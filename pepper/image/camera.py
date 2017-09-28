@@ -93,7 +93,8 @@ class SystemCamera(Camera):
 
 class PepperCamera(Camera):
 
-    ID = "PepperCamera3"
+    #TODO: Fix issue with ID
+    ID = "PepperCamera"
 
     def __init__(self, session, resolution = Resolution.VGA, colorspace = ColorSpace.RGB, rate = 5):
         """

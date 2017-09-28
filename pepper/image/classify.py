@@ -23,7 +23,7 @@ class ClassifyClient:
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
-    TMP = r'C:\Users\Bram\Documents\Pepper\pepper\tmp\capture.jpg'
+    TMP = os.getcwd() + r'\capture.jpg'
 
     client = ClassifyClient(('localhost', 9999))
 

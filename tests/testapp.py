@@ -11,6 +11,7 @@ from pepper.knowledge.wordnet import WordNet
 from threading import Thread
 from time import sleep, time
 from random import choice
+import os
 
 
 GREETINGS = [
@@ -51,7 +52,7 @@ class TestApp(App):
 
     def classify(self):
         THRESHOLD = 0.4
-        TMP = r'C:\Users\Bram\Documents\Pepper\pepper\tmp\capture.jpg'
+        TMP = os.getcwd() + r'\capture.jpg'
 
         WORDS_SAID = set()
 
