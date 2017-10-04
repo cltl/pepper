@@ -1,5 +1,10 @@
 from pepper.event import Event
+from pepper.image.camera import PepperCamera
+from pepper.image.classify import ClassifyClient
+
 import numpy as np
+from time import time
+import os
 
 
 class FaceInfo:
@@ -284,7 +289,7 @@ class FaceDetectedEvent(Event):
 
 
 class LookingAtRobotEvent(Event):
-    def __init__(self, session, callback):
+    def __init__(self, session, callback, threshold = 0.5):
         """
         Looking At Robot Event.
 
@@ -298,25 +303,107 @@ class LookingAtRobotEvent(Event):
 
         super(LookingAtRobotEvent, self).__init__(session, callback)
 
+        self._threshold = 0.5
+
         # Connect to "GazeAnalysis/PersonStartsLookingAtRobot" event
         self._subscriber = self.memory.subscriber("GazeAnalysis/PersonStartsLookingAtRobot")
-        self._subscriber.signal.connect(self.on_look)
+        self._subscriber.signal.connect(self._on_look)
 
         # Subscribe to ALGazeAnalysis service. This way the events will actually be cast.
         self._service = self.session.service("ALGazeAnalysis")
         self._service.subscribe(self.name)
+        self._service.setTolerance(self._threshold)
 
-    def on_look(self, person):
+    def _on_look(self, person):
         """
-        Looking At Robot Event: callback should have identical signature
+        Raw Looking At Robot Event, attaching 'LookingAtRobotScore' to event
 
         Parameters
         ----------
         person: int
             ID of person looking at Pepper
         """
-        self.callback(person)
+
+        score = float(self.memory.getData("PeoplePerception/Person/{}/LookingAtRobotScore".format(person)))
+        self.on_look(person, score)
+
+    def on_look(self, person, score):
+        """
+        On Look Event: callback should have identical signature
+
+        Parameters
+        ----------
+        person: int
+            Identification Number of Person (different than FaceDetection event?)
+        score: float
+            Confidence score of person actually looking at Pepper
+        """
+        self.callback(person, score)
 
     def close(self):
         """Cleanup by unsubscribing from 'AlGazeAnalysis' service"""
         self._service.unsubscribe(self.name)
+
+
+class ObjectPresentEvent(FaceDetectedEvent):
+
+    TMP = os.path.join(os.getcwd(), 'tmp/presenting.jpg')
+
+    def __init__(self, session, callback, camera_id, classification_address = ('localhost', 9999),
+                 timeout = 2, object_threshold = 0.5):
+        """
+        Object Present Event
+
+        Parameters
+        ----------
+        session: qi.Session
+            Session to attach this event to
+        callback: callable
+            Function to call when event occurs
+        classification_address: tuple
+            Address of Classification Host - see pepper_tensorflow project
+        look_threshold: float
+            Confidence threshold on whether a person actually looks at Pepper
+        object_threshold: float
+            Confidence threshold on object recognition
+        """
+
+        if not os.path.exists(self.TMP):
+            os.makedirs(os.path.dirname(self.TMP))
+
+        self._camera = PepperCamera(session, camera_id)
+        self._classify_client = ClassifyClient(classification_address)
+
+        self._object_threshold = object_threshold
+
+        self._timeout = timeout
+        self._time_last_event = 0
+
+        super(ObjectPresentEvent, self).__init__(session, callback)
+
+    @property
+    def camera(self):
+        return self._camera
+
+    def on_event(self, t, faces, recognition):
+        if time() - self._time_last_event > self._timeout:
+            self._time_last_event = time()
+            self.camera.get().save(self.TMP)
+            object_score, object = self._classify_client.classify(self.TMP)[0]
+
+            if object_score > self._object_threshold:
+                self.on_present(object_score, object)
+
+    def on_present(self, object_score, object):
+        """
+        On Present Event: callback should have identical signature
+
+        Parameters
+        ----------
+        object_score: float
+            Confidence score of object detection
+        object: list of str
+            List of words, representing the detected object
+        """
+        self.callback(object_score, object)
+

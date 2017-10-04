@@ -1,2 +1,4 @@
 from .event import Event
-from .people import FaceDetectedEvent, LookingAtRobotEvent
+from .people import *
+from .sensors import *
+from .speech import *

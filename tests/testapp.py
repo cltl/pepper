@@ -32,12 +32,13 @@ class TestApp(App):
 
         self.animated_speech = self.session.service("ALAnimatedSpeech")
 
-        self.camera = PepperCamera(self.session)
+        self.camera = PepperCamera(self.session, "TestAppCamera")
 
         self.classify_client = ClassifyClient(('localhost', 9999))
 
         self.events.append(FaceDetectedEvent(self.session, self.on_face))
-        self.events.append(LookingAtRobotEvent(self.session, self.on_look))
+        self.events.append(ObjectPresentEvent(self.session, self.on_present))
+        self.events.append(GestureDetectedEvent(self.session, self.on_gesture))
         self.events.append(self.camera)
 
         classify_thread = Thread(target=self.classify)
@@ -47,12 +48,17 @@ class TestApp(App):
     def on_face(self, time, faces, recognition):
         pass
 
-    def on_look(self, value):
-        self.animated_speech.say(choice(GREETINGS))
+    def on_present(self, person, look_score, object_score, object):
+        word = choice(object)
+        self.animated_speech.say("You are presenting a {}".format(word))
+        print("Presenting [{:3.1%}] Object '{}' [{:3.1%}]".format(look_score, word, object_score))
+
+    def on_gesture(self, name):
+        print(name)
 
     def classify(self):
         THRESHOLD = 0.4
-        TMP = os.getcwd() + r'\capture.jpg'
+        TMP = os.path.join(os.getcwd(), 'tmp', 'classify.jpg')
 
         WORDS_SAID = set()
 
@@ -74,5 +80,5 @@ class TestApp(App):
 
 
 if __name__ == "__main__":
-    app = TestApp(["192.168.1.101", 9559])
+    app = TestApp(["192.168.1.100", 9559])
     app.run()

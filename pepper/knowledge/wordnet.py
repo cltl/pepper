@@ -58,3 +58,18 @@ class WordNet:
             part_of_speech_definitions[part_of_speech] = definitions
 
         return part_of_speech_definitions
+
+    @staticmethod
+    def definitions_intersection(*words):
+        definitions_intersection = {}
+
+        for word in words:
+            for part_of_speech, definitions in WordNet.definitions(word).items():
+                if part_of_speech not in definitions_intersection:
+                    definitions_intersection[part_of_speech] = definitions
+                else:
+                    definitions_intersection[part_of_speech] = [
+                        d for d in definitions_intersection[part_of_speech] if d in definitions
+                    ]
+
+        return definitions_intersection

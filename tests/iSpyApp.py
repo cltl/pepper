@@ -6,6 +6,9 @@ from pepper.event import *
 from pepper.image.camera import PepperCamera
 from pepper.image.classify import ClassifyClient
 
+from pepper.event.sensors import GestureDetectedEvent
+from pepper.event.speech import WordDetectedEvent
+
 from pepper.knowledge.wordnet import WordNet
 
 from time import sleep
@@ -33,7 +36,7 @@ class iSpyApp(App):
         self.animated_speech = self.session.service("ALAnimatedSpeech")
         self.tactile_gesture = self.session.service("ALTactileGesture")
         self.speech_recognition = self.session.service("ALSpeechRecognition")
-        self.camera = PepperCamera(self.session)
+        self.camera = PepperCamera(self.session, "iSpyCamera")
 
         # External services
         self.classify_client = ClassifyClient(('localhost', 9999))
@@ -70,6 +73,7 @@ class iSpyApp(App):
 
         # Robot gives feedback (yes/no)
         if guess == word:
+            pass
             # Victory
             #TODO: victory dance
 

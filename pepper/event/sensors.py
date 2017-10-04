@@ -16,25 +16,22 @@ class GestureDetectedEvent(Event):
 
         super(GestureDetectedEvent, self).__init__(session, callback)
 
-        # Connect to 'ALTactileGesture/Gesture' event
-        self._subscriber = self.memory.subscriber("ALTactileGesture/Gesture")
-        self._subscriber.signal.connect(self.on_gesture)
-
         # Subscribe to ALTactileGesture service. This way the events will actually be cast.
         self._detection = self.session.service("ALTactileGesture")
-        self._detection.subscribe(self.name)
 
-    def on_gesture(self, gestureName):
+        self._detection.onGesture.connect(self.on_gesture)
+
+    def on_gesture(self, gesture_name):
         """
         Gesture Detected Event: callback should have identical signature
 
         Parameters
         ----------
-        gestureName: string
+        gesture_name: str
             name of gesture detected
         """
 
-        self.callback(gestureName)
+        self.callback(gesture_name)
 
     def close(self):
         """Cleanup by unsubscribing from 'ALTactileGesture' service"""

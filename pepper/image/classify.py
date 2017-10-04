@@ -1,22 +1,18 @@
 from pepper.image.camera import SystemCamera
 
-from socket import socket
+import socket
 import yaml
-
+import os
 
 class ClassifyClient:
     def __init__(self, address):
         self.address = address
 
     def classify(self, path):
-        sock = socket()
-        sock.connect(self.address)
-        sock.sendall(path.encode())
-
-        response = yaml.load(sock.recv(4096).decode())
-
-        sock.close()
-
+        s = socket.socket()
+        s.connect(self.address)
+        s.sendall(path.encode())
+        response = yaml.load(s.recv(4096).decode())
         return response
 
 

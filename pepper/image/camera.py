@@ -93,10 +93,7 @@ class SystemCamera(Camera):
 
 class PepperCamera(Camera):
 
-    #TODO: Fix issue with ID
-    ID = "PepperCamera1"
-
-    def __init__(self, session, resolution = Resolution.VGA, colorspace = ColorSpace.RGB, rate = 5):
+    def __init__(self, session, camera_id, resolution = Resolution.VGA, colorspace = ColorSpace.RGB, rate = 5):
         """
         Capture images using Pepper's Camera
 
@@ -113,12 +110,16 @@ class PepperCamera(Camera):
         """
 
         self._session = session
+        self._camera_id = camera_id
         self._resolution = resolution
         self._colorspace = colorspace
         self._rate = rate
 
         self._service = self.session.service("ALVideoDevice")
-        self._client = self.service.subscribe(self.ID, int(self.resolution), int(self.colorspace), self.rate)
+
+        self._client = self.service.subscribeCamera(
+            self._camera_id, 0, int(self.resolution), int(self.colorspace), self.rate)
+
 
     @property
     def session(self):
@@ -129,6 +130,16 @@ class PepperCamera(Camera):
             Session camera is hooked into
         """
         return self._session
+
+    @property
+    def camera_id(self):
+        """
+        Returns
+        -------
+        camera_id: str
+            Name of the attached camera service subscription
+        """
+        return self._camera_id
 
     @property
     def resolution(self):
@@ -175,7 +186,7 @@ class PepperCamera(Camera):
         return Image.frombytes(self.colorspace.name, (width, height), str(data))
 
     def close(self):
-        self.service.unsubscribe(self.ID)
+        self.service.unsubscribe(self.camera_id)
 
 
 if __name__ == "__main__":
@@ -185,7 +196,7 @@ if __name__ == "__main__":
     session = qi.Session()
     session.connect("tcp://192.168.1.100:9559")
 
-    camera = PepperCamera(session)
+    camera = PepperCamera(session, "CameraTest")
     image = camera.get()
     camera.close()
 
