@@ -37,8 +37,6 @@ class TestApp(App):
         self.classify_client = ClassifyClient(('localhost', 9999))
 
         self.events.append(FaceDetectedEvent(self.session, self.on_face))
-        self.events.append(ObjectPresentEvent(self.session, self.on_present))
-        self.events.append(GestureDetectedEvent(self.session, self.on_gesture))
         self.events.append(self.camera)
 
         classify_thread = Thread(target=self.classify)
@@ -47,14 +45,6 @@ class TestApp(App):
 
     def on_face(self, time, faces, recognition):
         pass
-
-    def on_present(self, person, look_score, object_score, object):
-        word = choice(object)
-        self.animated_speech.say("You are presenting a {}".format(word))
-        print("Presenting [{:3.1%}] Object '{}' [{:3.1%}]".format(look_score, word, object_score))
-
-    def on_gesture(self, name):
-        print(name)
 
     def classify(self):
         THRESHOLD = 0.4

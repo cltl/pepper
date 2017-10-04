@@ -11,9 +11,18 @@ from threading import Thread, Timer
 from time import sleep
 from random import choice
 
+
 INTRODUCTION = """
-    Hello, I am Pepper.
+Hello everybody, my name is Pepper! I am a social humanoid robot.
+This means I can interact with you through seeing, hearing, talking and moving.
+However, in order to do anything - I need to be programmed.
+Remember, a robot is only as smart as you make it to be!
+
+Today, we will play a game. This is an opportunity for me to show off all my skills.
+I will think of an object I see and give you hints to guess what I am thinking about.
+I am excited to see how fast you can guess!
 """
+
 
 OBJECT_HINTS = {
     'water bottle': [
@@ -36,6 +45,11 @@ OBJECT_HINTS = {
         "You use it in the garden",
         "It has a handle"
     ],
+    'sunglasses': [
+        "You can use this object in summer",
+        "You wear it on your head",
+        "You don't use it indoors"
+    ]
 }
 
 OBJECT_COLORS = {
@@ -43,6 +57,7 @@ OBJECT_COLORS = {
     'banana': 'yellow',
     'coffee mug': 'black',
     'water jug': 'white',
+    'sunglasses': 'black'
 }
 
 TEXT_SUCCESS = [
