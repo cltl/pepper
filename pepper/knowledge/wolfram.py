@@ -11,9 +11,30 @@ class SimpleWolfram:
     ]
 
     def __init__(self, app = "LA3GP6-VJ8KK8Y36A"):
+        """
+        Interact with Wolfram Spoken Results API
+
+        Parameters
+        ----------
+        app: str
+            Application Identifier
+        """
         self.app = app
 
     def get(self, query):
+        """
+        Get spoken result from WolframAlpha query
+
+        Parameters
+        ----------
+        query: str
+            Question to ask the WolframAlpha Engine
+
+        Returns
+        -------
+        result: str
+            Answer to Question or one of SimpleWolfram.ERRORS
+        """
         return requests.get(self.API.format(query.replace(' ', '+'), self.app)).text
 
 
