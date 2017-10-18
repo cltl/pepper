@@ -8,7 +8,7 @@ class Microphone(object):
     """Abstract Microphone Class"""
 
     @property
-    def sample_rate(self):
+    def rate(self):
         """Get microphone sample rate in hertz"""
         raise NotImplementedError()
 
@@ -22,47 +22,20 @@ class Microphone(object):
         raise NotImplementedError()
 
 
-class SystemMicrophone(Microphone):
+class PepperMicrophoneMode(Enum):
+    ALL = (48000, 0)
+    LEFT = (16000, 1)
+    RIGHT = (16000, 2)
+    FRONT = (16000, 3)
+    REAR = (16000, 4)
 
-    FORMAT = pyaudio.paInt16
-    DATA_TYPE = np.int16
-    DATA_TYPE_MAX = np.iinfo(DATA_TYPE).max
 
-    def __init__(self, sample_rate=16000, channels=1):
-        """
-        Use Local System Microphone
+class PepperMicrophoneProcessor(object):
+    def __init__(self):
+        """Process Microphone Events and Buffer Signal"""
 
-        Parameters
-        ----------
-        sample_rate: int
-            Sample rate in Hertz
-        channels: int
-            Number of channels
-        """
-        self._audio = pyaudio.PyAudio()
-        self._stream = self._audio.open(sample_rate, channels, self.FORMAT, True)
-        self._sample_rate = sample_rate
-        self._channels = channels
-
-    @property
-    def sample_rate(self):
-        """
-        Returns
-        -------
-        sample_rate: int
-            Sample rate in Hertz
-        """
-        return self._sample_rate
-
-    @property
-    def channels(self):
-        """
-        Returns
-        -------
-        channels: int
-            Number of channels
-        """
-        return self._channels
+        self._buffer = []
+        self._listen = False
 
     def get(self, seconds):
         """
@@ -76,20 +49,51 @@ class SystemMicrophone(Microphone):
         -------
         signal: np.ndarray
         """
-        return np.frombuffer(self._stream.read(int(self.sample_rate * seconds)), self.DATA_TYPE)
 
-    def __del__(self):
-        self._stream.stop_stream()
-        self._stream.close()
-        self._audio.terminate()
+        self._listen = True
+        sleep(seconds)
+        self._listen = False
 
+        result = np.concatenate(self._buffer)
+        self._buffer = []
 
-class PepperMicrophoneMode(Enum):
-    ALL = (48000, 0)
-    LEFT = (16000, 1)
-    RIGHT = (16000, 2)
-    FRONT = (16000, 3)
-    REAR = (16000, 4)
+        return result
+
+    def process(self, channels, samples, timestamp, buffer):
+        """
+        Process Raw Microphone Signal on Local Event (On Pepper)
+
+        Parameters
+        ----------
+        channels: int
+            Number of Channels
+        samples: int
+            Sample Rate in Hertz
+        timestamp: list of int
+            Number of seconds and microseconds since device boot
+        buffer: bytes
+            Raw Microphone Data
+        """
+        if self._listen:
+            data = np.frombuffer(buffer, np.int16).reshape(samples)
+            self._buffer.append(data)
+
+    def processRemote(self, channels, samples, timestamp, buffer):
+        """
+        Process Raw Microphone Signal on Remote Event (On Remote Machine)
+
+        Parameters
+        ----------
+        channels: int
+            Number of Channels
+        samples: int
+            Sample Rate in Hertz
+        timestamp: list of int
+            Number of seconds and microseconds since device boot
+        buffer: bytes
+            Raw Microphone Data
+        """
+        self.process(channels, samples, timestamp, buffer)
 
 
 class PepperMicrophone(Microphone):
@@ -113,7 +117,7 @@ class PepperMicrophone(Microphone):
         self._sample_rate = mode.value[0]
         self._channels = 1 if mode.value[1] else 4
 
-        self.service.setClientPreferences(self.name, self.sample_rate, self.channels, 0)
+        self.service.setClientPreferences(self.name, self.rate, self.channels, 0)
         self.service.subscribe(self.name)
 
     @property
@@ -147,7 +151,7 @@ class PepperMicrophone(Microphone):
         return self._service
 
     @property
-    def sample_rate(self):
+    def rate(self):
         """
         Returns
         -------
@@ -181,12 +185,47 @@ class PepperMicrophone(Microphone):
         return self._processor.get(seconds)
 
 
-class PepperMicrophoneProcessor(object):
-    def __init__(self):
-        """Process Microphone Events and Buffer Signal"""
+class SystemMicrophone(Microphone):
 
-        self._buffer = []
-        self._listen = False
+    FORMAT = pyaudio.paInt16
+    DATA_TYPE = np.int16
+    DATA_TYPE_MAX = np.iinfo(DATA_TYPE).max
+
+    def __init__(self, sample_rate=16000, channels=1):
+        """
+        Use Local System Microphone
+
+        Parameters
+        ----------
+        sample_rate: int
+            Sample rate in Hertz
+        channels: int
+            Number of channels
+        """
+        self._audio = pyaudio.PyAudio()
+        self._stream = self._audio.open(sample_rate, channels, self.FORMAT, True)
+        self._sample_rate = sample_rate
+        self._channels = channels
+
+    @property
+    def rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate in Hertz
+        """
+        return self._sample_rate
+
+    @property
+    def channels(self):
+        """
+        Returns
+        -------
+        channels: int
+            Number of channels
+        """
+        return self._channels
 
     def get(self, seconds):
         """
@@ -200,48 +239,9 @@ class PepperMicrophoneProcessor(object):
         -------
         signal: np.ndarray
         """
+        return np.frombuffer(self._stream.read(int(self.rate * seconds)), self.DATA_TYPE)
 
-        self._listen = True
-        sleep(seconds)
-        self._listen = False
-
-        result = np.concatenate(self._buffer, 1)
-        self._buffer = []
-
-        return result
-
-    def process(self, channels, samples, timestamp, buffer):
-        """
-        Process Raw Microphone Signal on Local Event (On Pepper)
-
-        Parameters
-        ----------
-        channels: int
-            Number of Channels
-        samples: int
-            Sample Rate in Hertz
-        timestamp: list of int
-            Number of seconds and microseconds since device boot
-        buffer: bytes
-            Raw Microphone Data
-        """
-        if self._listen:
-            data = np.frombuffer(buffer, np.int16).reshape(channels, samples)
-            self._buffer.append(data)
-
-    def processRemote(self, channels, samples, timestamp, buffer):
-        """
-        Process Raw Microphone Signal on Remote Event (On Remote Machine)
-
-        Parameters
-        ----------
-        channels: int
-            Number of Channels
-        samples: int
-            Sample Rate in Hertz
-        timestamp: list of int
-            Number of seconds and microseconds since device boot
-        buffer: bytes
-            Raw Microphone Data
-        """
-        self.process(channels, samples, timestamp, buffer)
+    def __del__(self):
+        self._stream.stop_stream()
+        self._stream.close()
+        self._audio.terminate()
