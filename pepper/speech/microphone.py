@@ -1,7 +1,9 @@
+from scipy.io import wavfile
 import pyaudio
 import numpy as np
 from enum import Enum
 from time import sleep
+
 
 
 class Microphone(object):
@@ -182,6 +184,7 @@ class PepperMicrophone(Microphone):
         -------
         signal: np.ndarray
         """
+
         return self._processor.get(seconds)
 
 

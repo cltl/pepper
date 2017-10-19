@@ -149,15 +149,15 @@ class StreamedKaldiRecognition(WebSocketClient, StreamedRecognition):
     BUFFER_SECONDS = 0.25
 
     def __init__(self, microphone, callback, url = r"ws://localhost:8080/client/ws/speech"):
-        WebSocketClient.__init__(self,
-             "{}?{}".format(url, urllib.urlencode([("content-type", (
-                 "audio/x-raw, "
-                 "layout=(string)interleaved, "
-                 "rate=(int){}, "
-                 "format=(string)S16LE,"
-                 "channels=(int){}".format(
-                     microphone.rate, microphone.channels)
-             ))])))
+
+        self.url =  "{}?{}".format(url, urllib.urlencode([("content-type", (
+                    "audio/x-raw, "
+                    "layout=(string)interleaved, "
+                    "rate=(int){}, "
+                    "format=(string)S16LE,"
+                    "channels=(int){}".format(microphone.rate, microphone.channels)))]))
+
+        WebSocketClient.__init__(self, self.url, heartbeat_freq=10)
         StreamedRecognition.__init__(self, microphone, callback)
 
     def start(self):
@@ -169,7 +169,8 @@ class StreamedKaldiRecognition(WebSocketClient, StreamedRecognition):
     def opened(self):
         def stream_microphone():
             while True:
-                self.send(self.microphone.get(self.BUFFER_SECONDS).tobytes(), binary=True)
+                signal = self.microphone.get(self.BUFFER_SECONDS)
+                self.send(signal.tobytes(), binary=True)
 
         thread = Thread(target=stream_microphone)
         thread.start()
@@ -186,12 +187,18 @@ class StreamedKaldiRecognition(WebSocketClient, StreamedRecognition):
                         hypotheses.append([hypothesis['transcript'], hypothesis['likelihood']/100])
 
                     self.on_transcribe(hypotheses)
+                else:
+                    print "\r{}".format(response['result']['hypotheses'][0]['transcript']) ,
+
 
         else:
             if 'message' in response:
                 print >> sys.stderr, "Kaldi Error ({}) {}".format(response['status'], response['message'])
             else:
                 print >> sys.stderr, "Kaldi Server Error ({})".format(response['status'])
+
+    def closed(self, code, reason=None):
+        print("Closed! {} {}".format(reason, code))
 
 
 if __name__ == "__main__":
@@ -200,18 +207,20 @@ if __name__ == "__main__":
     # See: https://github.com/alumae/kaldi-gstreamer-server
     # Installing The GStreamer server as a Docker image is probably easiest, see:
     # https://github.com/jcsilva/docker-kaldi-gstreamer-server
-    # TODO: Fix all bugs/crashes (This is by no means stable (yet)!)
-    # TODO: Fix Kaldi Confidence Score (Goes above 100%?)
+    # TODO: Fix Kaldi Confidence Score (Goes above 100%?) >> Is log-likelihood >> transform?
 
     from pepper.speech.microphone import SystemMicrophone
     def on_transcribe(hypotheses):
-        print("[{}][{:3.0%}] {}".format(strftime("%H:%M:%S"), *hypotheses[0][::-1]))
+        print("\r[{}][{:4.0%}] {}".format(strftime("%H:%M:%S"), *hypotheses[0][::-1]))
     recognition = StreamedKaldiRecognition(SystemMicrophone(), on_transcribe)
+    print("Starting Online Voice Recognition!")
     recognition.start()
+
 
     # # Offline Recognition Example (Google vs Kaldi)
     # # Next to having the Kaldi GStreamer Server set up, you should also have access to the Google Speed API,
     # # See: https://cloud.google.com/speech/
+    #
     # from pepper.speech.microphone import SystemMicrophone
     # from time import time
     #
@@ -220,20 +229,24 @@ if __name__ == "__main__":
     #     sleep(1)
     # print("Talk!")
     #
-    # audio = SystemMicrophone().get(4)
+    # audio = SystemMicrophone().get(5)
     #
     # print("Thank You, Processing!\n")
     #
-    # t0 = time()
-    # hypotheses = GoogleRecognition().transcribe(audio)
-    # print("Google ({:1.3f}s)".format(time() - t0))
+    # try:
     #
-    # for i, hypothesis in enumerate(hypotheses):
-    #     print(u"\t{:>2d}. [{:3.0%}] {}".format(i+1, *hypothesis[::-1]))
+    #     t0 = time()
+    #     hypotheses = GoogleRecognition().transcribe(audio)
+    #     print("Google ({:1.3f}s)".format(time() - t0))
     #
-    # t0 = time()
-    # hypotheses = KaldiRecognition().transcribe(audio)
-    # print("Kaldi ({:1.3f}s)".format(time() - t0))
+    #     for i, hypothesis in enumerate(hypotheses):
+    #         print(u"\t{:>2d}. [{:3.0%}] {}".format(i+1, *hypothesis[::-1]))
     #
-    # for i, hypothesis in enumerate(hypotheses):
-    #     print(u"\t{:>2d}. [{:3.0%}] {}".format(i+1, *hypothesis[::-1]))
+    #     t0 = time()
+    #     hypotheses = KaldiRecognition().transcribe(audio)
+    #     print("Kaldi ({:1.3f}s)".format(time() - t0))
+    #
+    #     for i, hypothesis in enumerate(hypotheses):
+    #         print(u"\t{:>2d}. [{:3.0%}] {}".format(i+1, *hypothesis[::-1]))
+    # except AttributeError:
+    #     pass
