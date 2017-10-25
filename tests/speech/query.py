@@ -1,7 +1,7 @@
 from pepper.app import App
 from pepper.speech.microphone import PepperMicrophone
 from pepper.speech.recognition import GoogleRecognition
-from pepper.knowledge.wolfram import SimpleWolfram
+from pepper.knowledge.wolfram import Wolfram
 from pepper.event.people import LookingAtRobotEvent
 from pepper.output.led import *
 
@@ -55,7 +55,7 @@ class QueryApp(App):
 
         self.microphone = PepperMicrophone(self.session)
         self.recognition = GoogleRecognition()
-        self.wolfram = SimpleWolfram()
+        self.wolfram = Wolfram()
         self.led = Led(self.session)
 
         self.events.append(LookingAtRobotEvent(self.session, self.on_look))
@@ -88,7 +88,7 @@ class QueryApp(App):
             if hypotheses:
                 question, confidence = hypotheses[0]
                 # Query WolframAlpha for Answer to Question
-                answer = self.wolfram.get(question).replace('Wolfram Alpha', 'Leolani')
+                answer = self.wolfram.query(question).replace('Wolfram Alpha', 'Leolani')
 
                 # Display Question
                 print(u"Q: {} [{:3.0%}]".format(question, confidence))
@@ -96,7 +96,7 @@ class QueryApp(App):
                 # Let Pepper Repeat Your Question
                 self.speech.say(u"^startTag(estimate) You asked: {} ^waitTag(estimate)".format(question))
 
-                if answer == "No spoken result available" or answer == "Leolani did not understand your input":
+                if not answer:
                     # In case Pepper does not know, he will ask you to 'Google it yourself'
                     print(u"A: **NOT FOUND**\n")
                     self.speech.say(u"^startTag(not know){}^waitTag(not know)".format(choice(NO_RESULT_SPEECH)))

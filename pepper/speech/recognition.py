@@ -11,7 +11,6 @@ import sys
 from threading import Thread
 from time import sleep
 
-
 from enum import Enum
 
 
@@ -94,8 +93,8 @@ class GoogleRecognition(Recognition):
         """
         super(GoogleRecognition, self).__init__()
 
-        self._sample_rate = sample_rate
         self._language_code = language_code
+        self._sample_rate = sample_rate
 
         self._config = speech.types.RecognitionConfig(
             encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
@@ -103,16 +102,6 @@ class GoogleRecognition(Recognition):
             language_code = self._language_code,
             max_alternatives = 10
         )
-
-    @property
-    def sample_rate(self):
-        """
-        Returns
-        -------
-        sample_rate: int
-            Sample rate of audio signal
-        """
-        return self._sample_rate
 
     @property
     def language_code(self):
@@ -123,6 +112,16 @@ class GoogleRecognition(Recognition):
             Code of the to be recognised language
         """
         return self.language_code
+
+    @property
+    def sample_rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate of audio signal
+        """
+        return self._sample_rate
 
     @property
     def config(self):
@@ -143,17 +142,83 @@ class GoogleRecognition(Recognition):
 
         Returns
         -------
-        transcript_confidence: list of (str, float)
+        hypotheses: list of (str, float)
             List of transcript-confidence pairs
         """
         response = speech.SpeechClient().recognize(self.config, speech.types.RecognitionAudio(content=audio.tobytes()))
-        transcript_confidence = []
+        hypotheses = []
 
         for result in response.results:
             for alternative in result.alternatives:
-                transcript_confidence.append([alternative.transcript, alternative.confidence])
+                hypotheses.append([alternative.transcript, alternative.confidence])
 
-        return transcript_confidence
+        return hypotheses
+
+
+class GoogleStreamedRecognition(StreamedRecognition):
+
+    BUFFER_SECONDS = 0.1
+
+    def __init__(self, microphone, callback, language_code = 'en-GB', sample_rate = 16000):
+        super(GoogleStreamedRecognition, self).__init__(microphone, callback)
+
+        self._language_code = language_code
+        self._sample_rate = sample_rate
+
+        self._client = speech.SpeechClient()
+        self._config = speech.types.RecognitionConfig(
+            encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            sample_rate_hertz = sample_rate,
+            language_code = language_code
+        )
+        self._streaming_config = speech.types.StreamingRecognitionConfig(
+            config = self._config,
+            interim_results = True
+        )
+
+        thread = Thread(target=self.run)
+        thread.setDaemon(True)
+        thread.start()
+
+    def stream_microphone(self):
+        while True:
+            yield self.microphone.get(self.BUFFER_SECONDS)
+
+    def run(self):
+        requests = (speech.types.StreamingRecognizeRequest(audio_content=content.tobytes())
+                    for content in self.stream_microphone())
+
+        responses = self._client.streaming_recognize(self._streaming_config, requests)
+
+        for response in responses:
+            hypotheses = []
+
+            for result in response.results:
+                for alternative in result.alternatives:
+                    hypotheses.append([alternative.transcript, 0])
+
+                self.on_transcribe(hypotheses, result.is_final)
+
+
+    @property
+    def language_code(self):
+        """
+        Returns
+        -------
+        language_code: str
+            Code of the to be recognised language
+        """
+        return self.language_code
+
+    @property
+    def sample_rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate of audio signal
+        """
+        return self._sample_rate
 
 
 class WatsonLanguageModel(Enum):
@@ -248,7 +313,7 @@ class WatsonRecognition(Recognition):
         return transcript_confidence
 
 
-class StreamedWatsonRecognition(WebSocketClient, StreamedRecognition):
+class WatsonStreamedRecognition(WebSocketClient, StreamedRecognition):
 
     API_URL = "wss://stream.watsonplatform.net/speech-to-text/api/v1/recognize"
     API_USR = "d3977008-2079-42f8-ba77-8b44213a4c48"
@@ -299,6 +364,7 @@ class StreamedWatsonRecognition(WebSocketClient, StreamedRecognition):
             "content-type": "audio/l16;rate={}".format(self.sample_rate),
             "interim_results": True,
             "max_alternatives": 10,
+
         }))
 
         self.stream_thread = Thread(target=self.stream_microphone)
@@ -307,10 +373,12 @@ class StreamedWatsonRecognition(WebSocketClient, StreamedRecognition):
 
     def stream_microphone(self):
         """Stream Microphone Signal to Server"""
-
-        while True:
-            signal = self.microphone.get(self.BUFFER_SECONDS)
-            self.send(signal.tobytes(), binary=True)
+        try:
+            while True:
+                signal = self.microphone.get(self.BUFFER_SECONDS)
+                self.send(signal.tobytes(), binary=True)
+        except AttributeError as e:
+            print >> sys.stderr, "{} has timed out.".format(self.__class__.__name__)
 
     def received_message(self, message):
         """Called on response from Watson API Server, calls callback function"""
@@ -386,7 +454,7 @@ class KaldiRecognition(Recognition):
         return transcript
 
 
-class StreamedKaldiRecognition(WebSocketClient, StreamedRecognition):
+class KaldiStreamedRecognition(WebSocketClient, StreamedRecognition):
 
     BUFFER_SECONDS = 0.25
 
@@ -454,15 +522,24 @@ class StreamedKaldiRecognition(WebSocketClient, StreamedRecognition):
 
 
 if __name__ == "__main__":
+    from pepper.speech.microphone import SystemMicrophone
+    from pepper.knowledge.wolfram import Wolfram
 
     # Watson Streaming Recognition Example
     def on_speech(hypotheses, final):
-        transcript = "\r{}".format(hypotheses[0][0])
-        if final: print transcript
-        else: print transcript,
+        question = "\rQ: {}".format(hypotheses[0][0])
 
-    from pepper.speech.microphone import SystemMicrophone
-    recognition = StreamedWatsonRecognition(SystemMicrophone(), on_speech)
+        if final:
+            print "{}?".format(question)
+            answer = Wolfram().query(question)
+            if answer:
+                print "A: {}\n".format(answer)
+            else:
+                print "\r",
+        else:
+            print question,
+
+    recognition = GoogleStreamedRecognition(SystemMicrophone(), on_speech)
     print("Recognition Booted!")
 
     while True:
