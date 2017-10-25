@@ -2,6 +2,8 @@ import subprocess
 from threading import Thread
 from enum import Enum
 from time import sleep
+import os
+
 
 class KaldiModel(Enum):
     TEDLIUM = r"tedlium_nnet_ms_sp_online.yaml"
@@ -10,7 +12,7 @@ class KaldiModel(Enum):
 class KaldiServer(Thread):
 
     SERVER_IMAGE = r"jcsilva/docker-kaldi-gstreamer-server:latest"
-    MODEL_DIRECTORY = r"c:/Users/Bram/Documents/Pepper/pepper/pepper/speech/kaldi/models"
+    MODEL_DIRECTORY = os.path.join(os.path.dirname(__file__), r"models")
     WORKING_DIRECTORY = r"/opt/models"
 
     def __init__(self, port, model = KaldiModel.TEDLIUM, daemon = False):

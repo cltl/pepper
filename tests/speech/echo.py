@@ -46,6 +46,6 @@ class EchoApp(App):
 
 
 if __name__ == "__main__":
-    EchoApp(("192.168.1.100", 9559), KaldiRecognition()).run()
+    EchoApp(("192.168.1.103", 9559), KaldiRecognition()).run()
 
 

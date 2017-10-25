@@ -35,7 +35,7 @@ class SimpleWolfram:
         result: str
             Answer to Question or one of SimpleWolfram.ERRORS
         """
-        return requests.get(self.API.format(query.replace(' ', '+'), self.app)).text
+        return requests.get(self.API.format(query.replace(u' ', u'+'), self.app)).text
 
 
 class PodHandler(object):

@@ -2,11 +2,24 @@ from pepper.app import App
 from pepper.speech.microphone import PepperMicrophone
 from pepper.speech.recognition import GoogleRecognition
 from pepper.knowledge.wolfram import SimpleWolfram
-from pepper.event.sensors import GestureDetectedEvent
+from pepper.event.people import LookingAtRobotEvent
 from pepper.output.led import *
 
+from time import sleep
 from random import choice
 import numpy as np
+
+
+ASK_FOR_QUESTION = [
+    "Do you have a question for me?",
+    "Do you have a question in mind?",
+    "Is there something you'd like to know?",
+]
+
+
+NO_RESPONSE = [
+    "Another time then"
+]
 
 
 NO_RESULT_SPEECH = [
@@ -19,7 +32,7 @@ NO_RESULT_SPEECH = [
 
 class QueryApp(App):
 
-    LISTEN_DURATION = 4
+    LISTEN_DURATION = 6
 
     def __init__(self, address):
         """
@@ -45,49 +58,62 @@ class QueryApp(App):
         self.wolfram = SimpleWolfram()
         self.led = Led(self.session)
 
-        self.events.append(GestureDetectedEvent(self.session, self.on_gesture))
+        self.events.append(LookingAtRobotEvent(self.session, self.on_look))
 
-    def on_gesture(self, name):
-        """Program will fire when tapping on his head"""
-        self.speech.say(u"Do you have a question for me?")
+        self.listening = False
 
-        # Random Eye Colors to show Pepper's Listening
-        self.blinking.setEnabled(False)
-        self.led.set(Leds.LEFT_FACE_LEDS, np.random.uniform(size=3).tolist())
-        self.led.set(Leds.RIGHT_FACE_LEDS, np.random.uniform(size=3).tolist())
+        print("Started Program\n")
 
-        # Get Audio for 'LISTEN_DURATION' seconds
-        audio = self.microphone.get(self.LISTEN_DURATION)
+    def on_look(self, person, score):
+        if not self.listening:
+            self.listening = True
+            self.speech.say(choice(ASK_FOR_QUESTION))
 
-        # Disable Random Eye Colors and Resume Blinking
-        self.led.reset(Leds.LEFT_FACE_LEDS)
-        self.led.reset(Leds.RIGHT_FACE_LEDS)
-        self.blinking.setEnabled(True)
+            # Random Eye Colors to show Pepper's Listening
+            self.blinking.setEnabled(False)
+            self.led.set(Leds.LEFT_FACE_LEDS, np.random.uniform(size=3).tolist())
+            self.led.set(Leds.RIGHT_FACE_LEDS, np.random.uniform(size=3).tolist())
 
-        # Transcribe Question and Obtain Confidence Level
-        question, confidence = self.recognition.transcribe(audio)[0]
-        # Query WolframAlpha for Answer to Question
-        answer = self.wolfram.get(question)
+            # Get Audio for 'LISTEN_DURATION' seconds
+            audio = self.microphone.get(self.LISTEN_DURATION)
 
-        # Display Question
-        print(u"Q: {} [{:3.0%}]".format(question, confidence))
+            # Disable Random Eye Colors and Resume Blinking
+            self.led.reset(Leds.LEFT_FACE_LEDS)
+            self.led.reset(Leds.RIGHT_FACE_LEDS)
+            self.blinking.setEnabled(True)
 
-        # Let Pepper Repeat Your Question
-        self.speech.say(u"^startTag(estimate) You asked: {} ^waitTag(estimate)".format(question))
+            # Transcribe Question and Obtain Confidence Level
+            hypotheses = self.recognition.transcribe(audio)
 
-        if answer == "No spoken result available" or answer == "Wolfram Alpha did not understand your input":
-            # In case Pepper does not know, he will ask you to 'Google it yourself'
-            print(u"A: **NOT FOUND**\n")
-            self.speech.say(u"^startTag(not know){}^waitTag(not know)".format(choice(NO_RESULT_SPEECH)))
-        else:
-            # Otherwise an answer will be provided
-            print(u"A: {}\n".format(answer))
-            self.speech.say(u"^startTag(explain){}^waitTag(explain)".format(answer))
+            if hypotheses:
+                question, confidence = hypotheses[0]
+                # Query WolframAlpha for Answer to Question
+                answer = self.wolfram.get(question).replace('Wolfram Alpha', 'Leolani')
+
+                # Display Question
+                print(u"Q: {} [{:3.0%}]".format(question, confidence))
+
+                # Let Pepper Repeat Your Question
+                self.speech.say(u"^startTag(estimate) You asked: {} ^waitTag(estimate)".format(question))
+
+                if answer == "No spoken result available" or answer == "Leolani did not understand your input":
+                    # In case Pepper does not know, he will ask you to 'Google it yourself'
+                    print(u"A: **NOT FOUND**\n")
+                    self.speech.say(u"^startTag(not know){}^waitTag(not know)".format(choice(NO_RESULT_SPEECH)))
+                else:
+                    # Otherwise an answer will be provided
+                    print(u"A: {}\n".format(answer))
+                    self.speech.say(u"^startTag(explain){}^waitTag(explain)".format(answer))
+            else:
+                self.speech.say(choice(NO_RESPONSE))
+
+            sleep(10)
+            self.listening = False
 
 
 if __name__ == "__main__":
     # Run App
-    QueryApp(("192.168.1.101", 9559)).run()
+    QueryApp(("192.168.1.103", 9559)).run()
 
 
 

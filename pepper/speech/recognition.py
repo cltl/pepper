@@ -1,21 +1,44 @@
 from google.cloud import speech
-
+from watson_developer_cloud import SpeechToTextV1
+from pepper.speech.kaldi.client import KaldiClient
 from ws4py.client.threadedclient import WebSocketClient
-from threading import Thread
+
 import urllib
-from time import sleep, strftime
+import base64
 import json
 import sys
 
+from threading import Thread
+from time import sleep
+
+
+from enum import Enum
+
 
 class Recognition(object):
+    """Speech Recognition Base Class"""
+
     def transcribe(self, audio):
+        """
+        Transcribe Speech Audio
+
+        Parameters
+        ----------
+        audio: numpy.ndarray
+
+        Returns
+        -------
+        hypotheses: list of (str, float)
+            List of transcript-confidence pairs
+        """
         raise NotImplementedError()
 
 
 class StreamedRecognition(object):
     def __init__(self, microphone, callback):
         """
+        Streamed Speech Recognition Base Class
+
         Parameters
         ----------
         microphone: pepper.speech.microphone.Microphone
@@ -43,12 +66,32 @@ class StreamedRecognition(object):
         """
         return self._callback
 
-    def on_transcribe(self, hypotheses):
-        self.callback(hypotheses)
+    def on_transcribe(self, hypotheses, final):
+        """
+        On Transcribe Event Interface
+
+        Parameters
+        ----------
+        hypotheses: list of (str, float)
+            List of transcript-confidence values
+        final: bool
+            True if transcript contains whole utterance, False if hypotheses are intermediate
+        """
+        self.callback(hypotheses, final)
 
 
 class GoogleRecognition(Recognition):
-    def __init__(self, sample_rate = 16000, language_code = 'en-GB'):
+    def __init__(self, language_code = 'en-GB', sample_rate = 16000):
+        """
+        Perform Speech Recognition using Google Speech API
+
+        Parameters
+        ----------
+        language_code: str
+            Code of the to be recognised language
+        sample_rate: int
+            Sample rate of audio signal
+        """
         super(GoogleRecognition, self).__init__()
 
         self._sample_rate = sample_rate
@@ -63,17 +106,46 @@ class GoogleRecognition(Recognition):
 
     @property
     def sample_rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate of audio signal
+        """
         return self._sample_rate
 
     @property
     def language_code(self):
+        """
+        Returns
+        -------
+        language_code: str
+            Code of the to be recognised language
+        """
         return self.language_code
 
     @property
     def config(self):
+        """
+        Returns
+        -------
+        config: speech.types.RecognitionConfig
+        """
         return self._config
 
     def transcribe(self, audio):
+        """
+        Transcribe Speech Audio
+
+        Parameters
+        ----------
+        audio: numpy.ndarray
+
+        Returns
+        -------
+        transcript_confidence: list of (str, float)
+            List of transcript-confidence pairs
+        """
         response = speech.SpeechClient().recognize(self.config, speech.types.RecognitionAudio(content=audio.tobytes()))
         transcript_confidence = []
 
@@ -84,60 +156,230 @@ class GoogleRecognition(Recognition):
         return transcript_confidence
 
 
-class KaldiRecognitionClient(WebSocketClient):
-    def __init__(self, url, audio):
-        super(KaldiRecognitionClient, self).__init__(url)
+class WatsonLanguageModel(Enum):
+    ar_AR_BroadbandModel = "ar-AR_BroadbandModel"  # Modern Standard Arabic broadband model
+    en_US_BroadbandModel = "en-US_BroadbandModel"  # US English broadband model
+    en_GB_BroadbandModel = "en-GB_BroadbandModel"  # GB English broadband model
+    es_ES_BroadbandModel = "es-ES_BroadbandModel"  # Spanish broadband model
+    fr_FR_BroadbandModel = "fr-FR_BroadbandModel"  # French broadband model
+    pt_BR_BroadbandModel = "pt-BR_BroadbandModel"  # Brazilian Portuguese broadband model
+    zh_CN_BroadbandModel = "zh-CN_BroadbandModel"  # Mandarin broadband model
+    ja_JP_BroadbandModel = "ja-JP_BroadbandModel"  # Japanese broadband model
 
-        self._audio = audio
-        self._transcript_confidence = []
+
+    en_US_NarrowbandModel = "en-US_NarrowbandModel"  # US English narrowband model
+    en_GB_NarrowbandModel = "en-GB_NarrowbandModel"  # GB English narrowband model
+    es_ES_NarrowbandModel = "es-ES_NarrowbandModel"  # Spanish narrowband model
+    ja_JP_NarrowbandModel = "ja-JP_NarrowbandModel"  # Japanese narrowband model
+    pt_BR_NarrowbandModel = "pt-BR_NarrowbandModel"  # Brazilian Portuguese narrowband model
+    zh_CN_NarrowbandModel = "zh-CN_NarrowbandModel"  # Mandarin narrowband model
+
+
+class WatsonRecognition(Recognition):
+    def __init__(self, model = WatsonLanguageModel.en_GB_BroadbandModel, sample_rate = 16000):
+        """
+        Perform Speech Recognition using the Watson API
+
+        Parameters
+        ----------
+        model: WatsonLanguageModel
+            Language model to use for speech recognition
+        sample_rate: int
+            Sample rate of audio signal
+        """
+
+        self._model = model
+        self._sample_rate = sample_rate
+
+        self.stt = SpeechToTextV1(
+            username="d3977008-2079-42f8-ba77-8b44213a4c48",
+            password="7I8oVN4aboFm"
+        )
+
+        self.stt.get_model(model.value)
 
     @property
-    def audio(self):
-        return self._audio
+    def model(self):
+        """
+        Returns
+        -------
+        model: WatsonLanguageModel
+            Model to use for speech recognition
+        """
+        return self._model
 
     @property
-    def transcript(self):
-        while not self._transcript_confidence: sleep(0.1)
-        return self._transcript_confidence
+    def sample_rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate of audio signal
+        """
+        return self._sample_rate
+
+    def transcribe(self, audio):
+        """
+        Transcribe Speech Audio
+
+        Parameters
+        ----------
+        audio: numpy.ndarray
+
+        Returns
+        -------
+        hypotheses: list of (str, float)
+            List of transcript-confidence pairs
+        """
+        response = self.stt.recognize(audio.tobytes(),
+                                      content_type='audio/l16;rate={}'.format(self.sample_rate),
+                                      max_alternatives=10)
+
+        transcript_confidence = []
+
+        confidence = 0
+
+        for alternative in response['results'][0]['alternatives']:
+            if 'confidence' in alternative:
+                confidence = alternative['confidence']
+
+            transcript_confidence.append([alternative['transcript'], confidence])
+
+        return transcript_confidence
+
+
+class StreamedWatsonRecognition(WebSocketClient, StreamedRecognition):
+
+    API_URL = "wss://stream.watsonplatform.net/speech-to-text/api/v1/recognize"
+    API_USR = "d3977008-2079-42f8-ba77-8b44213a4c48"
+    API_PSS = "7I8oVN4aboFm"
+
+    BUFFER_SECONDS = 1
+
+    def __init__(self, microphone, callback, model = WatsonLanguageModel.en_GB_BroadbandModel, sample_rate = 16000):
+        """
+        Perform Streamed Speech Recognition using the Watson API
+
+        Parameters
+        ----------
+        microphone: SystemMicrophone
+            Microphone to Listen to
+        callback: callable
+            Callback to call on transcribe
+        model: WatsonLanguageModel
+            Language model to use for speech recognition
+        sample_rate: int
+            Sample rate of audio signal
+        """
+
+        StreamedRecognition.__init__(self, microphone, callback)
+        WebSocketClient.__init__(self, r"{}?model={}".format(self.API_URL, model.value),
+                                 headers=[("Authorization", "Basic {}".format(
+                                     base64.encodestring("{}:{}".format(self.API_USR, self.API_PSS))))])
+
+        self._sample_rate = sample_rate
+        self._listening = False
+        self.connect()
+
+    @property
+    def sample_rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate of audio signal
+        """
+        return self._sample_rate
 
     def opened(self):
-        self.send(self.audio.tobytes(), binary=True)
-        self.send("EOS")
+        """Called after connecting to Watson API, sets up connection and starts microphone stream"""
+
+        self.send(json.dumps({
+            "action": "start",
+            "content-type": "audio/l16;rate={}".format(self.sample_rate),
+            "interim_results": True,
+            "max_alternatives": 10,
+        }))
+
+        self.stream_thread = Thread(target=self.stream_microphone)
+        self.stream_thread.setDaemon(True)
+        self.stream_thread.start()
+
+    def stream_microphone(self):
+        """Stream Microphone Signal to Server"""
+
+        while True:
+            signal = self.microphone.get(self.BUFFER_SECONDS)
+            self.send(signal.tobytes(), binary=True)
 
     def received_message(self, message):
-        response = json.loads(str(message))
+        """Called on response from Watson API Server, calls callback function"""
 
-        if not response['status']:
-            if 'result' in response:
-                if response['result']['final']:
-                    transcript_confidence = []
+        message = json.loads(str(message))
 
-                    for hypothesis in response['result']['hypotheses']:
-                        transcript_confidence.append([hypothesis['transcript'], hypothesis['likelihood']/100])
-                    self._transcript_confidence = transcript_confidence
-        else:
-            if 'message' in response:
-                print >> sys.stderr, "Kaldi Error ({}) {}".format(response['status'], response['message'])
-            else:
-                print >> sys.stderr, "Kaldi Server Error ({})".format(response['status'])
+        if 'results' in message:
+            hypotheses = []
+            confidence = 0
+
+            for alternative in message['results'][0]['alternatives']:
+                if 'confidence' in alternative:
+                    confidence = alternative['confidence']
+
+                hypotheses.append([alternative['transcript'], confidence])
+            self.on_transcribe(hypotheses, message['results'][0]['final'])
 
 
 class KaldiRecognition(Recognition):
     def __init__(self, url = r"ws://localhost:8080/client/ws/speech", sample_rate = 16000):
+        """
+        Perform Kaldi Recognition using Locally Running Kaldi Server
+
+        Parameters
+        ----------
+        url: str
+            Address of Kaldi Server
+        sample_rate: int
+            Sample rate of audio signal
+        """
         super(KaldiRecognition, self).__init__()
 
-        self._request = "{}?{}".format(url, urllib.urlencode([("content-type",(
-            "audio/x-raw, layout=(string)interleaved, rate=(int){}, format=(string)S16LE, channels=(int)1".format(
-                sample_rate
-            )
-        ))]))
+        self._url = url
+        self._sample_rate = sample_rate
 
     @property
-    def request(self):
-        return self._request
+    def url(self):
+        """
+        Returns
+        -------
+        url: str
+            Address of Kaldi Server
+        """
+        return self._url
+
+    @property
+    def sample_rate(self):
+        """
+        Returns
+        -------
+        sample_rate: int
+            Sample rate of audio signal
+        """
+        return self._sample_rate
 
     def transcribe(self, audio):
-        client = KaldiRecognitionClient(self.request, audio)
+        """
+        Transcribe Speech Audio
+
+        Parameters
+        ----------
+        audio: numpy.ndarray
+
+        Returns
+        -------
+        hypotheses: list of (str, float)
+            List of transcript-confidence pairs
+        """
+        client = KaldiClient(self.url, audio, self.sample_rate)
         client.connect()
         transcript = client.transcript
         client.close_connection()
@@ -149,75 +391,84 @@ class StreamedKaldiRecognition(WebSocketClient, StreamedRecognition):
     BUFFER_SECONDS = 0.25
 
     def __init__(self, microphone, callback, url = r"ws://localhost:8080/client/ws/speech"):
+        """
+        Perform Streamed Speech Recognition using local Kaldi Server
 
-        self.url =  "{}?{}".format(url, urllib.urlencode([("content-type", (
+        Parameters
+        ----------
+        microphone: SystemMicrophone
+            Microphone to Listen to
+        callback: callable
+            Callback to call on transcribe
+        url: str
+            URL of Kaldi Server
+        """
+
+        StreamedRecognition.__init__(self, microphone, callback)
+        WebSocketClient.__init__(self,
+                    "{}?{}".format(url, urllib.urlencode([("content-type", (
                     "audio/x-raw, "
                     "layout=(string)interleaved, "
                     "rate=(int){}, "
                     "format=(string)S16LE,"
-                    "channels=(int){}".format(microphone.rate, microphone.channels)))]))
+                    "channels=(int){}".format(microphone.rate, microphone.channels)))])))
 
-        WebSocketClient.__init__(self, self.url, heartbeat_freq=10)
-        StreamedRecognition.__init__(self, microphone, callback)
-
-    def start(self):
         self.connect()
 
-        while True:
-            sleep(1)
-
     def opened(self):
-        def stream_microphone():
-            while True:
-                signal = self.microphone.get(self.BUFFER_SECONDS)
-                self.send(signal.tobytes(), binary=True)
+        """Called after connecting to Kaldi Server, starts microphone stream"""
 
-        thread = Thread(target=stream_microphone)
+        thread = Thread(target=self.stream_microphone)
         thread.start()
 
+    def stream_microphone(self):
+        """Stream Microphone Signal to Server"""
+
+        while True:
+            signal = self.microphone.get(self.BUFFER_SECONDS)
+            self.send(signal.tobytes(), binary=True)
+
     def received_message(self, message):
-        response = json.loads(str(message))
+        """Called on response from Kaldi Server, calls callback function"""
 
-        if not response['status']:
-            if 'result' in response:
-                if response['result']['final']:
-                    hypotheses = []
+        message = json.loads(str(message))
 
-                    for hypothesis in response['result']['hypotheses']:
-                        hypotheses.append([hypothesis['transcript'], hypothesis['likelihood']/100])
+        if not message['status']:
+            if 'result' in message:
+                hypotheses = []
+                likelihood = 0
 
-                    self.on_transcribe(hypotheses)
-                else:
-                    print "\r{}".format(response['result']['hypotheses'][0]['transcript']) ,
+                for hypothesis in message['result']['hypotheses']:
+                    if 'likelihood' in hypothesis:
+                        likelihood = hypothesis['likelihood']/100
 
+                    hypotheses.append([hypothesis['transcript'], likelihood])
+
+                self.on_transcribe(hypotheses, message['result']['final'])
 
         else:
-            if 'message' in response:
-                print >> sys.stderr, "Kaldi Error ({}) {}".format(response['status'], response['message'])
+            if 'message' in message:
+                print >> sys.stderr, "Kaldi Error ({}) {}".format(message['status'], message['message'])
             else:
-                print >> sys.stderr, "Kaldi Server Error ({})".format(response['status'])
-
-    def closed(self, code, reason=None):
-        print("Closed! {} {}".format(reason, code))
+                print >> sys.stderr, "Kaldi Server Error ({})".format(message['status'])
 
 
 if __name__ == "__main__":
-    # ..:: Live Speech Recognition Example ::..
-    # This code uses the Kaldi GStreamer server, and assumes it is running at ws://localhost:8080/client/ws/speech
-    # See: https://github.com/alumae/kaldi-gstreamer-server
-    # Installing The GStreamer server as a Docker image is probably easiest, see:
-    # https://github.com/jcsilva/docker-kaldi-gstreamer-server
-    # TODO: Fix Kaldi Confidence Score (Goes above 100%?) >> Is log-likelihood >> transform?
+
+    # Watson Streaming Recognition Example
+    def on_speech(hypotheses, final):
+        transcript = "\r{}".format(hypotheses[0][0])
+        if final: print transcript
+        else: print transcript,
 
     from pepper.speech.microphone import SystemMicrophone
-    def on_transcribe(hypotheses):
-        print("\r[{}][{:4.0%}] {}".format(strftime("%H:%M:%S"), *hypotheses[0][::-1]))
-    recognition = StreamedKaldiRecognition(SystemMicrophone(), on_transcribe)
-    print("Starting Online Voice Recognition!")
-    recognition.start()
+    recognition = StreamedWatsonRecognition(SystemMicrophone(), on_speech)
+    print("Recognition Booted!")
 
+    while True:
+        sleep(1)
 
-    # # Offline Recognition Example (Google vs Kaldi)
+    # # Recognition Example (Google vs Kaldi vs Watson)
     # # Next to having the Kaldi GStreamer Server set up, you should also have access to the Google Speed API,
     # # See: https://cloud.google.com/speech/
     #
@@ -248,5 +499,13 @@ if __name__ == "__main__":
     #
     #     for i, hypothesis in enumerate(hypotheses):
     #         print(u"\t{:>2d}. [{:3.0%}] {}".format(i+1, *hypothesis[::-1]))
+    #
+    #     t0 = time()
+    #     hypotheses = WatsonRecognition().transcribe(audio)
+    #     print("Watson ({:1.3f}s)".format(time() - t0))
+    #
+    #     for i, hypothesis in enumerate(hypotheses):
+    #         print(u"\t{:>2d}. [{:3.0%}] {}".format(i+1, *hypothesis[::-1]))
+    #
     # except AttributeError:
     #     pass
