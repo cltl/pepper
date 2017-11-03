@@ -10,7 +10,6 @@ import pepper.knowledge.general_questions as general
 
 from time import sleep, time
 from random import choice
-from datetime import datetime
 
 ############ CONSTANTS ############
 
@@ -42,7 +41,7 @@ class BachelorDay(App):
 
         self.listening = False
         self.busy = False
-        self.lastGreetingTime = None
+        self.lastGreetingTime = 0
 
         self.speech = self.session.service("ALAnimatedSpeech")
         self.events.append(FaceDetectedEvent(self.session, self.on_face))
@@ -63,11 +62,11 @@ class BachelorDay(App):
         # Person is already looking at robot, so do a simple greeting
         if not self.busy and not self.listening:
             self.busy = True
-            if (datetime.now() - self.lastGreetingTime).total_seconds() > SECONDS_BETWEEN_GREETINGS :
-                self.lastGreetingTime = datetime.now()
+            if time() - self.lastGreetingTime > SECONDS_BETWEEN_GREETINGS :
+                self.lastGreetingTime = time()
                 animation = choice(SIMPLE_GREETING['ANIMATIONS'])
                 text = choice(SIMPLE_GREETING['TEXT'])
-                self.speech.say("^start(%s) %s ^stop(%s)").format(animation, text, animation)
+                self.speech.say("^start({}) {} ^stop({})".format(animation, text, animation))
                 sleep(2)
 
             else:
