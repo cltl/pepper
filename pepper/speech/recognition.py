@@ -157,7 +157,7 @@ class GoogleRecognition(Recognition):
 
 class GoogleStreamedRecognition(StreamedRecognition):
 
-    BUFFER_SECONDS = 0.1
+    BUFFER_SECONDS = 0.5
 
     def __init__(self, microphone, callback, language_code = 'en-GB', sample_rate = 16000):
         super(GoogleStreamedRecognition, self).__init__(microphone, callback)
@@ -176,12 +176,14 @@ class GoogleStreamedRecognition(StreamedRecognition):
             interim_results = True
         )
 
+        self._stopped = False
+
         thread = Thread(target=self.run)
         thread.setDaemon(True)
         thread.start()
 
     def stream_microphone(self):
-        while True:
+        while not self._stopped:
             yield self.microphone.get(self.BUFFER_SECONDS)
 
     def run(self):
@@ -198,6 +200,9 @@ class GoogleStreamedRecognition(StreamedRecognition):
                     hypotheses.append([alternative.transcript, 0])
 
                 self.on_transcribe(hypotheses, result.is_final)
+
+    def stop(self):
+        self._stopped = True
 
 
     @property
@@ -525,6 +530,7 @@ if __name__ == "__main__":
     from pepper.speech.microphone import SystemMicrophone
     from pepper.knowledge.wolfram import Wolfram
 
+
     # Watson Streaming Recognition Example
     def on_speech(hypotheses, final):
         question = "\rQ: {}".format(hypotheses[0][0])
@@ -542,8 +548,8 @@ if __name__ == "__main__":
     recognition = GoogleStreamedRecognition(SystemMicrophone(), on_speech)
     print("Recognition Booted!")
 
-    while True:
-        sleep(1)
+    sleep(15)
+    recognition.stop()
 
     # # Recognition Example (Google vs Kaldi vs Watson)
     # # Next to having the Kaldi GStreamer Server set up, you should also have access to the Google Speed API,

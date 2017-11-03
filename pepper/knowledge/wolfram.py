@@ -1,5 +1,4 @@
 import requests
-import json
 
 
 class Wolfram:
@@ -11,6 +10,8 @@ class Wolfram:
         "No spoken result available",
         "Information about"
     ]
+
+    TOO_BROAD = "Information about "
 
     def __init__(self, app = "LA3GP6-VJ8KK8Y36A"):
         """
@@ -42,7 +43,10 @@ class Wolfram:
         """
 
         result = requests.get(self.API_SPOKEN.format(self.app, query.replace(u' ', u'+'))).text
-        if any([result.startswith(error) for error in self.ERRORS]): return None
+        if any([result.startswith(error) for error in self.ERRORS]):
+            if result.startswith(self.TOO_BROAD):
+                topic = result.replace(self.TOO_BROAD, "")
+                return "What would you like to know about {}?".format(topic)
         else: return result
 
 
