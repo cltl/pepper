@@ -6,7 +6,9 @@ from pepper.speech.recognition import GoogleStreamedRecognition
 from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.greetings import CATCH_ATTENTION, SIMPLE_GREETING
 
-import pepper.knowledge.general_questions as general
+import pepper.knowledge.vu_bachelors as bachelors
+
+from pepper.knowledge.general_questions import general_questions
 
 from time import sleep, time
 from random import choice
@@ -28,6 +30,9 @@ ASK_FOR_QUESTION = [
 ]
 
 SECONDS_BETWEEN_GREETINGS = 60
+
+VOICE_SPEED = 80
+SAY_SPEED = "\RSPD=" + str(VOICE_SPEED) + "\ "
 
 ####################################
 
@@ -69,11 +74,10 @@ class BachelorDay(App):
                 self.speech.say("^start({}) {} ^stop({})".format(animation, text, animation))
                 sleep(2)
 
-            else:
-                text = choice(ASK_FOR_QUESTION)
-                self.speech.say(text)
-                self.listen()
-                sleep(5)
+            text = choice(ASK_FOR_QUESTION)
+            self.speech.say(text)
+            self.listen()
+            sleep(5)
             self.busy = False
 
     def on_speech(self, hypotheses, final):
@@ -87,22 +91,40 @@ class BachelorDay(App):
             print u"\rQ: {}?".format(question)
             self.speech.say(u"You asked: {}".format(question))
 
-            # Wolfram Alpha #
-            answer = self.wolfram.query(question)
+            answer = general_questions(question)
+
             if answer:
-                answer = answer.replace("Wolfram Alpha", "Leo Lani")
-                print(u"A: {}\n".format(answer))
                 self.speech.say(answer)
+                print("A: {}\n".format(answer))
             else:
-                answer = choice(WOLFRAM_NO_RESULT)
-                print(u"A: {}\n".format(answer))
-                self.speech.say(answer)
+                # Bachelors #
+                found_bachelor_match = False
+                for bachelor in bachelors.ONE_LINER.keys():
+                    for bachelor_tag in bachelor:
+                        if bachelor_tag in question.lower():
+                            print("A: {}\n".format(bachelor[0]))
+                            self.speech.say("I will now talk about the bachelor {}".format(bachelor[0]))
+                            self.speech.say("{}{}".format(SAY_SPEED, bachelors.ONE_LINER[bachelor]))
+                            found_bachelor_match = True
+                            break
+
+                if not found_bachelor_match:
+                    # Wolfram Alpha #
+                    answer = self.wolfram.query(question)
+                    if answer:
+                        answer = answer.replace("Wolfram Alpha", "Leo Lani")
+                        print(u"A: {}\n".format(answer))
+                        self.speech.say(answer)
+                    else:
+                        answer = choice(WOLFRAM_NO_RESULT)
+                        print(u"A: {}\n".format(answer))
+                        self.speech.say(answer)
             sleep(4)
             self.busy = False
         else:
             print "\rQ: {}".format(question),
 
-    def listen(self, duration = 10):
+    def listen(self, duration = 15):
         self.listening = True
         self.recognition = GoogleStreamedRecognition(self.microphone, self.on_speech)
         sleep(duration)

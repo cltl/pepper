@@ -139,166 +139,166 @@ SUMMARY = {
 }
 
 ONE_LINER = {
-    "earth and economy":
+    ("earth and economy",):
         "Developments such as climate change, economic crisis, population growth have an increasing impact. "
         "They ask for solutions that go beyond a single field.",
-    "natural sciences":
+    ("natural sciences",):
         "What's the bottom up? Why can not we predict earthquakes? "
         "How has the climate changed and what are we waiting for? "
         "Help us to deal with our planet in a responsible way.",
-    "archeology":
+    ("archeology",):
         "Learn how to perform excavations and what you can discover about past cultures such as "
         "Celts, Celts, Romans and Greeks. But also the archeology of WW II is discussed.",
-    "management and organisation science":
+    ("management and organisation science",):
         "We are hardly aware of it, but our social actions are governed by government rules and " 
         "public and private organizations. You study this among other things in this broad education program.",
-    "movement sciences":
+    ("movement sciences",):
         "Movement science brings together areas such as biology, mathematics, physics and psychology. "
         "You deepen in the action of human movement and the control of the nervous system.",
-    "biology":
+    ("biology",):
         "You are trained to be a full-fledged biologist. Learn about bacteria, plants and animals that,"
         "despite fascinating diversity, often use the same biological principles.",
-    "biomedical sciences":
+    ("biomedical sciences",):
         "The Bachelor's degree in Biomedical Sciences at the VU focuses on the biology of the "
         "healthy and the sick person, on scientific research into the origin and course of "
         "diseases and the possibilities for intervention.",
-    "business analytics":
+    ("business analytics",):
         "Important decisions and processes within organizations are never on their own. "
         "You learn to understand such processes and translate big data into concrete decisions.",
-    "communication and information sciences":
+    ("communication and information sciences",):
         "Language is inextricably linked to communication. "
         "We emphasize the message and the language and form with which that message is transmitted."
         "You learn from different theories.",
-    "communication science":
+    ("communication science",):
         "What is the importance of a corporate identity? Why do we like to watch television?"
         "You will discover how communication processes work and how to best use them.",
-    "computer science":
+    ("computer science",):
         "Computers are playing an ever increasing role in our daily lives."
         "You will be trained to become an expert in the underlying technology.",
-    "criminology":
+    ("criminology",):
         "Crime is everywhere. You may be able to meet yourself or hear or read about it. "
         "Crime attracts many opinions. But the rights are often more nuanced.",
-    "cultural anthropology and development sociology":
+    ("cultural anthropology and development sociology",):
         "You study the experience world of different groups of people."
         "You discover the relationship between societies and themes such as globalization, "
         "colonial history, migration and emancipation.",
-    "econometrics and operations research":
+    ("econometrics and operations research",):
         "Solving the big issues using mathematics and statistics, in a smart way."
         "Thanks to your econometric knowledge and practical skills, "
         "you are able to quantitatively formulate and analyze questions from economic practice.",
-    "econometrics and data science":
+    ("econometrics and data science",):
         "A new international specialization with a focus on econometrics, statistics, databases and computing.",
-    "economics and business economics":
+    ("economics and business economics",):
         "Become an economic expert and formulate effective answers to societal challenges."
         "Address societal issues from different areas of knowledge such as macro and microeconomics, "
         "spatial economics, development economics, economic history and ethics.",
-    "pharmaceutical sciences":
+    ("pharmaceutical sciences",):
         "From a molecular perspective, you learn to develop medicines that make people and society smart with you."
         "You focus on the initial phase of research into new drugs.",
-    "medicine":
+    ("medicine",):
         "In this six-year program (three years bachelor and three year master) you are trained to a doctor with head, "
         "heart and hands. A good doctor is a doer and thinker at the same time.",
-    "history":
+    ("history",):
         "Search for answers to scientific and social questions. You study historical connections between key people, "
         "groups, states, developments and conflicts.",
-    "health and life":
+    ("health and life",):
         "A complete view of our health. Focus on all aspects of life, health and disease and the genetic, "
         "social, biotic, behavioral and physical influences.",
-    "health sciences":
+    ("health sciences",):
         "In order to improve public health, it is important to map and understand the health of populations. "
         "Learn to study the health of groups of people.",
-    "greek and latin language and culture":
+    ("greek and latin language and culture",):
         "Dive deep into the thinking and living of people over a period of thousands of years and " 
         "discover the relevance for the language and communication of now.",
-    "information, multimedia and management":
+    ("information, multimedia and management",):
         "Everyone is online. For organizations, it is therefore increasingly possible to generate and use data."
         "This is exactly what you learn from Information, Multimedia and Management (IMM) at the VU.",
-    "international business administration":
+    ("international business administration",):
         "With International Business Administration at the VU,"
         "you are in the middle of Amsterdam's vibrant business district: the Zuidas. "
         "You choose a successful career in the world of multinationals.",
-    "liberal arts and sciences":
+    ("liberal arts and sciences",):
         "The VU and the UvA together offer the program at Amsterdam University College. An English-wide,"
         "comprehensive education that teaches you in intelligent reading, critical thinking and effective writing.",
-    "lifestyle informatics":
+    ("lifestyle informatics",):
         "Develop tools and programs to make people's daily lives more fun, safer and healthier. "
         "For example, think of Alice care robot and apps to support depressed people.",
-    "literature and society: english":
+    ("literature and society: english",):
         "Our program is about the interaction between literature, visual culture and society.",
-    "literature and society: dutch":
+    ("literature and society: dutch",):
         "Why is every new generation affected by novels? "
         "How is it that we can not talk without stories? "
         "Learn the Dutch literature in all its facets.",
-    "mathematics":
+    ("mathematics",):
         "If you choose the Bachelor's program in Mathematics at VU Amsterdam, "
         "you will learn fundamental mathematics and discover the surprising way in which this is applied in society. "
         "After all, mathematics is everywhere: the Google search algorithm uses algebra, "
         "debit cards are secured using prime numbers, we predict epidemics with the help of differential equations "
         "and statistics, and Einstein's theory of relativity is described in terms of modern geometry.",
-    "media, art, design and architecture":
+    ("media, art, design and architecture",):
         "In today's society we are surrounded by images, visual technologies and design. "
         "Do you understand in a variety of cultural expressions and their meaning and influence "
         "in the present and the past?",
-    "medical natural sciences":
+    ("medical natural sciences",):
         "The smartphone as a diagnostic tool, remotely controlled pacemakers and 3-D printed organs: "
         "developments in the medical world are moving fast. Dive into the wonderful world of medical innovations.",
-    "nature and astronomy":
+    ("nature and astronomy",):
         "Nature and Astronomy are among the most complex and at the same time also the most fascinating "
         "research areas in existence. Enter the depth for three years: "
         "from quantum particles to infinity of the universe.",
-    "notarial law":
+    ("notarial law",):
         "Notarial laws govern the business side of all major events in a human life such as "
         "when people start their own business, buy a house, marry and die.",
-    "audit sciences":
+    ("audit sciences",):
         "Study the civilisations of the Greeks, Romans and Mesopotamians from angles such as archeology,"
         "ancient languages and ancient history.",
-    "educational sciences":
+    ("educational sciences",):
         "Learn about judging ideas about good education, care and meaningful education. "
         "Do focused research on questions like 'How often should we test children at school?'.",
-    "philosophy, politics and economics":
+    ("philosophy, politics and economics",):
         "Learn the skills and knowledge leaders need in complex social issues that can "
         "no longer be solved from one point of view.",
-    "politics":
+    ("politics",):
         "Look at the process of political decision making. "
         "How does political power arise and how is it controlled and deployed for the benefit of society?",
-    "psychology":
+    ("psychology",):
         "You study how people develop from time to time, how people perceive and make decisions, "
         "what drives people, but what interventions or therapies work or not.",
-    "jurisdiction":
+    ("jurisdiction",):
         "Right and injustice you encounter everywhere in society. "
         "You study science scientifically and develop the skill to apply your knowledge in practice optimally.",
-    "buddhism":
+    ("buddhism",):
         "You develop the ability to interact with Buddhism from Buddhism, "
         "from within (Buddhist) and beyond (scientific) perspective.",
-    "religion":
+    ("religion",):
         "You gain insights into the religious life forms that exist throughout the world and "
         "teach you how to contribute to the public debate on religion and sentiment in the 21st century.",
-    "hinduism":
+    ("hinduism",):
         "This study combines Hindu-theological subjects and secular religious studies subjects. "
         "You learn to compare religions and to deepen your own Hindu tradition.",
-    "islam":
+    ("islam",):
         "You compete in Arabic, Quran, Hadith, 'Aqida, Kalam, Tafsir, Fiqh and History. "
         "You develop perspective on the Western context and you learn to interact with other religions.",
-    "chemistry":
+    ("chemistry",):
         "From chemical reactions to complex molecular networks: In chemistry you look at the whole spectrum of life, "
         "investigating the structure and properties of molecules and living cells.",
-    "science, business and innovation":
+    ("science, business and innovation",):
         "For a future-proof society we depend on smart and innovative solutions. "
         "You learn to look into the world with a scientific, social, economic spectacle.",
-    "sociology":
+    ("sociology",):
         "Sociology is about how people live together. You will discover how social developments such as globalization, "
         "individualization and digitization affect the behavior of people.",
-    "dental science":
+    ("dental science",):
         "In the Dentistry study you will learn how to combine technique and precision with human work."
         "Each patient is different, and therefore every treatment will be different. "
         "It's your job to look further than just the teeth.",
-    "theology":
+    ("theology",):
         "You are interested in the history of Christian faith and you are happy to read texts. "
         "You want to know what people believe and what meaning they have for their lives.",
-    "pabo":
+    ("pabo",):
         "You enter the width and the depth at full force; "
         "In addition to the necessary professional skills, you also develop a scientific background.",
-    "philosophy":
+    ("philosophy",):
         "Philosophy is about key themes of life, you learn how big thinkers approached these themes, "
         "but you are also starting to develop and explain your own ideas.",
 }
