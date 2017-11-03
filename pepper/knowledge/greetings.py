@@ -1,33 +1,38 @@
 CATCH_ATTENTION = {
     'ANIMATIONS': [
-        "animations/Stand/Gestures/Hey_1",
-        "animations/Stand/Gestures/Hey_3",
-        "animations/Stand/Gestures/Hey_4",
-        "animations/Stand/Gestures/Hey_6",
-        "animations/Stand/Emotions/Positive/Hysterical_1",
-        "animations/Stand/Gestures/Enthusiastic_4",
-        "animations/Stand/Gestures/Enthusiastic_5",
-        "animations/Stand/Gestures/Excited_1"
+        "animations/Stand/Emotions/Positive/Enthusiastic_1",
+        "animations/Stand/Emotions/Positive/Ecstatic_1"
+        "animations/Stand/Emotions/Positive/Enthusiastic_1",
+        "animations/Stand/Emotions/Positive/Ecstatic_1",
+        "animations/Stand/Emotions/Neutral/AskForAttention_1",
+        "animations/Stand/Emotions/Neutral/AskForAttention_2",
+        "animations/Stand/Emotions/Neutral/AskForAttention_3"
     ],
     'TEXT': [
         "Hello! How is it going?",
         "Hi there!",
-        "Hey! Would you like to chat?"
+        "Hey! Would you like to chat?",
+        "Let's have a chat",
+        "Hi, do you have a question?",
+        "How are you?",
+        "Come! let's have a talk"
     ]
 }
 
 SIMPLE_GREETING = {
     'ANIMATIONS': [
         "animations/Stand/Gestures/BowShort_1",
-        "animations/Stand/Emotions/Positive/Happy_1"
-        "animations/Stand/Emotions/Positive/Happy_2",
-        "animations/Stand/Emotions/Positive/Happy_3",
-        "animations/Stand/Emotions/Positive/Happy_4"
+        "animations/Stand/Emotions/Positive/Enthusiastic_1",
+        "animations/Stand/Emotions/Positive/Proud_2",
+        "animations/Stand/Emotions/Positive/Proud_3"
     ],
     'TEXT': [
         "It is very nice to meet you",
         "It is a pleasure to meet you",
         "I am excited to talk to you",
-        "I am glad we can chat"
+        "I am glad we can chat",
+        "How nice of you to come talk to me",
+        "Thank you for coming to talk to me",
+        "Great! Let's have a conversation"
     ]
 }

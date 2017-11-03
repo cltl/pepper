@@ -17,13 +17,19 @@ WOLFRAM_NO_RESULT = [
     "I don't know",
     "You should look it up yourself!",
     "Google it!",
-    "How would I know? I am a robot!"
+    "How would I know? I am a robot!",
+    "I have no idea",
+    "That is a very complex question for a simple robot like me"
 ]
 
 ASK_FOR_QUESTION = [
     "I'm listening",
     "Shoot me a question",
-    "What would you like to know?"
+    "What would you like to know?",
+    "What's your question?",
+    "I am ready for your question",
+    "Ask me"
+    "Let's hear your question"
 ]
 
 SECONDS_BETWEEN_GREETINGS = 60
