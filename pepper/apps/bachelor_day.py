@@ -27,6 +27,7 @@ class BachelorDay(App):
         self.wolfram = Wolfram()
 
         self.listening = False
+        self.busy = False
 
         self.speech = self.session.service("ALAnimatedSpeech")
         self.events.append(FaceDetectedEvent(self.session, self.on_face))
@@ -36,7 +37,7 @@ class BachelorDay(App):
         pass
 
     def on_look(self, person, score):
-        if not self.listening:
+        if not self.busy and not self.listening:
             self.speech.say("I'm listening!")
             self.listen()
             sleep(5)
@@ -45,6 +46,7 @@ class BachelorDay(App):
         question = hypotheses[0][0]
 
         if final:
+            self.busy = True
             self.recognition.stop()
             print u"\rQ: {}?".format(question)
             self.speech.say(u"You asked: {}".format(question))
@@ -57,6 +59,8 @@ class BachelorDay(App):
                 answer = choice(WOLFRAM_NO_RESULT)
                 print(u"A: {}\n".format(answer))
                 self.speech.say(answer)
+                sleep(4)
+            self.busy = False
         else:
             print "\rQ: {}".format(question),
 
