@@ -10,7 +10,9 @@ import pepper.knowledge.general_questions as general
 
 from time import sleep, time
 from random import choice
+from datetime import datetime
 
+############ CONSTANTS ############
 
 WOLFRAM_NO_RESULT = [
     "I have no clue, sorry",
@@ -20,6 +22,15 @@ WOLFRAM_NO_RESULT = [
     "How would I know? I am a robot!"
 ]
 
+ASK_FOR_QUESTION = [
+    "I'm listening",
+    "Shoot me a question",
+    "What would you like to know?"
+]
+
+SECONDS_BETWEEN_GREETINGS = 60
+
+####################################
 
 class BachelorDay(App):
     def __init__(self, address):
@@ -31,30 +42,40 @@ class BachelorDay(App):
 
         self.listening = False
         self.busy = False
+        self.lastGreetingTime = None
 
         self.speech = self.session.service("ALAnimatedSpeech")
         self.events.append(FaceDetectedEvent(self.session, self.on_face))
         self.events.append(LookingAtRobotEvent(self.session, self.on_look))
 
     def on_face(self, time, faces, recognition):
-        pass
         # # Call for attention
         # if not self.busy:
+        #     self.busy = True
         #     animation = choice(CATCH_ATTENTION['ANIMATIONS'])
         #     text = choice(CATCH_ATTENTION['TEXT'])
         #     self.speech.say("^start(%s) %s ^stop(%s)").format(animation, text, animation)
         #     sleep(15)
+        #     self.busy = False
+        pass
 
     def on_look(self, person, score):
+        # Person is already looking at robot, so do a simple greeting
         if not self.busy and not self.listening:
-            animation = choice(SIMPLE_GREETING['ANIMATIONS'])
-            text = choice(SIMPLE_GREETING['TEXT'])
-            self.speech.say("^start({}) {} ^stop({})".format(animation, text, animation))
-            sleep(2)
+            self.busy = True
+            if (datetime.now() - self.lastGreetingTime).total_seconds() > SECONDS_BETWEEN_GREETINGS :
+                self.lastGreetingTime = datetime.now()
+                animation = choice(SIMPLE_GREETING['ANIMATIONS'])
+                text = choice(SIMPLE_GREETING['TEXT'])
+                self.speech.say("^start(%s) %s ^stop(%s)").format(animation, text, animation)
+                sleep(2)
 
-            self.speech.say("I'm listening!")
-            self.listen()
-            sleep(5)
+            else:
+                text = choice(ASK_FOR_QUESTION)
+                self.speech.say(text)
+                self.listen()
+                sleep(5)
+            self.busy = False
 
     def on_speech(self, hypotheses, final):
         question = hypotheses[0][0]
@@ -77,8 +98,7 @@ class BachelorDay(App):
                 answer = choice(WOLFRAM_NO_RESULT)
                 print(u"A: {}\n".format(answer))
                 self.speech.say(answer)
-                sleep(4)
-                
+            sleep(4)
             self.busy = False
         else:
             print "\rQ: {}".format(question),
