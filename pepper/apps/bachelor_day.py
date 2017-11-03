@@ -4,6 +4,7 @@ from pepper.event.people import LookingAtRobotEvent, FaceDetectedEvent
 from pepper.speech.microphone import PepperMicrophone
 from pepper.speech.recognition import GoogleStreamedRecognition
 from pepper.knowledge.wolfram import Wolfram
+from pepper.knowledge.greetings import CATCH_ATTENTION, SIMPLE_GREETING
 
 from time import sleep, time
 from random import choice
@@ -33,9 +34,21 @@ class BachelorDay(App):
         self.events.append(LookingAtRobotEvent(self.session, self.on_look))
 
     def on_face(self, time, faces, recognition):
-        pass
+        # Call for attention
+        if not self.busy:
+            animation = choice(CATCH_ATTENTION['ANIMATIONS'])
+            text = choice(CATCH_ATTENTION['TEXT'])
+            self.speech.say("^start(%s) %s ^stop(%s)").format(animation, text, animation)
+            sleep(15)
 
     def on_look(self, person, score):
+        # Person is already looking at robot, so do a simple greeting
+        if not self.busy:
+            animation = choice(SIMPLE_GREETING['ANIMATIONS'])
+            text = choice(SIMPLE_GREETING['TEXT'])
+            self.speech.say("^start(%s) %s ^stop(%s)").format(animation, text, animation)
+            sleep(4)
+
         if not self.listening:
             self.speech.say("I'm listening!")
             self.listen()
