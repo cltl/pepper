@@ -1,6 +1,6 @@
 from pepper.event import Event
-from pepper.image.camera import PepperCamera
-from pepper.image.classify import ClassifyClient
+from pepper.vision.camera import PepperCamera
+from pepper.vision.classify import ClassifyClient
 
 import numpy as np
 from time import time
@@ -347,8 +347,6 @@ class LookingAtRobotEvent(Event):
 
 class ObjectPresentEvent(FaceDetectedEvent):
 
-    TMP = os.path.join(os.getcwd(), 'tmp/presenting.jpg')
-
     def __init__(self, session, callback, camera_id, classification_address = ('localhost', 9999),
                  timeout = 2, object_threshold = 0.55):
         """
@@ -368,9 +366,6 @@ class ObjectPresentEvent(FaceDetectedEvent):
             Confidence threshold on object recognition
         """
 
-        if not os.path.exists(self.TMP):
-            os.makedirs(os.path.dirname(self.TMP))
-
         self._camera = PepperCamera(session, camera_id)
         self._classify_client = ClassifyClient(classification_address)
 
@@ -388,8 +383,7 @@ class ObjectPresentEvent(FaceDetectedEvent):
     def on_event(self, t, faces, recognition):
         if time() - self._time_last_event > self._timeout:
             self._time_last_event = time()
-            self.camera.get().save(self.TMP)
-            object_score, object = self._classify_client.classify(self.TMP)[0]
+            object_score, object = self._classify_client.classify(self.camera.get())[0]
 
             if object_score > self._object_threshold:
                 self.on_present(object_score, object)

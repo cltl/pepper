@@ -47,7 +47,7 @@ class Camera:
         """
         Returns
         -------
-        image: PIL.Image.Image
+        vision: PIL.Image.Image
             Image captured by camera object
         """
         raise NotImplementedError()

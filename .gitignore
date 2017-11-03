@@ -1,3 +1,5 @@
-.idea/
 *.pyc
-tests/capture.jpg
+.idea/
+experiments/
+pepper/speech/kaldi/models/test/
+pepper/speech/kaldi/models/tmp/
