@@ -31,7 +31,7 @@ ASK_FOR_QUESTION = [
     "What would you like to know?",
     "What's your question?",
     "I am ready for your question",
-    "Ask me"
+    "Ask me",
     "Let's hear your question"
 ]
 
@@ -51,28 +51,36 @@ class BachelorDay(App):
         self.wolfram = Wolfram()
 
         self.listening = False
-        self.busy = False
+        self.answering = False
+        self.greeting = False
+        self.calling = False
         self.lastGreetingTime = 0
 
         self.speech = self.session.service("ALAnimatedSpeech")
         self.events.append(FaceDetectedEvent(self.session, self.on_face))
         self.events.append(LookingAtRobotEvent(self.session, self.on_look))
 
+        print("\nProgram Booted\n")
+
     def on_face(self, time, faces, recognition):
-        # # Call for attention
-        # if not self.busy:
-        #     self.busy = True
-        #     animation = choice(CATCH_ATTENTION['ANIMATIONS'])
-        #     text = choice(CATCH_ATTENTION['TEXT'])
-        #     self.speech.say("^start(%s) %s ^stop(%s)").format(animation, text, animation)
-        #     sleep(15)
-        #     self.busy = False
-        pass
+        # Call for attention
+        if not self.answering and not self.listening and not self.greeting and not self.calling:
+            print("Log: on_face running")
+            self.calling = True
+            self.greeting = True
+            animation = choice(CATCH_ATTENTION['ANIMATIONS'])
+            text = choice(CATCH_ATTENTION['TEXT'])
+            self.speech.say("^start({}) {} ^stop({})".format(animation, text, animation))
+            self.greeting = False
+            sleep(30)
+            self.calling = False
+
 
     def on_look(self, person, score):
         # Person is already looking at robot, so do a simple greeting
-        if not self.busy and not self.listening:
-            self.busy = True
+        if not self.answering and not self.listening and not self.greeting:
+            print("Log: on_look running")
+            self.greeting = True
             if time() - self.lastGreetingTime > SECONDS_BETWEEN_GREETINGS :
                 self.lastGreetingTime = time()
                 animation = choice(SIMPLE_GREETING['ANIMATIONS'])
@@ -84,21 +92,21 @@ class BachelorDay(App):
             self.speech.say(text)
             self.listen()
             sleep(5)
-            self.busy = False
+            self.greeting = False
 
     def on_speech(self, hypotheses, final):
-        question = hypotheses[0][0]
+        question, confidence = hypotheses[0]
 
         if final:
-            self.busy = True
+            self.answering = True
             self.recognition.stop()
 
             # Question has been recognised #
             print u"\rQ: {}?".format(question)
             self.speech.say(u"You asked: {}".format(question))
 
+            # Try to answer general questions #
             answer = general_questions(question)
-
             if answer:
                 self.speech.say(answer)
                 print("A: {}\n".format(answer))
@@ -126,9 +134,9 @@ class BachelorDay(App):
                         print(u"A: {}\n".format(answer))
                         self.speech.say(answer)
             sleep(4)
-            self.busy = False
+            self.answering = False
         else:
-            print "\rQ: {}".format(question),
+            print u"\rQ: {}".format(question),
 
     def listen(self, duration = 15):
         self.listening = True

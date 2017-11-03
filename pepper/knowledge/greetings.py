@@ -13,7 +13,7 @@ CATCH_ATTENTION = {
         "Hi there!",
         "Hey! Would you like to chat?",
         "Let's have a chat",
-        "Hi, do you have a question?",
+        "Hi, come talk to me",
         "How are you?",
         "Come! let's have a talk"
     ]

@@ -207,29 +207,29 @@ ONE_LINER = {
     ("health sciences",):
         "In order to improve public health, it is important to map and understand the health of populations. "
         "Learn to study the health of groups of people.",
-    ("greek and latin language and culture",):
+    ("greek and latin language and culture", "greek and latin", "latin", "greek"):
         "Dive deep into the thinking and living of people over a period of thousands of years and " 
         "discover the relevance for the language and communication of now.",
     ("information, multimedia and management",):
         "Everyone is online. For organizations, it is therefore increasingly possible to generate and use data."
         "This is exactly what you learn from Information, Multimedia and Management (IMM) at the VU.",
-    ("international business administration",):
+    ("international business administration", "international business"):
         "With International Business Administration at the VU,"
         "you are in the middle of Amsterdam's vibrant business district: the Zuidas. "
         "You choose a successful career in the world of multinationals.",
-    ("liberal arts and sciences",):
+    ("liberal arts and sciences", "arts"):
         "The VU and the UvA together offer the program at Amsterdam University College. An English-wide,"
         "comprehensive education that teaches you in intelligent reading, critical thinking and effective writing.",
     ("lifestyle informatics",):
         "Develop tools and programs to make people's daily lives more fun, safer and healthier. "
         "For example, think of Alice care robot and apps to support depressed people.",
-    ("literature and society: english",):
+    ("literature and society: english", "english"):
         "Our program is about the interaction between literature, visual culture and society.",
-    ("literature and society: dutch",):
+    ("literature and society: dutch", "dutch"):
         "Why is every new generation affected by novels? "
         "How is it that we can not talk without stories? "
         "Learn the Dutch literature in all its facets.",
-    ("mathematics",):
+    ("mathematics", "maths", "math"):
         "If you choose the Bachelor's program in Mathematics at VU Amsterdam, "
         "you will learn fundamental mathematics and discover the surprising way in which this is applied in society. "
         "After all, mathematics is everywhere: the Google search algorithm uses algebra, "
