@@ -146,30 +146,30 @@ ONE_LINER = {
         "What's the bottom up? Why can not we predict earthquakes? "
         "How has the climate changed and what are we waiting for? "
         "Help us to deal with our planet in a responsible way.",
-    ("archeology",):
+    ("archaeology",):
         "Learn how to perform excavations and what you can discover about past cultures such as "
         "Celts, Celts, Romans and Greeks. But also the archeology of WW II is discussed.",
-    ("management and organisation science",):
+    ("management and organisation science", "management"):
         "We are hardly aware of it, but our social actions are governed by government rules and " 
         "public and private organizations. You study this among other things in this broad education program.",
-    ("movement sciences",):
+    ("movement sciences", "movement"):
         "Movement science brings together areas such as biology, mathematics, physics and psychology. "
         "You deepen in the action of human movement and the control of the nervous system.",
     ("biology",):
         "You are trained to be a full-fledged biologist. Learn about bacteria, plants and animals that,"
         "despite fascinating diversity, often use the same biological principles.",
-    ("biomedical sciences",):
+    ("biomedical sciences", "biomedical"):
         "The Bachelor's degree in Biomedical Sciences at the VU focuses on the biology of the "
         "healthy and the sick person, on scientific research into the origin and course of "
         "diseases and the possibilities for intervention.",
-    ("business analytics",):
+    ("business analytics", "analytics"):
         "Important decisions and processes within organizations are never on their own. "
         "You learn to understand such processes and translate big data into concrete decisions.",
-    ("communication and information sciences",):
+    ("communication and information sciences", "information sciences"):
         "Language is inextricably linked to communication. "
         "We emphasize the message and the language and form with which that message is transmitted."
         "You learn from different theories.",
-    ("communication science",):
+    ("communication science", ):
         "What is the importance of a corporate identity? Why do we like to watch television?"
         "You will discover how communication processes work and how to best use them.",
     ("computer science",):
@@ -178,21 +178,21 @@ ONE_LINER = {
     ("criminology",):
         "Crime is everywhere. You may be able to meet yourself or hear or read about it. "
         "Crime attracts many opinions. But the rights are often more nuanced.",
-    ("cultural anthropology and development sociology",):
+    ("cultural anthropology and development sociology", "anthropology"):
         "You study the experience world of different groups of people."
         "You discover the relationship between societies and themes such as globalization, "
         "colonial history, migration and emancipation.",
-    ("econometrics and operations research",):
+    ("econometrics and operations research", "operations research"):
         "Solving the big issues using mathematics and statistics, in a smart way."
         "Thanks to your econometric knowledge and practical skills, "
         "you are able to quantitatively formulate and analyze questions from economic practice.",
-    ("econometrics and data science",):
+    ("econometrics and data science", "data science"):
         "A new international specialization with a focus on econometrics, statistics, databases and computing.",
-    ("economics and business economics",):
+    ("economics and business economics", "economics"):
         "Become an economic expert and formulate effective answers to societal challenges."
         "Address societal issues from different areas of knowledge such as macro and microeconomics, "
         "spatial economics, development economics, economic history and ethics.",
-    ("pharmaceutical sciences",):
+    ("pharmaceutical sciences", "pharmaceutical"):
         "From a molecular perspective, you learn to develop medicines that make people and society smart with you."
         "You focus on the initial phase of research into new drugs.",
     ("medicine",):
@@ -210,7 +210,7 @@ ONE_LINER = {
     ("greek and latin language and culture", "greek and latin", "latin", "greek"):
         "Dive deep into the thinking and living of people over a period of thousands of years and " 
         "discover the relevance for the language and communication of now.",
-    ("information, multimedia and management",):
+    ("information, multimedia and management", "multimedia"):
         "Everyone is online. For organizations, it is therefore increasingly possible to generate and use data."
         "This is exactly what you learn from Information, Multimedia and Management (IMM) at the VU.",
     ("international business administration", "international business"):
@@ -220,7 +220,7 @@ ONE_LINER = {
     ("liberal arts and sciences", "arts"):
         "The VU and the UvA together offer the program at Amsterdam University College. An English-wide,"
         "comprehensive education that teaches you in intelligent reading, critical thinking and effective writing.",
-    ("lifestyle informatics",):
+    ("lifestyle informatics", "lifestyle"):
         "Develop tools and programs to make people's daily lives more fun, safer and healthier. "
         "For example, think of Alice care robot and apps to support depressed people.",
     ("literature and society: english", "english"):
@@ -235,14 +235,14 @@ ONE_LINER = {
         "After all, mathematics is everywhere: the Google search algorithm uses algebra, "
         "debit cards are secured using prime numbers, we predict epidemics with the help of differential equations "
         "and statistics, and Einstein's theory of relativity is described in terms of modern geometry.",
-    ("media, art, design and architecture",):
+    ("media, art, design and architecture", "media", "design"):
         "In today's society we are surrounded by images, visual technologies and design. "
         "Do you understand in a variety of cultural expressions and their meaning and influence "
         "in the present and the past?",
-    ("medical natural sciences",):
+    ("medical natural sciences", "medical",):
         "The smartphone as a diagnostic tool, remotely controlled pacemakers and 3-D printed organs: "
         "developments in the medical world are moving fast. Dive into the wonderful world of medical innovations.",
-    ("nature and astronomy",):
+    ("nature and astronomy", "astronomy"):
         "Nature and Astronomy are among the most complex and at the same time also the most fascinating "
         "research areas in existence. Enter the depth for three years: "
         "from quantum particles to infinity of the universe.",
@@ -252,13 +252,13 @@ ONE_LINER = {
     ("audit sciences",):
         "Study the civilisations of the Greeks, Romans and Mesopotamians from angles such as archeology,"
         "ancient languages and ancient history.",
-    ("educational sciences",):
+    ("educational sciences", "education"):
         "Learn about judging ideas about good education, care and meaningful education. "
         "Do focused research on questions like 'How often should we test children at school?'.",
-    ("philosophy, politics and economics",):
+    ("philosophy, politics and economics", "philosophy"):
         "Learn the skills and knowledge leaders need in complex social issues that can "
         "no longer be solved from one point of view.",
-    ("politics",):
+    ("politics", "political"):
         "Look at the process of political decision making. "
         "How does political power arise and how is it controlled and deployed for the benefit of society?",
     ("psychology",):
@@ -282,13 +282,13 @@ ONE_LINER = {
     ("chemistry",):
         "From chemical reactions to complex molecular networks: In chemistry you look at the whole spectrum of life, "
         "investigating the structure and properties of molecules and living cells.",
-    ("science, business and innovation",):
+    ("science, business and innovation", "innovation"):
         "For a future-proof society we depend on smart and innovative solutions. "
         "You learn to look into the world with a scientific, social, economic spectacle.",
     ("sociology",):
         "Sociology is about how people live together. You will discover how social developments such as globalization, "
         "individualization and digitization affect the behavior of people.",
-    ("dental science",):
+    ("dental science", "dental"):
         "In the Dentistry study you will learn how to combine technique and precision with human work."
         "Each patient is different, and therefore every treatment will be different. "
         "It's your job to look further than just the teeth.",

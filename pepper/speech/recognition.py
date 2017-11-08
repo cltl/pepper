@@ -169,11 +169,12 @@ class GoogleStreamedRecognition(StreamedRecognition):
         self._config = speech.types.RecognitionConfig(
             encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
             sample_rate_hertz = sample_rate,
-            language_code = language_code
+            language_code = language_code,
         )
         self._streaming_config = speech.types.StreamingRecognitionConfig(
             config = self._config,
-            interim_results = True
+            interim_results = True,
+            single_utterance=True,
         )
 
         self._stopped = False

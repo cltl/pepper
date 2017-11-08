@@ -56,10 +56,12 @@ class PepperMicrophoneProcessor(object):
         sleep(seconds)
         self._listen = False
 
-        result = np.concatenate(self._buffer)
-        self._buffer = []
+        if self._buffer:
+            result = np.concatenate(self._buffer)
+            self._buffer = []
 
-        return result
+            return result
+        else: return np.array([0], dtype=np.int16)
 
     def process(self, channels, samples, timestamp, buffer):
         """

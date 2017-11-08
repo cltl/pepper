@@ -1,5 +1,6 @@
 from pepper.app import App
 from pepper.event.people import LookingAtRobotEvent, FaceDetectedEvent
+from pepper.output.led import *
 
 from pepper.speech.microphone import PepperMicrophone
 from pepper.speech.recognition import GoogleStreamedRecognition
@@ -12,6 +13,8 @@ from pepper.knowledge.general_questions import general_questions
 
 from time import sleep, time
 from random import choice
+
+import numpy as np
 
 ############ CONSTANTS ############
 
@@ -46,6 +49,7 @@ class BachelorDay(App):
     def __init__(self, address):
         super(BachelorDay, self).__init__(address)
 
+        self.led = Led(self.session)
         self.microphone = PepperMicrophone(self.session)
         self.recognition = None
         self.wolfram = Wolfram()
@@ -72,7 +76,7 @@ class BachelorDay(App):
             text = choice(CATCH_ATTENTION['TEXT'])
             self.speech.say("^start({}) {} ^stop({})".format(animation, text, animation))
             self.greeting = False
-            sleep(30)
+            sleep(60)
             self.calling = False
 
 
@@ -91,7 +95,6 @@ class BachelorDay(App):
             text = choice(ASK_FOR_QUESTION)
             self.speech.say(text)
             self.listen()
-            sleep(5)
             self.greeting = False
 
     def on_speech(self, hypotheses, final):
@@ -100,6 +103,7 @@ class BachelorDay(App):
         if final:
             self.answering = True
             self.recognition.stop()
+            self.listening = False
 
             # Question has been recognised #
             print u"\rQ: {}?".format(question)
@@ -135,10 +139,14 @@ class BachelorDay(App):
                         self.speech.say(answer)
             sleep(4)
             self.answering = False
+            self.listening = False
         else:
+            self.led.set(Leds.LEFT_FACE_LEDS, np.random.uniform(size=3).tolist())
+            self.led.set(Leds.RIGHT_FACE_LEDS, np.random.uniform(size=3).tolist())
             print u"\rQ: {}".format(question),
 
-    def listen(self, duration = 15):
+
+    def listen(self, duration = 20):
         self.listening = True
         self.recognition = GoogleStreamedRecognition(self.microphone, self.on_speech)
         sleep(duration)
@@ -147,5 +155,5 @@ class BachelorDay(App):
 
 
 if __name__ == "__main__":
-    app = BachelorDay(["192.168.1.103", 9559])
+    app = BachelorDay(["192.168.1.101", 9559])
     app.run()
