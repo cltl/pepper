@@ -1,9 +1,8 @@
-from pepper.app import App
-
-from pepper.vision.camera import PepperCamera
-from pepper.vision.classify import ClassifyClient
-
 from time import sleep
+
+from pepper.app import App
+from pepper.vision.camera import PepperCamera
+from pepper.vision.classification.object import ObjectClassifyClient
 
 
 class VisionTest(App):
@@ -11,7 +10,7 @@ class VisionTest(App):
         super(VisionTest, self).__init__(address)
 
         self.camera = PepperCamera(self.session, "PepperCamera2")
-        self.classify_client = ClassifyClient(('localhost', 9999))
+        self.classify_client = ObjectClassifyClient(('localhost', 9999))
 
     def classify(self):
         while True:

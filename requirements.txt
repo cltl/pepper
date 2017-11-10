@@ -1,22 +1,8 @@
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: win-32
-bzip2=1.0.6=vc9_3
-certifi=2016.2.28=py27_0
-enum34=1.1.6=py27_0
-freetype=2.5.5=vc9_2
-jpeg=9b=vc9_0
-libpng=1.6.30=vc9_1
-libtiff=4.0.6=vc9_3
-mkl=2017.0.3=0
-numpy=1.13.1=py27_0
-olefile=0.44=py27_0
-pillow=4.2.1=py27_0
-pip=9.0.1=py27_1
-python=2.7.13=1
-pyyaml=3.12=py27_0
-setuptools=36.4.0=py27_1
-vs2008_runtime=9.00.30729.5054=0
-wheel=0.29.0=py27_0
-wincertstore=0.2=py27_0
-zlib=1.2.11=vc9_0
+numpy
+requests
+ws4py
+pyaudio
+pillow
+pyyaml
+google-cloud-speech
+watson_developer_cloud

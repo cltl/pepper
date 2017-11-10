@@ -4,7 +4,7 @@ import yaml
 import numpy as np
 
 
-class ClassifyClient:
+class ObjectClassifyClient:
     def __init__(self, address):
         """
         Classify Images using Inception Model

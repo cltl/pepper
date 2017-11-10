@@ -66,6 +66,9 @@ class BachelorDay(App):
 
         print("\nProgram Booted\n")
 
+    def initiate_human_destruction(self):
+        self._press_red_button()
+
     def on_face(self, time, faces, recognition):
         # Call for attention
         if not self.answering and not self.listening and not self.greeting and not self.calling:
@@ -78,7 +81,6 @@ class BachelorDay(App):
             self.greeting = False
             sleep(60)
             self.calling = False
-
 
     def on_look(self, person, score):
         # Person is already looking at robot, so do a simple greeting
@@ -153,7 +155,10 @@ class BachelorDay(App):
         self.recognition.stop()
         self.listening = False
 
+    def _press_red_button(self):
+        pass
+
 
 if __name__ == "__main__":
-    app = BachelorDay(["192.168.1.101", 9559])
+    app = BachelorDay(["192.168.1.102", 9559])
     app.run()

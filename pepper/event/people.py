@@ -1,10 +1,10 @@
-from pepper.event import Event
-from pepper.vision.camera import PepperCamera
-from pepper.vision.classify import ClassifyClient
+from time import time
 
 import numpy as np
-from time import time
-import os
+
+from pepper.event import Event
+from pepper.vision.camera import PepperCamera
+from pepper.vision.classification.object import ObjectClassifyClient
 
 
 class FaceInfo:
@@ -367,7 +367,7 @@ class ObjectPresentEvent(FaceDetectedEvent):
         """
 
         self._camera = PepperCamera(session, camera_id)
-        self._classify_client = ClassifyClient(classification_address)
+        self._classify_client = ObjectClassifyClient(classification_address)
 
         self._object_threshold = object_threshold
 

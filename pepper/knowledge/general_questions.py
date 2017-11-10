@@ -8,7 +8,7 @@ def answer_trigger(key):
 	Properties = {'name': 'Leo Lani', 'weight':'28', 'height':'120', 'gender': 'female', 
 		'work':'understanding humans', 'age': 'just a few months'}
 	
-	Favorites =	{'book': 'the Hobbit', 'animal':'elefant', 'writer':'Isaak Asimov', 'movie':'WALL-E', 
+	Favorites =	{'book': 'the Hobbit', 'animal':'elephant', 'writer':'Isaak Asimov', 'movie':'WALL-E',
 			'food':'electricity', 'colour':'blue', 'song':'Ode to joy', 'sport':'kung-fu ^start(animations/Stand/Waiting/MysticalPower_1)',
                     'instrument':'human voice','drink':'streams of bits', 'weather':'sunny'}
 	

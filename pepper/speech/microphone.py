@@ -1,4 +1,3 @@
-from scipy.io import wavfile
 import pyaudio
 import numpy as np
 from enum import Enum
