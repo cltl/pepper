@@ -36,5 +36,11 @@ Please keep in mind that, at least with this particular model, Kaldi is not perf
 Object recognition is possible using Google's Inception Model, described in the [TensorFlow Image Recognition Tutorial](https://www.tensorflow.org/tutorials/image_recognition).
 Since [TensorFlow](https://www.tensorflow.org/install/install_windows) is only available in Python 3
 and this repository is forced to work in Python 2, because of the Python SDK for Pepper, 
-A separate repository is used for the Tensorflow applications and can be found at the [Pepper TensorFlow GitHub](https://github.com/cltl/pepper_tensorflow).
+a separate repository is used for the Tensorflow applications and can be found at the [Pepper TensorFlow GitHub](https://github.com/cltl/pepper_tensorflow).
 This repository contains the model and the server needed to do object recognition using this package.
+
+### 4. Face Recognition
+Face recognition is done using the open source OpenFace project ([Site](http://cmusatyalab.github.io/openface/), [Git](https://github.com/cmusatyalab/openface)),
+which is, to put it mildly, difficult to install; Probably even impossible on Windows.
+Luckily, the developers were so kind to provide a Docker image, which can be obtained using `docker pull bamos/openface`.
+This repository will communicate with and run the image, providing face recognition for Pepper.

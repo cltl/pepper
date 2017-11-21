@@ -61,8 +61,8 @@ class BachelorDay(App):
         self.lastGreetingTime = 0
 
         self.speech = self.session.service("ALAnimatedSpeech")
-        self.events.append(FaceDetectedEvent(self.session, self.on_face))
-        self.events.append(LookingAtRobotEvent(self.session, self.on_look))
+        self.resources.append(FaceDetectedEvent(self.session, self.on_face))
+        self.resources.append(LookingAtRobotEvent(self.session, self.on_look))
 
         print("\nProgram Booted\n")
 

@@ -1,5 +1,5 @@
 from PIL import Image
-from pepper.vision.classification.faces import Faces
+from pepper.vision.classification.face import FaceRecognition
 import os
 import numpy as np
 import yaml
@@ -7,7 +7,7 @@ import yaml
 
 DIR = r"C:\Users\Bram\Documents\Pepper\data\lfw"
 
-faces = Faces()
+faces = FaceRecognition()
 
 
 with open("lfw_names.txt", 'w') as lfw_names, open("lfw_vector.bin", 'wb') as lfw_vector:
@@ -17,7 +17,7 @@ with open("lfw_names.txt", 'w') as lfw_names, open("lfw_vector.bin", 'wb') as lf
         representation = []
 
         for image in os.listdir(os.path.join(DIR, person)):
-            people = faces.represent(Image.open(os.path.join(DIR, person, image)))
+            people = faces.represent_all(Image.open(os.path.join(DIR, person, image)))
             if people: representation.append(people[0][1])
             print("\t{}".format(image))
 

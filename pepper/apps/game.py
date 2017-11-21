@@ -128,8 +128,8 @@ class Game(App):
         self.current_object = ""
 
         # ..:: Subscribe to Events ::.. #
-        self.events.append(GestureDetectedEvent(self.session, self.on_gesture))
-        self.events.append(ObjectPresentEvent(self.session, self.on_present, "PresentCamera5"))
+        self.resources.append(GestureDetectedEvent(self.session, self.on_gesture))
+        self.resources.append(ObjectPresentEvent(self.session, self.on_present, "PresentCamera5"))
 
         # Start Hinting
         hint_thread = Thread(target=self.hint)

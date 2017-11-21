@@ -93,7 +93,7 @@ class SystemCamera(Camera):
 
 class PepperCamera(Camera):
 
-    def __init__(self, session, camera_id, resolution = Resolution.VGA, colorspace = ColorSpace.RGB, rate = 5):
+    def __init__(self, session, camera_id, resolution = Resolution.VGA, colorspace = ColorSpace.RGB, rate = 30):
         """
         Capture images using Pepper's Camera
 

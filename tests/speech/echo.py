@@ -23,7 +23,7 @@ class EchoApp(App):
         self.microphone = PepperMicrophone(self.session)
         self.listening = False
 
-        self.events.append(FaceDetectedEvent(self.session, self.on_face))
+        self.resources.append(FaceDetectedEvent(self.session, self.on_face))
 
     def on_face(self, time, faces, recognition):
         if not self.listening:

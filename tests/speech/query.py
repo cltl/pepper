@@ -58,7 +58,7 @@ class QueryApp(App):
         self.wolfram = Wolfram()
         self.led = Led(self.session)
 
-        self.events.append(LookingAtRobotEvent(self.session, self.on_look))
+        self.resources.append(LookingAtRobotEvent(self.session, self.on_look))
 
         self.listening = False
 

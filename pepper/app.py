@@ -13,7 +13,7 @@ class App(object):
             Peppers internet address: (ip, port)
 
         """
-        self.events = []
+        self.resources = []
 
         self._address = address
         self._url = "tcp://{}:{}".format(*address)
@@ -82,12 +82,13 @@ class App(object):
         try:
             while True: time.sleep(1)
         except KeyboardInterrupt:
+            print("KeyboardInterrupt, Closing Down!")
             self.stop()
 
     def stop(self):
         """Close Events and Stop Application"""
-        for event in self.events:
-            event.close()
+        for resource in self.resources:
+            resource.close()
         self.application.stop()
 
     def __enter__(self):
