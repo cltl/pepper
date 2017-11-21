@@ -346,7 +346,6 @@ class LookingAtRobotEvent(Event):
 
 
 class ObjectPresentEvent(FaceDetectedEvent):
-
     def __init__(self, session, callback, camera_id, classification_address = ('localhost', 9999),
                  timeout = 2, object_threshold = 0.55):
         """

@@ -44,14 +44,14 @@ class FaceApp(App):
             t = time()
 
             image = self.camera.get()
-            face = self.face_recognition.represent(image)
+            face = self.face_recognition.representation(image)
 
             if face:
                 bounds, representation = face
 
                 self.recent.append(representation)
 
-                name, distance = self.face_recognition.distance(representation, self.names, self.vector)[0]
+                name, distance = self.face_recognition.names_distance(self.names, self.vector, representation)[0]
 
                 if distance < THRESHOLD:
                     print("Recognized {}".format((name, distance)))

@@ -10,14 +10,14 @@ DIR = r"C:\Users\Bram\Documents\Pepper\data\lfw"
 faces = FaceRecognition()
 
 
-with open("lfw_names.txt", 'w') as lfw_names, open("lfw_vector.bin", 'wb') as lfw_vector:
+with open("lfw_names.txt", 'w') as lfw_names, open("lfw_matrix.bin", 'wb') as lfw_vector:
     for person in os.listdir(DIR):
         print(person)
 
         representation = []
 
         for image in os.listdir(os.path.join(DIR, person)):
-            people = faces.represent_all(Image.open(os.path.join(DIR, person, image)))
+            people = faces.full_representation(Image.open(os.path.join(DIR, person, image)))
             if people: representation.append(people[0][1])
             print("\t{}".format(image))
 

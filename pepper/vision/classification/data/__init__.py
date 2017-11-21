@@ -2,10 +2,10 @@ import os
 import numpy as np
 
 LFW_NAMES_PATH = os.path.join(os.path.dirname(__file__), 'lfw_names.txt')
-LFW_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'lfw_vector.bin')
+LFW_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'lfw_matrix.bin')
 
 FACE_NAMES_PATH = os.path.join(os.path.dirname(__file__), 'face_names.txt')
-FACE_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'face_vector.bin')
+FACE_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'face_matrix.bin')
 
 
 def load_lfw():

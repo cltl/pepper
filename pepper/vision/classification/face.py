@@ -1,4 +1,5 @@
 from pepper.vision.classification.data import load_lfw
+from pepper.event import Event
 
 import numpy as np
 import subprocess
@@ -89,14 +90,25 @@ class FaceRecognition:
 
         sleep(3)  # Wait for Setup, TODO: Make more elegant..
 
-    def lfw_distance(self, representation):
-        return self.distance(representation, *load_lfw())
+    @staticmethod
+    def distance(matrix, representation):
+        return np.sum((matrix - representation) ** 2, 1)
 
-    def distance(self, representation, names, vector):
-        distance = np.sum((vector - representation) ** 2, 1)
+    @staticmethod
+    def inner_distance(matrix):
+        return np.mean(FaceRecognition.distance(matrix, np.mean(matrix, 0)))
+
+    @staticmethod
+    def names_distance(names, matrix, representation):
+        distance = FaceRecognition.distance(matrix, representation)
         return [(names[i], distance[i]) for i in np.argsort(distance)]
 
-    def represent(self, image):
+    @staticmethod
+    def lfw_distance(representation):
+        names, matrix = load_lfw()
+        return FaceRecognition.names_distance(names, matrix, representation)
+
+    def representation(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.REPRESENT_PORT))
 
@@ -113,7 +125,7 @@ class FaceRecognition:
 
             return bounds, representation
 
-    def represent_all(self, image):
+    def full_representation(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.REPRESENT_ALL_PORT))
 
@@ -146,19 +158,31 @@ class FaceRecognition:
         subprocess.call(['docker', 'stop', self.DOCKER_NAME])
 
 
+class FaceRecognitionEvent(Event):
+    def __init__(self, session, callback, names, faces):
+        super(FaceRecognitionEvent, self).__init__(session, callback)
+
+
 if __name__ == "__main__":
     from pepper.vision.camera import SystemCamera
 
     face = FaceRecognition()
 
-    image = SystemCamera().get()
+    N = 5
+    representation_matrix = np.empty((N, 128))
 
-    print(image.width, image.height)
+    for i in range(N):
+        image = SystemCamera().get()
 
-    t = time()
-    # for i, (lfw, distance) in enumerate(face.lfw_distance(image)[:10]):
-    #     print("{:3d}. {:30s} ({:1.5f})".format(i+1, lfw, distance))
-    print(face.represent_all(image))
-    print(time() - t)
+        image.show()
+
+        t = time()
+        bounds, representation = face.representation(image)
+        print("Image[{}] {:4.4f}".format(i, time() - t))
+
+        representation_matrix[i] = representation
+
+    print("Inner Distance {}".format(face.inner_distance(representation_matrix)))
+    print("LFW Distance {}".format(face.lfw_distance(np.mean(representation_matrix, 0))[:10]))
 
     face.stop()
