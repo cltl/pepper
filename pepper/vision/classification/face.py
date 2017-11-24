@@ -1,11 +1,14 @@
-from pepper.vision.classification.data import load_lfw
+from pepper.vision.classification.data import load_lfw, load_faces
 from pepper.event import Event
 
 import numpy as np
+
+from threading import Thread
+from time import time, sleep
 import subprocess
 import socket
 import os
-from time import time, sleep
+
 
 # This Script does Face Detection using OpenFace
 # OpenFace is accessed using the 'bamos/openface' Docker image
@@ -88,7 +91,7 @@ class FaceRecognition:
         subprocess.call(['docker', 'exec', '-d', self.DOCKER_NAME, 'python', "./{}".format(self.REPRESENT_NAME)])
         subprocess.call(['docker', 'exec', '-d', self.DOCKER_NAME, 'python', "./{}".format(self.REPRESENT_ALL_NAME)])
 
-        sleep(3)  # Wait for Setup, TODO: Make more elegant..
+        sleep(5)  # Wait for Setup, TODO: Make more elegant..
 
     @staticmethod
     def distance(matrix, representation):
@@ -159,8 +162,86 @@ class FaceRecognition:
 
 
 class FaceRecognitionEvent(Event):
-    def __init__(self, session, callback, names, faces):
-        super(FaceRecognitionEvent, self).__init__(session, callback)
+
+    OUTER_MEAN = 1.7038624
+    OUTER_STD = 0.46672297
+
+    INNER_MEAN = 0.22572114728781423
+    INNER_STD = 0.091139727503611295
+
+    BACKLOG = 20
+
+    MATCH_THRESHOLD = INNER_MEAN
+    NEW_FACE_THRESHOLD = INNER_MEAN + INNER_STD
+
+    def __init__(self, session, on_face, on_new_face, camera, names, representations):
+        super(FaceRecognitionEvent, self).__init__(session, on_face)
+
+        self._on_new_face = on_new_face
+        self._camera = camera
+        self._names = names
+        self._representations = representations
+
+        self._recognition = FaceRecognition()
+
+        self._backlog = np.zeros((self.BACKLOG, 128), np.float32)
+        self._distance = np.zeros(self.BACKLOG, np.float32)
+
+        self._running = True
+        Thread(target=self.run).start()
+
+    @property
+    def camera(self):
+        return self._camera
+
+    @property
+    def names(self):
+        return self._names
+
+    @property
+    def representations(self):
+        return self._representations
+
+    def add_face(self, name, representation):
+        self._names.append(name)
+        self._representations = np.concatenate((self._representations, representation[None, :]))
+
+    def run(self):
+        backlog_index = 0
+
+        while self._running:
+
+            image = self.camera.get()
+            face = self._recognition.representation(image)
+
+            if face:
+                bounds, representation = face
+
+                outer = FaceRecognition.distance(self.representations, representation)
+                outer_min_index = np.argmin(outer)
+
+                self._backlog[backlog_index] = representation
+                self._distance[backlog_index] = outer[outer_min_index]
+
+                if outer[outer_min_index] < self.MATCH_THRESHOLD:
+                    self.on_face(outer[outer_min_index], self.names[outer_min_index])
+
+                elif np.all(self._distance) and np.min(self._distance) > self.NEW_FACE_THRESHOLD:
+                    self._on_new_face(np.mean(self._backlog, 0))
+                    self._backlog = np.zeros(self._backlog.shape)
+                    self._distance = np.zeros(self._distance.shape)
+
+                backlog_index = (backlog_index + 1) % self.BACKLOG
+
+    def on_face(self, distance, name):
+        self.callback(distance, name)
+
+    def on_new_face(self, representation):
+        self._on_new_face(representation)
+
+    def close(self):
+        self._running = False
+        self._recognition.close()
 
 
 if __name__ == "__main__":
@@ -174,15 +255,18 @@ if __name__ == "__main__":
     for i in range(N):
         image = SystemCamera().get()
 
-        image.show()
-
         t = time()
         bounds, representation = face.representation(image)
         print("Image[{}] {:4.4f}".format(i, time() - t))
 
         representation_matrix[i] = representation
 
+
+    representation = np.mean(representation_matrix, 0)
     print("Inner Distance {}".format(face.inner_distance(representation_matrix)))
-    print("LFW Distance {}".format(face.lfw_distance(np.mean(representation_matrix, 0))[:10]))
+    print("LFW Distance {}".format(face.lfw_distance(representation)[:10]))
+
+    names, matrix = load_faces()
+    print("DB Distance {}".format(face.names_distance(names, matrix, representation)))
 
     face.stop()
