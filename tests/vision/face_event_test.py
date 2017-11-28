@@ -4,6 +4,7 @@ from pepper.vision.classification.face import FaceRecognitionEvent
 from pepper.vision.classification.data import load_lfw, load_faces
 import numpy as np
 
+
 class FaceEventApp(App):
     def __init__(self, address):
         super(FaceEventApp, self).__init__(address)

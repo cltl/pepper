@@ -7,6 +7,7 @@ import urllib
 import base64
 import json
 import sys
+import re
 
 from threading import Thread
 from time import sleep
@@ -155,9 +156,140 @@ class GoogleRecognition(Recognition):
         return hypotheses
 
 
+class GoogleName():
+    def __init__(self, language_codes=('en-GB', 'nl-NL', 'es-ES'),
+                 names=(["Lenka"], ["Piek", "Bram"], ["Selene"]),
+                 sample_rate=16000):
+        self._sample_rate = sample_rate
+
+        self._config = speech.types.RecognitionConfig(
+            encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            sample_rate_hertz=sample_rate,
+            language_code=language_codes[0],
+            enable_word_time_offsets=True,
+        )
+
+        self._name_config = [speech.types.RecognitionConfig(
+            encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            sample_rate_hertz = sample_rate,
+            language_code = code,
+            speech_contexts = [speech.types.SpeechContext(
+                phrases = names[i]
+            )]
+        ) for i, code in enumerate(language_codes)]
+
+        self._client = speech.SpeechClient()
+
+    @property
+    def sample_rate(self):
+        return self._sample_rate
+
+    @property
+    def config(self):
+        return self._config
+        
+    @property
+    def name_config(self):
+        return self._name_config
+
+    def extract(self, audio):
+
+        PADDING = 0.5
+
+        names = []
+
+        words, timings = self._extract_words(audio)
+        sentence = " ".join(words)
+
+        name = re.findall(r"my name is ([a-zA-Z]+)", sentence)
+
+        if name:
+            start, end = timings[words.index(name[0])]
+            print(name, start, end)
+
+            import matplotlib.pyplot as plt
+
+            fragment_start = int((start) * self.sample_rate)
+            fragment_end = int((end + PADDING) * self.sample_rate)
+
+            plt.plot(audio)
+            plt.plot([fragment_start, fragment_end], [0,0])
+            plt.show()
+
+            fragment = audio.copy()
+            fragment[:fragment_start] = 0
+            fragment[fragment_end:] = 0
+
+            for config in self.name_config:
+                response = self._client.recognize(config, speech.types.RecognitionAudio(content=fragment.tobytes()))
+                for result in response.results:
+                    for alternative in result.alternatives:
+                        if re.match(r'([A-Z].+)', alternative.transcript):
+                            names.append([alternative.transcript, alternative.confidence])
+        return names
+
+
+    def _extract_words(self, audio):
+        response = self._client.recognize(self.config, speech.types.RecognitionAudio(content=audio.tobytes()))
+
+        words, times = [], []
+
+        for word_info in response.results[0].alternatives[0].words:
+            words.append(word_info.word)
+            times.append([word_info.start_time.seconds + word_info.start_time.nanos * 1E-9,
+                          word_info.end_time.seconds + word_info.end_time.nanos * 1E-9])
+        return words, times
+
+
+class GoogleUtterance():
+
+    MICROPHONE_BUFFER_SECONDS = 0.1
+
+    def __init__(self, microphone, language_code = 'en-GB', sample_rate = 16000):
+
+        self._microphone = microphone
+
+        self._config = speech.types.StreamingRecognitionConfig(
+            config=speech.types.RecognitionConfig(
+                encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+                language_code=language_code,
+                sample_rate_hertz=sample_rate,
+            ),
+            interim_results=False,
+            single_utterance=True)
+
+        self._client = speech.SpeechClient()
+
+    @property
+    def microphone(self):
+        return self._microphone
+
+    def listen(self, seconds=60):
+
+        requests = (speech.types.StreamingRecognizeRequest(audio_content=content.tobytes())
+                    for content in self._stream_microphone())
+
+        responses = self._client.streaming_recognize(self._config, requests)
+
+        for response in responses:
+            hypotheses = []
+
+            for result in response.results:
+                for alternative in result.alternatives:
+                    hypotheses.append([alternative.transcript, alternative.confidence])
+
+                if result.is_final:
+                    return hypotheses
+        return None
+
+    def _stream_microphone(self):
+        while True:
+            yield self.microphone.get(self.MICROPHONE_BUFFER_SECONDS)
+
+
 class GoogleStreamedRecognition(StreamedRecognition):
 
-    BUFFER_SECONDS = 0.5
+    BUFFER_SECONDS = 0.1
 
     def __init__(self, microphone, callback, language_code = 'en-GB', sample_rate = 16000):
         super(GoogleStreamedRecognition, self).__init__(microphone, callback)
@@ -174,7 +306,7 @@ class GoogleStreamedRecognition(StreamedRecognition):
         self._streaming_config = speech.types.StreamingRecognitionConfig(
             config = self._config,
             interim_results = True,
-            single_utterance=True,
+            single_utterance = True,
         )
 
         self._stopped = False
