@@ -4,7 +4,9 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix n2my: <http://www.semanticweb.org/leolani/N2MY#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geonames: <http://www.geonames.org/ontology/documentation.html> .
 @base <http://www.semanticweb.org/leolani/N2MY> .
 
 <http://www.semanticweb.org/leolani/N2MY> rdf:type owl:Ontology .
@@ -13,58 +15,115 @@
 #    Object Properties
 #################################################################
 
-###  http://www.semanticweb.org/leolani/N2MY#comesFrom
-:comesFrom rdf:type owl:ObjectProperty ;
-           rdfs:domain :Agent ;
-           rdfs:range :Country .
+###  http://www.semanticweb.org/leolani/N2MY#bornIn
+n2my:bornIn rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf n2my:originallyFrom ;
+            rdfs:domain n2my:Person ;
+            owl:propertyDisjointWith n2my:manufacturedIn .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#dislikes
+n2my:dislikes rdf:type owl:ObjectProperty ;
+              owl:propertyDisjointWith n2my:likes .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#favourite
+n2my:favourite rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf n2my:likes ;
+               owl:inverseOf n2my:favourite_of .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#favourite_of
+n2my:favourite_of rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf n2my:liked_by .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#in
+n2my:in rdf:type owl:ObjectProperty ,
+                 owl:TransitiveProperty ;
+        rdfs:domain n2my:City ;
+        rdfs:range n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#isMemberOf
+n2my:isMemberOf rdf:type owl:ObjectProperty ;
+                rdfs:domain n2my:Agent ;
+                rdfs:range n2my:Institution .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#knows
-:knows rdf:type owl:ObjectProperty ,
-                owl:SymmetricProperty ;
-       rdfs:domain :Agent ;
-       rdfs:range :Agent .
+n2my:knows rdf:type owl:ObjectProperty ,
+                    owl:SymmetricProperty ;
+           rdfs:domain n2my:Agent ;
+           rdfs:range n2my:Agent .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#liked_by
+n2my:liked_by rdf:type owl:ObjectProperty ;
+              owl:inverseOf n2my:likes .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#likes
-:likes rdf:type owl:ObjectProperty ;
-       rdfs:domain :Agent ;
-       rdfs:range :Interest .
+n2my:likes rdf:type owl:ObjectProperty ;
+           rdfs:domain n2my:Agent ;
+           rdfs:range n2my:Interest .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#located
-:located rdf:type owl:ObjectProperty ;
-         rdfs:domain :Organization ;
-         rdfs:range :City .
+n2my:located rdf:type owl:ObjectProperty ;
+             rdfs:domain n2my:Institution ;
+             rdfs:range n2my:City .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#manufacturedIn
+n2my:manufacturedIn rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf n2my:originallyFrom ;
+                    rdfs:domain n2my:Robot .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#originallyFrom
+n2my:originallyFrom rdf:type owl:ObjectProperty ;
+                    rdfs:domain n2my:Agent ;
+                    rdfs:range n2my:Country .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#studiesAt
-:studiesAt rdf:type owl:ObjectProperty ;
-           rdfs:domain :Agent ;
-           rdfs:range :Studyplace .
+n2my:studiesAt rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf n2my:isMemberOf ;
+               rdfs:range n2my:University .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#worksAt
-:worksAt rdf:type owl:ObjectProperty ;
-         rdfs:subPropertyOf owl:topObjectProperty ;
-         rdfs:domain :Agent ;
-         rdfs:range :Workplace .
+n2my:worksAt rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf n2my:isMemberOf .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#writtenBy
+n2my:writtenBy rdf:type owl:ObjectProperty ;
+               rdfs:domain n2my:Book ;
+               rdfs:range n2my:Person .
 
 
 #################################################################
 #    Data properties
 #################################################################
 
-###  http://www.semanticweb.org/leolani/N2MY#FaceID
-:FaceID rdf:type owl:DatatypeProperty ;
-        rdfs:domain :Agent ;
-        rdfs:range rdfs:Literal .
+###  http://www.semanticweb.org/leolani/N2MY#age
+n2my:age rdf:type owl:DatatypeProperty ;
+         rdfs:domain n2my:Person ;
+         rdfs:range xsd:int .
 
 
-###  http://www.semanticweb.org/leolani/N2MY#Name
-:Name rdf:type owl:DatatypeProperty ;
-      rdfs:domain :Agent ;
-      rdfs:range rdfs:Literal .
+###  http://www.semanticweb.org/leolani/N2MY#faceID
+n2my:faceID rdf:type owl:DatatypeProperty ;
+            rdfs:domain n2my:Person ;
+            rdfs:range rdfs:Literal .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#name
+n2my:name rdf:type owl:DatatypeProperty ;
+          rdfs:domain n2my:Agent ;
+          rdfs:range rdfs:Literal .
 
 
 #################################################################
@@ -72,44 +131,182 @@
 #################################################################
 
 ###  http://www.semanticweb.org/leolani/N2MY#Agent
-:Agent rdf:type owl:Class .
+n2my:Agent rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Book
+n2my:Book rdf:type owl:Class ;
+          rdfs:subClassOf n2my:Interest ;
+          owl:disjointWith n2my:Food ,
+                           n2my:Sport .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#City
-:City rdf:type owl:Class ;
-      rdfs:subClassOf :Place .
+n2my:City rdf:type owl:Class ;
+          rdfs:subClassOf n2my:Place .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Company
+n2my:Company rdf:type owl:Class ;
+             rdfs:subClassOf n2my:Institution .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Country
-:Country rdf:type owl:Class ;
-         rdfs:subClassOf :Place .
+n2my:Country rdf:type owl:Class ;
+             rdfs:subClassOf n2my:Place .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Food
+n2my:Food rdf:type owl:Class ;
+          rdfs:subClassOf n2my:Interest ;
+          owl:disjointWith n2my:Movie ,
+                           n2my:Sport .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Institution
+n2my:Institution rdf:type owl:Class .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Interest
-:Interest rdf:type owl:Class .
+n2my:Interest rdf:type owl:Class .
 
 
-###  http://www.semanticweb.org/leolani/N2MY#Organization
-:Organization rdf:type owl:Class .
+###  http://www.semanticweb.org/leolani/N2MY#Movie
+n2my:Movie rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Interest ;
+           owl:disjointWith n2my:Sport .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Person
-:Person rdf:type owl:Class ;
-        rdfs:subClassOf :Agent .
+n2my:Person rdf:type owl:Class ;
+            rdfs:subClassOf n2my:Agent ;
+            owl:disjointWith n2my:Robot .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Place
-:Place rdf:type owl:Class .
+n2my:Place rdf:type owl:Class .
 
 
-###  http://www.semanticweb.org/leolani/N2MY#Studyplace
-:Studyplace rdf:type owl:Class ;
-            rdfs:subClassOf :Organization .
+###  http://www.semanticweb.org/leolani/N2MY#Robot
+n2my:Robot rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Agent .
 
 
-###  http://www.semanticweb.org/leolani/N2MY#Workplace
-:Workplace rdf:type owl:Class ;
-           rdfs:subClassOf :Organization .
+###  http://www.semanticweb.org/leolani/N2MY#Song
+n2my:Song rdf:type owl:Class ;
+          rdfs:subClassOf n2my:Interest .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Sport
+n2my:Sport rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Interest .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#University
+n2my:University rdf:type owl:Class ;
+                rdfs:subClassOf n2my:Institution .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#sharedInterest
+n2my:sharedInterest rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( n2my:Interest
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty n2my:liked_by ;
+                                                                 owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                                                 owl:onClass n2my:Agent
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf n2my:Interest .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/leolani/N2MY#Amsterdam
+n2my:Amsterdam rdf:type owl:NamedIndividual ,
+                        n2my:City ;
+               n2my:in n2my:Netherlands .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#France
+n2my:France rdf:type owl:NamedIndividual ,
+                     n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#HP
+n2my:HP rdf:type owl:NamedIndividual ,
+                 n2my:Book .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Japan
+n2my:Japan rdf:type owl:NamedIndividual ,
+                    n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Leo_lani
+n2my:Leo_lani rdf:type owl:NamedIndividual ,
+                       n2my:Robot ;
+              n2my:isMemberOf n2my:VU_Amsterdam ;
+              n2my:knows n2my:Selene ;
+              n2my:likes n2my:HP ,
+                         n2my:Mulan ;
+              n2my:manufacturedIn n2my:France ,
+                                  n2my:Japan ;
+              n2my:name "Leo Lani"^^rdfs:Literal .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Mexico
+n2my:Mexico rdf:type owl:NamedIndividual ,
+                     n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Mulan
+n2my:Mulan rdf:type owl:NamedIndividual ,
+                    n2my:Movie .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Netherlands
+n2my:Netherlands rdf:type owl:NamedIndividual ,
+                          n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Selene
+n2my:Selene rdf:type owl:NamedIndividual ,
+                     n2my:Person ;
+            n2my:bornIn n2my:Mexico ;
+            n2my:favourite n2my:HP ,
+                           n2my:Mulan ;
+            n2my:likes n2my:football ;
+            n2my:worksAt n2my:VU_Amsterdam ,
+                         n2my:myTomorrows ;
+            n2my:age "24"^^xsd:int ;
+            n2my:faceID "001"^^rdfs:Literal ;
+            n2my:name "Selene"^^rdfs:Literal .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#VU_Amsterdam
+n2my:VU_Amsterdam rdf:type owl:NamedIndividual ,
+                           n2my:University ;
+                  n2my:located n2my:Amsterdam .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#football
+n2my:football rdf:type owl:NamedIndividual ,
+                       n2my:Sport .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#myTomorrows
+n2my:myTomorrows rdf:type owl:NamedIndividual ,
+                          n2my:Company ;
+                 n2my:located n2my:Amsterdam .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#tacos
+n2my:tacos rdf:type owl:NamedIndividual ,
+                    n2my:Food .
 
 
 ###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
