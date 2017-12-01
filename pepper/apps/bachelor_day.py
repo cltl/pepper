@@ -84,7 +84,7 @@ class BachelorDay(App):
         if not self.answering and not self.listening and not self.greeting:
             print("Log: on_look running")
             self.greeting = True
-            if time() - self.lastGreetingTime > SECONDS_BETWEEN_GREETINGS :
+            if time() - self.lastGreetingTime > SECONDS_BETWEEN_GREETINGS:
                 self.lastGreetingTime = time()
                 animation = choice(SIMPLE_GREETING['ANIMATIONS'])
                 text = choice(SIMPLE_GREETING['TEXT'])

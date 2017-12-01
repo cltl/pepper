@@ -6,6 +6,7 @@ from pepper.knowledge.greetings import CATCH_ATTENTION, SIMPLE_GREETING
 
 from pepper.event.people import FaceDetectedEvent, LookingAtRobotEvent
 from pepper.speech.microphone import PepperMicrophone
+from pepper.speech.recognition import GoogleUtterance
 
 from random import choice
 from time import time
@@ -39,6 +40,17 @@ class MeetGreet(App):
 
     SECONDS_BETWEEN_ATTENTIONS = 60
     SECONDS_BETWEEN_GREETINGS = 60
+    SECONDS_LISTENING_FOR_QUESTION = 30
+
+    ASK_FOR_QUESTION = [
+        "I'm listening",
+        "Shoot me a question",
+        "What would you like to know?",
+        "What's your question?",
+        "I am ready for your question",
+        "Ask me",
+        "Let's hear your question"
+    ]
 
     def __init__(self, address):
         super(MeetGreet, self).__init__(address)
@@ -46,6 +58,7 @@ class MeetGreet(App):
         # Services
         self.microphone = PepperMicrophone(self.session)
         self.speech = self.session.service("ALAnimatedSpeech")
+        self.recognition = GoogleUtterance(self.microphone)
 
         # Variables
         self.busy = False
@@ -60,15 +73,33 @@ class MeetGreet(App):
 
     def on_face(self, t, faces, recognition):
         if not self.busy and time() - self.last_attention_time > self.SECONDS_BETWEEN_ATTENTIONS:
-            # TODO: Attention!
+            self.busy = True
+            self.log.info("on_face event")
+            self.speech.say("^start({0}) {1} ^stop({0})".format(
+                choice(CATCH_ATTENTION['ANIMATIONS']), choice(CATCH_ATTENTION['TEXT'])))
             self.last_attention_time = time()
+            self.busy = False
 
     def on_look(self, person, score):
         if not self.busy and time() - self.last_greeting_time > self.SECONDS_BETWEEN_GREETINGS:
-            # TODO: Greet!
+            self.busy = True
+            self.speech.say("^start({0}) {1} ^stop({0})".format(
+                choice(SIMPLE_GREETING['ANIMATIONS']), choice(SIMPLE_GREETING['TEXT'])
+            ))
             self.last_attention_time = time()
             self.last_greeting_time = time()
+            self.busy = False
+
+        self.speech.say(self.ASK_FOR_QUESTION)
+
+        question = self.recognition.listen(self.SECONDS_LISTENING_FOR_QUESTION)
+        self.log.info("Q: {}".format(question))
+
+        answer = brain(question)
+        self.log.info("A: {}".format(question))
+
+        self.speech.say(answer)
 
 
-
-
+if __name__ == "__main__":
+    MeetGreet(["192.168.1.102", 9559]).run()
