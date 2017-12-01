@@ -1,5 +1,6 @@
 import qi
 import time
+import logging
 
 
 class App(object):
@@ -18,8 +19,20 @@ class App(object):
         self._address = address
         self._url = "tcp://{}:{}".format(*address)
         self._application = qi.Application([self.name, "--qi-url={}".format(self.url)])
+        self._log = logging.getLogger(self.__class__.__name__)
 
         self.application.start()
+
+    @property
+    def log(self):
+        """
+        Get Logger for application
+
+        Returns
+        -------
+        log: logging.Logger
+        """
+        return self._log
 
     @property
     def address(self):
