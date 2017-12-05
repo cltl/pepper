@@ -1,4 +1,4 @@
-from pepper.vision.classification.data import load_lfw, load_faces
+from pepper.vision.classification.data import load_lfw, load_lfw_gender, load_faces
 from pepper.event import Event
 
 import numpy as np
@@ -110,6 +110,23 @@ class FaceRecognition:
     def lfw_distance(representation):
         names, matrix = load_lfw()
         return FaceRecognition.names_distance(names, matrix, representation)
+
+    @staticmethod
+    def gender(representation):
+        N = 100
+
+        names, matrix = load_lfw()
+        gender = load_lfw_gender()
+
+        distance = FaceRecognition.distance(matrix, representation)
+        sorting = np.argsort(distance)
+        score = np.average(gender[sorting[:N]], weights=distance[sorting[:N]])
+
+        classification = score > 0.5
+        probability = 1 + score * np.log(score + np.finfo(score.dtype).eps)
+
+        return classification, probability
+
 
     def representation(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

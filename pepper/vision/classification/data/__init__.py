@@ -3,6 +3,7 @@ import numpy as np
 
 LFW_NAMES_PATH = os.path.join(os.path.dirname(__file__), 'lfw_names.txt')
 LFW_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'lfw_matrix.bin')
+LFW_GENDER_PATH = os.path.join(os.path.dirname(__file__), 'lfw_gender.bin')
 
 FACE_NAMES_PATH = os.path.join(os.path.dirname(__file__), 'face_names.txt')
 FACE_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'face_matrix.bin')
@@ -15,6 +16,11 @@ def load_lfw():
     lfw_vector = np.fromfile(LFW_VECTOR_PATH, np.float32).reshape(len(lfw_names), 128)
 
     return lfw_names, lfw_vector
+
+
+def load_lfw_gender():
+    data = np.fromfile(LFW_GENDER_PATH, np.int32)
+    return data[::2]
 
 
 def load_faces():

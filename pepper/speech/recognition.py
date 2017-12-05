@@ -10,7 +10,7 @@ import sys
 import re
 
 from threading import Thread
-from time import sleep
+from time import sleep, time
 
 from enum import Enum
 

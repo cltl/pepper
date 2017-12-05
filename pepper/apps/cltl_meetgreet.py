@@ -4,13 +4,20 @@ from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.general_questions import general_questions
 from pepper.knowledge.greetings import CATCH_ATTENTION, SIMPLE_GREETING
 
-from pepper.event.people import FaceDetectedEvent, LookingAtRobotEvent
 from pepper.speech.microphone import PepperMicrophone
-from pepper.speech.recognition import GoogleUtterance
+from pepper.speech.recognition import GoogleStreamedRecognition
+
+from pepper.vision.camera import PepperCamera, Resolution
+from pepper.vision.classification.face import FaceRecognition
+
+from pepper.output.led import *
+
+from pepper.event.people import FaceDetectedEvent, LookingAtRobotEvent
 
 from random import choice
-from time import time
+from time import time, sleep
 
+import numpy as np
 
 
 def brain(question):
@@ -39,7 +46,7 @@ def brain(question):
 class MeetGreet(App):
 
     SECONDS_BETWEEN_ATTENTIONS = 60
-    SECONDS_BETWEEN_GREETINGS = 60
+    SECONDS_BETWEEN_GREETINGS = 10
     SECONDS_LISTENING_FOR_QUESTION = 30
 
     ASK_FOR_QUESTION = [
@@ -57,13 +64,21 @@ class MeetGreet(App):
 
         # Services
         self.microphone = PepperMicrophone(self.session)
+        self.camera = PepperCamera(self.session, "PepperCamera6", Resolution.QVGA)
+        self.led = Led(self.session)
+
         self.speech = self.session.service("ALAnimatedSpeech")
-        self.recognition = GoogleUtterance(self.microphone)
+        self.speech_to_text = None
+        self.face_recognition = FaceRecognition()
 
         # Variables
-        self.busy = False
         self.last_attention_time = 0
         self.last_greeting_time = 0
+
+        # State
+        self.listening = False
+        self.answering = False
+        self.greeting = False
 
         # Events
         self.resources.append(FaceDetectedEvent(self.session, self.on_face))
@@ -71,35 +86,87 @@ class MeetGreet(App):
 
         self.log.info("Application Started")
 
+    @property
+    def busy(self):
+        return self.listening or self.answering or self.greeting
+
     def on_face(self, t, faces, recognition):
         if not self.busy and time() - self.last_attention_time > self.SECONDS_BETWEEN_ATTENTIONS:
-            self.busy = True
+            self.greeting = True
+
             self.log.info("on_face event")
-            self.speech.say("^start({0}) {1} ^stop({0})".format(
+            self.speech.say("\\rspd=90\\^start({0}) {1} ^stop({0})".format(
                 choice(CATCH_ATTENTION['ANIMATIONS']), choice(CATCH_ATTENTION['TEXT'])))
             self.last_attention_time = time()
-            self.busy = False
+
+            self.greeting = False
 
     def on_look(self, person, score):
         if not self.busy and time() - self.last_greeting_time > self.SECONDS_BETWEEN_GREETINGS:
-            self.busy = True
-            self.speech.say("^start({0}) {1} ^stop({0})".format(
-                choice(SIMPLE_GREETING['ANIMATIONS']), choice(SIMPLE_GREETING['TEXT'])
+            self.greeting = True
+
+            self.log.info("on_look_event")
+
+            # Get Gender of Person for Appropriate Greeting
+            image = self.camera.get()
+            person = self.face_recognition.representation(image)
+
+            PERSON_TAG = ""
+
+            if person:
+                bounds, representation = person
+                gender, probability = self.face_recognition.gender(representation)
+
+                if gender: PERSON_TAG = choice(['Madam', "My Lady", "Mam"])
+                else: PERSON_TAG = choice(["Sir", "Mister"])
+
+            # General Attention Calling
+            self.speech.say("\\rspd=90\\^start({0}) {1}, {2} ^stop({0})".format(
+                choice(SIMPLE_GREETING['ANIMATIONS']), choice(SIMPLE_GREETING['TEXT']), PERSON_TAG
             ))
             self.last_attention_time = time()
             self.last_greeting_time = time()
-            self.busy = False
 
-        self.speech.say(self.ASK_FOR_QUESTION)
+            # Ask for Question
+            self.speech.say("\\rspd=90\\{}".format(choice(self.ASK_FOR_QUESTION)))
+            self._listen()
 
-        question = self.recognition.listen(self.SECONDS_LISTENING_FOR_QUESTION)
-        self.log.info("Q: {}".format(question))
+            self.greeting = False
 
-        answer = brain(question)
-        self.log.info("A: {}".format(question))
+    def on_speech(self, hypotheses, final):
+        question, confidence = hypotheses[0]
 
-        self.speech.say(answer)
+        if final:
+            self.answering = True
+            self.listening = False
+
+            self.log.info(u"Q: {}".format(question))
+            self.led.set(Leds.LEFT_FACE_LEDS, [0.2, 0.2, 1])
+            self.led.set(Leds.RIGHT_FACE_LEDS, [0.2, 0.2, 1])
+            answer = brain(question)
+            self.led.set(Leds.LEFT_FACE_LEDS, [0.2, 1, 0.2])
+            self.led.set(Leds.RIGHT_FACE_LEDS, [0.2, 1, 0.2])
+            self.log.info(u"A: {}".format(answer))
+
+            self.speech.say("\\rspd=90\\{}".format(answer))
+
+            self.answering = False
+        else:
+            color = np.random.uniform(size=3).tolist()
+            color[2] = 1
+
+            self.led.set(Leds.LEFT_FACE_LEDS, color)
+            self.led.set(Leds.RIGHT_FACE_LEDS, color)
+
+    def _listen(self):
+        self.log.info("Listening for Speech")
+        self.listening = True
+        self.speech_to_text = GoogleStreamedRecognition(self.microphone, self.on_speech)
+        sleep(self.SECONDS_LISTENING_FOR_QUESTION)
+        self.speech_to_text.stop()
+        self.listening = False
+
 
 
 if __name__ == "__main__":
-    MeetGreet(["192.168.1.102", 9559]).run()
+    MeetGreet(["192.168.1.103", 9559]).run()
