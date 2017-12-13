@@ -15,6 +15,17 @@
 #    Object Properties
 #################################################################
 
+###  http://www.semanticweb.org/leolani/N2MY#acknowledge
+n2my:acknowledge rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf n2my:perceive ;
+                 rdfs:domain n2my:Robot ;
+                 rdfs:range n2my:Smell ,
+                            n2my:Taste ,
+                            n2my:Temperature ,
+                            n2my:Touch ;
+                 owl:propertyDisjointWith n2my:experience .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#bornIn
 n2my:bornIn rdf:type owl:ObjectProperty ;
             rdfs:subPropertyOf n2my:originallyFrom ;
@@ -25,6 +36,16 @@ n2my:bornIn rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/leolani/N2MY#dislikes
 n2my:dislikes rdf:type owl:ObjectProperty ;
               owl:propertyDisjointWith n2my:likes .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#experience
+n2my:experience rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf n2my:perceive ;
+                rdfs:domain n2my:Person ;
+                rdfs:range n2my:Smell ,
+                           n2my:Taste ,
+                           n2my:Temperature ,
+                           n2my:Touch .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#favourite
@@ -87,6 +108,19 @@ n2my:originallyFrom rdf:type owl:ObjectProperty ;
                     rdfs:range n2my:Country .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#perceive
+n2my:perceive rdf:type owl:ObjectProperty ;
+              rdfs:domain n2my:Agent ;
+              rdfs:range n2my:Percept .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#sense
+n2my:sense rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf n2my:perceive ;
+           rdfs:range n2my:Sound ,
+                      n2my:Visual .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#studiesAt
 n2my:studiesAt rdf:type owl:ObjectProperty ;
                rdfs:subPropertyOf n2my:isMemberOf ;
@@ -136,9 +170,7 @@ n2my:Agent rdf:type owl:Class .
 
 ###  http://www.semanticweb.org/leolani/N2MY#Book
 n2my:Book rdf:type owl:Class ;
-          rdfs:subClassOf n2my:Interest ;
-          owl:disjointWith n2my:Food ,
-                           n2my:Sport .
+          rdfs:subClassOf n2my:Interest_occurrence .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#City
@@ -156,11 +188,19 @@ n2my:Country rdf:type owl:Class ;
              rdfs:subClassOf n2my:Place .
 
 
-###  http://www.semanticweb.org/leolani/N2MY#Food
-n2my:Food rdf:type owl:Class ;
-          rdfs:subClassOf n2my:Interest ;
-          owl:disjointWith n2my:Movie ,
-                           n2my:Sport .
+###  http://www.semanticweb.org/leolani/N2MY#Cuisine
+n2my:Cuisine rdf:type owl:Class ;
+             rdfs:subClassOf n2my:Interest_field .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Dish
+n2my:Dish rdf:type owl:Class ;
+          rdfs:subClassOf n2my:Interest_occurrence .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Film_Genre
+n2my:Film_Genre rdf:type owl:Class ;
+                rdfs:subClassOf n2my:Interest_field .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Institution
@@ -171,10 +211,33 @@ n2my:Institution rdf:type owl:Class .
 n2my:Interest rdf:type owl:Class .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Interest_field
+n2my:Interest_field rdf:type owl:Class ;
+                    rdfs:subClassOf n2my:Interest .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Interest_occurrence
+n2my:Interest_occurrence rdf:type owl:Class ;
+                         rdfs:subClassOf n2my:Interest .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Literature_Genre
+n2my:Literature_Genre rdf:type owl:Class ;
+                      rdfs:subClassOf n2my:Interest_field .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#Movie
 n2my:Movie rdf:type owl:Class ;
-           rdfs:subClassOf n2my:Interest ;
-           owl:disjointWith n2my:Sport .
+           rdfs:subClassOf n2my:Interest_occurrence .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Music_Genre
+n2my:Music_Genre rdf:type owl:Class ;
+                 rdfs:subClassOf n2my:Interest_field .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Percept
+n2my:Percept rdf:type owl:Class .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Person
@@ -187,19 +250,63 @@ n2my:Person rdf:type owl:Class ;
 n2my:Place rdf:type owl:Class .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Popular_interest
+n2my:Popular_interest rdf:type owl:Class ;
+                      owl:equivalentClass [ owl:intersectionOf ( n2my:Interest
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty n2my:liked_by ;
+                                                                   owl:minQualifiedCardinality "5"^^xsd:nonNegativeInteger ;
+                                                                   owl:onClass n2my:Agent
+                                                                 ]
+                                                               ) ;
+                                            rdf:type owl:Class
+                                          ] ;
+                      rdfs:subClassOf n2my:Interest .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#Robot
 n2my:Robot rdf:type owl:Class ;
            rdfs:subClassOf n2my:Agent .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Smell
+n2my:Smell rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Percept .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#Song
 n2my:Song rdf:type owl:Class ;
-          rdfs:subClassOf n2my:Interest .
+          rdfs:subClassOf n2my:Interest_occurrence .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Sound
+n2my:Sound rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Percept .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Sport
 n2my:Sport rdf:type owl:Class ;
-           rdfs:subClassOf n2my:Interest .
+           rdfs:subClassOf n2my:Interest_field .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Sports_Team
+n2my:Sports_Team rdf:type owl:Class ;
+                 rdfs:subClassOf n2my:Interest_occurrence .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Taste
+n2my:Taste rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Percept .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Temperature
+n2my:Temperature rdf:type owl:Class ;
+                 rdfs:subClassOf n2my:Percept .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Touch
+n2my:Touch rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Percept .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#University
@@ -207,18 +314,9 @@ n2my:University rdf:type owl:Class ;
                 rdfs:subClassOf n2my:Institution .
 
 
-###  http://www.semanticweb.org/leolani/N2MY#sharedInterest
-n2my:sharedInterest rdf:type owl:Class ;
-                    owl:equivalentClass [ owl:intersectionOf ( n2my:Interest
-                                                               [ rdf:type owl:Restriction ;
-                                                                 owl:onProperty n2my:liked_by ;
-                                                                 owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
-                                                                 owl:onClass n2my:Agent
-                                                               ]
-                                                             ) ;
-                                          rdf:type owl:Class
-                                        ] ;
-                    rdfs:subClassOf n2my:Interest .
+###  http://www.semanticweb.org/leolani/N2MY#Visual
+n2my:Visual rdf:type owl:Class ;
+            rdfs:subClassOf n2my:Percept .
 
 
 #################################################################
@@ -306,7 +404,31 @@ n2my:myTomorrows rdf:type owl:NamedIndividual ,
 
 ###  http://www.semanticweb.org/leolani/N2MY#tacos
 n2my:tacos rdf:type owl:NamedIndividual ,
-                    n2my:Food .
+                    n2my:Dish .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( n2my:Book
+                n2my:Dish
+                n2my:Movie
+                n2my:Song
+                n2my:Sports_Team
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( n2my:Cuisine
+                n2my:Film_Genre
+                n2my:Literature_Genre
+                n2my:Music_Genre
+                n2my:Sport
+              )
+] .
 
 
 ###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
