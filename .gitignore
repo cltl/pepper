@@ -1,3 +1,6 @@
+# Mac useless files
+*.DS_Store
+
 *.pyc
 .idea/
 experiments/
