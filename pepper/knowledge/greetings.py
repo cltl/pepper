@@ -16,7 +16,7 @@ CATCH_ATTENTION = {
         "Hi, come talk to me",
         "How are you?",
         "Come! let's have a talk",
-        "Hi, I'm Leo Lani and I will answer your questions!",
+        "Hi, I'm Leo Lani and I will answer your questions!"
     ]
 }
 
