@@ -15,6 +15,46 @@
 #    Annotation properties
 #################################################################
 
+###  http://purl.obolibrary.org/obo/IAO_0000115
+<http://purl.obolibrary.org/obo/IAO_0000115> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.obolibrary.org/obo/IAO_0000118
+<http://purl.obolibrary.org/obo/IAO_0000118> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.obolibrary.org/obo/IAO_0000412
+<http://purl.obolibrary.org/obo/IAO_0000412> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#created_by
+<http://www.geneontology.org/formats/oboInOwl#created_by> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#creation_date
+<http://www.geneontology.org/formats/oboInOwl#creation_date> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#hasDbXref
+<http://www.geneontology.org/formats/oboInOwl#hasDbXref> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#hasExactSynonym
+<http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym
+<http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#hasOBONamespace
+<http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.geneontology.org/formats/oboInOwl#id
+<http://www.geneontology.org/formats/oboInOwl#id> rdf:type owl:AnnotationProperty .
+
+
 ###  http://www.w3.org/2003/06/sw-vocab-status/ns#term_status
 <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> rdf:type owl:AnnotationProperty .
 
@@ -29,7 +69,6 @@ n2my:acknowledge rdf:type owl:ObjectProperty ;
                  rdfs:domain n2my:Robot ;
                  rdfs:range n2my:Smell ,
                             n2my:Taste ,
-                            n2my:Temperature ,
                             n2my:Touch ;
                  owl:propertyDisjointWith n2my:experience .
 
@@ -52,7 +91,6 @@ n2my:experience rdf:type owl:ObjectProperty ;
                 rdfs:domain n2my:Person ;
                 rdfs:range n2my:Smell ,
                            n2my:Taste ,
-                           n2my:Temperature ,
                            n2my:Touch .
 
 
@@ -172,18 +210,145 @@ n2my:name rdf:type owl:DatatypeProperty ;
 #    Classes
 #################################################################
 
-###  http://purl.org/dc/terms/Agent
-<http://purl.org/dc/terms/Agent> rdf:type owl:Class ;
-                                 owl:equivalentClass foaf:Agent .
+###  http://purl.obolibrary.org/obo/GO_0007600
+<http://purl.obolibrary.org/obo/GO_0007600> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/MF_0000019> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a sensory stimulus, convert it to a molecular signal, and recognize and characterize the signal. This is a neurological process."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "Wikipedia:Perception"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0007600"^^xsd:string ;
+                                            rdfs:label "sensory perception"^^xsd:string .
 
 
-###  http://schema.org/Person
-<http://schema.org/Person> rdf:type owl:Class ;
-                           owl:equivalentClass foaf:Person .
+###  http://purl.obolibrary.org/obo/GO_0019233
+<http://purl.obolibrary.org/obo/GO_0019233> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Pain ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/GO_0007600> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a painful stimulus, convert it to a molecular signal, and recognize and characterize the signal. Pain is medically defined as the physical sensation of discomfort or distress caused by injury or illness, so can hence be described as a harmful stimulus which signals current (or impending) tissue damage. Pain may come from extremes of temperature, mechanical damage, electricity or from noxious chemical substances. This is a neurological process."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "Wikipedia:Nociception"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "nociception"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym> "perception of physiological pain"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0019233"^^xsd:string ;
+                                            rdfs:label "sensory perception of pain"^^xsd:string .
+
+
+###  http://purl.obolibrary.org/obo/GO_0050951
+<http://purl.obolibrary.org/obo/GO_0050951> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Temperature ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/GO_0007600> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a sensory temperature stimulus, convert it to a molecular signal, and recognize and characterize the signal. This is a neurological process."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "sensory perception of thermal stimulus"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0050951"^^xsd:string ;
+                                            rdfs:label "sensory perception of temperature stimulus"^^xsd:string .
+
+
+###  http://purl.obolibrary.org/obo/GO_0050952
+<http://purl.obolibrary.org/obo/GO_0050952> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Electricity ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/GO_0007600> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a sensory electrical stimulus, convert it to a molecular signal, and recognize and characterize the signal. This is a neurological process."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0050952"^^xsd:string ;
+                                            rdfs:label "sensory perception of electrical stimulus"^^xsd:string .
+
+
+###  http://purl.obolibrary.org/obo/GO_0050953
+<http://purl.obolibrary.org/obo/GO_0050953> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Light ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/GO_0007600> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a sensory light stimulus, convert it to a molecular signal, and recognize and characterize the signal. This is a neurological process."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0050953"^^xsd:string ;
+                                            rdfs:label "sensory perception of light stimulus"^^xsd:string .
+
+
+###  http://purl.obolibrary.org/obo/GO_0050957
+<http://purl.obolibrary.org/obo/GO_0050957> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Equilibrium ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/GO_0007600> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive an orientational stimulus, convert it to a molecular signal, and recognize and characterize the signal. Equilibrioception refers to a combination of processes by which an organism can perceive its orientation with respect to gravity. In animals, stimuli come from labyrinth system of the inner ears, monitoring the direction of motion; visual stimuli, with information on orientation and motion; pressure receptors, which tell the organism which body surfaces are in contact with the ground; and proprioceptive cues, which report which parts of the body are in motion."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasDbXref> "Wikipedia:Equilibrioception"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym> "sensory perception of orientation with respect to gravity"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0050957"^^xsd:string ;
+                                            rdfs:label "equilibrioception"^^xsd:string .
+
+
+###  http://purl.obolibrary.org/obo/GO_0070998
+<http://purl.obolibrary.org/obo/GO_0070998> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Gravity ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/GO_0007600> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> "The series of events required for an organism to receive a gravitational stimulus, convert it to a molecular signal, and recognize and characterize the signal. This is a neurological process."^^xsd:string ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000412> <http://purl.obolibrary.org/obo/go.owl> ;
+                                            <http://www.geneontology.org/formats/oboInOwl#created_by> "midori"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#creation_date> "2009-11-03T03:25:12Z"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> "biological_process"^^xsd:string ;
+                                            <http://www.geneontology.org/formats/oboInOwl#id> "GO:0070998"^^xsd:string ;
+                                            rdfs:label "sensory perception of gravity"^^xsd:string .
+
+
+###  http://purl.obolibrary.org/obo/MF_0000019
+<http://purl.obolibrary.org/obo/MF_0000019> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Percept ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000115> """a mental process which is a) produced by a causal process (for example involving light rays or air vibrations) involving a part of the environment of the organism, and b) is experienced by the organism as being so caused, and c) in
+which the relevant part of the environment is thereby represented to the organism""" ;
+                                            rdfs:label "perception" .
+
+
+###  http://purl.obolibrary.org/obo/MF_0000024
+<http://purl.obolibrary.org/obo/MF_0000024> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Visual ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/MF_0000019> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000118> "visual perception" ;
+                                            rdfs:label "seeing"@en .
+
+
+###  http://purl.obolibrary.org/obo/MF_0000038
+<http://purl.obolibrary.org/obo/MF_0000038> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Sound ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/MF_0000019> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000118> "auditory perception" ;
+                                            rdfs:label "hearing"@en .
+
+
+###  http://purl.obolibrary.org/obo/MF_0000054
+<http://purl.obolibrary.org/obo/MF_0000054> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Taste ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/MF_0000019> ;
+                                            rdfs:label "tasting"@en .
+
+
+###  http://purl.obolibrary.org/obo/MF_0000055
+<http://purl.obolibrary.org/obo/MF_0000055> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Smell ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/MF_0000019> ;
+                                            <http://purl.obolibrary.org/obo/IAO_0000118> "olfactory perception" ;
+                                            rdfs:label "smelling"@en .
+
+
+###  http://purl.obolibrary.org/obo/MF_0000056
+<http://purl.obolibrary.org/obo/MF_0000056> rdf:type owl:Class ;
+                                            owl:equivalentClass n2my:Touch ;
+                                            rdfs:subClassOf <http://purl.obolibrary.org/obo/MF_0000019> ;
+                                            rdfs:label "touching"@en .
+
+
+###  http://schema.org/Place
+<http://schema.org/Place> rdf:type owl:Class ;
+                          owl:equivalentClass n2my:Place .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Agent
-n2my:Agent rdf:type owl:Class .
+n2my:Agent rdf:type owl:Class ;
+           owl:equivalentClass foaf:Agent .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Book
@@ -216,9 +381,24 @@ n2my:Dish rdf:type owl:Class ;
           rdfs:subClassOf n2my:Interest_occurrence .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Electricity
+n2my:Electricity rdf:type owl:Class ;
+                 rdfs:subClassOf n2my:Percept .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Equilibrium
+n2my:Equilibrium rdf:type owl:Class ;
+                 rdfs:subClassOf n2my:Percept .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#Film_Genre
 n2my:Film_Genre rdf:type owl:Class ;
                 rdfs:subClassOf n2my:Interest_field .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Gravity
+n2my:Gravity rdf:type owl:Class ;
+             rdfs:subClassOf n2my:Percept .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Institution
@@ -239,6 +419,11 @@ n2my:Interest_occurrence rdf:type owl:Class ;
                          rdfs:subClassOf n2my:Interest .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Light
+n2my:Light rdf:type owl:Class ;
+           rdfs:subClassOf n2my:Percept .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#Literature_Genre
 n2my:Literature_Genre rdf:type owl:Class ;
                       rdfs:subClassOf n2my:Interest_field .
@@ -254,12 +439,18 @@ n2my:Music_Genre rdf:type owl:Class ;
                  rdfs:subClassOf n2my:Interest_field .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Pain
+n2my:Pain rdf:type owl:Class ;
+          rdfs:subClassOf n2my:Percept .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#Percept
 n2my:Percept rdf:type owl:Class .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Person
 n2my:Person rdf:type owl:Class ;
+            owl:equivalentClass foaf:Person ;
             rdfs:subClassOf n2my:Agent ;
             owl:disjointWith n2my:Robot .
 
@@ -337,15 +528,6 @@ n2my:Visual rdf:type owl:Class ;
             rdfs:subClassOf n2my:Percept .
 
 
-###  http://www.w3.org/2000/10/swap/pim/contact#Person
-<http://www.w3.org/2000/10/swap/pim/contact#Person> rdf:type owl:Class ;
-                                                    owl:equivalentClass foaf:Person .
-
-
-###  http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing
-<http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> rdf:type owl:Class .
-
-
 ###  http://xmlns.com/foaf/0.1/Agent
 foaf:Agent rdf:type owl:Class ;
            rdfs:comment "An agent (eg. person, group, software or physical artifact)." ;
@@ -353,24 +535,13 @@ foaf:Agent rdf:type owl:Class ;
            <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable" .
 
 
-###  http://xmlns.com/foaf/0.1/Organization
-foaf:Organization rdf:type owl:Class ;
-                  owl:disjointWith foaf:Person .
-
-
 ###  http://xmlns.com/foaf/0.1/Person
 foaf:Person rdf:type owl:Class ;
-            rdfs:subClassOf <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> ,
-                            foaf:Agent ;
-            owl:disjointWith foaf:Project ;
+            rdfs:subClassOf foaf:Agent ;
             rdfs:comment "A person." ;
             rdfs:isDefinedBy foaf: ;
             rdfs:label "Person" ;
             <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable" .
-
-
-###  http://xmlns.com/foaf/0.1/Project
-foaf:Project rdf:type owl:Class .
 
 
 #################################################################
