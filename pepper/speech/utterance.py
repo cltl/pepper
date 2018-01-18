@@ -20,7 +20,7 @@ class Utterance(object):
     SPEECH_THRESHOLD = 0.9
     NON_SPEECH_THRESHOLD = 0.7
 
-    def __init__(self, microphone, callback, mode = 3):
+    def __init__(self, microphone, callback, mode=3):
         self._microphone = microphone
         self._sample_rate = microphone.sample_rate
         self._callback = callback
@@ -52,7 +52,8 @@ class Utterance(object):
 
     def stop(self):
         self._is_running = False
-        if self._thread: self._thread.join()
+        if self._thread:
+            self._thread.join()
 
     def run(self):
         frame_bytes = 2 * (self.FRAME_LENGTH_MS * self.sample_rate) // 1000
@@ -109,7 +110,7 @@ if __name__ == "__main__":
         print("{0}".format(GoogleRecognition().transcribe(audio)[0][0]))
 
 
-    microphone = WaveFileMicrophone(16000, r"C:\Users\Bram\Documents\Pepper\data\speech\noisy_speech_2\10db.wav")
+    mic = WaveFileMicrophone(16000, r"C:\Users\Bram\Documents\Pepper\data\speech\noisy_speech_2\10db.wav")
     # microphone = SystemMicrophone()
-    utterance = Utterance(microphone, on_utterance)
+    utterance = Utterance(mic, on_utterance)
     utterance.start()
