@@ -617,7 +617,7 @@ class KaldiStreamedRecognition(WebSocketClient, StreamedRecognition):
                     "layout=(string)interleaved, "
                     "rate=(int){}, "
                     "format=(string)S16LE,"
-                    "channels=(int){}".format(microphone.rate, microphone.channels)))])))
+                    "channels=(int){}".format(microphone.sample_rate, microphone.channels)))])))
 
         self.connect()
 

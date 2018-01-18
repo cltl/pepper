@@ -303,7 +303,7 @@ class LookingAtRobotEvent(Event):
 
         super(LookingAtRobotEvent, self).__init__(session, callback)
 
-        self._threshold = 0.5
+        self._threshold = threshold
 
         # Connect to "GazeAnalysis/PersonStartsLookingAtRobot" event
         self._subscriber = self.memory.subscriber("GazeAnalysis/PersonStartsLookingAtRobot")

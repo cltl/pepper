@@ -18,19 +18,22 @@ class Host(App):
             else:
                 job = speaker['occupation']
             welcome=''
-            if i==7:
+            if i==6:
                 welcome='I hope everyone enjoyed their break, I had the opportunity to cool down a little bit...'
             welcome = welcome+ random.choice(invite) + fullname + ',... ' + job + '!'
             goodbye = random.choice(thank) + 'Thank you, ' + speaker['name'] + '!...'
             if i == 0:
                 welcome = 'Our first speaker is ' + fullname + ',... ' + job + '!'
+            if i==4:
+                welcome = 'And now we have a double pitch, please welcome, Mike van der Houwen and Eline Saarlos, '+job+'!'
+                goodbye = 'Thank you very much Mike and Eline!'
             if i == len(speakers) - 1:
                 welcome = 'And the last speaker for today is ' + fullname + ',... ' + job + '!'
                 goodbye += 'This was the last company pitch! I hope you had as much fun as I did... I wish I was a computational linguist!' \
                            '... Now we will hear the remaining student pitches!' \
                            '... Do not forget to stay for drinks and Q and A with me afterwards! ...Also, you can ask me anything - ' \
                            'on my twitter account! Hashtag Ask Leo-lani'
-            if i==6:
+            if i==5:
                 goodbye+='And now, we have the opportunity to meet the newest computational linguists from the VU,' \
                          ' please welcome our Master students from Human Language Technology and Forensic Linguistics!...' \
                          ' After their pitches, ' \
@@ -44,7 +47,7 @@ class Host(App):
             raw_input('Press enter for next speaker...')
             print(goodbye)
             self.speech.say(goodbye)
-            if i==7:
+            if i==6:
                 raw_input('Press enter when the break is over...')
 
     def load_speakers(self):
@@ -86,4 +89,4 @@ invite = ['And now ','And now let us welcome ', 'Our next speaker is ', 'And now
 thank = ['Awesome!', 'Wow! ', 'How interesting! ', 'A really nice presentation, ', 'Super!']
 
 if __name__ == "__main__":
-    Host(["192.168.1.103", 9559]).run()
+    Host(["192.168.137.159", 9559]).run()

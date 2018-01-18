@@ -29,4 +29,4 @@ accuracy = (male_male + female_female) / total
 male_accuracy = male_male / float(male_male + male_female)
 female_accuracy = female_female / float(female_female + female_male)
 
-print(accuracy, male_accuracy, female_accuracy)
+print(accuracy, male_accuracy, female_accuracy, np.average(probability > threshold))

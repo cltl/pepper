@@ -37,7 +37,7 @@ try:
 
         if bounding_box:
             connection.sendall(np.int32(1))
-            bounds = np.array([[bounding_box.left(),bounding_box.top()],
+            bounds = np.array([[bounding_box.left() , bounding_box.top()],
                                [bounding_box.width(), bounding_box.height()]],
                               np.float32)
 

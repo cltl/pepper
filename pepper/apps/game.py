@@ -26,37 +26,37 @@ OBJECT_HINTS = {
         "You cannot take it with you on an airplane",
         "It is made from plastic"
     ],
-    'Granny Smith': [
-        'You can eat it!',
-        'It grows from trees',
-        'It is healthy',
-        'An electronic brand was named after it'
-    ], #Granny Smith replaced banana
+    # 'Granny Smith': [
+    #     'You can eat it!',
+    #     'It grows from trees',
+    #     'It is healthy',
+    #     'An electronic brand was named after it'
+    # ], #Granny Smith replaced banana
     'coffee mug': [
         'It holds drinks',
         "It's made from ceramic",
         "It has a handle"
     ],
-    'sunglasses': [
-        "You can use this object in summer",
-        "You wear it on your head",
-        "You don't use it indoors"
-    ],
-    'Christmas stocking': [
-        "This is a holiday item",
-        "You wear it when you are cold",
-        "It has stripes"
-    ],
+    # 'sunglasses': [
+    #     "You can use this object in summer",
+    #     "You wear it on your head",
+    #     "You don't use it indoors"
+    # ],
+    # 'Christmas stocking': [
+    #     "This is a holiday item",
+    #     "You wear it when you are cold",
+    #     "It has stripes"
+    # ],
     'stole': [
         "You wear it when it is cold",
         "It goes around your neck",
         "This object is usually made from wool"
     ],
-    'goblet': [
-        "You drink from it",
-        "It can be made from glass or metal or plastic",
-        "It is slim on the bottom but wide at the top"
-    ],
+    # 'goblet': [
+    #     "You drink from it",
+    #     "It can be made from glass or metal or plastic",
+    #     "It is slim on the bottom but wide at the top"
+    # ],
     'teapot': [
         "You use it in the kitchen",
         "It can hold water inside",
@@ -68,12 +68,12 @@ OBJECT_HINTS = {
 
 OBJECT_COLORS = {
     'water bottle': 'blue',
-    'Granny Smith': 'green',
-    'coffee mug': 'black',
-    'sunglasses': 'black',
-    'Christmas stocking': 'red',
-    'stole': 'red',
-    'goblet': 'transparent',
+    # 'Granny Smith': 'green',
+    'coffee mug': 'green',
+    # 'sunglasses': 'black',
+    # 'Christmas stocking': 'red',
+    'stole': 'pink',
+    # 'goblet': 'transparent',
     'teapot': 'grey'
 }
 
@@ -122,7 +122,7 @@ class Game(App):
 
         # ..:: Introduction ::.. #
         print("Introduction")
-        self.speech.say(SAY_SPEED + INTRODUCTION)
+        # self.speech.say(SAY_SPEED + INTRODUCTION)
 
         # ..:: Runtime Variables ::.. #
         self.current_object = ""
@@ -171,5 +171,5 @@ class Game(App):
             sleep(20)
 
 if __name__ == "__main__":
-    app = Game(["192.168.1.103", 9559])
+    app = Game(["192.168.137.159", 9559])
     app.run()

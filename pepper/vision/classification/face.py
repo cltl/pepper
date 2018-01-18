@@ -127,7 +127,6 @@ class FaceRecognition:
 
         return classification, probability
 
-
     def representation(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.REPRESENT_PORT))

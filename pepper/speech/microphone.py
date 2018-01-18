@@ -1,4 +1,6 @@
 import pyaudio
+from scipy.io import wavfile
+import wave
 import numpy as np
 from enum import Enum
 from time import sleep
@@ -9,7 +11,7 @@ class Microphone(object):
     """Abstract Microphone Class"""
 
     @property
-    def rate(self):
+    def sample_rate(self):
         """Get microphone sample rate in hertz"""
         raise NotImplementedError()
 
@@ -21,6 +23,33 @@ class Microphone(object):
     def get(self, seconds):
         """Get Audio Signal as Numpy Array"""
         raise NotImplementedError()
+
+
+class WaveFileMicrophone(Microphone):
+    def __init__(self, samples, *wave_files):
+
+        self._audio = np.concatenate([wavfile.read(wav)[1] for wav in wave_files])
+        self._samples = samples
+
+        self._index = 0
+
+    @property
+    def sample_rate(self):
+        return self._samples
+
+    @property
+    def channels(self):
+        return 1
+
+    def get(self, seconds):
+        index = self._index
+        length = int(seconds * self.sample_rate)
+        self._index += length
+
+        if self._index > len(self._audio):
+            return np.zeros(length, self._audio.dtype)
+        return self._audio[index:self._index]
+
 
 
 class PepperMicrophoneMode(Enum):
@@ -120,7 +149,7 @@ class PepperMicrophone(Microphone):
         self._sample_rate = mode.value[0]
         self._channels = 1 if mode.value[1] else 4
 
-        self.service.setClientPreferences(self.name, self.rate, self.channels, 0)
+        self.service.setClientPreferences(self.name, self.sample_rate, self.channels, 0)
         self.service.subscribe(self.name)
 
     @property
@@ -154,7 +183,7 @@ class PepperMicrophone(Microphone):
         return self._service
 
     @property
-    def rate(self):
+    def sample_rate(self):
         """
         Returns
         -------
@@ -212,7 +241,7 @@ class SystemMicrophone(Microphone):
         self._channels = channels
 
     @property
-    def rate(self):
+    def sample_rate(self):
         """
         Returns
         -------
@@ -243,7 +272,7 @@ class SystemMicrophone(Microphone):
         -------
         signal: np.ndarray
         """
-        return np.frombuffer(self._stream.read(int(self.rate * seconds)), self.DATA_TYPE)
+        return np.frombuffer(self._stream.read(int(self.sample_rate * seconds)), self.DATA_TYPE)
 
     def __del__(self):
         self._stream.stop_stream()
