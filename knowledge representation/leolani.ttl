@@ -112,6 +112,41 @@ n2my:in rdf:type owl:ObjectProperty ,
         rdfs:range n2my:Country .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#isColleagueOf
+n2my:isColleagueOf rdf:type owl:ObjectProperty ,
+                            owl:SymmetricProperty ;
+                   rdfs:domain [ owl:intersectionOf ( n2my:Agent
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty n2my:isMemberOf ;
+                                                        owl:someValuesFrom n2my:Institution
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+                   rdfs:range [ owl:intersectionOf ( n2my:Agent
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty n2my:isMemberOf ;
+                                                       owl:someValuesFrom n2my:Institution
+                                                     ]
+                                                   ) ;
+                                rdf:type owl:Class
+                              ] ;
+                   rdfs:comment """a isMemberOf x
+and
+b isMemberOf y
+and
+a Type Agent
+and
+b Type Agent
+and
+a != b
+and
+x Type Institution
+and 
+y Type Institution
+and x == y""" .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#isMemberOf
 n2my:isMemberOf rdf:type owl:ObjectProperty ;
                 rdfs:domain n2my:Agent ;
@@ -165,6 +200,41 @@ n2my:sense rdf:type owl:ObjectProperty ;
            rdfs:subPropertyOf n2my:perceive ;
            rdfs:range n2my:Sound ,
                       n2my:Visual .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#shareInterest
+n2my:shareInterest rdf:type owl:ObjectProperty ,
+                            owl:SymmetricProperty ;
+                   rdfs:domain [ owl:intersectionOf ( n2my:Agent
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty n2my:likes ;
+                                                        owl:someValuesFrom n2my:Interest
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+                   rdfs:range [ owl:intersectionOf ( n2my:Agent
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty n2my:likes ;
+                                                       owl:someValuesFrom n2my:Interest
+                                                     ]
+                                                   ) ;
+                                rdf:type owl:Class
+                              ] ;
+                   rdfs:comment """a likes x
+and
+b likes y
+and
+a Type Agent
+and
+b Type Agent
+and
+a != b
+and
+x Type Interest
+and 
+y Type Interest
+and x == y""" .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#studiesAt
@@ -464,7 +534,7 @@ n2my:Popular_interest rdf:type owl:Class ;
                       owl:equivalentClass [ owl:intersectionOf ( n2my:Interest
                                                                  [ rdf:type owl:Restriction ;
                                                                    owl:onProperty n2my:liked_by ;
-                                                                   owl:minQualifiedCardinality "5"^^xsd:nonNegativeInteger ;
+                                                                   owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger ;
                                                                    owl:onClass n2my:Agent
                                                                  ]
                                                                ) ;
@@ -554,6 +624,13 @@ n2my:Amsterdam rdf:type owl:NamedIndividual ,
                n2my:in n2my:Netherlands .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#Bram
+n2my:Bram rdf:type owl:NamedIndividual ,
+                   n2my:Person ;
+          n2my:likes n2my:HP ;
+          n2my:worksAt n2my:VU_Amsterdam .
+
+
 ###  http://www.semanticweb.org/leolani/N2MY#France
 n2my:France rdf:type owl:NamedIndividual ,
                      n2my:Country .
@@ -567,6 +644,13 @@ n2my:HP rdf:type owl:NamedIndividual ,
 ###  http://www.semanticweb.org/leolani/N2MY#Japan
 n2my:Japan rdf:type owl:NamedIndividual ,
                     n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Lenka
+n2my:Lenka rdf:type owl:NamedIndividual ,
+                    n2my:Person ;
+           n2my:likes n2my:HP ;
+           n2my:worksAt n2my:VU_Amsterdam .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Leo_lani
@@ -594,6 +678,13 @@ n2my:Mulan rdf:type owl:NamedIndividual ,
 ###  http://www.semanticweb.org/leolani/N2MY#Netherlands
 n2my:Netherlands rdf:type owl:NamedIndividual ,
                           n2my:Country .
+
+
+###  http://www.semanticweb.org/leolani/N2MY#Piek
+n2my:Piek rdf:type owl:NamedIndividual ,
+                   n2my:Person ;
+          n2my:likes n2my:HP ;
+          n2my:worksAt n2my:VU_Amsterdam .
 
 
 ###  http://www.semanticweb.org/leolani/N2MY#Selene
@@ -632,6 +723,11 @@ n2my:tacos rdf:type owl:NamedIndividual ,
                     n2my:Dish .
 
 
+###  http://www.semanticweb.org/leolani/N2MY#x
+n2my:x rdf:type owl:NamedIndividual ,
+                n2my:Popular_interest .
+
+
 #################################################################
 #    General axioms
 #################################################################
@@ -653,6 +749,48 @@ n2my:tacos rdf:type owl:NamedIndividual ,
                 n2my:Music_Genre
                 n2my:Sport
               )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( n2my:Bram
+                        n2my:Lenka
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( n2my:Bram
+                        n2my:Piek
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( n2my:Bram
+                        n2my:Selene
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( n2my:Lenka
+                        n2my:Piek
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( n2my:Lenka
+                        n2my:Selene
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( n2my:Piek
+                        n2my:Selene
+                      )
 ] .
 
 
