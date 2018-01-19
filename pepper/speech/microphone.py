@@ -51,7 +51,6 @@ class WaveFileMicrophone(Microphone):
         return self._audio[index:self._index]
 
 
-
 class PepperMicrophoneMode(Enum):
     ALL = (48000, 0)
     LEFT = (16000, 1)
@@ -125,6 +124,7 @@ class PepperMicrophoneProcessor(object):
         buffer: bytes
             Raw Microphone Data
         """
+        print(timestamp, len(buffer))
         self.process(channels, samples, timestamp, buffer)
 
 

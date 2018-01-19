@@ -5,7 +5,7 @@ from scipy import stats
 
 NAME_PATH = r"C:\Users\Bram\Documents\Pepper\pepper\tests\data\lfw\names.txt"
 MATRIX_PATH = r"C:\Users\Bram\Documents\Pepper\pepper\tests\data\lfw\matrix.bin"
-MIN_PICTURES = 5
+MIN_PICTURES = 10
 
 def distance(matrix, vector):
     # return np.sum((matrix - vector) ** 2, 1)
@@ -106,27 +106,25 @@ print("New Accuracy: {}".format(np.mean(new_accuracy)))
 print("Fraction Classified: {}".format((total - non_classified) / float(total)))
 
 
-from pepper.vision.camera import SystemCamera
-from pepper.vision.classification.face import FaceRecognition
-from time import sleep
-
-recognition = FaceRecognition()
-
-for i in range(3):
-    print(3 - i)
-    sleep(1)
-
-for i in range(10):
-    print("Picture {}".format(i))
-    result = recognition.representation(SystemCamera().get())
-
-    if result:
-        bounds, representation = result
-        print(classify_face_probability(representation))
-    else:
-        print("Couldn't Find Face")
-
-
+# from pepper.vision.camera import SystemCamera
+# from pepper.vision.classification.face import FaceRecognition
+# from time import sleep
+#
+# recognition = FaceRecognition()
+#
+# for i in range(3):
+#     print(3 - i)
+#     sleep(1)
+#
+# for i in range(10):
+#     print("Picture {}".format(i))
+#     result = recognition.representation(SystemCamera().get())
+#
+#     if result:
+#         bounds, representation = result
+#         print(classify_face_probability(representation))
+#     else:
+#         print("Couldn't Find Face")
 
 
 BINS = 20

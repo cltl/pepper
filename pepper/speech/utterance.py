@@ -1,5 +1,3 @@
-from pepper.speech.microphone import WaveFileMicrophone, SystemMicrophone
-
 from webrtcvad import Vad
 import numpy as np
 
@@ -105,6 +103,7 @@ class Utterance(object):
 
 if __name__ == "__main__":
     from pepper.speech.recognition import GoogleRecognition
+    from pepper.speech.microphone import WaveFileMicrophone, SystemMicrophone
 
     def on_utterance(audio):
         print("{0}".format(GoogleRecognition().transcribe(audio)[0][0]))

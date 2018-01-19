@@ -21,7 +21,7 @@ TOTAL = 0
 SKIP = True
 
 recognition = FaceRecognition()
-with open('imdb/matrix2.bin', 'wb') as matrix, open('imdb/gender_age2.bin', 'wb') as gender_age, open('imdb/names2.txt', 'wb') as names:
+with open('imdb/matrix3.bin', 'wb') as matrix, open('imdb/gender_age3.bin', 'wb') as gender_age, open('imdb/names3.txt', 'wb') as names:
     for i, (dob, taken, gender, name, path, crop, score) in enumerate(zip(_dob[0], _taken[0], _gender[0], _name[0], _path[0], _crop[0], _score[0])):
 
         if name[0] == "Olivia Newton-John":
