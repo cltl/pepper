@@ -1,54 +1,166 @@
 import pyaudio
-from scipy.io import wavfile
 import wave
 import numpy as np
 from enum import Enum
-from time import sleep
-
 
 
 class Microphone(object):
-    """Abstract Microphone Class"""
+    def __init__(self, sample_rate, channels, callbacks):
+        """
+        Microphone Interface
+
+        Parameters
+        ----------
+        sample_rate: int
+            Microphone Sample Rate
+        channels: int
+            Microphone Channels
+        callbacks: list of callable
+            Microphone Callbacks
+        """
+        super(Microphone, self).__init__()
+
+        self._sample_rate = sample_rate
+        self._channels = channels
+        self._callbacks = callbacks
 
     @property
     def sample_rate(self):
-        """Get microphone sample rate in hertz"""
-        raise NotImplementedError()
+        """
+        Microphone Sample Rate
+
+        Returns
+        -------
+        sample_rate: int
+        """
+        return self._sample_rate
 
     @property
     def channels(self):
-        """Get number of microphone channels"""
-        raise NotImplementedError()
+        """
+        Microphone Channels
 
-    def get(self, seconds):
-        """Get Audio Signal as Numpy Array"""
-        raise NotImplementedError()
-
-
-class WaveFileMicrophone(Microphone):
-    def __init__(self, samples, *wave_files):
-
-        self._audio = np.concatenate([wavfile.read(wav)[1] for wav in wave_files])
-        self._samples = samples
-
-        self._index = 0
+        Returns
+        -------
+        channels: int
+        """
+        return self._channels
 
     @property
-    def sample_rate(self):
-        return self._samples
+    def callbacks(self):
+        """
+        Microphone Callback
 
-    @property
-    def channels(self):
-        return 1
+        Returns
+        -------
+        callback: list of callable
+        """
+        return self._callbacks
 
-    def get(self, seconds):
-        index = self._index
-        length = int(seconds * self.sample_rate)
-        self._index += length
+    @callbacks.setter
+    def callbacks(self, value):
+        """
+        Set Callback
 
-        if self._index > len(self._audio):
-            return np.zeros(length, self._audio.dtype)
-        return self._audio[index:self._index]
+        Parameters
+        ----------
+        value: list
+        """
+        self._callbacks = value
+
+    def start(self):
+        """Start Microphone Stream"""
+        raise NotImplementedError()
+
+    def stop(self):
+        """Stop Microphone Stream"""
+        raise NotImplementedError()
+
+    def on_audio(self, samples):
+        """
+        On Audio Callback
+
+        Parameters
+        ----------
+        samples: np.ndarray
+        """
+
+        for callback in self.callbacks:
+            callback(samples)
+
+
+class WaveMicrophone(Microphone):
+    def __init__(self, path, callbacks = [], play = False):
+        """
+        Stream Wave File as if it were Microphone Input
+
+        Parameters
+        ----------
+        path: str
+            Path to Wave File on disk
+        callbacks: list of callable
+            Microphone Callbacks
+        play: bool
+            Play file over Speakers or not
+        """
+        self._wave = wave.open(path, 'rb')
+        self._play = play
+        super(WaveMicrophone, self).__init__(self._wave.getframerate(), self._wave.getnchannels(), callbacks)
+
+        self._pyaudio = pyaudio.PyAudio()
+        self._stream = self._pyaudio.open(self.sample_rate, self.channels,
+                                          format=pyaudio.paInt16,
+                                          output=True, stream_callback=self._on_audio)
+
+    def start(self):
+        """Start Microphone Stream"""
+        self._stream.start_stream()
+
+    def stop(self):
+        """Stop Microphone Stream"""
+        self._stream.stop_stream()
+        self._stream.close()
+
+    def _on_audio(self, in_data, frame_count, time_info, status):
+        """Pyaudio Callback, ensures realtime"""
+        data = self._wave.readframes(frame_count)
+        self.on_audio(np.frombuffer(data, np.int16))
+        return (data if self._play else np.zeros(frame_count, np.uint16), pyaudio.paContinue)
+
+
+class SystemMicrophone(Microphone):
+    def __init__(self, sample_rate, channels, callbacks = []):
+        """
+        System Microphone: The microphone of this computer
+
+        Parameters
+        ----------
+        sample_rate: int
+            Microphone Sample Rate
+        channels: int
+            Microphone Channels
+        callbacks: list of callable
+            Microphone Callbacks
+        """
+        super(SystemMicrophone, self).__init__(sample_rate, channels, callbacks)
+
+        self._pyaudio = pyaudio.PyAudio()
+        self._stream = self._pyaudio.open(sample_rate, channels, pyaudio.paInt16,
+                                          input=True, stream_callback=self._on_audio)
+
+    def start(self):
+        """Start Microphone Stream"""
+        self._stream.start_stream()
+
+    def stop(self):
+        """Stop Microphone Stream"""
+        self._stream.stop_stream()
+        # self._stream.close()
+
+    def _on_audio(self, in_data, frame_count, time_info, status):
+        """Pyaudio Callback, ensures realtime"""
+        self.on_audio(np.frombuffer(in_data, np.int16))
+        return (None, pyaudio.paContinue)
 
 
 class PepperMicrophoneMode(Enum):
@@ -59,36 +171,47 @@ class PepperMicrophoneMode(Enum):
     REAR = (16000, 4)
 
 
-class PepperMicrophoneProcessor(object):
-    def __init__(self):
-        """Process Microphone Events and Buffer Signal"""
-
-        self._buffer = []
-        self._listen = False
-
-    def get(self, seconds):
+class PepperMicrophone(Microphone):
+    def __init__(self, session, callbacks = [], mode = PepperMicrophoneMode.FRONT):
         """
-        Get Audio Signal as Numpy Array
+        Pepper Microphone
 
         Parameters
         ----------
-        seconds: number of seconds to sample
+        session: qi.Session
+            Pepper Session Object (naoqi)
+        callbacks: list of callable
+            Microphone Callbacks
+        mode: PepperMicrophoneMode
+            Which Microphone to use
+        """
+        super(PepperMicrophone, self).__init__(mode.value[0], mode.value[0] // 16000, callbacks)
 
+        self._session = session
+        self._name = self.__class__.__name__
+        self._service = self.session.service("ALAudioDevice")
+        self._microphone = self.session.registerService(self._name, self)
+        self._service.setClientPreferences(self._name, self.sample_rate, self.channels, 0)
+        self._service.subscribe(self._name)
+
+        self._listening = False
+
+    @property
+    def session(self):
+        """
         Returns
         -------
-        signal: np.ndarray
+        session: qi.Session
         """
+        return self._session
 
-        self._listen = True
-        sleep(seconds)
-        self._listen = False
+    def start(self):
+        """Start Microphone Stream"""
+        self._listening = True
 
-        if self._buffer:
-            result = np.concatenate(self._buffer)
-            self._buffer = []
-
-            return result
-        else: return np.array([0], dtype=np.int16)
+    def stop(self):
+        """Stop Microphone Stream"""
+        self._listening = False
 
     def process(self, channels, samples, timestamp, buffer):
         """
@@ -105,9 +228,8 @@ class PepperMicrophoneProcessor(object):
         buffer: bytes
             Raw Microphone Data
         """
-        if self._listen:
-            data = np.frombuffer(buffer, np.int16).reshape(samples)
-            self._buffer.append(data)
+        if self._listening:
+            self.on_audio(np.frombuffer(buffer, np.int16))
 
     def processRemote(self, channels, samples, timestamp, buffer):
         """
@@ -124,157 +246,19 @@ class PepperMicrophoneProcessor(object):
         buffer: bytes
             Raw Microphone Data
         """
-        print(timestamp, len(buffer))
         self.process(channels, samples, timestamp, buffer)
 
 
-class PepperMicrophone(Microphone):
 
-    def __init__(self, session, mode = PepperMicrophoneMode.FRONT):
-        """
-        Use Pepper's Microphone
+if __name__ == "__main__":
+    from time import sleep
 
-        Parameters
-        ----------
-        session: qi.Session
-            Session to subscribe microphone to
-        mode: PepperMicrophoneMode
-            Sampling Mode (sampling rate & microphone location)
-        """
-        self._session = session
-        self._service = self.session.service("ALAudioDevice")
-        self._processor = PepperMicrophoneProcessor()
-        self._microphone = self.session.registerService(self.name, self._processor)
+    def on_audio(data):
+        print(len(data))
 
-        self._sample_rate = mode.value[0]
-        self._channels = 1 if mode.value[1] else 4
+    path = r"C:\Users\Bram\Documents\Pepper\data\speech\noisy_speech_2\15db.wav"
+    mic = WaveMicrophone(path, play=True)
 
-        self.service.setClientPreferences(self.name, self.sample_rate, self.channels, 0)
-        self.service.subscribe(self.name)
-
-    @property
-    def name(self):
-        """
-        Returns
-        -------
-        name: str
-            Name of Class
-        """
-        return self.__class__.__name__
-
-    @property
-    def session(self):
-        """
-        Returns
-        -------
-        session: qi.Session
-            Session to subscribe microphone to
-        """
-        return self._session
-
-    @property
-    def service(self):
-        """
-        Returns
-        -------
-        service
-            The ALAudioDevice service
-        """
-        return self._service
-
-    @property
-    def sample_rate(self):
-        """
-        Returns
-        -------
-        sample_rate: int
-            Sample rate in Hertz
-        """
-        return self._sample_rate
-
-    @property
-    def channels(self):
-        """
-        Returns
-        -------
-        channels: int
-            Number of channels
-        """
-        return self._channels
-
-    def get(self, seconds):
-        """
-        Get Audio Signal as Numpy Array
-
-        Parameters
-        ----------
-        seconds: number of seconds to sample
-
-        Returns
-        -------
-        signal: np.ndarray
-        """
-
-        return self._processor.get(seconds)
-
-
-class SystemMicrophone(Microphone):
-
-    FORMAT = pyaudio.paInt16
-    DATA_TYPE = np.int16
-    DATA_TYPE_MAX = np.iinfo(DATA_TYPE).max
-
-    def __init__(self, sample_rate=16000, channels=1):
-        """
-        Use Local System Microphone
-
-        Parameters
-        ----------
-        sample_rate: int
-            Sample rate in Hertz
-        channels: int
-            Number of channels
-        """
-        self._audio = pyaudio.PyAudio()
-        self._stream = self._audio.open(sample_rate, channels, self.FORMAT, True)
-        self._sample_rate = sample_rate
-        self._channels = channels
-
-    @property
-    def sample_rate(self):
-        """
-        Returns
-        -------
-        sample_rate: int
-            Sample rate in Hertz
-        """
-        return self._sample_rate
-
-    @property
-    def channels(self):
-        """
-        Returns
-        -------
-        channels: int
-            Number of channels
-        """
-        return self._channels
-
-    def get(self, seconds):
-        """
-        Get Audio Signal as Numpy Array
-
-        Parameters
-        ----------
-        seconds: number of seconds to sample
-
-        Returns
-        -------
-        signal: np.ndarray
-        """
-        return np.frombuffer(self._stream.read(int(self.sample_rate * seconds)), self.DATA_TYPE)
-
-    def __del__(self):
-        self._stream.stop_stream()
-        self._stream.close()
-        self._audio.terminate()
+    mic.start()
+    sleep(10)
+    mic.stop()

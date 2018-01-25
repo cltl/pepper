@@ -1,31 +1,49 @@
+from microphone import Microphone
 from webrtcvad import Vad
 import numpy as np
 
 from threading import Thread
-import itertools
 
 
 class Utterance(object):
 
-    FRAME_LENGTH_MS = 30
+    FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
+    WINDOW_SIZE = 30  # Sliding Window Length (Multiples of Frame MS)
 
-    MICROPHONE_LENGTH_MS = FRAME_LENGTH_MS * 10
-    BUFFER_LENGTH_MS = FRAME_LENGTH_MS * 30
-
-    MICROPHONE_SIZE = MICROPHONE_LENGTH_MS / FRAME_LENGTH_MS
-    BUFFER_SIZE = BUFFER_LENGTH_MS / FRAME_LENGTH_MS
-
-    SPEECH_THRESHOLD = 0.9
-    NON_SPEECH_THRESHOLD = 0.7
+    VOICE_THRESHOLD = 0.7
+    NONVOICE_THRESHOLD = 0.2
 
     def __init__(self, microphone, callback, mode=3):
+        """
+
+        Parameters
+        ----------
+        microphone: Microphone
+            Microphone to extract Utterances from
+        callback: callable
+            On Utterance Callback
+        mode: int
+            Voice Activity Detection (VAD) 'Aggressiveness' (1..3)
+        """
         self._microphone = microphone
+        self._microphone.callbacks += [self.on_audio]
         self._sample_rate = microphone.sample_rate
+
         self._callback = callback
         self._vad = Vad(mode)
 
-        self._is_running = False
-        self._thread = None
+        self._frame_size = self.FRAME_MS * self.sample_rate // 1000
+
+        self._ringbuffer_index = 0
+        self._audio_ringbuffer = np.zeros((self.WINDOW_SIZE, self._frame_size), np.int16)
+        self._vad_ringbuffer = np.zeros(self.WINDOW_SIZE, np.bool)
+
+        self._empty_space = np.random.uniform(-10, 10, self.sample_rate//2).astype(np.int16).tobytes()
+
+        self._audio_buffer = bytearray()
+        self._voice_buffer = bytearray()
+
+        self._voice = False
 
     @property
     def microphone(self):
@@ -44,72 +62,63 @@ class Utterance(object):
         return self._vad
 
     def start(self):
-        self._is_running = True
-        self._thread = Thread(target=self.run)
-        self._thread.start()
+        self.microphone.start()
 
     def stop(self):
-        self._is_running = False
-        if self._thread:
-            self._thread.join()
+        self.microphone.stop()
 
-    def run(self):
-        frame_bytes = 2 * (self.FRAME_LENGTH_MS * self.sample_rate) // 1000
-        frame_length = frame_bytes // 2
+    def process_frame(self, frame):
+        self._audio_ringbuffer[self._ringbuffer_index] = frame
+        self._vad_ringbuffer[self._ringbuffer_index] = self.vad.is_speech(frame.tobytes(), self.sample_rate, len(frame))
+        self._ringbuffer_index = (self._ringbuffer_index + 1) % self.WINDOW_SIZE
 
-        audio_ringbuffer = np.zeros((self.BUFFER_SIZE, frame_length), np.int16)
-        speech_ringbuffer = np.zeros(self.BUFFER_SIZE, np.bool)
+    def process_voice(self, frame):
+        activation = np.mean(self._vad_ringbuffer)
 
-        speech = False
-        speech_audio_buffer = []
+        if self._voice:
+            if activation > self.NONVOICE_THRESHOLD:
+                self._voice_buffer.extend(frame.tobytes())  # Add Frame to Voice Buffer
+            else:
+                self._voice = False  # Stop Recording Voice
 
-        buffer_index = 0
+                # Call Utterance Callback (in Thread, to prevent blocking)
+                self._voice_buffer.extend(self._empty_space)
+                Thread(target=self.on_utterance, args=(np.frombuffer(self._voice_buffer, np.int16),)).start()
 
-        while self._is_running:
-            audio = self.microphone.get(self.MICROPHONE_LENGTH_MS * 1E-3)
+                self._voice_buffer = bytearray()  # Clear Voice Buffer
+        else:
+            if activation > self.VOICE_THRESHOLD:
+                self._voice = True  # Start Recording Voice
 
-            for frame_index in range(self.MICROPHONE_SIZE):
-                frame = audio[frame_index * frame_length:(frame_index+1)*frame_length]
+                # Add Buffered Audio to Voice Buffer
+                self._voice_buffer.extend(self._empty_space)
+                self._voice_buffer.extend(self._audio_ringbuffer[self._ringbuffer_index:].tobytes())
+                self._voice_buffer.extend(self._audio_ringbuffer[:self._ringbuffer_index].tobytes())
 
-                audio_ringbuffer[buffer_index] = frame
-                speech_ringbuffer[buffer_index] = self.vad.is_speech(frame.tobytes(), self.sample_rate, frame_length)
+    def on_audio(self, audio):
+        self._audio_buffer.extend(audio.tobytes())
 
-                buffer_index = (buffer_index + 1) % self.BUFFER_SIZE
-
-                if speech:
-                    if np.mean(speech_ringbuffer) < self.NON_SPEECH_THRESHOLD:
-                        speech = False
-
-                        self.on_utterance(np.concatenate(speech_audio_buffer))
-                        speech_audio_buffer = []
-
-                    else:
-                        speech_audio_buffer.append(frame)
-
-                else:
-                    if np.mean(speech_ringbuffer) > self.SPEECH_THRESHOLD:
-                        speech = True
-
-                        # Append some Silence to audio
-                        speech_audio_buffer.append(np.zeros(frame_length, np.int16))
-
-                        # Append current contents of audio ringbuffer to speech audio output
-                        for index in itertools.chain(range(buffer_index, self.BUFFER_SIZE), range(0, buffer_index)):
-                            speech_audio_buffer.append(audio_ringbuffer[index].flatten())
+        while len(self._audio_buffer) > 2 * self._frame_size:
+            frame = np.frombuffer(self._audio_buffer[:2*self._frame_size], np.int16)
+            self.process_frame(frame)
+            self.process_voice(frame)
+            del self._audio_buffer[:2*self._frame_size]
 
     def on_utterance(self, audio):
         self._callback(audio)
 
 
 if __name__ == "__main__":
+    from microphone import WaveMicrophone
     from pepper.speech.recognition import GoogleRecognition
-    from pepper.speech.microphone import WaveFileMicrophone, SystemMicrophone
+    from time import sleep
 
     def on_utterance(audio):
-        print("{0}".format(GoogleRecognition().transcribe(audio)[0][0]))
+        print(GoogleRecognition().transcribe(audio))
 
-
-    mic = WaveFileMicrophone(16000, r"C:\Users\Bram\Documents\Pepper\data\speech\noisy_speech_2\10db.wav")
-    # microphone = SystemMicrophone()
+    mic = WaveMicrophone(r"C:\Users\Bram\Documents\Pepper\data\speech\noisy_speech_2\10db.wav", play=True)
     utterance = Utterance(mic, on_utterance)
     utterance.start()
+    sleep(50)
+    utterance.stop()
+

@@ -101,7 +101,7 @@ class GoogleRecognition(Recognition):
             encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
             sample_rate_hertz = self.sample_rate,
             language_code = self._language_code,
-            max_alternatives = 10
+            max_alternatives = 10,
         )
 
     @property
