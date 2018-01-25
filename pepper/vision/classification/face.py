@@ -127,7 +127,6 @@ class FaceRecognition:
 
         return classification, probability
 
-
     def representation(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.REPRESENT_PORT))
@@ -259,31 +258,3 @@ class FaceRecognitionEvent(Event):
     def close(self):
         self._running = False
         self._recognition.close()
-
-
-if __name__ == "__main__":
-    from pepper.vision.camera import SystemCamera
-
-    face = FaceRecognition()
-
-    N = 5
-    representation_matrix = np.empty((N, 128))
-
-    for i in range(N):
-        image = SystemCamera().get()
-
-        t = time()
-        bounds, representation = face.representation(image)
-        print("Image[{}] {:4.4f}".format(i, time() - t))
-
-        representation_matrix[i] = representation
-
-
-    representation = np.mean(representation_matrix, 0)
-    print("Inner Distance {}".format(face.inner_distance(representation_matrix)))
-    print("LFW Distance {}".format(face.lfw_distance(representation)[:10]))
-
-    names, matrix = load_faces()
-    print("DB Distance {}".format(face.names_distance(names, matrix, representation)))
-
-    face.stop()

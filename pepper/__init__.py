@@ -1,2 +1,2 @@
 import logging
-logging.basicConfig(format='%(asctime)-15s %(message)s', level=0)
+logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s', level=logging.INFO)

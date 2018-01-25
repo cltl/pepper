@@ -39,15 +39,18 @@ def brain(question):
             "Google it!",
             "How would I know? I am a robot!",
             "I have no idea",
-            "That is a very complex question for a simple robot like me"
+            "That is a very complex question for a simple robot like me",
+            "You're asking tough questions!",
+            "Eeehrm, yeah, I wouldn't know."
         ])
 
 
 class MeetGreet(App):
 
-    SECONDS_BETWEEN_ATTENTIONS = 60
-    SECONDS_BETWEEN_GREETINGS = 10
-    SECONDS_LISTENING_FOR_QUESTION = 30
+    SECONDS_BETWEEN_ATTENTIONS = 25
+    SECONDS_BETWEEN_GREETINGS = 5
+    SECONDS_LISTENING_FOR_QUESTION = 15
+    ON_LOOK_THRESHOLD = 0.25
 
     ASK_FOR_QUESTION = [
         "I'm listening",
@@ -59,12 +62,20 @@ class MeetGreet(App):
         "Let's hear your question"
     ]
 
+    DID_NOT_UNDERSTAND = [
+        "Sorry, I didn't catch that",
+        "I'm sorry, but I didn't understand your question",
+        "Eeerhm, I can't make out what you said.",
+        "Pardon me, my robot ears are failing me",
+        ""
+    ]
+
     def __init__(self, address):
         super(MeetGreet, self).__init__(address)
 
         # Services
         self.microphone = PepperMicrophone(self.session)
-        self.camera = PepperCamera(self.session, "PepperCamera6", Resolution.QVGA)
+        self.camera = PepperCamera(self.session, "PepperCamera1", Resolution.QVGA)
         self.led = Led(self.session)
 
         self.speech = self.session.service("ALAnimatedSpeech")
@@ -82,7 +93,7 @@ class MeetGreet(App):
 
         # Events
         self.resources.append(FaceDetectedEvent(self.session, self.on_face))
-        self.resources.append(LookingAtRobotEvent(self.session, self.on_look))
+        self.resources.append(LookingAtRobotEvent(self.session, self.on_look, self.ON_LOOK_THRESHOLD))
 
         self.log.info("Application Started")
 
@@ -108,6 +119,8 @@ class MeetGreet(App):
             self.log.info("on_look_event")
 
             # Get Gender of Person for Appropriate Greeting
+            self.log.info("Get Face Representation")
+            t = time()
             image = self.camera.get()
             person = self.face_recognition.representation(image)
 
@@ -117,18 +130,23 @@ class MeetGreet(App):
                 bounds, representation = person
                 gender, probability = self.face_recognition.gender(representation)
 
-                if gender: PERSON_TAG = choice(['Madam', "My Lady", "Mam"])
-                else: PERSON_TAG = choice(["Sir", "Mister"])
+                self.log.info("{}: {} {}s".format("Female" if gender else "Male", probability, time() - t))
+
+                if probability > 0.75:
+                    if gender: PERSON_TAG = choice(['Madam', "My Lady", "Mam", "Miss"])
+                    else: PERSON_TAG = choice(["Sir", "Mister"])
 
             # General Attention Calling
             self.speech.say("\\rspd=90\\^start({0}) {1}, {2} ^stop({0})".format(
                 choice(SIMPLE_GREETING['ANIMATIONS']), choice(SIMPLE_GREETING['TEXT']), PERSON_TAG
             ))
-            self.last_attention_time = time()
-            self.last_greeting_time = time()
 
             # Ask for Question
             self.speech.say("\\rspd=90\\{}".format(choice(self.ASK_FOR_QUESTION)))
+
+            self.last_attention_time = time()
+            self.last_greeting_time = time()
+
             self._listen()
 
             self.greeting = False
@@ -143,10 +161,11 @@ class MeetGreet(App):
             self.log.info(u"Q: {}".format(question))
             self.led.set(Leds.LEFT_FACE_LEDS, [0.2, 0.2, 1])
             self.led.set(Leds.RIGHT_FACE_LEDS, [0.2, 0.2, 1])
+            t = time()
             answer = brain(question)
             self.led.set(Leds.LEFT_FACE_LEDS, [0.2, 1, 0.2])
             self.led.set(Leds.RIGHT_FACE_LEDS, [0.2, 1, 0.2])
-            self.log.info(u"A: {}".format(answer))
+            self.log.info(u"A: {} : {}s".format(answer, time() - t))
 
             self.speech.say("\\rspd=90\\{}".format(answer))
 
@@ -169,4 +188,4 @@ class MeetGreet(App):
 
 
 if __name__ == "__main__":
-    MeetGreet(["192.168.1.103", 9559]).run()
+    MeetGreet(["192.168.137.159", 9559]).run()

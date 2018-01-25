@@ -7,3 +7,4 @@ pillow
 pyyaml
 google-cloud-speech
 watson_developer_cloud
+webrtcvad
