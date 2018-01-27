@@ -1,0 +1,21 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX n2my: <http://www.semanticweb.org/leolani/N2MY/>
+
+SELECT ?author ?a ?emotion #?person1 ?r ?person2
+WHERE {
+# Retrieve Claim
+?person1 ?r ?person2 .
+
+# Retrieve Author and Emotion
+# by means of a perspective and its mention
+?person1 grasp:denotedBy ?mention .
+?perspective prov:isAttributionFor ?mention .
+?perspective rdf:value ?emotion .
+?perspective grasp:wasDerivedFrom ?turn .
+?turn prov:wasAttributedTo ?author .
+
+# Restrict Claim to Leolani's ontology
+FILTER(contains((str(?r)), str(n2my:) ))
+}
