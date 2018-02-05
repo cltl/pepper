@@ -5,7 +5,7 @@ from scipy import stats
 
 NAME_PATH = r"C:\Users\Bram\Documents\Pepper\pepper\tests\data\lfw\names.txt"
 MATRIX_PATH = r"C:\Users\Bram\Documents\Pepper\pepper\tests\data\lfw\matrix.bin"
-MIN_PICTURES = 10
+MIN_PICTURES = 30
 
 def distance(matrix, vector):
     # return np.sum((matrix - vector) ** 2, 1)
@@ -39,6 +39,14 @@ for i, name in enumerate(names):
 for i, name in enumerate(names):
     dist = np.concatenate((distance(mean[:i], mean[i]), distance(mean[i+1:], mean[i])))
     outer_distance[i] = np.min(dist), np.std(dist)
+
+
+with open(r"C:\Users\Bram\Documents\Pepper\pepper\tests\data\lfw\submatrix.bin", 'wb') as submatrix_file:
+    submatrix_file.write(mean)
+
+with open(r"C:\Users\Bram\Documents\Pepper\pepper\tests\data\lfw\subnames.txt", 'w') as subnames_file:
+    for name in names:
+        subnames_file.write("{}\n".format(name))
 
 
 INNER_DISTANCE_MEAN, INNER_DISTANCE_STD = np.mean(inner_distance, 0)

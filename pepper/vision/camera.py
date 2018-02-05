@@ -39,6 +39,14 @@ class ColorSpace(IntEnum):
     H2RGB = 15
     HSMixed = 16
 
+    I16 = 17
+
+
+class CameraID(IntEnum):
+    TOP = 0
+    BOTTOM = 1
+    DEPTH = 2
+
 
 class Camera:
     """Abstract Base Class for Camera Objects"""
@@ -93,7 +101,8 @@ class SystemCamera(Camera):
 
 class PepperCamera(Camera):
 
-    def __init__(self, session, camera_id, resolution = Resolution.VGA, colorspace = ColorSpace.RGB, rate = 30):
+    def __init__(self, session, camera_name, resolution = Resolution.VGA,
+                 camera_id = CameraID.TOP, colorspace = ColorSpace.RGB, rate = 30):
         """
         Capture images using Pepper's Camera
 
@@ -110,7 +119,7 @@ class PepperCamera(Camera):
         """
 
         self._session = session
-        self._camera_id = camera_id
+        self._camera_name = camera_name
         self._resolution = resolution
         self._colorspace = colorspace
         self._rate = rate
@@ -118,7 +127,7 @@ class PepperCamera(Camera):
         self._service = self.session.service("ALVideoDevice")
 
         self._client = self.service.subscribeCamera(
-            self._camera_id, 0, int(self.resolution), int(self.colorspace), self.rate)
+            self._camera_name, int(camera_id), int(self.resolution), int(self.colorspace), self.rate)
 
 
     @property
@@ -132,14 +141,14 @@ class PepperCamera(Camera):
         return self._session
 
     @property
-    def camera_id(self):
+    def camera_name(self):
         """
         Returns
         -------
         camera_id: str
             Name of the attached camera service subscription
         """
-        return self._camera_id
+        return self._camera_name
 
     @property
     def resolution(self):
@@ -186,7 +195,7 @@ class PepperCamera(Camera):
         return Image.frombytes(self.colorspace.name, (width, height), str(data))
 
     def close(self):
-        self.service.unsubscribe(self.camera_id)
+        self.service.unsubscribe(self.camera_name)
 
 
 if __name__ == "__main__":

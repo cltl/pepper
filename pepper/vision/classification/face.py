@@ -1,10 +1,9 @@
-from pepper.vision.classification.data import load_lfw, load_lfw_gender, load_faces
-from pepper.event import Event
+from pepper.vision.classification.data import load_lfw, load_lfw_gender
 
 import numpy as np
+from scipy import stats
 
-from threading import Thread
-from time import time, sleep
+from time import sleep
 import subprocess
 import socket
 import os
@@ -177,84 +176,58 @@ class FaceRecognition:
         subprocess.call(['docker', 'stop', self.DOCKER_NAME])
 
 
-class FaceRecognitionEvent(Event):
+class PersonRecognition:
 
-    OUTER_MEAN = 1.7038624
-    OUTER_STD = 0.46672297
+    # Average distance between faces of one person versus
+    # Average distance to the face of the closest other person
+    INNER_DISTANCE_MEAN, INNER_DISTANCE_STD = 0.49405375, 0.11498976
+    OUTER_DISTANCE_MEAN, OUTER_DISTANCE_STD = 0.59587806, 0.17431158
 
-    INNER_MEAN = 0.22572114728781423
-    INNER_STD = 0.091139727503611295
+    def __init__(self, names, matrix):
+        """
+        Person Recognition
 
-    BACKLOG = 20
-
-    MATCH_THRESHOLD = INNER_MEAN
-    NEW_FACE_THRESHOLD = INNER_MEAN + INNER_STD
-
-    def __init__(self, session, on_face, on_new_face, camera, names, representations):
-        super(FaceRecognitionEvent, self).__init__(session, on_face)
-
-        self._on_new_face = on_new_face
-        self._camera = camera
+        Parameters
+        ----------
+        names: sized
+        matrix: np.ndarray
+        """
         self._names = names
-        self._representations = representations
+        self._matrix = matrix
 
-        self._recognition = FaceRecognition()
-
-        self._backlog = np.zeros((self.BACKLOG, 128), np.float32)
-        self._distance = np.zeros(self.BACKLOG, np.float32)
-
-        self._running = True
-        Thread(target=self.run).start()
-
-    @property
-    def camera(self):
-        return self._camera
+        print(len(names), len(matrix))
 
     @property
     def names(self):
         return self._names
 
     @property
-    def representations(self):
-        return self._representations
+    def matrix(self):
+        return self._matrix
 
-    def add_face(self, name, representation):
+    def add(self, name, face):
         self._names.append(name)
-        self._representations = np.concatenate((self._representations, representation[None, :]))
+        self._matrix = np.concatenate((self._matrix, face.reshape(1, 128)))
 
-    def run(self):
-        backlog_index = 0
+    def distance(self, face):
+        return np.linalg.norm(self.matrix - face, 2, 1)
 
-        while self._running:
+    def closest(self, face):
+        distance = self.distance(face)
+        index = int(np.argmin(distance))
+        name = self.names[index]
+        return name, distance[index]
 
-            image = self.camera.get()
-            face = self._recognition.representation(image)
+    def classify(self, face, threshold_known = 0.8, threshold_new=0.95):
+        name, distance = self.closest(face)
 
-            if face:
-                bounds, representation = face
+        inner_probability = stats.norm.sf(distance, self.INNER_DISTANCE_MEAN, self.INNER_DISTANCE_STD)
+        outer_probability = stats.norm.cdf(distance, self.OUTER_DISTANCE_MEAN, self.OUTER_DISTANCE_STD)
 
-                outer = FaceRecognition.distance(self.representations, representation)
-                outer_min_index = np.argmin(outer)
+        print(name, distance, inner_probability, outer_probability)
 
-                self._backlog[backlog_index] = representation
-                self._distance[backlog_index] = outer[outer_min_index]
-
-                if outer[outer_min_index] < self.MATCH_THRESHOLD:
-                    self.on_face(outer[outer_min_index], self.names[outer_min_index])
-
-                elif np.all(self._distance) and np.min(self._distance) > self.NEW_FACE_THRESHOLD:
-                    self._on_new_face(np.mean(self._backlog, 0))
-                    self._backlog = np.zeros(self._backlog.shape)
-                    self._distance = np.zeros(self._distance.shape)
-
-                backlog_index = (backlog_index + 1) % self.BACKLOG
-
-    def on_face(self, distance, name):
-        self.callback(distance, name)
-
-    def on_new_face(self, representation):
-        self._on_new_face(representation)
-
-    def close(self):
-        self._running = False
-        self._recognition.close()
+        if inner_probability > threshold_known:
+            return name
+        elif outer_probability > threshold_new:
+            return True
+        else: return None

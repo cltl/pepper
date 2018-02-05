@@ -102,6 +102,9 @@ class GoogleRecognition(Recognition):
             sample_rate_hertz = self.sample_rate,
             language_code = self._language_code,
             max_alternatives = 10,
+            speech_contexts=[speech.types.SpeechContext(
+                phrases=['leolani']
+            )]
         )
 
     @property
