@@ -130,9 +130,8 @@ class FaceRecognition:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.REPRESENT_PORT))
 
-        array = np.array(image)
-        client.send(np.array(array.shape, np.int32))
-        client.sendall(array.tobytes())
+        client.send(np.array(image.shape, np.int32))
+        client.sendall(image.tobytes())
 
         success = np.frombuffer(client.recv(4), np.int32)[0]
 
@@ -147,9 +146,8 @@ class FaceRecognition:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.REPRESENT_ALL_PORT))
 
-        array = np.array(image)
-        client.send(np.array(array.shape, np.int32))
-        client.sendall(array.tobytes())
+        client.send(np.array(image.shape, np.int32))
+        client.sendall(image.tobytes())
 
         number = np.frombuffer(client.recv(4), np.int32)[0]
 

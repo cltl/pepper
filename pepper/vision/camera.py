@@ -1,45 +1,18 @@
-from PIL.ImageEnhance import Contrast, Sharpness
-from PIL import Image
-from enum import IntEnum
+from enum import Enum, IntEnum
+import numpy as np
+import random
 
 
-class Resolution(IntEnum):
-    """Resolution of Pepper Camera"""
+class Camera(object):
+    def get(self):
+        """
+        Get Image
 
-    QQQQVGA = 8     # (40, 30)
-    QQQVGA = 7      # (80, 60)
-    QQVGA = 0       # (160, 120)
-    QVGA = 1        # (320, 240)
-    VGA = 2         # (640, 480)
-    VGA4 = 3        # (1280, 960)
-
-
-class ColorSpace(IntEnum):
-    """Color Space of Pepper Camera"""
-
-    Yuv = 0
-    yUv = 1
-    yuV = 2
-
-    Rgb = 3
-    rGb = 4
-    rgB = 5
-
-    Hsy = 6
-    hSy = 7
-    hsY = 8
-
-    YUV422 = 9
-    YUV = 10
-    RGB = 11
-    HSY = 12
-    BGR = 13
-
-    YYCbCr = 14
-    H2RGB = 15
-    HSMixed = 16
-
-    I16 = 17
+        Returns
+        -------
+        image: np.ndarray
+        """
+        raise NotImplementedError()
 
 
 class CameraID(IntEnum):
@@ -48,137 +21,56 @@ class CameraID(IntEnum):
     DEPTH = 2
 
 
-class Camera:
-    """Abstract Base Class for Camera Objects"""
+class CameraResolution(IntEnum):
+    """
+    Supported Pepper Camera Resolutions
 
-    def get(self):
-        """
-        Returns
-        -------
-        vision: PIL.Image.Image
-            Image captured by camera object
-        """
-        raise NotImplementedError()
+    KEY = (<ID>, (<width>, <height>))
+    """
+
+    VGA_40x30 = 8
+    VGA_80x60 = 7
+    VGA_160x120 = 0
+    VGA_320x240 = 1
+    VGA_640x480 = 2
+    VGA_1280x960 = 3
 
 
-class SystemCamera(Camera):
+class CameraColorSpace(Enum):
+    """
+    Supported Pepper Color Spaces
 
-    WARM_UP = 30
+    KEY = (<ID>, (<channels>, <dtype>)
+    """
 
-    def __init__(self, camera = 0):
-        """
-        Capture images using the webcam of this device
-
-        Parameters
-        ----------
-        camera
-        """
-
-        # Importing cv2 (OpenCV)
-        # This way it's not necessary to have the OpenCV library, unless you want to use the webcam.
-        import cv2
-
-        self._capture = cv2.VideoCapture(camera)
-        self._capture.set(3, 1280)
-        self._capture.set(4, 1024)
-        for i in range(self.WARM_UP): self._capture.read()
-
-    def get(self):
-        import cv2
-        status, image = self._capture.read()
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-        image = Image.fromarray(image)
-
-        image = Contrast(image).enhance(2)
-        image = Sharpness(image).enhance(2)
-
-        return image
-
-    def __del__(self):
-        self._capture.release()
+    LUMINANCE = (0, (1, np.uint8))
+    YUV = (10, (3, np.uint8))
+    RGB = (11, (3, np.uint8))
+    DEPTH = (17, (1, np.uint16))
 
 
 class PepperCamera(Camera):
-
-    def __init__(self, session, camera_name, resolution = Resolution.VGA,
-                 camera_id = CameraID.TOP, colorspace = ColorSpace.RGB, rate = 30):
-        """
-        Capture images using Pepper's Camera
-
-        Parameters
-        ----------
-        session: qi.Session
-            Session to hook the camera onto
-        resolution: Resolution
-            Resolution of the camera
-        colorspace: ColorSpace
-            Color Space of the camera
-        rate: int
-            Rate at which camera captures images, should be in range 1..30
-        """
+    def __init__(self, session, camera = CameraID.TOP, resolution = CameraResolution.VGA_160x120,
+                 colorspace = CameraColorSpace.RGB, framerate = 30):
 
         self._session = session
-        self._camera_name = camera_name
+        self._camera = camera
         self._resolution = resolution
-        self._colorspace = colorspace
-        self._rate = rate
+        self._colorspace, (self._channels, self._dtype) = colorspace.value
+        self._framerate = framerate
+
+        self._id = str(random.getrandbits(128))
 
         self._service = self.session.service("ALVideoDevice")
-
-        self._client = self.service.subscribeCamera(
-            self._camera_name, int(camera_id), int(self.resolution), int(self.colorspace), self.rate)
-
+        self._client = self.service.subscribeCamera(self.id,
+                                                    int(self.camera),
+                                                    int(self.resolution),
+                                                    int(self.colorspace),
+                                                    int(self.framerate))
 
     @property
     def session(self):
-        """
-        Returns
-        -------
-        session: qi.Session
-            Session camera is hooked into
-        """
         return self._session
-
-    @property
-    def camera_name(self):
-        """
-        Returns
-        -------
-        camera_id: str
-            Name of the attached camera service subscription
-        """
-        return self._camera_name
-
-    @property
-    def resolution(self):
-        """
-        Returns
-        -------
-        resolution: Resolution
-            Resolution of Camera
-        """
-        return self._resolution
-
-    @property
-    def colorspace(self):
-        """
-        Returns
-        -------
-        colorspace: ColorSpace
-            Color Space of Camera
-        """
-        return self._colorspace
-
-    @property
-    def rate(self):
-        """
-        Returns
-        -------
-        rate: int
-            Frame rate of
-        """
-        return self._rate
 
     @property
     def service(self):
@@ -188,26 +80,43 @@ class PepperCamera(Camera):
     def client(self):
         return self._client
 
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def camera(self):
+        return self._camera
+
+    @property
+    def resolution(self):
+        return self._resolution
+
+    @property
+    def colorspace(self):
+        return self._colorspace
+
+    @property
+    def framerate(self):
+        return self._framerate
+
+    @property
+    def channels(self):
+        return self._channels
+
+    @property
+    def dtype(self):
+        return self._dtype
+
     def get(self):
-        width, height, layers, color_space, seconds, milliseconds, data, camera_id, \
-        angle_left, angle_top, angle_right, angle_bottom = self.service.getImageRemote(self.client)
+        result = self.service.getImageRemote(self.client)
 
-        return Image.frombytes(self.colorspace.name, (width, height), str(data))
+        if result:
+            width, height, layers, color_space, seconds, milliseconds, data, camera, \
+            angle_left, angle_top, angle_right, angle_bottom = result
+            return np.frombuffer(data, self.dtype).reshape(height, width, self.channels)
 
-    def close(self):
-        self.service.unsubscribe(self.camera_name)
+        else:
+            self.service.unsubscribe(self.id)
+            raise RuntimeError("No Result from ImageRemote")
 
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    import qi
-
-    session = qi.Session()
-    session.connect("tcp://192.168.1.100:9559")
-
-    camera = PepperCamera(session, "CameraTest")
-    image = camera.get()
-    camera.close()
-
-    plt.imshow(image)
-    plt.show()

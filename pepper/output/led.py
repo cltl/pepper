@@ -41,7 +41,7 @@ class Led(object):
         """
         return self._service
 
-    def set(self, led, rgb):
+    def set(self, rgb):
         """
         Set led color
 
@@ -53,7 +53,8 @@ class Led(object):
             Led RGB value
         """
         for i, color in enumerate(["Red", "Green", "Blue"]):
-            self.service.setIntensity(led.value.format(color), rgb[i])
+            for led in ["RightFaceLeds{}","LeftFaceLeds{}"]:
+                self.service.setIntensity(led.format(color), rgb[i])
 
     def reset(self, led):
         """

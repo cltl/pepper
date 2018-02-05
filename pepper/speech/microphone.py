@@ -2,6 +2,7 @@ import pyaudio
 import wave
 import numpy as np
 from enum import Enum
+from queue import Queue
 
 
 class Microphone(object):
@@ -164,7 +165,7 @@ class SystemMicrophone(Microphone):
 
 
 class PepperMicrophoneMode(Enum):
-    ALL = (48000, 0)
+    # ALL = (48000, 0)
     LEFT = (16000, 1)
     RIGHT = (16000, 2)
     FRONT = (16000, 3)
@@ -185,13 +186,13 @@ class PepperMicrophone(Microphone):
         mode: PepperMicrophoneMode
             Which Microphone to use
         """
-        super(PepperMicrophone, self).__init__(mode.value[0], mode.value[0] // 16000, callbacks)
+        super(PepperMicrophone, self).__init__(16000, 1, callbacks)
 
         self._session = session
         self._name = self.__class__.__name__
         self._service = self.session.service("ALAudioDevice")
         self._microphone = self.session.registerService(self._name, self)
-        self._service.setClientPreferences(self._name, self.sample_rate, self.channels, 0)
+        self._service.setClientPreferences(self._name, self.sample_rate, mode.value[1], 0)
         self._service.subscribe(self._name)
 
         self._listening = False
@@ -247,8 +248,6 @@ class PepperMicrophone(Microphone):
             Raw Microphone Data
         """
         self.process(channels, samples, timestamp, buffer)
-
-
 
 if __name__ == "__main__":
     from time import sleep
