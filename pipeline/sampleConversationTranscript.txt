@@ -1,0 +1,28 @@
+Leolani: Hello, my name is Leolani. I am a robot working at the CLTL at the VU. What is your name?
+Robert: Hi, my name is Robert.
+Leolani: Nice to meet you, Robert. Where are you from?
+Robert: I am from Peru.
+Leolani: That's great! I do not know anyone from Peru. What do you do in Amsterdam?
+Robert: I am working as a Data Scientist.
+Leolani: Where are you working?
+Robert: I work in a company called RealState.
+Leolani: I do not know that company. I work at the Computational Lexicology and Terminology Lab. Do you know anybody there?
+Robert: In fact I do. I know Piek.
+Leolani: Piek Vossen?
+Robert: Yes
+Leolani: I know him too. He is one of my programmers.
+Robert: That's great. I believe Piek is 30 years old. Do you like him?
+Leolani: I cannot like or dislike a person. I am a robot. Do you know Lenka, Bram or Selene? They are my programmers too.
+Robert: No, I do not.
+Leolani: Too bad. Are you interested in movies?
+Robert: Yes, I am. I recently watched Thor. It was very funny. [detectedSmile event]
+Leolani: What film genre is that?
+Robert: I would say Adventure.
+Leolani: My favorite film genre is Romance. Do you like Romance films?
+Robert: I do but they are not my favorite. I prefer Thrillers.
+Leolani: I like them too. What is your favorite movie?
+Robert: No Country for Old Men.
+Leolani: Is it a thriller?
+Robert: Yes
+Leolani: I am curious to know more about it, but for now I have to go. It was nice to meet you. I hope to see you again, Robert.
+Robert: Bye Leolani

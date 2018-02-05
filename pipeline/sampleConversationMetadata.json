@@ -1,0 +1,27 @@
+{
+  "conversation_metadata": {
+    "id": "incremental it",
+    "time": "datestamp",
+    "actors": [
+      {
+        "faceID": "incremental int",
+        "averageFaceRepresentation": "128 vector",
+        "stdFaceRepresentation": "128 vector",
+        "faceRepresentation": "list of n viewings of same person (meaning list of vectors)",
+        "gender": "categorical (female, male, unknown)"
+      }
+    ]
+  },
+  "utterances_metadata":
+  {
+    "id": "conversaionID-incremental int",
+    "time": "datestamp",
+    "conversation": "conversationID",
+    "actor": "faceID",
+    "value": "str from the audio recognition",
+    "positionInTranscript": "line:initialChar-endingChar"
+  }
+}
+
+
+

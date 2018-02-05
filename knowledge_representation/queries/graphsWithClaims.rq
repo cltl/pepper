@@ -1,0 +1,12 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX n2my: <http://www.semanticweb.org/leolani/N2MY/>
+
+SELECT distinct ?g
+WHERE {
+graph ?g {
+?s ?p ?o .
+FILTER(contains((str(?p)), str(n2my:) ))
+}
+}
