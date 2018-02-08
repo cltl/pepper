@@ -1,13 +1,19 @@
-from pepper.app import App
-from pepper.vision.camera import PepperCamera, CameraID, CameraResolution, CameraColorSpace
+from pepper import ADDRESS, App, PepperCamera, CameraID, CameraResolution, CameraColorSpace
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 
 class CameraTest(App):
-
     def __init__(self, address):
+        """
+        Test Pepper Cameras by displaying their feeds
+
+        Parameters
+        ----------
+        address: (str, int)
+            tuple of (<ip>, <port>)
+        """
         super(CameraTest, self).__init__(address)
 
         self.cameras = [
@@ -28,4 +34,4 @@ class CameraTest(App):
 
 
 if __name__ == "__main__":
-    app = CameraTest(('192.168.137.54', 9559))
+    app = CameraTest(ADDRESS)

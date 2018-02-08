@@ -58,22 +58,4 @@ class WordDetectedEvent(Event):
     def close(self):
         """Cleanup by unsubscribing from 'ALSpeechRecognition' service"""
         self._detection.unsubscribe(self.name)
-
-
-class UtteranceEvent(Event):
-
-    MICROPHONE_BUFFER = 0.3
-
-    def __init__(self, session, callback):
-        super(UtteranceEvent, self).__init__(session, callback)
-
-        self._microphone = PepperMicrophone(session)
-
-    @property
-    def microphone(self):
-        return self._microphone
-
-    def _run(self):
-        while True:
-            signal = self.microphone.get(self.MICROPHONE_BUFFER)
             
