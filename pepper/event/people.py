@@ -4,7 +4,7 @@ import numpy as np
 
 from pepper.event import Event
 from pepper.input.camera import PepperCamera
-from pepper.vision.classification.object import ObjectClassifyClient
+from pepper.vision.object import ObjectClassifyClient
 
 
 class FaceInfo:
