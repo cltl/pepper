@@ -129,7 +129,7 @@ class WaveMicrophone(Microphone):
 
 
 class SystemMicrophone(Microphone):
-    def __init__(self, sample_rate, channels, callbacks = []):
+    def __init__(self, sample_rate = 16000, channels = 1, callbacks = []):
         """
         System Microphone: The microphone of this computer
 
