@@ -10,8 +10,8 @@ ADDRESS = '192.168.137.54', 9559
 # Import to Package Level
 from .app import App
 
-from .speech.microphone import WaveMicrophone, SystemMicrophone, PepperMicrophone
-from .vision.camera import PepperCamera, CameraID, CameraColorSpace, CameraResolution
+from pepper.input.microphone import WaveMicrophone, SystemMicrophone, PepperMicrophone
+from pepper.input.camera import PepperCamera, CameraTarget, CameraColorSpace, CameraResolution
 
 from .speech.recognition import GoogleRecognition
 from .speech.utterance import Utterance

@@ -2,7 +2,6 @@ import pyaudio
 import wave
 import numpy as np
 from enum import Enum
-from queue import Queue
 
 
 class Microphone(object):
@@ -248,16 +247,3 @@ class PepperMicrophone(Microphone):
             Raw Microphone Data
         """
         self.process(channels, samples, timestamp, buffer)
-
-if __name__ == "__main__":
-    from time import sleep
-
-    def on_audio(data):
-        print(len(data))
-
-    path = r"C:\Users\Bram\Documents\Pepper\data\speech\noisy_speech_2\15db.wav"
-    mic = WaveMicrophone(path, play=True)
-
-    mic.start()
-    sleep(10)
-    mic.stop()

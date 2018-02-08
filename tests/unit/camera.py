@@ -1,4 +1,4 @@
-from pepper import ADDRESS, App, PepperCamera, CameraID, CameraResolution, CameraColorSpace
+from pepper import ADDRESS, App, PepperCamera, CameraTarget, CameraResolution, CameraColorSpace
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -17,9 +17,9 @@ class CameraTest(App):
         super(CameraTest, self).__init__(address)
 
         self.cameras = [
-            PepperCamera(self.session, CameraID.TOP),
-            PepperCamera(self.session, CameraID.BOTTOM),
-            PepperCamera(self.session, CameraID.DEPTH, CameraResolution.VGA_80x60, CameraColorSpace.DEPTH)
+            PepperCamera(self.session, CameraTarget.TOP),
+            PepperCamera(self.session, CameraTarget.BOTTOM),
+            PepperCamera(self.session, CameraTarget.DEPTH, CameraResolution.VGA_80x60, CameraColorSpace.DEPTH)
         ]
 
         self.figure, self.axes = plt.subplots(1, 3)

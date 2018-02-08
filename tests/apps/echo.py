@@ -1,5 +1,5 @@
 from pepper.app import App
-from pepper.speech.microphone import PepperMicrophone, SystemMicrophone
+from pepper.input.microphone import PepperMicrophone
 from pepper.speech.utterance import Utterance
 from pepper.speech.recognition import GoogleRecognition
 from pepper.output.led import Led

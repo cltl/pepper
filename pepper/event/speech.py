@@ -1,6 +1,4 @@
 from pepper.event import Event
-from pepper.speech.microphone import PepperMicrophone
-from threading import Thread
 
 
 class WordDetectedEvent(Event):

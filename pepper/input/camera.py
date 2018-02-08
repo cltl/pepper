@@ -4,9 +4,11 @@ import random
 
 
 class Camera(object):
+    """Abstract Camera Class"""
+
     def get(self):
         """
-        Get Image
+        Get Image as Numpy Array
 
         Returns
         -------
@@ -15,7 +17,9 @@ class Camera(object):
         raise NotImplementedError()
 
 
-class CameraID(IntEnum):
+class CameraTarget(IntEnum):
+    """Target Camera for PepperCamera"""
+
     TOP = 0
     BOTTOM = 1
     DEPTH = 2
@@ -23,7 +27,7 @@ class CameraID(IntEnum):
 
 class CameraResolution(IntEnum):
     """
-    Supported Pepper Camera Resolutions
+    Supported Resolutions for Pepper Camera
 
     KEY = (<ID>, (<width>, <height>))
     """
@@ -38,7 +42,7 @@ class CameraResolution(IntEnum):
 
 class CameraColorSpace(Enum):
     """
-    Supported Pepper Color Spaces
+    Supported Color Spaces for Pepper Camera
 
     KEY = (<ID>, (<channels>, <dtype>)
     """
@@ -50,11 +54,21 @@ class CameraColorSpace(Enum):
 
 
 class PepperCamera(Camera):
-    def __init__(self, session, camera = CameraID.TOP, resolution = CameraResolution.VGA_160x120,
+    def __init__(self, session, camera_target = CameraTarget.TOP, resolution = CameraResolution.VGA_160x120,
                  colorspace = CameraColorSpace.RGB, framerate = 30):
+        """
 
+
+        Parameters
+        ----------
+        session
+        camera_target
+        resolution
+        colorspace
+        framerate
+        """
         self._session = session
-        self._camera = camera
+        self._camera_target = camera_target
         self._resolution = resolution
         self._colorspace, (self._channels, self._dtype) = colorspace.value
         self._framerate = framerate
@@ -63,52 +77,118 @@ class PepperCamera(Camera):
 
         self._service = self.session.service("ALVideoDevice")
         self._client = self.service.subscribeCamera(self.id,
-                                                    int(self.camera),
+                                                    int(self.camera_target),
                                                     int(self.resolution),
                                                     int(self.colorspace),
                                                     int(self.framerate))
 
     @property
     def session(self):
+        """
+        Returns
+        -------
+        session: qi.Session
+        """
         return self._session
 
     @property
     def service(self):
+        """
+        Returns
+        -------
+        service
+            ALVideoDevice Service
+        """
         return self._service
 
     @property
     def client(self):
+        """
+        Returns
+        -------
+        client
+            ALVideoDevice Client
+        """
         return self._client
 
     @property
     def id(self):
+        """
+        Returns
+        -------
+        id: str
+            Camera ID (random hash, to avoid conflicts)
+        """
         return self._id
 
     @property
-    def camera(self):
-        return self._camera
+    def camera_target(self):
+        """
+        Returns
+        -------
+        camera_target: CameraTarget
+            Camera Target
+        """
+        return self._camera_target
 
     @property
     def resolution(self):
+        """
+        Returns
+        -------
+        resolution: CameraResolution
+            Camera Resolution
+        """
         return self._resolution
 
     @property
     def colorspace(self):
+        """
+        Returns
+        -------
+        colorspace: CameraColorSpace
+            Camera Color Space
+        """
         return self._colorspace
 
     @property
     def framerate(self):
+        """
+        Returns
+        -------
+        framerate: int
+            Camera Frame Rate
+        """
         return self._framerate
 
     @property
     def channels(self):
+        """
+        Returns
+        -------
+        channels: int
+            Number of Channels (e.g. 3 for RGB, 1 for Luminance)
+        """
         return self._channels
 
     @property
     def dtype(self):
+        """
+        Returns
+        -------
+        dtype: np.dtype
+            Data type of each element in image
+        """
         return self._dtype
 
     def get(self):
+        """
+        Get Image as Numpy Array
+
+        Returns
+        -------
+        image: np.ndarray
+        """
         result = self.service.getImageRemote(self.client)
 
         if result:

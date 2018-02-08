@@ -3,7 +3,7 @@ from time import time
 import numpy as np
 
 from pepper.event import Event
-from pepper.vision.camera import PepperCamera
+from pepper.input.camera import PepperCamera
 from pepper.vision.classification.object import ObjectClassifyClient
 
 

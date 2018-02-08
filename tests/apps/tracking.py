@@ -1,7 +1,7 @@
 from pepper.app import App
-from pepper.vision.camera import PepperCamera, CameraResolution, CameraColorSpace, CameraID
+from pepper.input.camera import PepperCamera, CameraResolution, CameraColorSpace
 from pepper.vision.classification.face import FaceRecognition
-from pepper.output.led import Led, Leds
+from pepper.output.led import Led
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation

@@ -10,7 +10,7 @@ import sys
 import re
 
 from threading import Thread
-from time import sleep, time
+from time import sleep
 
 from enum import Enum
 
@@ -663,7 +663,7 @@ class KaldiStreamedRecognition(WebSocketClient, StreamedRecognition):
 
 
 if __name__ == "__main__":
-    from pepper.speech.microphone import SystemMicrophone
+    from pepper.input.microphone import SystemMicrophone
     from pepper.knowledge.wolfram import Wolfram
 
 

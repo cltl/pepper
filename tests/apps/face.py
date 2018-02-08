@@ -1,5 +1,5 @@
 from pepper.app import App
-from pepper.vision.camera import PepperCamera, CameraResolution
+from pepper.input.camera import PepperCamera, CameraResolution
 from pepper.vision.classification.face import FaceRecognition, PersonRecognition
 
 import numpy as np
