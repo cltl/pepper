@@ -14,17 +14,18 @@ class Tracking(App):
 
         self.led = Led(self.session)
 
-        self.camera = PepperCamera(self.session, resolution=CameraResolution.VGA_160x120, colorspace=CameraColorSpace.RGB)
+        self.camera = PepperCamera(self.session, resolution=CameraResolution.VGA_160x120,
+                                   colorspace=CameraColorSpace.RGB)
         self.face = FaceRecognition()
 
         self.figure, self.axis = plt.subplots()
         self.preview = self.axis.imshow(self.camera.get().squeeze(), cmap='Greys_r')
 
-        self.bounding_box = plt.Rectangle((0,0), 0, 0, fill=False, color='red')
+        self.bounding_box = plt.Rectangle((0, 0), 0, 0, fill=False, color='red')
         self.axis.add_patch(self.bounding_box)
         self.figure.colorbar(self.preview)
 
-        self.animation = FuncAnimation(self.figure, self.get_frame, interval=1000/60.0)
+        self.animation = FuncAnimation(self.figure, self.get_frame, interval=1000 / 60.0)
         plt.show()
 
     def get_frame(self, i):
@@ -39,7 +40,7 @@ class Tracking(App):
             self.bounding_box.set_bounds(bounds.x, bounds.y, bounds.width, bounds.height)
             self.led.set((0, 1, 0))
         else:
-            self.bounding_box.set_bounds(0,0,0,0)
+            self.bounding_box.set_bounds(0, 0, 0, 0)
             self.led.set((0, 0, 0))
 
 

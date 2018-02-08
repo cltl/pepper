@@ -15,3 +15,6 @@ from pepper.input.camera import PepperCamera, CameraTarget, CameraColorSpace, Ca
 
 from .speech.recognition import GoogleRecognition
 from .speech.utterance import Utterance
+
+from .vision.face import OpenFace, FaceBounds
+
