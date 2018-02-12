@@ -1,5 +1,7 @@
-from enum import Enum, IntEnum
 import numpy as np
+import cv2
+
+from enum import Enum, IntEnum
 import random
 
 
@@ -200,3 +202,22 @@ class PepperCamera(Camera):
             self.service.unsubscribe(self.id)
             raise RuntimeError("No Result from ImageRemote")
 
+
+class SystemCamera(Camera):
+    def __init__(self):
+        self._capture = cv2.VideoCapture(0)
+
+    def get(self):
+        """
+        Get Image as Numpy Array
+
+        Returns
+        -------
+        image: np.ndarray
+        """
+        ret, frame = self._capture.read()
+        return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+
+if __name__ == "__main__":
+    SystemCamera().get()

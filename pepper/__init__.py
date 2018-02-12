@@ -11,10 +11,10 @@ ADDRESS = '192.168.137.54', 9559
 from .app import App
 
 from pepper.input.microphone import WaveMicrophone, SystemMicrophone, PepperMicrophone
-from pepper.input.camera import PepperCamera, CameraTarget, CameraColorSpace, CameraResolution
+from pepper.input.camera import PepperCamera, SystemCamera, CameraTarget, CameraColorSpace, CameraResolution
 
 from .speech.recognition import GoogleRecognition
 from .speech.utterance import Utterance
 
-from .vision.face import OpenFace, FaceBounds
+from .vision.face import OpenFace, FaceBounds, GenderClassifyClient
 
