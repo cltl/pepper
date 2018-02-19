@@ -217,7 +217,3 @@ class SystemCamera(Camera):
         """
         ret, frame = self._capture.read()
         return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-
-if __name__ == "__main__":
-    SystemCamera().get()
