@@ -23,7 +23,7 @@ class CameraTest(App):
         ]
 
         self.figure, self.axes = plt.subplots(1, 3)
-        self.previews = [self.axes[i].imshow(camera.get().squeeze(), cmap='magma_r') for i, camera in enumerate(self.cameras)]
+        self.previews = [self.axes[i].imshow(camera.get().squeeze(), cmap='Greys') for i, camera in enumerate(self.cameras)]
 
         self.animation = FuncAnimation(self.figure, self.get_frame, interval=1000/60.0)
         plt.show()

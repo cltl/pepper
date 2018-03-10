@@ -12,7 +12,7 @@ class Utterance(object):
     WINDOW_SIZE = 30  # Sliding Window Length (Multiples of Frame MS)
 
     VOICE_THRESHOLD = 0.9
-    NONVOICE_THRESHOLD = 0
+    NONVOICE_THRESHOLD = 0.2
 
     def __init__(self, microphone, callback, mode=3):
         """

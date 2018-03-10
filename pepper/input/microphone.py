@@ -2,6 +2,11 @@ import pyaudio
 import wave
 import numpy as np
 from enum import Enum
+from collections import deque
+from queue import Queue
+from threading import Thread
+from time import time
+from sys import stderr
 
 
 class Microphone(object):
@@ -187,6 +192,14 @@ class PepperMicrophone(Microphone):
         """
         super(PepperMicrophone, self).__init__(16000, 1, callbacks)
 
+        self._queue = Queue(maxsize=10)
+        self._worker = Thread(target=self.worker)
+        self._worker.daemon = True
+        self._worker.start()
+
+        self._t = 0
+        self._dt_window = deque([], maxlen=10)
+
         self._session = session
         self._name = self.__class__.__name__
         self._service = self.session.service("ALAudioDevice")
@@ -213,6 +226,18 @@ class PepperMicrophone(Microphone):
         """Stop Microphone Stream"""
         self._listening = False
 
+    def worker(self):
+        while True:
+            t = time()
+            frame = self._queue.get()
+            self.on_audio(np.frombuffer(frame, np.int16))
+            self._queue.task_done()
+
+            # print(time() - t, self._queue.unfinished_tasks)
+
+            if self._queue.full():
+                raise BufferError("Microphone Processing is not Realtime.., Please reduce callback overhead")
+
     def process(self, channels, samples, timestamp, buffer):
         """
         Process Raw Microphone Signal on Local Event (On Pepper)
@@ -229,7 +254,16 @@ class PepperMicrophone(Microphone):
             Raw Microphone Data
         """
         if self._listening:
-            self.on_audio(np.frombuffer(buffer, np.int16))
+            self._queue.put(buffer)
+
+            t = timestamp[0] + timestamp[1] * 1E-6
+
+            if self._t != 0:
+                dt = t - self._t
+                self._dt_window.append(dt)
+                if np.mean(self._dt_window) > 2 * samples / float(self.sample_rate):
+                    print("<< Microphone Frames were skipped, Check Host/Pepper Internet Connection >>")
+            self._t = t
 
     def processRemote(self, channels, samples, timestamp, buffer):
         """

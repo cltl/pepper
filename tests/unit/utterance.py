@@ -1,20 +1,19 @@
-from pepper import SystemMicrophone, Utterance, GoogleRecognition
-from time import sleep
+import pepper
 
 
-recognition = GoogleRecognition()
+class UtteranceTest(pepper.App):
+    def __init__(self, address):
+        super(UtteranceTest, self).__init__(address)
+
+        self.microphone = pepper.PepperMicrophone(self.session)
+        self.utterance = pepper.Utterance(self.microphone, self.on_utterance)
+        self.asr = pepper.GoogleRecognition()
+
+        self.utterance.start()
+
+    def on_utterance(self, audio):
+        print(self.asr.transcribe(audio))
 
 
-def on_utterance(audio):
-    print(recognition.transcribe(audio))
-
-
-SAMPLE_RATE = 16000
-microphone = SystemMicrophone(SAMPLE_RATE, 1)
-utterance = Utterance(microphone, on_utterance)
-utterance.start()
-
-print("Utterance Test Started")
-
-while True:
-    sleep(1)
+if __name__ == "__main__":
+    UtteranceTest(pepper.ADDRESS).run()
