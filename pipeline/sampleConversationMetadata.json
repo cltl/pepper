@@ -1,6 +1,6 @@
 {
   "conversation_metadata": {
-    "id": "incremental it",
+    "id": "incremental int",
     "time": "datestamp",
     "actors": [
       {
@@ -14,14 +14,42 @@
   },
   "utterances_metadata":
   {
-    "id": "conversaionID-incremental int",
-    "time": "datestamp",
-    "conversation": "conversationID",
-    "actor": "faceID",
-    "value": "str from the audio recognition",
-    "positionInTranscript": "line:initialChar-endingChar"
+    "time": "datestamp of chat",
+    "instance_layer": {
+      "subject": {
+        "id": "uri",
+        "label": "",
+        "type": "one of leolani's classes"
+      },
+      "predicate": {
+        "type": "one of leolani's predicates"
+      },
+      "object": {
+        "id": "uri",
+        "label": "",
+        "type": "one of leolani's classes"
+      }
+    },
+    "mention_layer": {
+      "turn": {
+        "id": "chatID-incremental int",
+        "value": "str from the audio recognition"
+      }
+    },
+    "attribution_layer": {
+      "source": {
+        "chat_id": "chatID",
+        "actor_id": "faceID"
+      },
+      "attributions": {
+        "emotion": "",
+        "factuality": {
+          "certainty": "",
+          "polarity": "",
+          "temporal": ""
+        },
+        "sentiment": ""
+      }
+    }
   }
 }
-
-
-

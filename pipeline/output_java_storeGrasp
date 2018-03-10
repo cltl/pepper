@@ -1,0 +1,98 @@
+Usage:
+--ks               IP address of the knowledge store
+--source           unique identifier for the chat
+--turn             unique identifier for the turn within the chat
+--author-uri       <OPTIONAL> uri for the author of the turn. If omitted a uri is created from the author-name
+--author-name      name of the author of the turn
+--subject-label    word that represents the subject label
+--subject-uri      <OPTIONAL>uri that represents the referent for the subject. If omitted a global uri is created from the label
+--subject-type     <OPTIONAL>uri that represents the CLASS for the subject. CLASS information is not considered a statement but as interpretation
+--predicate-uri    uri that represents the predicate
+--object-label     word that represents the object label
+--object-uri       <OPTIONAL>uri that represents the referent for the object. If omitted a global uri is created from the label
+--object-type      <OPTIONAL>uri that represents the CLASS for the subject. CLASS information is not considered as a statement but as interpretation
+--perspective      <OPTIONAL>list of perspective values separated by semicolons
+--debug            <OPTIONAL>print out debug statements
+ks = 145.100.57.176
+source or chat = chat5
+turn = 1
+authorName = Selene
+authorURI =
+subjectLabel = Bram
+subjectType = http://dbpedia.org/resource/Person
+subjectUri =
+predicateUri = http://www.semanticweb.org/leolani/N2MY/knows
+objectLabel = Selene
+objectType = http://dbpedia.org/resource/Person
+objectUri =
+perspective = CERTAIN
+
+
+rdfString =
+@prefix eso:   <http://www.newsreader-project.eu/domain-ontology#> .
+            @prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+            @prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix ili:   <http://globalwordnet.org/ili/> .
+@prefix fn:    <http://www.newsreader-project.eu/ontologies/framenet/> .
+            @prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+            @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix pb:    <http://www.newsreader-project.eu/ontologies/propbank/> .
+            @prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+            @prefix leolaniTime: <http://cltl.nl/leolani/date/> .
+@prefix dbp:   <http://dbpedia.org/resource/> .
+            @prefix grasp: <http://groundedannotationframework.org/grasp#> .
+            @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix wn:    <http://www.newsreader-project.eu/ontologies/pwn3.0/> .
+@prefix graspAttribution: <http://groundedannotationframework.org/grasp/attribution#> .
+            @prefix sem:   <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+           @prefix time:  <http://www.w3.org/TR/owl-time#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix graspSentiment: <http://groundedannotationframework.org/grasp/sentiment#> .
+
+{
+}
+
+leolaniWorld:instances {
+    leolaniTime:20180307
+            a              time:DateTimeDescription ;
+            time:day       "---07"^^<http://www.w3.org/2001/XMLSchema#gDay> ;
+            time:month     "--03"^^<http://www.w3.org/2001/XMLSchema#gMonth> ;
+            time:unitType  time:unitDay ;
+            time:year      "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+    leolaniWorld:Bram
+            a                dbp:Person ;
+            rdfs:label       "Bram:1" ;
+            grasp:denotedBy  <http://cltl.nl/leolani/talk/chat5Selene20180307#char=0,4> ;
+            skos:prefLabel   "Bram" .
+
+    leolaniWorld:Selene
+            a                dbp:Person ;
+            rdfs:label       "Selene:1" ;
+            grasp:denotedBy  <http://cltl.nl/leolani/talk/chat5Selene20180307#char=4,6> ;
+            skos:prefLabel   "Selene" .
+
+    leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b
+            a                grasp:Statement ;
+            grasp:denotedBy  <http://cltl.nl/leolani/talk/chat5Selene20180307#char=0,10&sentence=1&paragraph=1> .
+}
+
+leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b {
+    leolaniWorld:Bram
+            <http://www.semanticweb.org/leolani/N2MY/knows>
+                    leolaniWorld:Selene .
+}
+
+grasp:perspectives {
+    leolaniTalk:chat5Selene20180307
+            a                     grasp:Chat ;
+            sem:hasTime           leolaniTime:20180307 ;
+            prov:wasAttributedTo  leolaniFriends:Selene .
+
+    leolaniTalk:chat5Selene20180307CERTAIN
+            a                       grasp:Attribution ;
+            rdf:value               grasp:CERTAIN ;
+            grasp:isAttributionFor  <http://cltl.nl/leolani/talk/chat5Selene20180307#char=0,10&sentence=1&paragraph=1> ;
+            grasp:wasDerivedFrom    leolaniTalk:chat5Selene20180307 .
+}
