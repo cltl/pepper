@@ -7,7 +7,7 @@ class UtteranceTest(pepper.App):
 
         self.microphone = pepper.PepperMicrophone(self.session)
         self.utterance = pepper.Utterance(self.microphone, self.on_utterance)
-        self.asr = pepper.GoogleRecognition()
+        self.asr = pepper.GoogleASR()
 
         self.utterance.start()
 

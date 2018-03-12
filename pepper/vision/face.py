@@ -54,18 +54,27 @@ class OpenFace(object):
     HOST, PORT = '127.0.0.1', 8988
 
     def __init__(self):
-        subprocess.call(['docker', 'run',                                           # Run Docker Image
-                         '-d',                                                      # Detached Mode (Non-Blocking)
-                         '-w', self.DOCKER_WORKING_DIRECTORY,                       # Working Directory
-                         '-p', '{}:{}:{}'.format(self.HOST, self.PORT, self.PORT),  # Port Forwarding
-                         '--rm',                                                    # Remove on Stop
-                         '--name', self.DOCKER_NAME,                                # Name for Docker Image
-                         self.DOCKER_IMAGE])                                        # Docker Image to Run
+        if not self.docker_openface_running():
+            subprocess.call(['docker', 'run',                                           # Run Docker Image
+                             '-d',                                                      # Detached Mode (Non-Blocking)
+                             '-w', self.DOCKER_WORKING_DIRECTORY,                       # Working Directory
+                             '-p', '{}:{}:{}'.format(self.HOST, self.PORT, self.PORT),  # Port Forwarding
+                             '--rm',                                                    # Remove on Stop
+                             '--name', self.DOCKER_NAME,                                # Name for Docker Image
+                             self.DOCKER_IMAGE])                                        # Docker Image to Run
 
-        # Copy and Execute OpenFace Script in Docker
-        subprocess.call(['docker', 'cp', self.SCRIPT_PATH, "{}:/root/openface".format(self.DOCKER_NAME)])
-        subprocess.call(['docker', 'exec', '-d', self.DOCKER_NAME, 'python', "./{}".format(self.SCRIPT_NAME)])
-        sleep(5)  # Wait for Server to Boot
+            # Copy and Execute OpenFace Script in Docker
+            subprocess.call(['docker', 'cp', self.SCRIPT_PATH, "{}:/root/openface".format(self.DOCKER_NAME)])
+            subprocess.call(['docker', 'exec', '-d', self.DOCKER_NAME, 'python', "./{}".format(self.SCRIPT_NAME)])
+            sleep(5)  # Wait for Server to Boot
+
+    def docker_openface_running(self):
+        try:
+            subprocess.check_output(['docker', 'ps'])
+            return 'openface' in subprocess.check_output(['docker', 'ps'])
+        except Exception as e:
+            return False
+
 
     def represent(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

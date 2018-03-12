@@ -1,7 +1,8 @@
+from pepper import ADDRESS
 from pepper.app import App
 from pepper.input.microphone import PepperMicrophone
 from pepper.speech.utterance import Utterance
-from pepper.speech.recognition import GoogleRecognition
+from pepper.speech.recognition import GoogleASR
 from pepper.output.led import Led
 
 from threading import Thread
@@ -21,7 +22,7 @@ class EchoTest(App):
         # self.microphone = SystemMicrophone(16000, 1)
         self.microphone = PepperMicrophone(self.session)
         self.utterance = Utterance(self.microphone, self.on_utterance)
-        self.recognition = GoogleRecognition()
+        self.recognition = GoogleASR()
 
         self.utterance.start()
 
@@ -58,5 +59,5 @@ class EchoTest(App):
 
 
 if __name__ == "__main__":
-    app = EchoTest(('192.168.137.49', 9559))
+    app = EchoTest(ADDRESS)
     app.run()

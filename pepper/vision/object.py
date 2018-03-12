@@ -1,7 +1,9 @@
+from PIL import Image
+import numpy as np
+import yaml
+
 from io import BytesIO
 import socket
-import yaml
-import numpy as np
 
 
 class ObjectClassifyClient:
@@ -20,7 +22,7 @@ class ObjectClassifyClient:
         """
         Parameters
         ----------
-        image: PIL.Image.Image
+        image: np.ndarray
 
         Returns
         -------
@@ -42,7 +44,7 @@ class ObjectClassifyClient:
         """
         Parameters
         ----------
-        image: PIL.Image.Image
+        image: np.ndarray
 
         Returns
         -------
@@ -50,6 +52,6 @@ class ObjectClassifyClient:
         """
 
         with BytesIO() as jpeg_buffer:
-            image.save(jpeg_buffer, format='JPEG')
+            Image.fromarray(image).save(jpeg_buffer, format='JPEG')
             return jpeg_buffer.getvalue()
 
