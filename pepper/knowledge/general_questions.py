@@ -1,30 +1,29 @@
-LeoLani = 	{'name': 'Leo Lani', 'origin': 'France', 'age':'a few months', 'weight':'28', 'height':'120', 
-			'meaning':'Voice of heaven', 'gender': 'female', 'feeling': 'good'}
-			
+LeoLani = 	{'name': 'Leo Lani', 'origin': 'France', 'age':'a few months', 'weight':'28', 'height':'120',
+              'meaning':'Voice of heaven', 'gender': 'female', 'feeling': 'good'}
 
-	
+
 def answer_trigger(key):
 
-	Properties = {'name': 'Leo Lani', 'weight':'28', 'height':'120', 'gender': 'female', 
-		'work':'understanding humans', 'age': 'just a few months'}
-	
-	Favorites =	{'book': 'the Hobbit', 'animal':'an elephant', 'writer':'Isaak Asimov', 'movie':'WALL-E',
-			'food':'electricity', 'colour':'blue', 'song':'Ode to joy', 'sport':'kung-fu ^start(animations/Stand/Waiting/MysticalPower_1)',
-                    'instrument':'human voice','drink':'streams of bits', 'weather':'sunny'}
-	
-	Abilities = {'dance':'I love dance!', 
-			'joke': 'What does Batman say to Robin before they get in the Batmobile? ... Robin, get in the Batmobile',
-			'answer': 'But I do not know everything'}
+    Properties = {'name': 'Leo Lani', 'weight':'28', 'height':'120', 'gender': 'female',
+                  'work':'understanding humans', 'age': 'just a few months'}
 
-	answer=''
-	if key in Properties.keys():
-		answer = 'My ' + key + ' is ' + Properties.get(key)
-	if key in Favorites.keys():
-		answer = 'My favorite ' + key + ' is ' + Favorites.get(key)
-	if key in Abilities.keys():
-		answer = 'Sure I can! ' + Abilities.get(key)
-	return answer
-	
+    Favorites =	{'book': 'the Hobbit', 'animal':'an elephant', 'writer':'Isaak Asimov', 'movie':'WALL-E',
+                    'food':'electricity', 'colour':'blue', 'song':'Ode to joy', 'sport':'kung-fu ^start(animations/Stand/Waiting/MysticalPower_1)',
+                    'instrument':'human voice','drink':'streams of bits', 'weather':'sunny'}
+
+    Abilities = {'dance':'I love dance!',
+                 'joke': 'What does Batman say to Robin before they get in the Batmobile? ... Robin, get in the Batmobile',
+                 'answer': 'But I do not know everything'}
+
+    answer=''
+    if key in Properties.keys():
+        answer = 'My ' + key + ' is ' + Properties.get(key)
+    if key in Favorites.keys():
+        answer = 'My favorite ' + key + ' is ' + Favorites.get(key)
+    if key in Abilities.keys():
+        answer = 'Sure I can! ' + Abilities.get(key)
+    return answer
+
 
 def general_questions(line):
     line.strip()
@@ -48,13 +47,3 @@ def general_questions(line):
         for word in words:
             answer = answer_trigger(word)
             if answer: return answer
-
-
-		
-			
-
-
-
-
-
-
