@@ -38,6 +38,13 @@ class TheoryOfMindApp(pepper.App):
     TEXT_TO_SPEECH_SPEED = 90
 
     def __init__(self, address):
+        """
+        Connect and Initialize Theory of Mind Application
+
+        Parameters
+        ----------
+        address (<ip>, <port>)
+        """
         super(TheoryOfMindApp, self).__init__(address)
 
         # Speech to Text and Text to Speech
