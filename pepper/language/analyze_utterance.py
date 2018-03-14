@@ -95,7 +95,7 @@ def analyze_question(speaker, words, pos_list):
         elif subject[0] == 'you':
             subject.append('leolani')
         else: #PRONOUN COREFERENCE RESOLUTION
-            say+='I am not sure which '+subject[0]+' you think\n'
+            say+='I am not sure which '+subject[0]+' you think '
             ambig = 1
 
      #  print('subject: ' + str(subject))
@@ -119,7 +119,7 @@ def analyze_question(speaker, words, pos_list):
         elif pr=='you':
             obj[0] = 'leolani'
         else:
-            say = '\nwhich '+obj[0]+' you mean?'
+            say = ' which '+obj[0]+' you mean?'
             ambig = 1
 
     # WHERE IS X FROM / WHERE ARE YOU FROM / WHO IS FROM X
@@ -141,7 +141,7 @@ def analyze_question(speaker, words, pos_list):
                     subject = ' I '
                     to_be = 'am'
                 if 'from' in person.keys():
-                    say += '\n'+subject+' '+to_be + " " + 'from' + ' ' + person['from']
+                    say += ' '+subject+' '+to_be + " " + 'from' + ' ' + person['from']
                 else:
                     say += "I don't know"+question_word+' '+person['name']+' '+to_be+ ' from'
         print('RDF ',rdf_subject, rdf_predicate, rdf_object)
@@ -191,9 +191,11 @@ def analyze_question(speaker, words, pos_list):
    # print('response info: ' + str(response))
    # print('extracted morphological info: ' + str(morphology))
     if say:
-        print('\nresponse:\n'+say)
+        print('response:'+say)
+        return(say)
     else:
         print(str(subject) + " " + to_be + " " + main_verb + "..." + response["type"] + ' ' + str(obj))
+        return('i got confused')
 
 
 def analyze_statement(speaker, words, pos_list):
@@ -204,6 +206,7 @@ def analyze_statement(speaker, words, pos_list):
     to_be=''
     main_verb=''
     subject=[]
+    say = ''
 
     for pos in pos_list[1:]:
         if pos[0] not in names:
@@ -243,10 +246,9 @@ def analyze_statement(speaker, words, pos_list):
         #else:
         #    subject.append(pos_list[0][0]+' '+pos_list[1][0])
 
-    if main_verb in ['know','like','live']:
-        obj = words[words.index(main_verb) + 1:] #FIX
-    else:
-        obj = words[words.index(main_verb) + 1:]
+    obj = ''
+    for word in words[words.index(main_verb) + 1:]: #FIX
+        obj+=' '+word
     if obj:
         rdf['predicate'] = main_verb
         #  print('obj: ' + str(obj))
@@ -282,9 +284,10 @@ def analyze_statement(speaker, words, pos_list):
                     if 'likes' in person.keys():
                         print('looking up '+person['name'])
                         if subject[0]=='i':
-                            print('i have heard you like '+person['likes'])
+                            say+='i have heard you like '+person['likes']+' '
+
                         else:
-                            print("i have heard " + person['name'] + ' likes ' + person['likes'])
+                            say+="i have heard " + person['name'] + ' likes ' + person['likes']+' '
 
     print('subject: '+str(subject))
 
@@ -292,9 +295,12 @@ def analyze_statement(speaker, words, pos_list):
         main_verb = main_verb + 's'
 
     if len(subject)>0:
-        print(subject[len(subject)-1]+' '+main_verb + ' '+str(obj))
+        say+=subject[len(subject)-1]+' '+main_verb + ' '+str(obj)
     else:
-        print('hello') #unknown sentence
+        say+='i got confused' #unknown sentence
+
+
+    return say
 
 #["you live in the closet","person"],["i am from serbia","lenka"], ["a rabbit bit me", "selene"],
 #              ["What did you do", "person"], ["How are you", "person"], ["Where is she going", "person"]
@@ -310,7 +316,7 @@ statements = [['Does selene know piek', 'bram'],['who is from italy?','jill'],
               ['bram likes romantic movies', 'selene'], ['bram is from Italy', 'selene'],
               ['i think sel is from mexico', 'jo']]  # [question, speaker]
 
-#for st in statements:
+# for st in statements:
 def analyze_utterance(utterance, speaker):
     print('--------------------------------------------------------')
     print('utterance: '+utterance+', speaker: '+speaker)
@@ -349,8 +355,9 @@ def analyze_utterance(utterance, speaker):
         elif el[1] == 'PERSON':
             q = 'Who is '+el[0]
             print(q)
-        res = client.query(q)
-        print(res)
+
+        #res = client.query(q)
+        #print(res)
         #for r in res.results:
         #    print(r.text())
 
@@ -361,10 +368,10 @@ def analyze_utterance(utterance, speaker):
     print(pos_list)
 
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
-        analyze_question(speaker, words, pos_list)
+        return analyze_question(speaker, words, pos_list)
     else:
-        analyze_statement(speaker, words, pos_list)
+        return analyze_statement(speaker, words, pos_list)
 
 
-#for stat in statements:
-#    analyze_utterance(stat)
+for stat in statements:
+    print('LEOLANI SAYS: '+analyze_utterance(stat[0],stat[1]))
