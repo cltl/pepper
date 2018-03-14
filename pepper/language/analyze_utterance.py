@@ -22,6 +22,8 @@ json_dict = json.load(open(os.path.join(ROOT, 'dict.json')))
 client = wolframalpha.Client('LA3GP6-VJ8KK8Y36A')
 stemmer = PorterStemmer()
 
+print("HELLO UTTERANCE")
+
 grammar = json_dict["grammar"]
 names = ['selene', 'bram', 'leolani', 'piek','selene']
 people = [{'name': 'selene', 'lastname':'baez','gender': 'f', 'from': 'mexico', 'likes': 'monster inc.', 'knows': ['bram', 'piek']},

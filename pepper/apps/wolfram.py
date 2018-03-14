@@ -46,7 +46,7 @@ class WolframApp(pepper.App):
         if hypotheses_en:
             question, confidence = hypotheses_en[0]
 
-            if hypotheses_nl and hypotheses_nl[0][1] > confidence:
+            if hypotheses_nl and hypotheses_nl[0][1] > confidence and hypotheses_nl[0][1] > 0.7:
                 self.say(u"I'm sorry, but I don't speak Dutch")
             else:
                 print u"[{:3.0%}] {}".format(confidence, question),
