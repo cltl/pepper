@@ -301,17 +301,17 @@ statements = [['Does selene know piek', 'bram'],['who is from italy?','jill'],
               ['i think sel is from mexico', 'jo']]  # [question, speaker]
 
 #for st in statements:
-def analyze_utterance(st):
+def analyze_utterance(utterance, speaker):
     print('--------------------------------------------------------')
-    print('utterance: '+st[0]+', speaker: '+st[1])
-    words = st[0].lower().split(" ")
+    print('utterance: '+utterance+', speaker: '+speaker)
+    words = utterance.lower().split(" ")
     nlp = spacy.load('en')
-    doc = nlp(st[0])
+    doc = nlp(utterance)
     pos_list = []
 
     recognized_entities = {'stanford':[],'spacy':[]}
 
-    tok = word_tokenize(st[0])
+    tok = word_tokenize(utterance)
 
     ner_text = ner.tag(tok)
     for n in ner_text:
@@ -351,9 +351,9 @@ def analyze_utterance(st):
     print(pos_list)
 
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
-        analyze_question(st[1], words, pos_list)
+        analyze_question(speaker, words, pos_list)
     else:
-        analyze_statement(st[1], words, pos_list)
+        analyze_statement(speaker, words, pos_list)
 
 
 #for stat in statements:
