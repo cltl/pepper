@@ -1,4 +1,7 @@
 import pepper
+
+from pepper.language.analyze_utterance import analyze_utterance
+
 from threading import Thread
 from time import sleep
 from random import choice
@@ -113,6 +116,8 @@ class TheoryOfMindApp(pepper.App):
 
         # Give Random Answer from 'Eloquence'
         self.say(choice(LAST_RESORT))
+
+        analyze_utterance(transcript, name)
 
     def on_person_recognize(self, name, confidence):
         """

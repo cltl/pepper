@@ -1,19 +1,27 @@
 from __future__ import unicode_literals
+
 from nltk.corpus import wordnet
-import json
-import spacy
-import wolframalpha
 from nltk.stem.porter import *
 from nltk import word_tokenize
 from nltk.tag import StanfordNERTagger
+import spacy
+
+import wolframalpha
+
+import json
+import os
+
 
 # certain, uncertain, possible, probable
+ROOT = os.path.join(os.path.dirname(__file__))
+ner = StanfordNERTagger(os.path.join(ROOT, 'stanford-ner', 'english.muc.7class.distsim.crf.ser'),
+                        os.path.join(ROOT, 'stanford-ner', 'stanford-ner.jar'), encoding='utf-8')
 
-ner = StanfordNERTagger('/Users/lenka/Desktop/stanford-ner-2017-06-09/classifiers/english.muc.7class.distsim.crf.ser',
-                        '/Users/lenka/Desktop/stanford-ner-2017-06-09/stanford-ner.jar', encoding='utf-8')
+json_dict = json.load(open(os.path.join(ROOT, 'dict.json')))
+
 client = wolframalpha.Client('LA3GP6-VJ8KK8Y36A')
 stemmer = PorterStemmer()
-json_dict = json.load(open('dict.json'))
+
 grammar = json_dict["grammar"]
 names = ['selene', 'bram', 'leolani', 'piek','selene']
 people = [{'name': 'selene', 'lastname':'baez','gender': 'f', 'from': 'mexico', 'likes': 'monster inc.', 'knows': ['bram', 'piek']},
