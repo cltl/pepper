@@ -56,8 +56,8 @@ class CameraColorSpace(Enum):
 
 
 class PepperCamera(Camera):
-    def __init__(self, session, camera_target = CameraTarget.TOP, resolution = CameraResolution.VGA_160x120,
-                 colorspace = CameraColorSpace.RGB, framerate = 30):
+    def __init__(self, session, camera_target = CameraTarget.TOP, resolution = CameraResolution.VGA_320x240,
+                 colorspace = CameraColorSpace.RGB, framerate = 10):
         """
 
 

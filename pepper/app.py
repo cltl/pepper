@@ -1,6 +1,14 @@
+import pepper
+from pepper.vision.face import FaceBounds
+
+
 import qi
-import time
 import logging
+import time
+
+from threading import Thread
+from time import sleep
+
 
 
 class App(object):
@@ -111,3 +119,82 @@ class App(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Stop Application when exiting the 'with' statement"""
         self.stop()
+
+
+class FlowApp(App):
+
+    CAMERA_RESOLUTION = pepper.CameraResolution.VGA_320x240
+    CAMERA_FREQUENCY = 2
+
+    TEXT_TO_SPEECH_SPEED = 90
+
+    def __init__(self, address):
+        """
+        Create Pepper Baseline Application
+
+        Parameters
+        ----------
+        address: (str, int)
+            Peppers internet address: (ip, port)
+        """
+        super(FlowApp, self).__init__(address)
+
+        # Text to Speech
+        self._tts = self.session.service("ALAnimatedSpeech")
+
+        # Audio Stream
+        self._microphone = pepper.PepperMicrophone(self.session)
+        self._utterance = pepper.Utterance(self._microphone, self.on_utterance)
+
+        # Camera Stream
+        self._camera = pepper.PepperCamera(self.session, resolution=self.CAMERA_RESOLUTION)
+        self._camera_thread = Thread(target=self._update_camera)
+
+        # Face Detection
+        self._openface = pepper.OpenFace()
+
+        # Start processes
+        self._utterance.start()
+        self._camera_thread.start()
+        self.log.info("Application Booted")
+
+    def on_utterance(self, audio):
+        """
+        On Utterance Event
+
+        Parameters
+        ----------
+        audio: numpy.ndarray
+        """
+        pass
+
+    def on_face(self, bounds, representation):
+        """
+        On Face Detection
+
+        Parameters
+        ----------
+        bounds: FaceBounds
+        representation: np.ndarray
+        """
+        pass
+
+    def say(self, text):
+        """
+        Let Pepper Speak
+
+        Parameters
+        ----------
+        text: str
+        """
+        self.log.info("Leolani: '{}'".format(text))
+        self._utterance.stop()
+        self._tts.say(r"\\rspd={}\\{}".format(self.TEXT_TO_SPEECH_SPEED, text))
+        self._utterance.start()
+
+    def _update_camera(self):
+        while True:
+            image = self._camera.get()
+            face = self._openface.represent(image)
+            if face: self.on_face(*face)
+            sleep(1.0 / self.CAMERA_FREQUENCY)  # Important to keep the rest working :)

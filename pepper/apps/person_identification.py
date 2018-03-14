@@ -80,11 +80,11 @@ class PersonIdentificationApp(pepper.App):
 
             if face:
                 bounds, representation = face
-                name, z, s = self.cluster.classify(representation)
+                name, score = self.cluster.classify(representation)
 
-                if s > 0.25: self.on_person_recognise(name, s)
-                elif s < 0.01: self.on_person_new(s)
-                else: print(name, z, s)
+                if score > 0.25: self.on_person_recognise(name, score)
+                elif score < 0.01: self.on_person_new(score)
+                else: print(name, score)
 
     def say(self, text):
         self.tts.say(text)

@@ -57,10 +57,6 @@ class PeopleCluster:
         self._labels = self._cluster.fit_predict(self._data)
         self._centers = self._cluster.cluster_centers_
 
-        # Intra-Cluster Distances
-        self._distances = np.array([np.std(np.linalg.norm(self._data[np.where(self._labels == i)] - self._centers[i], 2, 1))
-                                    for i in range(len(self._names))])
-
     def classify(self, face):
         distances = np.linalg.norm(self._means - face, 2, 1)
         labels = np.argsort(distances)
@@ -74,7 +70,7 @@ class PeopleCluster:
         name = self._names[index]
         distance = distances[index]
 
-        return name, distance / self._distances[index], s
+        return name, s
 
     def performance(self):
         print("Accuracy: {}".format(metrics.accuracy_score(self._true_labels, self._labels)))

@@ -8,8 +8,6 @@ ADDRESS = '192.168.1.103', 9559
 
 
 # Import to Package Level
-from .app import App
-
 from pepper.input.microphone import WaveMicrophone, SystemMicrophone, PepperMicrophone
 from pepper.input.camera import PepperCamera, SystemCamera, CameraTarget, CameraColorSpace, CameraResolution
 
@@ -22,4 +20,6 @@ from .vision.object import ObjectClassifyClient
 from .people.clustering import PeopleCluster, load_people, load_data_set
 
 from .knowledge.wolfram import Wolfram
+
+from .app import App, FlowApp
 

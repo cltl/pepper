@@ -170,7 +170,7 @@ class TheoryOfMindApp(pepper.App):
 
             if face:
                 bounds, representation = face
-                name, z_score, silhouette_score = self.cluster.classify(representation)
+                name, silhouette_score = self.cluster.classify(representation)
 
                 # If Pepper is sure enough, recognize known/new person
                 if silhouette_score > self.PERSON_RECOGNITION_THRESHOLD:
