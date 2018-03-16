@@ -1,5 +1,5 @@
-@prefix gaf: <http://groundedannotationframework.org/gaf> .
-@prefix grasp: <http://groundedannotationframework.org/grasp> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
 @prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
 @prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
 @prefix leolaniTime: <http://cltl.nl/leolani/date/> .
@@ -15,15 +15,27 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-leolaniFriends:Selene a <http://groundedannotationframework.org/gafInstance>,
-        sem:Actor ;
-    rdfs:label "Selene" .
+leolaniTalk:chat5 a sem:Event ;
+    sem:hasActor leolaniFriends:Selene ;
+    sem:hasSubevent leolaniTalk:chat5_turn1 .
+
+leolaniTalk:chat5_turn1_char0-10 a gaf:Mention ;
+    gaf:containsDenotation leolaniWorld:Bram,
+        leolaniWorld:romantic_movies ;
+    grasp:wasAttributedTo leolaniFriends:Selene .
+
+leolaniTalk:chat5_turn1 a sem:Event ;
+    sem:hasActor leolaniFriends:Selene .
 
 leolaniWorld:Bram a n2mu:PERSON,
-        <http://groundedannotationframework.org/gafInstance> ;
+        gaf:Instance ;
     rdfs:label "Bram" .
 
-leolaniWorld:romantic_movies a <http://groundedannotationframework.org/gafInstance>,
+leolaniWorld:romantic_movies a gaf:Instance,
         owl:Thing ;
     rdfs:label "romantic movies" .
+
+leolaniFriends:Selene a gaf:Instance,
+        sem:Actor ;
+    rdfs:label "Selene" .
 

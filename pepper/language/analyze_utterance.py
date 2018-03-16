@@ -1,4 +1,8 @@
 from __future__ import unicode_literals
+
+import nltk
+nltk.data.path.append("your location/directory")
+
 from nltk.corpus import wordnet
 from nltk.stem.porter import *
 from nltk import word_tokenize
@@ -8,7 +12,7 @@ import wolframalpha
 import re
 import json
 import os
-#from theory_of_mind import TheoryOfMind
+from theory_of_mind import TheoryOfMind
 
 # certain, uncertain, possible, probable
 ROOT = os.path.join(os.path.dirname(__file__))

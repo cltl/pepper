@@ -32,13 +32,13 @@ class TheoryOfMind(object):
         self.namespaces['INSTANCE_RESOURCE'] = Namespace(instance_resource)
 
         # Namespaces for the mention layer
-        mention_vocab = 'http://groundedannotationframework.org/gaf'
+        mention_vocab = 'http://groundedannotationframework.org/gaf#'
         self.namespaces['MENTION_VOCAB'] = Namespace(mention_vocab)
         mention_resource = 'http://cltl.nl/leolani/talk/'
         self.namespaces['MENTION_RESOURCE'] = Namespace(mention_resource)
 
         # Namespaces for the attribution layer
-        attribution_vocab = 'http://groundedannotationframework.org/grasp'
+        attribution_vocab = 'http://groundedannotationframework.org/grasp#'
         self.namespaces['ATTRIBUTION_VOCAB'] = Namespace(attribution_vocab)
         attribution_resource = 'http://cltl.nl/leolani/friends/'
         self.namespaces['ATTRIBUTION_RESOURCE'] = Namespace(attribution_resource)
@@ -218,14 +218,38 @@ class TheoryOfMind(object):
         self.dataset.add((actor, RDF.type, actor_type2))
 
         # Chat and turn
-        chat_id = 'chat5'
-        chat_id = 'chat5'
-        chat_id = 'chat5'
+        turn = URIRef(to_iri(self.namespaces['MENTION_RESOURCE'] + 'chat5_turn1'))
+        turn_type = URIRef(self.namespaces['SEM'] + 'Event')
+
+        self.dataset.add((turn, RDF.type, turn_type))
+        self.dataset.add((turn, self.namespaces['SEM']['hasActor'], actor))
+
+        chat = URIRef(to_iri(self.namespaces['MENTION_RESOURCE'] + 'chat5'))
+        chat_type = URIRef(self.namespaces['SEM'] + 'Event')
+
+        self.dataset.add((chat, RDF.type, chat_type))
+        self.dataset.add((chat, self.namespaces['SEM']['hasActor'], actor))
+        self.dataset.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
 
         # Mention
-        mention_id = ''
+        mention = URIRef(to_iri(self.namespaces['MENTION_RESOURCE'] + 'chat5_turn1_char0-10'))
+        mention_type = URIRef(self.namespaces['MENTION_VOCAB'] + 'Mention')
 
+        self.dataset.add((mention, RDF.type, mention_type))
+        self.dataset.add((mention, self.namespaces['MENTION_VOCAB']['containsDenotation'], subject))
+        self.dataset.add((mention, self.namespaces['MENTION_VOCAB']['containsDenotation'], object))
+        # self.dataset.add((mention, self.namespaces['MENTION_VOCAB']['denotes'], subject)) # link to statement
+        self.dataset.add((mention, self.namespaces['ATTRIBUTION_VOCAB']['wasAttributedTo'], actor))
 
+        # Attribution
+        attribution = URIRef(to_iri(self.namespaces['MENTION_RESOURCE'] + 'chat5_turn1_char0-10'))
+        mention_type = URIRef(self.namespaces['MENTION_VOCAB'] + 'Mention')
+
+        self.dataset.add((mention, RDF.type, mention_type))
+        self.dataset.add((mention, self.namespaces['MENTION_VOCAB']['containsDenotation'], subject))
+        self.dataset.add((mention, self.namespaces['MENTION_VOCAB']['containsDenotation'], object))
+        # self.dataset.add((mention, self.namespaces['MENTION_VOCAB']['denotes'], subject)) # link to statement
+        self.dataset.add((mention, self.namespaces['ATTRIBUTION_VOCAB']['wasAttributedTo'], actor))
 
     def update(self, parsed_statement):
         # TODO: In leolani time create time instance
