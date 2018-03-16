@@ -22,6 +22,7 @@ class TheoryOfMind(object):
 
         self.__define_namespaces__()
         self.__get_ontology_path__()
+        self._bind_namespaces_()
 
     def __define_namespaces__(self):
         # Namespaces for the instance layer
@@ -79,7 +80,7 @@ class TheoryOfMind(object):
 
         self.dataset.bind('owl', OWL)
 
-        self.dataset.default_context.parse(self.ontology_paths['n2mu'], format='turtle')
+        # self.dataset.default_context.parse(self.ontology_paths['n2mu'], format='turtle')
 
     def _create_instance_layer_(self, instances):
         # TODO Check if this entity exists?
@@ -162,10 +163,12 @@ class TheoryOfMind(object):
 
         subject = URIRef(to_iri(self.namespaces['INSTANCE_RESOURCE'] + subject_id))
         subject_label = Literal(subject_label)
-        subject_type = URIRef(subject_vocab + subject_type)
+        subject_type1 = URIRef(subject_vocab + subject_type)
+        subject_type2 = URIRef(self.namespaces['MENTION_VOCAB'] + 'Instance')
 
         self.dataset.add((subject, RDFS.label, subject_label))
-        self.dataset.add((subject, RDF.type, subject_type))
+        self.dataset.add((subject, RDF.type, subject_type1))
+        self.dataset.add((subject, RDF.type, subject_type2))
 
         # Object
         if len(parsed_statement['object']) == 1:  # We only get the label
@@ -181,23 +184,47 @@ class TheoryOfMind(object):
 
         object = URIRef(to_iri(self.namespaces['INSTANCE_RESOURCE'] + object_id))
         object_label = Literal(object_label)
-        object_type = URIRef(object_vocab + object_type)
+        object_type1 = URIRef(object_vocab + object_type)
+        object_type2 = URIRef(self.namespaces['MENTION_VOCAB'] + 'Instance')
 
         self.dataset.add((object, RDFS.label, object_label))
-        self.dataset.add((object, RDF.type, object_type))
+        self.dataset.add((object, RDF.type, object_type1))
+        self.dataset.add((object, RDF.type, object_type2))
 
         # Predicate
         predicate = parsed_statement['predicate']
 
-        # Triple
-        self.dataset.add((subject, self.namespaces['INSTANCE_VOCAB'][predicate], object))
+        # Statement
 
         # Create hashed id from name for this statement
         statement_uri = hash_id([subject, predicate, object])
 
         # Create graph and add triple
-        graph = self.dataset.graph(statement_uri)
+        graph = Graph()
         graph.add((subject, self.namespaces['INSTANCE_VOCAB'][predicate], object))
+        # TODO add graph to dataset
+
+        # Actor
+        actor_id = parsed_statement['author']
+        actor_label = parsed_statement['author']
+
+        actor = URIRef(to_iri(self.namespaces['ATTRIBUTION_RESOURCE'] + actor_id))
+        actor_label = Literal(actor_label)
+        actor_type1 = URIRef(self.namespaces['SEM'] + 'Actor')
+        actor_type2 = URIRef(self.namespaces['MENTION_VOCAB'] + 'Instance')
+
+        self.dataset.add((actor, RDFS.label, actor_label))
+        self.dataset.add((actor, RDF.type, actor_type1))
+        self.dataset.add((actor, RDF.type, actor_type2))
+
+        # Chat and turn
+        chat_id = 'chat5'
+        chat_id = 'chat5'
+        chat_id = 'chat5'
+
+        # Mention
+        mention_id = ''
+
 
 
     def update(self, parsed_statement):
