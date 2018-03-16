@@ -84,7 +84,7 @@ Is Selene from Mexico
     "format": "bool"
 }
 
-  SELECT ?s ?authorlabel ?v
+  SELECT ?authorlabel ?v
         WHERE
         ?s isFrom ?o
         ?s rdf:type n2mu:Person      ## add if we have this information, if we dont have we infer from range of property'

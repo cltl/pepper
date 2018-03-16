@@ -25,45 +25,59 @@ leolaniWorld:instances {
             time:unitType  time:unitDay ;
             time:year      "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
 
+    leolaniTalk:chat5
+            a                     sem:Event ;
+            sem:hasTime           leolaniTime:20180307 ;
+            sem:hasActor          leolaniFriends:Selene ;
+            sem:hassubevent       leolaniTalk:chat5#turn1 .
+
+    leolaniTalk:chat5#turn1
+            a                     sem:Event ;
+            sem:hasTime           leolaniTime:20180307 ;
+            sem:hasActor          leolaniFriends:Selene .
+
     leolaniWorld:Bram
             a                n2mu:Person ;
+            a                gaf:Instance ;
             rdfs:label       "Bram" ;
-            grasp:denotedIn  leolaniTalk:chat5#turn1#char=0,10 ;
-            skos:prefLabel   "Bram" .
+            skos:prefLabel   "Bram" ;
+            grasp:denotedIn  leolaniTalk:chat5#turn1#char=0,10 .
 
     leolaniWorld:Selene
-            a                dbp:Person ;
-            rdfs:label       "Selene:1" ;
-            grasp:denotedIn  leolaniTalk:chat5#turn1#char=0,10 ;
+            a                n2mu:Person ;
+            a                gaf:Instance ;
+            rdfs:label       "Selene" ;
+            skos:prefLabel   "Selene" ;
+            grasp:denotedIn  leolaniTalk:chat5#turn1#char=0,10 .
+
+    leolaniFriends:Selene
+            a                sem:Actor ;
+            a                gaf:Instance ;
+            rdfs:label       "Selene" ;
             skos:prefLabel   "Selene" .
 
     leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b
             a                grasp:Statement ;
-            grasp:denotedBy  <http://cltl.nl/leolani/talk/chat5Selene20180307#char=0,10&sentence=1&paragraph=1> .
+            grasp:denotedBy  leolaniTalk:chat5#turn1#char=0,10 .
 }
 
 leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b {
     leolaniWorld:Bram
-            <http://www.semanticweb.org/leolani/N2MY/knows>
+            n2mu:knows
                     leolaniWorld:Selene .
 }
 
-gaf:mentions {
-    leolaniTalk:chat5#turn1#char=0,10
-            a                     gaf:Mention ;
-            sem:hasTime           leolaniTime:20180307 ;
-            prov:wasAttributedTo  leolaniFriends:Selene .
-}
-
 grasp:perspectives {
-    leolaniTalk:chat5Selene20180307
-            a                     grasp:Chat ;
-            sem:hasTime           leolaniTime:20180307 ;
-            prov:wasAttributedTo  leolaniFriends:Selene .
+    leolaniTalk:chat5#turn1#char=0,10
+            a                       gaf:Mention ;
+            gaf:containsDenotation  leolaniWorld:Bram ;
+            gaf:containsDenotation  leolaniWorld:Selene ;
+            gaf:denotes             leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b ;
+            grasp:wasAttributedTo   leolaniFriends:Selene ;
+            grasp:hasAttribution    leolaniTalk:chat5#turn1#char=0,10#CERTAIN .
 
-    leolaniTalk:chat5Selene20180307CERTAIN
+    leolaniTalk:chat5#turn1#char=0,10#CERTAIN
             a                       grasp:Attribution ;
             rdf:value               grasp:CERTAIN ;
-            grasp:isAttributionFor  <http://cltl.nl/leolani/talk/chat5Selene20180307#char=0,10&sentence=1&paragraph=1> ;
-            grasp:wasDerivedFrom    leolaniTalk:chat5Selene20180307 .
+            grasp:isAttributionFor  leolaniTalk:chat5#turn1#char=0,10 .
 }

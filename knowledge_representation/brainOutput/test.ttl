@@ -1,0 +1,13 @@
+@prefix ns1: <http://cltl.nl/leolani/n2mu/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://cltl.nl/leolani/world/Bram> a ns1:PERSON ;
+    rdfs:label "Bram" ;
+    ns1:likes <http://cltl.nl/leolani/world/romantic_movies> .
+
+<http://cltl.nl/leolani/world/romantic_movies> a <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "romantic movies" .
+
