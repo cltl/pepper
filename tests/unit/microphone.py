@@ -1,4 +1,5 @@
-from pepper import ADDRESS, App, PepperMicrophone
+from pepper import ADDRESS, App, PepperMicrophone, SystemMicrophone
+from pepper.input.microphone import PepperMicrophoneModule
 from time import sleep
 
 
@@ -14,11 +15,8 @@ class MicrophoneTest(App):
         """
         super(MicrophoneTest, self).__init__(address)
 
-        self.microphone = PepperMicrophone(self.session, [self.on_audio])
-        self.microphone.start()
-
-    def on_audio(self, samples):
-        sleep(0.05)
+        self.microphone = PepperMicrophoneModule(self.session)
+        print("Microphone Test Started")
 
 
 if __name__ == "__main__":

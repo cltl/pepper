@@ -17,7 +17,7 @@ LAST_RESOURCE = {
         "But at what cost?",
         "So let it be written, ... so let it be done",
         "So ... it   has come to this",
-        "That’s just what he/she/they would’ve said",
+        "That's just what he/she/they would've said",
         "Is this why fate brought us together?",
         "And thus, I die",
         "... just like in my dream",

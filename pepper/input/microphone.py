@@ -6,7 +6,9 @@ from collections import deque
 from queue import Queue
 from threading import Thread
 from time import time
-from sys import stderr
+
+import naoqi
+from pepper import ADDRESS
 
 
 class Microphone(object):
@@ -192,19 +194,19 @@ class PepperMicrophone(Microphone):
         """
         super(PepperMicrophone, self).__init__(16000, 1, callbacks)
 
-        self._queue = Queue(maxsize=10)
+        self._queue = Queue()
         self._worker = Thread(target=self.worker)
         self._worker.daemon = True
         self._worker.start()
 
         self._t = 0
-        self._dt_window = deque([], maxlen=10)
+        self._dt_window = deque([], maxlen=20)
 
         self._session = session
         self._name = self.__class__.__name__
         self._service = self.session.service("ALAudioDevice")
-        self._microphone = self.session.registerService(self._name, self)
-        self._service.setClientPreferences(self._name, self.sample_rate, mode.value[1], 0)
+        self.session.registerService(self._name, self)
+        self._service.setClientPreferences(self._name, 16000, 3, 1)
         self._service.subscribe(self._name)
 
         self._listening = False
@@ -233,9 +235,10 @@ class PepperMicrophone(Microphone):
             self.on_audio(np.frombuffer(frame, np.int16))
             self._queue.task_done()
 
+            # # Show Queue Worker Performance
             # print(time() - t, self._queue.unfinished_tasks)
 
-            if self._queue.full():
+            if self._queue.qsize() > 10:
                 raise BufferError("Microphone Processing is not Realtime.., Please reduce callback overhead")
 
     def process(self, channels, samples, timestamp, buffer):
@@ -253,17 +256,7 @@ class PepperMicrophone(Microphone):
         buffer: bytes
             Raw Microphone Data
         """
-        if self._listening:
-            self._queue.put(buffer)
-
-            t = timestamp[0] + timestamp[1] * 1E-6
-
-            if self._t != 0:
-                dt = t - self._t
-                self._dt_window.append(dt)
-                if np.mean(self._dt_window) > 2 * samples / float(self.sample_rate):
-                    print("<< Microphone Frames were skipped, Check Host/Pepper Internet Connection >>")
-            self._t = t
+        self.processRemote(channels, samples, timestamp, buffer)
 
     def processRemote(self, channels, samples, timestamp, buffer):
         """
@@ -280,4 +273,67 @@ class PepperMicrophone(Microphone):
         buffer: bytes
             Raw Microphone Data
         """
-        self.process(channels, samples, timestamp, buffer)
+
+        # if self._listening: self.on_audio(np.frombuffer(buffer, np.int16))
+
+        t = timestamp[0] + timestamp[1] * 1E-6
+
+        if self._listening:
+            self._queue.put(buffer)
+
+            if self._t != 0:
+                dt = t - self._t
+                self._dt_window.append(dt)
+
+                dt_mean = np.mean(self._dt_window)
+
+                if dt_mean > 2 * samples / float(self.sample_rate):
+                    print("<< Microphone Frames were skipped, Check Host/Pepper Network Connection >>")
+
+        self._t = t
+
+class PepperMicrophoneProcessor(object):
+    def __init__(self, module):
+        self._module = module
+        self._listening = True
+
+        self.last_timestamp = time()
+        self.average_delta = 0
+        self.index = -1
+
+    def processRemote(self, channels, samples, timestamp, buffer):
+        timestamp = time() # timestamp[0] + timestamp[1] * 1E-6
+        delta = timestamp - self.last_timestamp
+
+        if self.index > 0:
+            self.average_delta = (self.index * self.average_delta + delta) / (self.index + 1)
+
+        print(self.average_delta, (len(buffer)/2) / 16000.0)
+        self.last_timestamp = timestamp
+        self.index += 1
+
+        # self._module.on_audio(np.frombuffer(buffer, np.int16))
+
+
+class PepperMicrophoneModule(Microphone):
+    def __init__(self, session, callbacks=[], mode=PepperMicrophoneMode.FRONT):
+        super(PepperMicrophoneModule, self).__init__(16000, 1, callbacks)
+
+        self._session = session
+        self._service = naoqi.ALProxy("ALAudioDevice", *ADDRESS)
+        self._processor = PepperMicrophoneProcessor(self)
+
+        self._session.registerService(PepperMicrophoneProcessor.__name__, self._processor)
+        self._service.setClientPreferences(PepperMicrophoneProcessor.__name__, 16000, 1, 0)
+        self._service.subscribe(PepperMicrophoneProcessor.__name__)
+
+    def start(self):
+        """Start Microphone Stream"""
+        self._processor._listening = True
+
+    def stop(self):
+        """Stop Microphone Stream"""
+        self._processor._listening = False
+
+
+
