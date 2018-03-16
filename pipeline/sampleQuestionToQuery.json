@@ -1,0 +1,104 @@
+{
+  "subject": {
+    "id": "uri",
+    "label": "",
+    "type": "one of leolani's 35 classes"
+  },
+  "predicate": {
+    "type": "one of leolani's 21 predicates"
+  },
+  "object": {
+    "id": "uri",
+    "label": "",
+    "type": "one of leolani's 35 classes"
+  },
+  "response": {
+    "role": "one of subject, predicate, object",
+    "format": "one of count/list"
+}
+}
+
+Who is from Mexico
+
+
+{
+  "subject": {
+    "id": "",
+    "label": "",
+    "type": "Person"
+  },
+  "predicate": {
+    "type": "isFrom"
+  },
+  "object": {
+    "id": "uri",
+    "label": "Mexico",
+    "type": "Location"
+  },
+  "response": {
+    "role": "subject",
+    "format": "list"
+}
+
+  SELECT ?s ?slabel ?authorlabel
+        WHERE
+        ?s isFrom ?o
+        ?s rdf:type n2mu:Person
+        ?o rdfs:label "Mexico"
+        ?o rdf:type n2mu:Place       ## add only if we have this information
+        ?s rdfs:label ?slabel
+
+        GRAPH ?g { ?s isFrom ?o . }
+        ?g grasp:denotedBy ?m .
+        ?a grasp:isAttributionFor ?m .
+        ?a grasp:wasDerivedFrom ?turn .
+        ?turn prov:wasAttributedTo ?author .
+        ?author rdfs:label ?authorlabel
+}
+
+{
+        "type": "",
+        "data": ""
+}
+
+
+Is Selene from Mexico
+
+
+{
+  "subject": {
+    "id": "",
+    "label": "Selene",
+    "type": "Person"
+  },
+  "predicate": {
+    "type": "isFrom"
+  },
+  "object": {
+    "id": "",
+    "label": "Mexico",
+    "type": "Location"
+  },
+  "response": {
+    "role": "",
+    "format": "bool"
+}
+
+  SELECT ?s ?authorlabel ?v
+        WHERE
+        ?s isFrom ?o
+        ?s rdf:type n2mu:Person      ## add if we have this information, if we dont have we infer from range of property'
+        ?s rdfs:label "Selene"
+
+        ?o rdfs:label "Mexico"
+        ?o rdf:type n2mu:Place       ## add only if we have this information
+
+        GRAPH ?g { ?s isFrom ?o . }
+        ?g grasp:denotedBy ?m .
+        ?a grasp:isAttributionFor ?m .
+        ?a rdf:value ?v .
+        ?a grasp:wasDerivedFrom ?turn .
+        ?turn prov:wasAttributedTo ?author .
+        ?author rdfs:label ?authorlabel
+}
+

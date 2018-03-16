@@ -13,7 +13,7 @@ class TheoryOfMind(object):
         address: str
             IP address and port of the Triple store
         """
-        self.address = "http://145.100.57.176:50053/" if address is None else address
+        self.address = "http://145.100.58.167:50053/" if address is None else address
         self.namespaces = {}
         self.dataset = Dataset()
 
@@ -51,15 +51,16 @@ class TheoryOfMind(object):
         skos = 'http://www.w3.org/2004/02/skos/core#'
         self.namespaces['SKOS'] = Namespace(skos)
 
-        rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-        self.namespaces['RDF'] = Namespace(rdf)
+        prov = 'http://www.w3.org/ns/prov#'
+        self.namespaces['PROV'] = Namespace(prov)
 
         sem = 'http://semanticweb.cs.vu.nl/2009/11/sem/'
         self.namespaces['SEM'] = Namespace(sem)
 
     def __upload_ontology__(self):
         # TODO implement this method
-        n2mu_path = ''
+        n2mu_path = './../../knowledge_representation/ontologies/leolani.ttl'
+
         return n2mu_path
 
     def _create_instance_layer_(self, instances):
