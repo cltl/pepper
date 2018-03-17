@@ -29,7 +29,7 @@ leolaniWorld:instances {
             a                     sem:Event ;
             sem:hasTime           leolaniTime:20180307 ;
             sem:hasActor          leolaniFriends:Selene ;
-            sem:hassubevent       leolaniTalk:chat5#turn1 .
+            sem:hasSubevent       leolaniTalk:chat5#turn1 .
 
     leolaniTalk:chat5#turn1
             a                     sem:Event ;
@@ -41,14 +41,14 @@ leolaniWorld:instances {
             a                gaf:Instance ;
             rdfs:label       "Bram" ;
             skos:prefLabel   "Bram" ;
-            grasp:denotedIn  leolaniTalk:chat5#turn1#char=0,10 .
+            gaf:denotedIn  leolaniTalk:chat5#turn1#char=0,10 .
 
     leolaniWorld:Selene
             a                n2mu:Person ;
             a                gaf:Instance ;
             rdfs:label       "Selene" ;
             skos:prefLabel   "Selene" ;
-            grasp:denotedIn  leolaniTalk:chat5#turn1#char=0,10 .
+            gaf:denotedIn  leolaniTalk:chat5#turn1#char=0,10 .
 
     leolaniFriends:Selene
             a                sem:Actor ;
@@ -58,7 +58,8 @@ leolaniWorld:instances {
 
     leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b
             a                grasp:Statement ;
-            grasp:denotedBy  leolaniTalk:chat5#turn1#char=0,10 .
+            a                gaf:Instance ;
+            gaf:denotedBy  leolaniTalk:chat5#turn1#char=0,10 .
 }
 
 leolaniTalk:c46989ef3dff4d879272e7eaa3d37d3b {
