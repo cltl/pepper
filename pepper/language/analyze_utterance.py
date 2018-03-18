@@ -1,20 +1,22 @@
 from __future__ import unicode_literals
 
-import nltk
-nltk.data.path.append("your location/directory")
+from pepper.knowledge.theory_of_mind import TheoryOfMind
 
 from nltk.corpus import wordnet
 from nltk.stem.porter import *
 from nltk import word_tokenize
 from nltk.tag import StanfordNERTagger
+
 import spacy
 import wolframalpha
 import re
 import json
 import os
-from theory_of_mind import TheoryOfMind
+from datetime import date
 
 # certain, uncertain, possible, probable
+brain = TheoryOfMind(address = 'http://130.37.60.58:7200/repositories/leolani_test2')
+
 ROOT = os.path.join(os.path.dirname(__file__))
 ner = StanfordNERTagger(os.path.join(ROOT, 'stanford-ner', 'english.muc.7class.distsim.crf.ser'),
                         os.path.join(ROOT, 'stanford-ner', 'stanford-ner.jar'), encoding='utf-8')
@@ -32,16 +34,13 @@ names = ['selene', 'bram', 'leolani', 'piek','selene']
 #              {'name': 'leolani', 'gender': 'f', 'from': 'france', 'movies': -1, 'knows': names, 'visited': 'netherlands',
 #              'likes':'computers'}]
 statements = [['I\'m from the Netherlands', 'Bram'],['What is your name', 'person'],['My name is lenka', 'person'],
-              ['my mother is ljubica','lenka']]
-
-'''
-              ['Does Selena know piek', 'bram'],['who is from italy?','jill'],
+              ['my mother is ljubica','lenka'], ['Does Selena know piek', 'bram'],['who is from italy?','jill'],
             ['Where is Selene from', 'person'], ['where are you from', 'person'], 
              ['Have you ever met Michael Jordan?', 'piek'], ['Has Selene ever met piek', 'person'],
              ['Does bram know Beyonce', 'person'], ['Do you know me','bram'],['Do you know him','bram'],
                ['i like action movies', 'bram'],['bram likes romantic movies', 'selene'],
               ['bram is from Italy', 'selene']]  # [question, speaker]
-'''
+
 
 def clean(word):
     clean_word = re.sub('[?!]','',word)
@@ -210,7 +209,20 @@ def analyze_question(speaker, words, pos_list):
         print(str(subject) + " " + to_be + " " + main_verb + "..." + response["type"] + ' ' + str(obj))
         print('i got confused')
 
-    return [rdf, speaker, 'question']
+    template = json.load(open(os.path.join(ROOT, 'template.json')))
+    template['author'] = speaker
+    template['utterance_type'] = 'question'
+    template['subject']['id'] = rdf['subject'].strip()
+    template['predicate']['type'] = rdf['predicate'].strip()
+    if rdf['object'] in names:
+        template['object']['id'] = rdf['object'].strip()
+        template['object']['type'] = 'acquaitance'
+    else:
+        template['object']['label'] = rdf['object'].strip()
+    template['date'] = date.today()
+    # return [rdf, speaker, 'question']
+    return template
+
 
 
 
@@ -268,7 +280,10 @@ def analyze_statement(speaker, words, pos_list):
         #else:
         #    subject.append(pos_list[0][0]+' '+pos_list[1][0])
 
-    rdf['subject'] = subject[len(subject)-1]
+    if len(subject)>0:
+        rdf['subject'] = subject[len(subject)-1]
+    else:
+        rdf['subject'] =''
 
     obj = ''
     if main_verb in words:
@@ -342,7 +357,19 @@ def analyze_statement(speaker, words, pos_list):
     print(say)
     '''
 
-    return [rdf, speaker, 'statement']
+    template = json.load(open(os.path.join(ROOT, 'template.json')))
+    template['author'] = speaker
+    template['utterance_type']='statement'
+    template['subject']['id']=rdf['subject'].strip()
+    template['predicate']['type'] = rdf['predicate'].strip()
+    if rdf['object'] in names:
+        template['object']['id'] = rdf['object'].strip()
+        template['object']['type'] = 'acquaitance'
+    else:
+        template['object']['label'] = rdf['object'].strip()
+    #return [rdf, speaker, 'statement']
+    template['date'] = date.today()
+    return template
 
 # for st in statements:
 def analyze_utterance(utterance, speaker):
@@ -381,23 +408,32 @@ def analyze_utterance(utterance, speaker):
     print(pos_list)
 
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
-        rdf = analyze_question(speaker, words, pos_list)
+        template = analyze_question(speaker, words, pos_list)
     else:
-        rdf = analyze_statement(speaker, words, pos_list)
+        template = analyze_statement(speaker, words, pos_list)
 
-    for key in rdf[0].keys():
-        rdf[0][key] = rdf[0][key].strip()
-        for e in recognized_entities:
-            if rdf[0][key].lower().endswith(e[0].lower()):
-                rdf[0][key] = [rdf[0][key],e[1]]
+    '''
+    for el in template:
+        for val in el.values():
+            for e in recognized_entities:
+                if val.lower().endswith(e[0].lower()):
+                    print(e[1])
+    '''
 
-    if rdf[2]=='statement':
-        return(rdf)
+    print(brain.update(template))
 
+    return template
 
-for stat in statements:
-    rdf = analyze_utterance(stat[0],stat[1])
-    print(rdf)
+# for stat in statements:
+#     rdf = analyze_utterance(stat[0],stat[1])
+#     if rdf['utterance_type'] == 'statement':
+
+    #if rdf[2]=='statement':
+        #response = brain.update(rdf)
+        #print(response)
+
+    # print(rdf)
+
 
 
 

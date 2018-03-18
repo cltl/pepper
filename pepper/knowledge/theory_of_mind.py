@@ -430,6 +430,7 @@ class TheoryOfMind(object):
 
 
 def hash_id(triple):
+    print('This is the triple: {}'.format(triple))
     temp = '_'.join(triple)
     temp.replace(" ", "_")
 

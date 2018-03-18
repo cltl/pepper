@@ -57,6 +57,8 @@ class PersonIdentificationApp(pepper.FlowApp):
         self.asr = pepper.GoogleASR()
         self.name_asr = pepper.NameASR()
 
+        self.wolfram = pepper.Wolfram()
+
         super(PersonIdentificationApp, self).__init__(address)
 
     def on_utterance(self, audio):
@@ -78,7 +80,21 @@ class PersonIdentificationApp(pepper.FlowApp):
             else:
                 self.say("Sorry, could you repeat that?")
         else:
-            pass
+            hypotheses = self.asr.transcribe(audio)
+
+            if hypotheses:
+                question, confidence = hypotheses[0]
+
+                self.log.info(u"[{:3.2%}] {}: '{}'".format(confidence, self.person_name, question))
+
+                if confidence > 0.7:
+                    answer = self.wolfram.query(question)
+
+                    if answer:
+                        self.say("You asked: {}. {}".format(question, answer))
+
+                else:
+                    self.say("You asked: {}, but I don't know the answer to that.".format(question))
 
     def on_face(self, bounds, representation):
         """
