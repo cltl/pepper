@@ -19,26 +19,30 @@
       "subject": {
         "id": "uri",
         "label": "",
-        "type": "one of leolani's classes"
+        "type": "one of leolani's 35 classes"
       },
       "predicate": {
-        "type": "one of leolani's predicates"
+        "type": "one of leolani's 21 predicates"
       },
       "object": {
         "id": "uri",
         "label": "",
-        "type": "one of leolani's classes"
+        "type": "one of leolani's 35 classes"
       }
     },
     "mention_layer": {
       "turn": {
         "id": "chatID-incremental int",
         "value": "str from the audio recognition"
+        "position": ""
+      },
+      "chat": {
+        "id": ""
+      }
       }
     },
     "attribution_layer": {
       "source": {
-        "chat_id": "chatID",
         "actor_id": "faceID"
       },
       "attributions": {
