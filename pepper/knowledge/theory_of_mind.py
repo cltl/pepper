@@ -585,7 +585,7 @@ if __name__ == "__main__":
     }
 
     # Create brain connection
-    brain = TheoryOfMind()
+    brain = TheoryOfMind(address='http://130.37.60.58:7200/repositories/leolani_test2')
 
     # Test statements
     for statement in [parsed_statement1, parsed_statement, parsed_statement2]:
