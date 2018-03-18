@@ -8,7 +8,7 @@ import wolframalpha
 import re
 import json
 import os
-from theory_of_mind import TheoryOfMind
+from pepper.knowledge.theory_of_mind import TheoryOfMind
 from datetime import date
 
 # certain, uncertain, possible, probable
@@ -403,21 +403,17 @@ def analyze_utterance(utterance, speaker):
 
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
         template = analyze_question(speaker, words, pos_list)
+        return (reply(brain.query_brain(template)))
+
     else:
         template = analyze_statement(speaker, words, pos_list)
+        print(brain.update(template))
+        return 'ok!'
 
-    '''
-    for el in template:
-        for val in el.values():
-            for e in recognized_entities:
-                if val.lower().endswith(e[0].lower()):
-                    print(e[1])
-    '''
-    return template
 
 def reply(brain_response):
 
-    say = ''
+    say = 'I am confused '
     if len(brain_response['response'])==0:
         say = "I dont know if "
         say += brain_response['question']['subject']['label'] + ' '
@@ -521,26 +517,21 @@ brain_response = [{
 
 
 
-for resp in brain_response:
-    print(reply(resp))
+#for resp in brain_response:
+#    print(reply(resp))
 
 
-brain = TheoryOfMind(address = 'http://130.37.60.58:7200/repositories/leolani_test2')
+brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
 
-for stat in statements:
-    rdf = analyze_utterance(stat[0],stat[1])
-    if rdf['utterance_type'] == 'statement':
-        print(brain.update(rdf))
-        print('Good!')
-    elif rdf['utterance_type'] == 'question':
-        print(reply(brain.query_brain(rdf)))
+#for stat in statements:
+#    rdf = analyze_utterance(stat[0],stat[1])
+
 
 
     #if rdf[2]=='statement':
         #response = brain.update(rdf)
         #print(response)
 
-    print(rdf)
 
 
 
