@@ -4,7 +4,7 @@ import os
 
 class NameRecognition(object):
 
-    KEYS = ["PERSON", "ORGANIZATION"]
+    KEYS = ["PERSON", "ORGANIZATION", "LOCATION"]
 
     def __init__(self):
 
@@ -17,8 +17,12 @@ class NameRecognition(object):
     def recognize(self, transcript):
         tokens = nltk.word_tokenize(transcript)
         tags = self.ner.tag(tokens)
-        print(tags)
-        words = ['{}' if tag in self.KEYS else word for word, tag in tags]
+
+        words = []
+
+        for word, tag in tags:
+            if tag in self.KEYS and not '{}' in words: words.append('{}')
+            else: words.append(word)
         return ' '.join(words)
 
 

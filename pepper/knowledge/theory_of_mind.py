@@ -527,12 +527,12 @@ if __name__ == "__main__":
     }
 
     # Create brain connection
-    brain = TheoryOfMind()
+    brain = TheoryOfMind(address='http://130.37.60.58:7200/repositories/leolani_test2')
 
     # Test statements
-    response = brain.update(parsed_statement)
-    response2 = brain.update(parsed_statement2)
-    print(response, response2)
+    # response = brain.update(parsed_statement)
+    # response2 = brain.update(parsed_statement2)
+    # print(response, response2)
 
     # Test questions
     response = brain.query_brain(parsed_question)

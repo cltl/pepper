@@ -141,7 +141,12 @@ class NameASR(object):
 
     NAME_REGEX = "([A-Z]\w+)"
 
-    def __init__(self, sample_rate=16000, max_alternatives=10, hints = ("My name is {}", "I'm {}", "I am {}")):
+    def __init__(self, sample_rate=16000, max_alternatives=10, hints = (
+            "My name is {}",
+            "I'm {}",
+            "I am {}",
+            "Where is {} from",
+            "{} is from")):
         self._sample_rate = sample_rate
         self.hints = hints
 
