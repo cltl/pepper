@@ -1,0 +1,173 @@
+/Users/mytomorrows/Documents/VU/pepper/venv/bin/python /Users/mytomorrows/Documents/VU/pepper/pepper/knowledge/theory_of_mind.py
+This is the triple: ['Selene', 'knows', 'Piek']
+Posting triples
+{
+    "question": {
+        "author": "Selene",
+        "chat": 5,
+        "date": "2018-03-18",
+        "object": {
+            "label": "Piek",
+            "type": "Person"
+        },
+        "position": "0-16",
+        "predicate": {
+            "type": "knows"
+        },
+        "subject": {
+            "label": "Selene",
+            "type": "Person"
+        },
+        "turn": 2
+    },
+    "response": "204"
+}
+This is the triple: ['Bram', 'likes', 'romantic movies']
+Posting triples
+{
+    "question": {
+        "author": "Selene",
+        "chat": 5,
+        "date": "2018-03-18",
+        "object": {
+            "label": "romantic movies",
+            "type": ""
+        },
+        "position": "0-25",
+        "predicate": {
+            "type": "likes"
+        },
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        },
+        "turn": 1
+    },
+    "response": "204"
+}
+This is the triple: ['Lenka', 'isFrom', 'Serbia']
+Posting triples
+{
+    "question": {
+        "author": "Selene",
+        "chat": 5,
+        "date": "2018-03-18",
+        "object": {
+            "label": "Serbia",
+            "type": "Country"
+        },
+        "position": "0-27",
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "Lenka",
+            "type": "Person"
+        },
+        "turn": 3
+    },
+    "response": "204"
+}
+This is the triple: ['', 'isFrom', 'Serbia']
+{
+    "question": {
+        "object": {
+            "label": "Serbia",
+            "type": "Country"
+        },
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "",
+            "type": "Person"
+        }
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "Selene"
+            },
+            "slabel": {
+                "type": "literal",
+                "value": "Lenka"
+            }
+        }
+    ]
+}
+This is the triple: ['Lenka', 'isFrom', '']
+{
+    "question": {
+        "object": {
+            "label": "",
+            "type": "Country"
+        },
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "Lenka",
+            "type": "Person"
+        }
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "Selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "Serbia"
+            }
+        }
+    ]
+}
+This is the triple: ['Selene', 'knows', 'Piek']
+{
+    "question": {
+        "object": {
+            "label": "Piek",
+            "type": "Person"
+        },
+        "predicate": {
+            "type": "knows"
+        },
+        "subject": {
+            "label": "Selene",
+            "type": "Person"
+        }
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "Selene"
+            },
+            "v": {
+                "type": "uri",
+                "value": "http://groundedannotationframework.org/grasp#CERTAIN"
+            }
+        }
+    ]
+}
+This is the triple: ['Bram', 'isFrom', 'Netherlands']
+{
+    "question": {
+        "object": {
+            "label": "Netherlands",
+            "type": "Country"
+        },
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        }
+    },
+    "response": []
+}
+
+Process finished with exit code 0
