@@ -1,4 +1,5 @@
 import pepper
+from pepper.language.name_recognition import NameRecognition
 
 from pepper.language.analyze_utterance import analyze_utterance
 
@@ -52,8 +53,8 @@ class TheoryOfMindApp(pepper.App):
 
         # Speech to Text and Text to Speech
         self.tts = self.session.service("ALAnimatedSpeech")
-        self.asr = pepper.GoogleASR('en-GB')
-        self.name_asr = pepper.NameASR()
+        self.asr = pepper.GoogleASR('en-GB', max_alternatives=5)
+        self.name_recognition = NameRecognition()
 
         # Pepper's Ears
         self.microphone = pepper.PepperMicrophone(self.session)
@@ -88,15 +89,26 @@ class TheoryOfMindApp(pepper.App):
         """
 
         # Transcribe Audio using Google Speech API
+        self.utterance.stop()
+
         hypotheses = self.asr.transcribe(audio)
 
         if hypotheses:
 
             # Get the most likely Hypothesis
-            transcript, confidence = hypotheses[0]
+            for transcript, confidence in hypotheses:
+                name_transcript = self.name_recognition.recognize(transcript)
 
-            # Call on Transcript with the Person information
-            self.on_transcript(audio, transcript, confidence, self.current_person, self.current_person_confidence)
+                if '{}' in name_transcript:
+                    name, name_confidence = pepper.NameASR(hints=(name_transcript,)).transcribe(audio)
+                    name_transcript = name_transcript.format(name)
+                    self.on_transcript(audio, name_transcript, confidence,
+                                       self.current_person, self.current_person_confidence)
+            else:
+                self.on_transcript(audio, hypotheses[0][0], hypotheses[0][1],
+                                   self.current_person, self.current_person_confidence)
+
+            self.utterance.start()
 
     def on_transcript(self, audio, transcript, transcript_confidence, name, name_confidence):
         """
@@ -114,9 +126,6 @@ class TheoryOfMindApp(pepper.App):
             Confidence that the face that was seen actually corresponds to this person -1..+1
         """
         self.log.info('{}: "{}"'.format(name, transcript))
-
-        # Give Random Answer from 'Eloquence'
-        # self.say(choice(LAST_RESORT))
 
         self.say(analyze_utterance(transcript, name if name else "person"))
 

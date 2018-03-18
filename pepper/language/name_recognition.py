@@ -15,15 +15,20 @@ class NameRecognition(object):
             os.path.join(ROOT, 'stanford-ner.jar'))
 
     def recognize(self, transcript):
-        tokens = nltk.word_tokenize(transcript)
-        tags = self.ner.tag(tokens)
 
-        words = []
+        try:
+            tokens = nltk.word_tokenize(transcript)
+            tags = self.ner.tag(tokens)
+            words = []
 
-        for word, tag in tags:
-            if tag in self.KEYS and not '{}' in words: words.append('{}')
-            else: words.append(word)
-        return ' '.join(words)
+            for word, tag in tags:
+                if tag in self.KEYS and not '{}' in words: words.append('{}')
+                else: words.append(word)
+            return ' '.join(words)
+
+        except Exception as e:
+            print("<< IGNORING NLTK/STANFORD ERROR >>")
+            return transcript
 
 
 if __name__ == "__main__":

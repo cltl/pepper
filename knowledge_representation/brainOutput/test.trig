@@ -18,46 +18,46 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 leolaniTalk:perspectives {
-    leolaniTalk:chat5_turn1_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:Bram,
-            leolaniWorld:romantic_movies ;
-        gaf:denotes leolaniWorld:Bram_likes_romantic_movies ;
-        grasp:hasAttribution leolaniTalk:chat5_turn1_char0-25_CERTAIN ;
-        grasp:wasAttributedTo leolaniFriends:Selene .
+    leolaniTalk:chat_turn_char a gaf:Mention ;
+        gaf:containsDenotation leolaniWorld:,
+            leolaniWorld:spicy_food ;
+        gaf:denotes leolaniWorld:_likes_spicy_food ;
+        grasp:hasAttribution leolaniTalk:chat_turn_char_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:Bram .
 
-    leolaniTalk:chat5_turn1_char0-25_CERTAIN a grasp:Attribution ;
-        grasp:isAttributionFor leolaniTalk:chat5_turn1_char0-25 ;
+    leolaniTalk:chat_turn_char_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat_turn_char ;
         rdf:value grasp:CERTAIN .
 }
 
 leolaniWorld:instances {
-    leolaniFriends:Selene a gaf:Instance,
+    leolaniFriends:Bram a gaf:Instance,
             sem:Actor ;
-        rdfs:label "Selene" .
+        rdfs:label "Bram" .
 
-    leolaniWorld:Bram a n2mu:Person,
-            gaf:Instance ;
-        rdfs:label "Bram" ;
-        gaf:denotedIn leolaniTalk:chat5_turn1_char0-25 .
-
-    leolaniWorld:Bram_likes_romantic_movies a gaf:Instance,
-            grasp:Statement ;
-        grasp:denotedBy leolaniTalk:chat5_turn1_char0-25 .
-
-    leolaniWorld:romantic_movies a gaf:Instance,
+    leolaniWorld: a gaf:Instance,
             owl:Thing ;
-        rdfs:label "romantic movies" ;
-        gaf:denotedIn leolaniTalk:chat5_turn1_char0-25 .
+        rdfs:label "" ;
+        gaf:denotedIn leolaniTalk:chat_turn_char .
+
+    leolaniWorld:_likes_spicy_food a gaf:Instance,
+            grasp:Statement ;
+        grasp:denotedBy leolaniTalk:chat_turn_char .
+
+    leolaniWorld:spicy_food a gaf:Instance,
+            owl:Thing ;
+        rdfs:label "spicy food" ;
+        gaf:denotedIn leolaniTalk:chat_turn_char .
 }
 
 {
-    leolaniTalk:chat5 a sem:Event ;
-        sem:hasActor leolaniFriends:Selene ;
-        sem:hasSubevent leolaniTalk:chat5_turn1 ;
+    leolaniTalk:chat a sem:Event ;
+        sem:hasActor leolaniFriends:Bram ;
+        sem:hasSubevent leolaniTalk:chat_turn ;
         sem:hasTime <http://cltl.nl/leolani/date/2018-03-18> .
 
-    leolaniTalk:chat5_turn1 a sem:Event ;
-        sem:hasActor leolaniFriends:Selene ;
+    leolaniTalk:chat_turn a sem:Event ;
+        sem:hasActor leolaniFriends:Bram ;
         sem:hasTime <http://cltl.nl/leolani/date/2018-03-18> .
 
     <http://cltl.nl/leolani/date/2018-03-18> a time:DateTimeDescription ;
@@ -67,7 +67,7 @@ leolaniWorld:instances {
         time:year "2018"^^xml1:gYear .
 }
 
-leolaniWorld:Bram_likes_romantic_movies {
-    leolaniWorld:Bram n2mu:likes leolaniWorld:romantic_movies .
+leolaniWorld:_likes_spicy_food {
+    leolaniWorld: n2mu:likes leolaniWorld:spicy_food .
 }
 
