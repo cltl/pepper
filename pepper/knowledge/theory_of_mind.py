@@ -122,20 +122,17 @@ class TheoryOfMind(object):
         return file_path
 
     def __upload_to_brain__(self, data):
-        transaction_begin_url = self.address + "/transaction/begin"
+        print("Posting triples")
 
-        # Start the transaction, and get a transaction_id
-        # response = requests.post(transaction_begin_url, headers={'Accept': 'text/plain'})
-        # transaction_id = response.content
-
-        # POST the data to the transaction
+        # POST the data
         post_url = self.address + "/statements"
-        response = requests.post(post_url, data=data,
-                                 headers={'Content-type': 'application/trig'})
 
-        # # Close the transaction
-        # transaction_close_url = self.address + "/transaction/commit/" + transaction_id
-        # response = requests.post(transaction_close_url)
+        curl = """curl -X POST -H "Content-Type:application/x-turtle" -T ./../../knowledge_representation/brainOutput/test.trig
+            http://localhost:7200/repositories/leolani_test2/statements"""
+
+        response = requests.post(post_url,
+                                 data=data,
+                                 headers={'Content-Type': 'application/trig'})
 
         return str(response.status_code)
 
@@ -145,16 +142,16 @@ class TheoryOfMind(object):
         instance_graph = self.dataset.graph(instance_graph_uri)
 
         # Subject
-        if len(parsed_statement['subject']) == 1:  # We only get the label
-            subject_id = parsed_statement['subject'][0]
-            subject_label = parsed_statement['subject'][0]
+        if parsed_statement['subject']['type'] == '':  # We only get the label
+            subject_id = parsed_statement['subject']['label']
+            subject_label = parsed_statement['subject']['label']
             subject_vocab = OWL
             subject_type = 'Thing'
         else:
-            subject_id = parsed_statement['subject'][0]
-            subject_label = parsed_statement['subject'][0]
+            subject_id = parsed_statement['subject']['label']
+            subject_label = parsed_statement['subject']['label']
             subject_vocab = self.namespaces['N2MU']
-            subject_type = parsed_statement['subject'][1]
+            subject_type = parsed_statement['subject']['type']
 
         subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
         subject_label = Literal(subject_label)
@@ -166,16 +163,16 @@ class TheoryOfMind(object):
         instance_graph.add((subject, RDF.type, subject_type2))
 
         # Object
-        if len(parsed_statement['object']) == 1:  # We only get the label
-            object_id = parsed_statement['object'][0]
-            object_label = parsed_statement['object'][0]
+        if parsed_statement['object']['type'] == '':  # We only get the label
+            object_id = parsed_statement['object']['label']
+            object_label = parsed_statement['object']['label']
             object_vocab = OWL
             object_type = 'Thing'
         else:
-            object_id = parsed_statement['object'][0]
-            object_label = parsed_statement['object'][0]
+            object_id = parsed_statement['object']['label']
+            object_label = parsed_statement['object']['label']
             object_vocab = self.namespaces['N2MU']
-            object_type = parsed_statement['object'][1]
+            object_type = parsed_statement['object']['type']
 
         object = URIRef(to_iri(self.namespaces['LW'] + object_id))
         object_label = Literal(object_label)
@@ -439,9 +436,15 @@ def hash_id(triple):
 if __name__ == "__main__":
     # Sample data
     parsed_statement = {
-        "subject": ["Bram", "Person"],
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        },
         "predicate": "likes",
-        "object": ["romantic movies"],
+        "object": {
+            "label":"romantic movies",
+            "type": ""
+        },
         "author": "Selene",
         "chat": 5,
         "turn": 1,
@@ -451,9 +454,15 @@ if __name__ == "__main__":
 
     # Is Bram from the Netherlands?
     parsed_statement2 = {
-        "subject": ["Bram", "Person"],
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        },
         "predicate": "isFrom",
-        "object": ["Netherlands", "Country"],
+        "object": {
+            "label": "Netherlands",
+            "type": "Country"
+        },
         "author": "Selene",
         "chat": 5,
         "turn": 2,
@@ -509,8 +518,8 @@ if __name__ == "__main__":
     print(response, response2)
 
     # Test questions
-    response = brain.query_brain(parsed_question)
-    response2 = brain.query_brain(parsed_question2)
-    response3 = brain.query_brain(parsed_question3)
+    # response = brain.query_brain(parsed_question)
+    # response2 = brain.query_brain(parsed_question2)
+    # response3 = brain.query_brain(parsed_question3)
 
-    # print(response3)
+    print(response)
