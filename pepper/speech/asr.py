@@ -139,21 +139,16 @@ class NameASR(object):
     NAMES = ["Leolani", "Piek", "Selene", "Lenka", "Bram"]
     LANGUAGES = ['en-GB', 'nl-NL', 'es-ES']
 
-    HINTS = [
-        "My name is {}",
-        "I'm {}",
-        "I am {}",
-    ]
-
     NAME_REGEX = "([A-Z]\w+)"
 
-    PHRASES = [hint.format(name) for name in NAMES for hint in HINTS]
-    HINT_REGEX = [hint.format(NAME_REGEX) for hint in HINTS]
-
-    def __init__(self, sample_rate=16000, max_alternatives=10):
+    def __init__(self, sample_rate=16000, max_alternatives=10, hints = ("My name is {}", "I'm {}", "I am {}")):
         self._sample_rate = sample_rate
+        self.hints = hints
 
-        self.asr = [GoogleASR(language, sample_rate, max_alternatives, self.PHRASES) for language in self.LANGUAGES]
+        self.phrases = [hint.format(name) for name in self.NAMES for hint in self.hints]
+        self.hint_regex = [hint.format(self.NAME_REGEX) for hint in self.hints]
+
+        self.asr = [GoogleASR(language, sample_rate, max_alternatives, self.phrases) for language in self.LANGUAGES]
 
     def transcribe(self, audio):
 
@@ -161,7 +156,7 @@ class NameASR(object):
 
         for asr in self.asr:
             for transcript, confidence in asr.transcribe(audio):
-                for hint in self.HINT_REGEX:
+                for hint in self.hint_regex:
                     name = re.findall(hint.lower(), transcript.lower())
 
                     if name:

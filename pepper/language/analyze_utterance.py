@@ -1,22 +1,17 @@
 from __future__ import unicode_literals
-
-from pepper.knowledge.theory_of_mind import TheoryOfMind
-
 from nltk.corpus import wordnet
 from nltk.stem.porter import *
 from nltk import word_tokenize
 from nltk.tag import StanfordNERTagger
-
 import spacy
 import wolframalpha
 import re
 import json
 import os
+from theory_of_mind import TheoryOfMind
 from datetime import date
 
 # certain, uncertain, possible, probable
-brain = TheoryOfMind(address = 'http://130.37.60.58:7200/repositories/leolani_test2')
-
 ROOT = os.path.join(os.path.dirname(__file__))
 ner = StanfordNERTagger(os.path.join(ROOT, 'stanford-ner', 'english.muc.7class.distsim.crf.ser'),
                         os.path.join(ROOT, 'stanford-ner', 'stanford-ner.jar'), encoding='utf-8')
@@ -204,7 +199,6 @@ def analyze_question(speaker, words, pos_list):
    # print('extracted morphological info: ' + str(morphology))
     if say:
         print('response:'+say)
-        print(say)
     else:
         print(str(subject) + " " + to_be + " " + main_verb + "..." + response["type"] + ' ' + str(obj))
         print('i got confused')
@@ -283,7 +277,7 @@ def analyze_statement(speaker, words, pos_list):
     if len(subject)>0:
         rdf['subject'] = subject[len(subject)-1]
     else:
-        rdf['subject'] =''
+        rdf['subject'] = ''
 
     obj = ''
     if main_verb in words:
@@ -419,20 +413,134 @@ def analyze_utterance(utterance, speaker):
                 if val.lower().endswith(e[0].lower()):
                     print(e[1])
     '''
-
-    print(brain.update(template))
-
     return template
 
-# for stat in statements:
-#     rdf = analyze_utterance(stat[0],stat[1])
-#     if rdf['utterance_type'] == 'statement':
+def reply(brain_response):
+
+    say = ''
+    if len(brain_response['response'])==0:
+        say = "I dont know if "
+        say += brain_response['question']['subject']['label'] + ' '
+        say += brain_response['question']['predicate']['type'] + ' '
+        say += brain_response['question']['object']['label']
+        return say+'\n'
+
+    print(brain_response)
+
+    if 'authorlabel' in brain_response['response'][0]:
+        say = brain_response['response'][0]['authorlabel']['value'] +' told me '
+
+    if 'slabel' in brain_response['response'][0]:
+        say += brain_response['response'][0]['slabel']['value']
+    elif 'subject' in brain_response['question']:
+        say += brain_response['question']['subject']['label']
+
+    if brain_response['question']['predicate']['type'] == 'isFrom':
+        say += ' is from '
+    elif brain_response['question']['predicate'] == 'likes':
+        say += ' likes '
+
+    if 'olabel' in brain_response['response'][0]:
+        say += brain_response['response'][0]['olabel']['value']
+    elif 'object' in brain_response['question'].keys():
+        say += brain_response['question']['object']['label']
+
+    return say+'\n'
+
+
+brain_response = [{
+    "question": {
+        "object": {
+            "label": "",
+            "type": "Country"
+        },
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        }
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "Selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "Netherlands"
+            }
+        }
+    ]
+},
+{
+    "question": {
+        "object": {
+            "label": "Piek",
+            "type": "Person"
+        },
+        "predicate": {
+            "type": "knows"
+        },
+        "subject": {
+            "label": "Selene",
+            "type": "Person"
+        }
+    },
+    "response": []
+},
+{
+    "question": {
+        "object": {
+            "label": "Netherlands",
+            "type": "Country"
+        },
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        }
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "Selene"
+            },
+            "v": {
+                "type": "uri",
+                "value": "http://groundedannotationframework.org/grasp#CERTAIN"
+            }
+        }
+    ]
+}]
+
+
+
+for resp in brain_response:
+    print(reply(resp))
+
+
+brain = TheoryOfMind(address = 'http://130.37.60.58:7200/repositories/leolani_test2')
+
+for stat in statements:
+    rdf = analyze_utterance(stat[0],stat[1])
+    if rdf['utterance_type'] == 'statement':
+        print(brain.update(rdf))
+        print('Good!')
+    elif rdf['utterance_type'] == 'question':
+        print(reply(brain.query_brain(rdf)))
+
 
     #if rdf[2]=='statement':
         #response = brain.update(rdf)
         #print(response)
 
-    # print(rdf)
+    print(rdf)
 
 
 
