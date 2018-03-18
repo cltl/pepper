@@ -143,6 +143,7 @@ class NameASR(object):
         "My name is {}",
         "I'm {}",
         "I am {}",
+        "Where is {} from"
     ]
 
     NAME_REGEX = "([A-Z]\w+)"

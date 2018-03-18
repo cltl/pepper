@@ -53,6 +53,7 @@ class TheoryOfMindApp(pepper.App):
         # Speech to Text and Text to Speech
         self.tts = self.session.service("ALAnimatedSpeech")
         self.asr = pepper.GoogleASR('en-GB')
+        self.name_asr = pepper.NameASR()
 
         # Pepper's Ears
         self.microphone = pepper.PepperMicrophone(self.session)
@@ -95,9 +96,9 @@ class TheoryOfMindApp(pepper.App):
             transcript, confidence = hypotheses[0]
 
             # Call on Transcript with the Person information
-            self.on_transcript(transcript, confidence, self.current_person, self.current_person_confidence)
+            self.on_transcript(audio, transcript, confidence, self.current_person, self.current_person_confidence)
 
-    def on_transcript(self, transcript, transcript_confidence, name, name_confidence):
+    def on_transcript(self, audio, transcript, transcript_confidence, name, name_confidence):
         """
         On Transcript Event: Called whenever a person utters something
 
@@ -115,9 +116,9 @@ class TheoryOfMindApp(pepper.App):
         self.log.info('{}: "{}"'.format(name, transcript))
 
         # Give Random Answer from 'Eloquence'
-        self.say(choice(LAST_RESORT))
+        # self.say(choice(LAST_RESORT))
 
-        analyze_utterance(transcript, name)
+        self.say(analyze_utterance(transcript, name if name else "person"))
 
     def on_person_recognize(self, name, confidence):
         """
@@ -139,7 +140,7 @@ class TheoryOfMindApp(pepper.App):
             self.current_person_confidence = confidence
 
             # Greet Person and ask Question
-            self.say("Hey {}, I realized I don't know a lot about you. Where are you from?".format(name))
+            self.say("Hey {}".format(name))
 
     def on_person_new(self, confidence):
         """
