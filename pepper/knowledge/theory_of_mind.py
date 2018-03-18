@@ -191,12 +191,12 @@ class TheoryOfMind(object):
         instance_graph.add((object, RDF.type, object_type2))
 
         # Predicate
-        predicate = parsed_statement['predicate']
+        predicate = parsed_statement['predicate']['type']
 
         # Statement
 
         # Create hashed id from name for this statement
-        statement_id = hash_id([parsed_statement['subject']['label'], parsed_statement['predicate'], parsed_statement['object']['label']])
+        statement_id = hash_id([parsed_statement['subject']['label'], parsed_statement['predicate']['type'], parsed_statement['object']['label']])
         statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
         statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Statement'))
         statement_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
@@ -368,10 +368,10 @@ class TheoryOfMind(object):
                             ?m grasp:wasAttributedTo ?author . 
                             ?author rdfs:label ?authorlabel .
                         }
-                """ % (parsed_question['predicate'],
+                """ % (parsed_question['predicate']['type'],
                    parsed_question['subject']['type'],
                    parsed_question['object']['type'], parsed_question['object']['label'],
-                   parsed_question['predicate'])
+                   parsed_question['predicate']['type'])
 
         else:
             query = """
@@ -391,10 +391,10 @@ class TheoryOfMind(object):
                             ?m grasp:hasAttribution ?att .
                             ?att rdf:value ?v .
                         }
-                """ % (parsed_question['predicate'],
+                """ % (parsed_question['predicate']['type'],
                        parsed_question['subject']['type'], parsed_question['subject']['label'],
                        parsed_question['object']['type'], parsed_question['object']['label'],
-                       parsed_question['predicate'])
+                       parsed_question['predicate']['type'])
 
         query = self.query_prefixes + query
 
@@ -447,9 +447,11 @@ if __name__ == "__main__":
             "label": "Bram",
             "type": "Person"
         },
-        "predicate": "likes",
+        "predicate": {
+            "type": "likes"
+        },
         "object": {
-            "label":"romantic movies",
+            "label": "romantic movies",
             "type": ""
         },
         "author": "Selene",
@@ -465,7 +467,9 @@ if __name__ == "__main__":
             "label": "Bram",
             "type": "Person"
         },
-        "predicate": "isFrom",
+        "predicate": {
+            "type": "isFrom"
+        },
         "object": {
             "label": "Netherlands",
             "type": "Country"
@@ -483,7 +487,9 @@ if __name__ == "__main__":
             "label": "",
             "type": "Person"
         },
-        "predicate": "isFrom",
+        "predicate": {
+            "type": "isFrom"}
+        ,
         "object": {
             "label": "Netherlands",
             "type": "Country"
@@ -496,7 +502,9 @@ if __name__ == "__main__":
             "label": "Selene",
             "type": "Person"
         },
-        "predicate": "knows",
+        "predicate": {
+            "type": "knows"
+        },
         "object": {
             "label": "Piek",
             "type": "Person"
@@ -509,7 +517,9 @@ if __name__ == "__main__":
             "label": "Bram",
             "type": "Person"
         },
-        "predicate": "isFrom",
+        "predicate": {
+            "type": "isFrom"
+        },
         "object": {
             "label": "Netherlands",
             "type": "Country"
