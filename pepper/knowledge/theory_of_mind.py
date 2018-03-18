@@ -126,13 +126,20 @@ class TheoryOfMind(object):
 
         # POST the data
         post_url = self.address + "/statements"
-
-        curl = """curl -X POST -H "Content-Type:application/x-turtle" -T ./../../knowledge_representation/brainOutput/test.trig
-            http://localhost:7200/repositories/leolani_test2/statements"""
+        base_uri ='file:/fake/generated/test.trig'
 
         response = requests.post(post_url,
                                  data=data,
-                                 headers={'Content-Type': 'application/trig'})
+                                 headers={'Content-Type': 'application/x-trig'})
+
+        # response = requests.post(upload_url,
+        #                          params={'context': context_uri, 'baseURI': base_uri},
+        #                          data=f,
+        #                          headers={'Content-Type': mime_type[0]},
+        #                          auth=(self.user, self.password))
+        #
+        # curl = """curl -X POST -H "Content-Type:application/x-turtle" -T ./../../knowledge_representation/brainOutput/test.trig
+        #             http://localhost:7200/repositories/leolani_test2/statements"""
 
         return str(response.status_code)
 
@@ -189,7 +196,7 @@ class TheoryOfMind(object):
         # Statement
 
         # Create hashed id from name for this statement
-        statement_id = hash_id([subject_label, predicate, object_label])
+        statement_id = hash_id([parsed_statement['subject']['label'], parsed_statement['predicate'], parsed_statement['object']['label']])
         statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
         statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Statement'))
         statement_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
@@ -418,9 +425,8 @@ class TheoryOfMind(object):
         sparql.setReturnFormat(JSON)
         sparql.addParameter('Accept', 'application/sparql-results+json')
         response = sparql.query().convert()
-        response_as_string = json.dumps(response, indent=2)
 
-        return response_as_string
+        return response["results"]["bindings"]
 
 
 def hash_id(triple):
@@ -518,8 +524,8 @@ if __name__ == "__main__":
     print(response, response2)
 
     # Test questions
-    # response = brain.query_brain(parsed_question)
-    # response2 = brain.query_brain(parsed_question2)
-    # response3 = brain.query_brain(parsed_question3)
+    response = brain.query_brain(parsed_question)
+    response2 = brain.query_brain(parsed_question2)
+    response3 = brain.query_brain(parsed_question3)
 
     print(response)
