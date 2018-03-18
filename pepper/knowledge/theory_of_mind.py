@@ -115,22 +115,24 @@ class TheoryOfMind(object):
         # self.dataset.default_context.parse(self.ontology_paths['n2mu'], format='turtle')
 
     def __serialize__(self, file_path):
+        format = 'trig'
+
         # Save to file but return the python representation
-        with open(file_path, 'w') as f:
-            self.dataset.serialize(f, format='trig')
+        with open(file_path+format, 'w') as f:
+            self.dataset.serialize(f, format=format)
 
         return file_path
 
     def __upload_to_brain__(self, data):
         print("Posting triples")
 
-        # POST the data
-        post_url = self.address + "/statements"
-        base_uri ='file:/fake/generated/test.trig'
-
-        response = requests.post(post_url,
-                                 data=data,
-                                 headers={'Content-Type': 'application/x-trig'})
+        # # POST the data
+        # post_url = self.address + "/statements"
+        # base_uri ='file:/fake/generated/test.trig'
+        #
+        # response = requests.post(post_url,
+        #                          data=data,
+        #                          headers={'Content-Type': 'application/x-trig'})
 
         # response = requests.post(upload_url,
         #                          params={'context': context_uri, 'baseURI': base_uri},
@@ -140,6 +142,10 @@ class TheoryOfMind(object):
         #
         # curl = """curl -X POST -H "Content-Type:application/x-turtle" -T ./../../knowledge_representation/brainOutput/test.trig
         #             http://localhost:7200/repositories/leolani_test2/statements"""
+
+        post_url = 'http://localhost:7200/rest/data/import/settings/upload?repository=leolani_test2'
+
+        response = requests.get(post_url, data=data)
 
         return str(response.status_code)
 
@@ -291,11 +297,14 @@ class TheoryOfMind(object):
         # Paradiso use case
         self._paradiso_simple_model_(parsed_statement)
 
-        data = self.__serialize__('./../../knowledge_representation/brainOutput/test.trig')
+        data = self.__serialize__('./../../knowledge_representation/brainOutput/test.')
 
         code = self.__upload_to_brain__(data)
 
-        return code
+        parsed_statement["date"] = str(parsed_statement["date"])
+        output = {'response': code, 'question': parsed_statement}
+
+        return output
 
     def update_with_java(self, source, turn, author_name, subject_label, subject_type, predicate_uri, object_label,
                          object_type, perspective, debug=False):
@@ -352,6 +361,7 @@ class TheoryOfMind(object):
         return result
 
     def _create_query_(self, parsed_question):
+        # Query subject
         if parsed_question['subject']['label'] == "":
             query = """
                 SELECT ?slabel ?authorlabel
@@ -373,6 +383,29 @@ class TheoryOfMind(object):
                    parsed_question['object']['type'], parsed_question['object']['label'],
                    parsed_question['predicate']['type'])
 
+        # Query object
+        elif parsed_question['object']['label'] == "":
+            query = """
+                SELECT ?olabel ?authorlabel
+                        WHERE { 
+                            ?s n2mu:%s ?o .  
+                            ?s rdf:type n2mu:%s . 
+                            ?s rdfs:label '%s' .  
+                            ?o rdf:type n2mu:%s . 
+                            ?o rdfs:label ?olabel .  
+                            GRAPH ?g {
+                                ?s n2mu:%s ?o . 
+                            } . 
+                            ?g grasp:denotedBY ?m . 
+                            ?m grasp:wasAttributedTo ?author . 
+                            ?author rdfs:label ?authorlabel .
+                        }
+                """ % (parsed_question['predicate']['type'],
+                   parsed_question['subject']['type'], parsed_question['subject']['label'],
+                   parsed_question['object']['type'],
+                   parsed_question['predicate']['type'])
+
+        # Query existence
         else:
             query = """
                 SELECT ?authorlabel ?v
@@ -426,7 +459,10 @@ class TheoryOfMind(object):
         sparql.addParameter('Accept', 'application/sparql-results+json')
         response = sparql.query().convert()
 
-        return response["results"]["bindings"]
+        # Get only the bindings
+        output = {'response': response["results"]["bindings"], 'question': parsed_question}
+
+        return output
 
 
 def hash_id(triple):
@@ -441,7 +477,7 @@ def hash_id(triple):
 
 
 if __name__ == "__main__":
-    # Sample data
+    # Bram likes romantic movies
     parsed_statement = {
         "subject": {
             "label": "Bram",
@@ -461,7 +497,27 @@ if __name__ == "__main__":
         "date": date.today()
     }
 
-    # Is Bram from the Netherlands?
+    # Selene knows Piek
+    parsed_statement1 = {
+        "subject": {
+            "label": "Selene",
+            "type": "Person"
+        },
+        "predicate": {
+            "type": "knows"
+        },
+        "object": {
+            "label": "Piek",
+            "type": "Person"
+        },
+        "author": "Selene",
+        "chat": 5,
+        "turn": 3,
+        "position": "0-16",
+        "date": date.today()
+    }
+
+    # Bram is from the Netherlands
     parsed_statement2 = {
         "subject": {
             "label": "Bram",
@@ -496,6 +552,21 @@ if __name__ == "__main__":
         }
     }
 
+    # Where is Bram from?
+    parsed_question1 = {
+        "subject": {
+            "label": "Bram",
+            "type": "Person"
+        },
+        "predicate": {
+            "type": "isFrom"}
+        ,
+        "object": {
+            "label": "",
+            "type": "Country"
+        }
+    }
+
     # Does Selene know Piek?
     parsed_question2 = {
         "subject": {
@@ -511,7 +582,7 @@ if __name__ == "__main__":
         }
     }
 
-    # Is Bram from the Netherlands
+    # Is Bram from the Netherlands?
     parsed_question3 = {
         "subject": {
             "label": "Bram",
@@ -530,13 +601,11 @@ if __name__ == "__main__":
     brain = TheoryOfMind()
 
     # Test statements
-    response = brain.update(parsed_statement)
-    response2 = brain.update(parsed_statement2)
-    print(response, response2)
+    for statement in [parsed_statement, parsed_statement1, parsed_statement2]:
+        response = brain.update(statement)
+        print(json.dumps(response, indent=4, sort_keys=True))
 
     # Test questions
-    response = brain.query_brain(parsed_question)
-    response2 = brain.query_brain(parsed_question2)
-    response3 = brain.query_brain(parsed_question3)
-
-    print(response)
+    # for question in [parsed_question, parsed_question1, parsed_question2, parsed_question3]:
+    #     response = brain.query_brain(question)
+    #     print(json.dumps(response, indent=4, sort_keys=True))

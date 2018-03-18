@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:sem="http://semanticweb.cs.vu.nl/2009/11/sem/"
+   xmlns:time="http://www.w3.org/TR/owl-time/#"
+>
+  <rdf:Description rdf:about="http://cltl.nl/leolani/talk/chat5">
+    <rdf:type rdf:resource="http://semanticweb.cs.vu.nl/2009/11/sem/Event"/>
+    <sem:hasTime rdf:resource="http://cltl.nl/leolani/date/2018-03-18"/>
+    <sem:hasSubevent rdf:resource="http://cltl.nl/leolani/talk/chat5_turn1"/>
+    <sem:hasActor rdf:resource="http://cltl.nl/leolani/friends/Selene"/>
+    <sem:hasSubevent rdf:resource="http://cltl.nl/leolani/talk/chat5_turn2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://cltl.nl/leolani/talk/chat5_turn1">
+    <rdf:type rdf:resource="http://semanticweb.cs.vu.nl/2009/11/sem/Event"/>
+    <sem:hasActor rdf:resource="http://cltl.nl/leolani/friends/Selene"/>
+    <sem:hasTime rdf:resource="http://cltl.nl/leolani/date/2018-03-18"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://cltl.nl/leolani/date/2018-03-18">
+    <time:month rdf:datatype="https://www.w3.org/TR/xmlschema-2/#gMonthDay">3</time:month>
+    <rdf:type rdf:resource="http://www.w3.org/TR/owl-time/#DateTimeDescription"/>
+    <time:year rdf:datatype="https://www.w3.org/TR/xmlschema-2/#gYear">2018</time:year>
+    <time:unitType rdf:resource="http://www.w3.org/TR/owl-time/#unitDay"/>
+    <time:day rdf:datatype="https://www.w3.org/TR/xmlschema-2/#gDay">18</time:day>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://cltl.nl/leolani/talk/chat5_turn2">
+    <rdf:type rdf:resource="http://semanticweb.cs.vu.nl/2009/11/sem/Event"/>
+    <sem:hasActor rdf:resource="http://cltl.nl/leolani/friends/Selene"/>
+    <sem:hasTime rdf:resource="http://cltl.nl/leolani/date/2018-03-18"/>
+  </rdf:Description>
+</rdf:RDF>
