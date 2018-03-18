@@ -1,17 +1,22 @@
 from __future__ import unicode_literals
+
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+
 from nltk.corpus import wordnet
 from nltk.stem.porter import *
 from nltk import word_tokenize
 from nltk.tag import StanfordNERTagger
+
 import spacy
 import wolframalpha
 import re
 import json
 import os
-from theory_of_mind import TheoryOfMind
 from datetime import date
 
 # certain, uncertain, possible, probable
+brain = TheoryOfMind(address = 'http://130.37.60.58:7200/repositories/leolani_test2')
+
 ROOT = os.path.join(os.path.dirname(__file__))
 ner = StanfordNERTagger(os.path.join(ROOT, 'stanford-ner', 'english.muc.7class.distsim.crf.ser'),
                         os.path.join(ROOT, 'stanford-ner', 'stanford-ner.jar'), encoding='utf-8')
@@ -275,7 +280,10 @@ def analyze_statement(speaker, words, pos_list):
         #else:
         #    subject.append(pos_list[0][0]+' '+pos_list[1][0])
 
-    rdf['subject'] = subject[len(subject)-1]
+    if len(subject)>0:
+        rdf['subject'] = subject[len(subject)-1]
+    else:
+        rdf['subject'] =''
 
     obj = ''
     if main_verb in words:
@@ -412,21 +420,19 @@ def analyze_utterance(utterance, speaker):
                     print(e[1])
     '''
 
+    print(brain.update(template))
 
     return template
 
-brain = TheoryOfMind(address = 'http://130.37.60.58:7200/repositories/leolani_test2')
-
-for stat in statements:
-    rdf = analyze_utterance(stat[0],stat[1])
-    if rdf['utterance_type'] == 'statement':
-        print(brain.update(rdf))
+# for stat in statements:
+#     rdf = analyze_utterance(stat[0],stat[1])
+#     if rdf['utterance_type'] == 'statement':
 
     #if rdf[2]=='statement':
         #response = brain.update(rdf)
         #print(response)
 
-    print(rdf)
+    # print(rdf)
 
 
 
