@@ -480,7 +480,7 @@ def hash_id(triple):
 
 if __name__ == "__main__":
     # Create brain connection
-    brain = TheoryOfMind()
+    brain = TheoryOfMind(address='http://192.168.1.100:7200/repositories/leolani_test2')
 
     # Test statements
     for statement in statements:

@@ -104,11 +104,12 @@ class TheoryOfMindApp(pepper.App):
                     name_transcript = name_transcript.format(name)
                     self.on_transcript(audio, name_transcript, confidence,
                                        self.current_person, self.current_person_confidence)
+                    break
             else:
                 self.on_transcript(audio, hypotheses[0][0], hypotheses[0][1],
                                    self.current_person, self.current_person_confidence)
 
-            self.utterance.start()
+        self.utterance.start()
 
     def on_transcript(self, audio, transcript, transcript_confidence, name, name_confidence):
         """

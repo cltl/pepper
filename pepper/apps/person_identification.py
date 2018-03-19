@@ -1,93 +1,161 @@
 import pepper
-from threading import Thread
 import numpy as np
+import collections
+
+from random import choice
 
 
-class PersonIdentificationApp(pepper.App):
+MALE = ["sir", "mister"]
+FEMALE = ["madam", "my lady", "miss"]
 
-    RESOLUTION = pepper.CameraResolution.VGA_320x240
+KNOWN = [
+    "Nice to see you again!",
+    "It has been a long time!",
+    "I'm glad we see each other again!",
+    "You came back!",
+    "At last!",
+    "I was thinking about you!"
+]
+
+GREET = ["Hello", "Hi", "Hey There", "Greetings"]
+
+NEW = [
+    "I don't think we have met before!",
+    "Let's get introduced!",
+    "Hi, I'm Leo Lani, the robot!",
+    "Ooh, new people!",
+    "Do you wanna be my friend?",
+    "Are you here often?"
+]
+
+NAME = [
+    "What's your name?",
+    "Who are you?",
+]
+
+
+class PersonIdentificationApp(pepper.FlowApp):
+
+    PERSON_RECOGNITION_THRESHOLD = 0.2
+    PERSON_NEW_THRESHOLD = 0.1
+
+    FACE_BUFFER = 3
 
     def __init__(self, address):
-        super(PersonIdentificationApp, self).__init__(address)
 
-        self.tts = self.session.service("ALAnimatedSpeech")
+        self.gender_classifier = pepper.GenderClassifyClient()
 
         self.people = pepper.load_data_set('lfw', 80)
         self.people.update(pepper.load_people())
-
-        print("People in Database: {}".format(len(self.people)))
-
         self.cluster = pepper.PeopleCluster(self.people)
-        self.cluster.performance()
 
-        self.camera = pepper.PepperCamera(self.session, resolution=self.RESOLUTION)
-        self.openface = pepper.OpenFace()
+        self.scores = collections.deque([], maxlen=self.FACE_BUFFER)
 
-        self.microphone = pepper.PepperMicrophone(self.session)
-        self.utterance = pepper.Utterance(self.microphone, self.on_utterance)
+        self.person_identification = False
+        self.person_name = None
+
+        self.asr = pepper.GoogleASR()
         self.name_asr = pepper.NameASR()
 
-        self.person_name = None
+        self.wolfram = pepper.Wolfram()
 
-        self._update_thread = Thread(target=self.update)
-        self._update_thread.daemon = True
-        self._update_thread.start()
-
-        print("Application Running")
+        super(PersonIdentificationApp, self).__init__(address)
 
     def on_utterance(self, audio):
-        hypothesis = self.name_asr.transcribe(audio)
+        """
+        On Utterance Event
 
-        if hypothesis:
-            name, confidence = hypothesis
-            self.person_name = name
-            self.utterance.stop()
+        Parameters
+        ----------
+        audio: numpy.ndarray
+        """
+
+        if self.person_identification:
+            hypothesis = self.name_asr.transcribe(audio)
+
+            if hypothesis:
+                name, confidence = hypothesis
+                self.person_name = name
+                self.person_identification = False
+            else:
+                self.say("Sorry, could you repeat that?")
         else:
-            self.utterance.stop()
-            self.say("Sorry, could you repeat that?")
-            self.utterance.start()
+            hypotheses = self.asr.transcribe(audio)
 
-    def on_person_new(self, confidence):
-        self.say("I don't think we have met before. What is your name?")
+            if hypotheses:
+                question, confidence = hypotheses[0]
 
+                self.log.info(u"[{:3.2%}] {}: '{}'".format(confidence, self.person_name, question))
+
+                if confidence > 0.7:
+                    answer = self.wolfram.query(question)
+
+                    if answer:
+                        self.say("You asked: {}. {}".format(question, answer))
+
+                else:
+                    self.say("You asked: {}, but I don't know the answer to that.".format(question))
+
+    def on_face(self, bounds, representation):
+        """
+        On Face Detection
+
+        Parameters
+        ----------
+        bounds: FaceBounds
+        representation: np.ndarray
+        """
+
+        name, score = self.cluster.classify(representation)
+
+        self.log.info("[{}] '{}': {} ~ {}".format(len(self.scores), name, score, np.mean(score)))
+
+        self.scores.append(score)
+
+        if len(self.scores) == self.scores.maxlen:
+            mean_score = np.mean(self.scores)
+
+            if mean_score > 0.2:
+                self.on_person_recognized(name)
+                self.scores.clear()
+
+            elif mean_score < 0.1:
+                gender = self.gender_classifier.classify(representation)
+
+                address = "human"
+
+                if gender < 0.20:
+                    address = choice(MALE)
+                if gender > 0.80:
+                    address = choice(FEMALE)
+
+                self.say("{} {}, {} {}".format(choice(GREET), address, choice(NEW), choice(NAME)))
+
+                self.on_person_new()
+                self.scores.clear()
+
+    def on_person_recognized(self, name):
+        self.say("{} {}, {}".format(choice(GREET), name, choice(KNOWN)))
+
+    def on_person_new(self):
+        self.person_name = None
+        self.person_identification = True
         samples = []
 
-        self.person_name = None
-        self.utterance.start()
-
         while len(samples) < 10 or not self.person_name:
-            image = self.camera.get()
-            face = self.openface.represent(image)
+            image = self._camera.get()
+            face = self._openface.represent(image)
 
             if face:
                 bounds, representation = face
                 samples.append(representation)
 
-        self.utterance.stop()
+            self.log.info("Name: {}, Samples: {}".format(self.person_name, len(samples)))
 
         if self.person_name not in self.people:
             self.people[self.person_name] = np.array(samples)
             self.cluster = pepper.PeopleCluster(self.people)
-            self.say("Nice to meet you, {}.".format(self.person_name))
-
-    def on_person_recognise(self, name, confidence):
-        self.say("Hello, {}".format(name))
-
-    def update(self):
-        while True:
-            image = self.camera.get()
-            face = self.openface.represent(image)
-
-            if face:
-                bounds, representation = face
-                name, score = self.cluster.classify(representation)
-
-                if score > 0.25: self.on_person_recognise(name, score)
-                elif score < 0.01: self.on_person_new(score)
-                else: print(name, score)
-
-    def say(self, text):
-        self.tts.say(text)
+            self.say("Nice to meet you, {}!".format(self.person_name))
 
 
 if __name__ == "__main__":
