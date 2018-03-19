@@ -1,12 +1,14 @@
 import subprocess
 import json
 import requests
-from datetime import date
 
 from rdflib import Dataset, Graph, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
 from hashids import Hashids
 from SPARQLWrapper import SPARQLWrapper, JSON
+
+from pepper.knowledge.brainFacts import statements
+from pepper.knowledge.brainQuestions import questions
 
 REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
 LOCAL_BRAIN = "http://localhost:7200/repositories/leolani_test2"
@@ -139,6 +141,19 @@ class TheoryOfMind(object):
         instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'instances'))
         instance_graph = self.dataset.graph(instance_graph_uri)
 
+        # Create Leolani
+        leolani_id = 'Leolani'
+        leolani_label = 'Leolani'
+
+        leolani = URIRef(to_iri(self.namespaces['LW'] + leolani_id))
+        leolani_label = Literal(leolani_label)
+        leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'ROBOT'))
+        leolani_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
+
+        instance_graph.add((leolani, RDFS.label, leolani_label))
+        instance_graph.add((leolani, RDF.type, leolani_type1))
+        instance_graph.add((leolani, RDF.type, leolani_type2))
+
         # Subject
         if parsed_statement['subject']['type'] == '':  # We only get the label
             subject_id = parsed_statement['subject']['label']
@@ -182,7 +197,7 @@ class TheoryOfMind(object):
         instance_graph.add((object, RDF.type, object_type2))
 
         # Predicate
-        predicate = parsed_statement['predicate']['type']
+        predicate = parsed_statement['predicate']['type'].replace(" ", "_")
 
         # Statement
 
@@ -226,6 +241,9 @@ class TheoryOfMind(object):
         instance_graph.add((actor, RDFS.label, actor_label))
         instance_graph.add((actor, RDF.type, actor_type1))
         instance_graph.add((actor, RDF.type, actor_type2))
+
+        # Add leolani knows actor
+        instance_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
 
         # Chat and turn
         chat_id = 'chat%s' % parsed_statement['chat']
@@ -282,12 +300,13 @@ class TheoryOfMind(object):
         # Paradiso use case
         self._paradiso_simple_model_(parsed_statement)
 
-        data = self.__serialize__('./../../knowledge_representation/brainOutput/test_2.')
+        data = self.__serialize__('./../../knowledge_representation/brainOutput/learned_facts.')
 
         code = self.__upload_to_brain__(data)
 
+        # Create JSON output
         parsed_statement["date"] = str(parsed_statement["date"])
-        output = {'response': code, 'question': parsed_statement}
+        output = {'response': code, 'statement': parsed_statement}
 
         return output
 
@@ -353,10 +372,8 @@ class TheoryOfMind(object):
             query = """
                 SELECT ?slabel ?authorlabel
                         WHERE { 
-                            ?s n2mu:%s ?o .  
-                            ?s rdf:type n2mu:%s . 
-                            ?s rdfs:label ?slabel .  
-                            ?o rdf:type n2mu:%s . 
+                            ?s n2mu:%s ?o . 
+                            ?s rdfs:label ?slabel . 
                             ?o rdfs:label '%s' .  
                             GRAPH ?g {
                                 ?s n2mu:%s ?o . 
@@ -366,19 +383,16 @@ class TheoryOfMind(object):
                             ?author rdfs:label ?authorlabel .
                         }
                 """ % (parsed_question['predicate']['type'],
-                   parsed_question['subject']['type'],
-                   parsed_question['object']['type'], parsed_question['object']['label'],
-                   parsed_question['predicate']['type'])
+                       parsed_question['object']['label'],
+                       parsed_question['predicate']['type'])
 
         # Query object
         elif parsed_question['object']['label'] == "":
             query = """
                 SELECT ?olabel ?authorlabel
                         WHERE { 
-                            ?s n2mu:%s ?o .  
-                            ?s rdf:type n2mu:%s . 
+                            ?s n2mu:%s ?o .   
                             ?s rdfs:label '%s' .  
-                            ?o rdf:type n2mu:%s . 
                             ?o rdfs:label ?olabel .  
                             GRAPH ?g {
                                 ?s n2mu:%s ?o . 
@@ -388,19 +402,16 @@ class TheoryOfMind(object):
                             ?author rdfs:label ?authorlabel .
                         }
                 """ % (parsed_question['predicate']['type'],
-                   parsed_question['subject']['type'], parsed_question['subject']['label'],
-                   parsed_question['object']['type'],
-                   parsed_question['predicate']['type'])
+                       parsed_question['subject']['label'],
+                       parsed_question['predicate']['type'])
 
         # Query existence
         else:
             query = """
                 SELECT ?authorlabel ?v
                         WHERE { 
-                            ?s n2mu:%s ?o .  
-                            ?s rdf:type n2mu:%s . 
+                            ?s n2mu:%s ?o .   
                             ?s rdfs:label '%s' .  
-                            ?o rdf:type n2mu:%s . 
                             ?o rdfs:label '%s' .  
                             GRAPH ?g {
                                 ?s n2mu:%s ?o . 
@@ -412,8 +423,8 @@ class TheoryOfMind(object):
                             ?att rdf:value ?v .
                         }
                 """ % (parsed_question['predicate']['type'],
-                       parsed_question['subject']['type'], parsed_question['subject']['label'],
-                       parsed_question['object']['type'], parsed_question['object']['label'],
+                       parsed_question['subject']['label'],
+                       parsed_question['object']['label'],
                        parsed_question['predicate']['type'])
 
         query = self.query_prefixes + query
@@ -446,7 +457,9 @@ class TheoryOfMind(object):
         sparql.addParameter('Accept', 'application/sparql-results+json')
         response = sparql.query().convert()
 
-        # Get only the bindings
+        # Create JSON output
+        if 'date' in parsed_question.keys():
+            parsed_question["date"] = str(parsed_question["date"])
         output = {'response': response["results"]["bindings"], 'question': parsed_question}
 
         return output
@@ -464,135 +477,18 @@ def hash_id(triple):
 
 
 if __name__ == "__main__":
-    # Bram likes romantic movies
-    parsed_statement = {
-        "subject": {
-            "label": "Bram",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "likes"
-        },
-        "object": {
-            "label": "cheese",
-            "type": ""
-        },
-        "author": "Selene",
-        "chat": 5,
-        "turn": 1,
-        "position": "0-25",
-        "date": date.today()
-    }
-
-    # Selene knows Piek
-    parsed_statement1 = {
-        "subject": {
-            "label": "Selene",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "knows"
-        },
-        "object": {
-            "label": "Piek",
-            "type": "PERSON"
-        },
-        "author": "Selene",
-        "chat": 5,
-        "turn": 2,
-        "position": "0-16",
-        "date": date.today()
-    }
-
-    # Lenka is from the Serbia
-    parsed_statement2 = {
-        "subject": {
-            "label": "Bram",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "isFrom"
-        },
-        "object": {
-            "label": "Netherlands",
-            "type": "LOCATION"
-        },
-        "author": "Selene",
-        "chat": 5,
-        "turn": 3,
-        "position": "0-27",
-        "date": date.today()
-    }
-
-    # Who is from the Netherlands? -> Bram, Selene
-    parsed_question = {
-        "subject": {
-            "label": "",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "isFrom"}
-        ,
-        "object": {
-            "label": "Netherlands",
-            "type": "LOCATION"
-        }
-    }
-
-    # Where is Bram from? -> Netherlands, Selene
-    parsed_question1 = {
-        "subject": {
-            "label": "Bram",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "isFrom"}
-        ,
-        "object": {
-            "label": "",
-            "type": "LOCATION"
-        }
-    }
-
-    # Does Selene know Piek? -> (yes) Selene
-    parsed_question2 = {
-        "subject": {
-            "label": "Selene",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "knows"
-        },
-        "object": {
-            "label": "Piek",
-            "type": "PERSON"
-        }
-    }
-
-    # Is Lenka from the Netherlands? -> (idk) empty
-    parsed_question3 = {
-        "subject": {
-            "label": "Lenka",
-            "type": "PERSON"
-        },
-        "predicate": {
-            "type": "isFrom"
-        },
-        "object": {
-            "label": "Netherlands",
-            "type": "LOCATION"
-        }
-    }
-
     # Create brain connection
     brain = TheoryOfMind(address='http://192.168.1.100:7200/repositories/leolani_test2')
 
     # Test statements
-    for statement in [parsed_statement1, parsed_statement, parsed_statement2]:
-        response = brain.update(statement)
-        print(json.dumps(response, indent=4, sort_keys=True))
+    # for statement in statements:
+    #     response = brain.update(statement)
+    #     print(json.dumps(response, indent=4, sort_keys=True))
+
+    # Separation
+    print('#######################################################')
 
     # Test questions
-    for question in [parsed_question, parsed_question1, parsed_question2, parsed_question3]:
+    for question in questions:
         response = brain.query_brain(question)
         print(json.dumps(response, indent=4, sort_keys=True))
