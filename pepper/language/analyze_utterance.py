@@ -25,7 +25,7 @@ stemmer = PorterStemmer()
 
 grammar = json_dict["grammar"]
 names = ['selene', 'bram', 'leolani', 'piek','selene']
-statements = [['my favorite food is cake','lenka'],['what does piek like?', 'jo'],['I\'m from the Netherlands', 'Bram'],
+statements = [['where is bram from?','jo'],['my favorite food is cake','lenka'],['what does piek like?', 'jo'],['I\'m from the Netherlands', 'Bram'],
               ['What is your name', 'person'],['My name is lenka', 'person'],
               ['my mother is ljubica','lenka'], ['Does Selena know piek', 'bram'],['who is from italy?','jill'],
             ['Where is Selene from', 'person'], ['where are you from', 'person'], 
@@ -63,8 +63,11 @@ def analyze_question(speaker, words, pos_list):
     elif pos_list[0][1].startswith('VB'):
         to_be = question_word
         response_type = 'bool'
+
+    '''
     if pos_list[0][0].lower() == 'have' or words[2].lower().strip() == 'ever':
         response_type += '-frequency'
+    '''
    # print('because the question word is '+question_word+', response type is '+response['type'])
 
     # EXTRACTING THE MAIN VERB AND TO BE
@@ -149,7 +152,7 @@ def analyze_question(speaker, words, pos_list):
         if question_word=='who':
             rdf['subject'] = 'PERSON'
         '''
-        if words[words.index('from')+1] and question_word=='who':
+        if len(words) > words.index('from')+1 and question_word=='who':
             rdf['object'] = words[words.index('from')+1]
         for name in names:
             if name in subject:
@@ -399,6 +402,8 @@ def analyze_statement(speaker, words, pos_list):
     #return [rdf, speaker, 'statement']
     template['date'] = date.today()
     print(template)
+    brain.update(template)
+
 
     if rdf['subject'].lower() == speaker.lower():
         speaker = 'you'
@@ -417,9 +422,8 @@ def analyze_statement(speaker, words, pos_list):
             rdf['subject'] = 'your '+prop
 
     say = speaker + ' said ' + rdf['subject'] + ' ' + main_verb + ' ' + rdf['object']
-    print(say)
 
-    return template
+    return say
 
 # for st in statements:
 def analyze_utterance(utterance, speaker):
@@ -460,20 +464,12 @@ def analyze_utterance(utterance, speaker):
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
         template = analyze_question(speaker, words, pos_list)
         print('i am thinking')
-        return (reply(brain.query_brain(template)))
+        response = (reply(brain.query_brain(template)))
     else:
-        template = analyze_statement(speaker, words, pos_list)
-        brain.update(template)
-        print('Good!')
+        response = analyze_statement(speaker, words, pos_list)
+        #print(brain.update(template))
 
-    '''
-    for el in template:
-        for val in el.values():
-            for e in recognized_entities:
-                if val.lower().endswith(e[0].lower()):
-                    print(e[1])
-    '''
-    return template
+    return response
 
 
 
@@ -551,13 +547,10 @@ def reply(brain_response):
 
     say = ''
     if len(brain_response['response'])==0:
-        '''
         say = "I dont know if "
         say += brain_response['question']['subject']['label'] + ' '
         say += brain_response['question']['predicate']['type'] + ' '
         say += brain_response['question']['object']['label']
-        '''
-        say = 'I dont know...'
         return say+'\n'
 
     print(brain_response)
@@ -582,7 +575,6 @@ def reply(brain_response):
 
     return say+'\n'
 
-print(reply('ksjb'))
 
 brain_response = [{
     "question": {
