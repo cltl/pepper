@@ -1,149 +1,98 @@
 /Users/mytomorrows/Documents/VU/pepper/venv/bin/python /Users/mytomorrows/Documents/VU/pepper/pepper/knowledge/theory_of_mind.py
-This is the triple: ['Selene', 'knows', 'Piek']
-Posting triples
-{
-    "question": {
-        "author": "Selene",
-        "chat": 5,
-        "date": "2018-03-18",
-        "object": {
-            "label": "Piek",
-            "type": "Person"
-        },
-        "position": "0-16",
-        "predicate": {
-            "type": "knows"
-        },
-        "subject": {
-            "label": "Selene",
-            "type": "Person"
-        },
-        "turn": 2
-    },
-    "response": "204"
-}
-This is the triple: ['Bram', 'likes', 'romantic movies']
-Posting triples
-{
-    "question": {
-        "author": "Selene",
-        "chat": 5,
-        "date": "2018-03-18",
-        "object": {
-            "label": "romantic movies",
-            "type": ""
-        },
-        "position": "0-25",
-        "predicate": {
-            "type": "likes"
-        },
-        "subject": {
-            "label": "Bram",
-            "type": "Person"
-        },
-        "turn": 1
-    },
-    "response": "204"
-}
-This is the triple: ['Lenka', 'isFrom', 'Serbia']
-Posting triples
-{
-    "question": {
-        "author": "Selene",
-        "chat": 5,
-        "date": "2018-03-18",
-        "object": {
-            "label": "Serbia",
-            "type": "Country"
-        },
-        "position": "0-27",
-        "predicate": {
-            "type": "isFrom"
-        },
-        "subject": {
-            "label": "Lenka",
-            "type": "Person"
-        },
-        "turn": 3
-    },
-    "response": "204"
-}
-This is the triple: ['', 'isFrom', 'Serbia']
+#######################################################
+This is the triple: ['', 'isFrom', 'serbia']
 {
     "question": {
         "object": {
-            "label": "Serbia",
-            "type": "Country"
+            "label": "serbia",
+            "type": "LOCATION"
         },
         "predicate": {
             "type": "isFrom"
         },
         "subject": {
             "label": "",
-            "type": "Person"
+            "type": "PERSON"
         }
     },
     "response": [
         {
             "authorlabel": {
                 "type": "literal",
-                "value": "Selene"
+                "value": "selene"
             },
             "slabel": {
                 "type": "literal",
-                "value": "Lenka"
+                "value": "lenka"
             }
         }
     ]
 }
-This is the triple: ['Lenka', 'isFrom', '']
+This is the triple: ['lenka', 'isFrom', '']
 {
     "question": {
         "object": {
             "label": "",
-            "type": "Country"
+            "type": "LOCATION"
         },
         "predicate": {
             "type": "isFrom"
         },
         "subject": {
-            "label": "Lenka",
-            "type": "Person"
+            "label": "lenka",
+            "type": "PERSON"
         }
     },
     "response": [
         {
             "authorlabel": {
                 "type": "literal",
-                "value": "Selene"
+                "value": "selene"
             },
             "olabel": {
                 "type": "literal",
-                "value": "Serbia"
+                "value": "serbia"
             }
         }
     ]
 }
-This is the triple: ['Selene', 'knows', 'Piek']
+This is the triple: ['selene', 'knows', 'piek']
 {
     "question": {
         "object": {
-            "label": "Piek",
-            "type": "Person"
+            "label": "piek",
+            "type": "PERSON"
         },
         "predicate": {
             "type": "knows"
         },
         "subject": {
-            "label": "Selene",
-            "type": "Person"
+            "label": "selene",
+            "type": "PERSON"
+        }
+    },
+    "response": []
+}
+This is the triple: ['bram', 'isFrom', 'netherlands']
+{
+    "question": {
+        "object": {
+            "label": "netherlands",
+            "type": "LOCATION"
+        },
+        "predicate": {
+            "type": "isFrom"
+        },
+        "subject": {
+            "label": "bram",
+            "type": "PERSON"
         }
     },
     "response": [
         {
             "authorlabel": {
                 "type": "literal",
-                "value": "Selene"
+                "value": "selene"
             },
             "v": {
                 "type": "uri",
@@ -152,22 +101,272 @@ This is the triple: ['Selene', 'knows', 'Piek']
         }
     ]
 }
-This is the triple: ['Bram', 'isFrom', 'Netherlands']
+This is the triple: [u'bram', u'knows', u'beyonce']
 {
     "question": {
+        "author": "person",
+        "chat": "",
+        "date": "2018-03-19",
         "object": {
-            "label": "Netherlands",
-            "type": "Country"
+            "id": "",
+            "label": "beyonce",
+            "type": ""
         },
+        "position": "",
+        "predicate": {
+            "type": "knows"
+        },
+        "response": {
+            "format": "",
+            "role": ""
+        },
+        "subject": {
+            "id": "",
+            "label": "bram",
+            "type": ""
+        },
+        "turn": "",
+        "utterance_type": "question"
+    },
+    "response": []
+}
+This is the triple: [u'leolani', u'knows', u'bram']
+{
+    "question": {
+        "author": "bram",
+        "chat": "",
+        "date": "2018-03-19",
+        "object": {
+            "id": "",
+            "label": "bram",
+            "type": "PERSON"
+        },
+        "position": "",
+        "predicate": {
+            "type": "knows"
+        },
+        "response": {
+            "format": "",
+            "role": ""
+        },
+        "subject": {
+            "id": "",
+            "label": "leolani",
+            "type": ""
+        },
+        "turn": "",
+        "utterance_type": "question"
+    },
+    "response": []
+}
+This is the triple: [u'selene', u'knows', u'piek']
+{
+    "question": {
+        "author": "person",
+        "chat": "",
+        "date": "2018-03-19",
+        "object": {
+            "id": "",
+            "label": "piek",
+            "type": "PERSON"
+        },
+        "position": "",
+        "predicate": {
+            "type": "knows"
+        },
+        "response": {
+            "format": "",
+            "role": ""
+        },
+        "subject": {
+            "id": "",
+            "label": "selene",
+            "type": ""
+        },
+        "turn": "",
+        "utterance_type": "question"
+    },
+    "response": []
+}
+This is the triple: [u'leolani', u'isFrom', u'']
+{
+    "question": {
+        "author": "person",
+        "chat": "",
+        "date": "2018-03-19",
+        "object": {
+            "id": "",
+            "label": "",
+            "type": ""
+        },
+        "position": "",
         "predicate": {
             "type": "isFrom"
         },
+        "response": {
+            "format": "",
+            "role": ""
+        },
         "subject": {
-            "label": "Bram",
-            "type": "Person"
-        }
+            "id": "",
+            "label": "leolani",
+            "type": ""
+        },
+        "turn": "",
+        "utterance_type": "question"
     },
-    "response": []
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "france"
+            }
+        },
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "japan"
+            }
+        }
+    ]
+}
+This is the triple: [u'', u'isFrom', u'italy']
+{
+    "question": {
+        "author": "jill",
+        "chat": "",
+        "date": "2018-03-19",
+        "object": {
+            "id": "",
+            "label": "italy",
+            "type": ""
+        },
+        "position": "",
+        "predicate": {
+            "type": "isFrom"
+        },
+        "response": {
+            "format": "",
+            "role": ""
+        },
+        "subject": {
+            "id": "",
+            "label": "",
+            "type": ""
+        },
+        "turn": "",
+        "utterance_type": "question"
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "slabel": {
+                "type": "literal",
+                "value": "bram"
+            }
+        },
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "lenka"
+            },
+            "slabel": {
+                "type": "literal",
+                "value": "bram"
+            }
+        },
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "bram"
+            },
+            "slabel": {
+                "type": "literal",
+                "value": "bram"
+            }
+        }
+    ]
+}
+This is the triple: [u'piek', u'likes', u'']
+{
+    "question": {
+        "author": "jo",
+        "chat": "",
+        "date": "2018-03-19",
+        "object": {
+            "id": "",
+            "label": "",
+            "type": ""
+        },
+        "position": "",
+        "predicate": {
+            "type": "likes"
+        },
+        "response": {
+            "format": "",
+            "role": ""
+        },
+        "subject": {
+            "id": "",
+            "label": "piek",
+            "type": ""
+        },
+        "turn": "",
+        "utterance_type": "question"
+    },
+    "response": [
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "balkenbrij"
+            }
+        },
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "soccer"
+            }
+        },
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "horror movies"
+            }
+        },
+        {
+            "authorlabel": {
+                "type": "literal",
+                "value": "selene"
+            },
+            "olabel": {
+                "type": "literal",
+                "value": "2001 a space odyssey"
+            }
+        }
+    ]
 }
 
 Process finished with exit code 0
