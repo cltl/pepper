@@ -468,13 +468,13 @@ if __name__ == "__main__":
     parsed_statement = {
         "subject": {
             "label": "Bram",
-            "type": "Person"
+            "type": "PERSON"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
-            "label": "romantic movies",
+            "label": "cheese",
             "type": ""
         },
         "author": "Selene",
@@ -488,14 +488,14 @@ if __name__ == "__main__":
     parsed_statement1 = {
         "subject": {
             "label": "Selene",
-            "type": "Person"
+            "type": "PERSON"
         },
         "predicate": {
             "type": "knows"
         },
         "object": {
             "label": "Piek",
-            "type": "Person"
+            "type": "PERSON"
         },
         "author": "Selene",
         "chat": 5,
@@ -507,15 +507,15 @@ if __name__ == "__main__":
     # Lenka is from the Serbia
     parsed_statement2 = {
         "subject": {
-            "label": "Lenka",
-            "type": "Person"
+            "label": "Bram",
+            "type": "PERSON"
         },
         "predicate": {
             "type": "isFrom"
         },
         "object": {
-            "label": "Serbia",
-            "type": "Country"
+            "label": "Netherlands",
+            "type": "LOCATION"
         },
         "author": "Selene",
         "chat": 5,
@@ -524,33 +524,33 @@ if __name__ == "__main__":
         "date": date.today()
     }
 
-    # Who is from the Serbia? -> Lenka, Selene
+    # Who is from the Netherlands? -> Bram, Selene
     parsed_question = {
         "subject": {
             "label": "",
-            "type": "Person"
+            "type": "PERSON"
         },
         "predicate": {
             "type": "isFrom"}
         ,
         "object": {
-            "label": "Serbia",
-            "type": "Country"
+            "label": "Netherlands",
+            "type": "LOCATION"
         }
     }
 
-    # Where is Lenka from? -> Serbia, Selene
+    # Where is Bram from? -> Netherlands, Selene
     parsed_question1 = {
         "subject": {
-            "label": "Lenka",
-            "type": "Person"
+            "label": "Bram",
+            "type": "PERSON"
         },
         "predicate": {
             "type": "isFrom"}
         ,
         "object": {
             "label": "",
-            "type": "Country"
+            "type": "LOCATION"
         }
     }
 
@@ -558,34 +558,34 @@ if __name__ == "__main__":
     parsed_question2 = {
         "subject": {
             "label": "Selene",
-            "type": "Person"
+            "type": "PERSON"
         },
         "predicate": {
             "type": "knows"
         },
         "object": {
             "label": "Piek",
-            "type": "Person"
+            "type": "PERSON"
         }
     }
 
-    # Is Bram from the Netherlands? -> (idk) empty
+    # Is Lenka from the Netherlands? -> (idk) empty
     parsed_question3 = {
         "subject": {
-            "label": "Bram",
-            "type": "Person"
+            "label": "Lenka",
+            "type": "PERSON"
         },
         "predicate": {
             "type": "isFrom"
         },
         "object": {
             "label": "Netherlands",
-            "type": "Country"
+            "type": "LOCATION"
         }
     }
 
     # Create brain connection
-    brain = TheoryOfMind(address='http://130.37.60.58:7200/repositories/leolani_test2')
+    brain = TheoryOfMind(address='http://192.168.1.100:7200/repositories/leolani_test2')
 
     # Test statements
     for statement in [parsed_statement1, parsed_statement, parsed_statement2]:

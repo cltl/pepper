@@ -29,8 +29,8 @@ def load_data_set(directory, min_samples = 30):
     return data
 
 
-def load_people():
-    ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'leolani')
+def load_people(directory = 'leolani'):
+    ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), directory)
 
     data = {}
 

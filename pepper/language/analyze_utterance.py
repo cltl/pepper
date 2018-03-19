@@ -415,10 +415,13 @@ def reply(brain_response):
 
     say = 'I am confused '
     if len(brain_response['response'])==0:
+        '''
         say = "I dont know if "
         say += brain_response['question']['subject']['label'] + ' '
         say += brain_response['question']['predicate']['type'] + ' '
         say += brain_response['question']['object']['label']
+        '''
+        say = 'I dont know...'
         return say+'\n'
 
     print(brain_response)

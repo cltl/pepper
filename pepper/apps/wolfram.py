@@ -46,22 +46,22 @@ class WolframApp(pepper.App):
         if hypotheses_en:
             question, confidence = hypotheses_en[0]
 
-            if hypotheses_nl and hypotheses_nl[0][1] > confidence and hypotheses_nl[0][1] > 0.7:
-                self.say(u"I'm sorry, but I don't speak Dutch")
-            else:
-                print u"[{:3.0%}] {}".format(confidence, question),
+            # if hypotheses_nl and hypotheses_nl[0][1] > confidence and hypotheses_nl[0][1] > 0.7:
+            #     self.say(u"I'm sorry, but I don't speak Dutch")
+            # else:
+            print u"[{:3.0%}] {}".format(confidence, question),
 
-                if confidence > 0.7:
-                    answer = self.wolfram.query(question)
+            if confidence > 0.7:
+                answer = self.wolfram.query(question)
 
-                    if answer:
-                        self.say(u"You asked: {}. {}".format(question, answer))
-                        print u" -> {}".format(answer),
+                if answer:
+                    self.say(u"You asked: {}. {}".format(question, answer))
+                    print u" -> {}".format(answer),
 
-                    else: self.say(choice(LAST_RESORT))
+                else: self.say(choice(LAST_RESORT))
 
-                else: self.say(u"You asked: {}, but I don't know the answer to that.".format(question))
-                print("")
+            else: self.say(u"You asked: {}, but I don't know the answer to that.".format(question))
+            print("")
 
     def say(self, text):
         self.utterance.stop()
