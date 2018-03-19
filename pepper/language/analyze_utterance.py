@@ -8,7 +8,8 @@ import wolframalpha
 import re
 import json
 import os
-from theory_of_mind import TheoryOfMind
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+
 brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
 from datetime import date
 
@@ -459,10 +460,10 @@ def analyze_utterance(utterance, speaker):
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
         template = analyze_question(speaker, words, pos_list)
         print('i am thinking')
-        #print(reply(brain.query_brain(template)))
+        return (reply(brain.query_brain(template)))
     else:
         template = analyze_statement(speaker, words, pos_list)
-        #print(brain.update(template))
+        brain.update(template)
         print('Good!')
 
     '''
@@ -662,8 +663,8 @@ brain_response = [{
 #for resp in brain_response:
 #    print(reply(resp))
 
-for stat in statements:
-    rdf = analyze_utterance(stat[0],stat[1])
+#for stat in statements:
+#    rdf = analyze_utterance(stat[0],stat[1])
 
 
 

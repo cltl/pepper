@@ -71,10 +71,14 @@ CATCH_ATTENTION_ANIMATION = [
 QnA = {
     "What is your name": "My name is Leo Lani, which means 'Voice of an Angel' in Hawaiian",
     "Where are you from": "From France and Japan!",
+    "How old are you": "I was born on Tuesday the eleventh of July, 2017. That means I'm 8 months old",
+    "When was your first performance": "My first performance was on July thirteenth, 2017! It was recorded on TV!",
+    "male or female": "I'm female, and proud of it!",
+    "what is your gender": "I'm female!",
     "Where are you now": "On stage at Paradiso in the lovely city of Amsterdam!",
     "How are you doing": "Tremendous, to be honest! Although you have to consider that I'm a robot and I do not feel emotions. I'm programmed to sound happy all the time!",
     "Python version": "Python 2.7 32-bit. I wish I was running 64 bit, ugh!",
-    "Speech recognition": "I'm using the Google Speech API. This is why I need the internet to work, because my audio is processed on some server somewhere in Europe",
+    "Speech Recognition": "I'm using the Google Speech API. This is why I need the internet to work, because my audio is processed on some server somewhere in Europe",
     "Face Recognition": "I'm using OpenFace to do Face Recognition, which is an open source face recognition library which encodes each face as a 128 dimensional vector. Impressive!",
     "Gender Recognition": "My programmers hacked a small neural network that estimates your gender from the shape of your face!",
     "Object Recognition": "I'm using the Inception Neural Network to do Object Recognition. It's a quite complicated network which works within the Tensorflow library within Python 3!",
@@ -111,7 +115,6 @@ class GuestRecognitionApp(pepper.FlowApp):
         self.cluster = pepper.PeopleCluster(self.people)
         self.scores = collections.deque([], maxlen=self.FACE_BUFFER)
 
-        self.catch_attention = 0
         self.people_greeted = {}
 
         self.person_identification = False
@@ -136,7 +139,7 @@ class GuestRecognitionApp(pepper.FlowApp):
 
         root = os.path.abspath('../../people/{}'.format(directory))
         for path in os.listdir(root):
-            matrix = np.fromfile(os.path.join(root, path))
+            result = np.round(self.gender_classifier.classify(np.mean(np.fromfile(os.path.join(root, path)),0)))
 
     def on_utterance(self, audio):
         """
@@ -160,8 +163,7 @@ class GuestRecognitionApp(pepper.FlowApp):
             done = False
             for transcript, confidence in self.asr.transcribe(audio):
                 if not done:
-
-                    if "how many people" in transcript.lower():
+                    if "how many people" in transcript.lower() or "how many new people" in transcript.lower():
                         self.say("I've met {} humans in Paradiso, today!".format(len(people('paradiso'))))
                         break
                     elif "who did you meet" in transcript.lower():
@@ -170,14 +172,15 @@ class GuestRecognitionApp(pepper.FlowApp):
                     elif "how many friends" in transcript.lower() or "who are your friends" in transcript.lower():
                         self.say("I have {} friends: {} and {}".format(len(people('leolani')), ', '.join(people('leolani')[:-1]), people('leolani')[-1]))
                         break
+                    elif "how many men" in transcript.lower():
+                        pass
+                    elif "how many women" in transcript.lower():
+                        pass
                     else:
                         for question, answer in QnA.items():
                             if question.lower() in transcript.lower():
                                 self.say(answer)
                                 done = True
-
-            if not done:
-                self.say("Sorry, I didn't get that!")
 
     def on_face(self, bounds, representation):
         """
@@ -217,19 +220,12 @@ class GuestRecognitionApp(pepper.FlowApp):
                 self.on_person_new()
                 self.scores.clear()
 
-        elif time() - self.catch_attention > self.CATCH_ATTENTION_TIMEOUT:
-            self.catch_attention = time()
-            self.say("^start({1}){0}^wait({1})".format(choice(CATCH_ATTENTION), choice(CATCH_ATTENTION_ANIMATION)))
-            self.scores.clear()
-
     def on_person_recognized(self, name):
-        self.catch_attention = time()
         if not name in self.people_greeted or time() - self.people_greeted[name] > self.PERSON_GREET_TIMEOUT:
             self.say("{} {}, {}".format(choice(GREET), name, choice(KNOWN)))
             self.people_greeted[name] = time()
 
     def on_person_new(self):
-        self.catch_attention = time()
         self.person_name = None
         self.person_identification = True
         samples = []
