@@ -10,7 +10,7 @@ import json
 import os
 from pepper.knowledge.theory_of_mind import TheoryOfMind
 
-brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
+brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
 from datetime import date
 
 # certain, uncertain, possible, probable
@@ -474,76 +474,6 @@ def analyze_utterance(utterance, speaker):
 
 
 def reply(brain_response):
-
-    brain_response  = {
-        "question": {
-            "author": "jo",
-            "chat": "",
-            "date": "2018-03-19",
-            "object": {
-                "id": "",
-                "label": "",
-                "type": ""
-            },
-            "position": "",
-            "predicate": {
-                "type": "likes"
-            },
-            "response": {
-                "format": "",
-                "role": ""
-            },
-            "subject": {
-                "id": "",
-                "label": "piek",
-                "type": ""
-            },
-            "turn": "",
-            "utterance_type": "question"
-        },
-        "response": [
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "balkenbrij"
-                }
-            },
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "soccer"
-                }
-            },
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "horror movies"
-                }
-            },
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "2001 a space odyssey"
-                }
-            }
-        ]
-    }
 
     say = ''
     if len(brain_response['response'])==0:

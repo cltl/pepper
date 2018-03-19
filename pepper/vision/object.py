@@ -7,7 +7,7 @@ import socket
 
 
 class ObjectClassifyClient:
-    def __init__(self, address):
+    def __init__(self, address = ('localhost', 9999)):
         """
         Classify Images using Inception Model
 

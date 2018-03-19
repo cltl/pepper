@@ -18,6 +18,7 @@ from .vision.face import OpenFace, FaceBounds, GenderClassifyClient
 from .vision.object import ObjectClassifyClient
 
 from .people.clustering import PeopleCluster, load_people, load_data_set
+from .language.name_recognition import NameRecognition
 
 from .knowledge.wolfram import Wolfram
 

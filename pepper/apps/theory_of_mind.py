@@ -53,7 +53,7 @@ class TheoryOfMindApp(pepper.App):
 
         # Speech to Text and Text to Speech
         self.tts = self.session.service("ALAnimatedSpeech")
-        self.asr = pepper.GoogleASR('en-GB', max_alternatives=5)
+        self.asr = pepper.GoogleASR('en-GB', max_alternatives=3)
         self.name_recognition = NameRecognition()
 
         # Pepper's Ears
@@ -128,7 +128,7 @@ class TheoryOfMindApp(pepper.App):
         """
         self.log.info('{}: "{}"'.format(name, transcript))
 
-        self.say(analyze_utterance(transcript, name if name else "person"))
+        self.say(analyze_utterance(transcript, name.lower() if name else "person"))
 
     def on_person_recognize(self, name, confidence):
         """

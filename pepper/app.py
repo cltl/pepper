@@ -179,6 +179,15 @@ class FlowApp(App):
         """
         pass
 
+    def on_camera(self, image):
+        """
+        On Camera Event
+
+        Parameters
+        ----------
+        image: np.ndarray
+        """
+
     def say(self, text):
         """
         Let Pepper Speak
@@ -187,7 +196,7 @@ class FlowApp(App):
         ----------
         text: str
         """
-        self.log.info("Leolani: '{}'".format(text))
+        self.log.info(u"Leolani: '{}'".format(text))
         self._utterance.stop()
         self._tts.say(r"\\rspd={}\\{}".format(self.TEXT_TO_SPEECH_SPEED, text))
         self._utterance.start()
@@ -195,6 +204,7 @@ class FlowApp(App):
     def _update_camera(self):
         while True:
             image = self._camera.get()
+            self.on_camera(image)
             face = self._openface.represent(image)
             if face: self.on_face(*face)
             sleep(1.0 / self.CAMERA_FREQUENCY)  # Important to keep the rest working :)
