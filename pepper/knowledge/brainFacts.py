@@ -473,7 +473,7 @@ statements = [
         u'predicate': {u'type': u'isFrom'},
         u'chat': u'',
         u'author': u'selene',
-        u'object': {u'type': u'', u'id': u'', u'label': u'italy'},
+        u'object': {u'type': u'LOCATION', u'id': u'', u'label': u'italy'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),

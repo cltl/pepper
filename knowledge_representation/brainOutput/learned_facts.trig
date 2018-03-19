@@ -484,8 +484,8 @@ leolaniWorld:instances {
         rdfs:label "ice cream" ;
         gaf:denotedIn leolaniTalk:chat1_turn10_char0-25 .
 
-    leolaniWorld:italy a gaf:Instance,
-            owl:Thing ;
+    leolaniWorld:italy a n2mu:LOCATION,
+            gaf:Instance ;
         rdfs:label "italy" ;
         gaf:denotedIn leolaniTalk:chat_turn_char .
 

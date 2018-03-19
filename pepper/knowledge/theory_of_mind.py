@@ -16,7 +16,7 @@ LOCAL_BRAIN = "http://localhost:7200/repositories/leolani_test2"
 
 
 class TheoryOfMind(object):
-    def __init__(self, address=LOCAL_BRAIN):
+    def __init__(self, address=LOCAL_BRAIN, debug=False):
         """
         Interact with Triple store
 
@@ -27,6 +27,7 @@ class TheoryOfMind(object):
         """
 
         self.address = address
+        self.debug = debug
         self.namespaces = {}
         self.ontology_paths = {}
         self.dataset = Dataset()
@@ -127,7 +128,8 @@ class TheoryOfMind(object):
         return self.dataset.serialize(format=format)
 
     def __upload_to_brain__(self, data):
-        print("Posting triples")
+        if self.debug:
+            print("Posting triples")
 
         # From serialized string
         post_url = self.address + "/statements"
@@ -482,9 +484,9 @@ if __name__ == "__main__":
     brain = TheoryOfMind(address='http://192.168.1.100:7200/repositories/leolani_test2')
 
     # Test statements
-    # for statement in statements:
-    #     response = brain.update(statement)
-    #     print(json.dumps(response, indent=4, sort_keys=True))
+    for statement in statements:
+        response = brain.update(statement)
+        print(json.dumps(response, indent=4, sort_keys=True))
 
     # Separation
     print('#######################################################')
