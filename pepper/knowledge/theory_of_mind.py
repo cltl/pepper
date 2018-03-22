@@ -436,12 +436,36 @@ class TheoryOfMind(object):
         for chat in response['results']['bindings']:
             chat_uri = chat['s']['value']
             chat_id = chat_uri.split('/')[-1][4:]
-            print(chat_id)
+            chat_id = int(chat_id)
 
             if chat_id > last_chat:
                 last_chat = chat_id
 
         return last_chat
+
+    def get_last_turn_id(self, chat_id):
+        query = """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+            select ?s where { 
+            ?s rdf:type sem:Event .
+            FILTER(regex(str(?s), "chat%s_turn")) .
+            }
+        """ % chat_id
+
+        response = self._submit_query_(query)
+
+        last_turn = 0
+        for turn in response['results']['bindings']:
+            turn_uri = turn['s']['value']
+            turn_id = turn_uri.split('/')[-1][10:]
+            turn_id = int(turn_id)
+
+            if turn_id > last_turn:
+                last_turn = turn_id
+
+        return last_turn
 
 
 def hash_id(triple):
@@ -472,5 +496,5 @@ if __name__ == "__main__":
     #     response = brain.query_brain(question)
     #     print(json.dumps(response, indent=4, sort_keys=True))
 
-    id = brain.get_last_chat_id()
-    print(id)
+    id = brain.get_last_turn_id(1)
+    print('\n%s' % id)
