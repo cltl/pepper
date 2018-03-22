@@ -475,7 +475,8 @@ def analyze_utterance(utterance, speaker):
 def reply(brain_response):
 
     say = ''
-    previous = ''
+    previous_author = ''
+    previous_subject = ''
 
     if len(brain_response['response'])==0:
         say = "I dont know if "
@@ -488,14 +489,18 @@ def reply(brain_response):
 
     for response in brain_response['response']:
 
-        if 'authorlabel' in response and response['authorlabel']['value']!=previous:
+        if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
             say += response['authorlabel']['value'] +' told me '
-            previous = response['authorlabel']['value']
+            previous_author = response['authorlabel']['value']
+        elif 'authorlabel' in response and response['authorlabel']['value']==previous_author:
+            say+=' that '
 
         if 'slabel' in response:
             say += response['slabel']['value']
+            previous_subject = brain_response['question']['subject']['label']
         elif 'subject' in brain_response['question']:
             say += brain_response['question']['subject']['label']
+            previous_subject = brain_response['question']['subject']['label']
 
         if brain_response['question']['predicate']['type'] == 'isFrom':
             say += ' is from '
@@ -656,8 +661,8 @@ brain_response = [{
 #  u'response': {u'role': u'', u'format': u''}, u'subject': {u'type': u'', u'id': u'SUBJECT', u'label': u''}}
 
 
-#for resp in brain_response:
-#    print(reply(resp))
+for resp in brain_response:
+    print(reply(resp))
 
 #for stat in statements:
 #    rdf = analyze_utterance(stat[0],stat[1])
