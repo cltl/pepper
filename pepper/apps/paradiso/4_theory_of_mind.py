@@ -3,6 +3,7 @@ import numpy as np
 import collections
 import os
 from random import choice
+import random
 
 from pepper.language.analyze_utterance import analyze_utterance
 
@@ -46,6 +47,9 @@ class TheoryOfMindApp(pepper.FlowApp):
         self.asr = pepper.GoogleASR(max_alternatives=self.NAME_FINDING_TRIALS)
         self.name_recognition = pepper.NameRecognition()
 
+        self.chat_id = None
+        self.chat_turn = 0
+
         super(TheoryOfMindApp, self).__init__(address)
 
     def load_people(self):
@@ -55,8 +59,10 @@ class TheoryOfMindApp(pepper.FlowApp):
         return people
 
     def on_transcript(self, audio, transcript, transcript_confidence, name, name_confidence):
-        self.log.info('{}: "{}"'.format(name, transcript))
-        self.say(analyze_utterance(transcript, name.lower() if name else "person"))
+        if self.chat_id:
+            self.log.info('[{}] {}: "{}"'.format(self.chat_turn, name, transcript))
+            # self.say(analyze_utterance(transcript, name.lower() if name else "person", self.chat_id, self.chat_turn))
+            self.chat_turn += 1
 
     def on_utterance(self, audio):
         """
@@ -111,7 +117,9 @@ class TheoryOfMindApp(pepper.FlowApp):
 
     def on_person_recognized(self, name, confidence):
         if name != self.current_person:  # Only trigger when known person changes
-            self.log.info("Recognized '{}' with Silhouette Score: {}".format(name, confidence))
+            self.chat_id = int(random.getrandbits(128))
+            self.chat_turn = 0
+            self.log.info("Recognized '{}' -> chat id: {}".format(name, self.chat_id))
 
             # Update Current Person, to which on_transcript will be attributed
             self.current_person = name
