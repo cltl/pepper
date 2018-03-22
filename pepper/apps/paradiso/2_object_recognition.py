@@ -1,17 +1,19 @@
 import pepper
 
-import matplotlib.pyplot as plt
-import numpy as np
-
 from random import choice
 from time import time, sleep
+from socket import socket
+from threading import Thread
+import json
 
 
 class ObjectRecognitionApp(pepper.SensorApp):
 
-    PERSON_GREET_TIMEOUT = 120
+    PERSON_GREET_TIMEOUT = 60
     CONFIDENCE_THRESHOLD = 0.5
     OBJECT_TIMEOUT = 300
+
+    GREET = ["Hello", "Hi", "Hey There", "Greetings"]
 
     KNOWN_PERSON = [
         "Nice to see you again!",
@@ -19,17 +21,19 @@ class ObjectRecognitionApp(pepper.SensorApp):
         "I'm glad we see each other again!",
         "You came back!",
         "At last!",
-        "I was thinking about you!"
+        "I was thinking about you!",
+        "I was looking for you!",
+        "I missed you!"
     ]
 
     TELL_OBJECT = [
         "Guess what, I saw a {}",
         "Would you believe, I just saw a {}",
         "Did you know there's a {} here?",
-        "I'm happy, I saw a {}"
+        "I'm very happy, I saw a {}",
+        "When you were not looking, I spotted a {}! Unbelievable!",
+        "Have you seen the {}? I'm sure I did!"
     ]
-
-    GREET = ["Hello", "Hi", "Hey There", "Greetings"]
 
     NOT_SO_SURE = [
         "I'm not sure, but I see a {}!",
@@ -49,33 +53,29 @@ class ObjectRecognitionApp(pepper.SensorApp):
     ]
 
     VERY_SURE = [
-        "That's a {}, I'm one hundred percent sure!",
+        "That's a {}, I'm very very sure!",
         "I see it clearly, that is a {}!",
         "Yes, a {}!",
         "Awesome, that's a {}!"
     ]
 
     # Plotting
-    NUM_CATEGORIES = 5
-    FONT = {'fontsize': 25}
+    SERVER = ('localhost', 47282)
 
     def __init__(self, address):
-        super(ObjectRecognitionApp, self).__init__(address, camera_frequency=0.5)
+        super(ObjectRecognitionApp, self).__init__(address, camera_frequency=1)
 
         self.objects = {}
         self.object_classifier = pepper.ObjectClassifyClient()
         self.bottom_camera = pepper.PepperCamera(self.session, pepper.CameraTarget.BOTTOM)
-
+        self.classification = None
         self.greeted_people = {}
 
-        # self.figure, self.axis = plt.subplots()
-        # self.bars = self.axis.barh(np.arange(self.NUM_CATEGORIES), np.ones(self.NUM_CATEGORIES))
-        # self.axis.set_yticks(np.arange(self.NUM_CATEGORIES))
-        # self.axis.set_yticklabels(["<<LABEL>>" for i in range(self.NUM_CATEGORIES)], self.FONT)
-        # self.axis.set_xlim(0, 1)
-        # plt.get_current_fig_manager().window.showMaximized()
-        # plt.tight_layout()
-        # plt.show()
+    def plot(self):
+        s = socket()
+        s.connect(self.SERVER)
+        s.sendall(json.dumps(self.classification))
+        s.close()
 
     def on_camera(self, image):
         super(ObjectRecognitionApp, self).on_camera(image)
@@ -84,8 +84,10 @@ class ObjectRecognitionApp(pepper.SensorApp):
 
     def classify(self, image):
         self.classification = self.object_classifier.classify(image)
-        confidence, labels = self.classification[0]
 
+        self.plot()
+
+        confidence, labels = self.classification[0]
         if confidence > self.CONFIDENCE_THRESHOLD:
             label = choice(labels)
 
@@ -103,17 +105,6 @@ class ObjectRecognitionApp(pepper.SensorApp):
 
                 self.say(sentence.format(label))
                 self.objects[label] = time(), confidence
-
-    # def plot(self):
-    #     while True:
-    #         for bar, (confidence, labels) in zip(self.bars, self.classification[::-1]):
-    #             bar.set_width(confidence)
-    #             bar.set_color((1 - confidence, confidence, 0, 1))
-    #
-    #         self.axis.set_yticklabels([name[0] for confidence, name in self.classification], self.FONT)
-    #         self.figure.canvas.draw()
-    #
-    #         sleep(self.camera_frequency)
 
     def on_person_recognized(self, name):
         if name not in self.greeted_people or time() - self.greeted_people[name] > self.PERSON_GREET_TIMEOUT:

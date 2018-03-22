@@ -8,8 +8,10 @@ import wolframalpha
 import re
 import json
 import os
-from theory_of_mind import TheoryOfMind
-brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+
+
+brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
 from datetime import date
 
 # certain, uncertain, possible, probable
@@ -171,7 +173,8 @@ def analyze_question(speaker, words, pos_list):
     # DOES X KNOW Y / HAS X MET Y / DO YOU KNOW Y
     if (stemmer.stem(main_verb) =='know' or main_verb=='met') and ambig == 0:
         rdf['predicate'] = 'knows'
-        rdf['object'] = obj[0]
+        if len(obj):
+            rdf['object'] = obj[0]
         rdf['subject'] = 'PERSON'
         for s in subject:
             if s in names:
@@ -485,7 +488,7 @@ def reply(brain_response):
         say += brain_response['question']['object']['label']
         return say+'\n'
 
-    print(brain_response)
+    print("Brain Response:", brain_response)
 
     for response in brain_response['response']:
 
@@ -661,8 +664,8 @@ brain_response = [{
 #  u'response': {u'role': u'', u'format': u''}, u'subject': {u'type': u'', u'id': u'SUBJECT', u'label': u''}}
 
 
-for resp in brain_response:
-    print(reply(resp))
+# for resp in brain_response:
+#     print(reply(resp))
 
 #for stat in statements:
 #    rdf = analyze_utterance(stat[0],stat[1])

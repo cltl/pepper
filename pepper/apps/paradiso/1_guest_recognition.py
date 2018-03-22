@@ -19,7 +19,7 @@ KNOWN = [
     "I was thinking about you!"
 ]
 
-GREET = ["Hello", "Hi", "Hey There", "Greetings"]
+GREET = ["Hello", "Hi", "Hey There", "Greetings", "Good Day"]
 
 NEW = [
     "I don't think we have met before!",
@@ -73,6 +73,7 @@ QnA = {
     "Where are you from": "From France and Japan!",
     "How old are you": "I was born on Tuesday the eleventh of July, 2017. That means I'm 8 months old",
     "When was your first performance": "My first performance was on July thirteenth, 2017! It was recorded on TV!",
+    "did you like it": "Definitely",
     "male or female": "I'm female, and proud of it!",
     "what is your gender": "I'm female!",
     "Where are you now": "On stage at Paradiso in the lovely city of Amsterdam!",
@@ -91,6 +92,7 @@ QnA = {
                           "I learn from conversation! "
 }
 
+
 def people(directory):
     return [os.path.splitext(path)[0] for path in os.listdir(os.path.abspath('../../people/{}'.format(directory)))]
 
@@ -100,7 +102,8 @@ class GuestRecognitionApp(pepper.FlowApp):
     PERSON_RECOGNITION_THRESHOLD = 0.2
     PERSON_NEW_THRESHOLD = 0.1
     PERSON_GREET_TIMEOUT = 120
-    PERSON_MEET_TIMEOUT = 5
+    PERSON_MEET_TIMEOUT = 10
+    MIN_SAMPLES = 10
 
     CATCH_ATTENTION_TIMEOUT = 180
 
@@ -232,7 +235,7 @@ class GuestRecognitionApp(pepper.FlowApp):
 
         t0 = time()
 
-        while len(samples) < 10 or not self.person_name:
+        while len(samples) < self.MIN_SAMPLES or not self.person_name:
             image = self._camera.get()
             face = self._openface.represent(image)
 
@@ -248,7 +251,7 @@ class GuestRecognitionApp(pepper.FlowApp):
 
             self.log.info("Person Recognition: Name: {}, Samples: {}".format(self.person_name, len(samples)))
 
-        if self.person_name:
+        if self.person_name and len(samples) >= self.MIN_SAMPLES:
             if self.person_name not in self.people:
                 matrix = np.array(samples)
                 self.people[self.person_name] = matrix

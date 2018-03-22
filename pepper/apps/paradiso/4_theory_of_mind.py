@@ -29,7 +29,7 @@ class TheoryOfMindApp(pepper.FlowApp):
     PERSON_GREET_TIMEOUT = 120
     FACE_BUFFER = 3
 
-    NAME_FINDING_TRIALS = 3
+    NAME_FINDING_TRIALS = 1
 
     def __init__(self, address):
         self.paradiso_root = os.path.abspath('../../people/paradiso')

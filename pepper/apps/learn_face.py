@@ -51,6 +51,6 @@ class LearnFaceApp(pepper.App):
 
 
 if __name__ == "__main__":
-    app = LearnFaceApp(pepper.ADDRESS, "New Person A")
+    app = LearnFaceApp(pepper.ADDRESS, "NEW_PERSON")
     np.array(app.representation).tofile(app.path)
 
