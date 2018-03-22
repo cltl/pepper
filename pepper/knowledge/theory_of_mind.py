@@ -312,60 +312,6 @@ class TheoryOfMind(object):
 
         return output
 
-    def update_with_java(self, source, turn, author_name, subject_label, subject_type, predicate_uri, object_label,
-                         object_type, perspective, debug=False):
-        """
-        Post triples to Triple store. Runs subprocess for java API
-
-        Parameters
-        ----------
-        source: str
-            unique identifier for the chat
-        turn: int
-            unique identifier for the turn within the chat
-        author_name: str
-            name of the author of the turn
-        subject_label: str
-            word that represents the subject label
-        subject_type: str
-            uri that represents the CLASS for the subject.
-            CLASS information is not considered a statement but as interpretation
-        predicate_uri: str
-            uri that represents the predicate
-        object_label: str
-            word that represents the object label
-        object_type: str
-            uri that represents the CLASS for the subject.
-            CLASS information is not considered as a statement but as interpretation
-        perspective: str
-            list of perspective values separated by semicolons
-        debug: bool
-            print out debug statements
-
-        Returns
-        -------
-        result: string
-            Triples added
-        """
-        debug_arg = '--debug' if debug else ''
-
-        try:
-            parameter_string = '--ks %s --source %s --turn %s --author-name %s ' \
-                               '--subject-label %s --subject-type %s ' \
-                               '--predicate-uri %s ' \
-                               '--object-label %s --object-type %s ' \
-                               '--perspective %s ' \
-                               '%s' % (self.address, source, str(turn), author_name, subject_label, subject_type,
-                                       predicate_uri, object_label, object_type, perspective, debug_arg)
-
-            # Call java API with correct parameters
-            result = subprocess.check_output(["java storeGraspStatementInKnowledgeStore", parameter_string])
-
-        except subprocess.CalledProcessError as e:
-            result = e.output
-
-        return result
-
     def _create_query_(self, parsed_question):
         _ = hash_id([parsed_question['subject']['label'], parsed_question['predicate']['type'], parsed_question['object']['label']])
 
@@ -433,6 +379,18 @@ class TheoryOfMind(object):
 
         return query
 
+    def _submit_query_(self, query):
+        # Set up connection
+        sparql = SPARQLWrapper(self.address)
+
+        # Response parameters
+        sparql.setQuery(query)
+        sparql.setReturnFormat(JSON)
+        sparql.addParameter('Accept', 'application/sparql-results+json')
+        response = sparql.query().convert()
+
+        return response
+
     def query_brain(self, parsed_question):
         """
         Get features from query, such as keywords (relevance,text) and entities
@@ -447,17 +405,12 @@ class TheoryOfMind(object):
         result: json
             Analysis of the query
         """
-        # Set up connection
-        sparql = SPARQLWrapper(self.address)
 
         # Generate query
         query = self._create_query_(parsed_question)
 
-        # Response parameters
-        sparql.setQuery(query)
-        sparql.setReturnFormat(JSON)
-        sparql.addParameter('Accept', 'application/sparql-results+json')
-        response = sparql.query().convert()
+        # Perform query
+        response = self._submit_query_(query)
 
         # Create JSON output
         if 'date' in parsed_question.keys():
@@ -465,6 +418,30 @@ class TheoryOfMind(object):
         output = {'response': response["results"]["bindings"], 'question': parsed_question}
 
         return output
+
+    def get_last_chat_id(self):
+        query = """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+    
+            select ?s where { 
+            ?s rdf:type sem:Event .
+            FILTER(!regex(str(?s), "turn")) .
+            }
+        """
+
+        response = self._submit_query_(query)
+
+        last_chat = 0
+        for chat in response['results']['bindings']:
+            chat_uri = chat['s']['value']
+            chat_id = chat_uri.split('/')[-1][4:]
+            print(chat_id)
+
+            if chat_id > last_chat:
+                last_chat = chat_id
+
+        return last_chat
 
 
 def hash_id(triple):
@@ -480,17 +457,20 @@ def hash_id(triple):
 
 if __name__ == "__main__":
     # Create brain connection
-    brain = TheoryOfMind(address='http://192.168.1.100:7200/repositories/leolani_test2')
+    brain = TheoryOfMind()
 
     # Test statements
-    for statement in statements:
-        response = brain.update(statement)
-        print(json.dumps(response, indent=4, sort_keys=True))
+    # for statement in statements:
+    #     response = brain.update(statement)
+    #     print(json.dumps(response, indent=4, sort_keys=True))
+    #
+    # # Separation
+    # print('#######################################################')
+    #
+    # # Test questions
+    # for question in questions:
+    #     response = brain.query_brain(question)
+    #     print(json.dumps(response, indent=4, sort_keys=True))
 
-    # Separation
-    print('#######################################################')
-
-    # Test questions
-    for question in questions:
-        response = brain.query_brain(question)
-        print(json.dumps(response, indent=4, sort_keys=True))
+    id = brain.get_last_chat_id()
+    print(id)
