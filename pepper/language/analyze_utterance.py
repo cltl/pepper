@@ -8,9 +8,8 @@ import wolframalpha
 import re
 import json
 import os
-from pepper.knowledge.theory_of_mind import TheoryOfMind
-
-brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
+from theory_of_mind import TheoryOfMind
+brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
 from datetime import date
 
 # certain, uncertain, possible, probable
@@ -466,7 +465,7 @@ def analyze_utterance(utterance, speaker):
         print('i am thinking')
         response = (reply(brain.query_brain(template)))
     else:
-        response = analyze_statement(speaker, words, pos_list)
+        response= analyze_statement(speaker, words, pos_list)
         #print(brain.update(template))
 
     return response
@@ -476,6 +475,8 @@ def analyze_utterance(utterance, speaker):
 def reply(brain_response):
 
     say = ''
+    previous = ''
+
     if len(brain_response['response'])==0:
         say = "I dont know if "
         say += brain_response['question']['subject']['label'] + ' '
@@ -485,25 +486,30 @@ def reply(brain_response):
 
     print(brain_response)
 
-    if 'authorlabel' in brain_response['response'][0]:
-        say = brain_response['response'][0]['authorlabel']['value'] +' told me '
+    for response in brain_response['response']:
 
-    if 'slabel' in brain_response['response'][0]:
-        say += brain_response['response'][0]['slabel']['value']
-    elif 'subject' in brain_response['question']:
-        say += brain_response['question']['subject']['label']
+        if 'authorlabel' in response and response['authorlabel']['value']!=previous:
+            say += response['authorlabel']['value'] +' told me '
+            previous = response['authorlabel']['value']
 
-    if brain_response['question']['predicate']['type'] == 'isFrom':
-        say += ' is from '
-    elif brain_response['question']['predicate'] == 'likes':
-        say += ' likes '
+        if 'slabel' in response:
+            say += response['slabel']['value']
+        elif 'subject' in brain_response['question']:
+            say += brain_response['question']['subject']['label']
 
-    if 'olabel' in brain_response['response'][0]:
-        say += brain_response['response'][0]['olabel']['value']
-    elif 'object' in brain_response['question'].keys():
-        say += brain_response['question']['object']['label']
+        if brain_response['question']['predicate']['type'] == 'isFrom':
+            say += ' is from '
+        elif brain_response['question']['predicate']['type'] == 'likes':
+            say += ' likes '
 
-    return say+'\n'
+        if 'olabel' in response:
+            say += response['olabel']['value']
+        elif 'object' in brain_response['question'].keys():
+            say += brain_response['question']['object']['label']
+
+        say+=' and '
+
+    return say[:-5]+'\n'
 
 
 brain_response = [{
@@ -575,7 +581,75 @@ brain_response = [{
             }
         }
     ]
-}]
+},{
+        "question": {
+            "author": "jo",
+            "chat": "",
+            "date": "2018-03-19",
+            "object": {
+                "id": "",
+                "label": "",
+                "type": ""
+            },
+            "position": "",
+            "predicate": {
+                "type": "likes"
+            },
+            "response": {
+                "format": "",
+                "role": ""
+            },
+            "subject": {
+                "id": "",
+                "label": "piek",
+                "type": ""
+            },
+            "turn": "",
+            "utterance_type": "question"
+        },
+        "response": [
+            {
+                "authorlabel": {
+                    "type": "literal",
+                    "value": "selene"
+                },
+                "olabel": {
+                    "type": "literal",
+                    "value": "balkenbrij"
+                }
+            },
+            {
+                "authorlabel": {
+                    "type": "literal",
+                    "value": "bram"
+                },
+                "olabel": {
+                    "type": "literal",
+                    "value": "soccer"
+                }
+            },
+            {
+                "authorlabel": {
+                    "type": "literal",
+                    "value": "selene"
+                },
+                "olabel": {
+                    "type": "literal",
+                    "value": "horror movies"
+                }
+            },
+            {
+                "authorlabel": {
+                    "type": "literal",
+                    "value": "selene"
+                },
+                "olabel": {
+                    "type": "literal",
+                    "value": "2001 a space odyssey"
+                }
+            }
+        ]
+    }]
 
 #print(analyze_utterance('what does selene like?','jo'))
 #u'predicate': {u'type': u'PREDICATE'}, u'chat': u'', u'author': u'jo', u'object': {u'type': u'', u'id': u'', u'label': u'OBJECT'}, u'turn': u'', u'utterance_type': u'question', u'date': datetime.date(2018, 3, 18), u'position': u'',
@@ -587,6 +661,8 @@ brain_response = [{
 
 #for stat in statements:
 #    rdf = analyze_utterance(stat[0],stat[1])
+
+
 
 
 
