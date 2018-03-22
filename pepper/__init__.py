@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s', level=logging.INFO)
 
 # Pepper Address, reference point for all apps (because it will change a lot!)
-ADDRESS = '192.168.1.104', 9559
+ADDRESS = '192.168.1.101', 9559
 
 
 # Import to Package Level
@@ -22,5 +22,5 @@ from .language.name_recognition import NameRecognition
 
 from .knowledge.wolfram import Wolfram
 
-from .app import App, FlowApp
+from .app import App, FlowApp, SensorApp
 

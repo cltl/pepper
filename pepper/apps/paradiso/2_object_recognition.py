@@ -3,10 +3,30 @@ import pepper
 from random import choice
 from time import time
 
-class ObjectRecognitionApp(pepper.FlowApp):
 
+class ObjectRecognitionApp(pepper.SensorApp):
+
+    PERSON_GREET_TIMEOUT = 120
     CONFIDENCE_THRESHOLD = 0.5
     OBJECT_TIMEOUT = 300
+
+    KNOWN_PERSON = [
+        "Nice to see you again!",
+        "It has been a long time!",
+        "I'm glad we see each other again!",
+        "You came back!",
+        "At last!",
+        "I was thinking about you!"
+    ]
+
+    TELL_OBJECT = [
+        "Guess what, I saw a {}",
+        "Would you believe, I just saw a {}",
+        "Did you know there's a {} here?",
+        "I'm happy, I saw a {}"
+    ]
+
+    GREET = ["Hello", "Hi", "Hey There", "Greetings"]
 
     NOT_SO_SURE = [
         "I'm not sure, but I see a {}!",
@@ -33,13 +53,18 @@ class ObjectRecognitionApp(pepper.FlowApp):
     ]
 
     def __init__(self, address):
-        super(ObjectRecognitionApp, self).__init__(address)
+        super(ObjectRecognitionApp, self).__init__(address, camera_frequency=1)
 
         self.objects = {}
         self.object_classifier = pepper.ObjectClassifyClient()
         self.bottom_camera = pepper.PepperCamera(self.session, pepper.CameraTarget.BOTTOM)
 
+        self.last_object = None
+        self.greeted_people = {}
+
     def on_camera(self, image):
+        super(ObjectRecognitionApp, self).on_camera(image)
+
         self.classify(image)
         self.classify(self.bottom_camera.get())
 
@@ -63,6 +88,18 @@ class ObjectRecognitionApp(pepper.FlowApp):
 
                 self.say(sentence.format(label))
                 self.objects[label] = time(), confidence
+
+                self.last_object = label
+
+    def on_person_recognized(self, name):
+        if name not in self.greeted_people or time() - self.greeted_people[name] > self.PERSON_GREET_TIMEOUT:
+            if self.last_object:
+                self.say("{} {}, {}. {}!".format(
+                    choice(self.GREET),
+                    name,
+                    choice(self.KNOWN_PERSON),
+                    choice(self.TELL_OBJECT).format(self.last_object)))
+                self.greeted_people[name] = time()
 
 if __name__ == "__main__":
     ObjectRecognitionApp(pepper.ADDRESS).run()
