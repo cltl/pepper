@@ -1,7 +1,10 @@
 import pepper
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 from random import choice
-from time import time
+from time import time, sleep
 
 
 class ObjectRecognitionApp(pepper.SensorApp):
@@ -52,24 +55,36 @@ class ObjectRecognitionApp(pepper.SensorApp):
         "Awesome, that's a {}!"
     ]
 
+    # Plotting
+    NUM_CATEGORIES = 5
+    FONT = {'fontsize': 25}
+
     def __init__(self, address):
-        super(ObjectRecognitionApp, self).__init__(address, camera_frequency=1)
+        super(ObjectRecognitionApp, self).__init__(address, camera_frequency=0.5)
 
         self.objects = {}
         self.object_classifier = pepper.ObjectClassifyClient()
         self.bottom_camera = pepper.PepperCamera(self.session, pepper.CameraTarget.BOTTOM)
 
-        self.last_object = None
         self.greeted_people = {}
+
+        # self.figure, self.axis = plt.subplots()
+        # self.bars = self.axis.barh(np.arange(self.NUM_CATEGORIES), np.ones(self.NUM_CATEGORIES))
+        # self.axis.set_yticks(np.arange(self.NUM_CATEGORIES))
+        # self.axis.set_yticklabels(["<<LABEL>>" for i in range(self.NUM_CATEGORIES)], self.FONT)
+        # self.axis.set_xlim(0, 1)
+        # plt.get_current_fig_manager().window.showMaximized()
+        # plt.tight_layout()
+        # plt.show()
 
     def on_camera(self, image):
         super(ObjectRecognitionApp, self).on_camera(image)
-
         self.classify(image)
-        self.classify(self.bottom_camera.get())
+        # self.classify(self.bottom_camera.get())
 
     def classify(self, image):
-        confidence, labels = self.object_classifier.classify(image)[0]
+        self.classification = self.object_classifier.classify(image)
+        confidence, labels = self.classification[0]
 
         if confidence > self.CONFIDENCE_THRESHOLD:
             label = choice(labels)
@@ -89,16 +104,25 @@ class ObjectRecognitionApp(pepper.SensorApp):
                 self.say(sentence.format(label))
                 self.objects[label] = time(), confidence
 
-                self.last_object = label
+    # def plot(self):
+    #     while True:
+    #         for bar, (confidence, labels) in zip(self.bars, self.classification[::-1]):
+    #             bar.set_width(confidence)
+    #             bar.set_color((1 - confidence, confidence, 0, 1))
+    #
+    #         self.axis.set_yticklabels([name[0] for confidence, name in self.classification], self.FONT)
+    #         self.figure.canvas.draw()
+    #
+    #         sleep(self.camera_frequency)
 
     def on_person_recognized(self, name):
         if name not in self.greeted_people or time() - self.greeted_people[name] > self.PERSON_GREET_TIMEOUT:
-            if self.last_object:
+            if self.objects:
                 self.say("{} {}, {}. {}!".format(
                     choice(self.GREET),
                     name,
                     choice(self.KNOWN_PERSON),
-                    choice(self.TELL_OBJECT).format(self.last_object)))
+                    choice(self.TELL_OBJECT).format(choice(self.objects.keys()))))
                 self.greeted_people[name] = time()
 
 if __name__ == "__main__":
