@@ -3,6 +3,7 @@ import numpy as np
 import collections
 import os
 from random import choice
+from time import time
 import random
 
 from pepper.language.analyze_utterance import analyze_utterance
@@ -28,6 +29,7 @@ class TheoryOfMindApp(pepper.FlowApp):
     PERSON_RECOGNITION_THRESHOLD = 0.2
     PERSON_NEW_THRESHOLD = 0.1
     PERSON_GREET_TIMEOUT = 120
+    CHAT_TIMEOUT = 15
     FACE_BUFFER = 3
 
     NAME_FINDING_TRIALS = 1
@@ -61,7 +63,10 @@ class TheoryOfMindApp(pepper.FlowApp):
     def on_transcript(self, audio, transcript, transcript_confidence, name, name_confidence):
         if self.chat_id:
             self.log.info('[{}] {}: "{}"'.format(self.chat_turn, name, transcript))
-            # self.say(analyze_utterance(transcript, name.lower() if name else "person", self.chat_id, self.chat_turn))
+
+            try: self.say(analyze_utterance(transcript, name.lower() if name else "person", self.chat_id, self.chat_turn))
+            except Exception as e: print("ERROR:", e)
+
             self.chat_turn += 1
 
     def on_utterance(self, audio):
@@ -91,6 +96,7 @@ class TheoryOfMindApp(pepper.FlowApp):
                 self.on_transcript(audio, hypotheses[0][0], hypotheses[0][1], self.current_person, self.current_person_confidence)
 
         self._utterance.start()
+
 
     def on_face(self, bounds, representation):
         """

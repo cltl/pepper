@@ -213,9 +213,9 @@ class GuestRecognitionApp(pepper.FlowApp):
 
                 address = ""
 
-                if gender < 0.20:
+                if gender < 0.10:
                     address = choice(MALE)
-                if gender > 0.80:
+                if gender > 0.90:
                     address = choice(FEMALE)
 
                 self.say("{} {}, {} {}".format(choice(GREET), address, choice(NEW), choice(NAME)))

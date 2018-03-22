@@ -8,8 +8,10 @@ import wolframalpha
 import re
 import json
 import os
-from theory_of_mind import TheoryOfMind
-brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+
+
+brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
 from datetime import date
 
 # certain, uncertain, possible, probable
@@ -119,14 +121,18 @@ def analyze_question(speaker, words, pos_list, chat_id, chat_turn):
 
     #FINDING THE OBJECT OF THE SENTENCE
     obj = words[words.index(main_verb) + 1:]
-    if obj:
+    if 'from' not in words:
+        for o in obj:
+            rdf['object']+=o
       #  print('obj: ' + str(obj))
+        '''
         if obj[0] == 'your':
             obj = words[3].lower().strip()
             subject = 'my ' + obj
 
             say = subject+' is '+' ...hmmm'
             print(say)
+        '''
     #        if obj in people[len(people)-1].keys():
                 # WHAT IS YOUR X
     #            say += subject+' '+to_be+ ' '+ people[len(people)-1][obj]
@@ -428,7 +434,7 @@ def analyze_statement(speaker, words, pos_list, chat_id, chat_turn):
     say = speaker + ' said ' + rdf['subject'] + ' ' + main_verb + ' ' + rdf['object']
 
     if len(say.split()) < 3:
-        say = random.choice['Can you repeat your statement?','I am not sure what you said','Sorry, I didnt quite hear you...']
+        say = random.choice(['Can you repeat your statement?','I am not sure what you said','Sorry, I didnt quite hear you...'])
 
 
     return say
@@ -488,7 +494,7 @@ def reply(brain_response):
     previous_subject = ''
 
     if len(brain_response['response'])==0: #FIX
-        say = random.choice["I dont know","i have no idea","i wouldnt know"]
+        say = random.choice(["I dont know","i have no idea","i wouldnt know"])
         '''
         say += brain_response['question']['subject']['label'] + ' '
         say += brain_response['question']['predicate']['type'] + ' '
@@ -672,8 +678,8 @@ brain_response = [{
 #  u'response': {u'role': u'', u'format': u''}, u'subject': {u'type': u'', u'id': u'SUBJECT', u'label': u''}}
 
 
-for resp in brain_response:
-    print(reply(resp))
+#for resp in brain_response:
+#    print(reply(resp))
 
 #for stat in statements:
 #    rdf = analyze_utterance(stat[0],stat[1])
