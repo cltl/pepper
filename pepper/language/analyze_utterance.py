@@ -476,16 +476,18 @@ def analyze_utterance(utterance, speaker):
 
 
 def reply(brain_response):
-
+ # If i am talking to you ----- you told me piek likes / piek told me you like
     say = ''
     previous_author = ''
     previous_subject = ''
 
-    if len(brain_response['response'])==0:
-        say = "I dont know if "
+    if len(brain_response['response'])==0: #FIX
+        say = "I dont know"
+        '''
         say += brain_response['question']['subject']['label'] + ' '
         say += brain_response['question']['predicate']['type'] + ' '
         say += brain_response['question']['object']['label']
+        '''
         return say+'\n'
 
     print("Brain Response:", brain_response)
