@@ -8,10 +8,8 @@ import wolframalpha
 import re
 import json
 import os
-from pepper.knowledge.theory_of_mind import TheoryOfMind
-
-
-brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
+from theory_of_mind import TheoryOfMind
+brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
 from datetime import date
 
 # certain, uncertain, possible, probable
@@ -46,7 +44,7 @@ def get_synonims(word):
         print(word+' - ' + s.lemmas()[0].name() + ': ' + s.definition())
         print(s.lemmas()[0].antonyms())
 
-def analyze_question(speaker, words, pos_list):
+def analyze_question(speaker, words, pos_list, chat_id, chat_turn):
     ambig = 0
     morphology = {}
     to_be = ''
@@ -233,6 +231,8 @@ def analyze_question(speaker, words, pos_list):
     else:
         template['object']['label'] = rdf['object'].strip()
     template['date'] = date.today()
+    template['chat'] = chat_id
+    template['turn'] = chat_turn
     # return [rdf, speaker, 'question']
 
     print(template)
@@ -242,7 +242,7 @@ def analyze_question(speaker, words, pos_list):
 
 
 
-def analyze_statement(speaker, words, pos_list):
+def analyze_statement(speaker, words, pos_list, chat_id, chat_turn):
 
     rdf = {'subject': '', 'predicate': '', 'object': ''}
 
@@ -403,6 +403,8 @@ def analyze_statement(speaker, words, pos_list):
         template['object']['label'] = rdf['object'].strip()
     #return [rdf, speaker, 'statement']
     template['date'] = date.today()
+    template['chat'] = chat_id
+    template['turn'] = chat_turn
     print(template)
     brain.update(template)
 
@@ -425,10 +427,14 @@ def analyze_statement(speaker, words, pos_list):
 
     say = speaker + ' said ' + rdf['subject'] + ' ' + main_verb + ' ' + rdf['object']
 
+    if len(say.split()) < 3:
+        say = random.choice['Can you repeat your statement?','I am not sure what you said','Sorry, I didnt quite hear you...']
+
+
     return say
 
 # for st in statements:
-def analyze_utterance(utterance, speaker):
+def analyze_utterance(utterance, speaker, chat_id, chat_turn):
     print('--------------------------------------------------------')
     print('utterance: '+utterance+', speaker: '+speaker)
     words_raw = utterance.lower().split(" ")
@@ -464,16 +470,16 @@ def analyze_utterance(utterance, speaker):
     print(pos_list)
 
     if pos_list[0][1] in ['WP', 'WRB','VBZ','VBP']:
-        template = analyze_question(speaker, words, pos_list)
+        template = analyze_question(speaker, words, pos_list, chat_id, chat_turn)
         print('i am thinking')
         response = (reply(brain.query_brain(template)))
     else:
-        response= analyze_statement(speaker, words, pos_list)
+        response= analyze_statement(speaker, words, pos_list, chat_id, chat_turn)
         #print(brain.update(template))
 
     return response
 
-
+import random
 
 def reply(brain_response):
  # If i am talking to you ----- you told me piek likes / piek told me you like
@@ -482,7 +488,7 @@ def reply(brain_response):
     previous_subject = ''
 
     if len(brain_response['response'])==0: #FIX
-        say = "I dont know"
+        say = random.choice["I dont know","i have no idea","i wouldnt know"]
         '''
         say += brain_response['question']['subject']['label'] + ' '
         say += brain_response['question']['predicate']['type'] + ' '
@@ -490,7 +496,7 @@ def reply(brain_response):
         '''
         return say+'\n'
 
-    print("Brain Response:", brain_response)
+    print(brain_response)
 
     for response in brain_response['response']:
 
@@ -666,8 +672,8 @@ brain_response = [{
 #  u'response': {u'role': u'', u'format': u''}, u'subject': {u'type': u'', u'id': u'SUBJECT', u'label': u''}}
 
 
-# for resp in brain_response:
-#     print(reply(resp))
+for resp in brain_response:
+    print(reply(resp))
 
 #for stat in statements:
 #    rdf = analyze_utterance(stat[0],stat[1])
