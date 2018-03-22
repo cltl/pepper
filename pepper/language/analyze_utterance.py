@@ -171,7 +171,8 @@ def analyze_question(speaker, words, pos_list):
     # DOES X KNOW Y / HAS X MET Y / DO YOU KNOW Y
     if (stemmer.stem(main_verb) =='know' or main_verb=='met') and ambig == 0:
         rdf['predicate'] = 'knows'
-        rdf['object'] = obj[0]
+        if len(obj):
+            rdf['object'] = obj[0]
         rdf['subject'] = 'PERSON'
         for s in subject:
             if s in names:
@@ -473,16 +474,18 @@ def analyze_utterance(utterance, speaker):
 
 
 def reply(brain_response):
-
+ # If i am talking to you ----- you told me piek likes / piek told me you like
     say = ''
     previous_author = ''
     previous_subject = ''
 
-    if len(brain_response['response'])==0:
-        say = "I dont know if "
+    if len(brain_response['response'])==0: #FIX
+        say = "I dont know"
+        '''
         say += brain_response['question']['subject']['label'] + ' '
         say += brain_response['question']['predicate']['type'] + ' '
         say += brain_response['question']['object']['label']
+        '''
         return say+'\n'
 
     print(brain_response)
