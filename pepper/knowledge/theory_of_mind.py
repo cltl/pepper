@@ -1,6 +1,7 @@
 import subprocess
 import json
 import requests
+import os
 
 from rdflib import Dataset, Graph, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
@@ -302,7 +303,7 @@ class TheoryOfMind(object):
         # Paradiso use case
         self._paradiso_simple_model_(parsed_statement)
 
-        data = self.__serialize__('./../../knowledge_representation/brainOutput/learned_facts.')
+        data = self.__serialize__(os.path.abspath('../../../knowledge_representation/brainOutput/learned_facts.'))
 
         code = self.__upload_to_brain__(data)
 

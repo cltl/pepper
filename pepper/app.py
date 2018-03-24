@@ -1,13 +1,14 @@
 import pepper
 from pepper.vision.face import FaceBounds
 
-
+import numpy as np
 import qi
-import logging
-import time
 
 from threading import Thread
 from time import sleep
+import collections
+import logging
+import time
 
 
 
@@ -179,6 +180,15 @@ class FlowApp(App):
         """
         pass
 
+    def on_camera(self, image):
+        """
+        On Camera Event
+
+        Parameters
+        ----------
+        image: np.ndarray
+        """
+
     def say(self, text):
         """
         Let Pepper Speak
@@ -187,7 +197,7 @@ class FlowApp(App):
         ----------
         text: str
         """
-        self.log.info("Leolani: '{}'".format(text))
+        self.log.info(u"Leolani: '{}'".format(text))
         self._utterance.stop()
         self._tts.say(r"\\rspd={}\\{}".format(self.TEXT_TO_SPEECH_SPEED, text))
         self._utterance.start()
@@ -195,6 +205,143 @@ class FlowApp(App):
     def _update_camera(self):
         while True:
             image = self._camera.get()
+            self.on_camera(image)
             face = self._openface.represent(image)
             if face: self.on_face(*face)
             sleep(1.0 / self.CAMERA_FREQUENCY)  # Important to keep the rest working :)
+
+
+class SensorApp(App):
+    def __init__(self,
+                 address, people = pepper.load_people(),
+                 camera_resolution = pepper.CameraResolution.VGA_320x240,
+                 camera_frequency = 2,
+                 face_buffer = 3,
+                 speech_buffer = 3,
+                 known_person_threshold = 0.2,
+                 new_person_threshold = 0.1):
+
+        super(SensorApp, self).__init__(address)
+
+        self._camera_resolution = camera_resolution
+        self._camera_frequency = camera_frequency
+
+        self.known_person_threshold = known_person_threshold
+        self.new_person_threshold = new_person_threshold
+
+        # Text to Speech & Speech to Text
+        self._text_to_speech = self.session.service("ALAnimatedSpeech")
+        self._speech_to_text = pepper.GoogleASR(max_alternatives=speech_buffer)
+
+        # Audio Stream
+        self._microphone = pepper.PepperMicrophone(self.session)
+        self._utterance = pepper.Utterance(self._microphone, self._on_utterance)
+        self._name_recognition = pepper.NameRecognition()
+
+        # Camera Stream
+        self._camera = pepper.PepperCamera(self.session, resolution=camera_resolution)
+        self._camera_thread = Thread(target=self._update_camera)
+
+        # Face Detection
+        self._open_face = pepper.OpenFace()
+        self._people = people
+        self._cluster = pepper.PeopleCluster(self._people)
+        self._scores = collections.deque([], maxlen=face_buffer)
+
+        self._current_person = "person"
+
+        # Start processes
+        self._utterance.start()
+        self._camera_thread.start()
+        self.log.info("Application Booted")
+
+    @property
+    def text_to_speech(self):
+        return self._text_to_speech
+
+    @property
+    def microphone(self):
+        return self._microphone
+
+    @property
+    def utterance(self):
+        return self._utterance
+
+    @property
+    def open_face(self):
+        return self._open_face
+
+    @property
+    def camera(self):
+        return self._camera
+
+    @property
+    def camera_resolution(self):
+        return self._camera_resolution
+
+    @property
+    def camera_frequency(self):
+        return self._camera_frequency
+
+    @property
+    def current_person(self):
+        return self._current_person
+
+    def say(self, text, speed = 90):
+        self.log.info(u"Leolani: '{}'".format(text))
+        self._utterance.stop()
+        self._text_to_speech.say(r"\\rspd={}\\{}".format(speed, text))
+        self._utterance.start()
+
+    def on_camera(self, image):
+        face = self.open_face.represent(image)
+        if face: self.on_face(*face)
+
+    def on_face(self, bounds, representation):
+        name, score = self._cluster.classify(representation)
+
+        self._scores.append(score)
+
+        if len(self._scores) == self._scores.maxlen:
+            mean_score = np.mean(self._scores)
+
+            if mean_score > self.known_person_threshold:
+                self.on_person_recognized(name)
+                self._current_person = name
+                self._scores.clear()
+            elif mean_score < self.new_person_threshold:
+                self.on_person_new()
+                self._scores.clear()
+
+    def on_person_recognized(self, name):
+        self.log.info("Recognized '{}'".format(name))
+
+    def on_person_new(self):
+        self.log.info("New Person!")
+
+    def on_transcript(self, transcript, person):
+        self.log.info("{}: '{}'".format(person, transcript))
+
+    def _on_utterance(self, audio):
+        self._utterance.stop()
+
+        hypotheses = self._speech_to_text.transcribe(audio)
+
+        if hypotheses:
+            for transcript, confidence in hypotheses:
+                name_transcript = self._name_recognition.recognize(transcript)
+
+                if '{}' in name_transcript:
+                    name, name_confidence = pepper.NameASR(hints=(name_transcript,)).transcribe(audio)
+                    name_transcript = name_transcript.format(name)
+                    self.on_transcript(name_transcript, self.current_person)
+                    break
+            else:
+                self.on_transcript(hypotheses[0][0], self.current_person)
+
+        self._utterance.start()
+
+    def _update_camera(self):
+        while True:
+            self.on_camera(self.camera.get())
+            sleep(1.0 / self.camera_frequency)  # Important to keep the rest working :)
