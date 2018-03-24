@@ -468,6 +468,35 @@ class TheoryOfMind(object):
 
         return last_turn
 
+    def count_statements(self):
+        query = """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+            
+            select (COUNT(?stat) AS ?count) where { 
+            ?stat rdf:type grasp:Statement .
+            }
+        """
+
+        response = self._submit_query_(query)
+        response = response['results']['bindings'][0]['count']['value']
+
+        return response
+
+    def count_friends(self):
+        query = """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+            
+            select (COUNT(?act) AS ?count) where { 
+            ?act rdf:type sem:Actor .
+            }
+        """
+
+        response = self._submit_query_(query)
+        response = response['results']['bindings'][0]['count']['value']
+
+        return response
 
 def hash_id(triple):
     print('This is the triple: {}'.format(triple))
@@ -497,5 +526,5 @@ if __name__ == "__main__":
     #     response = brain.query_brain(question)
     #     print(json.dumps(response, indent=4, sort_keys=True))
 
-    id = brain.get_last_turn_id(1)
+    id = brain.count_friends()
     print('\n%s' % id)
