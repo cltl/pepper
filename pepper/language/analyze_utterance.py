@@ -11,7 +11,7 @@ import os
 from pepper.knowledge.theory_of_mind import TheoryOfMind
 
 
-brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
+brain = TheoryOfMind(address = 'http://192.168.1.103:7200/repositories/leolani_test2')
 from datetime import date
 
 # certain, uncertain, possible, probable

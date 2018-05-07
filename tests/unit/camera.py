@@ -3,7 +3,6 @@ from pepper import ADDRESS, App, PepperCamera, CameraTarget, CameraResolution, C
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-
 class CameraTest(App):
     def __init__(self, address):
         """

@@ -218,8 +218,8 @@ class SensorApp(App):
                  camera_frequency = 2,
                  face_buffer = 3,
                  speech_buffer = 3,
-                 known_person_threshold = 0.2,
-                 new_person_threshold = 0.1):
+                 known_person_threshold = 0.15,
+                 new_person_threshold = 0.05):
 
         super(SensorApp, self).__init__(address)
 
@@ -249,6 +249,8 @@ class SensorApp(App):
         self._scores = collections.deque([], maxlen=face_buffer)
 
         self._current_person = "person"
+
+        self.speaking = False
 
         # Start processes
         self._utterance.start()
@@ -287,11 +289,15 @@ class SensorApp(App):
     def current_person(self):
         return self._current_person
 
-    def say(self, text, speed = 90):
+    def say(self, text, speed = 80):
+        while self.speaking: sleep(0.1)
+
+        self.speaking = True
         self.log.info(u"Leolani: '{}'".format(text))
         self._utterance.stop()
         self._text_to_speech.say(r"\\rspd={}\\{}".format(speed, text))
         self._utterance.start()
+        self.speaking = False
 
     def on_camera(self, image):
         face = self.open_face.represent(image)
@@ -323,23 +329,13 @@ class SensorApp(App):
         self.log.info("{}: '{}'".format(person, transcript))
 
     def _on_utterance(self, audio):
-        self._utterance.stop()
+        self.log.info("Utterance {:3.2f}s".format(float(len(audio)) / self.microphone.sample_rate))
 
         hypotheses = self._speech_to_text.transcribe(audio)
 
         if hypotheses:
-            for transcript, confidence in hypotheses:
-                name_transcript = self._name_recognition.recognize(transcript)
-
-                if '{}' in name_transcript:
-                    name, name_confidence = pepper.NameASR(hints=(name_transcript,)).transcribe(audio)
-                    name_transcript = name_transcript.format(name)
-                    self.on_transcript(name_transcript, self.current_person)
-                    break
-            else:
-                self.on_transcript(hypotheses[0][0], self.current_person)
-
-        self._utterance.start()
+            transcript, confidence = hypotheses[0]
+            self.on_transcript(transcript, self.current_person)
 
     def _update_camera(self):
         while True:

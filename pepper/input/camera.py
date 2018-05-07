@@ -4,6 +4,8 @@ import cv2
 from enum import Enum, IntEnum
 import random
 
+from numba import jit
+
 
 class Camera(object):
     """Abstract Camera Class"""
@@ -50,7 +52,7 @@ class CameraColorSpace(Enum):
     """
 
     LUMINANCE = (0, (1, np.uint8))
-    YUV = (10, (3, np.uint8))
+    YUV = (9, (3, np.uint8))
     RGB = (11, (3, np.uint8))
     DEPTH = (17, (1, np.uint16))
 
@@ -191,13 +193,13 @@ class PepperCamera(Camera):
         -------
         image: np.ndarray
         """
+
         result = self.service.getImageRemote(self.client)
 
         if result:
             width, height, layers, color_space, seconds, milliseconds, data, camera, \
             angle_left, angle_top, angle_right, angle_bottom = result
             return np.frombuffer(data, self.dtype).reshape(height, width, self.channels)
-
         else:
             self.service.unsubscribe(self.id)
             raise RuntimeError("No Result from ImageRemote")

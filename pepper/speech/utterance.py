@@ -3,15 +3,16 @@ from webrtcvad import Vad
 import numpy as np
 
 from threading import Thread
+from time import sleep
 
 
 class Utterance(object):
 
     FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
     BUFFER_SIZE = 100 # Buffer Size
-    WINDOW_SIZE = 30  # Sliding Window Length (Multiples of Frame MS)
+    WINDOW_SIZE = 40  # Sliding Window Length (Multiples of Frame MS)
 
-    VOICE_THRESHOLD = 0.9
+    VOICE_THRESHOLD = 0.8
     NONVOICE_THRESHOLD = 0.2
 
     def __init__(self, microphone, callback, mode=3):
@@ -116,6 +117,10 @@ class Utterance(object):
         """
         window = np.arange(self._ringbuffer_index - self.WINDOW_SIZE, self._ringbuffer_index) % self.BUFFER_SIZE
         return np.mean(self._vad_ringbuffer[window])
+
+    def wait_for_silence(self):
+        while self.activation() > 0.1:
+            sleep(0.1)
 
     def _on_audio(self, audio):
         """

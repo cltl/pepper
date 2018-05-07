@@ -33,9 +33,10 @@ def load_people(directory = 'leolani'):
     ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), directory)
 
     data = {}
-
-    for matrix_path in os.listdir(ROOT):
-        data[os.path.splitext(matrix_path)[0]] = np.fromfile(os.path.join(ROOT, matrix_path), np.float32).reshape(-1, 128)
+    if os.path.isdir(ROOT):
+        for matrix_path in os.listdir(ROOT):
+            data[os.path.splitext(matrix_path)[0]] = np.fromfile(
+                os.path.join(ROOT, matrix_path), np.float32).reshape(-1, 128)
 
     return data
 
@@ -63,14 +64,13 @@ class PeopleCluster:
         index = labels[0]
 
         # Silhouette Score
-        a = np.mean(np.linalg.norm(self._data[np.where(self._labels == labels[0])] - face, 2, 1))
-        b = np.mean(np.linalg.norm(self._data[np.where(self._labels == labels[1])] - face, 2, 1))
-        s = (b - a) / max(a, b)
+        inner = np.mean(np.linalg.norm(self._data[np.where(self._labels == labels[0])] - face, 2, 1))
+        outer = np.mean(np.linalg.norm(self._data[np.where(self._labels == labels[1])] - face, 2, 1))
+        silhouette = (outer - inner) / max(inner, outer)
 
         name = self._names[index]
-        distance = distances[index]
 
-        return name, s
+        return name, silhouette
 
     def performance(self):
         print("Accuracy: {}".format(metrics.accuracy_score(self._true_labels, self._labels)))
@@ -80,10 +80,9 @@ class PeopleCluster:
 
     def plot(self):
         pca = PCA(2)
-        pca.fit(self._data)
-        data_pca = pca.transform(self._data)
+        data_pca = pca.fit_transform(self._data)
 
-        for index in range(len(people)):
+        for index in range(len(self.people)):
             cluster_data = data_pca[np.where(self._labels == index)]
             plt.scatter(cluster_data[:, 0], cluster_data[:, 1], cmap='tab20', label=self._names[index])
 
@@ -92,9 +91,7 @@ class PeopleCluster:
 
 
 if __name__ == "__main__":
-    people = load_data_set('lfw', 100)
-    people.update(load_people())
+    people = load_people()
+    people.update(load_people('paradiso'))
 
-    cluster = PeopleCluster(people)
-    cluster.performance()
-    cluster.plot()
+    PeopleCluster(people).performance()
