@@ -69,7 +69,7 @@ CATCH_ATTENTION_ANIMATION = [
 ]
 
 QnA = {
-    "What is your name": "My name is Leo Lani, which means 'Voice of an Angel' in Hawaiian",
+    "What is your name": "My name is Leo Lani, which means \\vct=70\\ 'Voice of an Angel' \\vct=100\\ in Hawaiian",
     "Where are you from": "From France and Japan!",
     "How old are you": "I was born on Tuesday the eleventh of July, 2017. That means I'm 8 months old",
     "When was your first performance": "My first performance was on July thirteenth, 2017! It was recorded on TV!",
@@ -100,14 +100,14 @@ def people(directory):
 class GuestRecognitionApp(pepper.FlowApp):
 
     PERSON_RECOGNITION_THRESHOLD = 0.2
-    PERSON_NEW_THRESHOLD = 0.1
+    PERSON_NEW_THRESHOLD = 0.05
     PERSON_GREET_TIMEOUT = 120
     PERSON_MEET_TIMEOUT = 10
     MIN_SAMPLES = 10
 
     CATCH_ATTENTION_TIMEOUT = 180
 
-    FACE_BUFFER = 3
+    FACE_BUFFER = 4
 
     def __init__(self, address):
         self.paradiso_root = os.path.abspath('../../people/paradiso')
@@ -169,16 +169,12 @@ class GuestRecognitionApp(pepper.FlowApp):
                     if "how many people" in transcript.lower() or "how many new people" in transcript.lower():
                         self.say("I've met {} humans in Paradiso, today!".format(len(people('paradiso'))))
                         break
-                    elif "who did you meet" in transcript.lower():
+                    elif "who did you meet" in transcript.lower() or "what are they're names" in transcript.lower():
                         self.say("I've met {} new people today. I didn't catch all their names, but they're called {} and {}".format(len(people('paradiso')), ', '.join(people('paradiso')[:-1]), people('paradiso')[-1]))
                         break
                     elif "how many friends" in transcript.lower() or "who are your friends" in transcript.lower():
                         self.say("I have {} friends: {} and {}".format(len(people('leolani')), ', '.join(people('leolani')[:-1]), people('leolani')[-1]))
                         break
-                    elif "how many men" in transcript.lower():
-                        pass
-                    elif "how many women" in transcript.lower():
-                        pass
                     else:
                         for question, answer in QnA.items():
                             if question.lower() in transcript.lower():
@@ -204,24 +200,24 @@ class GuestRecognitionApp(pepper.FlowApp):
         if len(self.scores) == self.scores.maxlen:
             mean_score = np.mean(self.scores)
 
-            if mean_score > 0.2:
+            if mean_score > 0.15:
                 self.on_person_recognized(name)
                 self.scores.clear()
 
-            elif mean_score < 0.1:
-                gender = self.gender_classifier.classify(representation)
-
-                address = ""
-
-                if gender < 0.10:
-                    address = choice(MALE)
-                if gender > 0.90:
-                    address = choice(FEMALE)
-
-                self.say("{} {}, {} {}".format(choice(GREET), address, choice(NEW), choice(NAME)))
-
-                self.on_person_new()
-                self.scores.clear()
+            # elif mean_score < 0.05:
+            #     gender = self.gender_classifier.classify(representation)
+            #
+            #     address = ""
+            #
+            #     if gender < 0.10:
+            #         address = choice(MALE)
+            #     if gender > 0.90:
+            #         address = choice(FEMALE)
+            #
+            #     self.say("{} {}, {} {}".format(choice(GREET), address, choice(NEW), choice(NAME)))
+            #
+            #     self.on_person_new()
+            #     self.scores.clear()
 
     def on_person_recognized(self, name):
         if not name in self.people_greeted or time() - self.people_greeted[name] > self.PERSON_GREET_TIMEOUT:

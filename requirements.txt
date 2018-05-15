@@ -1,10 +1,8 @@
 numpy
 scipy
 requests
-ws4py
 pyaudio
 pillow
 pyyaml
 google-cloud-speech
-watson_developer_cloud
 webrtcvad

@@ -9,3 +9,7 @@ pepper/speech/kaldi/models/tmp/
 twitter_auth.yaml
 tests/data/
 /venv/*
+tests/image/
+pepper/people/
+knowledge_representation/brainOutput/
+pepper/language/stanford-ner/

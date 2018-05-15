@@ -46,7 +46,7 @@ class WolframApp(pepper.FlowApp):
     def load_people(self):
         people = pepper.load_data_set('lfw', 80)
         people.update(pepper.load_people('leolani'))
-        people.update(pepper.load_people('paradiso'))
+        # people.update(pepper.load_people('paradiso'))
         return people
 
     def on_utterance(self, audio):
@@ -68,7 +68,7 @@ class WolframApp(pepper.FlowApp):
         if len(self.scores) == self.scores.maxlen:
             mean_score = np.mean(self.scores)
 
-            if mean_score > 0.2:
+            if mean_score > 0.15:
                 self.on_person_recognized(name)
                 self.scores.clear()
 

@@ -26,8 +26,8 @@ GREET = ["Hello", "Hi", "Hey There", "Greetings"]
 
 class TheoryOfMindApp(pepper.FlowApp):
 
-    PERSON_RECOGNITION_THRESHOLD = 0.2
-    PERSON_NEW_THRESHOLD = 0.1
+    PERSON_RECOGNITION_THRESHOLD = 0.10
+    PERSON_NEW_THRESHOLD = 0.02
     PERSON_GREET_TIMEOUT = 120
     CHAT_TIMEOUT = 15
     FACE_BUFFER = 3
@@ -57,7 +57,7 @@ class TheoryOfMindApp(pepper.FlowApp):
     def load_people(self):
         people = pepper.load_data_set('lfw', 80)
         people.update(pepper.load_people('leolani'))
-        people.update(pepper.load_people('paradiso'))
+        # people.update(pepper.load_people('paradiso'))
         return people
 
     def on_transcript(self, audio, transcript, transcript_confidence, name, name_confidence):

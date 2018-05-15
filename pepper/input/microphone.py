@@ -3,7 +3,7 @@ import wave
 import numpy as np
 from enum import Enum
 from collections import deque
-from queue import Queue
+from Queue import Queue
 from threading import Thread
 from time import time
 
