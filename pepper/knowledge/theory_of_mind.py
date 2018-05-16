@@ -70,7 +70,7 @@ class TheoryOfMind(object):
         # TODO refactor
         self._paradiso_simple_model_(parsed_statement)
 
-        data = self._serialize(os.path.abspath('../../../knowledge_representation/brainOutput/learned_facts_test'))
+        data = self._serialize(os.path.abspath('../../../pepper/knowledge_representation/brainOutput/learned_facts'))
 
         code = self._upload_to_brain(data)
 
@@ -96,7 +96,7 @@ class TheoryOfMind(object):
         # Create JSON output
         if 'date' in parsed_question.keys():
             parsed_question["date"] = str(parsed_question["date"])
-        output = {'response': response["results"]["bindings"], 'question': parsed_question}
+        output = {'response': response, 'question': parsed_question}
 
         return output
 
@@ -118,10 +118,10 @@ class TheoryOfMind(object):
         response = self._submit_query(query)
 
         last_chat = 0
-        for chat in response['results']['bindings']:
+        for chat in response:
             chat_uri = chat['s']['value']
             chat_id = chat_uri.split('/')[-1][4:]
-            chat_id = int(chat_id)
+            chat_id = int(chat_id) if chat_id != '' else 0
 
             if chat_id > last_chat:
                 last_chat = chat_id
@@ -147,7 +147,7 @@ class TheoryOfMind(object):
         response = self._submit_query(query)
 
         last_turn = 0
-        for turn in response['results']['bindings']:
+        for turn in response:
             turn_uri = turn['s']['value']
             turn_id = turn_uri.split('/')[-1][10:]
             turn_id = int(turn_id)
@@ -172,7 +172,7 @@ class TheoryOfMind(object):
         """
 
         response = self._submit_query(query)
-        response = response['results']['bindings'][0]['count']['value']
+        response = response[0]['count']['value']
 
         return response
 
@@ -187,7 +187,7 @@ class TheoryOfMind(object):
         """
 
         response = self._submit_query(query)
-        response = response['results']['bindings'][0]['count']['value']
+        response = response[0]['count']['value']
 
         return response
 
@@ -195,16 +195,16 @@ class TheoryOfMind(object):
         query = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select distinct ?act where { 
-            ?act rdf:type sem:Actor .
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                        
+            select distinct ?name where { 
+                ?act rdf:type sem:Actor .
+                ?act rdfs:label ?name
             }
         """
 
         response = self._submit_query(query)
-        response = response['results']['bindings']
-
-        friends = [elem['act']['value'].split('/')[-1] for elem in response]
+        friends = [elem['name']['value'].split('/')[-1] for elem in response]
 
         return friends
 
@@ -217,8 +217,6 @@ class TheoryOfMind(object):
         """
 
         response = self._submit_query(query)
-        response = response['results']['bindings']
-
         predicates = [elem['p']['value'].split('/')[-1] for elem in response]
 
         return predicates
@@ -232,8 +230,6 @@ class TheoryOfMind(object):
         """
 
         response = self._submit_query(query)
-        response = response['results']['bindings']
-
         classes = [elem['o']['value'].split('/')[-1] for elem in response]
 
         return classes
@@ -242,37 +238,76 @@ class TheoryOfMind(object):
         query = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                         
-            select distinct ?act (count(distinct ?chat) as ?num_chat) where { 
+            select distinct ?name (count(distinct ?chat) as ?num_chat) where { 
                 ?act rdf:type sem:Actor .
+                ?act rdfs:label ?name .
                 ?chat sem:hasActor ?act .
                 ?chat sem:hasSubevent ?t
-            }    GROUP BY ?act
+            }    GROUP BY ?name
             ORDER BY DESC (?num_chat) 
             LIMIT 5
         """
 
         response = self._submit_query(query)
-        response = response['results']['bindings']
-
-        best_friends = [elem['act']['value'].split('/')[-1] for elem in response]
+        best_friends = [elem['name']['value'] for elem in response]
 
         return best_friends
 
-    def get_all_of_type(self, type):
+    def get_instance_of_type(self, instance_type):
         query = """
             PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            select distinct ?s where { 
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            
+            select distinct ?name where { 
                 ?s a n2mu:%s .
+                ?s rdfs:label ?name
             } 
-        """ % type
+        """ % instance_type
 
         response = self._submit_query(query)
-        response = response['results']['bindings']
-
-        instances = [elem['s']['value'].split('/')[-1] for elem in response]
+        instances = [elem['name']['value'] for elem in response]
 
         return instances
+
+    def when_last_chat_with(self, actor_label):
+        query = """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                        
+            select distinct ?time where { 
+                ?act rdf:type sem:Actor .
+                ?act rdfs:label "%s" .
+                ?chat sem:hasActor ?act .
+                ?chat sem:hasSubevent ?turn .
+                ?chat sem:hasTime ?time
+            }  ORDER BY DESC (?time)
+            LIMIT 1
+        """ % actor_label
+
+        response = self._submit_query(query)
+        response = response[0]['time']['value'].split('/')[-1]
+
+        return response
+
+    def get_triples_with_predicate(self, predicate):
+        query = """
+            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            
+            select ?sname ?oname where { 
+                ?s n2mu:%s ?o .
+                ?s rdfs:label ?sname .
+                ?o rdfs:label ?oname
+            }  
+        """ % predicate
+
+        response = self._submit_query(query)
+        triples = [(elem['sname']['value'], elem['oname']['value']) for elem in response]
+
+        return triples
 
     ##################################### Helpers for setting up store connection #####################################
 
@@ -377,7 +412,6 @@ class TheoryOfMind(object):
         # Save to file but return the python representation
         with open(file_path + '.' + self.format, 'w') as f:
             self.dataset.serialize(f, format=self.format)
-
         return self.dataset.serialize(format=self.format)
 
     def _upload_to_brain(self, data):
@@ -410,7 +444,7 @@ class TheoryOfMind(object):
             subject_type = 'Thing'
         else:
             subject_vocab = self.namespaces['N2MU']
-            subject_type = parsed_statement['subject']['type']
+            subject_type = parsed_statement['subject']['type'].capitalize()
 
         subject_id = determine_case(parsed_statement['subject']['label'], subject_type)
         subject_label = determine_case(parsed_statement['subject']['label'], subject_type)
@@ -430,7 +464,7 @@ class TheoryOfMind(object):
             object_type = 'Thing'
         else:
             object_vocab = self.namespaces['N2MU']
-            object_type = parsed_statement['object']['type']
+            object_type = parsed_statement['object']['type'].capitalize()
 
         object_id = determine_case(parsed_statement['object']['label'], object_type)
         object_label = determine_case(parsed_statement['object']['label'], object_type)
@@ -494,6 +528,9 @@ class TheoryOfMind(object):
         instance_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
 
         # Chat and turn
+        if parsed_statement['chat'] == '':
+            parsed_statement['chat'] = str(self.get_last_chat_id() + 1)
+
         chat_id = 'chat%s' % parsed_statement['chat']
         turn_id = chat_id + '_turn%s' % parsed_statement['turn']
         turn = URIRef(to_iri(self.namespaces['LTa'] + turn_id))
@@ -623,7 +660,7 @@ class TheoryOfMind(object):
         sparql.addParameter('Accept', 'application/sparql-results+json')
         response = sparql.query().convert()
 
-        return response
+        return response["results"]["bindings"]
 
 
 def hash_id(triple):
@@ -649,10 +686,10 @@ if __name__ == "__main__":
     brain = TheoryOfMind()
 
     # Test statements
-    # for statement in statements:
-    #     response = brain.update(statement)
-    #     print(json.dumps(response, indent=4, sort_keys=True))
-    #
+    for statement in statements:
+        response = brain.update(statement)
+        print(json.dumps(response, indent=4, sort_keys=True))
+
     # # Separation
     # print('#######################################################')
     #
@@ -661,5 +698,6 @@ if __name__ == "__main__":
     #     response = brain.query_brain(question)
     #     print(json.dumps(response, indent=4, sort_keys=True))
 
-    id = brain.get_all_of_type('Location')
-    print('\n%s' % id)
+    response = brain.get_instance_of_type('Location')
+    response = brain.get_triples_with_predicate('is_from')
+    print('\n%s' % response)

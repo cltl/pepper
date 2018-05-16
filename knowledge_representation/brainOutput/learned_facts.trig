@@ -17,71 +17,83 @@
 @prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-leolaniWorld:lenka_isFrom_serbia {
-    leolaniWorld:Lenka n2mu:isFrom leolaniWorld:Serbia .
+leolaniWorld:Bram_likes_action_movies {
+    leolaniWorld:Bram n2mu:likes leolaniWorld:action_movies .
 }
 
-leolaniWorld:piek_likes_horror_movies {
-    leolaniWorld:Piek n2mu:likes leolaniWorld:horror_movies .
+leolaniWorld:Bram_likes_romantic_movies {
+    leolaniWorld:Bram n2mu:likes leolaniWorld:romantic_movies .
 }
 
-leolaniWorld:lenka_likes_acrobatics {
-    leolaniWorld:Lenka n2mu:likes leolaniWorld:acrobatics .
+leolaniWorld:Lenka_is_from_Serbia {
+    leolaniWorld:Lenka n2mu:is_from leolaniWorld:Serbia .
 }
 
-leolaniWorld:piek_likes_balkenbrij {
-    leolaniWorld:Piek n2mu:likes leolaniWorld:balkenbrij .
+leolaniWorld:Selene_K_is_from_Netherlands {
+    leolaniWorld:Selene_K n2mu:is_from leolaniWorld:Netherlands .
 }
 
-leolaniWorld:lenka_likes_harry_potter {
-    leolaniWorld:Lenka n2mu:likes leolaniWorld:harry_potter .
-}
-
-leolaniWorld:bram_knows_lenka {
-    leolaniWorld:Bram n2mu:knows leolaniWorld:Lenka .
-}
-
-leolaniWorld:selene_isFrom_mexico {
-    leolaniWorld:Selene n2mu:isFrom leolaniWorld:Mexico .
-}
-
-leolaniWorld:selene_likes_coco {
-    leolaniWorld:Selene n2mu:likes leolaniWorld:coco .
-}
-
-leolaniWorld:lenka_likes_action_movies {
-    leolaniWorld:Lenka n2mu:likes leolaniWorld:action_movies .
-}
-
-leolaniWorld:selene_likes_animated_movies {
-    leolaniWorld:Selene n2mu:likes leolaniWorld:animated_movies .
-}
-
-leolaniWorld:lenka_likes_ice_cream {
-    leolaniWorld:Lenka n2mu:likes leolaniWorld:ice_cream .
-}
-
-leolaniWorld:piek_likes_2001_a_space_odyssey {
-    leolaniWorld:Piek n2mu:likes <http://cltl.nl/leolani/world/2001_a_space_odyssey> .
-}
-
-leolaniWorld:leolani_isFrom_japan {
-    leolaniWorld:Leolani n2mu:isFrom leolaniWorld:Japan .
-}
-
-leolaniWorld:selene_likes_soccer {
+leolaniWorld:Selene_likes_soccer {
     leolaniWorld:Selene n2mu:likes leolaniWorld:soccer .
 }
 
-leolaniWorld:piek_isFrom_netherlands {
-    leolaniWorld:Piek n2mu:isFrom leolaniWorld:Netherlands .
+leolaniWorld:Leolani_is_from_Japan {
+    leolaniWorld:Leolani n2mu:is_from leolaniWorld:Japan .
+}
+
+leolaniWorld:Bram_likes_goulash {
+    leolaniWorld:Bram n2mu:likes leolaniWorld:goulash .
+}
+
+leolaniWorld:Lenka_mother_is_ljubica {
+    leolaniWorld:Lenka n2mu:mother_is leolaniWorld:ljubica .
+}
+
+leolaniWorld:Lenka_likes_ice_cream {
+    leolaniWorld:Lenka n2mu:likes leolaniWorld:ice_cream .
+}
+
+leolaniWorld:Piek_is_from_Netherlands {
+    leolaniWorld:Piek n2mu:is_from leolaniWorld:Netherlands .
+}
+
+leolaniWorld:Piek_likes_horror_movies {
+    leolaniWorld:Piek n2mu:likes leolaniWorld:horror_movies .
+}
+
+leolaniWorld:Piek_likes_soccer {
+    leolaniWorld:Piek n2mu:likes leolaniWorld:soccer .
+}
+
+leolaniWorld:Selene_is_from_Mexico {
+    leolaniWorld:Selene n2mu:is_from leolaniWorld:Mexico .
+}
+
+leolaniWorld:Bram_likes_the_big_lebowski {
+    leolaniWorld:Bram n2mu:likes leolaniWorld:the_big_lebowski .
+}
+
+leolaniWorld:Leolani_is_from_France {
+    leolaniWorld:Leolani n2mu:is_from leolaniWorld:France .
+}
+
+leolaniWorld:Bram_likes_baseball {
+    leolaniWorld:Bram n2mu:likes leolaniWorld:baseball .
+}
+
+leolaniWorld:Bram_is_from_Netherlands {
+    leolaniWorld:Bram n2mu:is_from leolaniWorld:Netherlands .
+}
+
+leolaniWorld:Lenka_likes_harry_potter {
+    leolaniWorld:Lenka n2mu:likes leolaniWorld:harry_potter .
 }
 
 leolaniTalk:perspectives {
     leolaniTalk:chat1_turn10_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:ice_cream,
-            leolaniWorld:Lenka ;
-        gaf:denotes leolaniWorld:lenka_likes_ice_cream ;
+        gaf:containsDenotation leolaniWorld:Lenka,
+            leolaniWorld:ice_cream ;
+        gaf:denotes leolaniWorld:Lenka_likes_ice_cream ;
         grasp:hasAttribution leolaniTalk:chat1_turn10_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -90,9 +102,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn11_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:harry_potter,
-            leolaniWorld:Lenka ;
-        gaf:denotes leolaniWorld:lenka_likes_harry_potter ;
+        gaf:containsDenotation leolaniWorld:Lenka,
+            leolaniWorld:harry_potter ;
+        gaf:denotes leolaniWorld:Lenka_likes_harry_potter ;
         grasp:hasAttribution leolaniTalk:chat1_turn11_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -101,9 +113,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn12_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:acrobatics,
-            leolaniWorld:Lenka ;
-        gaf:denotes leolaniWorld:lenka_likes_acrobatics ;
+        gaf:containsDenotation leolaniWorld:Lenka,
+            leolaniWorld:acrobatics ;
+        gaf:denotes leolaniWorld:Lenka_likes_acrobatics ;
         grasp:hasAttribution leolaniTalk:chat1_turn12_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -112,9 +124,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn13_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:action_movies,
-            leolaniWorld:Lenka ;
-        gaf:denotes leolaniWorld:lenka_likes_action_movies ;
+        gaf:containsDenotation leolaniWorld:Lenka,
+            leolaniWorld:action_movies ;
+        gaf:denotes leolaniWorld:Lenka_likes_action_movies ;
         grasp:hasAttribution leolaniTalk:chat1_turn13_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -123,9 +135,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn14_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:balkenbrij,
-            leolaniWorld:Piek ;
-        gaf:denotes leolaniWorld:piek_likes_balkenbrij ;
+        gaf:containsDenotation leolaniWorld:Piek,
+            leolaniWorld:balkenbrij ;
+        gaf:denotes leolaniWorld:Piek_likes_balkenbrij ;
         grasp:hasAttribution leolaniTalk:chat1_turn14_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -136,7 +148,7 @@ leolaniTalk:perspectives {
     leolaniTalk:chat1_turn15_char0-25 a gaf:Mention ;
         gaf:containsDenotation <http://cltl.nl/leolani/world/2001_a_space_odyssey>,
             leolaniWorld:Piek ;
-        gaf:denotes leolaniWorld:piek_likes_2001_a_space_odyssey ;
+        gaf:denotes leolaniWorld:Piek_likes_2001_a_space_odyssey ;
         grasp:hasAttribution leolaniTalk:chat1_turn15_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -145,9 +157,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn16_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:piek,
+        gaf:containsDenotation leolaniWorld:Piek,
             leolaniWorld:soccer ;
-        gaf:denotes leolaniWorld:piek_likes_soccer ;
+        gaf:denotes leolaniWorld:Piek_likes_soccer ;
         grasp:hasAttribution leolaniTalk:chat1_turn16_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -156,9 +168,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn17_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:horror_movies,
-            leolaniWorld:Piek ;
-        gaf:denotes leolaniWorld:piek_likes_horror_movies ;
+        gaf:containsDenotation leolaniWorld:Piek,
+            leolaniWorld:horror_movies ;
+        gaf:denotes leolaniWorld:Piek_likes_horror_movies ;
         grasp:hasAttribution leolaniTalk:chat1_turn17_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -167,9 +179,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn18_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:selene,
+        gaf:containsDenotation leolaniWorld:Selene,
             leolaniWorld:tacos ;
-        gaf:denotes leolaniWorld:selene_likes_tacos ;
+        gaf:denotes leolaniWorld:Selene_likes_tacos ;
         grasp:hasAttribution leolaniTalk:chat1_turn18_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -178,9 +190,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn19_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:coco,
-            leolaniWorld:Selene ;
-        gaf:denotes leolaniWorld:selene_likes_coco ;
+        gaf:containsDenotation leolaniWorld:Selene,
+            leolaniWorld:coco ;
+        gaf:denotes leolaniWorld:Selene_likes_coco ;
         grasp:hasAttribution leolaniTalk:chat1_turn19_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -189,9 +201,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn1_char0-27 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:lenka,
+        gaf:containsDenotation leolaniWorld:Lenka,
             leolaniWorld:Serbia ;
-        gaf:denotes leolaniWorld:lenka_isFrom_serbia ;
+        gaf:denotes leolaniWorld:Lenka_is_from_Serbia ;
         grasp:hasAttribution leolaniTalk:chat1_turn1_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -200,9 +212,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn20_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:selene,
+        gaf:containsDenotation leolaniWorld:Selene,
             leolaniWorld:soccer ;
-        gaf:denotes leolaniWorld:selene_likes_soccer ;
+        gaf:denotes leolaniWorld:Selene_likes_soccer ;
         grasp:hasAttribution leolaniTalk:chat1_turn20_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -211,9 +223,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn21_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:animated_movies,
-            leolaniWorld:Selene ;
-        gaf:denotes leolaniWorld:selene_likes_animated_movies ;
+        gaf:containsDenotation leolaniWorld:Selene,
+            leolaniWorld:animated_movies ;
+        gaf:denotes leolaniWorld:Selene_likes_animated_movies ;
         grasp:hasAttribution leolaniTalk:chat1_turn21_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -222,9 +234,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn22_char0-16 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:bram,
+        gaf:containsDenotation leolaniWorld:Bram,
             leolaniWorld:Lenka ;
-        gaf:denotes leolaniWorld:bram_knows_lenka ;
+        gaf:denotes leolaniWorld:Bram_knows_Lenka ;
         grasp:hasAttribution leolaniTalk:chat1_turn22_char0-16_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -235,7 +247,7 @@ leolaniTalk:perspectives {
     leolaniTalk:chat1_turn23_char0-27 a gaf:Mention ;
         gaf:containsDenotation leolaniWorld:France,
             leolaniWorld:Leolani ;
-        gaf:denotes leolaniWorld:leolani_isFrom_france ;
+        gaf:denotes leolaniWorld:Leolani_is_from_France ;
         grasp:hasAttribution leolaniTalk:chat1_turn23_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -246,7 +258,7 @@ leolaniTalk:perspectives {
     leolaniTalk:chat1_turn24_char0-27 a gaf:Mention ;
         gaf:containsDenotation leolaniWorld:Japan,
             leolaniWorld:Leolani ;
-        gaf:denotes leolaniWorld:leolani_isFrom_japan ;
+        gaf:denotes leolaniWorld:Leolani_is_from_Japan ;
         grasp:hasAttribution leolaniTalk:chat1_turn24_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -255,9 +267,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn2_char0-27 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:bram,
+        gaf:containsDenotation leolaniWorld:Bram,
             leolaniWorld:Netherlands ;
-        gaf:denotes leolaniWorld:bram_isFrom_netherlands ;
+        gaf:denotes leolaniWorld:Bram_is_from_Netherlands ;
         grasp:hasAttribution leolaniTalk:chat1_turn2_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -268,7 +280,7 @@ leolaniTalk:perspectives {
     leolaniTalk:chat1_turn3_char0-27 a gaf:Mention ;
         gaf:containsDenotation leolaniWorld:Mexico,
             leolaniWorld:Selene ;
-        gaf:denotes leolaniWorld:selene_isFrom_mexico ;
+        gaf:denotes leolaniWorld:Selene_is_from_Mexico ;
         grasp:hasAttribution leolaniTalk:chat1_turn3_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -279,7 +291,7 @@ leolaniTalk:perspectives {
     leolaniTalk:chat1_turn4_char0-27 a gaf:Mention ;
         gaf:containsDenotation leolaniWorld:Netherlands,
             leolaniWorld:Piek ;
-        gaf:denotes leolaniWorld:piek_isFrom_netherlands ;
+        gaf:denotes leolaniWorld:Piek_is_from_Netherlands ;
         grasp:hasAttribution leolaniTalk:chat1_turn4_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -290,7 +302,7 @@ leolaniTalk:perspectives {
     leolaniTalk:chat1_turn5_char0-27 a gaf:Mention ;
         gaf:containsDenotation leolaniWorld:Netherlands,
             leolaniWorld:Selene_K ;
-        gaf:denotes leolaniWorld:selene_K_isFrom_netherlands ;
+        gaf:denotes leolaniWorld:Selene_K_is_from_Netherlands ;
         grasp:hasAttribution leolaniTalk:chat1_turn5_char0-27_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -299,9 +311,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn6_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:bram,
+        gaf:containsDenotation leolaniWorld:Bram,
             leolaniWorld:goulash ;
-        gaf:denotes leolaniWorld:bram_likes_goulash ;
+        gaf:denotes leolaniWorld:Bram_likes_goulash ;
         grasp:hasAttribution leolaniTalk:chat1_turn6_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -310,9 +322,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn7_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:bram,
+        gaf:containsDenotation leolaniWorld:Bram,
             leolaniWorld:the_big_lebowski ;
-        gaf:denotes leolaniWorld:bram_likes_the_big_lebowski ;
+        gaf:denotes leolaniWorld:Bram_likes_the_big_lebowski ;
         grasp:hasAttribution leolaniTalk:chat1_turn7_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -321,9 +333,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn8_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:baseball,
-            leolaniWorld:Bram ;
-        gaf:denotes leolaniWorld:bram_likes_baseball ;
+        gaf:containsDenotation leolaniWorld:Bram,
+            leolaniWorld:baseball ;
+        gaf:denotes leolaniWorld:Bram_likes_baseball ;
         grasp:hasAttribution leolaniTalk:chat1_turn8_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -332,9 +344,9 @@ leolaniTalk:perspectives {
         rdf:value grasp:CERTAIN .
 
     leolaniTalk:chat1_turn9_char0-25 a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:bram,
+        gaf:containsDenotation leolaniWorld:Bram,
             leolaniWorld:romantic_movies ;
-        gaf:denotes leolaniWorld:bram_likes_romantic_movies ;
+        gaf:denotes leolaniWorld:Bram_likes_romantic_movies ;
         grasp:hasAttribution leolaniTalk:chat1_turn9_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:Selene .
 
@@ -342,67 +354,71 @@ leolaniTalk:perspectives {
         grasp:isAttributionFor leolaniTalk:chat1_turn9_char0-25 ;
         rdf:value grasp:CERTAIN .
 
-    leolaniTalk:chat_turn_char a gaf:Mention ;
-        gaf:containsDenotation leolaniWorld:action_movies,
-            leolaniWorld:bram,
-            leolaniWorld:cake,
-            leolaniWorld:Italy,
-            leolaniWorld:lenka,
-            leolaniWorld:ljubica,
-            leolaniWorld:romantic_movies ;
-        gaf:denotes leolaniWorld:bram_isFrom_italy,
-            leolaniWorld:bram_likes_action_movies,
-            leolaniWorld:bram_likes_romantic_movies,
-            leolaniWorld:lenka_favorite_food-is_cake,
-            leolaniWorld:lenka_mother-is_ljubica ;
-        grasp:hasAttribution leolaniTalk:chat_turn_char_CERTAIN ;
-        grasp:wasAttributedTo leolaniFriends:bram,
-            leolaniFriends:lenka,
-            leolaniFriends:Selene .
+    leolaniTalk:chat2_turn_char a gaf:Mention ;
+        gaf:containsDenotation leolaniWorld:Lenka,
+            leolaniWorld:ljubica ;
+        gaf:denotes leolaniWorld:Lenka_mother_is_ljubica ;
+        grasp:hasAttribution leolaniTalk:chat2_turn_char_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:Lenka .
 
-    leolaniTalk:chat_turn_char_CERTAIN a grasp:Attribution ;
-        grasp:isAttributionFor leolaniTalk:chat_turn_char ;
+    leolaniTalk:chat2_turn_char_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat2_turn_char ;
+        rdf:value grasp:CERTAIN .
+
+    leolaniTalk:chat3_turn_char a gaf:Mention ;
+        gaf:containsDenotation leolaniWorld:Bram,
+            leolaniWorld:action_movies ;
+        gaf:denotes leolaniWorld:Bram_likes_action_movies ;
+        grasp:hasAttribution leolaniTalk:chat3_turn_char_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:Bram .
+
+    leolaniTalk:chat3_turn_char_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat3_turn_char ;
+        rdf:value grasp:CERTAIN .
+
+    leolaniTalk:chat4_turn_char a gaf:Mention ;
+        gaf:containsDenotation leolaniWorld:Bram,
+            leolaniWorld:romantic_movies ;
+        gaf:denotes leolaniWorld:Bram_likes_romantic_movies ;
+        grasp:hasAttribution leolaniTalk:chat4_turn_char_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:Selene .
+
+    leolaniTalk:chat4_turn_char_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat4_turn_char ;
+        rdf:value grasp:CERTAIN .
+
+    leolaniTalk:chat5_turn_char a gaf:Mention ;
+        gaf:containsDenotation leolaniWorld:Bram,
+            leolaniWorld:Italy ;
+        gaf:denotes leolaniWorld:Bram_is_from_Italy ;
+        grasp:hasAttribution leolaniTalk:chat5_turn_char_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:Selene .
+
+    leolaniTalk:chat5_turn_char_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat5_turn_char ;
+        rdf:value grasp:CERTAIN .
+
+    leolaniTalk:chat6_turn_char a gaf:Mention ;
+        gaf:containsDenotation leolaniWorld:Lenka,
+            leolaniWorld:cake ;
+        gaf:denotes leolaniWorld:Lenka_favorite_cake ;
+        grasp:hasAttribution leolaniTalk:chat6_turn_char_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:Lenka .
+
+    leolaniTalk:chat6_turn_char_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat6_turn_char ;
         rdf:value grasp:CERTAIN .
 }
 
+leolaniWorld:Selene_likes_animated_movies {
+    leolaniWorld:Selene n2mu:likes leolaniWorld:animated_movies .
+}
+
 leolaniWorld:instances {
-    <http://cltl.nl/leolani/world/2001_a_space_odyssey> a gaf:Instance,
-            owl:Thing ;
+    <http://cltl.nl/leolani/world/2001_a_space_odyssey> a n2mu:Movie,
+            gaf:Instance ;
         rdfs:label "2001 a space odyssey" ;
         gaf:denotedIn leolaniTalk:chat1_turn15_char0-25 .
-
-    leolaniWorld:Leolani a n2mu:Robot,
-            gaf:Instance ;
-        rdfs:label "Leolani" ;
-        n2mu:knows leolaniFriends:bram,
-            leolaniFriends:lenka,
-            leolaniFriends:Selene .
-
-    leolaniWorld:acrobatics a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "acrobatics" ;
-        gaf:denotedIn leolaniTalk:chat1_turn12_char0-25 .
-
-    leolaniWorld:action_movies a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "action movies" ;
-        gaf:denotedIn leolaniTalk:chat1_turn13_char0-25,
-            leolaniTalk:chat_turn_char .
-
-    leolaniWorld:animated_movies a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "animated movies" ;
-        gaf:denotedIn leolaniTalk:chat1_turn21_char0-25 .
-
-    leolaniWorld:balkenbrij a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "balkenbrij" ;
-        gaf:denotedIn leolaniTalk:chat1_turn14_char0-25 .
-
-    leolaniWorld:baseball a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "baseball" ;
-        gaf:denotedIn leolaniTalk:chat1_turn8_char0-25 .
 
     leolaniWorld:Bram a n2mu:Person,
             gaf:Instance,
@@ -414,80 +430,52 @@ leolaniWorld:instances {
             leolaniTalk:chat1_turn7_char0-25,
             leolaniTalk:chat1_turn8_char0-25,
             leolaniTalk:chat1_turn9_char0-25,
-            leolaniTalk:chat_turn_char .
+            leolaniTalk:chat3_turn_char,
+            leolaniTalk:chat4_turn_char,
+            leolaniTalk:chat5_turn_char .
 
-    leolaniWorld:bram_isFrom_italy a gaf:Instance,
+    leolaniWorld:Bram_is_from_Italy a gaf:Instance,
             grasp:Statement ;
-        grasp:denotedBy leolaniTalk:chat_turn_char .
+        grasp:denotedBy leolaniTalk:chat5_turn_char .
 
-    leolaniWorld:bram_isFrom_netherlands a gaf:Instance,
+    leolaniWorld:Bram_is_from_Netherlands a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn2_char0-27 .
 
-    leolaniWorld:bram_knows_lenka a gaf:Instance,
+    leolaniWorld:Bram_knows_Lenka a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn22_char0-16 .
 
-    leolaniWorld:bram_likes_action_movies a gaf:Instance,
+    leolaniWorld:Bram_likes_action_movies a gaf:Instance,
             grasp:Statement ;
-        grasp:denotedBy leolaniTalk:chat_turn_char .
+        grasp:denotedBy leolaniTalk:chat3_turn_char .
 
-    leolaniWorld:bram_likes_baseball a gaf:Instance,
+    leolaniWorld:Bram_likes_baseball a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn8_char0-25 .
 
-    leolaniWorld:bram_likes_goulash a gaf:Instance,
+    leolaniWorld:Bram_likes_goulash a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn6_char0-25 .
 
-    leolaniWorld:bram_likes_romantic_movies a gaf:Instance,
+    leolaniWorld:Bram_likes_romantic_movies a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn9_char0-25,
-            leolaniTalk:chat_turn_char .
+            leolaniTalk:chat4_turn_char .
 
-    leolaniWorld:bram_likes_the_big_lebowski a gaf:Instance,
+    leolaniWorld:Bram_likes_the_big_lebowski a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn7_char0-25 .
-
-    leolaniWorld:cake a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "cake" ;
-        gaf:denotedIn leolaniTalk:chat_turn_char .
-
-    leolaniWorld:coco a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "coco" ;
-        gaf:denotedIn leolaniTalk:chat1_turn19_char0-25 .
 
     leolaniWorld:France a n2mu:Location,
             gaf:Instance ;
         rdfs:label "France" ;
         gaf:denotedIn leolaniTalk:chat1_turn23_char0-27 .
 
-    leolaniWorld:goulash a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "goulash" ;
-        gaf:denotedIn leolaniTalk:chat1_turn6_char0-25 .
-
-    leolaniWorld:harry_potter a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "harry potter" ;
-        gaf:denotedIn leolaniTalk:chat1_turn11_char0-25 .
-
-    leolaniWorld:horror_movies a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "horror movies" ;
-        gaf:denotedIn leolaniTalk:chat1_turn17_char0-25 .
-
-    leolaniWorld:ice_cream a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "ice cream" ;
-        gaf:denotedIn leolaniTalk:chat1_turn10_char0-25 .
-
     leolaniWorld:Italy a n2mu:Location,
             gaf:Instance ;
         rdfs:label "Italy" ;
-        gaf:denotedIn leolaniTalk:chat_turn_char .
+        gaf:denotedIn leolaniTalk:chat5_turn_char .
 
     leolaniWorld:Japan a n2mu:Location,
             gaf:Instance ;
@@ -504,54 +492,53 @@ leolaniWorld:instances {
             leolaniTalk:chat1_turn13_char0-25,
             leolaniTalk:chat1_turn1_char0-27,
             leolaniTalk:chat1_turn22_char0-16,
-            leolaniTalk:chat_turn_char .
+            leolaniTalk:chat2_turn_char,
+            leolaniTalk:chat6_turn_char .
 
-    leolaniWorld:lenka_favorite_food-is_cake a gaf:Instance,
+    leolaniWorld:Lenka_favorite_cake a gaf:Instance,
             grasp:Statement ;
-        grasp:denotedBy leolaniTalk:chat_turn_char .
+        grasp:denotedBy leolaniTalk:chat6_turn_char .
 
-    leolaniWorld:lenka_isFrom_serbia a gaf:Instance,
+    leolaniWorld:Lenka_is_from_Serbia a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn1_char0-27 .
 
-    leolaniWorld:lenka_likes_acrobatics a gaf:Instance,
+    leolaniWorld:Lenka_likes_acrobatics a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn12_char0-25 .
 
-    leolaniWorld:lenka_likes_action_movies a gaf:Instance,
+    leolaniWorld:Lenka_likes_action_movies a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn13_char0-25 .
 
-    leolaniWorld:lenka_likes_harry_potter a gaf:Instance,
+    leolaniWorld:Lenka_likes_harry_potter a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn11_char0-25 .
 
-    leolaniWorld:lenka_likes_ice_cream a gaf:Instance,
+    leolaniWorld:Lenka_likes_ice_cream a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn10_char0-25 .
 
-    leolaniWorld:lenka_mother-is_ljubica a gaf:Instance,
+    leolaniWorld:Lenka_mother_is_ljubica a gaf:Instance,
             grasp:Statement ;
-        grasp:denotedBy leolaniTalk:chat_turn_char .
+        grasp:denotedBy leolaniTalk:chat2_turn_char .
 
     leolaniWorld:Leolani a n2mu:Robot,
             gaf:Instance ;
         rdfs:label "Leolani" ;
+        n2mu:knows leolaniFriends:Bram,
+            leolaniFriends:Lenka,
+            leolaniFriends:Selene ;
         gaf:denotedIn leolaniTalk:chat1_turn23_char0-27,
             leolaniTalk:chat1_turn24_char0-27 .
 
-    leolaniWorld:leolani_isFrom_france a gaf:Instance,
+    leolaniWorld:Leolani_is_from_France a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn23_char0-27 .
 
-    leolaniWorld:leolani_isFrom_japan a gaf:Instance,
+    leolaniWorld:Leolani_is_from_Japan a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn24_char0-27 .
-
-    leolaniWorld:ljubica a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "ljubica" ;
-        gaf:denotedIn leolaniTalk:chat_turn_char .
 
     leolaniWorld:Mexico a n2mu:Location,
             gaf:Instance ;
@@ -574,31 +561,25 @@ leolaniWorld:instances {
             leolaniTalk:chat1_turn17_char0-25,
             leolaniTalk:chat1_turn4_char0-27 .
 
-    leolaniWorld:piek_isFrom_netherlands a gaf:Instance,
+    leolaniWorld:Piek_is_from_Netherlands a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn4_char0-27 .
 
-    leolaniWorld:piek_likes_2001_a_space_odyssey a gaf:Instance,
+    leolaniWorld:Piek_likes_2001_a_space_odyssey a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn15_char0-25 .
 
-    leolaniWorld:piek_likes_balkenbrij a gaf:Instance,
+    leolaniWorld:Piek_likes_balkenbrij a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn14_char0-25 .
 
-    leolaniWorld:piek_likes_horror_movies a gaf:Instance,
+    leolaniWorld:Piek_likes_horror_movies a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn17_char0-25 .
 
-    leolaniWorld:piek_likes_soccer a gaf:Instance,
+    leolaniWorld:Piek_likes_soccer a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn16_char0-25 .
-
-    leolaniWorld:romantic_movies a gaf:Instance,
-            owl:Thing ;
-        rdfs:label "romantic movies" ;
-        gaf:denotedIn leolaniTalk:chat1_turn9_char0-25,
-            leolaniTalk:chat_turn_char .
 
     leolaniWorld:Selene a n2mu:Person,
             gaf:Instance ;
@@ -614,27 +595,27 @@ leolaniWorld:instances {
         rdfs:label "Selene K" ;
         gaf:denotedIn leolaniTalk:chat1_turn5_char0-27 .
 
-    leolaniWorld:selene_K_isFrom_netherlands a gaf:Instance,
+    leolaniWorld:Selene_K_is_from_Netherlands a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn5_char0-27 .
 
-    leolaniWorld:selene_isFrom_mexico a gaf:Instance,
+    leolaniWorld:Selene_is_from_Mexico a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn3_char0-27 .
 
-    leolaniWorld:selene_likes_animated_movies a gaf:Instance,
+    leolaniWorld:Selene_likes_animated_movies a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn21_char0-25 .
 
-    leolaniWorld:selene_likes_coco a gaf:Instance,
+    leolaniWorld:Selene_likes_coco a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn19_char0-25 .
 
-    leolaniWorld:selene_likes_soccer a gaf:Instance,
+    leolaniWorld:Selene_likes_soccer a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn20_char0-25 .
 
-    leolaniWorld:selene_likes_tacos a gaf:Instance,
+    leolaniWorld:Selene_likes_tacos a gaf:Instance,
             grasp:Statement ;
         grasp:denotedBy leolaniTalk:chat1_turn18_char0-25 .
 
@@ -643,19 +624,88 @@ leolaniWorld:instances {
         rdfs:label "Serbia" ;
         gaf:denotedIn leolaniTalk:chat1_turn1_char0-27 .
 
-    leolaniWorld:soccer a gaf:Instance,
+    leolaniWorld:acrobatics a n2mu:Sport,
+            gaf:Instance ;
+        rdfs:label "acrobatics" ;
+        gaf:denotedIn leolaniTalk:chat1_turn12_char0-25 .
+
+    leolaniWorld:action_movies a n2mu:Film_genre,
+            gaf:Instance,
             owl:Thing ;
+        rdfs:label "action movies" ;
+        gaf:denotedIn leolaniTalk:chat1_turn13_char0-25,
+            leolaniTalk:chat3_turn_char .
+
+    leolaniWorld:animated_movies a n2mu:Film_genre,
+            gaf:Instance ;
+        rdfs:label "animated movies" ;
+        gaf:denotedIn leolaniTalk:chat1_turn21_char0-25 .
+
+    leolaniWorld:balkenbrij a n2mu:Dish,
+            gaf:Instance ;
+        rdfs:label "balkenbrij" ;
+        gaf:denotedIn leolaniTalk:chat1_turn14_char0-25 .
+
+    leolaniWorld:baseball a n2mu:Sport,
+            gaf:Instance ;
+        rdfs:label "baseball" ;
+        gaf:denotedIn leolaniTalk:chat1_turn8_char0-25 .
+
+    leolaniWorld:cake a gaf:Instance,
+            owl:Thing ;
+        rdfs:label "cake" ;
+        gaf:denotedIn leolaniTalk:chat6_turn_char .
+
+    leolaniWorld:coco a n2mu:Movie,
+            gaf:Instance ;
+        rdfs:label "coco" ;
+        gaf:denotedIn leolaniTalk:chat1_turn19_char0-25 .
+
+    leolaniWorld:goulash a n2mu:Dish,
+            gaf:Instance ;
+        rdfs:label "goulash" ;
+        gaf:denotedIn leolaniTalk:chat1_turn6_char0-25 .
+
+    leolaniWorld:harry_potter a n2mu:Movie,
+            gaf:Instance ;
+        rdfs:label "harry potter" ;
+        gaf:denotedIn leolaniTalk:chat1_turn11_char0-25 .
+
+    leolaniWorld:horror_movies a n2mu:Film_genre,
+            gaf:Instance ;
+        rdfs:label "horror movies" ;
+        gaf:denotedIn leolaniTalk:chat1_turn17_char0-25 .
+
+    leolaniWorld:ice_cream a n2mu:Dish,
+            gaf:Instance ;
+        rdfs:label "ice cream" ;
+        gaf:denotedIn leolaniTalk:chat1_turn10_char0-25 .
+
+    leolaniWorld:ljubica a gaf:Instance,
+            owl:Thing ;
+        rdfs:label "ljubica" ;
+        gaf:denotedIn leolaniTalk:chat2_turn_char .
+
+    leolaniWorld:romantic_movies a n2mu:Film_genre,
+            gaf:Instance,
+            owl:Thing ;
+        rdfs:label "romantic movies" ;
+        gaf:denotedIn leolaniTalk:chat1_turn9_char0-25,
+            leolaniTalk:chat4_turn_char .
+
+    leolaniWorld:soccer a n2mu:Sport,
+            gaf:Instance ;
         rdfs:label "soccer" ;
         gaf:denotedIn leolaniTalk:chat1_turn16_char0-25,
             leolaniTalk:chat1_turn20_char0-25 .
 
-    leolaniWorld:tacos a gaf:Instance,
-            owl:Thing ;
+    leolaniWorld:tacos a n2mu:Dish,
+            gaf:Instance ;
         rdfs:label "tacos" ;
         gaf:denotedIn leolaniTalk:chat1_turn18_char0-25 .
 
-    leolaniWorld:the_big_lebowski a gaf:Instance,
-            owl:Thing ;
+    leolaniWorld:the_big_lebowski a n2mu:Movie,
+            gaf:Instance ;
         rdfs:label "the big lebowski" ;
         gaf:denotedIn leolaniTalk:chat1_turn7_char0-25 .
 
@@ -672,26 +722,19 @@ leolaniWorld:instances {
         rdfs:label "Selene" .
 }
 
-leolaniWorld:bram_likes_the_big_lebowski {
-    leolaniWorld:Bram n2mu:likes leolaniWorld:the_big_lebowski .
+leolaniWorld:Bram_knows_Lenka {
+    leolaniWorld:Bram n2mu:knows leolaniWorld:Lenka .
 }
 
-leolaniWorld:bram_likes_baseball {
-    leolaniWorld:Bram n2mu:likes leolaniWorld:baseball .
+leolaniWorld:Bram_is_from_Italy {
+    leolaniWorld:Bram n2mu:is_from leolaniWorld:Italy .
 }
 
-leolaniWorld:bram_isFrom_italy {
-    leolaniWorld:Bram n2mu:isFrom leolaniWorld:Italy .
+leolaniWorld:Piek_likes_2001_a_space_odyssey {
+    leolaniWorld:Piek n2mu:likes <http://cltl.nl/leolani/world/2001_a_space_odyssey> .
 }
 
 {
-    leolaniTalk:chat a sem:Event ;
-        sem:hasActor leolaniFriends:bram,
-            leolaniFriends:lenka,
-            leolaniFriends:Selene ;
-        sem:hasSubevent leolaniTalk:chat_turn ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
-
     leolaniTalk:chat1 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
         sem:hasSubevent leolaniTalk:chat1_turn1,
@@ -718,108 +761,147 @@ leolaniWorld:bram_isFrom_italy {
             leolaniTalk:chat1_turn7,
             leolaniTalk:chat1_turn8,
             leolaniTalk:chat1_turn9 ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
+
+    leolaniTalk:chat2 a sem:Event ;
+        sem:hasActor leolaniFriends:Lenka ;
+        sem:hasSubevent leolaniTalk:chat2_turn ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat3 a sem:Event ;
+        sem:hasActor leolaniFriends:Bram ;
+        sem:hasSubevent leolaniTalk:chat3_turn ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat4 a sem:Event ;
+        sem:hasActor leolaniFriends:Selene ;
+        sem:hasSubevent leolaniTalk:chat4_turn ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat5 a sem:Event ;
+        sem:hasActor leolaniFriends:Selene ;
+        sem:hasSubevent leolaniTalk:chat5_turn ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat6 a sem:Event ;
+        sem:hasActor leolaniFriends:Lenka ;
+        sem:hasSubevent leolaniTalk:chat6_turn ;
         sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
 
     leolaniTalk:chat1_turn1 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn10 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn11 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn12 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn13 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn14 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn15 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn16 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn17 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn18 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn19 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn2 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn20 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn21 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn22 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn23 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn24 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn3 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn4 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn5 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn6 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn7 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn8 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
-        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
 
     leolaniTalk:chat1_turn9 a sem:Event ;
         sem:hasActor leolaniFriends:Selene ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-05-16> .
+
+    leolaniTalk:chat2_turn a sem:Event ;
+        sem:hasActor leolaniFriends:Lenka ;
         sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
 
-    leolaniTalk:chat_turn a sem:Event ;
-        sem:hasActor leolaniFriends:bram,
-            leolaniFriends:lenka,
-            leolaniFriends:Selene ;
+    leolaniTalk:chat3_turn a sem:Event ;
+        sem:hasActor leolaniFriends:Bram ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat4_turn a sem:Event ;
+        sem:hasActor leolaniFriends:Selene ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat5_turn a sem:Event ;
+        sem:hasActor leolaniFriends:Selene ;
+        sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
+
+    leolaniTalk:chat6_turn a sem:Event ;
+        sem:hasActor leolaniFriends:Lenka ;
         sem:hasTime <http://cltl.nl/leolani/date/2018-03-19> .
 
     <http://cltl.nl/leolani/date/2018-03-19> a time:DateTimeDescription ;
@@ -827,45 +909,35 @@ leolaniWorld:bram_isFrom_italy {
         time:month "3"^^xml1:gMonthDay ;
         time:unitType time:unitDay ;
         time:year "2018"^^xml1:gYear .
+
+    <http://cltl.nl/leolani/date/2018-05-16> a time:DateTimeDescription ;
+        time:day "16"^^xml1:gDay ;
+        time:month "5"^^xml1:gMonthDay ;
+        time:unitType time:unitDay ;
+        time:year "2018"^^xml1:gYear .
 }
 
-leolaniWorld:selene_K_isFrom_netherlands {
-    leolaniWorld:Selene_K n2mu:isFrom leolaniWorld:Netherlands .
-}
-
-leolaniWorld:lenka_favorite_food-is_cake {
-    leolaniWorld:Lenka n2mu:favorite_food-is leolaniWorld:cake .
-}
-
-leolaniWorld:bram_likes_action_movies {
-    leolaniWorld:Bram n2mu:likes leolaniWorld:action_movies .
-}
-
-leolaniWorld:leolani_isFrom_france {
-    leolaniWorld:Leolani n2mu:isFrom leolaniWorld:France .
-}
-
-leolaniWorld:bram_likes_romantic_movies {
-    leolaniWorld:Bram n2mu:likes leolaniWorld:romantic_movies .
-}
-
-leolaniWorld:bram_isFrom_netherlands {
-    leolaniWorld:Bram n2mu:isFrom leolaniWorld:Netherlands .
-}
-
-leolaniWorld:bram_likes_goulash {
-    leolaniWorld:Bram n2mu:likes leolaniWorld:goulash .
-}
-
-leolaniWorld:lenka_mother-is_ljubica {
-    leolaniWorld:Lenka n2mu:mother-is leolaniWorld:ljubica .
-}
-
-leolaniWorld:piek_likes_soccer {
-    leolaniWorld:Piek n2mu:likes leolaniWorld:soccer .
-}
-
-leolaniWorld:selene_likes_tacos {
+leolaniWorld:Selene_likes_tacos {
     leolaniWorld:Selene n2mu:likes leolaniWorld:tacos .
+}
+
+leolaniWorld:Piek_likes_balkenbrij {
+    leolaniWorld:Piek n2mu:likes leolaniWorld:balkenbrij .
+}
+
+leolaniWorld:Lenka_favorite_cake {
+    leolaniWorld:Lenka n2mu:favorite leolaniWorld:cake .
+}
+
+leolaniWorld:Lenka_likes_acrobatics {
+    leolaniWorld:Lenka n2mu:likes leolaniWorld:acrobatics .
+}
+
+leolaniWorld:Lenka_likes_action_movies {
+    leolaniWorld:Lenka n2mu:likes leolaniWorld:action_movies .
+}
+
+leolaniWorld:Selene_likes_coco {
+    leolaniWorld:Selene n2mu:likes leolaniWorld:coco .
 }
 

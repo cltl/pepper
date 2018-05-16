@@ -326,7 +326,7 @@ leolaniWorld:instances {
 	
 	leolaniWorld:Serbia a gaf:Instance , n2mu:Location .
 	
-	leolaniWorld:lenka_isFrom_Serbia a gaf:Instance , grasp:Statement .
+	leolaniWorld:lenka_isFrom_serbia a gaf:Instance , grasp:Statement .
 	
 	leolaniFriends:Selene a gaf:Instance , sem:Actor .
 	
@@ -400,7 +400,7 @@ leolaniWorld:instances {
 	
 	leolaniWorld:Japan a gaf:Instance , n2mu:Location .
 	
-	leolaniWorld:leolani_isFromjapan a gaf:Instance , grasp:Statement .
+	leolaniWorld:leolani_isFrom_japan a gaf:Instance , grasp:Statement .
 }
 
 leolaniTalk:perspectives {
@@ -498,7 +498,7 @@ leolaniTalk:perspectives {
 	
 	leolaniTalk:chat1_turn23_char0-27 gaf:denotes leolaniWorld:leolani_isFrom_france .
 	
-	leolaniTalk:chat1_turn24_char0-27 gaf:denotes leolaniWorld:leolani_isFromjapan .
+	leolaniTalk:chat1_turn24_char0-27 gaf:denotes leolaniWorld:leolani_isFrom_japan .
 	
 	leolaniTalk:chat1_turn1_char0-27 grasp:hasAttribution leolaniTalk:chat1_turn1_char0-27_CERTAIN .
 	
@@ -976,31 +976,31 @@ leolaniWorld:piek_likes_2001_a_space_odyssey {
 }
 
 leolaniWorld:lenka_isFrom_serbia {
-	leolaniWorld:Lenka n2mu:isFrom leolaniWorld:Serbia .
+	leolaniWorld:Lenka n2mu:is_from leolaniWorld:Serbia .
 }
 
 leolaniWorld:bram_isFrom_netherlands {
-	leolaniWorld:Bram n2mu:isFrom leolaniWorld:Netherlands .
+	leolaniWorld:Bram n2mu:is_from leolaniWorld:Netherlands .
 }
 
 leolaniWorld:selene_isFrom_mexico {
-	leolaniWorld:Selene n2mu:isFrom leolaniWorld:Mexico .
+	leolaniWorld:Selene n2mu:is_from leolaniWorld:Mexico .
 }
 
 leolaniWorld:piek_isFrom_netherlands {
-	leolaniWorld:Piek n2mu:isFrom leolaniWorld:Netherlands .
+	leolaniWorld:Piek n2mu:is_from leolaniWorld:Netherlands .
 }
 
 leolaniWorld:selene_K_isFrom_netherlands {
-	leolaniWorld:Selene_K n2mu:isFrom leolaniWorld:Netherlands .
+	leolaniWorld:Selene_K n2mu:is_from leolaniWorld:Netherlands .
 }
 
 leolaniWorld:leolani_isFrom_france {
-	leolaniWorld:Leolani n2mu:isFrom leolaniWorld:France .
+	leolaniWorld:Leolani n2mu:is_from leolaniWorld:France .
 }
 
-leolaniWorld:leolani_isFromjapan {
-	leolaniWorld:Leolani n2mu:isFrom leolaniWorld:Japan .
+leolaniWorld:leolani_isFrom_japan {
+	leolaniWorld:Leolani n2mu:is_from leolaniWorld:Japan .
 }
 
 leolaniWorld:instances {
@@ -1050,7 +1050,7 @@ leolaniWorld:instances {
 	
 	leolaniWorld:leolani_isFrom_france grasp:denotedBy leolaniTalk:chat1_turn23_char0-27 .
 	
-	leolaniWorld:leolani_isFromjapan grasp:denotedBy leolaniTalk:chat1_turn24_char0-27 .
+	leolaniWorld:leolani_isFrom_japan grasp:denotedBy leolaniTalk:chat1_turn24_char0-27 .
 	
 	leolaniWorld:Leolani n2mu:knows leolaniFriends:Selene .
 }

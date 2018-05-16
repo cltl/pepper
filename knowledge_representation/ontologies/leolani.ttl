@@ -78,7 +78,7 @@ n2mu:acknowledge rdf:type owl:ObjectProperty ;
 
 ###  http://cltl.nl/leolani/n2mu/born_in
 n2mu:born_in rdf:type owl:ObjectProperty ;
-             rdfs:subPropertyOf n2mu:originally_from ;
+             rdfs:subPropertyOf n2mu:is_from ;
              rdfs:domain n2mu:Person ;
              owl:propertyDisjointWith n2mu:manufactured_in .
 
@@ -150,6 +150,12 @@ y Type Institution
 and x == y""" .
 
 
+###  http://cltl.nl/leolani/n2mu/is_from
+n2mu:is_from rdf:type owl:ObjectProperty ;
+             rdfs:domain n2mu:Agent ;
+             rdfs:range n2mu:Location .
+
+
 ###  http://cltl.nl/leolani/n2mu/is_member_of
 n2mu:is_member_of rdf:type owl:ObjectProperty ;
                   rdfs:domain n2mu:Agent ;
@@ -182,14 +188,8 @@ n2mu:located rdf:type owl:ObjectProperty ;
 
 ###  http://cltl.nl/leolani/n2mu/manufactured_in
 n2mu:manufactured_in rdf:type owl:ObjectProperty ;
-                     rdfs:subPropertyOf n2mu:originally_from ;
+                     rdfs:subPropertyOf n2mu:is_from ;
                      rdfs:domain n2mu:Robot .
-
-
-###  http://cltl.nl/leolani/n2mu/originally_from
-n2mu:originally_from rdf:type owl:ObjectProperty ;
-                     rdfs:domain n2mu:Agent ;
-                     rdfs:range n2mu:Location .
 
 
 ###  http://cltl.nl/leolani/n2mu/perceive
@@ -383,7 +383,7 @@ n2mu:Literature_Genre rdf:type owl:Class ;
 n2mu:Location rdf:type owl:Class ;
               owl:equivalentClass <http://schema.org/Place> ,
                                   [ rdf:type owl:Restriction ;
-                                    owl:onProperty [ owl:inverseOf n2mu:originally_from
+                                    owl:onProperty [ owl:inverseOf n2mu:is_from
                                                    ] ;
                                     owl:someValuesFrom foaf:Agent
                                   ] .
