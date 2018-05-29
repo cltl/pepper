@@ -44,25 +44,10 @@ class CameraResolution(IntEnum):
     VGA_1280x960 = 3
 
 
-class CameraColorSpace(Enum):
-    """
-    Supported Color Spaces for Pepper Camera
-
-    KEY = (<ID>, (<channels>, <dtype>)
-    """
-
-    LUMINANCE = (0, (1, np.uint8))
-    YUV = (9, (3, np.uint8))
-    RGB = (11, (3, np.uint8))
-    DEPTH = (17, (1, np.uint16))
-
-
 class PepperCamera(Camera):
-    def __init__(self, session, camera_target = CameraTarget.TOP, resolution = CameraResolution.VGA_320x240,
-                 colorspace = CameraColorSpace.RGB, framerate = 10):
+    def __init__(self, session, camera_target = CameraTarget.TOP,
+                 resolution = CameraResolution.VGA_320x240, framerate = 10):
         """
-
-
         Parameters
         ----------
         session
@@ -74,7 +59,6 @@ class PepperCamera(Camera):
         self._session = session
         self._camera_target = camera_target
         self._resolution = resolution
-        self._colorspace, (self._channels, self._dtype) = colorspace.value
         self._framerate = framerate
 
         self._id = str(random.getrandbits(128))
@@ -83,7 +67,7 @@ class PepperCamera(Camera):
         self._client = self.service.subscribeCamera(self.id,
                                                     int(self.camera_target),
                                                     int(self.resolution),
-                                                    int(self.colorspace),
+                                                    9,  #YUV422,
                                                     int(self.framerate))
 
     @property
@@ -146,16 +130,6 @@ class PepperCamera(Camera):
         return self._resolution
 
     @property
-    def colorspace(self):
-        """
-        Returns
-        -------
-        colorspace: CameraColorSpace
-            Camera Color Space
-        """
-        return self._colorspace
-
-    @property
     def framerate(self):
         """
         Returns
@@ -164,26 +138,6 @@ class PepperCamera(Camera):
             Camera Frame Rate
         """
         return self._framerate
-
-    @property
-    def channels(self):
-        """
-        Returns
-        -------
-        channels: int
-            Number of Channels (e.g. 3 for RGB, 1 for Luminance)
-        """
-        return self._channels
-
-    @property
-    def dtype(self):
-        """
-        Returns
-        -------
-        dtype: np.dtype
-            Data type of each element in image
-        """
-        return self._dtype
 
     def get(self):
         """
@@ -197,9 +151,26 @@ class PepperCamera(Camera):
         result = self.service.getImageRemote(self.client)
 
         if result:
-            width, height, layers, color_space, seconds, milliseconds, data, camera, \
+            X, Y, layers, color_space, seconds, milliseconds, data, camera, \
             angle_left, angle_top, angle_right, angle_bottom = result
-            return np.frombuffer(data, self.dtype).reshape(height, width, self.channels)
+
+            X2 = X // 2
+
+            YUV442 = np.frombuffer(data, np.uint8).reshape(Y, X2, 4)
+
+            RGB = np.empty((Y, X2, 2, 3), np.float32)
+            RGB[:, :, 0, :] = YUV442[..., 0].reshape(Y, X2, 1)
+            RGB[:, :, 1, :] = YUV442[..., 2].reshape(Y, X2, 1)
+
+            Cr = (YUV442[..., 1].astype(np.float32) - 128.0).reshape(Y, X2, 1)
+            Cb = (YUV442[..., 3].astype(np.float32) - 128.0).reshape(Y, X2, 1)
+
+            RGB[..., 0] += np.float32(1.402) * Cb
+            RGB[..., 1] += - np.float32(0.71414) * Cb - np.float32(0.34414) * Cr
+            RGB[..., 2] += np.float32(1.772) * Cr
+
+            return RGB.clip(0, 255).astype(np.uint8).reshape(Y, X, 3)
+
         else:
             self.service.unsubscribe(self.id)
             raise RuntimeError("No Result from ImageRemote")

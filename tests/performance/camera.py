@@ -1,6 +1,5 @@
-from pepper import ADDRESS, App, PepperCamera, CameraResolution, CameraColorSpace
-from time import time, sleep
-from threading import Thread
+from pepper import ADDRESS, App, PepperCamera, CameraResolution
+from time import time
 
 
 class CameraTest(App):
@@ -14,9 +13,7 @@ class CameraTest(App):
             tuple of (<ip>, <port>)
         """
         super(CameraTest, self).__init__(address)
-        self.camera = PepperCamera(self.session,
-                                   colorspace=CameraColorSpace.RGB,
-                                   resolution=CameraResolution.VGA_640x480)
+        self.camera = PepperCamera(self.session, resolution=CameraResolution.VGA_320x240)
 
         index = 0
         mean = 0.0

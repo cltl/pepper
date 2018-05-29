@@ -11,7 +11,7 @@ device_proxy = naoqi.ALProxy(DEVICE_TARGET, *ADDRESS)
 client = device_proxy.subscribeCamera(
     CLIENT_ID,
     0,  # Top Camera
-    1,  # Resolution
+    2,  # Resolution
     8,  # RGB
     0,  # FrameRate
 )
