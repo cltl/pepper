@@ -37,7 +37,7 @@ class TheoryOfMind(object):
                     prefix grasp: <http://groundedannotationframework.org/grasp#> 
                     prefix leolaniFriends: <http://cltl.nl/leolani/friends/> 
                     prefix leolaniTalk: <http://cltl.nl/leolani/talk/> 
-                    prefix leolaniTime: <http://cltl.nl/leolani/date/> 
+                    prefix leolaniTime: <http://cltl.nl/leolani/time/> 
                     prefix leolaniWorld: <http://cltl.nl/leolani/world/> 
                     prefix n2mu: <http://cltl.nl/leolani/n2mu/> 
                     prefix ns1: <urn:x-rdflib:> 
@@ -56,6 +56,8 @@ class TheoryOfMind(object):
         self._define_namespaces()
         self._get_ontology_path()
         self._bind_namespaces()
+
+        self.my_uri = None
 
     #################################### Main functions to interact with the object ####################################
 
@@ -108,23 +110,18 @@ class TheoryOfMind(object):
         query = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select ?s where { 
-            ?s rdf:type sem:Event .
-            FILTER(!regex(str(?s), "turn")) .
-            }
+            
+            select ?chat where { 
+                ?chat rdf:type sem:Chat .
+            } ORDER BY DESC (?chat) LIMIT 1
         """
 
         response = self._submit_query(query)
 
-        last_chat = 0
-        for chat in response:
-            chat_uri = chat['s']['value']
-            chat_id = chat_uri.split('/')[-1][4:]
-            chat_id = int(chat_id) if chat_id != '' else 0
-
-            if chat_id > last_chat:
-                last_chat = chat_id
+        if response:
+            last_chat = int(response[0]['chat']['value'].split('/')[-1][4:])
+        else:
+            last_chat = 0
 
         return last_chat
 
@@ -337,7 +334,7 @@ class TheoryOfMind(object):
         # Namespaces for the temporal layer-ish
         time_vocab = 'http://www.w3.org/TR/owl-time/#'
         self.namespaces['TIME'] = Namespace(time_vocab)
-        time_resource = 'http://cltl.nl/leolani/date/'
+        time_resource = 'http://cltl.nl/leolani/time/'
         self.namespaces['LTi'] = Namespace(time_resource)
 
         # The namespaces of external ontologies
@@ -384,6 +381,76 @@ class TheoryOfMind(object):
 
     ######################################## Helpers for statement processing ########################################
 
+    def create_chat_id(self, actor, date):
+        if self.debug:
+            print('Chat with {} on {}'.format(actor, date))
+
+        query = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+                PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+                PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX time: <http://www.w3.org/TR/owl-time/#>
+                
+                select ?chatid ?day ?month ?year where { 
+                    ?chat rdf:type grasp:Chat .
+                    ?chat n2mu:id ?chatid .
+                    ?chat sem:hasActor ?actor .
+                    ?actor rdfs:label "%s" .
+                    ?chat sem:hasTime ?time . 
+                    ?time time:day ?day . 
+                    ?time time:month ?month . 
+                    ?time time:year ?year .
+                    FILTER(!regex(str(?chat), "turn")) .
+                } ORDER BY DESC (?chat)
+                LIMIT 1
+        """ % (actor)
+
+        response = self._submit_query(query)
+
+        if not response:
+            # have never chatted with this person, so add one to latest chat
+            chat_id = self.get_last_chat_id() + 1
+        elif int(response[0]['day']['value']) == int(date.day) and int(response[0]['month']['value']) == int(date.month) and int(response[0]['year']['value']) == int(date.year):
+            # Chatted with this person today so same chat id
+            chat_id = int(response[0]['chatid']['value'])
+        else:
+            # have chatted with this person (either today or ever), so add one to latest chat
+            chat_id = self.get_last_chat_id() + 1
+
+        return chat_id
+
+    def create_turn_id(self, chat_id):
+        if self.debug:
+            print('Turn in chat {}'.format(chat_id))
+
+        query = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+                PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+                PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+                select ?turnid where { 
+                    ?chat rdf:type grasp:Chat .
+                    ?chat n2mu:id "%s" .
+                    ?chat sem:hasSubevent ?turn .
+                    ?turn n2mu:id ?turnid .
+                } ORDER BY DESC (?turnid)
+                LIMIT 1
+        """ % (chat_id)
+
+        response = self._submit_query(query)
+
+        if not response:
+            # no turns in this chat, start from 1
+            turn_id = 1
+        else:
+            # Add one to latest chat
+            turn_id = int(response['turnid']['value']) + 1
+
+        return turn_id
+
     def _generate_leolani(self, instance_graph):
         # Create Leolani
         leolani_id = 'Leolani'
@@ -392,16 +459,184 @@ class TheoryOfMind(object):
         leolani = URIRef(to_iri(self.namespaces['LW'] + leolani_id))
         leolani_label = Literal(leolani_label)
         leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'Robot'))
-        leolani_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
+        leolani_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
 
         instance_graph.add((leolani, RDFS.label, leolani_label))
         instance_graph.add((leolani, RDF.type, leolani_type1))
         instance_graph.add((leolani, RDF.type, leolani_type2))
 
+        self.my_uri = leolani
+
         return leolani
 
-    def _create_instance_layer(self):
-        pass
+    def _create_leolani_world(self, parsed_statement):
+        # Instance graph
+        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
+        instance_graph = self.dataset.graph(instance_graph_uri)
+
+        # Subject
+        if parsed_statement['subject']['type'] == '':  # We only get the label
+            subject_vocab = OWL
+            subject_type = 'Thing'
+        else:
+            subject_vocab = self.namespaces['N2MU']
+            subject_type = parsed_statement['subject']['type'].capitalize()
+
+        subject_id = casefold_label(parsed_statement['subject']['label'], subject_type)
+
+        subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
+        subject_label = Literal(subject_id)
+        subject_type1 = URIRef(to_iri(subject_vocab + subject_type))
+        subject_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+
+        instance_graph.add((subject, RDFS.label, subject_label))
+        instance_graph.add((subject, RDF.type, subject_type1))
+        instance_graph.add((subject, RDF.type, subject_type2))
+
+        # Object
+        if parsed_statement['object']['type'] == '':  # We only get the label
+            object_vocab = OWL
+            object_type = 'Thing'
+        else:
+            object_vocab = self.namespaces['N2MU']
+            object_type = parsed_statement['object']['type'].capitalize()
+
+        object_id = casefold_label(parsed_statement['object']['label'], object_type)
+
+        object = URIRef(to_iri(self.namespaces['LW'] + object_id))
+        object_label = Literal(object_id)
+        object_type1 = URIRef(to_iri(object_vocab + object_type))
+        object_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+
+        instance_graph.add((object, RDFS.label, object_label))
+        instance_graph.add((object, RDF.type, object_type1))
+        instance_graph.add((object, RDF.type, object_type2))
+
+        claim_graph, statement = self._create_claim_graph(parsed_statement, subject, subject_label, object, object_label)
+
+        return instance_graph, claim_graph, subject, object, statement
+
+    def _create_claim_graph(self, parsed_statement, subject, subject_label, object, object_label):
+        # Claim graph
+        claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
+        claim_graph = self.dataset.graph(claim_graph_uri)
+
+        # Predicate
+        predicate = parsed_statement['predicate']['type'].replace(" ", "_")
+
+        # Statement
+        statement_id = hash_statement_id([subject_label, predicate, object_label])
+
+        statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
+        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Statement'))
+        statement_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+        statement_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+
+        # Create graph and add triple
+        graph = self.dataset.graph(statement)
+        graph.add((subject, self.namespaces['N2MU'][predicate], object))
+
+        claim_graph.add((statement, RDF.type, statement_type1))
+        claim_graph.add((statement, RDF.type, statement_type2))
+        claim_graph.add((statement, RDF.type, statement_type3))
+
+        return claim_graph, statement
+
+    def _create_leolani_talk(self, parsed_statement, leolani):
+        # Interaction graph
+        interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Interactions'))
+        interaction_graph = self.dataset.graph(interaction_graph_uri)
+
+        # Time
+        date = parsed_statement["date"]
+        time = URIRef(to_iri(self.namespaces['LTi'] + str(parsed_statement["date"].isoformat())))
+        time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
+        day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
+        month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
+        year = Literal(date.year, datatype=self.namespaces['XML']['gYear'])
+        time_unitType = URIRef(to_iri(self.namespaces['TIME'] + 'unitDay'))
+
+        interaction_graph.add((time, RDF.type, time_type))
+        interaction_graph.add((time, self.namespaces['TIME']['day'], day))
+        interaction_graph.add((time, self.namespaces['TIME']['month'], month))
+        interaction_graph.add((time, self.namespaces['TIME']['year'], year))
+        interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
+
+        # Actor
+        actor_id = parsed_statement['author'].capitalize()
+        actor_label = parsed_statement['author'].capitalize()
+
+        actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
+        actor_label = Literal(actor_label)
+        actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
+        actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+
+        interaction_graph.add((actor, RDFS.label, actor_label))
+        interaction_graph.add((actor, RDF.type, actor_type1))
+        interaction_graph.add((actor, RDF.type, actor_type2))
+
+        # Add leolani knows actor
+        interaction_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
+
+        # Chat and turn
+        chat_id = self.create_chat_id(actor_label, date)
+        chat_label = 'chat%s' % chat_id
+        turn_id = self.create_turn_id(chat_id)
+        turn_label = chat_label + '_turn%s' % turn_id
+
+        turn = URIRef(to_iri(self.namespaces['LTa'] + turn_label))
+        turn_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+        turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Turn'))
+
+        interaction_graph.add((turn, RDF.type, turn_type1))
+        interaction_graph.add((turn, RDF.type, turn_type2))
+        interaction_graph.add((turn, self.namespaces['N2MU']['id'], Literal(turn_id)))
+        interaction_graph.add((turn, self.namespaces['SEM']['hasActor'], actor))
+        interaction_graph.add((turn, self.namespaces['SEM']['hasTime'], time))
+
+        chat = URIRef(to_iri(self.namespaces['LTa'] + chat_label))
+        chat_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+        chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Chat'))
+
+        interaction_graph.add((chat, RDF.type, chat_type1))
+        interaction_graph.add((chat, RDF.type, chat_type2))
+        interaction_graph.add((chat, self.namespaces['N2MU']['id'], Literal(chat_id)))
+        interaction_graph.add((chat, self.namespaces['SEM']['hasActor'], actor))
+        interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
+        interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
+
+        perspective_graph, mention, attribution = self._create_perspective_graph(parsed_statement, turn_label)
+
+        # Link interactions and perspectives
+        perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
+        perspective_graph.add((mention, self.namespaces['GRASP']['hasAttribution'], attribution))
+        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], chat))
+        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], turn))
+
+        return interaction_graph, perspective_graph, actor, time, mention, attribution
+
+    def _create_perspective_graph(self, parsed_statement, turn_label):
+        # Perspective graph
+        perspective_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Perspectives'))
+        perspective_graph = self.dataset.graph(perspective_graph_uri)
+
+        # Mention
+        mention_id = turn_label + '_char%s' % parsed_statement['position']
+        mention = URIRef(to_iri(self.namespaces['LTa'] + mention_id))
+        mention_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Mention'))
+
+        perspective_graph.add((mention, RDF.type, mention_type))
+
+        # Attribution
+        attribution_id = mention_id + '_CERTAIN'
+        attribution = URIRef(to_iri(self.namespaces['LTa'] + attribution_id))
+        attribution_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Attribution'))
+        attribution_value = URIRef(to_iri(self.namespaces['GRASP'] + 'CERTAIN'))
+
+        perspective_graph.add((attribution, RDF.type, attribution_type))
+        perspective_graph.add((attribution, RDF.value, attribution_value))
+
+        return perspective_graph, mention, attribution
 
     def _serialize(self, file_path):
         """
@@ -432,159 +667,33 @@ class TheoryOfMind(object):
         return str(response.status_code)
 
     def _paradiso_simple_model_(self, parsed_statement):
-        # Instance graph
-        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'instances'))
-        instance_graph = self.dataset.graph(instance_graph_uri)
+        # Leolani world (includes instance and claim graphs)
+        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(parsed_statement)
 
-        leolani = self._generate_leolani(instance_graph)
+        # Identity
+        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
 
-        # Subject
-        if parsed_statement['subject']['type'] == '':  # We only get the label
-            subject_vocab = OWL
-            subject_type = 'Thing'
-        else:
-            subject_vocab = self.namespaces['N2MU']
-            subject_type = parsed_statement['subject']['type'].capitalize()
-
-        subject_id = determine_case(parsed_statement['subject']['label'], subject_type)
-        subject_label = determine_case(parsed_statement['subject']['label'], subject_type)
-
-        subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
-        subject_label = Literal(subject_label)
-        subject_type1 = URIRef(to_iri(subject_vocab + subject_type))
-        subject_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
-
-        instance_graph.add((subject, RDFS.label, subject_label))
-        instance_graph.add((subject, RDF.type, subject_type1))
-        instance_graph.add((subject, RDF.type, subject_type2))
-
-        # Object
-        if parsed_statement['object']['type'] == '':  # We only get the label
-            object_vocab = OWL
-            object_type = 'Thing'
-        else:
-            object_vocab = self.namespaces['N2MU']
-            object_type = parsed_statement['object']['type'].capitalize()
-
-        object_id = determine_case(parsed_statement['object']['label'], object_type)
-        object_label = determine_case(parsed_statement['object']['label'], object_type)
-
-        object = URIRef(to_iri(self.namespaces['LW'] + object_id))
-        object_label = Literal(object_label)
-        object_type1 = URIRef(to_iri(object_vocab + object_type))
-        object_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
-
-        instance_graph.add((object, RDFS.label, object_label))
-        instance_graph.add((object, RDF.type, object_type1))
-        instance_graph.add((object, RDF.type, object_type2))
-
-        # Predicate
-        predicate = parsed_statement['predicate']['type'].replace(" ", "_")
-
-        # Statement
-
-        # Create hashed id from name for this statement
-        statement_id = hash_id([parsed_statement['subject']['label'], parsed_statement['predicate']['type'], parsed_statement['object']['label']])
-        statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
-        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Statement'))
-        statement_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
-
-        # Create graph and add triple
-        graph = self.dataset.graph(statement)
-        graph.add((subject, self.namespaces['N2MU'][predicate], object))
-
-        instance_graph.add((statement, RDF.type, statement_type1))
-        instance_graph.add((statement, RDF.type, statement_type2))
-
-        # Time
-        date = parsed_statement["date"]
-        time = URIRef(to_iri(self.namespaces['LTi'] + str(date.isoformat())))
-        time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
-        day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
-        month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
-        year = Literal(date.year, datatype=self.namespaces['XML']['gYear'])
-        time_unitType = URIRef(to_iri(self.namespaces['TIME'] + 'unitDay'))
-
-        self.dataset.add((time, RDF.type, time_type))
-        self.dataset.add((time, self.namespaces['TIME']['day'], day))
-        self.dataset.add((time, self.namespaces['TIME']['month'], month))
-        self.dataset.add((time, self.namespaces['TIME']['year'], year))
-        self.dataset.add((time, self.namespaces['TIME']['unitType'], time_unitType))
-
-        # Actor
-        actor_id = parsed_statement['author'].capitalize()
-        actor_label = parsed_statement['author'].capitalize()
-
-        actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
-        actor_label = Literal(actor_label)
-        actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
-        actor_type2 = URIRef(to_iri(self.namespaces['GAF'] + 'Instance'))
-
-        instance_graph.add((actor, RDFS.label, actor_label))
-        instance_graph.add((actor, RDF.type, actor_type1))
-        instance_graph.add((actor, RDF.type, actor_type2))
-
-        # Add leolani knows actor
-        instance_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
-
-        # Chat and turn
-        if parsed_statement['chat'] == '':
-            parsed_statement['chat'] = str(self.get_last_chat_id() + 1)
-
-        chat_id = 'chat%s' % parsed_statement['chat']
-        turn_id = chat_id + '_turn%s' % parsed_statement['turn']
-        turn = URIRef(to_iri(self.namespaces['LTa'] + turn_id))
-        turn_type = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-
-        self.dataset.add((turn, RDF.type, turn_type))
-        self.dataset.add((turn, self.namespaces['SEM']['hasActor'], actor))
-        self.dataset.add((turn, self.namespaces['SEM']['hasTime'], time))
-
-        chat = URIRef(to_iri(self.namespaces['LTa'] + chat_id))
-        chat_type = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-
-        self.dataset.add((chat, RDF.type, chat_type))
-        self.dataset.add((chat, self.namespaces['SEM']['hasActor'], actor))
-        self.dataset.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
-        self.dataset.add((chat, self.namespaces['SEM']['hasTime'], time))
-
-        # Perspective graph
-        perspective_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'perspectives'))
-        perspective_graph = self.dataset.graph(perspective_graph_uri)
-
-        # Mention
-        mention_id = turn_id + '_char%s' % parsed_statement['position']
-        mention = URIRef(to_iri(self.namespaces['LTa'] + mention_id))
-        mention_type = URIRef(to_iri(self.namespaces['GAF'] + 'Mention'))
-
-        perspective_graph.add((mention, RDF.type, mention_type))
-
-        # Attribution
-        attribution_id = mention_id + '_CERTAIN'
-        attribution = URIRef(to_iri(self.namespaces['LTa'] + attribution_id))
-        attribution_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Attribution'))
-        attribution_value = URIRef(to_iri(self.namespaces['GRASP'] + 'CERTAIN'))
-
-        perspective_graph.add((attribution, RDF.type, attribution_type))
-        perspective_graph.add((attribution, RDF.value, attribution_value))
+        # Leolani talk (includes interaction and perspective graphs)
+        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(parsed_statement, leolani)
 
         # Interconnections
-        instance_graph.add((subject, self.namespaces['GAF']['denotedIn'], mention))
-        instance_graph.add((object, self.namespaces['GAF']['denotedIn'], mention))
-        instance_graph.add((statement, self.namespaces['GRASP']['denotedBy'], mention))
+        instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
+        instance_graph.add((object, self.namespaces['GRASP']['denotedIn'], mention))
 
-        perspective_graph.add((mention, self.namespaces['GAF']['containsDenotation'], subject))
-        perspective_graph.add((mention, self.namespaces['GAF']['containsDenotation'], object))
-        perspective_graph.add((mention, self.namespaces['GAF']['denotes'], statement))
-        perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
-        perspective_graph.add((mention, self.namespaces['GRASP']['hasAttribution'], attribution))
+        instance_graph.add((statement, self.namespaces['GRASP']['denotedBy'], mention))
+        instance_graph.add((statement, self.namespaces['SEM']['hasActor'], actor))
+        instance_graph.add((statement, self.namespaces['SEM']['hasTime'], time))
+
+        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], subject))
+        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], object))
+        perspective_graph.add((mention, self.namespaces['GRASP']['denotes'], statement))
 
         perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
 
     ######################################### Helpers for question processing #########################################
 
     def _create_query(self, parsed_question):
-        _ = hash_id([parsed_question['subject']['label'], parsed_question['predicate']['type'], parsed_question['object']['label']])
+        _ = hash_statement_id([parsed_question['subject']['label'], parsed_question['predicate']['type'], parsed_question['object']['label']])
 
         # Query subject
         if parsed_question['subject']['label'] == "":
@@ -663,22 +772,20 @@ class TheoryOfMind(object):
         return response["results"]["bindings"]
 
 
-def hash_id(triple):
-    print('This is the triple: {}'.format(triple))
-    temp = '_'.join(triple)
-    temp.replace(" ", "_")
-
-    # hashids = Hashids(min_length=10)
-    # id = hashids.encode(temp)
-
-    return temp
-
-
-def determine_case(instance, type):
+def casefold_label(instance, type):
     if type in ('Actor', 'Agent', 'Robot', 'Person', 'Location'):
         instance.capitalize()
 
     return instance
+
+
+def hash_statement_id(triple, debug=False):
+    if debug:
+        print('This is the triple: {}'.format(triple))
+    temp = '_'.join(triple)
+    temp.replace(" ", "_")
+
+    return temp
 
 
 if __name__ == "__main__":
@@ -690,14 +797,14 @@ if __name__ == "__main__":
         response = brain.update(statement)
         print(json.dumps(response, indent=4, sort_keys=True))
 
-    # # Separation
-    # print('#######################################################')
-    #
-    # # Test questions
-    # for question in questions:
-    #     response = brain.query_brain(question)
-    #     print(json.dumps(response, indent=4, sort_keys=True))
+    # Separation
+    print('#######################################################')
 
-    response = brain.get_instance_of_type('Location')
-    response = brain.get_triples_with_predicate('is_from')
-    print('\n%s' % response)
+    # Test questions
+    for question in questions:
+        response = brain.query_brain(question)
+        print(json.dumps(response, indent=4, sort_keys=True))
+
+    # response = brain.get_instance_of_type('Location')
+    # response = brain.get_triples_with_predicate('is_from')
+    # print('\n%s' % response)
