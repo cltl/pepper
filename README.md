@@ -44,3 +44,10 @@ Face recognition is done using the open source OpenFace project ([Site](http://c
 which is, to put it mildly, difficult to install; Probably even impossible on Windows.
 Luckily, the developers were so kind to provide a Docker image, which can be obtained using `docker pull bamos/openface`.
 This repository will communicate with and run the image, providing face recognition for Pepper.
+
+#### 5. Brain in a triple store
+The brain is stored in a triple store. Currently, you need to have a local instance of [GraphDB](https://ontotext.com/graphdb-free-download/). You need to get an account to get a free download.
+
+Once launched, set up a repository with id and name: leolani. To populate the brain with some basic statements you can go to the menu Import >> RDF upload the file on pepper/knowledge_representation/brainOutput/brainBase.trig
+
+Alternatively, you can the main on run pepper/knowledge/theory_of_mind.py which automatically uploads every test statement.

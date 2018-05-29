@@ -1,397 +1,397 @@
 from datetime import date
 
 statements = [
-    {  # lenka is from Serbia
+    {  # Lenka is from Serbia
         "subject": {
-            "label": "lenka",
-            "type": "PERSON"
+            "label": "Lenka",
+            "type": "Person"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "serbia",
-            "type": "LOCATION"
+            "label": "Serbia",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 1,
         "position": "0-27",
         "date": date.today()
     },
-    {  # bram is from the Netherlands
+    {  # Bram is from the Netherlands
         "subject": {
-            "label": "bram",
-            "type": "PERSON"
+            "label": "Bram",
+            "type": "Person"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "netherlands",
-            "type": "LOCATION"
+            "label": "Netherlands",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 2,
         "position": "0-27",
         "date": date.today()
     },
-    {  # selene is from Mexico
+    {  # Selene is from Mexico
         "subject": {
-            "label": "selene",
-            "type": "PERSON"
+            "label": "Selene",
+            "type": "Person"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "mexico",
-            "type": "LOCATION"
+            "label": "Mexico",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 3,
         "position": "0-27",
         "date": date.today()
     },
-    {  # piek is from the Netherlands
+    {  # Piek is from the Netherlands
         "subject": {
-            "label": "piek",
-            "type": "PERSON"
+            "label": "Piek",
+            "type": "Person"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "netherlands",
-            "type": "LOCATION"
+            "label": "Netherlands",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 4,
         "position": "0-27",
         "date": date.today()
     },
-    {  # selene K is from the Netherlands
+    {  # Selene K is from the Netherlands
         "subject": {
-            "label": "selene K",
-            "type": "PERSON"
+            "label": "Selene K",
+            "type": "Person"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "netherlands",
-            "type": "LOCATION"
+            "label": "Netherlands",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 5,
         "position": "0-27",
         "date": date.today()
     },
-    {  # bram likes goulash
+    {  # Bram likes goulash
         "subject": {
-            "label": "bram",
-            "type": "PERSON"
+            "label": "Bram",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "goulash",
-            "type": ""
+            "type": "Dish"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 6,
         "position": "0-25",
         "date": date.today()
     },
-    {  # bram likes The Big Lebowski
+    {  # Bram likes The Big Lebowski
         "subject": {
-            "label": "bram",
-            "type": "PERSON"
+            "label": "Bram",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "the big lebowski",
-            "type": ""
+            "type": "Movie"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 7,
         "position": "0-25",
         "date": date.today()
     },
-    {  # bram likes baseball
+    {  # Bram likes baseball
         "subject": {
-            "label": "bram",
-            "type": "PERSON"
+            "label": "Bram",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "baseball",
-            "type": ""
+            "type": "Sport"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 8,
         "position": "0-25",
         "date": date.today()
     },
-    {  # bram likes romantic movies
+    {  # Bram likes romantic movies
         "subject": {
-            "label": "bram",
-            "type": "PERSON"
+            "label": "Bram",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "romantic movies",
-            "type": ""
+            "type": "Film_Genre"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 9,
         "position": "0-25",
         "date": date.today()
     },
-    {  # lenka likes ice cream
+    {  # Lenka likes ice cream
         "subject": {
-            "label": "lenka",
-            "type": "PERSON"
+            "label": "Lenka",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "ice cream",
-            "type": ""
+            "type": "Dish"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 10,
         "position": "0-25",
         "date": date.today()
     },
-    {  # lenka likes Harry Potter
+    {  # Lenka likes Harry Potter
         "subject": {
-            "label": "lenka",
-            "type": "PERSON"
+            "label": "Lenka",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "harry potter",
-            "type": ""
+            "type": "Movie"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 11,
         "position": "0-25",
         "date": date.today()
     },
-    {  # lenka likes acrobatics
+    {  # Lenka likes acrobatics
         "subject": {
-            "label": "lenka",
-            "type": "PERSON"
+            "label": "Lenka",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "acrobatics",
-            "type": ""
+            "type": "Sport"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 12,
         "position": "0-25",
         "date": date.today()
     },
-    {  # lenka likes action movies
+    {  # Lenka likes action movies
         "subject": {
-            "label": "lenka",
-            "type": "PERSON"
+            "label": "Lenka",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "action movies",
-            "type": ""
+            "type": "Film_Genre"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 13,
         "position": "0-25",
         "date": date.today()
     },
-    {  # piek likes balkenbrij
+    {  # Piek likes balkenbrij
         "subject": {
-            "label": "piek",
-            "type": "PERSON"
+            "label": "Piek",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "balkenbrij",
-            "type": ""
+            "type": "Dish"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 14,
         "position": "0-25",
         "date": date.today()
     },
-    {  # piek likes 2001 A Space Odyssey
+    {  # Piek likes 2001 A Space Odyssey
         "subject": {
-            "label": "piek",
-            "type": "PERSON"
+            "label": "Piek",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "2001 a space odyssey",
-            "type": ""
+            "type": "Movie"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 15,
         "position": "0-25",
         "date": date.today()
     },
-    {  # piek likes soccer
+    {  # Piek likes soccer
         "subject": {
-            "label": "piek",
-            "type": "PERSON"
+            "label": "Piek",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "soccer",
-            "type": ""
+            "type": "Sport"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 16,
         "position": "0-25",
         "date": date.today()
     },
-    {  # piek likes horror movies
+    {  # Piek likes horror movies
         "subject": {
-            "label": "piek",
-            "type": "PERSON"
+            "label": "Piek",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "horror movies",
-            "type": ""
+            "type": "Film_Genre"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 17,
         "position": "0-25",
         "date": date.today()
     },
-    {  # selene likes tacos
+    {  # Selene likes tacos
         "subject": {
-            "label": "selene",
-            "type": "PERSON"
+            "label": "Selene",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "tacos",
-            "type": ""
+            "type": "Dish"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 18,
         "position": "0-25",
         "date": date.today()
     },
-    {  # selene likes Coco
+    {  # Selene likes Coco
         "subject": {
-            "label": "selene",
-            "type": "PERSON"
+            "label": "Selene",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "coco",
-            "type": ""
+            "type": "Movie"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 19,
         "position": "0-25",
         "date": date.today()
     },
-    {  # selene likes soccer
+    {  # Selene likes soccer
         "subject": {
-            "label": "selene",
-            "type": "PERSON"
+            "label": "Selene",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "soccer",
-            "type": ""
+            "type": "Sport"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 20,
         "position": "0-25",
         "date": date.today()
     },
-    {  # selene likes animated movies
+    {  # Selene likes animated movies
         "subject": {
-            "label": "selene",
-            "type": "PERSON"
+            "label": "Selene",
+            "type": "Person"
         },
         "predicate": {
             "type": "likes"
         },
         "object": {
             "label": "animated movies",
-            "type": ""
+            "type": "Film_Genre"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 21,
         "position": "0-25",
         "date": date.today()
     },
-    {  # bram knows lenka
+    {  # Bram knows Lenka
         "subject": {
-            "label": "bram",
-            "type": "PERSON"
+            "label": "Bram",
+            "type": "Person"
         },
         "predicate": {
             "type": "knows"
         },
         "object": {
-            "label": "lenka",
-            "type": "PERSON"
+            "label": "Lenka",
+            "type": "Person"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 22,
         "position": "0-16",
@@ -399,17 +399,17 @@ statements = [
     },
     {  # Leolani is from France
         "subject": {
-            "label": "leolani",
-            "type": "ROBOT"
+            "label": "Leolani",
+            "type": "Robot"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "france",
-            "type": "LOCATION"
+            "label": "France",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 23,
         "position": "0-27",
@@ -417,80 +417,80 @@ statements = [
     },
     {  # Leolani is from Japan
         "subject": {
-            "label": "leolani",
-            "type": "ROBOT"
+            "label": "Leolani",
+            "type": "Robot"
         },
         "predicate": {
-            "type": "isFrom"
+            "type": "is_from"
         },
         "object": {
-            "label": "japan",
-            "type": "LOCATION"
+            "label": "Japan",
+            "type": "Location"
         },
-        "author": "selene",
+        "author": "Selene",
         "chat": 1,
         "turn": 24,
         "position": "0-27",
         "date": date.today()
     },
-    {  # lenka mother is ljubica (lenka)
-        u'predicate': {u'type': u'mother-is'},
+    {  # Lenka mother is ljubica (Lenka)
+        u'predicate': {u'type': u'mother_is'},
         u'chat': u'',
-        u'author': u'lenka',
+        u'author': u'Lenka',
         u'object': {u'type': u'', u'id': u'', u'label': u'ljubica'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
         u'position': u'',
         u'response': {u'role': u'', u'format': u''},
-        u'subject': {u'type': u'', u'id': u'', u'label': u'lenka'}
+        u'subject': {u'type': u'', u'id': u'', u'label': u'Lenka'}
     },
-    {  # bram likes action movies (bram)
+    {  # Bram likes action movies (Bram)
         u'predicate': {u'type': u'likes'},
         u'chat': u'',
-        u'author': u'bram',
+        u'author': u'Bram',
         u'object': {u'type': u'', u'id': u'', u'label': u'action movies'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
         u'position': u'',
         u'response': {u'role': u'', u'format': u''},
-        u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
+        u'subject': {u'type': u'', u'id': u'', u'label': u'Bram'}
     },
-    {  # bram likes romantic movies (selene)
+    {  # Bram likes romantic movies (Selene)
         u'predicate': {u'type': u'likes'},
         u'chat': u'',
-        u'author': u'selene',
+        u'author': u'Selene',
         u'object': {u'type': u'', u'id': u'', u'label': u'romantic movies'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
         u'position': u'',
         u'response': {u'role': u'', u'format': u''},
-        u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
+        u'subject': {u'type': u'', u'id': u'', u'label': u'Bram'}
     },
-    {  # bram isFrom Italy (selene)
-        u'predicate': {u'type': u'isFrom'},
+    {  # Bram is_from Italy (Selene)
+        u'predicate': {u'type': u'is_from'},
         u'chat': u'',
-        u'author': u'selene',
-        u'object': {u'type': u'LOCATION', u'id': u'', u'label': u'italy'},
+        u'author': u'Selene',
+        u'object': {u'type': u'Location', u'id': u'', u'label': u'Italy'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
         u'position': u'',
         u'response': {u'role': u'', u'format': u''},
-        u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
+        u'subject': {u'type': u'', u'id': u'', u'label': u'Bram'}
     },
-    {  # lenka favorite food-is cake (lenka)
-        u'predicate': {u'type': u'favorite food-is'},
+    {  # Lenka favorite food-is cake (Lenka)
+        u'predicate': {u'type': u'favorite'},
         u'chat': u'',
-        u'author': u'lenka',
+        u'author': u'Lenka',
         u'object': {u'type': u'', u'id': u'', u'label': u'cake'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
         u'position': u'',
         u'response': {u'role': u'', u'format': u''},
-        u'subject': {u'type': u'', u'id': u'', u'label': u'lenka'}
+        u'subject': {u'type': u'', u'id': u'', u'label': u'Lenka'}
     }
 ]

@@ -3,13 +3,12 @@
     <uri id="User Entered Import Resolution" name="file:///grasp/sem.rdf" uri="sem.rdf"/>
     <uri id="Imports Wizard Entry" name="http://xmlns.com/foaf/0.1/" uri="foaf.rdf"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="http://groundedannotationframework.org/gaf" uri="gaf.rdf"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="http://groundedannotationframework.org/grasp" uri="grasp.rdf"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="duplicate:http://purl.obolibrary.org/obo/MF.owl" uri="MF.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="duplicate:http://purl.obolibrary.org/obo/MF.owl" uri="MF-core.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="http://purl.obolibrary.org/obo/MFOEM" uri="MFOEM.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="http://www.geonames.org/ontology" uri="geonames.rdf"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="http://www.semanticweb.org/leolani/N2MY" uri="leolani_raw.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1520700134323" name="http://xmlns.com/foaf/0.1/" uri="foaf.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="http://groundedannotationframework.org/gaf" uri="gaf.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="http://groundedannotationframework.org/grasp" uri="grasp.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="duplicate:http://purl.obolibrary.org/obo/MF.owl" uri="MF.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="duplicate:http://purl.obolibrary.org/obo/MF.owl" uri="MF-core.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="http://purl.obolibrary.org/obo/MFOEM" uri="MFOEM.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="http://www.geonames.org/ontology" uri="geonames.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1526297092349" name="http://xmlns.com/foaf/0.1/" uri="foaf.rdf"/>
     </group>
 </catalog>

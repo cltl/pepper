@@ -13,3 +13,5 @@ tests/image/
 pepper/people/
 knowledge_representation/brainOutput/
 pepper/language/stanford-ner/
+!/knowledge_representation/brainOutput/
+venv/
