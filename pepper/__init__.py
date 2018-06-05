@@ -16,6 +16,7 @@ from .speech.utterance import Utterance
 
 from .vision.face import OpenFace, FaceBounds, GenderClassifyClient
 from .vision.object import ObjectClassifyClient
+from .vision.coco import CocoClassifyClient
 
 from .people.people import PeopleCluster, PeopleClassifier, load_people, load_data_set
 from .language.name_recognition import NameRecognition
