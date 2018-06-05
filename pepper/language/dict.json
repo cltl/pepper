@@ -84,6 +84,18 @@
 
     },
 
+  "possessive":{
+    "your":{
+      "person":"second"
+    },
+
+    "my":
+    {
+      "person": "first"
+    }
+  },
+
+
 
 
   "question words": {
