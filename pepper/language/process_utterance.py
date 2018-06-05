@@ -1,6 +1,6 @@
 from nltk import pos_tag
 from analyzers import *
-from theory_of_mind import TheoryOfMind
+from pepper.knowledge.theory_of_mind import TheoryOfMind
 #from pepper.knowledge.theory_of_mind import TheoryOfMind
 
 test_mode = 1 # FOR ADDITIONAL PRINTS
@@ -413,4 +413,3 @@ def run_tests():
         chat_turn += 1
 
 
-run_tests()

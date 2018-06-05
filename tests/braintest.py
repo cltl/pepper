@@ -2,6 +2,10 @@ import pepper
 from threading import Thread
 from time import time, sleep
 from random import choice
+import random
+
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+from pepper.language.process_utterance import process_utterance, reply
 
 
 class BrainTest(pepper.App):
@@ -24,7 +28,11 @@ class BrainTest(pepper.App):
         self._openface = pepper.OpenFace()
         self._people_classifier = pepper.PeopleClassifier.from_directory(pepper.PeopleClassifier.LEOLANI)
 
-        self._wolfram = pepper.Wolfram()
+        # Brain
+        self.brain = TheoryOfMind()
+
+        self.chat_id = 0
+        self.chat_turn = 0
 
         self.speaking = False
         self._last_greeted_time = 0
@@ -45,6 +53,8 @@ class BrainTest(pepper.App):
         self._utterance.start()
         self.speaking = False
 
+        self.chat_turn += 1
+
     def on_utterance(self, audio):
         self.log.info(u"Utterance {:3.3f}s".format(len(audio) / float(self._microphone.sample_rate)))
 
@@ -56,10 +66,20 @@ class BrainTest(pepper.App):
     def on_transcript(self, transcript, confidence):
         self.log.info(u"[{:3.3%}] {}: '{}'".format(confidence, self._last_greeted_name, transcript))
 
-        answer = self._wolfram.query(transcript)
+        try:
+            template = process_utterance(transcript, self._last_greeted_name, self.chat_id, self.chat_turn)
 
-        if answer:
-            self.say(u"You asked {}. {}.".format(transcript, answer))
+            if 'question' in template:
+                response = self.brain.query_brain(template)
+                self.log.info(response)
+                self.say(reply(response))
+            elif 'statement' in template:
+                response = self.brain.update(template)
+                self.log.info(response)
+
+            self.chat_turn += 1
+        except Exception as e:
+            self.log.error(e)
 
     def on_face(self, bounds, representation):
         name, confidence, distance = self._people_classifier.classify(representation)
@@ -67,10 +87,12 @@ class BrainTest(pepper.App):
         self.log.info(u"[{:3.3%}] Face - '{}'".format(confidence, name))
 
         if confidence > 0.9:
-            if name != self._last_greeted_name or time() - self._last_greeted_time > self.GREET_TIMEOUT:
+            if name != self._last_greeted_name:
                 self.say("{}, {}!".format(choice(self.GREET), name))
                 self._last_greeted_name = name
-                self._last_greeted_time = time()
+
+                self.chat_id = int(random.getrandbits(128))
+                self.chat_turn = 0
 
     def _update_camera(self):
         while True:

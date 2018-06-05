@@ -9,7 +9,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 import random
 
-from theory_of_mind import TheoryOfMind
+from pepper.knowledge.theory_of_mind import TheoryOfMind
 brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
 
 wnl = WordNetLemmatizer()

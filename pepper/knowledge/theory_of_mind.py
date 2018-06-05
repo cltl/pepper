@@ -12,7 +12,7 @@ from pepper.knowledge.brainFacts import statements
 from pepper.knowledge.brainQuestions import questions
 
 REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
-LOCAL_BRAIN = "http://localhost:7200/repositories/leolani"
+LOCAL_BRAIN = "http://localhost:7200/repositories/leolani_test2"
 
 
 class TheoryOfMind(object):
