@@ -95,7 +95,8 @@ class PeopleCluster:
 
 class PeopleClassifier:
 
-    LEOLANI = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'leolani')
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+    LEOLANI = os.path.join(ROOT, 'leolani')
 
     FEATURE_DIM = 128
 
@@ -134,6 +135,9 @@ class PeopleClassifier:
 
     @staticmethod
     def load_directory(directory):
+        if not os.path.isdir(directory):
+            directory = os.path.join(PeopleClassifier.ROOT, directory)
+
         people = {}
         for path in os.listdir(directory):
             name = os.path.splitext(path)[0]

@@ -239,6 +239,8 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template['utterance_type'] = utterance_type
     template['subject']['label'] = rdf['subject'].strip().title() #capitalization
     template['predicate']['type'] = rdf['predicate'].strip()
+    if template['predicate']['type']=='is_from':
+        template['predicate']['type'] = 'isFrom' #FIX
     if rdf['object'] in names:
         template['object']['label'] = rdf['object'].strip().title()
         template['object']['type'] = 'PERSON'

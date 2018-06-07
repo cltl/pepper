@@ -141,7 +141,7 @@ class NameASR(object):
 
     NAME_REGEX = "([A-Z]\w+)"
 
-    def __init__(self, sample_rate=16000, max_alternatives=10, hints = ("My name is {}", "I'm {}", "I am {}")):
+    def __init__(self, sample_rate=16000, max_alternatives=5, hints = ("My name is {}", "I'm {}", "I am {}")):
         self._sample_rate = sample_rate
         self.hints = hints
 
@@ -151,7 +151,6 @@ class NameASR(object):
         self.asr = [GoogleASR(language, sample_rate, max_alternatives, self.phrases) for language in self.LANGUAGES]
 
     def transcribe(self, audio):
-
         name_match, name_confidence = None, 0
 
         for asr in self.asr:
@@ -169,4 +168,3 @@ class NameASR(object):
                             name_confidence = confidence
 
         return name_match, name_confidence
-

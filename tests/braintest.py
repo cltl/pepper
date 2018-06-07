@@ -66,20 +66,21 @@ class BrainTest(pepper.App):
     def on_transcript(self, transcript, confidence):
         self.log.info(u"[{:3.3%}] {}: '{}'".format(confidence, self._last_greeted_name, transcript))
 
-        try:
-            template = process_utterance(transcript, self._last_greeted_name, self.chat_id, self.chat_turn)
+        template = process_utterance(transcript, self._last_greeted_name, self.chat_id, self.chat_turn)
 
-            if 'question' in template:
-                response = self.brain.query_brain(template)
-                self.log.info(response)
-                self.say(reply(response))
-            elif 'statement' in template:
-                response = self.brain.update(template)
-                self.log.info(response)
+        utterance_type = template['utterance_type']
+        self.log.info(template)
 
-            self.chat_turn += 1
-        except Exception as e:
-            self.log.error(e)
+        if utterance_type == 'question':
+            response = self.brain.query_brain(template)
+            self.log.info(response)
+            print('brain reply:')
+            self.say(reply(response))
+        elif utterance_type == 'statement':
+            response = self.brain.update(template)
+            self.log.info(response)
+
+        self.chat_turn += 1
 
     def on_face(self, bounds, representation):
         name, confidence, distance = self._people_classifier.classify(representation)

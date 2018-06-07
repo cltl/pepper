@@ -12,7 +12,7 @@ from pepper.knowledge.brainFacts import statements
 from pepper.knowledge.brainQuestions import questions
 
 REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
-LOCAL_BRAIN = "http://localhost:7200/repositories/leolani_test2"
+LOCAL_BRAIN = "http://localhost:7200/repositories/leolani_brain"
 
 
 class TheoryOfMind(object):
@@ -72,7 +72,7 @@ class TheoryOfMind(object):
         # TODO refactor
         self._paradiso_simple_model_(parsed_statement)
 
-        data = self._serialize(os.path.abspath('../../../pepper/knowledge_representation/brainOutput/learned_facts'))
+        data = self._serialize(os.path.abspath('../../pepper/knowledge_representation/brainOutput/learned_facts'))
 
         code = self._upload_to_brain(data)
 

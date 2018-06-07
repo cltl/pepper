@@ -1,10 +1,9 @@
 import pepper
-from pepper.visualisation.coco import *
 
+from pepper.visualisation.coco import *
 from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
 
-from time import time
 
 
 class CocoTest(pepper.App):
@@ -15,6 +14,7 @@ class CocoTest(pepper.App):
         self.coco = pepper.CocoClassifyClient()
 
         self.figure, self.axis = plt.subplots()
+        self.image = self.axis.imshow(self.camera.get())
         self.animation = FuncAnimation(self.figure, self.update, interval=0)
         plt.show()
 
@@ -30,7 +30,7 @@ class CocoTest(pepper.App):
         visualize_boxes_and_labels_on_image_array(
             image, boxes, [cls['id'] for cls in classes], scores, index,
             use_normalized_coordinates=True)
-        plt.imshow(image)
+        self.image.set_data(image)
 
 
 if __name__ == "__main__":
