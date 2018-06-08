@@ -8,6 +8,8 @@ from random import choice
 from datetime import datetime
 import requests
 
+from pepper.knowledge.news import get_random_headline
+
 
 EVENT = "HPe"
 
@@ -15,6 +17,7 @@ LOCATION = requests.get('http://ipinfo.io/json').json()['city']
 
 
 QnA = {
+    "news": get_random_headline()['description'],
     "What time is it": datetime.now().strftime("It is currently %H %M"),
     "Where are we": "I feel in my Wifi that we are in {}".format(LOCATION),
     "How many friends": "I have {} friends!".format(len(pepper.PeopleClassifier.load_directory('leolani'))),

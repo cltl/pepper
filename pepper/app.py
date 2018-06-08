@@ -280,7 +280,7 @@ class SensorApp(App):
         self.speaking = True
         self.log.info(u"Leolani: '{}'".format(text))
         self._utterance.stop()
-        self._text_to_speech.say(r"\\rspd={}\\{}".format(speed, text))
+        self._text_to_speech.say(ur"\\rspd={}\\{}".format(speed, text))
         self._utterance.start()
         self.speaking = False
 
@@ -294,7 +294,6 @@ class SensorApp(App):
             self.on_person_new()
         elif confidence > self.PERSON_RECOGNITION_THRESHOLD:
             self.on_person_recognized(name)
-
 
     def on_person_recognized(self, name):
         self.log.info("Recognized '{}'".format(name))

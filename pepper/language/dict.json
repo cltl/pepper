@@ -141,7 +141,7 @@
     }
 
   },
-  "predicates": ["likes", "knows", "isFrom"],
+  "predicates": ["likes", "knows", "is_from"],
   "modal verbs":["can", "have", "has"],
   "categories": ["book", "movie", "friend", "food"]
 

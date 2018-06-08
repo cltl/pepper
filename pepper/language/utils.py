@@ -9,8 +9,8 @@ from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 import random
 
-from theory_of_mind import TheoryOfMind
-brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
+#from pepper.knowledge.theory_of_mind import TheoryOfMind
+#brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_brain')
 
 wnl = WordNetLemmatizer()
 
@@ -260,6 +260,8 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'template.json')))
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
+    if type(rdf) is str:
+        return rdf
     template['subject']['label'] = rdf['subject'].strip().title() #capitalization
     template['predicate']['type'] = rdf['predicate'].strip()
     if rdf['object'] in names:
@@ -296,7 +298,7 @@ def extract_roles_from_statement(words):
     for pos in pos_list:
         if pos[1].startswith('V') or wnl.lemmatize(words[i]) in grammar['verbs']:
             if pos_list[i+1][0]=='from':
-                rdf['predicate'] = 'isFrom'
+                rdf['predicate'] = 'is_from'
                 i+=1
             else:
                 rdf['predicate'] = words[i]+'s'if not words[i].endswith('s') else words[i]

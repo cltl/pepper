@@ -72,7 +72,8 @@ class TheoryOfMind(object):
         # TODO refactor
         self._paradiso_simple_model_(parsed_statement)
 
-        data = self._serialize(os.path.abspath('../../pepper/knowledge_representation/brainOutput/learned_facts'))
+        PATH = os.path.join(os.path.dirname(__file__), '../../knowledge_representation/brainOutput/learned_facts')
+        data = self._serialize(PATH)
 
         code = self._upload_to_brain(data)
 

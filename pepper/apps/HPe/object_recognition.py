@@ -146,8 +146,8 @@ class ObjectRecognitionApp(pepper.App):
 
             if confidence > self.FACE_THRESHOLD:
                 self.face_queue.put((name, confidence, distance))
-            else:
-                self.face_queue.put(("Human", confidence, distance))
+            # else:
+            #     self.face_queue.put(("Human", confidence, distance))
 
             x = bounds.x - self.FACE_BB_WIDEN
             y = bounds.y - self.FACE_BB_WIDEN

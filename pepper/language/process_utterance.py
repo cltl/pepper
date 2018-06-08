@@ -1,5 +1,5 @@
 from analyzers import *
-from theory_of_mind import TheoryOfMind
+from pepper.knowledge.theory_of_mind import TheoryOfMind
 #from pepper.knowledge.theory_of_mind import TheoryOfMind
 
 test_mode = 1 # FOR ADDITIONAL PRINTS
@@ -71,12 +71,12 @@ def analyze_utterance(utterance, speaker, chat_id, chat_turn, brain):
     elif template['utterance_type']=='question':
         response = brain.query_brain(template)
         if test_mode: print('brain response to question:', response)
-        print(reply_to_question(response))
+        return reply_to_question(response)
 
     elif template['utterance_type']=='statement':
         response = brain.update(template)
         if test_mode: print('brain response to statement:', response)
-        print(reply_to_statement(response, speaker))
+        return reply_to_statement(response, speaker)
 
 
 
@@ -86,11 +86,11 @@ def run_tests():
     chat_turn = 0
     chat_id = 0
 
-    test_batch = questions +statements
+    test_batch = statements
 
     for utt in test_batch:
         analyze_utterance(utt[0], utt[1],chat_id,  chat_turn, brain)
         chat_turn+=1
 
 
-run_tests()
+#run_tests()
