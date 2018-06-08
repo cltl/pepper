@@ -214,7 +214,7 @@ class FlowApp(App):
 class SensorApp(App):
 
     PERSON_RECOGNITION_THRESHOLD = 0.9
-    PERSON_NEW_THRESHOLD = 1
+    PERSON_NEW_THRESHOLD = 1.2
 
     CAMERA_RESOLUTION = pepper.CameraResolution.VGA_320x240
     CAMERA_FREQUENCY = 4

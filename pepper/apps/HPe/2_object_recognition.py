@@ -19,7 +19,7 @@ class ObjectRecognitionApp(pepper.App):
     GREET = ["Hello", "Hi", "Hey there", "Greetings", "Good day", "Nice to see you", "It's a pleasure", "Hey"]
 
     RESOLUTION = pepper.CameraResolution.VGA_640x480
-    SCORE_THRESHOLD = 0.7
+    SCORE_THRESHOLD = 0.5
     FACE_THRESHOLD = 0.8
     MAX_BOXES = 4
     FACE_BB_WIDEN = 8
@@ -53,7 +53,7 @@ class ObjectRecognitionApp(pepper.App):
 
         self.last_name = ""
         self.face_queue = Queue()
-        self.object_queue = Queue()
+        self.last_objects = {}
 
         Thread(target=self.reaction_worker).start()
 
@@ -91,21 +91,33 @@ class ObjectRecognitionApp(pepper.App):
 
         self.on_update()
 
+    def say(self, text, speed=80):
+        self.log.info(u"Leolani: '{}'".format(text))
+        self.text_to_speech.say(ur"\\rspd={}\\{}".format(speed, text))
+
     def reaction_worker(self):
         while True:
-
             # React to Peoples Faces
             try:
                 name, confidence, distance = self.face_queue.get(False)
                 if name != self.last_name:
-                    self.text_to_speech.say("{}, {}!".format(choice(self.GREET), name))
-                    self.last_name = name
-            except Empty:
-                pass
 
-            # React to Objects
-            try:
-                classes, scores = self.object_queue.get(False)
+                    self.say("{}, {}!".format(choice(self.GREET), name))
+                    self.last_name = name
+
+                    if self.last_objects:
+                        object_string = "I see "
+                        for cls, count in self.last_objects.items():
+                            object_string += "{} {}".format(count, cls) + ("s, " if count > 1 else ", ")
+
+                        object_string = object_string[:-2]
+
+                        if ', ' in object_string:
+                            k = object_string.rfind(',')
+                            object_string = object_string[:k] + ' and' + object_string[k+1:]
+
+                        self.say(object_string)
+
             except Empty:
                 pass
 
@@ -116,6 +128,16 @@ class ObjectRecognitionApp(pepper.App):
 
         height, width, channels = image.shape
         classes, scores, boxes = self.coco.classify(image)
+
+        # Update Last Objects
+        self.last_objects = {}
+
+        for cls, scr, box in zip([cls['name'] for cls in classes], scores, boxes):
+            if scr > self.SCORE_THRESHOLD:
+                if not cls in self.last_objects:
+                    self.last_objects[cls] = 1
+                else:
+                    self.last_objects[cls] += 1
 
         face = self.openface.represent(image)
         if face:

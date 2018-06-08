@@ -9,13 +9,18 @@ from datetime import datetime
 import requests
 
 
+EVENT = "HPe"
+
+LOCATION = requests.get('http://ipinfo.io/json').json()['city']
+
 
 QnA = {
     "What time is it": datetime.now().strftime("It is currently %H %M"),
-    "Where are we": "I feel in my Wifi that we are in {}".format(requests.get('http://ipinfo.io/json').json()['city']),
+    "Where are we": "I feel in my Wifi that we are in {}".format(LOCATION),
     "How many friends": "I have {} friends!".format(len(pepper.PeopleClassifier.load_directory('leolani'))),
     "Who are your friends": "My friends are {}.".format(", ".join(pepper.PeopleClassifier.load_directory('leolani'))),
-    "How many people": "I've met {} people today!".format(len(pepper.PeopleClassifier.load_directory('HPe'))),
+    "How many people": "I've met {} people today!".format(len(pepper.PeopleClassifier.load_directory(EVENT))),
+    "Who did you meet": "I've met several people today: {}".format(", ".join(pepper.PeopleClassifier.load_directory(EVENT))),
 
     "Open Source": "Yes, The code I'm running on is fully Open Source, you can find it on GitHub!",
     "tell me a joke": "Ok! \\pau=500\\ What's the difference between a hippo? \\pau=500\\ and a Zippo? \\pau=2000\\ Well \\pau=100\\, one is really heavy and the other is a little lighter.",
@@ -53,7 +58,7 @@ GREETINGS = [
     "What's up?",
     "What's new?",
     "What's going on?",
-    "What's up?"
+    "What's up?",
     "Good to see you!",
     "Nice to see you!",
 ]
@@ -88,20 +93,20 @@ VERIFY_NAME = [
     "Ah, your name is {}?",
     "Did I hear correctly your name is {}?",
     "I'm not sure, but is your name {}?",
-    "Right, {} it is then?"
+    "Ok, is it {} then?"
 ]
 
 DIDNT_HEAR_NAME = [
     "I didn't get your name.",
-    "Sorry, I didn't get that",
-    "Oops, I didn't get your name",
+    "Sorry, I didn't get that.",
+    "Oops, I didn't get your name.",
 ]
 
 REPEAT_NAME = [
     "Could you repeat your name please?",
     "What is your name again?",
     "What did you say your name was?",
-    "How are you called again?",
+    "I don't understand single words that well, please try a sentence instead!",
     "I'm not good with all names, maybe try an English nickname if you will!",
 ]
 
@@ -198,8 +203,6 @@ class MeetApp(pepper.SensorApp):
         self.last_greeted_name = ""
         self.last_greeted_time = 0
 
-        self.speaking = False
-
         self.meeting = False
         self.listening_for_name = False
 
@@ -207,16 +210,6 @@ class MeetApp(pepper.SensorApp):
         self.face_mean = np.zeros(128, np.float32)
         self.face_name = ""
         self.face_time = 0
-
-    def say(self, text, speed=80):
-        while self.speaking: sleep(0.1)
-
-        self.speaking = True
-        self.log.info(u"Leolani: '{}'".format(text))
-        self._utterance.stop()
-        self._text_to_speech.say(ur"\\rspd={}\\{}".format(speed, text))
-        self._utterance.start()
-        self.speaking = False
 
     def begin_meeting(self):
         self.say(choice(GREETINGS))
@@ -232,6 +225,18 @@ class MeetApp(pepper.SensorApp):
         self.faces = []
         self.meeting = False
 
+    def check_name(self, audio, hypotheses):
+        name_result = self.find_names(audio, hypotheses)
+        if name_result:
+            name, transcript, confidence = name_result
+
+            self.log.info("{}: '{}'".format(name, transcript))
+            self.face_name = name
+            # Verify
+            self.say(choice(VERIFY_NAME).format(name))
+            self.listening_for_name = False
+        return name_result
+
     def on_utterance(self, audio):
         hypotheses = self._speech_to_text.transcribe(audio)
         if hypotheses:
@@ -246,19 +251,7 @@ class MeetApp(pepper.SensorApp):
 
             if self.meeting:
                 if self.listening_for_name:
-                    name_result = self.find_names(audio, hypotheses)
-
-                    if name_result:
-                        name, transcript, confidence = name_result
-
-                        self.log.info("{}: '{}'".format(name, transcript))
-
-                        self.face_name = name
-
-                        # Verify
-                        self.say(choice(VERIFY_NAME).format(name))
-                        self.listening_for_name = False
-                    else:
+                    if not self.check_name(audio, hypotheses):
                         self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)))
                 else:
                     transcript, confidence = hypotheses[0]
@@ -298,11 +291,12 @@ class MeetApp(pepper.SensorApp):
                             self.listening_for_name = True
                             return
 
-                    self.say("{}, {}?".format(choice(SORRY), choice(VERIFY_NAME).format(self.face_name)))
+                    if not self.check_name(audio, hypotheses):
+                        self.say("{}, {}?".format(choice(SORRY), choice(VERIFY_NAME).format(self.face_name)))
             else:
                 self.log.info("{}: '{}'".format(self.last_greeted_name, hypothesis))
 
-                if ' meet' in hypothesis:
+                if "let's meet" in hypothesis:
                     self.say(choice(HAPPY))
                     self.begin_meeting()
                     return
@@ -325,6 +319,7 @@ class MeetApp(pepper.SensorApp):
 
             if len(self.faces) > 2 and np.linalg.norm(self.face_mean - representation) > self.PERSON_NEW_THRESHOLD:
                 self.say(choice(DIFFERENT_FACE))
+                sleep(5)
                 self.end_meeting()
         else:
             super(MeetApp, self).on_face(bounds, representation)
@@ -352,9 +347,12 @@ class MeetApp(pepper.SensorApp):
         candidates = []
 
         for transcript, confidence in hypotheses:
-            transcript = re.sub(NAME_REGEX, ' {0}', transcript)
-            if NAME_SUB in transcript:
-                candidates.append(transcript)
+            if not ' ' in transcript:
+                candidates.append('{0}')
+            else:
+                transcript = re.sub(NAME_REGEX, ' {0}', transcript)
+                if NAME_SUB in transcript:
+                    candidates.append(transcript)
 
         if candidates:
             languages = ['en-GB', 'nl-NL']
