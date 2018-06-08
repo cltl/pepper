@@ -140,6 +140,10 @@
       "past":"met"
     }
 
-  }
+  },
+  "predicates": ["likes", "knows", "isFrom"],
+  "modal verbs":["can", "have", "has"],
+  "categories": ["book", "movie", "friend", "food"]
+
   }
 }
