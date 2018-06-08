@@ -12,7 +12,6 @@ def analyze_question_word(question_word, pos):
 
 def analyze_nn(nn_list, speaker):
     morphology = {}
-    # object containing some property from brain? containing 'favorite'?
 
     first_word = (nn_list[0] if (type(nn_list) is list) else nn_list)
 
@@ -21,16 +20,17 @@ def analyze_nn(nn_list, speaker):
 
     elif first_word in names:
         morphology['human'] =  first_word
+        # what if it is a name but not of an acquaintance?
 
     elif first_word in grammar['possessive']:
-        morphology = analyze_possessive(first_word, nn_list)
+        morphology = analyze_possessive_nn(first_word, nn_list)
 
-    else:
-        morphology['entities'] = extract_named_entities(nn_list)
+    #else:
+    #    morphology['entities'] = extract_named_entities(nn_list)
 
     return morphology
 
-def analyze_possessive(poss, nn_list):
+def analyze_possessive_nn(poss, nn_list):
     morphology = grammar['possessive'][poss]
 
     for word in nn_list[1:]:
@@ -180,8 +180,8 @@ def analyze_verb_question(words, speaker):
                     rdf['object'] = speaker
                 elif nn_info['pronoun']['person'] == 'second':
                     rdf['subject'] = 'leolani'
-            elif 'entities' in nn_info:
-                print(nn_info['entities'])
+            #elif 'entities' in nn_info:
+            #    print(nn_info['entities'])
 
     return rdf
 
