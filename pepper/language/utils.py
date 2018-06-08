@@ -325,13 +325,23 @@ def extract_roles_from_statement(words):
     return rdf
 
 
+class IncompleteRDFError(Exception):
+    pass
+
+
+class UnknownPredicateError(Exception):
+    pass
+
+
 def check_rdf_completeness(rdf):
     for el in ['predicate', 'subject', 'object']:
         if not len(rdf[el]):
-            return "I cannot find the " + el + " of your statement"
+            raise IncompleteRDFError("I cannot find the " + el + " of your statement")
+            # return "I cannot find the " + el + " of your statement"
     if rdf['predicate'] not in grammar['predicates']:
         print('nonexisting predicate: ', rdf['predicate'])
-        return "I do not understand the predicate of your statement "
+        raise UnknownPredicateError("I do not understand the predicate of your statement ")
+        # return "I do not understand the predicate of your statement "
     return 1
 
 def pack_rdf_from_nn_info(nn_info, speaker, rdf):

@@ -18,7 +18,8 @@ LOCATION = requests.get('http://ipinfo.io/json').json()['city']
 
 QnA = {
     "news": get_random_headline()['description'],
-    "What time is it": datetime.now().strftime("It is currently %H %M"),
+    "What time is it": datetime.now().strftime("It is currently %H:%M"),
+    "The time": datetime.now().strftime("It is currently %H:%M"),
     "Where are we": "I feel in my Wifi that we are in {}".format(LOCATION),
     "How many friends": "I have {} friends!".format(len(pepper.PeopleClassifier.load_directory('leolani'))),
     "Who are your friends": "My friends are {}.".format(", ".join(pepper.PeopleClassifier.load_directory('leolani'))),

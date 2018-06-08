@@ -2,6 +2,7 @@ import pepper
 from pepper.language import process_utterance as pu
 from pepper.knowledge.theory_of_mind import TheoryOfMind
 from pepper.apps.HPe.guest_recognition import QnA
+from pepper.language.utils import UnknownPredicateError, IncompleteRDFError
 
 import random
 import re
@@ -67,12 +68,13 @@ class TheoryOfMindApp(pepper.SensorApp):
                 self.say(answer)
                 return
 
-        reply = pu.analyze_utterance(transcript, self.current_person, self.chat_id, self.chat_turn, self.brain)
-
-        if reply:
+        try:
+            reply = pu.analyze_utterance(transcript, self.current_person, self.chat_id, self.chat_turn, self.brain)
             self.say(reply)
-        else:
-            self.say("Whatafack")
+        except UnknownPredicateError as e:
+            self.say(e.message)
+        except IncompleteRDFError as e:
+            self.say(e.message)
 
         self.chat_turn += 1
 

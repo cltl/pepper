@@ -5,14 +5,16 @@ from pepper.apps.HPe.guest_recognition import QnA
 
 
 ADDRESSING = [
-    "Well, {}",
-    "Look, {}",
-    "I will tell you, {}",
+    "Well, {}.",
+    "Look, {}.",
+    "I will tell you, {}.",
+]
+
+ADDRESSING_INTERNET = ADDRESSING + [
     "I checked the internet, {}. This is what is says:",
     "I Googled it for you, {}.",
     "I found the answer on the interwebs, {}!"
 ]
-
 
 SORRY = [
     "Sorry!",
@@ -53,6 +55,7 @@ DONT_KNOW = [
 
 class WolframAlphaApp(pepper.SensorApp):
     def on_transcript(self, transcript, person):
+        self.log.info("{}: '{}'".format(person, transcript))
 
         for question, answer in QnA.items():
             if question.lower() in transcript.lower():
@@ -62,7 +65,7 @@ class WolframAlphaApp(pepper.SensorApp):
         answer = pepper.Wolfram().query(transcript)
 
         if answer:
-            self.say(u"{}, {}".format(choice(ADDRESSING).format(person), answer))
+            self.say(u"{}, {}".format(choice(ADDRESSING_INTERNET).format(person), answer))
         else:
             self.say(u"{} {}, {}".format(choice(SORRY), person, choice(DONT_KNOW)))
 
