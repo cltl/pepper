@@ -160,7 +160,7 @@ brain_response = [{
 json_dict = json.load(open(os.path.join(ROOT, 'dict.json')))
 grammar = json_dict["grammar"]
 
-names = ['selene', 'bram', 'leolani', 'piek','selene']
+names = ['selene', 'bram', 'leolani', 'piek','selene', 'lenka']
 statements = [['my favorite food is cake','lenka'],['I\'m from Amsterdam', 'Bram'],
               ['My name is lenka', 'person'],
                ['i like action movies', 'bram'],['bram likes romantic movies', 'selene'],
@@ -254,7 +254,7 @@ def reply_to_question(brain_response):
 
         say+=' and '
 
-    return say[:-5]+'\n'
+    return say[:-5]
 
 def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'template.json')))
@@ -277,14 +277,29 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template['turn'] = chat_turn
     return template
 
+def fix_predicate_morphology(predicate):
+    new_predicate = ''
+    for el in predicate.split():
+        if el != 'is':
+            new_predicate += el + ' '
+        else:
+            new_predicate += 'are '
+
+    if predicate.endswith('s'): new_predicate = predicate[:-1]
+
+    return new_predicate
 
 def reply_to_statement(template, speaker):
     subject = template['statement']['subject']['label']
     predicate = template['statement']['predicate']['type']
+
+    if predicate == 'isFrom': predicate = 'is from'
+
     object = template['statement']['object']['label']
 
     subject = 'you ' if speaker.lower()==subject.lower() else 'i' if speaker.lower()=='leolani' else subject.title()
-
+    if subject=='you ':
+        predicate = fix_predicate_morphology(predicate)
 
     response = subject +' '+predicate+' '+object
 
