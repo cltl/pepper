@@ -1,3 +1,6 @@
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split, cross_val_score
+
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn import metrics
@@ -90,8 +93,58 @@ class PeopleCluster:
         plt.show()
 
 
-if __name__ == "__main__":
-    people = load_people()
-    people.update(load_people('paradiso'))
+class PeopleClassifier:
 
-    PeopleCluster(people).performance()
+    ROOT = os.path.dirname(os.path.abspath(__file__))
+    LEOLANI = os.path.join(ROOT, 'leolani')
+
+    FEATURE_DIM = 128
+
+    def __init__(self, people, n_neighbors=20):
+        self._people = people
+        self._names = sorted(people.keys())
+        self._indices = range(len(self._names))
+
+        self._labels = np.concatenate([[index] * len(people[name]) for name, index in zip(self._names, self._indices)])
+        self._features = np.concatenate([people[name] for name in self._names])
+
+        self._classifier = KNeighborsClassifier(n_neighbors)
+        self._classifier.fit(self._features, self._labels)
+
+    @property
+    def people(self):
+        return self._people
+
+    def classify(self, face):
+        distances, indices = self._classifier.kneighbors(face.reshape(-1, self.FEATURE_DIM))
+        distances, indices = distances[0], indices[0]
+
+        labels = self._labels[indices]
+        label = np.bincount(labels).argmax()
+        name = self._names[label]
+        confidence = np.mean(labels == label)
+        distance = np.mean(distances[labels == label])
+        return name, confidence, distance
+
+    def accuracy(self):
+        return np.mean(cross_val_score(self._classifier, self._features, self._labels, cv=5))
+
+    @classmethod
+    def from_directory(cls, directory):
+        return cls(PeopleClassifier.load_directory(directory))
+
+    @staticmethod
+    def load_directory(directory):
+        if not os.path.isdir(directory):
+            directory = os.path.join(PeopleClassifier.ROOT, directory)
+
+        people = {}
+        for path in os.listdir(directory):
+            name = os.path.splitext(path)[0]
+            features = np.fromfile(os.path.join(directory, path), np.float32).reshape(-1, PeopleClassifier.FEATURE_DIM)
+            people[name] = features
+        return people
+
+
+if __name__ == "__main__":
+    pass

@@ -51,3 +51,9 @@ The brain is stored in a triple store. Currently, you need to have a local insta
 Once launched, set up a repository with id and name: leolani. To populate the brain with some basic statements you can go to the menu Import >> RDF upload the file on pepper/knowledge_representation/brainOutput/brainBase.trig
 
 Alternatively, you can the main on run pepper/knowledge/theory_of_mind.py which automatically uploads every test statement.
+
+### 6. Reference
+
+When using our implementation or ideas, please make reference to:
+
+Vossen, Piek , Selene Baez, Lenka Bajčetić , and Bram Kraaijeveld (2018), Leolani: a reference machine with a theory of mind for social communication, Invited Keynote speech, TSD-2018, Brno.

@@ -84,6 +84,18 @@
 
     },
 
+  "possessive":{
+    "your":{
+      "person":"second"
+    },
+
+    "my":
+    {
+      "person": "first"
+    }
+  },
+
+
 
 
   "question words": {
@@ -128,6 +140,10 @@
       "past":"met"
     }
 
-  }
+  },
+  "predicates": ["likes", "knows", "is_from"],
+  "modal verbs":["can", "have", "has"],
+  "categories": ["book", "movie", "friend", "food"]
+
   }
 }

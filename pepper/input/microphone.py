@@ -194,6 +194,8 @@ class PepperMicrophone(Microphone):
         """
         super(PepperMicrophone, self).__init__(16000, 1, callbacks)
 
+        self._listening = False
+
         self._queue = Queue()
         self._worker = Thread(target=self.worker)
         self._worker.daemon = True
@@ -208,8 +210,6 @@ class PepperMicrophone(Microphone):
         self.session.registerService(self._name, self)
         self._service.setClientPreferences(self._name, 16000, 3, 1)
         self._service.subscribe(self._name)
-
-        self._listening = False
 
     @property
     def session(self):
@@ -230,13 +230,11 @@ class PepperMicrophone(Microphone):
 
     def worker(self):
         while True:
-            t = time()
             frame = self._queue.get()
-            self.on_audio(np.frombuffer(frame, np.int16))
-            self._queue.task_done()
 
-            # # Show Queue Worker Performance
-            # print(time() - t, self._queue.unfinished_tasks)
+            if self._listening:
+                self.on_audio(np.frombuffer(frame, np.int16))
+                self._queue.task_done()
 
             if self._queue.qsize() > 10:
                 raise BufferError("Microphone Processing is not Realtime.., Please reduce callback overhead")
@@ -278,17 +276,17 @@ class PepperMicrophone(Microphone):
 
         t = timestamp[0] + timestamp[1] * 1E-6
 
-        if self._listening:
-            self._queue.put(buffer)
+        self._queue.put(buffer)
 
-            if self._t != 0:
-                dt = t - self._t
-                self._dt_window.append(dt)
+        if self._t != 0:
+            dt = t - self._t
+            self._dt_window.append(dt)
 
-                dt_mean = np.mean(self._dt_window)
+            dt_mean = np.mean(self._dt_window)
 
-                if dt_mean > 2 * samples / float(self.sample_rate):
-                    print("<< Microphone Frames were skipped, Check Host/Pepper Network Connection >>")
+            if dt_mean > 2 * samples / float(self.sample_rate):
+                print("<< Microphone Frames were skipped, Check Host/Pepper Network Connection >>")
+                self._dt_window.clear()
 
         self._t = t
 
