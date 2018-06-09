@@ -68,9 +68,8 @@ class TheoryOfMind(object):
         :param parsed_statement: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
-        # Paradiso use case
-        # TODO refactor
-        self._paradiso_simple_model_(parsed_statement)
+        # Create graphs and triples
+        self._model_graphs_(parsed_statement)
 
         data = self._serialize(os.path.abspath('../../../pepper/knowledge_representation/brainOutput/learned_facts'))
 
@@ -109,17 +108,19 @@ class TheoryOfMind(object):
         """
         query = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
             
-            select ?chat where { 
-                ?chat rdf:type sem:Chat .
-            } ORDER BY DESC (?chat) LIMIT 1
+            select ?chatid where { 
+                ?chat rdf:type grasp:Chat .
+                ?chat n2mu:id ?chatid .
+            } ORDER BY DESC (?chatid) LIMIT 1
         """
 
         response = self._submit_query(query)
 
         if response:
-            last_chat = int(response[0]['chat']['value'].split('/')[-1][4:])
+            last_chat = int(response[0]['chatid']['value'])
         else:
             last_chat = 0
 
@@ -666,7 +667,7 @@ class TheoryOfMind(object):
 
         return str(response.status_code)
 
-    def _paradiso_simple_model_(self, parsed_statement):
+    def _model_graphs_(self, parsed_statement):
         # Leolani world (includes instance and claim graphs)
         instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(parsed_statement)
 
@@ -697,6 +698,9 @@ class TheoryOfMind(object):
 
         # Query subject
         if parsed_question['subject']['label'] == "":
+            # Case fold
+            # object_label = casefold_label(parsed_question['object']['label'], parsed_question['object']['type'])
+
             query = """
                 SELECT ?slabel ?authorlabel
                         WHERE { 
@@ -793,17 +797,20 @@ if __name__ == "__main__":
     brain = TheoryOfMind()
 
     # Test statements
-    for statement in statements:
-        response = brain.update(statement)
-        print(json.dumps(response, indent=4, sort_keys=True))
-
-    # Separation
-    print('#######################################################')
+    # for statement in statements:
+    #     response = brain.update(statement)
+    #     print(json.dumps(response, indent=4, sort_keys=True))
+    #
+    # # Separation
+    # print('#######################################################')
 
     # Test questions
-    for question in questions:
-        response = brain.query_brain(question)
-        print(json.dumps(response, indent=4, sort_keys=True))
+    # for question in questions:
+    #     response = brain.query_brain(question)
+    #     print(json.dumps(response, indent=4, sort_keys=True))
+    #     break
+
+    print(brain.get_classes())
 
     # response = brain.get_instance_of_type('Location')
     # response = brain.get_triples_with_predicate('is_from')
