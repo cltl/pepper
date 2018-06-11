@@ -163,9 +163,16 @@ def analyze_verb_question(words, speaker):
     nn, index = extract_nn(words, tagged, index=1)
     nn_info = analyze_nn(nn, speaker)
 
-    #if 'pronoun' in nn_info and 'person' in nn_info['pronoun']:
-    #    if nn_info['pronoun']['person'] == 'second':
-    #        rdf['subject'] = 'leolani'
+    if 'pronoun' in nn_info and 'person' in nn_info['pronoun']:
+        if nn_info['pronoun']['person'] == 'second':
+            rdf['subject'] = 'leolani'
+        elif nn_info['pronoun']['person'] == 'first':
+            rdf['subject']=speaker
+
+    if 'human' in nn_info:
+        rdf['subject'] = nn_info['human']
+    if not len(nn_info):
+        return ('Sorry, I am confused')
 
     verb = words[index + 1]
     verb_info = analyze_verb(verb)
@@ -173,12 +180,15 @@ def analyze_verb_question(words, speaker):
     if 'predicate' in verb_info:
         rdf['predicate'] = verb_info['predicate']  # 'knows' instead of 'know' - predicate mapping
 
+    rdf['object'] = words[index + 2:]
+    return rdf
+
     '''
     remain = []
     while len(words) > index + 2:
         remain.append(words[index + 2])
         index += 1
-    '''
+    
 
     for word in words[index+2:]:
         if pos_tag([word])[0][1].startswith('V') or word == 'met':
@@ -193,6 +203,7 @@ def analyze_verb_question(words, speaker):
                     rdf['subject'] = 'leolani'
             #elif 'entities' in nn_info:
             #    print(nn_info['entities'])
+    '''
 
-    return rdf
+
 

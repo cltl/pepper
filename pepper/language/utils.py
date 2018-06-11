@@ -57,8 +57,8 @@ def get_synonims(word):
 def extract_nn(words, tagged, index):
     nn = words[index]
     for pos in tagged[index+1:]:
-        if (not pos[1].startswith('V') and words[index + 1] not in ['ever']) or pos[0] in names:
-            nn += words[index].lower().strip()
+        if (not pos[1].startswith('V') and (not pos[0] in ['like'])) or (pos[0] in names) :
+            nn += ' '+pos[0]
             index += 1
         else:
             break
@@ -70,13 +70,15 @@ def reply_to_question(brain_response):
     say = ''
     previous_author = ''
     previous_subject = ''
-    person = ''
+    previous_predicate = ''
+
 
     if len(brain_response['response'])==0: #FIX
         say = random.choice(["I don\'t know","i have no idea","i wouldn\'t know"])
         return say+'\n'
 
     for response in brain_response['response']:
+        person = ''
         if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
             if response['authorlabel']['value'] == brain_response['question']['author']:
                 say+=' you told me '
@@ -84,12 +86,16 @@ def reply_to_question(brain_response):
                 say += response['authorlabel']['value'] +' told me '
             previous_author = response['authorlabel']['value']
         elif 'authorlabel' in response and response['authorlabel']['value']==previous_author:
-            say+=' that '
+            if brain_response['question']['predicate']['type'] != previous_predicate:
+                say+=' that '
 
         if 'slabel' in response:
             if response['slabel']['value']==brain_response['question']['author']:
                 say+= 'you'
                 person = 'second'
+            elif response['slabel']['value']=='Leolani':
+                say+='I'
+                person='first'
 
             elif (response['slabel']['value']==previous_subject) or (response['slabel']['value']==response['authorlabel']['value']):
                 if response['slabel']['value'].lower() in ['bram','piek']:
@@ -101,8 +107,8 @@ def reply_to_question(brain_response):
                 say += response['slabel']['value']
                 previous_subject = response['slabel']['value']
 
-        elif 'subject' in brain_response['question'] and brain_response['question']['subject']!=previous_subject:
-            if 'author' in brain_response['question'].keys() and brain_response['question']['subject']['label'] == brain_response['question']['author']:
+        elif 'subject' in brain_response['question'] and brain_response['question']['subject']['label']!=previous_subject:
+            if brain_response['question']['subject']['label'] == brain_response['question']['author']:
                 person = 'second'
                 say+=' you '
             elif brain_response['question']['subject']['label']=='Leolani':
@@ -113,23 +119,32 @@ def reply_to_question(brain_response):
             previous_subject = brain_response['question']['subject']['label']
 
         if brain_response['question']['predicate']['type'] in grammar['predicates']:
-            if brain_response['question']['predicate']['type'] == 'is_from':
-                if person == 'first':
-                    say += ' am from '
-                elif person == 'second':
-                    say += ' are from'
-                else:
-                    say += ' is from '
+            if brain_response['question']['predicate']['type']==previous_predicate and response['slabel']==previous_subject:
+                pass
             else:
-                if person in ['first', 'second']:
-                    say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
+                previous_predicate = brain_response['question']['predicate']['type']
+                if brain_response['question']['predicate']['type'] == 'is_from':
+                    if person == 'first':
+                        say += ' am from '
+                    elif person == 'second':
+                        say += ' are from'
+                    else:
+                        say += ' is from '
                 else:
-                    say += ' '+brain_response['question']['predicate']['type']+' '
+                    if person in ['first', 'second']:
+                        say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
+                    else:
+                        say += ' '+brain_response['question']['predicate']['type']+' '
 
         if 'olabel' in response:
             say += response['olabel']['value']
         elif 'object' in brain_response['question'].keys():
-            say += brain_response['question']['object']['label']
+            if brain_response['question']['object']['label']==brain_response['question']['author']:
+                say+='you'
+            elif brain_response['question']['object']['label']=='Leolani':
+                say+='me'
+            else: say += brain_response['question']['object']['label']
+
 
         say+=' and '
 
@@ -139,18 +154,19 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'template.json')))
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
-
+    if type(rdf) == str:
+        return rdf
     template['subject']['label'] = rdf['subject'].strip().title() #capitalization
     template['predicate']['type'] = rdf['predicate'].strip()
     if rdf['object'] in names:
         template['object']['label'] = rdf['object'].strip().title()
         template['object']['type'] = 'PERSON'
-    elif len(rdf['object'])>1 and type(rdf['object']) is list:
+    elif type(rdf['object']) is list:
         template['object']['label'] = rdf['object'][0].strip().title()
-        template['object']['type'] = rdf['object'][1]
+        if len(rdf['object'])>1: template['object']['type'] = rdf['object'][1]
     else:
         template['object']['label'] = rdf['object'].strip().title()
-    if template['object']['label'] in ['Soccer', 'Tacos', 'Baseball']: template['object']['label'] = template['object']['label'].lower()
+    if template['object']['label'] in ['Soccer', 'Tacos', 'Baseball', 'Acrobatics', 'Cheese']: template['object']['label'] = template['object']['label'].lower()
     template['date'] = date.today()
     template['chat'] = chat_id
     template['turn'] = chat_turn

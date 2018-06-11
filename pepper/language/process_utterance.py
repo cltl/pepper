@@ -90,9 +90,9 @@ def run_tests():
 
     test_batch = questions
 
-    test_batch2 = [['Who do you know?', 'Piek'],
-                  ['You know me', 'Piek'],
-                  ['Who do you know?','Piek']] #, ['I know Bram', 'Piek'], ['Who do I know?', 'Bram']]
+    test_batch2 = [['do i like acrobatics?','lenka'],['Do you know me?', 'Piek'],
+                  ['who likes soccer?', 'Piek']]
+                 # ['Who do you know?','Piek'], ['I know Bram', 'Piek'], ['Who do I know?', 'Bram']]
 
     test_batch3 = [['you live at the vu','selene'], ['where do you live?', 'bram']]
 
