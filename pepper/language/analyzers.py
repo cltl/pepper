@@ -35,7 +35,7 @@ def analyze_possessive_nn(poss, nn_list):
 
     for word in nn_list[1:]:
         # print(word, pos_tag([word]))
-        if word in properties:  # your mother's maiden name?
+        if word in grammar['categories']:  # your friends's  name?
             morphology['object'] = word
             if morphology['person'] == 'second':
                 morphology['subject'] = 'leolani'
@@ -47,6 +47,12 @@ def analyze_possessive_nn(poss, nn_list):
     return morphology
 
 def extract_named_entities(nn_list):
+
+    from nltk.tag import StanfordNERTagger
+    ROOT = os.path.join(os.path.dirname(__file__))
+    ner = StanfordNERTagger(os.path.join(ROOT, 'stanford-ner', 'english.muc.7class.distsim.crf.ser'),
+                            os.path.join(ROOT, 'stanford-ner', 'stanford-ner.jar'), encoding='utf-8')
+
     recognized_entities = []
 
     ner_text = ner.tag(nn_list)
@@ -104,9 +110,14 @@ def analyze_wh_question(words, speaker, response_type):
     tagged = pos_tag(words)
     rdf = {'subject': '', 'predicate': '', 'object': ''}
 
-    to_be = words[1].lower().strip()
-    if to_be in grammar['to be']:
+
+    if words[1].strip() in grammar['to be']:
+        to_be = words[1].strip()
         morphology = grammar['to be'][to_be]
+    elif words[1].strip() in grammar['verbs'].keys()+grammar['predicates']:
+        rdf['predicate'] = words[1].strip()
+        rdf['object'] = words[2]
+
     else:
         return "I seem to have misunderstood the word "+to_be+" in your question"
 
@@ -126,7 +137,7 @@ def analyze_wh_question(words, speaker, response_type):
         nn_info = analyze_nn(nn, speaker)
         rdf = pack_rdf_from_nn_info(nn_info, speaker, rdf)
 
-        if wnl.lemmatize(words[3].lower().strip(), 'v') in grammar['verbs']:
+        if len(words)>3 and wnl.lemmatize(words[3].lower().strip(), 'v') in grammar['verbs']:
             verb_info = analyze_verb(words[3].lower().strip())
             if 'predicate' in verb_info.keys():
                 rdf['predicate'] = verb_info['predicate']
