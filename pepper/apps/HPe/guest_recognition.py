@@ -12,9 +12,7 @@ from pepper.knowledge.news import get_random_headline
 
 
 EVENT = "HPe"
-
 LOCATION = requests.get('http://ipinfo.io/json').json()['city']
-
 
 QnA = {
     "news": get_random_headline()['description'],
@@ -197,10 +195,12 @@ class MeetApp(pepper.SensorApp):
     MEET_TIMEOUT = 10
     MIN_FACE_SAMPLES = 30
 
+    CAMERA_FREQUENCY = 4
+
     def __init__(self):
 
         people = pepper.PeopleClassifier.load_directory('leolani')
-        people.update(pepper.PeopleClassifier.load_directory('HPe'))
+        people.update(pepper.PeopleClassifier.load_directory(EVENT))
 
         super(MeetApp, self).__init__(pepper.ADDRESS, people)
 
