@@ -47,6 +47,7 @@ QnA_DYNAMIC = {
 
 QnA_STATIC = {
     "Where are we": "I feel in my Wifi that we are in {}".format(LOCATION),
+    "Where are you": "I feel in my Wifi that we are in {}".format(LOCATION),
 
     "Open Source": "Yes, The code I'm running on is fully Open Source, you can find it on GitHub!",
     "tell me a joke": "Ok! \\pau=500\\ What's the difference between a hippo? \\pau=500\\ and a Zippo? \\pau=2000\\ Well \\pau=100\\, one is really heavy and the other is a little lighter.",
@@ -60,6 +61,7 @@ QnA_STATIC = {
     "Are you male": "Nope, I am a Lady!",
     "Are you female": "Yes, indeed!",
     "gender": "I'm female!",
+    "How do you feel": "Great, Indeed!",
     "How are you doing": "Tremendous, to be honest! Although you have to consider that I'm a robot and I do not feel emotions. I'm programmed to sound happy all the time!",
     "Python version": "Python 2.7 32-bit. I wish I was running 64 bit, ugh!",
     "Speech Recognition": "I'm using the Google Speech API. This is why I need the internet to work, because my audio is processed on some server somewhere in Europe",
@@ -351,8 +353,7 @@ class MeetApp(pepper.SensorApp):
                         return
 
                 # Cough if she has no clue
-                else:
-                    self.say("ahem")
+                # else: self.say("ahem")
 
     def on_face(self, bounds, representation):
         if self.meeting:

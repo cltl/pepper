@@ -2,7 +2,6 @@ import pepper
 from pepper.language import process_utterance as pu
 from pepper.knowledge.theory_of_mind import TheoryOfMind
 from pepper.apps.HPe.guest_recognition import QnA_STATIC, QnA_DYNAMIC
-from pepper.language.utils import UnknownPredicateError, IncompleteRDFError
 
 import random
 import re
@@ -30,6 +29,9 @@ ASK_ME = [
 
 
 class TheoryOfMindApp(pepper.SensorApp):
+
+    CAMERA_FREQUENCY = 1
+
     def __init__(self):
         super(TheoryOfMindApp, self).__init__(pepper.ADDRESS)
 
@@ -73,13 +75,12 @@ class TheoryOfMindApp(pepper.SensorApp):
                 self.say(answer_function())
                 return
 
-        try:
-            reply = pu.analyze_utterance(transcript, self.current_person, self.chat_id, self.chat_turn, self.brain)
+        reply = pu.analyze_utterance(transcript, self.current_person, self.chat_id, self.chat_turn, self.brain)
+
+        if reply:
             self.say(reply)
-        except UnknownPredicateError as e:
-            self.say(e.message)
-        except IncompleteRDFError as e:
-            self.say(e.message)
+        else:
+            self.say("Mmmh...")
 
         self.chat_turn += 1
 

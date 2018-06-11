@@ -9,8 +9,8 @@ from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 import random
 
-from theory_of_mind import TheoryOfMind
-brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_test2')
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_brain')
 
 wnl = WordNetLemmatizer()
 
@@ -119,8 +119,11 @@ def reply_to_question(brain_response):
             previous_subject = brain_response['question']['subject']['label']
 
         if brain_response['question']['predicate']['type'] in grammar['predicates']:
-            if brain_response['question']['predicate']['type']==previous_predicate and response['slabel']==previous_subject:
-                pass
+            if 'slabel' in response and  brain_response['question']['predicate']['type']==previous_predicate and response['slabel']==previous_subject:
+                if response['slabel']['value'].lower() in ['bram','piek']:
+                    say+= 'he'
+                elif response['slabel']['value'].lower() in ['selene','lenka']:
+                    say+= 'she'
             else:
                 previous_predicate = brain_response['question']['predicate']['type']
                 if brain_response['question']['predicate']['type'] == 'is_from':
@@ -131,7 +134,7 @@ def reply_to_question(brain_response):
                     else:
                         say += ' is from '
                 else:
-                    if person in ['first', 'second']:
+                    if person in ['first', 'second'] or ('subject'in brain_response['question'] and brain_response['question']['subject']['label']=='Leolani'):
                         say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
                     else:
                         say += ' '+brain_response['question']['predicate']['type']+' '
@@ -154,7 +157,7 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'template.json')))
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
-    if type(rdf) == str:
+    if type(rdf) == str or type(rdf)==unicode:
         return rdf
     template['subject']['label'] = rdf['subject'].strip().title() #capitalization
     template['predicate']['type'] = rdf['predicate'].strip()
@@ -188,7 +191,7 @@ def reply_to_statement(template, speaker):
     subject = template['statement']['subject']['label']
     predicate = template['statement']['predicate']['type']
 
-    if predicate == 'isFrom': predicate = 'is from'
+    if predicate == 'is_from': predicate = 'is from'
 
     object = template['statement']['object']['label']
 
@@ -212,7 +215,7 @@ def extract_roles_from_statement(words):
     for pos in pos_list:
         if pos[1].startswith('V') or wnl.lemmatize(words[i]) in grammar['verbs']:
             if pos_list[i+1][0]=='from':
-                rdf['predicate'] = 'isFrom'
+                rdf['predicate'] = 'is_from'
                 i+=1
             else:
                 rdf['predicate'] = words[i]+'s'if not words[i].endswith('s') else words[i]

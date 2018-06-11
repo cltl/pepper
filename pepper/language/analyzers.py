@@ -119,12 +119,12 @@ def analyze_wh_question(words, speaker, response_type):
         rdf['object'] = words[2]
 
     else:
-        return "I seem to have misunderstood the word "+to_be+" in your question"
+        return "I seem to have misunderstood the word "+words[1].strip()+" in your question"
 
     third_word = words[2].lower().strip()
     third_pos = pos_tag([third_word])[0][1]
-
-    if third_pos in ['PRP$', 'NN','PRP']:
+    print('pos',third_pos)
+    if third_pos in ['PRP$', 'NN','PRP', 'N']:
         nn = [third_word]
 
         for pos in tagged[3:]:

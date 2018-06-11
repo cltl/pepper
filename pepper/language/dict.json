@@ -139,12 +139,12 @@
     {
       "past":"met"
     },
-    "live":{
-
-    }
+    "live":{},
+    "love":{},
+    "enjoy":{}
 
   },
-  "predicates": ["likes", "knows", "is_from", "lives"],
+  "predicates": ["likes", "knows", "is_from", "lives", "loves", "enjoys"],
   "modal verbs":["can", "have", "has"],
   "categories": ["book", "movie", "friend", "food"]
 
