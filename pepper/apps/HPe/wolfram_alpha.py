@@ -1,19 +1,24 @@
 import pepper
 from random import choice
 
-from pepper.apps.HPe.guest_recognition import QnA
+from pepper.apps.HPe.guest_recognition import QnA_STATIC, QnA_DYNAMIC
+
+
 
 
 ADDRESSING = [
     "Well, {}.",
     "Look, {}.",
     "I will tell you, {}.",
+    "See. {}.",
+    "So, {},"
 ]
 
 ADDRESSING_INTERNET = ADDRESSING + [
     "I checked the internet, {}. This is what is says:",
     "I Googled it for you, {}.",
-    "I found the answer on the interwebs, {}!"
+    "I made use of the World Wide Web, {}.",
+    "I found the answer on the Web, {}!",
 ]
 
 SORRY = [
@@ -22,7 +27,7 @@ SORRY = [
     "Forgive me!",
     "My apologies!",
     "My humble apologies!",
-    "How unfortunate!"
+    "How unfortunate!",
 ]
 
 GREETINGS = [
@@ -37,6 +42,14 @@ GREETINGS = [
     "What's up?",
     "Good to see you!",
     "Nice to see you!",
+]
+
+ASK_ME = [
+    "Please ask me something!",
+    "Ask me anything!",
+    "I'm here for your questions!",
+    "Ask me something I can query the web with!",
+    "Please ask me a factual question!"
 ]
 
 DONT_KNOW = [
@@ -55,11 +68,16 @@ DONT_KNOW = [
 
 class WolframAlphaApp(pepper.SensorApp):
     def on_transcript(self, transcript, person):
-        self.log.info("{}: '{}'".format(person, transcript))
+        self.log.info(u"{}: '{}'".format(person, transcript))
 
-        for question, answer in QnA.items():
+        for question, answer in QnA_STATIC.items():
             if question.lower() in transcript.lower():
                 self.say(u"{} {}".format(choice(ADDRESSING).format(person), answer))
+                return
+
+        for question, answer_function in QnA_DYNAMIC.items():
+            if question.lower() in transcript.lower():
+                self.say(answer_function())
                 return
 
         answer = pepper.Wolfram().query(transcript)
@@ -71,7 +89,7 @@ class WolframAlphaApp(pepper.SensorApp):
 
     def on_person_recognized(self, name):
         if name != self.current_person:
-            self.say(u"{}, {}!".format(choice(GREETINGS), name))
+            self.say(u"{}, {}! {}!".format(choice(GREETINGS), name, choice(ASK_ME)))
             self._current_person = name
 
 

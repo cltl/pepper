@@ -8,5 +8,9 @@ def get_headlines(country="us", category="science", key=r"fac63d98350243e2b4f6e5
 def get_random_headline(country="us", category="science", key=r"fac63d98350243e2b4f6e51e4f42e13f"):
      return choice(get_headlines(country, category, key)['articles'])
 
+def get_random_headline_speech(country="us", category="science", key=r"fac63d98350243e2b4f6e51e4f42e13f"):
+    headline = get_random_headline(country, category, key)
+    return "u{}. {}.".format(headline['title'], headline['description'])
+
 if __name__ == "__main__":
     print(get_random_headline())

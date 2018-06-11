@@ -11,7 +11,7 @@ import numpy as np
 from threading import Thread
 from queue import Queue, Empty
 from random import choice
-from time import sleep
+from time import sleep, time
 
 
 class ObjectRecognitionApp(pepper.App):
@@ -23,6 +23,8 @@ class ObjectRecognitionApp(pepper.App):
     FACE_THRESHOLD = 0.8
     MAX_BOXES = 4
     FACE_BB_WIDEN = 8
+
+    FACE_TIMEOUT = 60
 
     LABEL_HEIGHT = 20
 
@@ -52,6 +54,7 @@ class ObjectRecognitionApp(pepper.App):
         self.people_classifier = pepper.PeopleClassifier.from_directory(pepper.PeopleClassifier.LEOLANI)
 
         self.last_name = ""
+        self.last_name_time = 0
         self.face_queue = Queue()
         self.last_objects = {}
 
@@ -100,10 +103,11 @@ class ObjectRecognitionApp(pepper.App):
             # React to Peoples Faces
             try:
                 name, confidence, distance = self.face_queue.get(False)
-                if name != self.last_name:
+                if name != self.last_name or time() - self.last_name_time > self.FACE_TIMEOUT:
 
                     self.say("{}, {}!".format(choice(self.GREET), name))
                     self.last_name = name
+                    self.last_name_time = time()
 
                     if self.last_objects:
                         object_string = "I see "

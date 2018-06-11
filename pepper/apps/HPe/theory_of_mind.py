@@ -1,7 +1,7 @@
 import pepper
 from pepper.language import process_utterance as pu
 from pepper.knowledge.theory_of_mind import TheoryOfMind
-from pepper.apps.HPe.guest_recognition import QnA
+from pepper.apps.HPe.guest_recognition import QnA_STATIC, QnA_DYNAMIC
 from pepper.language.utils import UnknownPredicateError, IncompleteRDFError
 
 import random
@@ -63,9 +63,14 @@ class TheoryOfMindApp(pepper.SensorApp):
                 self.say(random.choice(GREETINGS))
                 return
 
-        for question, answer in QnA.items():
+        for question, answer in QnA_STATIC.items():
             if question.lower() in transcript.lower():
                 self.say(answer)
+                return
+
+        for question, answer_function in QnA_DYNAMIC.items():
+            if question.lower() in transcript.lower():
+                self.say(answer_function())
                 return
 
         try:
@@ -124,4 +129,6 @@ class TheoryOfMindApp(pepper.SensorApp):
 
 
 if __name__ == "__main__":
+    # import nltk
+    # nltk.download('wordnet')
     TheoryOfMindApp().run()
