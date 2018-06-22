@@ -12,7 +12,7 @@ from pepper.knowledge.news import get_random_headline_speech
 
 
 
-EVENT = "HPe"
+EVENT = "CLTL"
 LOCATION = requests.get('http://ipinfo.io/json').json()['city']
 
 def n_friends():
@@ -20,7 +20,12 @@ def n_friends():
 
 def n_people():
     n_people = len(pepper.PeopleClassifier.load_directory(EVENT))
-    return "I've met {} people today!".format(n_people) if n_people > 1 else "I've just met one person today!"
+    if n_people == 0:
+        return "I didn't meet anybody today, yet!"
+    elif n_people == 1:
+        return "I've just met one person today!"
+    else:
+        return "I've met {} people today!".format(n_people)
 
 def friends():
     friends = pepper.PeopleClassifier.load_directory('leolani').keys()
@@ -29,10 +34,13 @@ def friends():
 def people():
     p = pepper.PeopleClassifier.load_directory(EVENT).keys()
 
-    if len(p) > 1:
-        return "I've met several people today: {} and {}".format(", ".join(p[:-1]), p[-1])
+    if p:
+        if len(p) > 1:
+            return "I've met several people today: {} and {}".format(", ".join(p[:-1]), p[-1])
+        else:
+            return "I've had the honour to meet {}!".format(p[0])
     else:
-        return "I've had the honour to meet {}!".format(p[0])
+        return "I didn't meet anybody today, yet."
 
 
 QnA_DYNAMIC = {
@@ -223,11 +231,11 @@ NEGATION = [
 
 class MeetApp(pepper.SensorApp):
 
-    GREET_TIMEOUT = 30
+    GREET_TIMEOUT = 120
     MEET_TIMEOUT = 10
-    MIN_FACE_SAMPLES = 30
+    MIN_FACE_SAMPLES = 25
 
-    CAMERA_FREQUENCY = 4
+    CAMERA_FREQUENCY = 2
 
     def __init__(self):
 
@@ -311,7 +319,7 @@ class MeetApp(pepper.SensorApp):
 
                             # Save New Person
                             face_data = np.array(self.faces)
-                            face_data.tofile(os.path.join(pepper.PeopleClassifier.ROOT, 'HPe', '{}.bin'.format(self.face_name)))
+                            face_data.tofile(os.path.join(pepper.PeopleClassifier.ROOT, 'CLTL', '{}.bin'.format(self.face_name)))
                             self._people[self.face_name] = face_data
                             self._people_classifier = pepper.PeopleClassifier(self._people)
 
