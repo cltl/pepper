@@ -6,7 +6,7 @@ from pepper.language.utils import UnknownPredicateError, IncompleteRDFError
 
 import random
 import re
-
+from time import time
 
 GREETINGS = [
     "Hey!",
@@ -32,6 +32,8 @@ ASK_ME = [
 class TheoryOfMindApp(pepper.SensorApp):
     def __init__(self):
         super(TheoryOfMindApp, self).__init__(pepper.ADDRESS)
+
+        random.seed(time())
 
         self.brain = TheoryOfMind()
 
