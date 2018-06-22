@@ -13,7 +13,7 @@ class CameraTest(App):
             tuple of (<ip>, <port>)
         """
         super(CameraTest, self).__init__(address)
-        self.camera = PepperCamera(self.session, resolution=CameraResolution.VGA_320x240)
+        self.camera = PepperCamera(self.session, resolution=CameraResolution.VGA_320x240, framerate=10)
 
         index = 0
         mean = 0.0

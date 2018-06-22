@@ -73,9 +73,12 @@ class ObjectRecognitionApp(pepper.SensorApp):
 
     def plot(self):
         s = socket()
-        s.connect(self.SERVER)
-        s.sendall(json.dumps(self.classification))
-        s.close()
+        try:
+            s.connect(self.SERVER)
+            s.sendall(json.dumps(self.classification))
+        except: pass
+        finally:
+            s.close()
 
     def on_camera(self, image):
         super(ObjectRecognitionApp, self).on_camera(image)

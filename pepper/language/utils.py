@@ -9,163 +9,22 @@ from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 import random
 
-#from pepper.knowledge.theory_of_mind import TheoryOfMind
-#brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_brain')
+from pepper.knowledge.theory_of_mind import TheoryOfMind
+brain = TheoryOfMind(address = 'http://192.168.1.100:7200/repositories/leolani_brain')
 
 wnl = WordNetLemmatizer()
 
-from nltk.tag import StanfordNERTagger
 ROOT = os.path.join(os.path.dirname(__file__))
-ner = StanfordNERTagger(os.path.join(ROOT, 'stanford-ner', 'english.muc.7class.distsim.crf.ser'),
-                        os.path.join(ROOT, 'stanford-ner', 'stanford-ner.jar'), encoding = 'utf-8')
-
-
-properties = ['name', 'gender', 'movie']
-
-
-modal_verbs = ['can','have']
-
-'''
-import wolframalpha
-client = wolframalpha.Client('LA3GP6-VJ8KK8Y36A')
-
-from nltk.stem.porter import *
-stemmer = PorterStemmer()
-'''
-
-
-brain_response = [{
-    "question": {
-        "object": {
-            "label": "",
-            "type": "Country"
-        },
-        "predicate": {
-            "type": "is_from"
-        },
-        "subject": {
-            "label": "Bram",
-            "type": "Person"
-        }
-    },
-    "response": [
-        {
-            "authorlabel": {
-                "type": "literal",
-                "value": "Selene"
-            },
-            "olabel": {
-                "type": "literal",
-                "value": "Netherlands"
-            }
-        }
-    ]
-},
-{
-    "question": {
-        "object": {
-            "label": "Netherlands",
-            "type": "Country"
-        },
-        "predicate": {
-            "type": "is_from"
-        },
-        "subject": {
-            "label": "Bram",
-            "type": "Person"
-        }
-    },
-    "response": [
-        {
-            "authorlabel": {
-                "type": "literal",
-                "value": "Selene"
-            },
-            "v": {
-                "type": "uri",
-                "value": "http://groundedannotationframework.org/grasp#CERTAIN"
-            }
-        }
-    ]
-},{
-        "question": {
-            "author": "jo",
-            "chat": "",
-            "date": "2018-03-19",
-            "object": {
-                "id": "",
-                "label": "",
-                "type": ""
-            },
-            "position": "",
-            "predicate": {
-                "type": "likes"
-            },
-            "response": {
-                "format": "",
-                "role": ""
-            },
-            "subject": {
-                "id": "",
-                "label": "piek",
-                "type": ""
-            },
-            "turn": "",
-            "utterance_type": "question"
-        },
-        "response": [
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "balkenbrij"
-                }
-            },
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "bram"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "soccer"
-                }
-            },
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "horror movies"
-                }
-            },
-            {
-                "authorlabel": {
-                    "type": "literal",
-                    "value": "selene"
-                },
-                "olabel": {
-                    "type": "literal",
-                    "value": "2001 a space odyssey"
-                }
-            }
-        ]
-    }]
-
 json_dict = json.load(open(os.path.join(ROOT, 'dict.json')))
 grammar = json_dict["grammar"]
 
 names = ['selene', 'bram', 'leolani', 'piek','selene', 'lenka']
-statements = [['my favorite food is cake','lenka'],['I\'m from Amsterdam', 'Bram'],
+statements = [['my favorite food is cake','lenka'],['I know Bram', 'Piek'],
               ['My name is lenka', 'person'],
                ['i like action movies', 'bram'],['bram likes romantic movies', 'selene'],
               ['bram is from Italy', 'selene']]  # [question, speaker]
-questions = [['where is selene from?','jo'], ['what does piek like?', 'jo'], ['What is your name', 'person'],
+questions = [['where is selene from?','jo'], ['what does piek like?', 'jo'], ['What is your name', 'person'], ['who knows bram?', 'ji'],
+             ['who likes soccer?','selene'],
              ['who is from italy?','jill'], ['where are you from', 'person'], ['who do i know?', 'bram'],['where do you live?','person']]
              #['Have you ever met Michael Jordan?', 'piek'], ['Has Selene ever met piek', 'person'], ['Does Selene know piek', 'bram'],
              #['Does bram know Beyonce', 'person'], ['Do you know me','bram']]
@@ -198,8 +57,8 @@ def get_synonims(word):
 def extract_nn(words, tagged, index):
     nn = words[index]
     for pos in tagged[index+1:]:
-        if (not pos[1].startswith('V') and words[index + 1] not in ['ever']) or pos[0] in names:
-            nn += words[index].lower().strip()
+        if (not pos[1].startswith('V') and (not pos[0] in ['like'])) or (pos[0] in names) :
+            nn += ' '+pos[0]
             index += 1
         else:
             break
@@ -211,24 +70,45 @@ def reply_to_question(brain_response):
     say = ''
     previous_author = ''
     previous_subject = ''
-    person = ''
+    previous_predicate = ''
+
 
     if len(brain_response['response'])==0: #FIX
-        say = random.choice(["I dont know","i have no idea","i wouldnt know"])
+        say = random.choice(["I don\'t know","i have no idea","i wouldn\'t know"])
         return say+'\n'
 
     for response in brain_response['response']:
+        person = ''
         if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
-            say += response['authorlabel']['value'] +' told me '
+            if response['authorlabel']['value'] == brain_response['question']['author']:
+                say+=' you told me '
+            else:
+                say += response['authorlabel']['value'] +' told me '
             previous_author = response['authorlabel']['value']
         elif 'authorlabel' in response and response['authorlabel']['value']==previous_author:
-            say+=' that '
+            if brain_response['question']['predicate']['type'] != previous_predicate:
+                say+=' that '
 
         if 'slabel' in response:
-            say += response['slabel']['value']
-            previous_subject = brain_response['question']['subject']['label']
-        elif 'subject' in brain_response['question']:
-            if 'author' in brain_response['question'].keys() and brain_response['question']['subject']['label'] == brain_response['question']['author']:
+            if response['slabel']['value']==brain_response['question']['author']:
+                say+= 'you'
+                person = 'second'
+            elif response['slabel']['value']=='Leolani':
+                say+='I'
+                person='first'
+
+            elif (response['slabel']['value']==previous_subject) or (response['slabel']['value']==response['authorlabel']['value']):
+                if response['slabel']['value'].lower() in ['bram','piek']:
+                    say+= 'he'
+                elif response['slabel']['value'].lower() in ['selene','lenka']:
+                    say+= 'she'
+
+            else:
+                say += response['slabel']['value']
+                previous_subject = response['slabel']['value']
+
+        elif 'subject' in brain_response['question'] and brain_response['question']['subject']['label']!=previous_subject:
+            if brain_response['question']['subject']['label'] == brain_response['question']['author']:
                 person = 'second'
                 say+=' you '
             elif brain_response['question']['subject']['label']=='Leolani':
@@ -238,19 +118,36 @@ def reply_to_question(brain_response):
                 say += brain_response['question']['subject']['label']
             previous_subject = brain_response['question']['subject']['label']
 
-        if brain_response['question']['predicate']['type'] == 'is_from' and person!='first':
-            say += ' is from '
-        elif brain_response['question']['predicate']['type'] == 'is_from' and person=='first':
-            say+= ' am from '
-        elif brain_response['question']['predicate']['type'] in ['likes','knows'] and person!='second':
-            say += ' '+brain_response['question']['predicate']['type']+' '
-        else:
-            say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
+        if brain_response['question']['predicate']['type'] in grammar['predicates']:
+            if 'slabel' in response and  brain_response['question']['predicate']['type']==previous_predicate and response['slabel']==previous_subject:
+                if response['slabel']['value'].lower() in ['bram','piek']:
+                    say+= 'he'
+                elif response['slabel']['value'].lower() in ['selene','lenka']:
+                    say+= 'she'
+            else:
+                previous_predicate = brain_response['question']['predicate']['type']
+                if brain_response['question']['predicate']['type'] == 'is_from':
+                    if person == 'first':
+                        say += ' am from '
+                    elif person == 'second':
+                        say += ' are from'
+                    else:
+                        say += ' is from '
+                else:
+                    if person in ['first', 'second'] or ('subject'in brain_response['question'] and brain_response['question']['subject']['label']=='Leolani'):
+                        say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
+                    else:
+                        say += ' '+brain_response['question']['predicate']['type']+' '
 
         if 'olabel' in response:
             say += response['olabel']['value']
         elif 'object' in brain_response['question'].keys():
-            say += brain_response['question']['object']['label']
+            if brain_response['question']['object']['label']==brain_response['question']['author']:
+                say+='you'
+            elif brain_response['question']['object']['label']=='Leolani':
+                say+='me'
+            else: say += brain_response['question']['object']['label']
+
 
         say+=' and '
 
@@ -260,18 +157,19 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'template.json')))
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
-    if type(rdf) is str:
+    if type(rdf) == str or type(rdf)==unicode:
         return rdf
     template['subject']['label'] = rdf['subject'].strip().title() #capitalization
     template['predicate']['type'] = rdf['predicate'].strip()
     if rdf['object'] in names:
         template['object']['label'] = rdf['object'].strip().title()
         template['object']['type'] = 'PERSON'
-    elif len(rdf['object'])>1 and type(rdf['object']) is list:
+    elif type(rdf['object']) is list:
         template['object']['label'] = rdf['object'][0].strip().title()
-        template['object']['type'] = rdf['object'][1]
+        if len(rdf['object'])>1: template['object']['type'] = rdf['object'][1]
     else:
         template['object']['label'] = rdf['object'].strip().title()
+    if template['object']['label'] in ['Soccer', 'Tacos', 'Baseball', 'Acrobatics', 'Cheese']: template['object']['label'] = template['object']['label'].lower()
     template['date'] = date.today()
     template['chat'] = chat_id
     template['turn'] = chat_turn
@@ -293,13 +191,17 @@ def reply_to_statement(template, speaker):
     subject = template['statement']['subject']['label']
     predicate = template['statement']['predicate']['type']
 
-    if predicate == 'isFrom': predicate = 'is from'
+    if predicate == 'is_from': predicate = 'is from'
 
     object = template['statement']['object']['label']
 
-    subject = 'you ' if speaker.lower()==subject.lower() else 'i' if speaker.lower()=='leolani' else subject.title()
+    subject = 'you ' if speaker.lower()==subject.lower() else 'i' if subject.lower()=='leolani' else subject.title()
     if subject=='you ':
         predicate = fix_predicate_morphology(predicate)
+
+    if subject =='i' and predicate.endswith('s'): predicate = predicate[:-1]
+
+    if object.lower() == speaker.lower(): object='you'
 
     response = subject +' '+predicate+' '+object
 
@@ -325,23 +227,13 @@ def extract_roles_from_statement(words):
     return rdf
 
 
-class IncompleteRDFError(Exception):
-    pass
-
-
-class UnknownPredicateError(Exception):
-    pass
-
-
 def check_rdf_completeness(rdf):
     for el in ['predicate', 'subject', 'object']:
         if not len(rdf[el]):
-            raise IncompleteRDFError("I cannot find the " + el + " of your statement")
-            # return "I cannot find the " + el + " of your statement"
+            return "I cannot find the " + el + " of your statement"
     if rdf['predicate'] not in grammar['predicates']:
         print('nonexisting predicate: ', rdf['predicate'])
-        raise UnknownPredicateError("I do not understand the predicate of your statement ")
-        # return "I do not understand the predicate of your statement "
+        return "I do not understand the predicate of your statement "
     return 1
 
 def pack_rdf_from_nn_info(nn_info, speaker, rdf):
@@ -366,12 +258,13 @@ def fix_pronouns(dict, speaker):
     elif dict['person'] == 'second':
         return 'leolani'
 
-def dereference_pronouns(words, rdf, speaker):
-    first_word = rdf['subject'].split()[0].lower()
+def dereference_pronouns_for_statement(words, rdf, speaker):
+    print(rdf)
+    first_word = rdf['subject'].split()[0]
     if first_word in grammar['pronouns']:
         morphology = grammar['pronouns'][first_word]
 
-    if rdf['subject'].split()[0].lower() in grammar['possessive']:
+    if rdf['subject'].split()[0] in grammar['possessive']:
         morphology = grammar['possessive'][rdf['subject'].split()[0].lower()]
         if rdf['subject'].split()[1] in ['name', 'age', 'gender']:  # LIST OF PROPERTIES
             rdf['predicate'] = rdf['subject'].split()[1] + '-is'
@@ -387,6 +280,11 @@ def dereference_pronouns(words, rdf, speaker):
                 rdf['predicate'] = rdf['subject'].split()[1] + '-' + rdf['subject'].split()[2] + '-is'
 
     rdf['subject'] = fix_pronouns(morphology, speaker)
+
+    if rdf['object'].split()[0] in grammar['pronouns']:
+        morphology = grammar['pronouns'][rdf['object'].split()[0]]
+        rdf['object'] = fix_pronouns(morphology, speaker)
+
         # TODO third person: pronoun coreferencing
 
     return rdf

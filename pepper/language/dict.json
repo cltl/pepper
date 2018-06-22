@@ -122,7 +122,7 @@
   {
     "like": {
       "sentiment":"positive",
-      "past":"likes"
+      "past":"liked"
     },
     "dislike": {
       "sentiment":"negative"
@@ -138,10 +138,13 @@
     "meet":
     {
       "past":"met"
-    }
+    },
+    "live":{},
+    "love":{},
+    "enjoy":{}
 
   },
-  "predicates": ["likes", "knows", "is_from"],
+  "predicates": ["likes", "knows", "is_from", "lives", "loves", "enjoys"],
   "modal verbs":["can", "have", "has"],
   "categories": ["book", "movie", "friend", "food"]
 

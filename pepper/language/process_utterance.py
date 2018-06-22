@@ -1,6 +1,8 @@
 from analyzers import *
 from pepper.knowledge.theory_of_mind import TheoryOfMind
-#from pepper.knowledge.theory_of_mind import TheoryOfMind
+import random
+from time import time
+
 
 test_mode = 1 # FOR ADDITIONAL PRINTS
 
@@ -31,6 +33,9 @@ def analyze_statement(speaker, words, chat_id, chat_turn):
 
     rdf = extract_roles_from_statement(words)
 
+    if rdf['subject'].split()[0].lower() in (grammar['possessive'].keys() + grammar['pronouns'].keys()) or rdf['object'].split()[0].lower() in (grammar['possessive'].keys() + grammar['pronouns'].keys()):
+        rdf = dereference_pronouns_for_statement(words, rdf, speaker)
+
     if test_mode: print('extracted roles from statement', rdf)
 
     is_rdf_complete  = check_rdf_completeness(rdf)
@@ -39,8 +44,6 @@ def analyze_statement(speaker, words, chat_id, chat_turn):
         return is_rdf_complete
 
     else:
-        if rdf['subject'].split()[0].lower() in grammar['possessive'].keys()+ grammar['pronouns'].keys():
-            rdf = dereference_pronouns(words, rdf, speaker)
 
         template = write_template(speaker, rdf, chat_id, chat_turn,'statement')
         return template
@@ -78,19 +81,24 @@ def analyze_utterance(utterance, speaker, chat_id, chat_turn, brain):
         if test_mode: print('brain response to statement:', response)
         return reply_to_statement(response, speaker)
 
-
-
 def run_tests():
     brain = TheoryOfMind()
 
     chat_turn = 0
-    chat_id = 0
+    random.seed(time())
+    chat_id = int(random.getrandbits(128))
 
-    test_batch = statements
+    test_batch = questions
 
-    for utt in test_batch:
+    test_batch2 = [['do i like acrobatics?','lenka'],['Do you know me?', 'Piek'],
+                  ['who likes soccer?', 'Piek']]
+                 # ['Who do you know?','Piek'], ['I know Bram', 'Piek'], ['Who do I know?', 'Bram']]
+
+    test_batch3 = [['you live at the vu','selene'], ['where do you live?', 'bram']]
+
+    for utt in test_batch2:
         analyze_utterance(utt[0], utt[1],chat_id,  chat_turn, brain)
         chat_turn+=1
 
 
-#run_tests()
+# run_tests()

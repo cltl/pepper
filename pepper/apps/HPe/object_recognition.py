@@ -11,8 +11,20 @@ import numpy as np
 from threading import Thread
 from queue import Queue, Empty
 from random import choice
-from time import sleep
+from time import sleep, time
 
+
+def enumerate_objects(dictionary):
+    string = ""
+    for cls, count in dictionary.items():
+        string += "{} {}".format(count, cls) + ("s, " if count > 1 else ", ")
+    object_string = string[:-2]
+
+    if ', ' in object_string:
+        k = object_string.rfind(',')
+        string = object_string[:k] + ' and' + object_string[k + 1:]
+
+    return string
 
 class ObjectRecognitionApp(pepper.App):
 
@@ -23,6 +35,8 @@ class ObjectRecognitionApp(pepper.App):
     FACE_THRESHOLD = 0.8
     MAX_BOXES = 4
     FACE_BB_WIDEN = 8
+
+    FACE_TIMEOUT = 60
 
     LABEL_HEIGHT = 20
 
@@ -52,8 +66,10 @@ class ObjectRecognitionApp(pepper.App):
         self.people_classifier = pepper.PeopleClassifier.from_directory(pepper.PeopleClassifier.LEOLANI)
 
         self.last_name = ""
+        self.last_name_time = 0
         self.face_queue = Queue()
         self.last_objects = {}
+        self.all_objects = {}
 
         Thread(target=self.reaction_worker).start()
 
@@ -100,23 +116,17 @@ class ObjectRecognitionApp(pepper.App):
             # React to Peoples Faces
             try:
                 name, confidence, distance = self.face_queue.get(False)
-                if name != self.last_name:
+                if name != self.last_name or time() - self.last_name_time > self.FACE_TIMEOUT:
 
                     self.say("{}, {}!".format(choice(self.GREET), name))
                     self.last_name = name
+                    self.last_name_time = time()
 
                     if self.last_objects:
-                        object_string = "I see "
-                        for cls, count in self.last_objects.items():
-                            object_string += "{} {}".format(count, cls) + ("s, " if count > 1 else ", ")
+                        self.say("I see " + enumerate_objects(self.last_objects) + ".")
 
-                        object_string = object_string[:-2]
-
-                        if ', ' in object_string:
-                            k = object_string.rfind(',')
-                            object_string = object_string[:k] + ' and' + object_string[k+1:]
-
-                        self.say(object_string)
+                    if self.all_objects:
+                        self.say("Since I was looking, I have seen " + enumerate_objects(self.all_objects) + ".")
 
             except Empty:
                 pass
@@ -138,6 +148,12 @@ class ObjectRecognitionApp(pepper.App):
                     self.last_objects[cls] = 1
                 else:
                     self.last_objects[cls] += 1
+
+        for cls, count in self.last_objects.items():
+            if not cls in self.all_objects:
+                self.all_objects[cls] = count
+            elif self.all_objects[cls] < count:
+                self.all_objects[cls] = count
 
         face = self.openface.represent(image)
         if face:

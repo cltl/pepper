@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s', level=logging.INFO)
 
 # Pepper Address, reference point for all apps (because it will change a lot!)
-ADDRESS = '192.168.137.166', 9559
+ADDRESS = '192.168.1.176', 9559
 
 
 # Import to Package Level

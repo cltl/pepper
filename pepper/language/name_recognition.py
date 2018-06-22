@@ -27,7 +27,7 @@ class NameRecognition(object):
             return ' '.join(words)
 
         except Exception as e:
-            print("<< IGNORING NLTK/STANFORD ERROR >>")
+            print("<< IGNORING NLTK/STANFORD ERROR >> : {}".format(e))
             return transcript
 
 
