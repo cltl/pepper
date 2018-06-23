@@ -214,10 +214,10 @@ class FlowApp(App):
 class SensorApp(App):
 
     PERSON_RECOGNITION_THRESHOLD = 0.9
-    PERSON_NEW_THRESHOLD = 1.2
+    PERSON_NEW_THRESHOLD = 1.0
 
     CAMERA_RESOLUTION = pepper.CameraResolution.VGA_320x240
-    CAMERA_FREQUENCY = 4
+    CAMERA_FREQUENCY = 2
 
     def __init__(self, address, people = pepper.PeopleClassifier.load_directory(pepper.PeopleClassifier.LEOLANI)):
 

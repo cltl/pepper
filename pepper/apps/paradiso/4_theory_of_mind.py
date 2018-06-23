@@ -117,7 +117,7 @@ class TheoryOfMindApp(pepper.FlowApp):
         if len(self.scores) == self.scores.maxlen:
             mean_score = np.mean(self.scores)
 
-            if mean_score > 0.2:
+            if mean_score > self.PERSON_RECOGNITION_THRESHOLD:
                 self.on_person_recognized(name, score)
                 self.scores.clear()
 

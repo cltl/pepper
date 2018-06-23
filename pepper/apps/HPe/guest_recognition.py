@@ -8,23 +8,54 @@ from random import choice
 from datetime import datetime
 import requests
 
-from pepper.knowledge.news import get_random_headline
+from pepper.knowledge.news import get_random_headline_speech
 
 
-EVENT = "HPe"
 
+EVENT = "CLTL"
 LOCATION = requests.get('http://ipinfo.io/json').json()['city']
 
+def n_friends():
+    return "I have {} friends!".format(len(pepper.PeopleClassifier.load_directory('leolani')))
 
-QnA = {
-    "news": get_random_headline()['description'],
-    "What time is it": datetime.now().strftime("It is currently %H:%M"),
-    "The time": datetime.now().strftime("It is currently %H:%M"),
+def n_people():
+    n_people = len(pepper.PeopleClassifier.load_directory(EVENT))
+    if n_people == 0:
+        return "I didn't meet anybody today, yet!"
+    elif n_people == 1:
+        return "I've just met one person today!"
+    else:
+        return "I've met {} people today!".format(n_people)
+
+def friends():
+    friends = pepper.PeopleClassifier.load_directory('leolani').keys()
+    return "My friends are {} and {}.".format(", ".join(friends[:-1]), friends[-1])
+
+def people():
+    p = pepper.PeopleClassifier.load_directory(EVENT).keys()
+
+    if p:
+        if len(p) > 1:
+            return "I've met several people today: {} and {}".format(", ".join(p[:-1]), p[-1])
+        else:
+            return "I've had the honour to meet {}!".format(p[0])
+    else:
+        return "I didn't meet anybody today, yet."
+
+
+QnA_DYNAMIC = {
+    "news": get_random_headline_speech,
+    "What time is it": lambda: datetime.now().strftime("It is currently %H:%M"),
+    "The time": lambda: datetime.now().strftime("It is currently %H:%M"),
+    "How many friends": n_friends,
+    "Who are your friends": friends,
+    "How many people": n_people,
+    "Who did you meet": people,
+}
+
+QnA_STATIC = {
     "Where are we": "I feel in my Wifi that we are in {}".format(LOCATION),
-    "How many friends": "I have {} friends!".format(len(pepper.PeopleClassifier.load_directory('leolani'))),
-    "Who are your friends": "My friends are {}.".format(", ".join(pepper.PeopleClassifier.load_directory('leolani'))),
-    "How many people": "I've met {} people today!".format(len(pepper.PeopleClassifier.load_directory(EVENT))),
-    "Who did you meet": "I've met several people today: {}".format(", ".join(pepper.PeopleClassifier.load_directory(EVENT))),
+    "Where are you": "I feel in my Wifi that we are in {}".format(LOCATION),
 
     "Open Source": "Yes, The code I'm running on is fully Open Source, you can find it on GitHub!",
     "tell me a joke": "Ok! \\pau=500\\ What's the difference between a hippo? \\pau=500\\ and a Zippo? \\pau=2000\\ Well \\pau=100\\, one is really heavy and the other is a little lighter.",
@@ -38,6 +69,7 @@ QnA = {
     "Are you male": "Nope, I am a Lady!",
     "Are you female": "Yes, indeed!",
     "gender": "I'm female!",
+    "How do you feel": "Great, Indeed!",
     "How are you doing": "Tremendous, to be honest! Although you have to consider that I'm a robot and I do not feel emotions. I'm programmed to sound happy all the time!",
     "Python version": "Python 2.7 32-bit. I wish I was running 64 bit, ugh!",
     "Speech Recognition": "I'm using the Google Speech API. This is why I need the internet to work, because my audio is processed on some server somewhere in Europe",
@@ -112,6 +144,7 @@ REPEAT_NAME = [
     "What did you say your name was?",
     "I don't understand single words that well, please try a sentence instead!",
     "I'm not good with all names, maybe try an English nickname if you will!",
+    "Sorry, names are not my strong point",
 ]
 
 JUST_MET = [
@@ -178,7 +211,11 @@ AFFIRMATION = [
     " great ",
     " true ",
     " good ",
-    " well done "
+    " well done ",
+    " correctamundo ",
+    " splendid ",
+    " indeed ",
+    " superduper "
 ]
 
 NEGATION = [
@@ -187,20 +224,23 @@ NEGATION = [
     " incorrect ",
     " wrong ",
     " false ",
-    " bad "
+    " bad ",
+    " stupid "
 ]
 
 
 class MeetApp(pepper.SensorApp):
 
-    GREET_TIMEOUT = 30
+    GREET_TIMEOUT = 120
     MEET_TIMEOUT = 10
-    MIN_FACE_SAMPLES = 30
+    MIN_FACE_SAMPLES = 25
+
+    CAMERA_FREQUENCY = 2
 
     def __init__(self):
 
         people = pepper.PeopleClassifier.load_directory('leolani')
-        people.update(pepper.PeopleClassifier.load_directory('HPe'))
+        people.update(pepper.PeopleClassifier.load_directory(EVENT))
 
         super(MeetApp, self).__init__(pepper.ADDRESS, people)
 
@@ -234,7 +274,7 @@ class MeetApp(pepper.SensorApp):
         if name_result:
             name, transcript, confidence = name_result
 
-            self.log.info("{}: '{}'".format(name, transcript))
+            self.log.info(u"{}: '{}'".format(name, transcript))
             self.face_name = name
             # Verify
             self.say(choice(VERIFY_NAME).format(name))
@@ -247,7 +287,7 @@ class MeetApp(pepper.SensorApp):
             hypothesis = hypotheses[0][0].lower()
 
             if 'bye' in hypothesis:
-                self.log.info("<< EXIT Conversation >>")
+                self.log.info(u"<< EXIT Conversation >>")
                 self.say(choice(GOODBYE))
                 sleep(5)
                 self.end_meeting()
@@ -259,7 +299,7 @@ class MeetApp(pepper.SensorApp):
                         self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)))
                 else:
                     transcript, confidence = hypotheses[0]
-                    self.log.info("{}: '{}'".format(self.face_name, transcript))
+                    self.log.info(u"{}: '{}'".format(self.face_name, transcript))
 
                     transcript = " {} ".format(transcript).lower()
 
@@ -275,11 +315,11 @@ class MeetApp(pepper.SensorApp):
 
                             self.say("{} {}".format(choice(HAPPY), choice(JUST_MET).format(self.face_name)))
 
-                            self.log.info("Got {} Face Samples!".format(len(self.faces)))
+                            self.log.info(u"Got {} Face Samples!".format(len(self.faces)))
 
                             # Save New Person
                             face_data = np.array(self.faces)
-                            face_data.tofile(os.path.join(pepper.PeopleClassifier.ROOT, 'HPe', '{}.bin'.format(self.face_name)))
+                            face_data.tofile(os.path.join(pepper.PeopleClassifier.ROOT, 'CLTL', '{}.bin'.format(self.face_name)))
                             self._people[self.face_name] = face_data
                             self._people_classifier = pepper.PeopleClassifier(self._people)
 
@@ -298,22 +338,30 @@ class MeetApp(pepper.SensorApp):
                     if not self.check_name(audio, hypotheses):
                         self.say("{}, {}?".format(choice(SORRY), choice(VERIFY_NAME).format(self.face_name)))
             else:
-                self.log.info("{}: '{}'".format(self.last_greeted_name, hypothesis))
+                self.log.info(u"{}: '{}'".format(self.last_greeted_name, hypothesis))
 
                 if "let's meet" in hypothesis:
                     self.say(choice(HAPPY))
                     self.begin_meeting()
                     return
 
-                for question, answer in QnA.items():
+                for question, answer in QnA_STATIC.items():
                     if question.lower() in hypothesis:
                         self.say(answer)
+                        return
+
+                for question, answer_function in QnA_DYNAMIC.items():
+                    if question.lower() in hypothesis.lower():
+                        self.say(answer_function())
                         return
 
                 for greeting in GREETINGS:
                     if greeting[:-1].lower() in hypothesis:
                         self.say(choice(GREETINGS))
                         return
+
+                # Cough if she has no clue
+                # else: self.say("ahem")
 
     def on_face(self, bounds, representation):
         if self.meeting:
