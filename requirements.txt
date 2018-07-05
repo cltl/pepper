@@ -1,8 +1,0 @@
-numpy
-scipy
-requests
-pyaudio
-pillow
-pyyaml
-google-cloud-speech
-webrtcvad
