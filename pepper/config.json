@@ -1,0 +1,9 @@
+{
+  "pepper-ip": "192.168.1.176",
+  "pepper-port": 9559,
+
+  "qi-ip": "localhost",
+  "qi-port-output": 9560,
+  "qi-port-audio": 9561,
+  "qi-port-video": 9562
+}
