@@ -1,11 +1,12 @@
 import logging
 import os
 
+
 # Global Logging Setup
 LOGGING_LEVEL = logging.DEBUG
 LOGGING_FILE = 'log.txt'
-LOGGING_FORMAT = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-LOGGING_DATE_FORMAT = '%D %H:%M:%S'
+LOGGING_FORMAT = '%(asctime)s %(levelname)-8s %(name)-20s %(message)s'
+LOGGING_DATE_FORMAT = '%x %X'
 
 LOGGING_LEVEL_CONSOLE = LOGGING_LEVEL
 LOGGING_FORMAT_CONSOLE = LOGGING_FORMAT
@@ -21,3 +22,4 @@ logging.getLogger().addHandler(console_logger)
 
 
 # Package Level Imports
+from . import framework

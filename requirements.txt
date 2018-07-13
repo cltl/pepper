@@ -1,1 +1,4 @@
 qi
+cv2
+pyaudio
+numpy

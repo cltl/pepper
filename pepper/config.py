@@ -1,0 +1,12 @@
+from pepper.framework.enumeration import *
+
+CAMERA_RESOLUTION = CameraResolution.VGA
+CAMERA_FRAME_RATE = 2
+
+MICROPHONE_SAMPLE_RATE = 16000
+MICROPHONE_CHANNELS = 1
+
+NAOQI_IP = "192.168.1.176"
+NAOQI_PORT = 9559
+NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
+NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
