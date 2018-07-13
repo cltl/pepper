@@ -3860,3 +3860,126 @@
 07/13/18 14:32:03 INFO     MyApp                Audio: (1365,)
 07/13/18 14:32:03 INFO     MyApp                Audio: (1365,)
 07/13/18 14:32:03 INFO     MyApp                Audio: (1365,)
+07/13/18 14:35:25 DEBUG    SystemCamera         Booted
+07/13/18 14:35:25 DEBUG    SystemMicrophone     Booted
+07/13/18 14:35:25 DEBUG    SystemTextToSpeech   Booted
+07/13/18 14:35:25 DEBUG    MyApp                Booted
+07/13/18 14:35:25 INFO     SystemTextToSpeech   Hello, I Just Booted!
+07/13/18 14:35:25 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:25 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:25 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:25 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:26 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:27 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:28 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:29 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Image: (480, 640, 3)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:30 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:31 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:31 INFO     MyApp                Audio: (1024,)
+07/13/18 14:35:31 INFO     MyApp                Audio: (1024,)
+07/13/18 14:53:54 DEBUG    SystemCamera         Booted
+07/13/18 14:53:54 DEBUG    SystemMicrophone     Booted
+07/13/18 14:53:54 DEBUG    SystemTextToSpeech   Booted
+07/13/18 14:53:54 DEBUG    MyApp                Booted
+07/13/18 14:53:54 INFO     SystemTextToSpeech   Hello, I Just Booted!
+07/13/18 14:56:32 DEBUG    SystemCamera         Booted
+07/13/18 14:56:32 DEBUG    SystemMicrophone     Booted
+07/13/18 14:56:32 DEBUG    SystemTextToSpeech   Booted
+07/13/18 14:56:32 DEBUG    MyApp                Booted
+07/13/18 14:56:32 INFO     SystemTextToSpeech   Hello, I Just Booted!
+07/13/18 14:56:37 INFO     MyApp                Utterance 5.27s
+07/13/18 14:56:38 INFO     MyApp                Utterance 1.95s
+07/13/18 14:56:43 INFO     MyApp                Utterance 2.09s
+07/13/18 14:58:27 DEBUG    SystemCamera         Booted
+07/13/18 14:58:27 DEBUG    SystemMicrophone     Booted
+07/13/18 14:58:27 DEBUG    SystemTextToSpeech   Booted
+07/13/18 14:58:27 DEBUG    VAD                  Booted
+07/13/18 14:58:27 DEBUG    MyApp                Booted
+07/13/18 14:58:27 INFO     SystemTextToSpeech   Hello, I Just Booted!
+07/13/18 14:58:34 INFO     MyApp                Utterance 7.81s
+07/13/18 14:58:37 INFO     MyApp                Utterance 2.57s
+07/13/18 14:58:39 INFO     MyApp                Utterance 1.86s

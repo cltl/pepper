@@ -11,10 +11,13 @@ class MyApp(APP):
         self.text_to_speech.say("Hello, I Just Booted!")
 
     def on_audio(self, audio):
-        self.log.info("Audio: {}".format(audio.shape))
+        pass
 
     def on_image(self, image):
-        self.log.info("Image: {}".format(image.shape))
+        pass
+
+    def on_utterance(self, audio):
+        self.log.info("Utterance {:3.2f}s".format(len(audio) / float(self.microphone.rate)))
 
 
 if __name__ == '__main__':

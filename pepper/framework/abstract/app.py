@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech
+from pepper.framework.vad import VAD
 
 from time import sleep
 import logging
@@ -9,6 +10,7 @@ class AbstractApp(object):
         self._camera = camera
         self._microphone = microphone
         self._text_to_speech = text_to_speech
+        self._vad = VAD(microphone, [self.on_utterance])
 
         self._running = False
 
@@ -55,6 +57,9 @@ class AbstractApp(object):
         pass
 
     def on_audio(self, audio):
+        pass
+
+    def on_utterance(self, audio):
         pass
 
     def start(self):

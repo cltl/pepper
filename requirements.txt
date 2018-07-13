@@ -1,4 +1,5 @@
 qi
 cv2
-pyaudio
 numpy
+webrtcvad
+pyaudio
