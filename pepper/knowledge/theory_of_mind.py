@@ -5,14 +5,15 @@ import os
 
 from rdflib import Dataset, Graph, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
-from hashids import Hashids
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 from pepper.knowledge.brainFacts import statements
 from pepper.knowledge.brainQuestions import questions
 
 REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
-LOCAL_BRAIN = "http://localhost:7200/repositories/leolani_brain"
+LOCAL_BRAIN = "http://localhost:7200/repositories/leolani"
+ONE_TO_ONE_PREDICATES = ['age', 'born_in', 'faceID', 'favorite', 'favorite_of', 'id', 'is_from', 'manufactured_in',
+                         'mother_is', 'name']
 
 
 class TheoryOfMind(object):
@@ -308,7 +309,69 @@ class TheoryOfMind(object):
 
         return triples
 
-    ##################################### Helpers for setting up store connection #####################################
+    def get_conflicts_with_predicate(self, one_to_one_predicate):
+        query = """
+            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            
+            select ?sname (group_concat(distinct ?oname ; separator=";") as ?onames) where { 
+                ?s n2mu:%s ?o .
+                ?s rdfs:label ?sname .
+                ?o rdfs:label ?oname
+            } group by ?sname having (count(distinct ?oname) > 1)
+        """ % one_to_one_predicate
+
+        response = self._submit_query(query)
+        conflicts = []
+        for item in response:
+            conflict = {}
+            conflict['subject'] = item['sname']['value']
+            conflict['predicate'] = one_to_one_predicate
+            conflict['objects'] = item['onames']['value'].split(';')
+            conflicts.append(conflict)
+
+        return conflicts
+
+    def get_all_conflicts(self):
+
+        conflicts = []
+
+        for predicate in ONE_TO_ONE_PREDICATES:
+            conflicts.extend(self.get_conflicts_with_predicate(predicate))
+
+        return len(conflicts), conflicts
+
+    def get_type_description(self, item):
+        query = """
+            PREFIX dbo: <http://dbpedia.org/ontology/>
+            PREFIX dbr: <http://dbpedia.org/resource/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            
+            SELECT DISTINCT ?label_type ?description
+            WHERE {
+                SERVICE <http://dbpedia.org/sparql> { 
+                    ?thing rdf:type owl:Thing ;
+                           rdfs:label "%s"@en ;
+                           dbo:abstract ?description ;
+                           rdf:type ?type .
+                    ?type rdfs:label ?label_type
+                filter(regex(str(?type), "dbpedia"))
+                    filter(langMatches(lang(?description),"EN"))
+                    filter(langMatches(lang(?label_type),"EN"))
+                }
+            }
+            LIMIT 1
+        """ % item
+
+        response = self._submit_query(query)
+        class_type = response[0]['label_type']['value']
+        description = response[0]['description']['value'].split('.')[0]
+
+        return class_type, description
+
+    ######################################## Helpers for setting up connection ########################################
 
     def _define_namespaces(self):
         """
@@ -380,6 +443,11 @@ class TheoryOfMind(object):
         self.dataset.bind('sem', self.namespaces['SEM'])
         self.dataset.bind('xml', self.namespaces['XML'])
         self.dataset.bind('owl', OWL)
+
+    def _rebuild_brain_base(self):
+        for statement in statements:
+            response = brain.update(statement)
+            print(json.dumps(response, indent=4, sort_keys=True))
 
     ######################################## Helpers for statement processing ########################################
 
@@ -793,26 +861,19 @@ def hash_statement_id(triple, debug=False):
     return temp
 
 
+def phrase_conflicts(number_conflicts, conflicts):
+    say = 'I have %s conflicts in my brain.' % number_conflicts
+
+
 if __name__ == "__main__":
     # Create brain connection
     brain = TheoryOfMind()
 
-    # Test statements
-    # for statement in statements:
-    #     response = brain.update(statement)
-    #     print(json.dumps(response, indent=4, sort_keys=True))
-    #
-    # # Separation
-    # print('#######################################################')
+    # Rebuild
+    # brain._rebuild_brain_base()
 
-    # Test questions
-    # for question in questions:
-    #     response = brain.query_brain(question)
-    #     print(json.dumps(response, indent=4, sort_keys=True))
-    #     break
+    print(brain.get_all_conflicts())
 
-    print(brain.get_classes())
+    # print(brain.get_type_description('Refrigerator'))
 
-    # response = brain.get_instance_of_type('Location')
-    # response = brain.get_triples_with_predicate('is_from')
-    # print('\n%s' % response)
+

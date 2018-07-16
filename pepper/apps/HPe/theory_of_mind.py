@@ -5,7 +5,7 @@ from pepper.apps.HPe.guest_recognition import QnA_STATIC, QnA_DYNAMIC
 
 import random
 import re
-
+from time import time
 
 GREETINGS = [
     "Hey!",
@@ -34,6 +34,8 @@ class TheoryOfMindApp(pepper.SensorApp):
 
     def __init__(self):
         super(TheoryOfMindApp, self).__init__(pepper.ADDRESS)
+
+        random.seed(time())
 
         self.brain = TheoryOfMind()
 

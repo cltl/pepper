@@ -97,15 +97,15 @@ n2mu:experience rdf:type owl:ObjectProperty ;
                            n2mu:Touch .
 
 
-###  http://cltl.nl/leolani/n2mu/favourite
-n2mu:favourite rdf:type owl:ObjectProperty ;
-               rdfs:subPropertyOf n2mu:likes ;
-               owl:inverseOf n2mu:favourite_of .
+###  http://cltl.nl/leolani/n2mu/favorite
+n2mu:favorite rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf n2mu:likes ;
+              owl:inverseOf n2mu:favorite_of .
 
 
-###  http://cltl.nl/leolani/n2mu/favourite_of
-n2mu:favourite_of rdf:type owl:ObjectProperty ;
-                  rdfs:subPropertyOf n2mu:liked_by .
+###  http://cltl.nl/leolani/n2mu/favorite_of
+n2mu:favorite_of rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf n2mu:liked_by .
 
 
 ###  http://cltl.nl/leolani/n2mu/in
@@ -708,8 +708,8 @@ foaf:Person rdf:type owl:Class ;
 <http://cltl.nl/leolani/world/Selene> rdf:type owl:NamedIndividual ,
                                                n2mu:Person ;
                                       n2mu:born_in <http://cltl.nl/leolani/world/Mexico> ;
-                                      n2mu:favourite <http://cltl.nl/leolani/world/HP> ,
-                                                     <http://cltl.nl/leolani/world/Mulan> ;
+                                      n2mu:favorite <http://cltl.nl/leolani/world/HP> ,
+                                                    <http://cltl.nl/leolani/world/Mulan> ;
                                       n2mu:likes <http://cltl.nl/leolani/world/football> ;
                                       n2mu:works_at <http://cltl.nl/leolani/world/VU_Amsterdam> ,
                                                     <http://cltl.nl/leolani/world/myTomorrows> ;
