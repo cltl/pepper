@@ -1,7 +1,8 @@
 from pepper.framework.abstract import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech
 from pepper.framework.asr import AbstractASR
 from pepper.framework.vad import VAD
-from pepper.framework.face import OpenFace, FaceClassifier
+from pepper.framework.face import FaceClassifier
+from pepper.framework.object import CocoClassifyClient
 from pepper import config
 
 from time import sleep
@@ -27,6 +28,8 @@ class AbstractApp(object):
         self._openface = openface
         self._faces = FaceClassifier.load_directory(config.FACE_DIRECTORY)
         self._face_classifier = FaceClassifier(self._faces)
+
+        self._coco = CocoClassifyClient()
 
         self._microphone = microphone
         self._microphone.callbacks += [self.on_audio]
@@ -105,10 +108,16 @@ class AbstractApp(object):
             sleep(1)
 
     def on_image(self, image):
+        classes, scores, boxes = self._coco.classify(image)
+        self.on_object(classes, scores, boxes)
+
         representation = self.openface.represent(image)
         if representation:
             bounds, face = representation
             self.on_face(bounds, face)
+
+    def on_object(self, classes, scores, boxes):
+        pass
 
     def on_face(self, bounds, face):
         name, confidence, distance = self._face_classifier.classify(face)

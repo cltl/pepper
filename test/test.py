@@ -10,6 +10,9 @@ class MyApp(APP):
     def on_face_known(self, bounds, face, name):
         self.log.info(name)
 
+    def on_object(self, classes, scores, boxes):
+        self.log.info(classes)
+
     def on_transcript(self, transcript):
         self.log.info(transcript)
 
