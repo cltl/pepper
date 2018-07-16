@@ -58,6 +58,8 @@ class TheoryOfMindApp(pepper.SensorApp):
             self.on_transcript(transcript, self.current_person)
 
     def on_transcript(self, transcript, person):
+        transcript = transcript.replace('tell me', '')
+
         self.log.info("[{}] {} '{}'".format(self.chat_turn, person, transcript))
 
         for greeting in GREETINGS:
@@ -78,9 +80,12 @@ class TheoryOfMindApp(pepper.SensorApp):
         reply = pu.analyze_utterance(transcript, self.current_person, self.chat_id, self.chat_turn, self.brain)
 
         if reply:
-            self.say(reply)
+            if 'no idea' in reply:
+                self.say("You asked me {}, but I don't know!".format(transcript))
+            else:
+                self.say(reply)
         else:
-            self.say("Mmmh...")
+            self.say("Uhm. You said {}. But I don't understand!".format(transcript))
 
         self.chat_turn += 1
 

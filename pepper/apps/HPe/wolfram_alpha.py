@@ -16,7 +16,7 @@ ADDRESSING = [
 
 ADDRESSING_INTERNET = ADDRESSING + [
     "I checked the internet, {}. This is what is says:",
-    "I Googled it for you, {}.",
+    "I looked it up for you with Wolfram Alpha, {}.",
     "I made use of the World Wide Web, {}.",
     "I found the answer on the Web, {}!",
 ]
@@ -60,7 +60,7 @@ DONT_KNOW = [
     "I don't know, sorry!",
     "Ask me another time, when I've gathered more knowledge",
     "How would I know, I am a robot!",
-    "Please Google it yourself!",
+    "Please find it yourself!",
     "I have no idea!",
     "Ask the internet!"
 ]

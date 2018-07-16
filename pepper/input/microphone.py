@@ -171,7 +171,7 @@ class SystemMicrophone(Microphone):
 
 
 class PepperMicrophoneMode(Enum):
-    # ALL = (48000, 0)
+    ALL = (48000, 0)
     LEFT = (16000, 1)
     RIGHT = (16000, 2)
     FRONT = (16000, 3)
@@ -192,7 +192,12 @@ class PepperMicrophone(Microphone):
         mode: PepperMicrophoneMode
             Which Microphone to use
         """
-        super(PepperMicrophone, self).__init__(16000, 1, callbacks)
+
+        print(mode)
+        self._sample_rate, self._microphone_id = mode.value
+        self._channels = 4 if mode == PepperMicrophoneMode.ALL else 1
+
+        super(PepperMicrophone, self).__init__(16000, self._channels, callbacks)
 
         self._listening = False
 
@@ -208,7 +213,7 @@ class PepperMicrophone(Microphone):
         self._name = self.__class__.__name__
         self._service = self.session.service("ALAudioDevice")
         self.session.registerService(self._name, self)
-        self._service.setClientPreferences(self._name, 16000, 3, 1)
+        self._service.setClientPreferences(self._name, self._sample_rate, self._microphone_id, 0)
         self._service.subscribe(self._name)
 
     @property
@@ -289,49 +294,3 @@ class PepperMicrophone(Microphone):
                 self._dt_window.clear()
 
         self._t = t
-
-class PepperMicrophoneProcessor(object):
-    def __init__(self, module):
-        self._module = module
-        self._listening = True
-
-        self.last_timestamp = time()
-        self.average_delta = 0
-        self.index = -1
-
-    def processRemote(self, channels, samples, timestamp, buffer):
-        timestamp = time() # timestamp[0] + timestamp[1] * 1E-6
-        delta = timestamp - self.last_timestamp
-
-        if self.index > 0:
-            self.average_delta = (self.index * self.average_delta + delta) / (self.index + 1)
-
-        print(self.average_delta, (len(buffer)/2) / 16000.0)
-        self.last_timestamp = timestamp
-        self.index += 1
-
-        # self._module.on_audio(np.frombuffer(buffer, np.int16))
-
-
-class PepperMicrophoneModule(Microphone):
-    def __init__(self, session, callbacks=[], mode=PepperMicrophoneMode.FRONT):
-        super(PepperMicrophoneModule, self).__init__(16000, 1, callbacks)
-
-        self._session = session
-        self._service = naoqi.ALProxy("ALAudioDevice", *ADDRESS)
-        self._processor = PepperMicrophoneProcessor(self)
-
-        self._session.registerService(PepperMicrophoneProcessor.__name__, self._processor)
-        self._service.setClientPreferences(PepperMicrophoneProcessor.__name__, 16000, 1, 0)
-        self._service.subscribe(PepperMicrophoneProcessor.__name__)
-
-    def start(self):
-        """Start Microphone Stream"""
-        self._processor._listening = True
-
-    def stop(self):
-        """Stop Microphone Stream"""
-        self._processor._listening = False
-
-
-

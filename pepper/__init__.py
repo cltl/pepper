@@ -4,11 +4,11 @@ import logging
 logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s', level=logging.INFO)
 
 # Pepper Address, reference point for all apps (because it will change a lot!)
-ADDRESS = '192.168.1.176', 9559
+ADDRESS = '192.168.1.173', 9559
 
 
 # Import to Package Level
-from pepper.input.microphone import WaveMicrophone, SystemMicrophone, PepperMicrophone
+from pepper.input.microphone import WaveMicrophone, SystemMicrophone, PepperMicrophone, PepperMicrophoneMode
 from pepper.input.camera import PepperCamera, SystemCamera, CameraTarget, CameraResolution
 
 from .speech.asr import *

@@ -14,6 +14,18 @@ from random import choice
 from time import sleep, time
 
 
+HAPPY = [
+    "Nice!",
+    "Cool!",
+    "Great!",
+    "Wow!",
+    "Superduper!",
+    "Amazing!",
+    "I like it!",
+    "That makes my day!"
+]
+
+
 def enumerate_objects(dictionary):
     string = ""
     for cls, count in dictionary.items():
@@ -31,12 +43,12 @@ class ObjectRecognitionApp(pepper.App):
     GREET = ["Hello", "Hi", "Hey there", "Greetings", "Good day", "Nice to see you", "It's a pleasure", "Hey"]
 
     RESOLUTION = pepper.CameraResolution.VGA_640x480
-    SCORE_THRESHOLD = 0.5
+    SCORE_THRESHOLD = 0.8
     FACE_THRESHOLD = 0.8
     MAX_BOXES = 4
     FACE_BB_WIDEN = 8
 
-    FACE_TIMEOUT = 60
+    FACE_TIMEOUT = 120
 
     LABEL_HEIGHT = 20
 
@@ -151,6 +163,7 @@ class ObjectRecognitionApp(pepper.App):
 
         for cls, count in self.last_objects.items():
             if not cls in self.all_objects:
+                self.say("{}. I see a {}!".format(choice(HAPPY), cls))
                 self.all_objects[cls] = count
             elif self.all_objects[cls] < count:
                 self.all_objects[cls] = count

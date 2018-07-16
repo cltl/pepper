@@ -217,7 +217,7 @@ class SensorApp(App):
     PERSON_NEW_THRESHOLD = 1.0
 
     CAMERA_RESOLUTION = pepper.CameraResolution.VGA_320x240
-    CAMERA_FREQUENCY = 2
+    CAMERA_FREQUENCY = 0.5
 
     def __init__(self, address, people = pepper.PeopleClassifier.load_directory(pepper.PeopleClassifier.LEOLANI)):
 
@@ -280,7 +280,8 @@ class SensorApp(App):
         self.speaking = True
         self.log.info(u"Leolani: '{}'".format(text))
         self._utterance.stop()
-        self._text_to_speech.say(ur"\\rspd={}\\{}".format(speed, text))
+        self._text_to_speech.say(text)
+        # self._text_to_speech.say(ur"\\rspd={}\\{}".format(speed, text))
         self._utterance.start()
         self.speaking = False
 
