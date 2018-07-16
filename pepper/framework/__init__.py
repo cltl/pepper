@@ -1,3 +1,8 @@
+from .asr import *
+from .face import *
+from .object import *
+from .vad import *
+
 from enum import Enum, IntEnum
 
 

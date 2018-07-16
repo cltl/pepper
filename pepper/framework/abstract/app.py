@@ -1,8 +1,5 @@
 from pepper.framework.abstract import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech
-from pepper.framework.asr import AbstractASR
-from pepper.framework.vad import VAD
-from pepper.framework.face import FaceClassifier
-from pepper.framework.object import CocoClassifyClient
+from pepper.framework import *
 from pepper import config
 
 from time import sleep
@@ -12,11 +9,18 @@ import logging
 class AbstractApp(object):
     def __init__(self, camera, openface, microphone, asr, text_to_speech):
         """
-        Initialize Application
+        Initialize Abstract Application -> Base for all Applications and BDI
+
+        The base application takes platform specific inputs as parameters and sets up event callbacks,
+        this allows keeping the same application structure over a range of hardware (Pepper/Nao/PC for now)
+
+        # TODO: Rename AbstractApp, since it is not really abstract
+        # TODO: Solve Weird Error when Loading OpenFace after loading SystemMicrophone
 
         Parameters
         ----------
         camera: AbstractCamera
+        openface: OpenFace
         microphone: AbstractMicrophone
         asr: AbstractASR
         text_to_speech: AbstractTextToSpeech

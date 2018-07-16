@@ -63,7 +63,6 @@ class InceptionClassifyClient:
             return jpeg_buffer.getvalue()
 
 
-
 class CocoClassifyClient:
 
     PORT = 35621

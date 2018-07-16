@@ -11,6 +11,15 @@ import logging
 
 class AbstractMicrophone(object):
     def __init__(self, rate, channels, callbacks):
+        """
+        Abstract Microphone
+
+        Parameters
+        ----------
+        rate: int
+        channels: int
+        callbacks: list of callable
+        """
         self._rate = rate
         self._channels = channels
         self._callbacks = callbacks
@@ -30,31 +39,67 @@ class AbstractMicrophone(object):
 
     @property
     def rate(self):
+        """
+        Returns
+        -------
+        rate: int
+            Audio bitrate
+        """
         return self._rate
 
     @property
     def channels(self):
+        """
+        Returns
+        -------
+        channels: int
+            Audio channels
+        """
         return self._channels
 
     @property
     def callbacks(self):
+        """
+        Returns
+        -------
+        callbacks: list of callable
+        """
         return self._callbacks
 
     @callbacks.setter
     def callbacks(self, value):
+        """
+        Parameters
+        ----------
+        value: list of callable
+        """
         self._callbacks = value
 
     def on_audio(self, audio):
+        """
+        On Audio Event
+
+        Parameters
+        ----------
+        audio: np.ndarray
+        """
         self._queue.put(audio)
 
     def start(self):
+        """Start Microphone Stream"""
         self._running = True
         self._t0 = time()
 
     def stop(self):
+        """Stop Microphone Stream"""
         self._running = False
 
     def _processor(self):
+        """
+        Audio Processor
+
+        Calls each callback for each audio frame, threaded, for higher audio throughput
+        """
         while True:
             audio = self._queue.get()
 
