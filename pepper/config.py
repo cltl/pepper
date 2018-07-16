@@ -9,7 +9,7 @@ MICROPHONE_CHANNELS = 1
 VAD_VOICE_THRESHOLD = 0.6
 VAD_NONVOICE_THRESHOLD = 0.1
 
-CAMERA_RESOLUTION = CameraResolution.VGA
+CAMERA_RESOLUTION = CameraResolution.QVGA
 CAMERA_FRAME_RATE = 2
 
 FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'friends'))
