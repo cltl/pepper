@@ -1,5 +1,5 @@
 from pepper.framework.abstract.camera import AbstractCamera
-from pepper.framework.enumeration import NaoqiCameraIndex, CameraResolution
+from pepper.framework import NaoqiCameraIndex, CameraResolution
 
 import numpy as np
 

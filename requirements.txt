@@ -1,5 +1,7 @@
 qi
-cv2
 numpy
-webrtcvad
+cv2
+
 pyaudio
+webrtcvad
+google-cloud-speech

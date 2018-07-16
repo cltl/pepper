@@ -1,5 +1,5 @@
 from pepper.framework.abstract.microphone import AbstractMicrophone
-from pepper.framework.enumeration import NaoqiMicrophoneIndex
+from pepper.framework import NaoqiMicrophoneIndex
 import numpy as np
 
 
