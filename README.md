@@ -33,7 +33,14 @@ which is, to put it mildly, difficult to install; Probably even impossible on Wi
 Luckily, the developers were so kind to provide a [Docker](https://www.docker.com/) image, which can be obtained using `docker pull bamos/openface`.
 If you're planning to run Docker on a Windows machine, make sure you have Windows Pro/Enterprise!
 
-##### 5: Other Python Dependencies
+##### 5: Object Recognition (Pepper Tensorflow)
+In order to use the [Inception](https://www.tensorflow.org/tutorials/images/image_recognition) and [COCO](cocodataset.org/) models natively within this project,
+you need to clone pepper's sister-project: [pepper_tensorflow](https://github.com/cltl/pepper_tensorflow), which includes the Tensorflow services within Python 3.6.
+These services need to run as a separate process either locally or remotely next to the main application.
+Since Tensorflow requires Python 3, this is our way of using Tensorflow in an otherwise Python 2.7 repo.
+
+
+##### 6: Other Python Dependencies
 This project depends on ``numpy``, ``OpenCV (cv2)``, ``pyaudio`` and ``webrtcvad``.
 Most of these packages can be installed using ``pip``,  with one notable exception being ``OpenCV``,
 which needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html) and build manually (Windows binaries exist).

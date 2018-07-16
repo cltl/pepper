@@ -1,9 +1,11 @@
-from socket import socket
+from socket import socket, error as socket_error
 from io import BytesIO
 from PIL import Image
 
 import numpy as np
 import json
+
+import logging
 
 
 class InceptionClassifyClient:
@@ -17,6 +19,7 @@ class InceptionClassifyClient:
             Address of Inception Model Host
         """
         self.address = address
+        self._log = logging.getLogger(self.__class__.__name__)
 
     def classify(self, image):
         """
@@ -33,12 +36,16 @@ class InceptionClassifyClient:
         jpeg = self._convert_to_jpeg(image)
         jpeg_size = np.array([len(jpeg)], np.uint32)
 
-        s = socket()
-        s.connect(self.address)
-        s.sendall(jpeg_size)
-        s.sendall(jpeg)
-        response = json.loads(s.recv(4096).decode())
-        return response
+        try:
+            s = socket()
+            s.connect(self.address)
+            s.sendall(jpeg_size)
+            s.sendall(jpeg)
+            response = json.loads(s.recv(4096).decode())
+            return response
+        except socket_error as e:
+            self._log.error("Can't connect to Inception Service at {}".format(self.address))
+
 
     def _convert_to_jpeg(self, image):
         """
@@ -63,18 +70,22 @@ class CocoClassifyClient:
 
     def __init__(self, address = ('localhost', PORT)):
         self.address = address
+        self._log = logging.getLogger(self.__class__.__name__)
 
     def classify(self, image):
-        sock = socket()
-        sock.connect(self.address)
+        try:
+            s = socket()
+            s.connect(self.address)
 
-        sock.sendall(np.array(image.shape, np.uint32))
-        sock.sendall(image)
+            s.sendall(np.array(image.shape, np.uint32))
+            s.sendall(image)
 
-        response_length = np.frombuffer(sock.recv(4), np.uint32)[0]
-        response = json.loads(self._recv_all(sock, response_length).decode())
+            response_length = np.frombuffer(s.recv(4), np.uint32)[0]
+            response = json.loads(self._recv_all(s, response_length).decode())
 
-        return response
+            return response
+        except socket_error as e:
+            self._log.error("Can't connect to Coco Service at {}".format(self.address))
 
     def _recv_all(self, sock, n):
         buffer = bytearray()

@@ -7,6 +7,8 @@ import subprocess
 import socket
 import os
 
+import logging
+
 
 def docker_openface_running():
     try:
@@ -62,7 +64,13 @@ class OpenFace(object):
     HOST, PORT = '127.0.0.1', 8989
 
     def __init__(self):
+
+        self._log = logging.getLogger(self.__class__.__name__)
+
         if not docker_openface_running():
+
+            self._log.debug("{} is not running -> booting it!".format(OpenFace.DOCKER_IMAGE))
+
             subprocess.call(['docker', 'run',                                           # Run Docker Image
                              '-d',                                                      # Detached Mode (Non-Blocking)
                              '-w', self.DOCKER_WORKING_DIRECTORY,                       # Working Directory
@@ -75,6 +83,8 @@ class OpenFace(object):
             subprocess.call(['docker', 'cp', self.SCRIPT_PATH, "{}:/root/openface".format(self.DOCKER_NAME)])
             subprocess.call(['docker', 'exec', '-d', self.DOCKER_NAME, 'python', "./{}".format(self.SCRIPT_NAME)])
             sleep(5)  # Wait for Server to Boot (I know this is not elegant)
+
+        self._log.debug("Booted")
 
     def represent(self, image):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

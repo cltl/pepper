@@ -1,8 +1,8 @@
-from pepper.framework.naoqi import *
+from pepper.framework.system import SystemApp
 from pepper.framework.object import InceptionClassifyClient
 
 
-APP = NaoqiApp
+APP = SystemApp
 
 class MyApp(APP):
     def __init__(self):
