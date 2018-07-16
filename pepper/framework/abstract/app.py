@@ -109,14 +109,14 @@ class AbstractApp(object):
 
     def on_image(self, image):
         classes, scores, boxes = self._coco.classify(image)
-        self.on_object(classes, scores, boxes)
+        self.on_object(image, classes, scores, boxes)
 
         representation = self.openface.represent(image)
         if representation:
             bounds, face = representation
             self.on_face(bounds, face)
 
-    def on_object(self, classes, scores, boxes):
+    def on_object(self, image, classes, scores, boxes):
         pass
 
     def on_face(self, bounds, face):
