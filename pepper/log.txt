@@ -5326,3 +5326,25 @@
 07/16/18 15:44:49 ERROR    InceptionClassifyClient Can't connect to Inception Service at ('localhost', 9999)
 07/16/18 15:44:49 INFO     MyApp                None
 07/16/18 15:44:49 INFO     MyApp                [{u'id': 1, u'name': u'person'}, {u'id': 47, u'name': u'cup'}, {u'id': 1, u'name': u'person'}, {u'id': 47, u'name': u'cup'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 37, u'name': u'sports ball'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 90, u'name': u'toothbrush'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 72, u'name': u'tv'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 90, u'name': u'toothbrush'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 42, u'name': u'surfboard'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 84, u'name': u'book'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 75, u'name': u'remote'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 32, u'name': u'tie'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 84, u'name': u'book'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 72, u'name': u'tv'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 47, u'name': u'cup'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 72, u'name': u'tv'}, {u'id': 62, u'name': u'chair'}, {u'id': 72, u'name': u'tv'}, {u'id': 1, u'name': u'person'}, {u'id': 62, u'name': u'chair'}, {u'id': 84, u'name': u'book'}, {u'id': 62, u'name': u'chair'}, {u'id': 84, u'name': u'book'}, {u'id': 1, u'name': u'person'}, {u'id': 1, u'name': u'person'}]
+07/18/18 12:55:17 DEBUG    SystemCamera         Booted
+07/18/18 12:55:17 DEBUG    OpenFace             bamos/openface is not running -> booting it!
+07/18/18 13:03:03 DEBUG    SystemCamera         Booted
+07/18/18 13:03:03 DEBUG    OpenFace             bamos/openface is not running -> booting it!
+07/18/18 13:03:10 DEBUG    OpenFace             Booted
+07/18/18 13:03:10 DEBUG    SystemMicrophone     Booted
+07/18/18 13:03:10 DEBUG    SystemTextToSpeech   Booted
+07/18/18 13:06:13 DEBUG    SystemCamera         Booted
+07/18/18 13:06:13 DEBUG    OpenFace             Booted
+07/18/18 13:06:13 DEBUG    SystemMicrophone     Booted
+07/18/18 13:06:13 DEBUG    SystemTextToSpeech   Booted
+07/18/18 13:06:31 DEBUG    SystemCamera         Booted
+07/18/18 13:06:31 DEBUG    OpenFace             Booted
+07/18/18 13:06:31 DEBUG    SystemMicrophone     Booted
+07/18/18 13:06:31 DEBUG    SystemTextToSpeech   Booted
+07/18/18 13:08:30 DEBUG    SystemCamera         Booted
+07/18/18 13:08:30 DEBUG    OpenFace             Booted
+07/18/18 13:08:30 DEBUG    SystemMicrophone     Booted
+07/18/18 13:08:30 DEBUG    SystemTextToSpeech   Booted
+07/18/18 13:08:30 DEBUG    VAD                  Booted
+07/18/18 13:08:30 DEBUG    MyApp                Booted
+07/18/18 13:08:31 ERROR    CocoClassifyClient   Can't connect to Coco Service at ('localhost', 35621)

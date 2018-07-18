@@ -1,8 +1,3 @@
-from .asr import *
-from .face import *
-from .object import *
-from .vad import *
-
 from enum import Enum, IntEnum
 
 
@@ -21,10 +16,15 @@ class NaoqiCameraIndex(IntEnum):
     DEPTH = 2
 
 
-
 class NaoqiMicrophoneIndex(IntEnum):
     ALL = 0
     LEFT = 1
     RIGHT = 2
     FRONT = 3
     REAR = 4
+
+
+from .vad import *
+from .face import *
+from .asr import *
+from .obj import *

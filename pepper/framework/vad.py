@@ -1,4 +1,3 @@
-from pepper.framework.abstract.microphone import AbstractMicrophone
 from pepper import config
 
 from webrtcvad import Vad

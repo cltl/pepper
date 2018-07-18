@@ -1,5 +1,5 @@
 from pepper.framework.system import SystemApp
-from pepper.framework.object import InceptionClassifyClient
+from pepper.framework.obj import InceptionClassifyClient
 
 
 APP = SystemApp

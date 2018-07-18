@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech
-from pepper.framework import *
+from pepper.framework import FaceClassifier, CocoClassifyClient, VAD
 from pepper import config
 
 from time import sleep
@@ -25,6 +25,8 @@ class AbstractApp(object):
         asr: AbstractASR
         text_to_speech: AbstractTextToSpeech
         """
+        super(AbstractApp, self).__init__()
+
 
         self._camera = camera
         self._camera.callbacks += [self.on_image]
