@@ -6753,3 +6753,167 @@
 07/19/18 13:26:55 INFO     VerboseApp           on_face_known: FaceBounds(127.00,52.00,64.00,63.00): 4032.00 (128,) Bram
 07/19/18 13:26:55 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
 07/19/18 13:26:56 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:25 DEBUG    SystemCamera         Booted
+07/19/18 13:48:25 DEBUG    OpenFace             Booted
+07/19/18 13:48:25 DEBUG    SystemMicrophone     Booted
+07/19/18 13:48:25 DEBUG    SystemTextToSpeech   Booted
+07/19/18 13:48:25 DEBUG    VAD                  Booted
+07/19/18 13:48:25 DEBUG    VerboseApp           Booted
+07/19/18 13:48:25 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:26 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:26 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:27 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:27 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:28 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:28 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:29 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:29 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:30 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:30 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:31 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:31 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:32 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:32 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:33 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:33 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:34 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:34 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:35 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:35 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:36 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:36 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:37 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:37 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:38 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:38 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:39 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:39 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:40 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:40 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:41 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:41 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:42 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:42 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:43 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:43 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:44 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:45 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:45 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:45 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:46 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:47 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:47 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:48 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:48 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:49 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:49 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:50 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:50 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:51 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:51 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:52 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:52 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:53 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:53 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:54 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:54 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:55 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:55 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:56 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:56 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:57 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:57 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:58 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:58 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:59 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:48:59 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:00 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:00 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:00 INFO     VerboseApp           on_face: FaceBounds(86.00,38.00,63.00,63.00): 3969.00 (128,)
+07/19/18 13:49:00 INFO     VerboseApp           on_face_new: FaceBounds(86.00,38.00,63.00,63.00): 3969.00 (128,)
+07/19/18 13:49:01 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:01 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:01 INFO     VerboseApp           on_face: FaceBounds(103.00,38.00,76.00,75.00): 5700.00 (128,)
+07/19/18 13:49:01 INFO     VerboseApp           on_face_known: FaceBounds(103.00,38.00,76.00,75.00): 5700.00 (128,) Bram
+07/19/18 13:49:02 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:02 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:02 INFO     VerboseApp           on_face: FaceBounds(127.00,52.00,64.00,63.00): 4032.00 (128,)
+07/19/18 13:49:02 INFO     VerboseApp           on_face_known: FaceBounds(127.00,52.00,64.00,63.00): 4032.00 (128,) Bram
+07/19/18 13:49:03 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:03 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:03 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:03 INFO     VerboseApp           on_utterance: 1.63s
+07/19/18 13:49:03 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:03 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:03 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 13:49:03 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 13:49:04 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 13:49:04 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:04 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:04 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:04 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:04 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:04 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:05 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:05 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:05 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:05 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:05 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:05 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:06 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:06 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:06 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:06 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:06 INFO     VerboseApp           on_face: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:06 INFO     VerboseApp           on_face_known: FaceBounds(120.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:07 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:07 INFO     VerboseApp           on_face: FaceBounds(120.00,46.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:07 INFO     VerboseApp           on_face_known: FaceBounds(120.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:07 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:07 INFO     VerboseApp           on_face: FaceBounds(127.00,45.00,64.00,63.00): 4032.00 (128,)
+07/19/18 13:49:07 INFO     VerboseApp           on_face_known: FaceBounds(127.00,45.00,64.00,63.00): 4032.00 (128,) Bram
+07/19/18 13:49:08 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:08 INFO     VerboseApp           on_face: FaceBounds(120.00,46.00,76.00,76.00): 5776.00 (128,)
+07/19/18 13:49:08 INFO     VerboseApp           on_face_known: FaceBounds(120.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 13:49:08 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:08 INFO     VerboseApp           on_face: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,)
+07/19/18 13:49:08 INFO     VerboseApp           on_face_known: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,) Bram
+07/19/18 13:49:09 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:09 INFO     VerboseApp           on_face: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,)
+07/19/18 13:49:09 INFO     VerboseApp           on_face_known: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,) Bram
+07/19/18 13:49:09 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:09 INFO     VerboseApp           on_face: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,)
+07/19/18 13:49:09 INFO     VerboseApp           on_face_known: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,) Bram
+07/19/18 13:49:10 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:10 INFO     VerboseApp           on_face: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,)
+07/19/18 13:49:10 INFO     VerboseApp           on_face_known: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,) Bram
+07/19/18 13:49:10 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:11 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:11 INFO     VerboseApp           on_face: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,)
+07/19/18 13:49:11 INFO     VerboseApp           on_face_known: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,) Bram
+07/19/18 13:49:11 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:11 INFO     VerboseApp           on_face: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,)
+07/19/18 13:49:11 INFO     VerboseApp           on_face_known: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,) Bram
+07/19/18 13:49:12 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:12 INFO     VerboseApp           on_face: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,)
+07/19/18 13:49:12 INFO     VerboseApp           on_face_known: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,) Bram
+07/19/18 13:49:12 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'remote']
+07/19/18 13:49:12 INFO     VerboseApp           on_face: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,)
+07/19/18 13:49:12 INFO     VerboseApp           on_face_known: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,) Bram
+07/19/18 13:49:13 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:13 INFO     VerboseApp           on_face: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,)
+07/19/18 13:49:13 INFO     VerboseApp           on_face_known: FaceBounds(112.00,46.00,75.00,76.00): 5700.00 (128,) Bram
+07/19/18 13:49:13 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:13 INFO     VerboseApp           on_face: FaceBounds(121.00,52.00,63.00,63.00): 3969.00 (128,)
+07/19/18 13:49:13 INFO     VerboseApp           on_face_known: FaceBounds(121.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/19/18 13:49:14 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:14 INFO     VerboseApp           on_face: FaceBounds(114.00,45.00,63.00,63.00): 3969.00 (128,)
+07/19/18 13:49:14 INFO     VerboseApp           on_face_known: FaceBounds(114.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/19/18 13:49:14 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 13:49:15 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'cell phone']
+07/19/18 13:49:15 INFO     VerboseApp           on_utterance: 2.50s
+07/19/18 13:49:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 13:49:15 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 13:49:15 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 13:49:15 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'cell phone']

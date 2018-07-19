@@ -1,4 +1,4 @@
-from pepper.framework.abstract import AbstractApp
+from pepper.framework.abstract import BaseApp
 from pepper.framework.naoqi import *
 from pepper.framework.asr import GoogleASR
 from pepper.framework.face import OpenFace
@@ -8,7 +8,7 @@ from pepper import config
 import qi
 
 
-class NaoqiApp(AbstractApp):
+class NaoqiApp(BaseApp):
     def __init__(self):
 
         self._application = qi.Application([self.__class__.__name__, "--qi-url={}".format(config.NAOQI_URL)])

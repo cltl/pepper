@@ -64,6 +64,7 @@ class OpenFace(object):
     HOST, PORT = '127.0.0.1', 8989
 
     def __init__(self):
+        """Run OpenFace Client"""
 
         self._log = logging.getLogger(self.__class__.__name__)
 
