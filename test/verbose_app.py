@@ -1,4 +1,5 @@
 from pepper.framework.system import SystemApp
+from pepper.framework.abstract import AbstractIntention
 
 
 APP = SystemApp
