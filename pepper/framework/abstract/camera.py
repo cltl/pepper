@@ -2,6 +2,7 @@ from pepper.framework import CameraResolution
 from threading import Thread
 from Queue import Queue
 
+import numpy as np
 
 
 class AbstractCamera(object):
@@ -18,6 +19,8 @@ class AbstractCamera(object):
         self._resolution = resolution
         self._rate = rate
         self._callbacks = callbacks
+
+        self._shape = np.array([self.height, self.width, self.channels])
 
         self._queue = Queue()
         self._processor_thread = Thread(target=self._processor)
@@ -74,6 +77,15 @@ class AbstractCamera(object):
             Image rate
         """
         return self._rate
+
+    @property
+    def shape(self):
+        """
+        Returns
+        -------
+        shape: np.ndarray
+        """
+        return self._shape
 
     @property
     def callbacks(self):

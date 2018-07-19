@@ -114,26 +114,28 @@ class FaceClassifier:
         self._names = sorted(people.keys())
         self._indices = range(len(self._names))
 
-        self._labels = np.concatenate([[index] * len(people[name]) for name, index in zip(self._names, self._indices)])
-        self._features = np.concatenate([people[name] for name in self._names])
-
-        self._classifier = KNeighborsClassifier(n_neighbors)
-        self._classifier.fit(self._features, self._labels)
+        if self.people:
+            self._labels = np.concatenate([[index] * len(people[name]) for name, index in zip(self._names, self._indices)])
+            self._features = np.concatenate([people[name] for name in self._names])
+            self._classifier = KNeighborsClassifier(n_neighbors)
+            self._classifier.fit(self._features, self._labels)
 
     @property
     def people(self):
         return self._people
 
     def classify(self, face):
-        distances, indices = self._classifier.kneighbors(face.reshape(-1, self.FEATURE_DIM))
-        distances, indices = distances[0], indices[0]
+        if self.people:
+            distances, indices = self._classifier.kneighbors(face.reshape(-1, self.FEATURE_DIM))
+            distances, indices = distances[0], indices[0]
 
-        labels = self._labels[indices]
-        label = np.bincount(labels).argmax()
-        name = self._names[label]
-        confidence = np.mean(labels == label)
-        distance = np.mean(distances[labels == label])
-        return name, confidence, distance
+            labels = self._labels[indices]
+            label = np.bincount(labels).argmax()
+            name = self._names[label]
+            confidence = np.mean(labels == label)
+            distance = np.mean(distances[labels == label])
+            return name, confidence, distance
+        return "", 0, 0
 
     def accuracy(self):
         return np.mean(cross_val_score(self._classifier, self._features, self._labels, cv=5))

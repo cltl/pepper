@@ -44,7 +44,8 @@ class InceptionClassifyClient:
             response = json.loads(s.recv(4096).decode())
             return response
         except socket_error as e:
-            self._log.error("Can't connect to Inception Service at {}".format(self.address))
+            raise RuntimeError(
+                "Can't connect to Inception Service at {}. Are you sure the service is running?".format(self.address))
 
 
     def _convert_to_jpeg(self, image):
@@ -84,7 +85,8 @@ class CocoClassifyClient:
 
             return response
         except socket_error as e:
-            self._log.error("Can't connect to Coco Service at {}".format(self.address))
+            raise RuntimeError(
+                "Can't connect to Coco Service at {}. Are you sure the service is running?".format(self.address))
 
     def _recv_all(self, sock, n):
         buffer = bytearray()

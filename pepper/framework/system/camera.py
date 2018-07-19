@@ -32,7 +32,7 @@ class SystemCamera(AbstractCamera):
 
             if status:
                 if self._running:
-                    self.on_image(image)
+                    self.on_image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
             else:
                 raise RuntimeWarning("{} could not fetch image".format(self.__class__.__name__))
 
