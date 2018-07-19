@@ -8,6 +8,8 @@ from pepper import config
 class SystemApp(BaseApp):
     def __init__(self, intention = AbstractIntention()):
         """
+        Run Application on Host System
+
         Parameters
         ----------
         intention: AbstractIntention

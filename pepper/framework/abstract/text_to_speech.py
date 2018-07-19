@@ -5,6 +5,8 @@ class AbstractTextToSpeech(object):
 
     def say(self, text):
         """
+        Say something through Text to Speech
+
         Parameters
         ----------
         text: str

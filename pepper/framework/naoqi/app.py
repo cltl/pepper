@@ -11,6 +11,8 @@ import qi
 class NaoqiApp(BaseApp):
     def __init__(self, intention = AbstractIntention()):
         """
+        Run Application on Naoqi System (Pepper/Nao)
+
         Parameters
         ----------
         intention: AbstractIntention

@@ -45,6 +45,80 @@ Most of these packages can be installed using ``pip``,  with one notable excepti
 which needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html) and build manually (Windows binaries exist).
 
 
+#### Structure
+
+##### 1: Apps & Events
+This package revolves around _Apps_, which program some robot behaviour.
+_Apps_ provide events for each sensory experience the robot 'perceives'. These events are (thus far):
+- ``on_image`` for every frame captured by robot camera
+- ``on_object`` for each object detected in a camera frame
+- ``on_face`` for each face detected in a camera frame
+- ``on_face_known`` when detected face is 'known' to the robot
+- ``on_face_new`` when detected face is 'new' to the robot
+- ``on_audio`` for every frame of audio captured by robot microphone
+- ``on_utterance`` for every segmented piece of speech-audio
+- ``on_transcript`` for every utterance that can be resolved into text
+
+More events are sure to come in the future!
+
+##### 2: Platforms & Devices
+
+In order to run _Apps_ made with this framework on multiple platforms, abstractions have been made for all host specific devices:
+- ``AbstractCamera``
+- ``AbstractMicrophone``
+- ``AbstractTextToSpeech``
+
+Implementations have been made for Naoqi Platforms, using the Camera/Microphone/AnimatedSpeech from Pepper/Nao,
+and for Laptop/PC Platforms (tested on Windows), using the built in Webcam/Microphone/Console instead.
+It should be possible to extend this to other devices later on, as well.
+being able to run applications on your host device gives the advantage that you can test the application without needing the robot.
+
+In order to create an application, one needs to create a class that inherits from the Application of the target platform.
+These can be easily switched around, as is demonstrated below:
+
+```python
+from pepper.framework.naoqi import NaoqiApp
+from pepper.framework.system import SystemApp
+
+APP = NaoqiApp or SystemApp
+
+class MyApp(APP):
+    def on_transcript(self, transcript):
+        self.text_to_speech.say("Right you are!")
+        
+if __name__ == '__main__':
+    MyApp().start()
+```
+
+##### 3: Intentions
+
+When Applications get bigger, the need for more structure arises. That is where _Intentions_ come in.
+Within each _App_, the user programs one or several _Intentions_ (The 'I' in [BDI](https://en.wikipedia.org/wiki/Belief–desire–intention_software_model)).
+These intentions act as subgoals within each application. An example is demonstrated below.
+
+```python
+from pepper.framework.system import SystemApp
+from pepper.framework import AbstractIntention
+
+
+class IdleIntention(AbstractIntention):
+    def on_face_new(self, bounds, face):
+        self.app.intention = MeetNewPersonIntention()
+        
+
+class MeetNewPersonIntention(AbstractIntention):
+    def __init__(self):
+        super(MeetNewPersonIntention, self).__init__()
+        self.text_to_speech.say("What is your name?")
+        
+    def on_transcript(self, transcript):
+        self.text_to_speech.say("Nice to meet you!")
+        self.app.intention = IdleIntention()
+        
+if __name__ == '__main__':
+    SystemApp(IdleIntention()).start()
+```
+
 #### Running
 
 To run an application, you'll have to run a few services and take a few considerations first.

@@ -43,7 +43,7 @@ class AbstractMicrophone(object):
         Returns
         -------
         rate: int
-            Audio bitrate
+            Audio bit rate
         """
         return self._rate
 
@@ -87,11 +87,13 @@ class AbstractMicrophone(object):
 
     def start(self):
         """Start Microphone Stream"""
+
         self._running = True
         self._t0 = time()
 
     def stop(self):
         """Stop Microphone Stream"""
+
         self._running = False
 
     def _processor(self):

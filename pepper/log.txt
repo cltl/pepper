@@ -7160,3 +7160,419 @@
 07/19/18 14:20:37 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
 07/19/18 14:20:38 INFO     VerboseApp           on_face: FaceBounds(112.00,54.00,75.00,76.00): 5700.00 (128,)
 07/19/18 14:20:38 INFO     VerboseApp           on_face_known: FaceBounds(112.00,54.00,75.00,76.00): 5700.00 (128,) Bram
+07/19/18 14:28:24 DEBUG    SystemCamera         Booted
+07/19/18 14:28:24 DEBUG    OpenFace             Booted
+07/19/18 14:28:24 DEBUG    SystemMicrophone     Booted
+07/19/18 14:28:24 DEBUG    SystemTextToSpeech   Booted
+07/19/18 14:28:24 DEBUG    VAD                  Booted
+07/19/18 14:28:24 DEBUG    VerboseApp           Booted -> AbstractIntention
+07/19/18 14:28:24 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person', u'tv']
+07/19/18 14:28:24 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:25 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:25 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:26 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:26 INFO     VerboseApp           on_face: FaceBounds(103.00,54.00,76.00,76.00): 5776.00 (128,)
+07/19/18 14:28:26 INFO     VerboseApp           on_face_known: FaceBounds(103.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+07/19/18 14:28:26 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:27 INFO     VerboseApp           on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
+07/19/18 14:28:27 INFO     VerboseApp           on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+07/19/18 14:28:27 INFO     VerboseApp           on_utterance: 2.10s
+07/19/18 14:28:27 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:28:27 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:28:27 INFO     VerboseApp           on_face: FaceBounds(127.00,59.00,64.00,63.00): 4032.00 (128,)
+07/19/18 14:28:27 INFO     VerboseApp           on_face_known: FaceBounds(127.00,59.00,64.00,63.00): 4032.00 (128,) Bram
+07/19/18 14:28:27 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:28:27 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:28 INFO     VerboseApp           on_face: FaceBounds(121.00,59.00,63.00,63.00): 3969.00 (128,)
+07/19/18 14:28:28 INFO     VerboseApp           on_face_known: FaceBounds(121.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/19/18 14:28:28 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:28 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:29 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:29 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:30 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:28:30 INFO     VerboseApp           on_object: (240, 320, 3) -> [u'person']
+07/19/18 14:37:00 DEBUG    SystemCamera         Booted
+07/19/18 14:37:00 DEBUG    OpenFace             Booted
+07/19/18 14:37:00 DEBUG    SystemMicrophone     Booted
+07/19/18 14:37:00 DEBUG    SystemTextToSpeech   Booted
+07/19/18 14:37:00 DEBUG    VAD                  Booted
+07/19/18 14:37:00 DEBUG    VerboseApp           Booted -> IdleIntention
+07/19/18 14:38:33 DEBUG    SystemCamera         Booted
+07/19/18 14:38:33 DEBUG    OpenFace             Booted
+07/19/18 14:38:33 DEBUG    SystemMicrophone     Booted
+07/19/18 14:38:33 DEBUG    SystemTextToSpeech   Booted
+07/19/18 14:38:33 DEBUG    VAD                  Booted
+07/19/18 14:38:33 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 14:38:34 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 14:38:34 DEBUG    SystemApp            Switch Intention -> SystemApp
+07/19/18 14:38:34 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:38:34 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:38:34 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:38:38 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:38:38 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:38:38 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:38:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:38:41 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:38:41 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:39:59 DEBUG    SystemCamera         Booted
+07/19/18 14:39:59 DEBUG    OpenFace             Booted
+07/19/18 14:39:59 DEBUG    SystemMicrophone     Booted
+07/19/18 14:39:59 DEBUG    SystemTextToSpeech   Booted
+07/19/18 14:39:59 DEBUG    VAD                  Booted
+07/19/18 14:39:59 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 14:39:59 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 14:39:59 INFO     SystemApp            Switch Intention IdleIntention -> <__main__.QnAIntention object at 0x043D5150>
+07/19/18 14:40:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:24 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:24 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:40:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:26 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:26 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:40:33 DEBUG    SystemCamera         Booted
+07/19/18 14:40:33 DEBUG    OpenFace             Booted
+07/19/18 14:40:33 DEBUG    SystemMicrophone     Booted
+07/19/18 14:40:33 DEBUG    SystemTextToSpeech   Booted
+07/19/18 14:40:33 DEBUG    VAD                  Booted
+07/19/18 14:40:33 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 14:40:34 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:34 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:34 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:40:36 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:36 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:36 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:40:37 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 14:40:37 INFO     SystemApp            Switch Intention IdleIntention -> QnAIntention
+07/19/18 14:40:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:37 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:37 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:40:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:40 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:41 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:41 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:40:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:40:43 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:40:43 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 14:44:11 DEBUG    SystemCamera         Booted
+07/19/18 14:44:11 DEBUG    OpenFace             Booted
+07/19/18 14:44:11 DEBUG    SystemMicrophone     Booted
+07/19/18 14:44:11 DEBUG    SystemTextToSpeech   Booted
+07/19/18 14:44:11 DEBUG    VAD                  Booted
+07/19/18 14:44:11 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 14:44:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 14:44:16 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 14:44:16 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:06 DEBUG    SystemCamera         Booted
+07/19/18 15:14:06 DEBUG    OpenFace             Booted
+07/19/18 15:14:06 DEBUG    SystemMicrophone     Booted
+07/19/18 15:14:06 DEBUG    SystemTextToSpeech   Booted
+07/19/18 15:14:06 DEBUG    VAD                  Booted
+07/19/18 15:14:06 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 15:14:07 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 15:14:20 DEBUG    SystemCamera         Booted
+07/19/18 15:14:20 DEBUG    OpenFace             Booted
+07/19/18 15:14:20 DEBUG    SystemMicrophone     Booted
+07/19/18 15:14:20 DEBUG    SystemTextToSpeech   Booted
+07/19/18 15:14:20 DEBUG    VAD                  Booted
+07/19/18 15:14:20 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 15:14:21 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 15:14:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:26 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:26 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:26 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:26 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:28 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:28 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:29 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:29 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:30 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:30 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:30 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:32 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:32 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:37 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:37 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:40 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:40 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:46 DEBUG    SystemCamera         Booted
+07/19/18 15:14:46 DEBUG    OpenFace             Booted
+07/19/18 15:14:46 DEBUG    SystemMicrophone     Booted
+07/19/18 15:14:46 DEBUG    SystemTextToSpeech   Booted
+07/19/18 15:14:46 DEBUG    VAD                  Booted
+07/19/18 15:14:46 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 15:14:47 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 15:14:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:49 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:49 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:51 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:51 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:51 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:54 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:54 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:54 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:57 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:57 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:57 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:14:59 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:14:59 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:14:59 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:02 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:02 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:02 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:03 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:03 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:06 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:06 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:07 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:07 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:11 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:11 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:13 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:13 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:13 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:17 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:17 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:20 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:20 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:20 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:22 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:22 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:22 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:27 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:27 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:31 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:31 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:31 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:33 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:33 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:35 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:35 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:35 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:37 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:37 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:40 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:40 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:42 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:42 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:43 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:43 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:45 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:45 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:45 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:53 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:53 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:55 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:55 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:55 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:58 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:58 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:15:58 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:15:59 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:15:59 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:00 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:01 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:01 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:08 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:08 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:09 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:09 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:09 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:11 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:11 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:12 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:12 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:12 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:17 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:17 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:21 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:21 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:21 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:24 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:24 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:26 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:26 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:32 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:32 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:39 DEBUG    SystemCamera         Booted
+07/19/18 15:16:39 DEBUG    OpenFace             Booted
+07/19/18 15:16:39 DEBUG    SystemMicrophone     Booted
+07/19/18 15:16:39 DEBUG    SystemTextToSpeech   Booted
+07/19/18 15:16:39 DEBUG    VAD                  Booted
+07/19/18 15:16:39 DEBUG    SystemApp            Booted -> IdleIntention
+07/19/18 15:16:39 INFO     SystemTextToSpeech   Hello, Bram
+07/19/18 15:16:39 INFO     SystemApp            Switch Intention IdleIntention -> QnAIntention
+07/19/18 15:16:44 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:16:44 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:16:44 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:16:45 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): api.wolframalpha.com
+07/19/18 15:16:48 DEBUG    urllib3.connectionpool https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=how+high+is+the+Eiffel+Tower HTTP/1.1" 200 None
+07/19/18 15:16:48 INFO     SystemTextToSpeech   The answer is about 324 meters
+07/19/18 15:19:14 DEBUG    SystemCamera              Booted
+07/19/18 15:19:14 DEBUG    OpenFace                  Booted
+07/19/18 15:19:14 DEBUG    SystemMicrophone          Booted
+07/19/18 15:19:14 DEBUG    SystemTextToSpeech        Booted
+07/19/18 15:19:14 DEBUG    VAD                       Booted
+07/19/18 15:19:14 DEBUG    SystemApp                 Booted -> IdleIntention
+07/19/18 15:19:15 INFO     SystemTextToSpeech        Hello, Bram
+07/19/18 15:19:15 INFO     SystemApp                 Switch Intention: IdleIntention -> QnAIntention
+07/19/18 15:19:20 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:19:20 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:19:20 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:19:21 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): api.wolframalpha.com
+07/19/18 15:19:24 DEBUG    urllib3.connectionpool    https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=what+countries+border+Russia HTTP/1.1" 200 None
+07/19/18 15:19:24 INFO     SystemTextToSpeech        Azerbaijan, Belarus, China, Estonia, Finland, Georgia, Kazakhstan, Latvia, Lithuania, Mongolia, North Korea, Norway, Poland, and Ukraine border Russia
+07/19/18 15:20:18 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:20:18 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:20:18 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:20:22 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:20:22 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:20:22 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:20:23 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:20:23 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:20:23 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:25:01 DEBUG    SystemCamera              Booted
+07/19/18 15:25:01 DEBUG    OpenFace                  Booted
+07/19/18 15:25:01 DEBUG    SystemMicrophone          Booted
+07/19/18 15:27:16 DEBUG    SystemCamera              Booted
+07/19/18 15:27:16 DEBUG    OpenFace                  Booted
+07/19/18 15:27:17 DEBUG    SystemMicrophone          Booted
+07/19/18 15:27:17 DEBUG    SystemTextToSpeech        Booted
+07/19/18 15:27:17 DEBUG    VAD                       Booted
+07/19/18 15:27:17 DEBUG    SystemApp                 Booted -> IdleIntention
+07/19/18 15:27:28 DEBUG    SystemCamera              Booted
+07/19/18 15:27:28 DEBUG    OpenFace                  Booted
+07/19/18 15:27:28 DEBUG    SystemMicrophone          Booted
+07/19/18 15:27:28 DEBUG    SystemTextToSpeech        Booted
+07/19/18 15:27:28 DEBUG    VAD                       Booted
+07/19/18 15:27:28 DEBUG    SystemApp                 Booted -> IdleIntention
+07/19/18 15:27:29 INFO     SystemTextToSpeech        Hello, Bram
+07/19/18 15:27:29 INFO     SystemApp                 Switch Intention: IdleIntention -> QnAIntention
+07/19/18 15:27:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:27:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:27:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:27:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): api.wolframalpha.com
+07/19/18 15:27:44 DEBUG    urllib3.connectionpool    https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=what+is+the+chemical+name+of+water HTTP/1.1" 200 None
+07/19/18 15:27:44 INFO     SystemTextToSpeech        The answer is water
+07/19/18 15:27:48 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:27:48 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:27:48 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:27:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:27:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:27:51 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 15:28:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 15:28:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 15:28:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 16:34:52 DEBUG    SystemCamera              Booted
+07/19/18 16:34:52 DEBUG    SystemMicrophone          Booted
+07/19/18 16:34:52 DEBUG    SystemTextToSpeech        Booted
+07/19/18 16:35:27 DEBUG    SystemCamera              Booted
+07/19/18 16:35:27 DEBUG    OpenFace                  Booted
+07/19/18 16:35:27 DEBUG    SystemMicrophone          Booted
+07/19/18 16:35:27 DEBUG    SystemTextToSpeech        Booted
+07/19/18 16:35:39 DEBUG    SystemCamera              Booted
+07/19/18 16:35:39 DEBUG    OpenFace                  Booted
+07/19/18 16:35:39 DEBUG    SystemMicrophone          Booted
+07/19/18 16:35:39 DEBUG    SystemTextToSpeech        Booted
+07/19/18 16:35:39 DEBUG    VAD                       Booted
+07/19/18 16:35:39 DEBUG    VerboseApp                Booted -> AbstractIntention
+07/19/18 16:35:43 INFO     VerboseApp                on_utterance: 4.78s
+07/19/18 16:35:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 16:35:43 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 16:35:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 16:37:11 DEBUG    SystemCamera              Booted
+07/19/18 16:37:11 DEBUG    OpenFace                  Booted
+07/19/18 16:37:11 DEBUG    SystemMicrophone          Booted
+07/19/18 16:37:11 DEBUG    SystemTextToSpeech        Booted
+07/19/18 16:37:11 DEBUG    VAD                       Booted
+07/19/18 16:37:11 DEBUG    VerboseApp                Booted -> AbstractIntention
+07/19/18 16:37:53 DEBUG    SystemCamera              Booted
+07/19/18 16:37:53 DEBUG    OpenFace                  Booted
+07/19/18 16:37:53 DEBUG    SystemMicrophone          Booted
+07/19/18 16:37:53 DEBUG    SystemTextToSpeech        Booted
+07/19/18 16:37:53 DEBUG    VAD                       Booted
+07/19/18 16:37:53 DEBUG    VerboseApp                Booted -> AbstractIntention
+07/19/18 16:37:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:37:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:37:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:37:59 INFO     VerboseApp                on_utterance: 7.03s
+07/19/18 16:37:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:00 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 16:38:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:00 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 16:38:00 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 16:38:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:00 INFO     VerboseApp                on_face: FaceBounds(127.00,24.00,64.00,64.00): 4096.00 (128,)
+07/19/18 16:38:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 INFO     VerboseApp                on_utterance: 1.96s
+07/19/18 16:38:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 16:38:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 16:38:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 16:38:02 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:02 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:03 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:03 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:04 INFO     VerboseApp                on_face: FaceBounds(134.00,38.00,64.00,63.00): 4032.00 (128,)
+07/19/18 16:38:04 INFO     VerboseApp                on_face_known: FaceBounds(134.00,38.00,64.00,63.00): 4032.00 (128,) Bram
+07/19/18 16:38:04 INFO     VerboseApp                on_utterance: 1.55s
+07/19/18 16:38:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 16:38:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 16:38:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 16:38:04 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:04 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:05 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:05 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:06 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:06 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:07 INFO     VerboseApp                on_face: FaceBounds(134.00,45.00,64.00,63.00): 4032.00 (128,)
+07/19/18 16:38:07 INFO     VerboseApp                on_face_known: FaceBounds(134.00,45.00,64.00,63.00): 4032.00 (128,) Bram
+07/19/18 16:38:07 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:07 INFO     VerboseApp                on_face: FaceBounds(141.00,72.00,52.00,53.00): 2756.00 (128,)
+07/19/18 16:38:07 INFO     VerboseApp                on_face_known: FaceBounds(141.00,72.00,52.00,53.00): 2756.00 (128,) Bram
+07/19/18 16:38:07 INFO     VerboseApp                on_utterance: 2.13s
+07/19/18 16:38:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/19/18 16:38:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/19/18 16:38:07 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/19/18 16:38:08 INFO     VerboseApp                on_face: FaceBounds(135.00,78.00,53.00,53.00): 2809.00 (128,)
+07/19/18 16:38:08 INFO     VerboseApp                on_face_known: FaceBounds(135.00,78.00,53.00,53.00): 2809.00 (128,) Bram
+07/19/18 16:38:08 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:08 INFO     VerboseApp                on_face: FaceBounds(135.00,78.00,53.00,53.00): 2809.00 (128,)
+07/19/18 16:38:08 INFO     VerboseApp                on_face_known: FaceBounds(135.00,78.00,53.00,53.00): 2809.00 (128,) Bram
+07/19/18 16:38:08 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/19/18 16:38:09 INFO     VerboseApp                on_face: FaceBounds(134.00,45.00,64.00,63.00): 4032.00 (128,)
+07/19/18 16:38:09 INFO     VerboseApp                on_face_known: FaceBounds(134.00,45.00,64.00,63.00): 4032.00 (128,) Bram

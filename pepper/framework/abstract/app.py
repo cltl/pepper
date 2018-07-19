@@ -90,7 +90,7 @@ class AbstractApp(object):
         ----------
         image: np.ndarray
             Camera Frame
-        objects: list of (str, float, list of float)
+        objects: list of tuple
             List of Objects: [(name, confidence score, bounding box)]
         """
         pass
@@ -172,13 +172,7 @@ class AbstractApp(object):
 
 class AbstractIntention(AbstractApp):
     def __init__(self):
-        """
-        Create Abstract Intention
-
-        Parameters
-        ----------
-        app: AbstractApp
-        """
+        """Create Abstract Intention"""
 
         self._app = None
         self._log = logging.getLogger(self.__class__.__name__)
@@ -188,7 +182,7 @@ class AbstractIntention(AbstractApp):
         """
         Returns
         -------
-        app: AbstractApp
+        app: BaseApp
         """
         return self._app
 
@@ -197,7 +191,7 @@ class AbstractIntention(AbstractApp):
         """
         Parameters
         ----------
-        value: AbstractApp
+        value: BaseApp
         """
         self._app = value
 
@@ -233,7 +227,7 @@ class AbstractIntention(AbstractApp):
         """
         Returns
         -------
-        text_to_speech: AbstractTextToSpeech
+        text_to_speech: pepper.framework.AbstractTextToSpeech
         """
         return self.app.text_to_speech
 
@@ -286,30 +280,38 @@ class BaseApp(AbstractApp):
         """
         super(BaseApp, self).__init__()
 
+        # Set Intention
         self._intention = intention
         self._intention.app = self
 
+        # Add Camera
         self._camera = camera
         self._camera.callbacks += [self._on_image]
 
+        # Add Microphone
+        self._microphone = microphone
+        self._microphone.callbacks += [self.on_audio]
+
+        # Add OpenFace and FaceClassifier
         self._openface = openface
         self._faces = FaceClassifier.load_directory(config.FACE_DIRECTORY)
         self._face_classifier = FaceClassifier(self._faces)
 
+        # Add Coco Client
         self._coco = CocoClassifyClient()
 
-        self._microphone = microphone
-        self._microphone.callbacks += [self.on_audio]
-
+        # Add Text to Speech
         self._text_to_speech = text_to_speech
 
+        # Add Voice Activity Detection and Automatic Speech Recognition
         self._vad = VAD(microphone, [self._on_utterance])
         self._asr = asr
 
-        self._running = False
-
+        # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)
-        self._log.debug("Booted")
+        self._log.debug("Booted -> {}".format(self.intention.__class__.__name__))
+
+        self._running = False
 
     @property
     def intention(self):
@@ -327,6 +329,9 @@ class BaseApp(AbstractApp):
         ----------
         value: AbstractIntention
         """
+
+        self.log.info("Switch Intention: {} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
+
         self._intention = value
         self._intention.app = self
 
@@ -434,7 +439,7 @@ class BaseApp(AbstractApp):
         ----------
         image: np.ndarray
             Camera Frame
-        objects: list of (str, float, list of float)
+        objects: list of tuple
             List of Objects: [(name, confidence score, bounding box)]
         """
         self.intention.on_object(image, objects)
@@ -514,13 +519,24 @@ class BaseApp(AbstractApp):
         self.intention.on_transcript(transcript)
 
     def _on_image(self, image):
+        """
+        Raw On Image Event. Called every time the camera yields a frame.
+
+        Parameters
+        ----------
+        image: np.ndarray
+        """
+
+        # Call On Image Event
         self.on_image(image)
 
+        # Classify Objects in Frame, calling On Object if any are found
         classes, scores, boxes = self._coco.classify(image)
         objects = [(cls['name'], scr, box)
                    for cls, scr, box in zip(classes, scores, boxes) if scr > config.OBJECT_CONFIDENCE_THRESHOLD]
         if objects: self.on_object(image, objects)
 
+        # Represent Faces and call appropriate events when they are known or new
         representation = self.openface.represent(image)
         if representation:
             bounds, face = representation
@@ -534,7 +550,11 @@ class BaseApp(AbstractApp):
                 self.on_face_known(bounds, face, name)
 
     def _on_utterance(self, audio):
+
+        # Call On Utterance Event
         self.on_utterance(audio)
+
+        # If Transcript, call On Transcript Event
         hypotheses = self.asr.transcribe(audio)
         if hypotheses:
             self.on_transcript(hypotheses)

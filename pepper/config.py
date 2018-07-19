@@ -1,4 +1,5 @@
 from pepper.framework import *
+import json
 import os
 
 LANGUAGE = 'en-GB'
@@ -22,3 +23,9 @@ NAOQI_IP = "192.168.1.176"
 NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
+
+
+# .json file with id tokens, with keys:
+#   "wolfram": <appid>
+with open(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tokens.json'))) as tokens:
+    TOKENS = json.load(tokens)

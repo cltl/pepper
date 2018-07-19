@@ -118,10 +118,12 @@ class AbstractCamera(object):
 
     def start(self):
         """Start Streaming Images from Camera"""
+
         self._running = True
 
     def stop(self):
         """Stop Streaming Images from Camera"""
+
         self._running = False
 
     def _processor(self):
