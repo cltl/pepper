@@ -58,9 +58,9 @@ QnA_STATIC = {
     "Where are you": "I feel in my Wifi that we are in {}".format(LOCATION),
 
     "Open Source": "Yes, The code I'm running on is fully Open Source, you can find it on GitHub!",
-    "tell me a joke": "Ok! \\pau=500\\ What's the difference between a hippo? \\pau=500\\ and a Zippo? \\pau=2000\\ Well \\pau=100\\, one is really heavy and the other is a little lighter.",
+    "joke": "Ok! \\pau=500\\ What's the difference between a hippo? \\pau=500\\ and a Zippo? \\pau=2000\\ Well \\pau=100\\, one is really heavy and the other is a little lighter.",
 
-    "What is your name": "My name is Leo Lani, which means \\vct=70\\ 'Voice of an Angel' \\vct=100\\ in Hawaiian",
+    "name": "My name is Leo Lani, which means \\vct=70\\ 'Voice of an Angel' \\vct=100\\ in Hawaiian",
     "Where are you from": "From France and Japan!",
     "How old are you": "I was born on Tuesday the eleventh of July, 2017. That means I'm 11 months old",
     "When was your first performance": "My first performance was on July thirteenth, 2017! It was recorded on TV!",
@@ -69,8 +69,8 @@ QnA_STATIC = {
     "Are you male": "Nope, I am a Lady!",
     "Are you female": "Yes, indeed!",
     "gender": "I'm female!",
-    "How do you feel": "Great, Indeed!",
-    "How are you doing": "Tremendous, to be honest! Although you have to consider that I'm a robot and I do not feel emotions. I'm programmed to sound happy all the time!",
+    "How do you": "Great, Indeed!",
+    "How are you": "Tremendous, to be honest! Although you have to consider that I'm a robot and I do not feel emotions. I'm programmed to sound happy all the time!",
     "Python version": "Python 2.7 32-bit. I wish I was running 64 bit, ugh!",
     "Speech Recognition": "I'm using the Google Speech API. This is why I need the internet to work, because my audio is processed on some server somewhere in Europe",
     "Face Recognition": "I'm using OpenFace to do Face Recognition, which is an open source face recognition library which encodes each face as a 128 dimensional vector. Impressive!",
@@ -235,7 +235,7 @@ class MeetApp(pepper.SensorApp):
     MEET_TIMEOUT = 10
     MIN_FACE_SAMPLES = 25
 
-    CAMERA_FREQUENCY = 2
+    CAMERA_FREQUENCY = 1
 
     def __init__(self):
 

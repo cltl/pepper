@@ -83,10 +83,13 @@ class ObjectRecognitionApp(pepper.App):
         self.last_objects = {}
         self.all_objects = {}
 
+        self.image_index = 0
+
         Thread(target=self.reaction_worker).start()
 
         # Plotting
-        self.figure, self.axis = plt.subplots()
+        self.figure, self.axis = plt.subplots(frameon=False)
+        self.figure.set_size_inches((12, 9))
         self.axis.set_xticks([])
         self.axis.set_yticks([])
         self.axis.set_xlim(0, 640)
@@ -163,7 +166,7 @@ class ObjectRecognitionApp(pepper.App):
 
         for cls, count in self.last_objects.items():
             if not cls in self.all_objects:
-                self.say("{}. I see a {}!".format(choice(HAPPY), cls))
+                # self.say("{}. I see a {}!".format(choice(HAPPY), cls))
                 self.all_objects[cls] = count
             elif self.all_objects[cls] < count:
                 self.all_objects[cls] = count
@@ -229,6 +232,9 @@ class ObjectRecognitionApp(pepper.App):
 
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
+        self.figure.set_size_inches((12, 9))
+        plt.savefig("img/frame_{:04d}.png".format(self.image_index), bbox_inches='tight', aspect='normal')
+        self.image_index += 1
 
 
     def on_update(self):

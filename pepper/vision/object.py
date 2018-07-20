@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-import yaml
+import json
 
 from io import BytesIO
 import socket
@@ -37,7 +37,7 @@ class ObjectClassifyClient:
         s.connect(self.address)
         s.sendall(jpeg_size)
         s.sendall(jpeg)
-        response = yaml.load(s.recv(4096).decode())
+        response = json.loads(s.recv(4096).decode())
         return response
 
     def _convert_to_jpeg(self, image):
