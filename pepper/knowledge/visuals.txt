@@ -1,6 +1,6 @@
 @prefix gaf: <http://groundedannotationframework.org/gaf#> .
 @prefix grasp: <http://groundedannotationframework.org/grasp#> .
-@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
 @prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
 @prefix leolaniTime: <http://cltl.nl/leolani/time/> .
 @prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
@@ -18,64 +18,59 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 leolaniTalk:Perspectives {
-    leolaniTalk:chat5_turn1_char0-27 a grasp:Mention ;
-        grasp:containsDenotation leolaniWorld:Lenka,
-            leolaniWorld:Serbia ;
-        grasp:denotes leolaniWorld:Lenka_is_from_Serbia ;
-        grasp:hasAttribution leolaniTalk:chat5_turn1_char0-27_CERTAIN ;
-        grasp:wasAttributedTo leolaniFriends:Selene ;
-        prov:wasDerivedFrom leolaniTalk:chat5,
-            leolaniTalk:chat5_turn1 .
+    leolaniTalk:visual1_object1_pixel0-15-0-15 a grasp:Mention ;
+        grasp:containsDenotation leolaniWorld:Leolani,
+            leolaniWorld:Refrigerator ;
+        grasp:denotes leolaniWorld:Leolani_saw_Refrigerator ;
+        grasp:hasAttribution leolaniTalk:visual1_object1_pixel0-15-0-15_CERTAIN ;
+        grasp:wasAttributedTo leolaniInputs:FrontCamera ;
+        prov:wasDerivedFrom leolaniTalk:visual1,
+            leolaniTalk:visual1_element1 .
 
-    leolaniTalk:chat5_turn1_char0-27_CERTAIN a grasp:Attribution ;
-        grasp:isAttributionFor leolaniTalk:chat5_turn1_char0-27 ;
+    leolaniTalk:visual1_object1_pixel0-15-0-15_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:visual1_object1_pixel0-15-0-15 ;
         rdf:value grasp:CERTAIN .
 }
 
 leolaniWorld:Claims {
-    leolaniWorld:Lenka_is_from_Serbia a grasp:Instance,
-            grasp:Statement,
+    leolaniWorld:Leolani_saw_Refrigerator a grasp:Instance,
+            grasp:Experience,
             sem:Event .
 }
 
 leolaniWorld:Instances {
-    leolaniWorld:Lenka a n2mu:Person,
-            grasp:Instance ;
-        rdfs:label "Lenka" ;
-        grasp:denotedIn leolaniTalk:chat5_turn1_char0-27 .
-
-    leolaniWorld:Lenka_is_from_Serbia grasp:denotedBy leolaniTalk:chat5_turn1_char0-27 ;
-        sem:hasActor leolaniFriends:Selene ;
+    leolaniWorld:Leolani_saw_Refrigerator grasp:denotedBy leolaniTalk:visual1_object1_pixel0-15-0-15 ;
+        sem:hasActor leolaniInputs:FrontCamera ;
         sem:hasTime <http://cltl.nl/leolani/time/2018-07-11> .
 
     leolaniWorld:Leolani a n2mu:Robot,
             grasp:Instance ;
         rdfs:label "Leolani" .
 
-    leolaniWorld:Serbia a n2mu:Location,
+    leolaniWorld:Refrigerator a n2mu:Information_Appliance,
             grasp:Instance ;
-        rdfs:label "Serbia" ;
-        grasp:denotedIn leolaniTalk:chat5_turn1_char0-27 .
+        rdfs:label "Refrigerator" ;
+        grasp:denotedIn leolaniTalk:visual1_object1_pixel0-15-0-15 .
 }
 
-leolaniWorld:Lenka_is_from_Serbia {
-    leolaniWorld:Lenka n2mu:is_from leolaniWorld:Serbia .
+leolaniWorld:Leolani_saw_Refrigerator {
+    leolaniWorld:Leolani n2mu:saw leolaniWorld:Refrigerator .
 }
 
-leolaniTalk:Interactions {
-    leolaniTalk:chat5 a grasp:Chat,
-            sem:Event ;
-        n2mu:id 5 ;
-        sem:hasActor leolaniFriends:Selene ;
-        sem:hasSubevent leolaniTalk:chat5_turn1 ;
-        sem:hasTime <http://cltl.nl/leolani/time/2018-07-11> .
-
-    leolaniWorld:Leolani n2mu:knows leolaniFriends:Selene .
-
-    leolaniTalk:chat5_turn1 a grasp:Turn,
+leolaniTalk:Sensors {
+    leolaniTalk:visual1 a grasp:Visual,
             sem:Event ;
         n2mu:id 1 ;
-        sem:hasActor leolaniFriends:Selene ;
+        sem:hasActor leolaniInputs:FrontCamera ;
+        sem:hasSubevent leolaniTalk:visual1_element1 ;
+        sem:hasTime <http://cltl.nl/leolani/time/2018-07-11> .
+
+    leolaniWorld:Leolani n2mu:sense leolaniTalk:visual1 .
+
+    leolaniTalk:visual1_element1 a grasp:Object,
+            sem:Event ;
+        n2mu:id 1 ;
+        sem:hasActor leolaniInputs:FrontCamera ;
         sem:hasTime <http://cltl.nl/leolani/time/2018-07-11> .
 
     <http://cltl.nl/leolani/time/2018-07-11> a time:DateTimeDescription ;
@@ -84,8 +79,8 @@ leolaniTalk:Interactions {
         time:unitType time:unitDay ;
         time:year "2018"^^xml1:gYear .
 
-    leolaniFriends:Selene a grasp:Instance,
+    leolaniInputs:FrontCamera a grasp:Instance,
             sem:Actor ;
-        rdfs:label "Selene" .
+        rdfs:label "Front Camera" .
 }
 

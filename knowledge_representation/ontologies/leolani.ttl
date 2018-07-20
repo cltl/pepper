@@ -201,6 +201,7 @@ n2mu:perceive rdf:type owl:ObjectProperty ;
 ###  http://cltl.nl/leolani/n2mu/sense
 n2mu:sense rdf:type owl:ObjectProperty ;
            rdfs:subPropertyOf n2mu:perceive ;
+           rdfs:domain n2mu:Agent ;
            rdfs:range n2mu:Sound ,
                       n2mu:Visual .
 

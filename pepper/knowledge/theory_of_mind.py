@@ -1,7 +1,7 @@
-import subprocess
 import json
 import requests
 import os
+import random
 
 from rdflib import Dataset, Graph, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
@@ -9,6 +9,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 from pepper.knowledge.brainFacts import statements
 from pepper.knowledge.brainQuestions import questions
+from pepper.knowledge.visuals import VISUALS
 
 REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
 LOCAL_BRAIN = "http://localhost:7200/repositories/leolani"
@@ -60,7 +61,7 @@ class TheoryOfMind(object):
 
         self.my_uri = None
 
-    #################################### Main functions to interact with the object ####################################
+    #################################### Main functions to interact with the brain ####################################
 
     def update(self, parsed_statement):
         """
@@ -72,8 +73,8 @@ class TheoryOfMind(object):
         # Create graphs and triples
         self._model_graphs_(parsed_statement)
 
-        PATH = os.path.join(os.path.dirname(__file__), '../../knowledge_representation/brainOutput/learned_facts')
-        data = self._serialize(PATH)
+        path = os.path.join(os.path.dirname(__file__), '../../knowledge_representation/brainOutput/learned_facts')
+        data = self._serialize(path)
 
         code = self._upload_to_brain(data)
 
@@ -103,6 +104,22 @@ class TheoryOfMind(object):
 
         return output
 
+    def process_visual(self, item):
+        if item in self.get_classes():
+            # If this is in the ontology already, create sensor triples directly
+            print('I know about %s, I will remember this object' % item)
+        else:
+            # Query the web for information
+            class_type, description = self.get_type_description(item)
+            if class_type is not None:
+                # Had to learn it, but I can create triples now
+                print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
+                      'I will remember this object' % (item, class_type))
+            else:
+                # Failure, nothing found
+                print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
+
+    ########## management system for keeping track of chats and turns ##########
     def get_last_chat_id(self):
         """
         Get the id for the last interaction recorded
@@ -157,6 +174,34 @@ class TheoryOfMind(object):
 
         return last_turn
 
+    ########## brain structure exploration ##########
+    def get_predicates(self):
+        query = """
+            select distinct ?p where { 
+            ?s ?p ?o .
+            FILTER(regex(str(?p), "n2mu")) .
+        } ORDER BY str(?p)
+        """
+
+        response = self._submit_query(query)
+        predicates = [elem['p']['value'].split('/')[-1] for elem in response]
+
+        return predicates
+
+    def get_classes(self):
+        query = """
+            select distinct ?o where { 
+            ?s a ?o .
+            FILTER(regex(str(?o), "n2mu")) .
+        } ORDER BY (str(?p))
+        """
+
+        response = self._submit_query(query)
+        classes = [elem['o']['value'].split('/')[-1] for elem in response]
+
+        return classes
+
+    ########## learned facts exploration ##########
     def count_statements(self):
         """
 
@@ -196,7 +241,7 @@ class TheoryOfMind(object):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        
+
             select distinct ?name where { 
                 ?act rdf:type sem:Actor .
                 ?act rdfs:label ?name
@@ -207,32 +252,6 @@ class TheoryOfMind(object):
         friends = [elem['name']['value'].split('/')[-1] for elem in response]
 
         return friends
-
-    def get_predicates(self):
-        query = """
-            select distinct ?p where { 
-            ?s ?p ?o .
-            FILTER(regex(str(?p), "n2mu")) .
-        } ORDER BY str(?p)
-        """
-
-        response = self._submit_query(query)
-        predicates = [elem['p']['value'].split('/')[-1] for elem in response]
-
-        return predicates
-
-    def get_classes(self):
-        query = """
-            select distinct ?o where { 
-            ?s a ?o .
-            FILTER(regex(str(?o), "n2mu")) .
-        } ORDER BY (str(?p))
-        """
-
-        response = self._submit_query(query)
-        classes = [elem['o']['value'].split('/')[-1] for elem in response]
-
-        return classes
 
     def get_best_friends(self):
         query = """
@@ -309,38 +328,17 @@ class TheoryOfMind(object):
 
         return triples
 
-    def get_conflicts_with_predicate(self, one_to_one_predicate):
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select ?sname (group_concat(distinct ?oname ; separator=";") as ?onames) where { 
-                ?s n2mu:%s ?o .
-                ?s rdfs:label ?sname .
-                ?o rdfs:label ?oname
-            } group by ?sname having (count(distinct ?oname) > 1)
-        """ % one_to_one_predicate
-
-        response = self._submit_query(query)
-        conflicts = []
-        for item in response:
-            conflict = {}
-            conflict['subject'] = item['sname']['value']
-            conflict['predicate'] = one_to_one_predicate
-            conflict['objects'] = item['onames']['value'].split(';')
-            conflicts.append(conflict)
-
-        return conflicts
-
+    ########## conflicts ##########
     def get_all_conflicts(self):
 
         conflicts = []
 
         for predicate in ONE_TO_ONE_PREDICATES:
-            conflicts.extend(self.get_conflicts_with_predicate(predicate))
+            conflicts.extend(self._get_conflicts_with_predicate(predicate))
 
-        return len(conflicts), conflicts
+        return conflicts
 
+    ########## semantic web ##########
     def get_type_description(self, item):
         query = """
             PREFIX dbo: <http://dbpedia.org/ontology/>
@@ -366,8 +364,13 @@ class TheoryOfMind(object):
         """ % item
 
         response = self._submit_query(query)
-        class_type = response[0]['label_type']['value']
-        description = response[0]['description']['value'].split('.')[0]
+
+        if response:
+            class_type = response[0]['label_type']['value']
+            description = response[0]['description']['value'].split('.')[0]
+        else:
+            class_type = None
+            description = None
 
         return class_type, description
 
@@ -844,9 +847,181 @@ class TheoryOfMind(object):
 
         return response["results"]["bindings"]
 
+    ########################################## Helpers for sensor processing ##########################################
+    def _create_leolani_world_sens(self, sensed_visual):
+        # Instance graph
+        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
+        instance_graph = self.dataset.graph(instance_graph_uri)
+
+        # Subject
+        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
+
+        # Object
+        if sensed_visual['object']['type'] == '':  # We only get the label
+            object_vocab = OWL
+            object_type = 'Thing'
+        else:
+            object_vocab = self.namespaces['N2MU']
+            object_type = sensed_visual['object']['type'].capitalize()
+
+        object_id = casefold_label(sensed_visual['object']['label'], object_type)
+
+        object = URIRef(to_iri(self.namespaces['LW'] + object_id))
+        object_label = Literal(object_id)
+        object_type1 = URIRef(to_iri(object_vocab + object_type))
+        object_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+
+        instance_graph.add((object, RDFS.label, object_label))
+        instance_graph.add((object, RDF.type, object_type1))
+        instance_graph.add((object, RDF.type, object_type2))
+
+        claim_graph, experience = self._create_claim_graph_sens(leolani, 'Leolani', object, object_label)
+
+        return instance_graph, claim_graph, leolani, object, experience
+
+    def _create_claim_graph_sens(self, subject, subject_label, object, object_label):
+        # Claim graph
+        claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
+        claim_graph = self.dataset.graph(claim_graph_uri)
+
+        # Predicate
+        predicate = 'saw'
+
+        # Statement
+        experience_id = hash_statement_id([subject_label, predicate, object_label])
+
+        experience = URIRef(to_iri(self.namespaces['LW'] + experience_id))
+        experience_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Experience'))
+        experience_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+        experience_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+
+        # Create graph and add triple
+        graph = self.dataset.graph(experience)
+        graph.add((subject, self.namespaces['N2MU'][predicate], object))
+
+        claim_graph.add((experience, RDF.type, experience_type1))
+        claim_graph.add((experience, RDF.type, experience_type2))
+        claim_graph.add((experience, RDF.type, experience_type3))
+
+        return claim_graph, experience
+
+    def _create_leolani_talk_sens(self, sensed_visual, leolani):
+        # Interaction graph
+        interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Sensors'))
+        interaction_graph = self.dataset.graph(interaction_graph_uri)
+
+        # Time
+        date = sensed_visual["date"]
+        time = URIRef(to_iri(self.namespaces['LTi'] + str(sensed_visual["date"].isoformat())))
+        time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
+        day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
+        month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
+        year = Literal(date.year, datatype=self.namespaces['XML']['gYear'])
+        time_unitType = URIRef(to_iri(self.namespaces['TIME'] + 'unitDay'))
+
+        interaction_graph.add((time, RDF.type, time_type))
+        interaction_graph.add((time, self.namespaces['TIME']['day'], day))
+        interaction_graph.add((time, self.namespaces['TIME']['month'], month))
+        interaction_graph.add((time, self.namespaces['TIME']['year'], year))
+        interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
+
+        # Actor
+        actor_id = sensed_visual['author'].capitalize()
+        actor_label = sensed_visual['author'].capitalize()
+
+        actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
+        actor_label = Literal(actor_label)
+        actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
+        actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+
+        interaction_graph.add((actor, RDFS.label, actor_label))
+        interaction_graph.add((actor, RDF.type, actor_type1))
+        interaction_graph.add((actor, RDF.type, actor_type2))
+
+        # TODO Add leolani sensed event
+        interaction_graph.add((leolani, self.namespaces['N2MU']['sense'], actor))
+
+        # Chat and turn
+        chat_id = self.create_chat_id(actor_label, date)
+        chat_label = 'chat%s' % chat_id
+        turn_id = self.create_turn_id(chat_id)
+        turn_label = chat_label + '_turn%s' % turn_id
+
+        turn = URIRef(to_iri(self.namespaces['LTa'] + turn_label))
+        turn_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+        turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Turn'))
+
+        interaction_graph.add((turn, RDF.type, turn_type1))
+        interaction_graph.add((turn, RDF.type, turn_type2))
+        interaction_graph.add((turn, self.namespaces['N2MU']['id'], Literal(turn_id)))
+        interaction_graph.add((turn, self.namespaces['SEM']['hasActor'], actor))
+        interaction_graph.add((turn, self.namespaces['SEM']['hasTime'], time))
+
+        chat = URIRef(to_iri(self.namespaces['LTa'] + chat_label))
+        chat_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+        chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Chat'))
+
+        interaction_graph.add((chat, RDF.type, chat_type1))
+        interaction_graph.add((chat, RDF.type, chat_type2))
+        interaction_graph.add((chat, self.namespaces['N2MU']['id'], Literal(chat_id)))
+        interaction_graph.add((chat, self.namespaces['SEM']['hasActor'], actor))
+        interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
+        interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
+
+        perspective_graph, mention, attribution = self._create_perspective_graph(sensed_visual, turn_label)
+
+        # Link interactions and perspectives
+        perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
+        perspective_graph.add((mention, self.namespaces['GRASP']['hasAttribution'], attribution))
+        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], chat))
+        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], turn))
+
+        return interaction_graph, perspective_graph, actor, time, mention, attribution
+
+
+    ######################################### Helpers for conflict processing #########################################
+    def _get_conflicts_with_predicate(self, one_to_one_predicate):
+        query = """
+            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+
+            select ?sname 
+                    (group_concat(?oname ; separator=";") as ?onames) 
+                    (group_concat(?authorlabel ; separator=";") as ?authorlabels) 
+            where { 
+                GRAPH ?g {
+                    ?s n2mu:%s ?o .
+                    } .
+                ?s rdfs:label ?sname .
+                ?o rdfs:label ?oname .
+
+                ?g grasp:denotedBy ?m . 
+                ?m grasp:wasAttributedTo ?author . 
+                ?author rdfs:label ?authorlabel .
+
+            } group by ?sname having (count(distinct ?oname) > 1)
+        """ % one_to_one_predicate
+
+        response = self._submit_query(query)
+        conflicts = []
+        for item in response:
+            conflict = {'subject': item['sname']['value'], 'predicate': one_to_one_predicate, 'objects': []}
+
+            values = item['onames']['value'].split(';')
+            authors = item['authorlabels']['value'].split(';')
+
+            for val, auth in zip(values, authors):
+                option = {'value': val, 'author': auth}
+                conflict['objects'].append(option)
+
+            conflicts.append(conflict)
+
+        return conflicts
+
 
 def casefold_label(instance, type):
-    if type in ('Actor', 'Agent', 'Robot', 'Person', 'Location'):
+    if type in ('Actor', 'Agent', 'Robot', 'Person', 'Location', 'Information_appliance'):
         instance.capitalize()
 
     return instance
@@ -861,8 +1036,32 @@ def hash_statement_id(triple, debug=False):
     return temp
 
 
-def phrase_conflicts(number_conflicts, conflicts):
-    say = 'I have %s conflicts in my brain.' % number_conflicts
+# TODO to be moved to NLP layer
+def phrase_conflicts(conflicts):
+    say = 'I have %s conflicts in my brain.' % len(conflicts)
+
+    conflict = random.choice(conflicts)
+
+    # Conflict of subject
+    if len(conflict['objects']) > 1:
+        options = ['%s like %s told me' % (item['value'], item['author']) for item in conflict['objects']]
+        options = ' or '.join(options)
+        predicate = conflict['predicate'].replace('_', ' ')
+        subject = 'I' if conflict['subject'] == 'Leolani' else conflict['subject']
+
+        say = say + ' For example, I do not know if %s %s %s'% (subject, predicate, options)
+
+    return say
+
+
+def sensor_info():
+    # try coco first, else try imagenet
+    # if web recognizes, then
+    # create triples of sensor
+    # phrase what I have seen (I see a fridge, which is choice type or description)
+    # if web does not recognize, say idk
+    # maybe ask type and store
+    pass
 
 
 if __name__ == "__main__":
@@ -872,8 +1071,12 @@ if __name__ == "__main__":
     # Rebuild
     # brain._rebuild_brain_base()
 
-    print(brain.get_all_conflicts())
+    # print(json.dumps(brain.get_all_conflicts(), indent=4, sort_keys=False))
+    # print(phrase_conflicts(brain.get_all_conflicts()))
 
-    # print(brain.get_type_description('Refrigerator'))
+    # print(json.dumps(brain.get_type_description('tv'), indent=4, sort_keys=False))
+    for visual in VISUALS:
+        for item in visual:
+            brain.process_visual(item)
 
 
