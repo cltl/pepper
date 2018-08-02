@@ -1,4 +1,4 @@
-from pepper.framework.abstract import BaseApp, AbstractIntention
+from pepper.framework import BaseApp, AbstractIntention
 from pepper.framework.system import *
 from pepper.sensor.asr import GoogleASR
 from pepper.sensor.face import OpenFace

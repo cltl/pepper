@@ -24,4 +24,5 @@ class NaoqiMicrophoneIndex(IntEnum):
     REAR = 4
 
 
+from .app import BaseApp
 from .abstract import *

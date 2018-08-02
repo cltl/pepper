@@ -8210,3 +8210,36 @@
 08/02/18 13:03:47 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
 08/02/18 13:03:47 INFO     VerboseApp                on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
 08/02/18 13:03:47 INFO     VerboseApp                on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 13:47:32 DEBUG    SystemCamera              Booted
+08/02/18 13:47:32 DEBUG    OpenFace                  Booted
+08/02/18 13:47:32 DEBUG    SystemMicrophone          Booted
+08/02/18 13:47:32 DEBUG    GoogleASR                 Booted
+08/02/18 13:47:32 DEBUG    SystemTextToSpeech        Booted
+08/02/18 13:47:32 DEBUG    VAD                       Booted
+08/02/18 13:47:32 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/02/18 13:47:33 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:33 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:34 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:34 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:34 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 13:47:34 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:35 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:35 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 13:47:35 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:35 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:35 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 13:47:35 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:36 INFO     VerboseApp                on_face: FaceBounds(107.00,31.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:47:36 INFO     VerboseApp                on_face_known: FaceBounds(107.00,31.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:47:36 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:36 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:36 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 13:47:36 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:37 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:37 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 13:47:37 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:37 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:37 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 13:47:37 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:47:38 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/02/18 13:47:38 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
