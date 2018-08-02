@@ -6,8 +6,8 @@ This is the (WIP) repository for CLTL Pepper/Nao Applications.
 #### (To Be Implemented) Features
 - [x] Object-Oriented wrapper around nao(qi)
 - [x] Creating apps that run both on the robot and on host machine
-- [ ] Framework for creating BDI applications
-- [ ] Machine Learning necessary for Human-Robot conversation
+- [x] Framework for creating BDI applications
+- [x] Machine Learning necessary for Human-Robot conversation
 - [ ] Realtime (interactive?) visualisation of BDI state in web browser
 
 
@@ -26,6 +26,7 @@ Please make sure the ``PYTHONPATH`` environment variable reflects the location o
 The [Google Cloud Speech-to-Text API](https://cloud.google.com/speech-to-text/) is used as Speech Recognition solution for this project.
 Please refer to their website for licencing and installation instructions.
 It is of course possible to use a different Automatic Speech Recognition (ASR) solution, if you wish!
+Call ``pip install google-cloud-speech`` in order to install the required libaries.
 
 ##### 4: OpenFace (Docker)
 Face recognition in this project is done using the open source OpenFace project ([Site](http://cmusatyalab.github.io/openface/), [Git](https://github.com/cmusatyalab/openface)),

@@ -7576,3 +7576,637 @@
 07/19/18 16:38:08 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
 07/19/18 16:38:09 INFO     VerboseApp                on_face: FaceBounds(134.00,45.00,64.00,63.00): 4032.00 (128,)
 07/19/18 16:38:09 INFO     VerboseApp                on_face_known: FaceBounds(134.00,45.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 11:35:05 DEBUG    SystemCamera              Booted
+07/20/18 11:35:05 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+07/20/18 11:36:18 DEBUG    SystemCamera              Booted
+07/20/18 11:36:18 DEBUG    OpenFace                  Booted
+07/20/18 11:36:18 DEBUG    SystemMicrophone          Booted
+07/20/18 11:36:18 DEBUG    SystemTextToSpeech        Booted
+07/20/18 11:36:18 DEBUG    VAD                       Booted
+07/20/18 11:36:18 DEBUG    VerboseApp                Booted -> AbstractIntention
+07/20/18 11:36:24 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:36:25 INFO     VerboseApp                on_utterance: 7.77s
+07/20/18 11:36:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:36:26 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:36:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:36:26 INFO     VerboseApp                on_utterance: 1.70s
+07/20/18 11:36:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:36:26 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:36:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:36:27 INFO     VerboseApp                on_transcript: [[u'so', 0.9277327656745911], [u'sow', 0.5433187484741211], [u'sew', 0.5433187484741211], [u'Soho', 0.5433187484741211], [u'show', 0.5433187484741211], [u'no', 0.5433187484741211], [u'soooo', 0.5433187484741211], [u'Sue', 0.5433187484741211], [u'solo', 0.5433187484741211]]
+07/20/18 11:36:28 INFO     VerboseApp                on_utterance: 2.35s
+07/20/18 11:36:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:36:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:36:28 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:40:47 DEBUG    SystemCamera              Booted
+07/20/18 11:40:47 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+07/20/18 11:40:54 DEBUG    OpenFace                  Booted
+07/20/18 11:40:54 DEBUG    SystemMicrophone          Booted
+07/20/18 11:40:54 DEBUG    SystemTextToSpeech        Booted
+07/20/18 11:40:54 DEBUG    VAD                       Booted
+07/20/18 11:40:54 DEBUG    VerboseApp                Booted -> AbstractIntention
+07/20/18 11:40:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:56 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:56 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:57 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:57 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:58 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:58 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:59 INFO     VerboseApp                on_utterance: 5.00s
+07/20/18 11:40:59 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:40:59 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:40:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:59 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:40:59 INFO     VerboseApp                on_face: FaceBounds(114.00,5.00,91.00,91.00): 8281.00 (128,)
+07/20/18 11:40:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:40:59 INFO     VerboseApp                on_face: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,)
+07/20/18 11:40:59 INFO     VerboseApp                on_face_known: FaceBounds(112.00,38.00,75.00,75.00): 5625.00 (128,) Bram
+07/20/18 11:41:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:00 INFO     VerboseApp                on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
+07/20/18 11:41:00 INFO     VerboseApp                on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 11:41:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:00 INFO     VerboseApp                on_transcript: [[u'and then unity', 0.9166375398635864], [u'and then you know', 0.6237794756889343], [u'indemnity', 0.5433187484741211], [u'and then you Nicky', 0.6243165731430054], [u'and then we', 0.7368939518928528], [u'and then', 0.893712043762207], [u'and then nothing', 0.7505414485931396], [u'and then uniti', 0.7512129545211792], [u'NM unit', 0.4011230170726776], [u'and then you', 0.7291490435600281]]
+07/20/18 11:41:00 INFO     VerboseApp                on_face: FaceBounds(134.00,66.00,64.00,63.00): 4032.00 (128,)
+07/20/18 11:41:00 INFO     VerboseApp                on_face_known: FaceBounds(134.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 11:41:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:01 INFO     VerboseApp                on_face: FaceBounds(121.00,73.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:01 INFO     VerboseApp                on_face_known: FaceBounds(121.00,73.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:01 INFO     VerboseApp                on_face: FaceBounds(121.00,73.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:01 INFO     VerboseApp                on_face_known: FaceBounds(121.00,73.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:02 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:02 INFO     VerboseApp                on_face: FaceBounds(127.00,73.00,64.00,63.00): 4032.00 (128,)
+07/20/18 11:41:02 INFO     VerboseApp                on_face_known: FaceBounds(127.00,73.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 11:41:02 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:02 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:02 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:03 INFO     VerboseApp                on_utterance: 5.04s
+07/20/18 11:41:03 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:41:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:41:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:41:03 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:03 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:03 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:03 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:03 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:04 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:04 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:04 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:04 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:04 INFO     VerboseApp                on_transcript: [[u'hey Siri go is like a thing so', 0.724646806716919], [u'so it goes like a thing so', 0.6226527690887451], [u'Siri go is like a thing so', 0.7578559517860413], [u'Siri goes like a thing so', 0.6804653406143188], [u'so here we go is like a thing so', 0.6131378412246704], [u"so here we go it's like a thing so", 0.5788887739181519], [u'Ciara go is like a thing so', 0.7483850121498108], [u'whoever goes like a thing so', 0.6716350317001343], [u'Siri Guru Singh so', 0.43830928206443787], [u'Harry goes like a thing so', 0.6696414351463318]]
+07/20/18 11:41:04 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:04 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:05 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:05 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:05 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:05 INFO     VerboseApp                on_utterance: 3.22s
+07/20/18 11:41:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:41:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:41:05 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:05 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:41:05 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:05 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:06 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:06 INFO     VerboseApp                on_face: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 11:41:06 INFO     VerboseApp                on_face_known: FaceBounds(121.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 11:41:06 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 11:41:06 INFO     VerboseApp                on_face: FaceBounds(127.00,80.00,64.00,63.00): 4032.00 (128,)
+07/20/18 11:41:06 INFO     VerboseApp                on_face_known: FaceBounds(127.00,80.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 11:42:46 DEBUG    SystemCamera              Booted
+07/20/18 11:42:46 DEBUG    OpenFace                  Booted
+07/20/18 11:42:46 DEBUG    SystemMicrophone          Booted
+07/20/18 11:42:46 DEBUG    SystemTextToSpeech        Booted
+07/20/18 11:42:46 DEBUG    VAD                       Booted
+07/20/18 11:42:46 DEBUG    SystemApp                 Booted -> IdleIntention
+07/20/18 11:42:47 INFO     SystemTextToSpeech        Hello, Bram
+07/20/18 11:42:47 INFO     SystemApp                 Switch Intention: IdleIntention -> QnAIntention
+07/20/18 11:42:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:42:52 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:42:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:42:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:42:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:42:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:42:54 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): api.wolframalpha.com
+07/20/18 11:42:54 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): api.wolframalpha.com
+07/20/18 11:42:55 DEBUG    urllib3.connectionpool    https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=hello HTTP/1.1" 200 None
+07/20/18 11:42:55 INFO     SystemTextToSpeech        Hello, human
+07/20/18 11:42:56 DEBUG    urllib3.connectionpool    https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=is+my+face HTTP/1.1" 200 None
+07/20/18 11:42:56 INFO     SystemTextToSpeech        The face is a central body region of sense and is also very central in the expression of emotion among humans and among numerous other species.
+07/20/18 11:42:57 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:42:57 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:42:57 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:44:28 DEBUG    SystemCamera              Booted
+07/20/18 11:44:28 DEBUG    OpenFace                  Booted
+07/20/18 11:44:28 DEBUG    SystemMicrophone          Booted
+07/20/18 11:44:28 DEBUG    SystemTextToSpeech        Booted
+07/20/18 11:44:28 DEBUG    VAD                       Booted
+07/20/18 11:44:28 DEBUG    SystemApp                 Booted -> IdleIntention
+07/20/18 11:44:29 INFO     SystemTextToSpeech        Hello, Bram
+07/20/18 11:44:29 INFO     SystemApp                 Switch Intention: IdleIntention -> QnAIntention
+07/20/18 11:44:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:44:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:44:33 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:44:34 INFO     SystemApp                 how high is the Eiffel Tower
+07/20/18 11:44:34 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): api.wolframalpha.com
+07/20/18 11:44:36 DEBUG    urllib3.connectionpool    https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=how+high+is+the+Eiffel+Tower HTTP/1.1" 200 None
+07/20/18 11:44:36 INFO     SystemTextToSpeech        The answer is about 324 meters
+07/20/18 11:50:26 DEBUG    SystemCamera              Booted
+07/20/18 11:50:26 DEBUG    OpenFace                  Booted
+07/20/18 11:50:26 DEBUG    SystemMicrophone          Booted
+07/20/18 11:50:26 DEBUG    SystemTextToSpeech        Booted
+07/20/18 11:50:26 DEBUG    VAD                       Booted
+07/20/18 11:50:26 DEBUG    SystemApp                 Booted -> IdleIntention
+07/20/18 11:50:27 INFO     SystemTextToSpeech        Hello, Bram
+07/20/18 11:50:27 INFO     SystemApp                 Switch Intention: IdleIntention -> QnAIntention
+07/20/18 11:50:32 INFO     VAD                       Utterance 6.39s
+07/20/18 11:50:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 11:50:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 11:50:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 11:50:33 INFO     GoogleASR                 how high is the Eiffel Tower
+07/20/18 11:50:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): api.wolframalpha.com
+07/20/18 11:50:35 DEBUG    urllib3.connectionpool    https://api.wolframalpha.com:443 "GET /v1/spoken?appid=LA3GP6-VJ8KK8Y36A&i=how+high+is+the+Eiffel+Tower HTTP/1.1" 200 None
+07/20/18 11:50:35 INFO     SystemTextToSpeech        The answer is about 324 meters
+07/20/18 13:26:29 DEBUG    SystemCamera              Booted
+07/20/18 13:26:29 DEBUG    OpenFace                  Booted
+07/20/18 13:26:29 DEBUG    SystemMicrophone          Booted
+07/20/18 13:26:29 DEBUG    GoogleASR                 Booted
+07/20/18 13:26:29 DEBUG    SystemTextToSpeech        Booted
+07/20/18 13:26:29 DEBUG    VAD                       Booted
+07/20/18 13:26:29 DEBUG    VerboseApp                Booted -> AbstractIntention
+07/20/18 13:26:30 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:30 INFO     VerboseApp                on_face: FaceBounds(89.00,60.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:30 INFO     VerboseApp                on_face_known: FaceBounds(89.00,60.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:30 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:30 INFO     VerboseApp                on_face: FaceBounds(86.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:30 INFO     VerboseApp                on_face_known: FaceBounds(86.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:31 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:31 INFO     VerboseApp                on_face: FaceBounds(86.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:31 INFO     VerboseApp                on_face_known: FaceBounds(86.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:31 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:31 INFO     VerboseApp                on_face: FaceBounds(100.00,60.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:31 INFO     VerboseApp                on_face_known: FaceBounds(100.00,60.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:32 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut', u'person']
+07/20/18 13:26:32 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:32 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:32 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:32 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:32 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:33 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:33 INFO     VerboseApp                on_face: FaceBounds(95.00,78.00,52.00,53.00): 2756.00 (128,)
+07/20/18 13:26:33 INFO     VerboseApp                on_face_known: FaceBounds(95.00,78.00,52.00,53.00): 2756.00 (128,) Bram
+07/20/18 13:26:33 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:33 INFO     VerboseApp                on_face: FaceBounds(107.00,89.00,45.00,44.00): 1980.00 (128,)
+07/20/18 13:26:33 INFO     VerboseApp                on_face_known: FaceBounds(107.00,89.00,45.00,44.00): 1980.00 (128,) Bram
+07/20/18 13:26:34 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:34 INFO     VerboseApp                on_face: FaceBounds(106.00,89.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:34 INFO     VerboseApp                on_face_known: FaceBounds(106.00,89.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:34 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:34 INFO     VerboseApp                on_face: FaceBounds(106.00,78.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:34 INFO     VerboseApp                on_face_known: FaceBounds(106.00,78.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:35 INFO     VAD                       Utterance 6.39s
+07/20/18 13:26:35 INFO     VerboseApp                on_utterance: 6.39s
+07/20/18 13:26:35 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:35 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 13:26:35 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 13:26:35 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:35 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:35 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 13:26:35 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:35 INFO     VerboseApp                on_face: FaceBounds(95.00,46.00,76.00,76.00): 5776.00 (128,)
+07/20/18 13:26:35 INFO     VerboseApp                on_face_known: FaceBounds(95.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+07/20/18 13:26:36 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:36 INFO     VerboseApp                on_face: FaceBounds(95.00,46.00,76.00,76.00): 5776.00 (128,)
+07/20/18 13:26:36 INFO     VerboseApp                on_face_known: FaceBounds(95.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+07/20/18 13:26:36 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:36 INFO     VerboseApp                on_face: FaceBounds(100.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:36 INFO     VerboseApp                on_face_known: FaceBounds(100.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:37 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:37 INFO     VerboseApp                on_face: FaceBounds(93.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:37 INFO     VerboseApp                on_face_known: FaceBounds(93.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:37 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:38 INFO     VerboseApp                on_face: FaceBounds(93.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:38 INFO     VerboseApp                on_face_known: FaceBounds(93.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:38 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:38 INFO     VerboseApp                on_face: FaceBounds(86.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:38 INFO     VerboseApp                on_face_known: FaceBounds(86.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:38 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:38 INFO     VerboseApp                on_face: FaceBounds(95.00,72.00,52.00,53.00): 2756.00 (128,)
+07/20/18 13:26:38 INFO     VerboseApp                on_face_known: FaceBounds(95.00,72.00,52.00,53.00): 2756.00 (128,) Bram
+07/20/18 13:26:39 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'teddy bear']
+07/20/18 13:26:39 INFO     VerboseApp                on_face: FaceBounds(95.00,72.00,52.00,53.00): 2756.00 (128,)
+07/20/18 13:26:39 INFO     VerboseApp                on_face_known: FaceBounds(95.00,72.00,52.00,53.00): 2756.00 (128,) Bram
+07/20/18 13:26:39 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'teddy bear']
+07/20/18 13:26:39 INFO     VerboseApp                on_face: FaceBounds(100.00,66.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:39 INFO     VerboseApp                on_face_known: FaceBounds(100.00,66.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:40 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:40 INFO     VerboseApp                on_face: FaceBounds(106.00,66.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:40 INFO     VerboseApp                on_face_known: FaceBounds(106.00,66.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:40 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:40 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:40 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:41 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:41 INFO     VerboseApp                on_face: FaceBounds(106.00,60.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:41 INFO     VerboseApp                on_face_known: FaceBounds(106.00,60.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:41 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:42 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:42 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:42 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:42 INFO     VerboseApp                on_face: FaceBounds(93.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:42 INFO     VerboseApp                on_face_known: FaceBounds(93.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:42 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:43 INFO     VerboseApp                on_face: FaceBounds(79.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:43 INFO     VerboseApp                on_face_known: FaceBounds(79.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:43 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:43 INFO     VerboseApp                on_face: FaceBounds(72.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:43 INFO     VerboseApp                on_face_known: FaceBounds(72.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:43 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:43 INFO     VerboseApp                on_face: FaceBounds(72.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:43 INFO     VerboseApp                on_face_known: FaceBounds(72.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:44 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:44 INFO     VerboseApp                on_face: FaceBounds(93.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:44 INFO     VerboseApp                on_face_known: FaceBounds(93.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:44 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:45 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:45 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:45 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'donut', u'person']
+07/20/18 13:26:45 INFO     VerboseApp                on_face: FaceBounds(107.00,38.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:45 INFO     VerboseApp                on_face_known: FaceBounds(107.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:45 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:46 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:46 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:46 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:46 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:46 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:46 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:47 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:47 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:47 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:47 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:47 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:47 INFO     VAD                       Utterance 13.45s
+07/20/18 13:26:47 INFO     VerboseApp                on_utterance: 13.45s
+07/20/18 13:26:47 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 13:26:47 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 13:26:47 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:47 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 13:26:48 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:48 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:48 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:48 INFO     VerboseApp                on_face: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:48 INFO     VerboseApp                on_face_known: FaceBounds(107.00,45.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:48 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:49 INFO     VerboseApp                on_face: FaceBounds(106.00,55.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:26:49 INFO     VerboseApp                on_face_known: FaceBounds(106.00,55.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:26:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:49 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:49 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:26:50 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:50 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:50 INFO     VAD                       Utterance 3.16s
+07/20/18 13:26:50 INFO     VerboseApp                on_utterance: 3.16s
+07/20/18 13:26:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 13:26:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 13:26:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 13:26:50 DEBUG    GoogleASR                 don't know
+07/20/18 13:26:50 INFO     VerboseApp                on_transcript: [[u"don't know", 0.9699060320854187], [u"I don't know", 0.7566123008728027], [u"don't no", 0.6855144500732422], [u"don't don't know", 0.7145395278930664]]
+07/20/18 13:26:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:50 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:50 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:51 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:51 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:51 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:51 DEBUG    GoogleASR                 I think there's a darkness
+07/20/18 13:26:51 INFO     VerboseApp                on_transcript: [[u"I think there's a darkness", 0.7937034964561462], [u'I think this Adonis', 0.6503718495368958], [u"I think it's a doughnut", 0.6551094055175781], [u'I think this is a doughnut', 0.5850244760513306], [u"I think it's a Darkness", 0.6873988509178162], [u"I think it's Adonis", 0.6379653811454773], [u'I think this is a day on Earth', 0.4777922034263611], [u'I think there is a day on Earth', 0.46682384610176086], [u'I think is Adonis', 0.6350835561752319], [u'I think it is Adonis', 0.5485154986381531]]
+07/20/18 13:26:51 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:51 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:51 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:52 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:52 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:52 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut', u'person']
+07/20/18 13:26:52 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:52 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:52 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut']
+07/20/18 13:26:53 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:53 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:53 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'donut', u'person']
+07/20/18 13:26:53 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:53 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:53 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:54 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:54 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:54 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:54 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:54 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:54 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:55 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:55 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person', u'donut']
+07/20/18 13:26:55 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:55 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:56 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:56 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:56 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:56 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:56 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:56 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person', u'donut']
+07/20/18 13:26:57 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:57 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:57 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:57 INFO     VerboseApp                on_face: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:57 INFO     VerboseApp                on_face_known: FaceBounds(100.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:57 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:58 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:58 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:58 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:58 INFO     VerboseApp                on_face: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:58 INFO     VerboseApp                on_face_known: FaceBounds(100.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:58 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:59 INFO     VerboseApp                on_face: FaceBounds(86.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:59 INFO     VerboseApp                on_face_known: FaceBounds(86.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:26:59 INFO     VerboseApp                on_face: FaceBounds(79.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:26:59 INFO     VerboseApp                on_face_known: FaceBounds(79.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:26:59 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:00 INFO     VerboseApp                on_face: FaceBounds(58.00,45.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:00 INFO     VerboseApp                on_face_known: FaceBounds(58.00,45.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:00 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:01 INFO     VerboseApp                on_face: FaceBounds(51.00,45.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:01 INFO     VerboseApp                on_face_known: FaceBounds(51.00,45.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:01 INFO     VerboseApp                on_face: FaceBounds(51.00,45.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:01 INFO     VerboseApp                on_face_known: FaceBounds(51.00,45.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:01 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:02 INFO     VerboseApp                on_face: FaceBounds(45.00,52.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:02 INFO     VerboseApp                on_face_known: FaceBounds(45.00,52.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:02 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:02 INFO     VerboseApp                on_face: FaceBounds(54.00,66.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:02 INFO     VerboseApp                on_face_known: FaceBounds(54.00,66.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:02 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:03 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:03 INFO     VerboseApp                on_face: FaceBounds(279.00,112.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:03 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:04 INFO     VerboseApp                on_face: FaceBounds(17.00,59.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:04 INFO     VerboseApp                on_face_known: FaceBounds(17.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:04 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:04 INFO     VerboseApp                on_face: FaceBounds(31.00,66.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:04 INFO     VerboseApp                on_face_known: FaceBounds(31.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:04 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:05 INFO     VerboseApp                on_face: FaceBounds(21.00,46.00,75.00,76.00): 5700.00 (128,)
+07/20/18 13:27:05 INFO     VerboseApp                on_face_known: FaceBounds(21.00,46.00,75.00,76.00): 5700.00 (128,) Bram
+07/20/18 13:27:05 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:05 INFO     VerboseApp                on_face: FaceBounds(48.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:05 INFO     VerboseApp                on_face_known: FaceBounds(48.00,83.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:06 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:06 INFO     VerboseApp                on_face: FaceBounds(60.00,89.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:06 INFO     VerboseApp                on_face_known: FaceBounds(60.00,89.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:06 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:06 INFO     VerboseApp                on_face: FaceBounds(95.00,95.00,52.00,53.00): 2756.00 (128,)
+07/20/18 13:27:06 INFO     VerboseApp                on_face_known: FaceBounds(95.00,95.00,52.00,53.00): 2756.00 (128,) Bram
+07/20/18 13:27:07 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:07 INFO     VerboseApp                on_face: FaceBounds(83.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:07 INFO     VerboseApp                on_face_known: FaceBounds(83.00,83.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:07 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+07/20/18 13:27:07 INFO     VerboseApp                on_face: FaceBounds(58.00,80.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:07 INFO     VerboseApp                on_face_known: FaceBounds(58.00,80.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:08 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:08 INFO     VerboseApp                on_face: FaceBounds(77.00,89.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:08 INFO     VerboseApp                on_face_known: FaceBounds(77.00,89.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:08 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:08 INFO     VerboseApp                on_face: FaceBounds(79.00,80.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:08 INFO     VerboseApp                on_face_known: FaceBounds(79.00,80.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:09 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:09 INFO     VerboseApp                on_face: FaceBounds(77.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:09 INFO     VerboseApp                on_face_known: FaceBounds(77.00,83.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:09 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:09 INFO     VerboseApp                on_face: FaceBounds(72.00,73.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:09 INFO     VerboseApp                on_face_known: FaceBounds(72.00,73.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:10 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:10 INFO     VerboseApp                on_face: FaceBounds(65.00,66.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:10 INFO     VerboseApp                on_face_known: FaceBounds(65.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:10 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:10 INFO     VerboseApp                on_face: FaceBounds(66.00,72.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:10 INFO     VerboseApp                on_face_known: FaceBounds(66.00,72.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:11 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:11 INFO     VerboseApp                on_face: FaceBounds(58.00,73.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:11 INFO     VerboseApp                on_face_known: FaceBounds(58.00,73.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:11 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:11 INFO     VerboseApp                on_face: FaceBounds(58.00,80.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:11 INFO     VerboseApp                on_face_known: FaceBounds(58.00,80.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:12 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:12 INFO     VerboseApp                on_face: FaceBounds(48.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:12 INFO     VerboseApp                on_face_known: FaceBounds(48.00,83.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:12 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:13 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:13 INFO     VerboseApp                on_face: FaceBounds(54.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:13 INFO     VerboseApp                on_face_known: FaceBounds(54.00,83.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:13 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:13 INFO     VerboseApp                on_face: FaceBounds(60.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:13 INFO     VerboseApp                on_face_new: FaceBounds(60.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:14 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:14 INFO     VerboseApp                on_face: FaceBounds(65.00,87.00,63.00,63.00): 3969.00 (128,)
+07/20/18 13:27:14 INFO     VerboseApp                on_face_known: FaceBounds(65.00,87.00,63.00,63.00): 3969.00 (128,) Bram
+07/20/18 13:27:14 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:14 INFO     VerboseApp                on_face: FaceBounds(66.00,101.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:15 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:15 INFO     VerboseApp                on_face: FaceBounds(71.00,95.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:15 INFO     VerboseApp                on_face_known: FaceBounds(71.00,95.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:15 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:15 INFO     VerboseApp                on_face: FaceBounds(71.00,101.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:15 INFO     VerboseApp                on_face_known: FaceBounds(71.00,101.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:15 INFO     VAD                       Utterance 25.39s
+07/20/18 13:27:15 INFO     VerboseApp                on_utterance: 25.39s
+07/20/18 13:27:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 13:27:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 13:27:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 13:27:16 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:16 INFO     VerboseApp                on_face: FaceBounds(71.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:16 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:16 INFO     VerboseApp                on_face: FaceBounds(51.00,80.00,64.00,63.00): 4032.00 (128,)
+07/20/18 13:27:16 INFO     VerboseApp                on_face_known: FaceBounds(51.00,80.00,64.00,63.00): 4032.00 (128,) Bram
+07/20/18 13:27:17 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:17 INFO     VerboseApp                on_face: FaceBounds(66.00,83.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:17 INFO     VerboseApp                on_face_known: FaceBounds(66.00,83.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:17 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:17 INFO     VerboseApp                on_face: FaceBounds(95.00,83.00,52.00,53.00): 2756.00 (128,)
+07/20/18 13:27:18 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:18 INFO     VerboseApp                on_face: FaceBounds(100.00,78.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:18 INFO     VerboseApp                on_face_known: FaceBounds(100.00,78.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:18 INFO     VAD                       Utterance 3.36s
+07/20/18 13:27:18 INFO     VerboseApp                on_utterance: 3.36s
+07/20/18 13:27:18 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+07/20/18 13:27:18 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+07/20/18 13:27:18 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+07/20/18 13:27:18 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:18 INFO     VerboseApp                on_face: FaceBounds(100.00,72.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:19 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:19 INFO     VerboseApp                on_face: FaceBounds(100.00,72.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:19 INFO     VerboseApp                on_face_known: FaceBounds(100.00,72.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:19 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+07/20/18 13:27:19 INFO     VerboseApp                on_face: FaceBounds(100.00,72.00,53.00,53.00): 2809.00 (128,)
+07/20/18 13:27:19 INFO     VerboseApp                on_face_known: FaceBounds(100.00,72.00,53.00,53.00): 2809.00 (128,) Bram
+07/20/18 13:27:20 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 10:51:39 DEBUG    SystemCamera              Booted
+08/02/18 10:51:39 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+08/02/18 10:55:40 DEBUG    SystemCamera              Booted
+08/02/18 10:55:40 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+08/02/18 10:55:47 DEBUG    OpenFace                  Booted
+08/02/18 10:55:47 DEBUG    SystemMicrophone          Booted
+08/02/18 10:55:47 DEBUG    GoogleASR                 Booted
+08/02/18 10:55:47 DEBUG    SystemTextToSpeech        Booted
+08/02/18 10:55:47 DEBUG    VAD                       Booted
+08/02/18 10:55:47 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/02/18 10:55:52 INFO     VAD                       Utterance 5.82s
+08/02/18 10:55:52 INFO     VerboseApp                on_utterance: 5.82s
+08/02/18 10:55:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/02/18 10:55:52 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/02/18 10:55:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/02/18 10:56:00 INFO     VAD                       Utterance 1.69s
+08/02/18 10:56:00 INFO     VerboseApp                on_utterance: 1.69s
+08/02/18 10:56:00 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/02/18 10:56:00 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/02/18 10:56:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/02/18 10:56:01 DEBUG    GoogleASR                 Billy
+08/02/18 10:56:01 INFO     VerboseApp                on_transcript: [[u'Billy', 0.6871686577796936], [u'billing', 0.5433187484741211], [u'Millie', 0.506537675857544], [u'villain', 0.5433187484741211], [u'bullying', 0.5433187484741211], [u'bully', 0.506537675857544], [u'billion', 0.5433187484741211], [u'Billie', 0.506537675857544], [u'villi', 0.506537675857544], [u'Milling', 0.5433187484741211]]
+08/02/18 10:56:07 INFO     VAD                       Utterance 6.40s
+08/02/18 10:56:07 INFO     VerboseApp                on_utterance: 6.40s
+08/02/18 10:56:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/02/18 10:56:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/02/18 10:56:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/02/18 10:56:10 INFO     VAD                       Utterance 3.47s
+08/02/18 10:56:10 INFO     VerboseApp                on_utterance: 3.47s
+08/02/18 10:56:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/02/18 10:56:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/02/18 10:56:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/02/18 10:56:10 DEBUG    GoogleASR                 I'm fine just don't windows
+08/02/18 10:56:10 INFO     VerboseApp                on_transcript: [[u"I'm fine just don't windows", 0.5321838855743408], [u"I don't windows", 0.5487512350082397], [u"images don't windows", 0.6578189134597778], [u'system information on Windows', 0.3060690760612488], [u"remember don't windows", 0.5940887928009033], [u"the midges don't windows", 0.5583001375198364], [u"don't windows", 0.6907227635383606], [u'my name is used on Windows', 0.3554568886756897], [u"my name is don't windows", 0.4783514440059662], [u'the system is used by the windows', 0.3148219585418701]]
+08/02/18 11:07:44 DEBUG    SystemCamera              Booted
+08/02/18 11:07:44 DEBUG    OpenFace                  Booted
+08/02/18 11:07:44 DEBUG    SystemMicrophone          Booted
+08/02/18 11:07:44 DEBUG    GoogleASR                 Booted
+08/02/18 11:07:44 DEBUG    SystemTextToSpeech        Booted
+08/02/18 11:07:44 DEBUG    VAD                       Booted
+08/02/18 11:07:44 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/02/18 11:07:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:50 INFO     VerboseApp                on_face: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,)
+08/02/18 11:07:50 INFO     VerboseApp                on_face_known: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,) Bram
+08/02/18 11:07:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:50 INFO     VerboseApp                on_face: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,)
+08/02/18 11:07:50 INFO     VerboseApp                on_face_known: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,) Bram
+08/02/18 11:07:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:50 INFO     VerboseApp                on_face: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,)
+08/02/18 11:07:50 INFO     VerboseApp                on_face_known: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,) Bram
+08/02/18 11:07:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:51 INFO     VerboseApp                on_face: FaceBounds(186.00,54.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:51 INFO     VerboseApp                on_face_known: FaceBounds(186.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:51 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:51 INFO     VerboseApp                on_face: FaceBounds(162.00,59.00,63.00,63.00): 3969.00 (128,)
+08/02/18 11:07:51 INFO     VerboseApp                on_face_known: FaceBounds(162.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 11:07:51 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:51 INFO     VerboseApp                on_face: FaceBounds(155.00,59.00,63.00,63.00): 3969.00 (128,)
+08/02/18 11:07:51 INFO     VerboseApp                on_face_known: FaceBounds(155.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 11:07:51 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:51 INFO     VerboseApp                on_face: FaceBounds(186.00,54.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:51 INFO     VerboseApp                on_face_known: FaceBounds(186.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:51 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:52 INFO     VerboseApp                on_face: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,)
+08/02/18 11:07:52 INFO     VerboseApp                on_face_known: FaceBounds(195.00,54.00,75.00,76.00): 5700.00 (128,) Bram
+08/02/18 11:07:52 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:52 INFO     VerboseApp                on_face: FaceBounds(186.00,54.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:52 INFO     VerboseApp                on_face_known: FaceBounds(186.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:52 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:52 INFO     VerboseApp                on_face: FaceBounds(186.00,46.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:52 INFO     VerboseApp                on_face_known: FaceBounds(186.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:52 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:52 INFO     VerboseApp                on_face: FaceBounds(186.00,46.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:52 INFO     VerboseApp                on_face_known: FaceBounds(186.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:52 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:53 INFO     VerboseApp                on_face: FaceBounds(186.00,46.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:53 INFO     VerboseApp                on_face_known: FaceBounds(186.00,46.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:53 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:53 INFO     VAD                       Utterance 3.16s
+08/02/18 11:07:53 INFO     VerboseApp                on_utterance: 3.16s
+08/02/18 11:07:53 INFO     VerboseApp                on_face: FaceBounds(155.00,59.00,63.00,63.00): 3969.00 (128,)
+08/02/18 11:07:53 INFO     VerboseApp                on_face_known: FaceBounds(155.00,59.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 11:07:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/02/18 11:07:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/02/18 11:07:53 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/02/18 11:07:53 INFO     VerboseApp                on_face: FaceBounds(145.00,54.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:53 INFO     VerboseApp                on_face_known: FaceBounds(145.00,54.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:53 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:53 INFO     VerboseApp                on_face: FaceBounds(148.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 11:07:53 INFO     VerboseApp                on_face_known: FaceBounds(148.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 11:07:54 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:54 INFO     VerboseApp                on_face: FaceBounds(141.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 11:07:54 INFO     VerboseApp                on_face_known: FaceBounds(141.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 11:07:54 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:54 INFO     VerboseApp                on_face: FaceBounds(141.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 11:07:54 INFO     VerboseApp                on_face_known: FaceBounds(141.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 11:07:54 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:54 INFO     VerboseApp                on_face: FaceBounds(141.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 11:07:54 INFO     VerboseApp                on_face_known: FaceBounds(141.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 11:07:54 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:55 INFO     VerboseApp                on_face: FaceBounds(148.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 11:07:55 INFO     VerboseApp                on_face_known: FaceBounds(148.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 11:07:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:55 INFO     VerboseApp                on_face: FaceBounds(148.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 11:07:55 INFO     VerboseApp                on_face_known: FaceBounds(148.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 11:07:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 11:07:55 INFO     VerboseApp                on_face: FaceBounds(145.00,62.00,76.00,76.00): 5776.00 (128,)
+08/02/18 11:07:55 INFO     VerboseApp                on_face_known: FaceBounds(145.00,62.00,76.00,76.00): 5776.00 (128,) Bram
+08/02/18 11:07:55 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:41 DEBUG    SystemCamera              Booted
+08/02/18 13:03:41 DEBUG    OpenFace                  Booted
+08/02/18 13:03:41 DEBUG    SystemMicrophone          Booted
+08/02/18 13:03:41 DEBUG    GoogleASR                 Booted
+08/02/18 13:03:41 DEBUG    SystemTextToSpeech        Booted
+08/02/18 13:03:41 DEBUG    VAD                       Booted
+08/02/18 13:03:41 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/02/18 13:03:42 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:42 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:42 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:42 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:42 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:42 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:42 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:42 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:42 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:43 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:43 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:43 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:43 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:43 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:43 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:44 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:44 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:44 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:44 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:44 INFO     VerboseApp                on_face: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,)
+08/02/18 13:03:44 INFO     VerboseApp                on_face_known: FaceBounds(121.00,66.00,63.00,63.00): 3969.00 (128,) Bram
+08/02/18 13:03:45 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:45 INFO     VerboseApp                on_face: FaceBounds(129.00,72.00,53.00,53.00): 2809.00 (128,)
+08/02/18 13:03:45 INFO     VerboseApp                on_face_known: FaceBounds(129.00,72.00,53.00,53.00): 2809.00 (128,) Bram
+08/02/18 13:03:45 INFO     VAD                       Utterance 4.30s
+08/02/18 13:03:45 INFO     VerboseApp                on_utterance: 4.30s
+08/02/18 13:03:45 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:45 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/02/18 13:03:45 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/02/18 13:03:45 INFO     VerboseApp                on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 13:03:45 INFO     VerboseApp                on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 13:03:45 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/02/18 13:03:46 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:46 INFO     VerboseApp                on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 13:03:46 INFO     VerboseApp                on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 13:03:46 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:46 INFO     VerboseApp                on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 13:03:46 INFO     VerboseApp                on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram
+08/02/18 13:03:47 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/02/18 13:03:47 INFO     VerboseApp                on_face: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,)
+08/02/18 13:03:47 INFO     VerboseApp                on_face_known: FaceBounds(127.00,66.00,64.00,63.00): 4032.00 (128,) Bram

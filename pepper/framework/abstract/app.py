@@ -1,4 +1,4 @@
-from pepper.framework import FaceClassifier, CocoClassifyClient, VAD
+from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
 from pepper import config
 
 import numpy as np

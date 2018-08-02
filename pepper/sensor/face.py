@@ -11,10 +11,15 @@ import logging
 
 
 def docker_openface_running():
-    try:
-        return 'openface' in subprocess.check_output(['docker', 'ps'])
-    except Exception as e:
-        return False
+    """
+    Check if OpenFace service is currently running
+
+    Returns
+    -------
+    is_running: bool
+    """
+    try: return 'openface' in subprocess.check_output(['docker', 'ps'])
+    except Exception as e: return False
 
 
 class FaceBounds:
@@ -64,7 +69,7 @@ class OpenFace(object):
     HOST, PORT = '127.0.0.1', 8989
 
     def __init__(self):
-        """Run OpenFace Client"""
+        """Run OpenFace Client (& Server)"""
 
         self._log = logging.getLogger(self.__class__.__name__)
 
@@ -72,6 +77,7 @@ class OpenFace(object):
 
             self._log.debug("{} is not running -> booting it!".format(OpenFace.DOCKER_IMAGE))
 
+            # Start OpenFace image and run server on it
             subprocess.call(['docker', 'run',                                           # Run Docker Image
                              '-d',                                                      # Detached Mode (Non-Blocking)
                              '-w', self.DOCKER_WORKING_DIRECTORY,                       # Working Directory
@@ -88,6 +94,19 @@ class OpenFace(object):
         self._log.debug("Booted")
 
     def represent(self, image):
+        """
+        Represent Face in Image as 128-dimensional vector
+
+        Parameters
+        ----------
+        image: np.ndarray
+            Image (containing a human face)
+
+        Returns
+        -------
+        result: FaceBounds, np.ndarray
+            (Face Bouding Box, Face Representation)
+        """
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((self.HOST, self.PORT))
 
@@ -103,6 +122,7 @@ class OpenFace(object):
             return bounds, representation
 
     def stop(self):
+        """Stop OpenFace Image"""
         subprocess.call(['docker', 'stop', self.DOCKER_NAME])
 
 
@@ -111,6 +131,15 @@ class FaceClassifier:
     FEATURE_DIM = 128
 
     def __init__(self, people, n_neighbors=20):
+        """
+        Classify Faces of Known People
+
+        Parameters
+        ----------
+        people: dict
+        n_neighbors: int
+        """
+
         self._people = people
         self._names = sorted(people.keys())
         self._indices = range(len(self._names))
@@ -123,6 +152,11 @@ class FaceClassifier:
 
     @property
     def people(self):
+        """
+        Returns
+        -------
+        people: dict
+        """
         return self._people
 
     def classify(self, face):

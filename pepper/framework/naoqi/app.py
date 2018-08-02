@@ -1,7 +1,7 @@
 from pepper.framework.abstract import BaseApp, AbstractIntention
 from pepper.framework.naoqi import *
-from pepper.framework.asr import GoogleASR
-from pepper.framework.face import OpenFace
+from pepper.sensor.asr import GoogleASR
+from pepper.sensor.face import OpenFace
 
 from pepper import config
 

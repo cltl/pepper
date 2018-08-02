@@ -1,4 +1,5 @@
 from google.cloud import speech
+import logging
 
 
 class AbstractASR(object):
@@ -15,7 +16,7 @@ class AbstractASR(object):
         Returns
         -------
         transcript: list of (str, float)
-            List of (<transcript>, <confidence>) pairs
+            List of (<transcript>, <confidence>) pairs, one for each hypothesis
         """
         raise NotImplementedError()
 
@@ -48,6 +49,9 @@ class GoogleASR(AbstractASR):
             )]
         )
 
+        self._log = logging.getLogger(self.__class__.__name__)
+        self._log.debug("Booted")
+
     def transcribe(self, audio):
         """
         Transcribe Speech in Audio
@@ -66,8 +70,9 @@ class GoogleASR(AbstractASR):
 
         for result in response.results:
             for alternative in result.alternatives:
-                hypotheses.append([
-                    alternative.transcript,
-                    alternative.confidence
-                ])
+                hypotheses.append([alternative.transcript, alternative.confidence])
+
+        if hypotheses:
+            self._log.debug(hypotheses[0][0])
+
         return hypotheses
