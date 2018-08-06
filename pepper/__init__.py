@@ -20,6 +20,8 @@ console_logger.setLevel(LOGGING_LEVEL_CONSOLE)
 console_logger.setFormatter(logging.Formatter(LOGGING_FORMAT_CONSOLE, LOGGING_DATE_FORMAT_CONSOLE))
 logging.getLogger().addHandler(console_logger)
 
+# Set GOOGLE CREDENTIALS
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(os.path.dirname(__file__), "../Pepper-9293d23935fa.json")
 
 # Package Level Imports
 from . import framework

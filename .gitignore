@@ -1,3 +1,11 @@
 .idea/
 people/
 *.pyc
+
+.DS_Store
+Pepper-9293d23935fa.json
+Reports/
+knowledge_representation/
+pepper/.DS_Store
+tokens.json
+venv/
