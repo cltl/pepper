@@ -548,7 +548,7 @@ class LongTermMemory(object):
             subject_vocab = self.namespaces['N2MU']
             subject_type = parsed_statement['subject']['type'].capitalize()
 
-        subject_id = casefold_label(parsed_statement['subject']['label'], subject_type)
+        subject_id = casefold_label(parsed_statement['subject']['label'])
 
         subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
         subject_label = Literal(subject_id)
@@ -567,7 +567,7 @@ class LongTermMemory(object):
             object_vocab = self.namespaces['N2MU']
             object_type = parsed_statement['object']['type'].capitalize()
 
-        object_id = casefold_label(parsed_statement['object']['label'], object_type)
+        object_id = casefold_label(parsed_statement['object']['label'])
 
         object = URIRef(to_iri(self.namespaces['LW'] + object_id))
         object_label = Literal(object_id)
@@ -764,7 +764,7 @@ class LongTermMemory(object):
         # Query subject
         if parsed_question['subject']['label'] == "":
             # Case fold
-            # object_label = casefold_label(parsed_question['object']['label'], parsed_question['object']['type'])
+            # object_label = casefold_label(parsed_question['object']['label'])
 
             query = """
                 SELECT ?slabel ?authorlabel
@@ -857,7 +857,7 @@ class LongTermMemory(object):
             object_vocab = self.namespaces['N2MU']
             object_type = sensed_visual['object']['type'].capitalize()
 
-        object_id = casefold_label(sensed_visual['object']['label'], object_type)
+        object_id = casefold_label(sensed_visual['object']['label'])
 
         object = URIRef(to_iri(self.namespaces['LW'] + object_id))
         object_label = Literal(object_id)
@@ -971,6 +971,30 @@ class LongTermMemory(object):
 
         return interaction_graph, perspective_graph, actor, time, mention, attribution
 
+    def _model_sensor_graphs_(self, parsed_experience):
+        # Leolani world (includes instance and claim graphs)
+        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(parsed_experience)
+
+        # Identity
+        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
+
+        # Leolani talk (includes interaction and perspective graphs)
+        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(parsed_experience, leolani)
+
+        # Interconnections
+        instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
+        instance_graph.add((object, self.namespaces['GRASP']['denotedIn'], mention))
+
+        instance_graph.add((statement, self.namespaces['GRASP']['denotedBy'], mention))
+        instance_graph.add((statement, self.namespaces['SEM']['hasActor'], actor))
+        instance_graph.add((statement, self.namespaces['SEM']['hasTime'], time))
+
+        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], subject))
+        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], object))
+        perspective_graph.add((mention, self.namespaces['GRASP']['denotes'], statement))
+
+        perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
+
 
     ######################################### Helpers for conflict processing #########################################
     def _get_conflicts_with_predicate(self, one_to_one_predicate):
@@ -1011,49 +1035,5 @@ class LongTermMemory(object):
             conflicts.append(conflict)
 
         return conflicts
-
-
-def casefold_label(instance, type):
-    if type in ('Actor', 'Agent', 'Robot', 'Person', 'Location', 'Information_appliance'):
-        instance.capitalize()
-
-    return instance
-
-
-def hash_statement_id(triple, debug=False):
-    if debug:
-        print('This is the triple: {}'.format(triple))
-    temp = '_'.join(triple)
-    temp.replace(" ", "_")
-
-    return temp
-
-
-# TODO to be moved to NLP layer
-def phrase_conflicts(conflicts):
-    say = 'I have %s conflicts in my brain.' % len(conflicts)
-
-    conflict = random.choice(conflicts)
-
-    # Conflict of subject
-    if len(conflict['objects']) > 1:
-        options = ['%s like %s told me' % (item['value'], item['author']) for item in conflict['objects']]
-        options = ' or '.join(options)
-        predicate = conflict['predicate'].replace('_', ' ')
-        subject = 'I' if conflict['subject'] == 'Leolani' else conflict['subject']
-
-        say = say + ' For example, I do not know if %s %s %s'% (subject, predicate, options)
-
-    return say
-
-
-def sensor_info():
-    # try coco first, else try imagenet
-    # if web recognizes, then
-    # create triples of sensor
-    # phrase what I have seen (I see a fridge, which is choice type or description)
-    # if web does not recognize, say idk
-    # maybe ask type and store
-    pass
 
 
