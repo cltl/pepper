@@ -58,7 +58,7 @@ class LongTermMemory(object):
         self.my_uri = None
 
         self._log = logging.getLogger(self.__class__.__name__)
-        self._log.info("Booted")
+        self._log.debug("Booted")
 
     #################################### Main functions to interact with the brain ####################################
 

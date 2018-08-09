@@ -180,7 +180,7 @@ class AbstractIntention(AbstractApp):
         """
         Returns
         -------
-        app: BaseApp
+        app: pepper.framework.BaseApp
         """
         return self._app
 
