@@ -1,5 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
+from pepper.language import *
 from pepper.brain import LongTermMemory
 from pepper import config
 
@@ -301,12 +302,13 @@ class BaseApp(AbstractApp):
             bounds, face = representation
 
             name, confidence, distance = self._face_classifier.classify(face)
-            self.on_face(bounds, face)
 
             if distance > config.FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD:
                 self.on_face_new(bounds, face)
             elif confidence > config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD:
                 self.on_face_known(bounds, face, name)
+            else:
+                self.on_face(bounds, face)
 
     def _on_utterance(self, audio):
 
@@ -317,3 +319,5 @@ class BaseApp(AbstractApp):
         hypotheses = self.asr.transcribe(audio)
         if hypotheses:
             self.on_transcript(hypotheses)
+
+

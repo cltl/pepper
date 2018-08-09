@@ -14,6 +14,9 @@ class VerboseApp(APP):
     def on_transcript(self, transcript):
         self.log.info("on_transcript: {}".format(transcript))
 
+    def on_understand(self, expression):
+        self.log.info("on_understand: {}".format(expression))
+
     def on_face(self, bounds, face):
         self.log.info("on_face: {} {}".format(bounds, face.shape))
 
