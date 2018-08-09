@@ -1,11 +1,11 @@
 from pepper import config
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold_label
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 import requests
-import random
 import logging
 
 
@@ -14,7 +14,7 @@ class LongTermMemory(object):
     ONE_TO_ONE_PREDICATES = ['age', 'born_in', 'faceID', 'favorite', 'favorite_of', 'id', 'is_from', 'manufactured_in',
                              'mother_is', 'name']
 
-    def __init__(self, address=config.LOCAL_BRAIN, debug=False):
+    def __init__(self, address=config.LOCAL_BRAIN):
         """
         Interact with Triple store
 
@@ -25,7 +25,6 @@ class LongTermMemory(object):
         """
 
         self.address = address
-        self.debug = debug
         self.namespaces = {}
         self.ontology_paths = {}
         self.format = 'trig'
@@ -33,6 +32,7 @@ class LongTermMemory(object):
         self.query_prefixes = """
                     prefix gaf: <http://groundedannotationframework.org/gaf#> 
                     prefix grasp: <http://groundedannotationframework.org/grasp#> 
+                    prefix leolaniInputs: <http://cltl.nl/leolani/inputs/>
                     prefix leolaniFriends: <http://cltl.nl/leolani/friends/> 
                     prefix leolaniTalk: <http://cltl.nl/leolani/talk/> 
                     prefix leolaniTime: <http://cltl.nl/leolani/time/> 
@@ -58,47 +58,67 @@ class LongTermMemory(object):
         self.my_uri = None
 
         self._log = logging.getLogger(self.__class__.__name__)
-        self._log.info("Booted")
+        self._log.debug("Booted")
 
     #################################### Main functions to interact with the brain ####################################
 
-    def update(self, parsed_statement):
+    def update(self, capsule):
         """
         Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
         transforms them to triples, and posts them to the triple store
-        :param parsed_statement: Structured data of a parsed statement
+        :param statement: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Create graphs and triples
-        self._model_graphs_(parsed_statement)
+        self._model_graphs_(capsule)
 
         data = self._serialize(config.BRAIN_LOG)
 
         code = self._upload_to_brain(data)
 
         # Create JSON output
-        parsed_statement["date"] = str(parsed_statement["date"])
-        output = {'response': code, 'statement': parsed_statement}
+        capsule["date"] = str(capsule["date"])
+        output = {'response': code, 'statement': capsule}
 
         return output
 
-    def query_brain(self, parsed_question):
+    def experience(self, experience):
+        """
+        Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
+        transforms them to triples, and posts them to the triple store
+        :param experience: Structured data of a parsed statement
+        :return: json response containing the status for posting the triples, and the original statement
+        """
+        # Create graphs and triples
+        self._model_sensor_graphs_(experience)
+
+        data = self._serialize(config.BRAIN_LOG)
+
+        code = self._upload_to_brain(data)
+
+        # Create JSON output
+        experience["date"] = str(experience["date"])
+        output = {'response': code, 'statement': experience}
+
+        return output
+
+    def query_brain(self, question):
         """
         Main function to interact with if a question is coming into the brain. Takes in a structured parsed question,
         transforms it into a query, and queries the triple store for a response
-        :param parsed_question: Structured data of a parsed question
+        :param question: Structured data of a parsed question
         :return: json response containing the results of the query, and the original question
         """
         # Generate query
-        query = self._create_query(parsed_question)
+        query = self._create_query(question)
 
         # Perform query
         response = self._submit_query(query)
 
         # Create JSON output
-        if 'date' in parsed_question.keys():
-            parsed_question["date"] = str(parsed_question["date"])
-        output = {'response': response, 'question': parsed_question}
+        if 'date' in question.keys():
+            question["date"] = str(question["date"])
+        output = {'response': response, 'question': question}
 
         return output
 
@@ -394,8 +414,10 @@ class LongTermMemory(object):
         # Namespaces for the attribution layer
         attribution_vocab = 'http://groundedannotationframework.org/grasp#'
         self.namespaces['GRASP'] = Namespace(attribution_vocab)
-        attribution_resource = 'http://cltl.nl/leolani/friends/'
-        self.namespaces['LF'] = Namespace(attribution_resource)
+        attribution_resource_friends = 'http://cltl.nl/leolani/friends/'
+        self.namespaces['LF'] = Namespace(attribution_resource_friends)
+        attribution_resource_inputs = 'http://cltl.nl/leolani/inputs/'
+        self.namespaces['LI'] = Namespace(attribution_resource_inputs)
 
         # Namespaces for the temporal layer-ish
         time_vocab = 'http://www.w3.org/TR/owl-time/#'
@@ -437,6 +459,7 @@ class LongTermMemory(object):
         self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
         self.dataset.bind('grasp', self.namespaces['GRASP'])
         self.dataset.bind('leolaniFriends', self.namespaces['LF'])
+        self.dataset.bind('leolaniInputs', self.namespaces['LI'])
         self.dataset.bind('time', self.namespaces['TIME'])
         self.dataset.bind('leolaniTime', self.namespaces['LTi'])
         self.dataset.bind('skos', self.namespaces['SKOS'])
@@ -448,8 +471,7 @@ class LongTermMemory(object):
     ######################################## Helpers for statement processing ########################################
 
     def create_chat_id(self, actor, date):
-        if self.debug:
-            print('Chat with {} on {}'.format(actor, date))
+        self._log.debug('Chat with {} on {}'.format(actor, date))
 
         query = """
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -488,8 +510,7 @@ class LongTermMemory(object):
         return chat_id
 
     def create_turn_id(self, chat_id):
-        if self.debug:
-            print('Turn in chat {}'.format(chat_id))
+        self._log.debug('Turn in chat {}'.format(chat_id))
 
         query = """
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -546,7 +567,7 @@ class LongTermMemory(object):
             subject_type = 'Thing'
         else:
             subject_vocab = self.namespaces['N2MU']
-            subject_type = parsed_statement['subject']['type'].capitalize()
+            subject_type = parsed_statement['subject']['type']
 
         subject_id = casefold_label(parsed_statement['subject']['label'])
 
@@ -565,7 +586,7 @@ class LongTermMemory(object):
             object_type = 'Thing'
         else:
             object_vocab = self.namespaces['N2MU']
-            object_type = parsed_statement['object']['type'].capitalize()
+            object_type = parsed_statement['object']['type']
 
         object_id = casefold_label(parsed_statement['object']['label'])
 
@@ -608,14 +629,14 @@ class LongTermMemory(object):
 
         return claim_graph, statement
 
-    def _create_leolani_talk(self, parsed_statement, leolani):
+    def _create_leolani_talk(self, statement, leolani):
         # Interaction graph
         interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Interactions'))
         interaction_graph = self.dataset.graph(interaction_graph_uri)
 
         # Time
-        date = parsed_statement["date"]
-        time = URIRef(to_iri(self.namespaces['LTi'] + str(parsed_statement["date"].isoformat())))
+        date = statement["date"]
+        time = URIRef(to_iri(self.namespaces['LTi'] + str(statement["date"].isoformat())))
         time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
         day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
         month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
@@ -629,8 +650,8 @@ class LongTermMemory(object):
         interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
 
         # Actor
-        actor_id = parsed_statement['author'].capitalize()
-        actor_label = parsed_statement['author'].capitalize()
+        actor_id = statement['author']
+        actor_label = statement['author']
 
         actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
         actor_label = Literal(actor_label)
@@ -671,7 +692,7 @@ class LongTermMemory(object):
         interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
         interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
 
-        perspective_graph, mention, attribution = self._create_perspective_graph(parsed_statement, turn_label)
+        perspective_graph, mention, attribution = self._create_perspective_graph(statement, turn_label)
 
         # Link interactions and perspectives
         perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
@@ -721,8 +742,7 @@ class LongTermMemory(object):
         :param data: serialized data as string
         :return: response status
         """
-        if self.debug:
-            print("Posting triples")
+        self._log.debug("Posting triples")
 
         # From serialized string
         post_url = self.address + "/statements"
@@ -732,15 +752,15 @@ class LongTermMemory(object):
 
         return str(response.status_code)
 
-    def _model_graphs_(self, parsed_statement):
+    def _model_graphs_(self, capsule):
         # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(parsed_statement)
+        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(capsule)
 
         # Identity
         leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
 
         # Leolani talk (includes interaction and perspective graphs)
-        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(parsed_statement, leolani)
+        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(capsule, leolani)
 
         # Interconnections
         instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
@@ -855,7 +875,7 @@ class LongTermMemory(object):
             object_type = 'Thing'
         else:
             object_vocab = self.namespaces['N2MU']
-            object_type = sensed_visual['object']['type'].capitalize()
+            object_type = sensed_visual['object']['type']
 
         object_id = casefold_label(sensed_visual['object']['label'])
 
@@ -919,10 +939,10 @@ class LongTermMemory(object):
         interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
 
         # Actor
-        actor_id = sensed_visual['author'].capitalize()
-        actor_label = sensed_visual['author'].capitalize()
+        actor_id = sensed_visual['author']
+        actor_label = sensed_visual['author']
 
-        actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
+        actor = URIRef(to_iri(to_iri(self.namespaces['LI'] + actor_id)))
         actor_label = Literal(actor_label)
         actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
         actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
@@ -936,13 +956,13 @@ class LongTermMemory(object):
 
         # Chat and turn
         chat_id = self.create_chat_id(actor_label, date)
-        chat_label = 'chat%s' % chat_id
+        chat_label = 'visual%s' % chat_id
         turn_id = self.create_turn_id(chat_id)
-        turn_label = chat_label + '_turn%s' % turn_id
+        turn_label = chat_label + '_object%s' % turn_id
 
         turn = URIRef(to_iri(self.namespaces['LTa'] + turn_label))
         turn_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Turn'))
+        turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Object'))
 
         interaction_graph.add((turn, RDF.type, turn_type1))
         interaction_graph.add((turn, RDF.type, turn_type2))
@@ -952,7 +972,7 @@ class LongTermMemory(object):
 
         chat = URIRef(to_iri(self.namespaces['LTa'] + chat_label))
         chat_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Chat'))
+        chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Visual'))
 
         interaction_graph.add((chat, RDF.type, chat_type1))
         interaction_graph.add((chat, RDF.type, chat_type2))
@@ -961,7 +981,7 @@ class LongTermMemory(object):
         interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
         interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
 
-        perspective_graph, mention, attribution = self._create_perspective_graph(sensed_visual, turn_label)
+        perspective_graph, mention, attribution = self._create_perspective_graph_sens(sensed_visual, turn_label)
 
         # Link interactions and perspectives
         perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
@@ -971,15 +991,38 @@ class LongTermMemory(object):
 
         return interaction_graph, perspective_graph, actor, time, mention, attribution
 
-    def _model_sensor_graphs_(self, parsed_experience):
+    def _create_perspective_graph_sens(self, sensed_visual, turn_label):
+        # Perspective graph
+        perspective_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Perspectives'))
+        perspective_graph = self.dataset.graph(perspective_graph_uri)
+
+        # Mention
+        mention_id = turn_label + '_pixel%s' % sensed_visual['position']
+        mention = URIRef(to_iri(self.namespaces['LTa'] + mention_id))
+        mention_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Mention'))
+
+        perspective_graph.add((mention, RDF.type, mention_type))
+
+        # Attribution
+        attribution_id = mention_id + '_CERTAIN'
+        attribution = URIRef(to_iri(self.namespaces['LTa'] + attribution_id))
+        attribution_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Attribution'))
+        attribution_value = URIRef(to_iri(self.namespaces['GRASP'] + 'CERTAIN'))
+
+        perspective_graph.add((attribution, RDF.type, attribution_type))
+        perspective_graph.add((attribution, RDF.value, attribution_value))
+
+        return perspective_graph, mention, attribution
+
+    def _model_sensor_graphs_(self, experience):
         # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(parsed_experience)
+        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world_sens(experience)
 
         # Identity
         leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
 
         # Leolani talk (includes interaction and perspective graphs)
-        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(parsed_experience, leolani)
+        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk_sens(experience, leolani)
 
         # Interconnections
         instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
@@ -1035,5 +1078,3 @@ class LongTermMemory(object):
             conflicts.append(conflict)
 
         return conflicts
-
-

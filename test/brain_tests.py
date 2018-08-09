@@ -8,10 +8,8 @@ if __name__ == "__main__":
     # Create brain connection
     brain = LongTermMemory()
 
-    # # Rebuild
-    # for statement in statements:
-    #     response = brain.update(statement)
+    # brain.update(statements[0])
 
-    for visual in experiences:
-        for item in visual:
-            brain.process_visual(item)
+    brain.experience(experiences[0])
+
+

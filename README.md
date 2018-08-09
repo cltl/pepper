@@ -40,14 +40,16 @@ you need to clone pepper's sister-project: [pepper_tensorflow](https://github.co
 These services need to run as a separate process either locally or remotely next to the main application.
 Since Tensorflow requires Python 3, this is our way of using Tensorflow in an otherwise Python 2.7 repo.
 
-##### 6: Knowledge representation (Brain)
+##### 6: Natural Language Understanding
+For analyzing utterances, this project relies on [NLTK](https://www.nltk.org/). Make sure to install this library and download ``averaged_perceptron_tagger`` and ``wordnet``.
+
+##### 7: Knowledge representation (Brain)
 In this project, knowledge is represented in the form of triples and stored in a triple store. As such, you need to install ``rdflib``, ``iribaker``, and ``SPARQLWrapper`` via pip. 
 Additionally, you have to install [GraphDB](http://graphdb.ontotext.com/). Please follow the instructions to download, the free version will suffice. 
 
 GraphDB's UI can be accessed through ``http://localhost:7200/``. From the UI, you will need to set up a new repository called _leolani_. Don't forget to connect to the repository when you start GraphDB.
 
-
-##### 7: Other Python Dependencies
+##### 8: Other Python Dependencies
 This project depends on ``numpy``, ``OpenCV (cv2)``, ``pyaudio`` and ``webrtcvad``.
 Most of these packages can be installed using ``pip``,  with one notable exception being ``OpenCV``,
 which needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html) and build manually (Windows binaries exist).
@@ -126,6 +128,58 @@ class MeetNewPersonIntention(AbstractIntention):
 if __name__ == '__main__':
     SystemApp(IdleIntention()).start()
 ```
+##### 4: Structured data
+In order to store knowledge in the brain, we need to parse unstructured natural language and transform it to triples.
+For this purpose, and following [GRaSP](https://github.com/cltl/GRaSP), we have designed a _json_ template that allows us to transmit this information between modules. 
+
+
+```json
+{
+  "subject": {
+    "id": "str: URI for this instance",
+    "label": "str: label to refer to this instance (lower case)",
+    "type": "str: one of leolani's 35 classes, or similar", 
+    "confidence": "float: value between 0-1",
+    "position": "str: beginPosition-endPosition"
+  },
+  "predicate": {
+    "type": "str: one of leolani's 21 predicates, or similar", 
+    "confidence": "float: value between 0-1",
+    "position": "str: beginPosition-endPosition"
+  },
+  "object": {
+    "id": "str: URI for this instance",
+    "label": "str: label to refer to this instance (lower case)",
+    "type": "str: one of leolani's 35 classes, or similar", 
+    "confidence": "float: value between 0-1",
+    "position": "str: beginPosition-endPosition"
+  },
+  "output_meta": {
+    "type": "categorical: [subject, predicate, object]",
+    "format": "categorical: [list, bool]"
+  },
+  "input_meta": {
+    "raw": "str: original input parsed/sensed (transcript or image)",
+    "type": "categorical: [statement, question, experience]",
+    "author": "str: label of person producing the input",
+    "chat": "str: chat ID",
+    "turn": "str: turn ID",
+    "date": "datestamp: date when input was produced",
+    "attributions": {
+      "certainty": "categorical: [certain, possible, probable, underspecified]",
+      "sentiment": "categorical: [negative, positive]",
+      "emotion": "categorical: [anger, disgust, fear, happiness, sadness, surprise]"
+    }
+  }
+}
+```
+
+###### Considerations
+* Entity/Predicate types (subject and objects): In general, recognized/parsed ``types`` are the ones present in the ontology. However, it is also possible to have unknown types, in which case these types will be created in the ontology.
+* Case folding: All fields (type, label, author, and attribution) should be lowercase, except for ``raw``. [Snake case](https://en.wikipedia.org/wiki/Snake_case) (replacing spaces with underscores) should be also followed when needed.
+* Positions: It is necessary to keep track of where in the raw input was the subject/predicate/object mentioned. As such, for an utterance as 'Piek likes pizza' should return ``positions`` like '0-3', '5-9' and '11-15' respectively.
+* Entity URI: Use full valid URIs for IDs (i.e. http://cltl.nl/leolani/world/piek)
+
 
 #### Running
 

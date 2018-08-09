@@ -8122,3 +8122,77 @@
 08/09/18 11:33:38 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
 08/09/18 11:33:38 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
 08/09/18 11:33:39 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 18:20:16 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:20:16 DEBUG    LongTermMemory            Booted
+08/09/18 18:24:11 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:24:11 DEBUG    LongTermMemory            Booted
+08/09/18 18:25:21 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:25:21 DEBUG    LongTermMemory            Booted
+08/09/18 18:26:05 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:26:05 DEBUG    LongTermMemory            Booted
+08/09/18 18:28:35 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:28:35 DEBUG    LongTermMemory            Booted
+08/09/18 18:30:08 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:30:08 DEBUG    LongTermMemory            Booted
+08/09/18 18:30:58 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:30:58 DEBUG    LongTermMemory            Booted
+08/09/18 18:30:58 DEBUG    LongTermMemory            Chat with Selene on 2018-08-09
+08/09/18 18:30:59 DEBUG    LongTermMemory            Turn in chat 9
+08/09/18 18:30:59 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:30:59 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:30:59 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:30:59 DEBUG    LongTermMemory            Chat with  on 2018-08-09
+08/09/18 18:30:59 DEBUG    LongTermMemory            Turn in chat 10
+08/09/18 18:30:59 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:30:59 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:30:59 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:38:39 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:40:11 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:40:11 DEBUG    LongTermMemory            Booted
+08/09/18 18:40:11 DEBUG    LongTermMemory            Chat with selene on 2018-08-09
+08/09/18 18:40:11 DEBUG    LongTermMemory            Turn in chat 11
+08/09/18 18:40:11 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:40:11 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:40:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:40:11 DEBUG    LongTermMemory            Chat with front_camera on 2018-08-09
+08/09/18 18:40:11 DEBUG    LongTermMemory            Turn in chat 12
+08/09/18 18:40:12 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:40:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:40:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:41:13 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:41:13 DEBUG    LongTermMemory            Booted
+08/09/18 18:41:19 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:41:19 DEBUG    LongTermMemory            Booted
+08/09/18 18:41:19 DEBUG    LongTermMemory            Chat with front_camera on 2018-08-09
+08/09/18 18:41:19 DEBUG    LongTermMemory            Turn in chat 12
+08/09/18 18:41:19 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:41:19 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:41:19 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:42:49 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:42:49 DEBUG    LongTermMemory            Booted
+08/09/18 18:42:49 DEBUG    LongTermMemory            Chat with front_camera on 2018-08-09
+08/09/18 18:42:49 DEBUG    LongTermMemory            Turn in chat 12
+08/09/18 18:42:49 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:42:49 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:42:49 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:46:08 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:46:08 DEBUG    LongTermMemory            Booted
+08/09/18 18:46:08 DEBUG    LongTermMemory            Chat with front_camera on 2018-08-09
+08/09/18 18:46:08 DEBUG    LongTermMemory            Turn in chat 12
+08/09/18 18:46:08 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:46:08 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:46:08 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:46:12 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:46:12 DEBUG    LongTermMemory            Booted
+08/09/18 18:46:12 DEBUG    LongTermMemory            Chat with front_camera on 2018-08-09
+08/09/18 18:46:12 DEBUG    LongTermMemory            Turn in chat 12
+08/09/18 18:46:12 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:46:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:46:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 18:51:38 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 18:51:38 DEBUG    LongTermMemory            Booted
+08/09/18 18:51:38 DEBUG    LongTermMemory            Chat with front_camera on 2018-08-09
+08/09/18 18:51:38 DEBUG    LongTermMemory            Turn in chat 12
+08/09/18 18:51:38 DEBUG    LongTermMemory            Posting triples
+08/09/18 18:51:38 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 18:51:38 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
