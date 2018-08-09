@@ -5,3 +5,7 @@ cv2
 pyaudio
 webrtcvad
 google-cloud-speech
+
+rdflib
+iribaker
+SPARQLWrapper

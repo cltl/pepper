@@ -17,6 +17,9 @@ class AbstractCamera(object):
         callbacks: list of callable
         """
         self._resolution = resolution
+        self._width = self._resolution.value[1]
+        self._height = self._resolution.value[0]
+
         self._rate = rate
         self._callbacks = callbacks
 
@@ -46,7 +49,7 @@ class AbstractCamera(object):
         width: int
             Image width
         """
-        return self._resolution.value[1]
+        return self._width
 
     @property
     def height(self):
@@ -56,7 +59,7 @@ class AbstractCamera(object):
         height: int
             Image height
         """
-        return self._resolution.value[0]
+        return self._height
 
     @property
     def channels(self):

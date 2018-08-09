@@ -1,20 +1,20 @@
-import requests
-import os
+from pepper import config
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-from pepper.brain.utils.helper_functions import casefold_label, hash_statement_id
-
-REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
-LOCAL_BRAIN = "http://localhost:7200/repositories/leolani"
-ONE_TO_ONE_PREDICATES = ['age', 'born_in', 'faceID', 'favorite', 'favorite_of', 'id', 'is_from', 'manufactured_in',
-                         'mother_is', 'name']
+import requests
+import random
+import logging
 
 
 class LongTermMemory(object):
-    def __init__(self, address=LOCAL_BRAIN, debug=False):
+
+    ONE_TO_ONE_PREDICATES = ['age', 'born_in', 'faceID', 'favorite', 'favorite_of', 'id', 'is_from', 'manufactured_in',
+                             'mother_is', 'name']
+
+    def __init__(self, address=config.LOCAL_BRAIN, debug=False):
         """
         Interact with Triple store
 
@@ -57,6 +57,9 @@ class LongTermMemory(object):
 
         self.my_uri = None
 
+        self._log = logging.getLogger(self.__class__.__name__)
+        self._log.info("Booted")
+
     #################################### Main functions to interact with the brain ####################################
 
     def update(self, parsed_statement):
@@ -69,8 +72,7 @@ class LongTermMemory(object):
         # Create graphs and triples
         self._model_graphs_(parsed_statement)
 
-        path = os.path.join(os.path.dirname(__file__), '../../knowledge_representation/brainOutput/learned_facts')
-        data = self._serialize(path)
+        data = self._serialize(config.BRAIN_LOG)
 
         code = self._upload_to_brain(data)
 
@@ -116,7 +118,6 @@ class LongTermMemory(object):
                 print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
 
     ########## management system for keeping track of chats and turns ##########
-
     def get_last_chat_id(self):
         """
         Get the id for the last interaction recorded
@@ -330,7 +331,7 @@ class LongTermMemory(object):
 
         conflicts = []
 
-        for predicate in ONE_TO_ONE_PREDICATES:
+        for predicate in self.ONE_TO_ONE_PREDICATES:
             conflicts.extend(self._get_conflicts_with_predicate(predicate))
 
         return conflicts

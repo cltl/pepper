@@ -2,6 +2,7 @@ from enum import Enum, IntEnum
 
 
 class CameraResolution(Enum):
+    NATIVE = -1, -1
     QQQQVGA = 30, 40
     QQQVGA = 60, 80
     QQVGA = 120, 160

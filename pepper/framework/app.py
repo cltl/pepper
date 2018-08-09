@@ -1,5 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
+from pepper.brain import LongTermMemory
 from pepper import config
 
 import logging
@@ -54,6 +55,8 @@ class BaseApp(AbstractApp):
         self._vad = VAD(microphone, [self._on_utterance])
         self._asr = asr
 
+        self._brain = LongTermMemory()
+
         # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)
         self._log.debug("Booted -> {}".format(self.intention.__class__.__name__))
@@ -74,7 +77,7 @@ class BaseApp(AbstractApp):
         """
         Parameters
         ----------
-        value: AbstractIntention
+        value: pepper.framework.AbstractIntention
         """
 
         self.log.info("Switch Intention: {} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
@@ -96,7 +99,7 @@ class BaseApp(AbstractApp):
         """
         Returns
         -------
-        camera: AbstractCamera
+        camera: pepper.framework.AbstractCamera
         """
         return self._camera
 
@@ -114,7 +117,7 @@ class BaseApp(AbstractApp):
         """
         Returns
         -------
-        text_to_speech: AbstractTextToSpeech
+        text_to_speech: pepper.framework.AbstractTextToSpeech
         """
         return self._text_to_speech
 
@@ -144,6 +147,15 @@ class BaseApp(AbstractApp):
         openface: pepper.framework.OpenFace
         """
         return self._openface
+
+    @property
+    def brain(self):
+        """
+        Returns
+        -------
+        brain: LongTermMemory
+        """
+        return self._brain
 
     def start(self):
         """Start Application"""

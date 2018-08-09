@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractCamera
+from pepper.framework import CameraResolution
 
 import cv2
 
@@ -23,8 +24,13 @@ class SystemCamera(AbstractCamera):
 
         # Get Camera and request resolution
         self._camera = cv2.VideoCapture(index)
-        self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
-        self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+
+        if not self.resolution == CameraResolution.NATIVE:
+            self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
+            self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+
+        self._width = int(self._camera.get(cv2.CAP_PROP_FRAME_WIDTH))
+        self._height = int(self._camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
         # Check if camera is working
         if not self._camera.isOpened():
