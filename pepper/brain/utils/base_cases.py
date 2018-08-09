@@ -623,13 +623,13 @@ experiences = [
         },
         "object": {
             "label": "apple",
-            "type": "Fruit"
+            "type": "fruit"
         },
         "author": "",
         "chat": None,
         "turn": None,
         "position": "",
-        "date": None #date.today()
+        "date": date.today()
     }
 ]
 

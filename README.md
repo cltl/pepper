@@ -40,7 +40,14 @@ you need to clone pepper's sister-project: [pepper_tensorflow](https://github.co
 These services need to run as a separate process either locally or remotely next to the main application.
 Since Tensorflow requires Python 3, this is our way of using Tensorflow in an otherwise Python 2.7 repo.
 
-##### 6: Other Python Dependencies
+##### 6: Knowledge representation (Brain)
+In this project, knowledge is represented in the form of triples and stored in a triple store. As such, you need to install ``rdflib``, ``iribaker``, and ``SPARQLWrapper`` via pip. 
+Additionally, you have to install [GraphDB](http://graphdb.ontotext.com/). Please follow the instructions to download, the free version will suffice. 
+
+GraphDB's UI can be accessed through ``http://localhost:7200/``. From the UI, you will need to set up a new repository called _leolani_. Don't forget to connect to the repository when you start GraphDB.
+
+
+##### 7: Other Python Dependencies
 This project depends on ``numpy``, ``OpenCV (cv2)``, ``pyaudio`` and ``webrtcvad``.
 Most of these packages can be installed using ``pip``,  with one notable exception being ``OpenCV``,
 which needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html) and build manually (Windows binaries exist).
@@ -70,9 +77,9 @@ In order to run _Apps_ made with this framework on multiple platforms, abstracti
 - ``AbstractTextToSpeech``
 
 Implementations have been made for Naoqi Platforms, using the Camera/Microphone/AnimatedSpeech from Pepper/Nao,
-and for Laptop/PC Platforms (tested on Windows), using the built in Webcam/Microphone/Console instead.
+and for Laptop/PC Platforms (tested on Windows and Mac), using the built in Webcam/Microphone/Console instead.
 It should be possible to extend this to other devices later on, as well.
-being able to run applications on your host device gives the advantage that you can test the application without needing the robot.
+Being able to run applications on your host device gives the advantage that you can test the application without needing the robot.
 
 In order to create an application, one needs to create a class that inherits from the Application of the target platform.
 These can be easily switched around, as is demonstrated below:

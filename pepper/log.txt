@@ -7812,3 +7812,131 @@
 08/02/18 12:09:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
 08/02/18 12:09:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
 08/02/18 12:09:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/06/18 20:53:10 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:54:50 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:55:41 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:57:14 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:58:16 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:58:36 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:58:44 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 20:59:09 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 21:01:30 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:35 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:36 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:37 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:38 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:39 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:40 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:41 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:41 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:41 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:41 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:53 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:54 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:55 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:56 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:57 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:58 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:01:59 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:02:00 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/06/18 21:02:00 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/06/18 21:06:17 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/06/18 21:06:46 DEBUG    rdflib                    RDFLib Version: 4.2.2

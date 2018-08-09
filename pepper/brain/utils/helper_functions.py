@@ -1,0 +1,42 @@
+import random
+
+
+def casefold_label(instance):
+    return instance.lower()
+
+
+def hash_statement_id(triple, debug=False):
+    if debug:
+        print('This is the triple: {}'.format(triple))
+    temp = '_'.join(triple)
+    temp.replace(" ", "_")
+
+    return temp
+
+
+# TODO to be moved to NLP layer
+def phrase_conflicts(conflicts):
+    say = 'I have %s conflicts in my brain.' % len(conflicts)
+
+    conflict = random.choice(conflicts)
+
+    # Conflict of subject
+    if len(conflict['objects']) > 1:
+        options = ['%s like %s told me' % (item['value'], item['author']) for item in conflict['objects']]
+        options = ' or '.join(options)
+        predicate = conflict['predicate'].replace('_', ' ')
+        subject = 'I' if conflict['subject'] == 'Leolani' else conflict['subject']
+
+        say = say + ' For example, I do not know if %s %s %s'% (subject, predicate, options)
+
+    return say
+
+
+def sensor_info():
+    # try coco first, else try imagenet
+    # if web recognizes, then
+    # create triples of sensor
+    # phrase what I have seen (I see a fridge, which is choice type or description)
+    # if web does not recognize, say idk
+    # maybe ask type and store
+    pass
