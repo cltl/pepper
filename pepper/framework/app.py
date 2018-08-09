@@ -74,7 +74,7 @@ class BaseApp(AbstractApp):
         """
         Parameters
         ----------
-        value: AbstractIntention
+        value: pepper.framework.AbstractIntention
         """
 
         self.log.info("Switch Intention: {} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
@@ -96,7 +96,7 @@ class BaseApp(AbstractApp):
         """
         Returns
         -------
-        camera: AbstractCamera
+        camera: pepper.framework.AbstractCamera
         """
         return self._camera
 
@@ -114,7 +114,7 @@ class BaseApp(AbstractApp):
         """
         Returns
         -------
-        text_to_speech: AbstractTextToSpeech
+        text_to_speech: pepper.framework.AbstractTextToSpeech
         """
         return self._text_to_speech
 

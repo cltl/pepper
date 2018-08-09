@@ -15,10 +15,11 @@ class NaoqiCamera(AbstractCamera):
     COLOR_SPACE = 9 # YUV442
 
     RESOLUTION_CODE = {
+        CameraResolution.NATIVE: 2,
         CameraResolution.QQQQVGA: 8,
         CameraResolution.QQQVGA: 7,
         CameraResolution.QQVGA: 0,
-        CameraResolution. QVGA: 1,
+        CameraResolution.QVGA: 1,
         CameraResolution.VGA: 2,
         CameraResolution.VGA4: 3,
     }
