@@ -7812,3 +7812,313 @@
 08/02/18 12:09:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
 08/02/18 12:09:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
 08/02/18 12:09:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:13:51 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:15:51 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:16:44 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:20:40 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:20:40 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:40 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:40 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:41 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:42 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:43 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:44 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:45 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:20:46 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:08 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:21:08 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:08 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:08 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:08 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:08 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:08 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:09 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:10 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:11 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:12 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:13 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:13 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:13 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:13 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:21:13 DEBUG    urllib3.connectionpool    Starting new HTTP connection (1): localhost
+08/09/18 11:21:13 DEBUG    urllib3.connectionpool    http://localhost:7200 "POST /repositories/leolani/statements HTTP/1.1" 204 0
+08/09/18 11:28:31 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:28:35 DEBUG    SystemCamera              Booted
+08/09/18 11:28:35 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+08/09/18 11:28:42 DEBUG    OpenFace                  Booted
+08/09/18 11:28:42 DEBUG    SystemMicrophone          Booted
+08/09/18 11:28:42 DEBUG    GoogleASR                 Booted
+08/09/18 11:28:42 DEBUG    SystemTextToSpeech        Booted
+08/09/18 11:28:42 DEBUG    VAD                       Booted
+08/09/18 11:28:42 INFO     LongTermMemory            Booted
+08/09/18 11:28:42 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/09/18 11:28:47 INFO     VAD                       Utterance 4.95s
+08/09/18 11:28:47 INFO     VerboseApp                on_utterance: 4.95s
+08/09/18 11:28:48 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:48 INFO     VerboseApp                on_face: FaceBounds(95.00,29.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:28:48 INFO     VerboseApp                on_face_known: FaceBounds(95.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:28:48 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:48 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:28:48 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:28:48 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:48 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:28:48 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:28:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:49 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:28:49 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:28:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person', u'person']
+08/09/18 11:28:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person', u'person']
+08/09/18 11:28:49 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:50 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:28:50 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:28:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:50 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:28:50 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:28:50 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person', u'person']
+08/09/18 11:28:50 INFO     VerboseApp                on_face: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:28:50 INFO     VerboseApp                on_face_known: FaceBounds(103.00,29.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:31:14 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:31:17 DEBUG    SystemCamera              Booted
+08/09/18 11:31:17 DEBUG    OpenFace                  Booted
+08/09/18 11:31:17 DEBUG    SystemMicrophone          Booted
+08/09/18 11:31:17 DEBUG    GoogleASR                 Booted
+08/09/18 11:31:17 DEBUG    SystemTextToSpeech        Booted
+08/09/18 11:31:17 DEBUG    VAD                       Booted
+08/09/18 11:31:17 INFO     LongTermMemory            Booted
+08/09/18 11:31:17 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/09/18 11:31:18 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:19 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:19 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:19 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:20 INFO     VerboseApp                on_face: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:31:20 INFO     VerboseApp                on_face_known: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:31:20 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:20 INFO     VerboseApp                on_face: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:31:20 INFO     VerboseApp                on_face_known: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:31:21 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:21 INFO     VerboseApp                on_face: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:31:21 INFO     VerboseApp                on_face_known: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:31:21 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:21 INFO     VerboseApp                on_face: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:31:21 INFO     VerboseApp                on_face_known: FaceBounds(87.00,21.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:31:22 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:22 INFO     VerboseApp                on_face: FaceBounds(85.00,5.00,90.00,91.00): 8190.00 (128,)
+08/09/18 11:31:22 INFO     VerboseApp                on_face_known: FaceBounds(85.00,5.00,90.00,91.00): 8190.00 (128,) Bram
+08/09/18 11:31:22 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:22 INFO     VerboseApp                on_face: FaceBounds(95.00,13.00,76.00,75.00): 5700.00 (128,)
+08/09/18 11:31:22 INFO     VerboseApp                on_face_known: FaceBounds(95.00,13.00,76.00,75.00): 5700.00 (128,) Bram
+08/09/18 11:31:23 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:23 INFO     VerboseApp                on_face: FaceBounds(95.00,13.00,76.00,75.00): 5700.00 (128,)
+08/09/18 11:31:23 INFO     VerboseApp                on_face_known: FaceBounds(95.00,13.00,76.00,75.00): 5700.00 (128,) Bram
+08/09/18 11:31:23 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:23 INFO     VerboseApp                on_face: FaceBounds(95.00,21.00,76.00,76.00): 5776.00 (128,)
+08/09/18 11:31:23 INFO     VerboseApp                on_face_known: FaceBounds(95.00,21.00,76.00,76.00): 5776.00 (128,) Bram
+08/09/18 11:31:24 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:24 INFO     VAD                       Utterance 6.72s
+08/09/18 11:31:24 INFO     VerboseApp                on_utterance: 6.72s
+08/09/18 11:31:24 INFO     VerboseApp                on_face: FaceBounds(107.00,38.00,63.00,63.00): 3969.00 (128,)
+08/09/18 11:31:24 INFO     VerboseApp                on_face_known: FaceBounds(107.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+08/09/18 11:31:24 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:31:24 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:31:24 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:31:24 INFO     VerboseApp                on_face: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,)
+08/09/18 11:31:24 INFO     VerboseApp                on_face_known: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+08/09/18 11:31:25 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:25 INFO     VerboseApp                on_face: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,)
+08/09/18 11:31:25 INFO     VerboseApp                on_face_known: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+08/09/18 11:31:25 INFO     VAD                       Utterance 2.21s
+08/09/18 11:31:25 INFO     VerboseApp                on_utterance: 2.21s
+08/09/18 11:31:25 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:31:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:31:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:31:25 INFO     VerboseApp                on_face: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,)
+08/09/18 11:31:25 INFO     VerboseApp                on_face_known: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+08/09/18 11:31:26 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:26 DEBUG    GoogleASR                 ok it is a rental
+08/09/18 11:31:26 INFO     VerboseApp                on_transcript: [[u'ok it is a rental', 0.6646593809127808], [u'ok rent', 0.8209336400032043], [u'ok it is Aaron', 0.7954922318458557], [u'ok it is it is there any', 0.6263447403907776], [u'ok it is there any', 0.6895049810409546], [u'ok it is the rent', 0.703120231628418], [u'ok it is there end', 0.7081791758537292], [u'ok it is a Wren', 0.7360355854034424], [u'ok it is rent', 0.812484860420227], [u'ok', 0.7223351001739502]]
+08/09/18 11:31:26 INFO     VerboseApp                on_face: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,)
+08/09/18 11:31:26 INFO     VerboseApp                on_face_known: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+08/09/18 11:31:26 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:26 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:26 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:27 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:27 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:27 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:27 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:27 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:27 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:28 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:28 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:28 INFO     VerboseApp                on_face: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,)
+08/09/18 11:31:28 INFO     VerboseApp                on_face_known: FaceBounds(114.00,38.00,63.00,63.00): 3969.00 (128,) Bram
+08/09/18 11:31:29 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:29 INFO     VAD                       Utterance 2.59s
+08/09/18 11:31:29 INFO     VerboseApp                on_utterance: 2.59s
+08/09/18 11:31:29 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:29 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:31:29 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:31:29 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:31:29 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:29 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:29 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:30 INFO     VAD                       Utterance 1.74s
+08/09/18 11:31:30 INFO     VerboseApp                on_utterance: 1.74s
+08/09/18 11:31:30 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:30 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:31:30 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:31:30 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:31:30 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:30 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:30 DEBUG    GoogleASR                 ok tarentum yeah
+08/09/18 11:31:30 INFO     VerboseApp                on_transcript: [[u'ok tarentum yeah', 0.6532748937606812], [u'ok tarentum you', 0.6028103828430176], [u'a guide to renting you', 0.3807039260864258], [u'a guide to renting with you', 0.3454917371273041], [u'a guide to renting yeah', 0.4120006561279297], [u'a guide to renting here', 0.3391081392765045], [u'ok to Wrentham you', 0.43571656942367554], [u'a guide to renting new', 0.3391081392765045], [u'a guide to rent in Meir', 0.31896013021469116], [u'a guide to renting near', 0.3391081392765045]]
+08/09/18 11:31:30 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:30 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:30 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:31 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:31:31 INFO     VerboseApp                on_face: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,)
+08/09/18 11:31:31 INFO     VerboseApp                on_face_known: FaceBounds(112.00,29.00,75.00,76.00): 5700.00 (128,) Bram
+08/09/18 11:31:31 INFO     VAD                       Utterance 1.58s
+08/09/18 11:31:31 INFO     VerboseApp                on_utterance: 1.58s
+08/09/18 11:31:31 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:31:31 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:31:31 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:31:31 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:25 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/09/18 11:33:28 DEBUG    SystemCamera              Booted
+08/09/18 11:33:28 DEBUG    OpenFace                  Booted
+08/09/18 11:33:28 DEBUG    SystemMicrophone          Booted
+08/09/18 11:33:28 DEBUG    GoogleASR                 Booted
+08/09/18 11:33:28 DEBUG    SystemTextToSpeech        Booted
+08/09/18 11:33:28 DEBUG    VAD                       Booted
+08/09/18 11:33:28 INFO     LongTermMemory            Booted
+08/09/18 11:33:28 DEBUG    VerboseApp                Booted -> AbstractIntention
+08/09/18 11:33:28 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:29 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:29 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:30 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:30 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:31 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:31 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:32 INFO     VAD                       Utterance 4.86s
+08/09/18 11:33:32 INFO     VerboseApp                on_utterance: 4.86s
+08/09/18 11:33:32 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:33:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:33:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:33:32 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:33 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:33 DEBUG    GoogleASR                 mum
+08/09/18 11:33:33 INFO     VerboseApp                on_transcript: [[u'mum', 0.8567166328430176], [u'bum', 0.6375865340232849], [u'Mam', 0.9150479435920715], [u'mom', 0.9150479435920715], [u'bomb', 0.9150479435920715], [u'thumb', 0.9150479435920715], [u'Farm', 0.9150479435920715], [u'man', 0.9150479435920715]]
+08/09/18 11:33:33 INFO     VAD                       Utterance 1.93s
+08/09/18 11:33:33 INFO     VerboseApp                on_utterance: 1.93s
+08/09/18 11:33:33 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/09/18 11:33:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/09/18 11:33:34 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/09/18 11:33:34 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:34 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:35 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:35 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:36 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:36 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:37 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:37 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:38 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:38 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']
+08/09/18 11:33:39 INFO     VerboseApp                on_object: (240, 320, 3) -> [u'person']

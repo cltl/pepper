@@ -1,5 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
+from pepper.brain import LongTermMemory
 from pepper import config
 
 import logging
@@ -53,6 +54,8 @@ class BaseApp(AbstractApp):
         # Add Voice Activity Detection and Automatic Speech Recognition
         self._vad = VAD(microphone, [self._on_utterance])
         self._asr = asr
+
+        self._brain = LongTermMemory()
 
         # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)
@@ -144,6 +147,15 @@ class BaseApp(AbstractApp):
         openface: pepper.framework.OpenFace
         """
         return self._openface
+
+    @property
+    def brain(self):
+        """
+        Returns
+        -------
+        brain: LongTermMemory
+        """
+        return self._brain
 
     def start(self):
         """Start Application"""
