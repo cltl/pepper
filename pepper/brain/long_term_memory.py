@@ -1,3 +1,4 @@
+from .utils.helper_functions import hash_statement_id, casefold_label
 from pepper import config
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
@@ -5,7 +6,6 @@ from iribaker import to_iri
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 import requests
-import random
 import logging
 
 
@@ -1035,5 +1035,3 @@ class LongTermMemory(object):
             conflicts.append(conflict)
 
         return conflicts
-
-

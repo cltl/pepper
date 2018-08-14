@@ -8675,3 +8675,257 @@
 08/09/18 16:13:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
 08/09/18 16:13:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
 08/09/18 16:13:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:26:14 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 10:27:29 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 10:27:33 DEBUG    SystemCamera              Booted
+08/14/18 10:27:33 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+08/14/18 10:27:40 DEBUG    OpenFace                  Booted
+08/14/18 10:27:40 DEBUG    SystemMicrophone          Booted
+08/14/18 10:27:40 DEBUG    GoogleASR                 Booted
+08/14/18 10:27:40 DEBUG    SystemTextToSpeech        Booted
+08/14/18 10:27:40 DEBUG    VAD                       Booted
+08/14/18 10:27:40 DEBUG    LongTermMemory            Booted
+08/14/18 10:27:40 DEBUG    SystemApp                 Booted -> ReactiveIntention
+08/14/18 10:27:44 INFO     VAD                       Utterance 4.75s
+08/14/18 10:27:45 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:27:45 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:27:45 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:27:49 INFO     VAD                       Utterance 2.25s
+08/14/18 10:27:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:27:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:27:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:27:50 DEBUG    GoogleASR                 how are you doing
+08/14/18 10:27:50 DEBUG    pepper.language.process_utterance utterance: how are you doing, speaker: Person, chat:0: 0, viewed objects: []
+08/14/18 10:27:54 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:27:54 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:29:38 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 10:29:41 DEBUG    SystemCamera              Booted
+08/14/18 10:29:41 DEBUG    OpenFace                  Booted
+08/14/18 10:29:41 DEBUG    SystemMicrophone          Booted
+08/14/18 10:29:41 DEBUG    GoogleASR                 Booted
+08/14/18 10:29:41 DEBUG    SystemTextToSpeech        Booted
+08/14/18 10:29:41 DEBUG    VAD                       Booted
+08/14/18 10:29:41 DEBUG    LongTermMemory            Booted
+08/14/18 10:29:41 DEBUG    SystemApp                 Booted -> ReactiveIntention
+08/14/18 10:29:46 INFO     VAD                       Utterance 5.74s
+08/14/18 10:29:46 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:29:46 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:29:46 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:29:47 DEBUG    GoogleASR                 how are you doing
+08/14/18 10:29:47 DEBUG    pepper.language.process_utterance utterance: how are you doing, speaker: Person, chat:0: 0, viewed objects: []
+08/14/18 10:29:50 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:29:50 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:29:53 INFO     VAD                       Utterance 2.35s
+08/14/18 10:29:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:29:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:29:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:31:07 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 10:31:10 DEBUG    SystemCamera              Booted
+08/14/18 10:31:10 DEBUG    OpenFace                  Booted
+08/14/18 10:31:10 DEBUG    SystemMicrophone          Booted
+08/14/18 10:31:10 DEBUG    GoogleASR                 Booted
+08/14/18 10:31:10 DEBUG    SystemTextToSpeech        Booted
+08/14/18 10:31:10 DEBUG    VAD                       Booted
+08/14/18 10:31:10 DEBUG    LongTermMemory            Booted
+08/14/18 10:31:10 DEBUG    SystemApp                 Booted -> ReactiveIntention
+08/14/18 10:31:14 INFO     VAD                       Utterance 4.81s
+08/14/18 10:31:14 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:31:14 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:31:14 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:31:16 INFO     VAD                       Utterance 2.23s
+08/14/18 10:31:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:31:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:31:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:31:17 DEBUG    GoogleASR                 how are you doing
+08/14/18 10:31:17 DEBUG    pepper.language.process_utterance utterance: how are you doing, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:31:20 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:31:20 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:33:15 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 10:33:18 DEBUG    SystemCamera              Booted
+08/14/18 10:33:18 DEBUG    OpenFace                  Booted
+08/14/18 10:33:18 DEBUG    SystemMicrophone          Booted
+08/14/18 10:33:18 DEBUG    GoogleASR                 Booted
+08/14/18 10:33:18 DEBUG    SystemTextToSpeech        Booted
+08/14/18 10:33:18 DEBUG    VAD                       Booted
+08/14/18 10:33:18 DEBUG    LongTermMemory            Booted
+08/14/18 10:33:18 DEBUG    SystemApp                 Booted -> ReactiveIntention
+08/14/18 10:33:19 INFO     ReactiveIntention         Bram
+08/14/18 10:33:22 INFO     VAD                       Utterance 1.56s
+08/14/18 10:33:22 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:33:22 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:33:22 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:33:24 INFO     VAD                       Utterance 2.41s
+08/14/18 10:33:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:33:24 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:33:24 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:33:24 DEBUG    GoogleASR                 how are you doing
+08/14/18 10:33:24 DEBUG    pepper.language.process_utterance utterance: how are you doing, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:33:28 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:33:28 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:33:40 INFO     VAD                       Utterance 2.73s
+08/14/18 10:33:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:33:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:33:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:33:41 DEBUG    GoogleASR                 what does Abraham like
+08/14/18 10:33:41 DEBUG    pepper.language.process_utterance utterance: what does Abraham like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:34:00 INFO     VAD                       Utterance 2.48s
+08/14/18 10:34:00 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:34:00 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:34:00 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:34:00 DEBUG    GoogleASR                 what do I like
+08/14/18 10:34:00 DEBUG    pepper.language.process_utterance utterance: what do I like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:34:00 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'likes', 'object': '', 'subject': 'Bram'}
+08/14/18 10:34:00 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'likes', 'object': '', 'subject': 'Bram'}
+08/14/18 10:34:13 INFO     VAD                       Utterance 6.52s
+08/14/18 10:34:13 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:34:13 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:34:13 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:57:58 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 10:58:02 DEBUG    SystemCamera              Booted
+08/14/18 10:58:02 DEBUG    OpenFace                  Booted
+08/14/18 10:58:02 DEBUG    SystemMicrophone          Booted
+08/14/18 10:58:02 DEBUG    GoogleASR                 Booted
+08/14/18 10:58:02 DEBUG    SystemTextToSpeech        Booted
+08/14/18 10:58:02 DEBUG    VAD                       Booted
+08/14/18 10:58:02 DEBUG    LongTermMemory            Booted
+08/14/18 10:58:02 DEBUG    SystemApp                 Booted -> ReactiveIntention
+08/14/18 10:58:07 INFO     VAD                       Utterance 5.07s
+08/14/18 10:58:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:58:10 INFO     ReactiveIntention         Bram
+08/14/18 10:58:12 INFO     VAD                       Utterance 1.77s
+08/14/18 10:58:12 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:12 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:12 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:58:14 INFO     VAD                       Utterance 1.57s
+08/14/18 10:58:14 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:14 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:14 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:58:19 INFO     VAD                       Utterance 2.21s
+08/14/18 10:58:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:58:19 DEBUG    GoogleASR                 how are you doing
+08/14/18 10:58:19 DEBUG    pepper.language.process_utterance utterance: how are you doing, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:58:23 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:58:23 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 10:58:23 INFO     SystemTextToSpeech        i wouldn't know
+
+08/14/18 10:58:33 INFO     VAD                       Utterance 2.41s
+08/14/18 10:58:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:33 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:58:34 DEBUG    GoogleASR                 what do I like
+08/14/18 10:58:34 DEBUG    pepper.language.process_utterance utterance: what do I like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:58:34 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'likes', 'object': '', 'subject': 'Bram'}
+08/14/18 10:58:34 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'likes', 'object': '', 'subject': 'Bram'}
+08/14/18 10:58:34 INFO     SystemTextToSpeech        Selene told me  you  like goulash and  likes goulash and  likes the big lebowski and  likes the big lebowski and  likes baseball and  likes baseball and  likes romantic movies and  likes romantic movies and  likes romantic movies and  likes romantic movies and  you told me  likes action movies
+08/14/18 10:58:45 INFO     VAD                       Utterance 2.66s
+08/14/18 10:58:45 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:45 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:45 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 10:58:46 DEBUG    GoogleASR                 where is Brum from
+08/14/18 10:58:46 DEBUG    pepper.language.process_utterance utterance: where is Brum from, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 10:58:55 INFO     VAD                       Utterance 1.60s
+08/14/18 10:58:55 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 10:58:55 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 10:58:55 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:11:20 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/14/18 11:11:24 DEBUG    SystemCamera              Booted
+08/14/18 11:11:24 DEBUG    OpenFace                  bamos/openface is not running -> booting it!
+08/14/18 11:11:31 DEBUG    OpenFace                  Booted
+08/14/18 11:11:31 DEBUG    SystemMicrophone          Booted
+08/14/18 11:11:31 DEBUG    GoogleASR                 Booted
+08/14/18 11:11:31 DEBUG    SystemTextToSpeech        Booted
+08/14/18 11:11:31 DEBUG    VAD                       Booted
+08/14/18 11:11:31 DEBUG    LongTermMemory            Booted
+08/14/18 11:11:31 DEBUG    SystemApp                 Booted -> ReactiveIntention
+08/14/18 11:11:36 INFO     VAD                       Utterance 6.22s
+08/14/18 11:11:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:11:37 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:11:37 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:11:38 INFO     ReactiveIntention         Bram
+08/14/18 11:11:40 INFO     VAD                       Utterance 2.35s
+08/14/18 11:11:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:11:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:11:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:11:43 INFO     VAD                       Utterance 2.29s
+08/14/18 11:11:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:11:43 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:11:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:11:43 DEBUG    GoogleASR                 how are you doing
+08/14/18 11:11:43 DEBUG    pepper.language.process_utterance utterance: how are you doing, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:11:47 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 11:11:47 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': u'leolani'}
+08/14/18 11:11:47 INFO     SystemTextToSpeech        i have no idea
+
+08/14/18 11:11:55 INFO     VAD                       Utterance 3.40s
+08/14/18 11:11:55 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:11:55 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:11:55 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:11:56 DEBUG    GoogleASR                 what is your name
+08/14/18 11:11:56 DEBUG    pepper.language.process_utterance utterance: what is your name, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:11:56 ERROR    pepper.language.analyzers unknown category for possessive: [u'your', u'name']
+08/14/18 11:11:56 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'name-is', 'object': '', 'subject': ''}
+08/14/18 11:11:56 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'name-is', 'object': '', 'subject': ''}
+08/14/18 11:11:56 INFO     SystemTextToSpeech        i have no idea
+
+08/14/18 11:12:01 INFO     VAD                       Utterance 2.56s
+08/14/18 11:12:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:12:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:12:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:12:04 INFO     VAD                       Utterance 2.31s
+08/14/18 11:12:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:12:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:12:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:12:05 DEBUG    GoogleASR                 what do I like
+08/14/18 11:12:05 DEBUG    pepper.language.process_utterance utterance: what do I like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:12:05 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'likes', 'object': '', 'subject': 'Bram'}
+08/14/18 11:12:05 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'likes', 'object': '', 'subject': 'Bram'}
+08/14/18 11:12:05 INFO     SystemTextToSpeech        Selene told me  you  like goulash and  likes goulash and  likes the big lebowski and  likes the big lebowski and  likes baseball and  likes baseball and  likes romantic movies and  likes romantic movies and  likes romantic movies and  likes romantic movies and  you told me  likes action movies
+08/14/18 11:12:10 INFO     VAD                       Utterance 2.48s
+08/14/18 11:12:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:12:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:12:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:12:11 DEBUG    GoogleASR                 what does a brown like
+08/14/18 11:12:11 DEBUG    pepper.language.process_utterance utterance: what does a brown like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:12:11 ERROR    pepper.language.analyzers This word a is surprising me
+08/14/18 11:12:11 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': '', 'object': '', 'subject': ''}
+08/14/18 11:12:11 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': '', 'object': '', 'subject': ''}
+08/14/18 11:12:11 INFO     SystemTextToSpeech        i have no idea
+
+08/14/18 11:12:18 INFO     VAD                       Utterance 2.95s
+08/14/18 11:12:18 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:12:18 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:12:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:12:20 DEBUG    GoogleASR                 what does brum like
+08/14/18 11:12:20 DEBUG    pepper.language.process_utterance utterance: what does brum like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:12:21 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'likes', 'object': '', 'subject': ''}
+08/14/18 11:12:21 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'likes', 'object': '', 'subject': ''}
+08/14/18 11:12:21 INFO     SystemTextToSpeech        i wouldn't know
+
+08/14/18 11:12:25 INFO     VAD                       Utterance 2.72s
+08/14/18 11:12:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:12:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:12:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:12:26 DEBUG    GoogleASR                 what does Selena like
+08/14/18 11:12:26 DEBUG    pepper.language.process_utterance utterance: what does Selena like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:12:27 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'likes', 'object': '', 'subject': ''}
+08/14/18 11:12:27 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'likes', 'object': '', 'subject': ''}
+08/14/18 11:12:27 INFO     SystemTextToSpeech        i have no idea
+
+08/14/18 11:12:38 INFO     VAD                       Utterance 3.09s
+08/14/18 11:12:38 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:12:38 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:12:38 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/14/18 11:12:39 DEBUG    GoogleASR                 what does Selena like
+08/14/18 11:12:39 DEBUG    pepper.language.process_utterance utterance: what does Selena like, speaker: Bram, chat:0: 0, viewed objects: []
+08/14/18 11:12:40 DEBUG    pepper.language.analyzers analysis of wh-question produced this rdf: {'predicate': u'likes', 'object': '', 'subject': ''}
+08/14/18 11:12:40 INFO     pepper.language.process_utterance RDF extracted from question: {'predicate': u'likes', 'object': '', 'subject': ''}
+08/14/18 11:12:40 INFO     SystemTextToSpeech        i have no idea
+
+08/14/18 11:13:08 INFO     VAD                       Utterance 1.60s
+08/14/18 11:13:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/14/18 11:13:08 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/14/18 11:13:09 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
