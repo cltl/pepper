@@ -1,4 +1,4 @@
-from pepper.framework.abstract import BaseApp, AbstractIntention
+from pepper.framework import BaseApp, AbstractIntention
 from pepper.framework.naoqi import *
 from pepper.sensor.asr import GoogleASR
 from pepper.sensor.face import OpenFace
@@ -21,7 +21,7 @@ class NaoqiApp(BaseApp):
         self._application = qi.Application([self.__class__.__name__, "--qi-url={}".format(config.NAOQI_URL)])
         self._application.start()
 
-        super(NaoqiApp, self).__init__(intention,
-            NaoqiCamera(self._application.session, config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE), OpenFace(),
-            NaoqiMicrophone(self._application.session, config.NAOQI_MICROPHONE_INDEX), GoogleASR(config.LANGUAGE),
+        super(NaoqiApp, self).__init__(intention, OpenFace(), GoogleASR(config.LANGUAGE),
+            NaoqiCamera(self._application.session, config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
+            NaoqiMicrophone(self._application.session, config.NAOQI_MICROPHONE_INDEX),
             NaoqiTextToSpeech(self._application.session))

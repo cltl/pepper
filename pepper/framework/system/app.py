@@ -16,8 +16,8 @@ class SystemApp(BaseApp):
             Intention to start program with
         """
         super(SystemApp, self).__init__(intention,
-                                        SystemCamera(config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
                                         OpenFace(),
-                                        SystemMicrophone(config.MICROPHONE_SAMPLE_RATE, config.MICROPHONE_CHANNELS),
                                         GoogleASR(config.LANGUAGE),
+                                        SystemCamera(config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
+                                        SystemMicrophone(config.MICROPHONE_SAMPLE_RATE, config.MICROPHONE_CHANNELS),
                                         SystemTextToSpeech())

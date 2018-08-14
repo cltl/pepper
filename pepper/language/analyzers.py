@@ -36,7 +36,7 @@ def analyze_np(np_list, speaker):
         morphology['pronoun'] = analyze_pronoun(first_word, speaker)
 
     elif first_word in names:
-        morphology['human'] =  first_word
+        morphology['human'] = first_word
         # what if it is a name but not of an acquaintance?
 
     elif first_word in grammar['possessive']:
@@ -102,6 +102,7 @@ def extract_named_entities(np_list):
         i += 1
     return recognized_entities
 
+
 def analyze_pronoun(pronoun, speaker):
     '''
     This function returns a morphology which it reads from the grammar (dict.json)
@@ -119,7 +120,6 @@ def analyze_pronoun(pronoun, speaker):
         LOG.error('unknown pronoun: '+pronoun)
 
     return morphology
-
 
 
 def analyze_verb(verb):

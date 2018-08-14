@@ -1,6 +1,5 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
-from pepper.language import *
 from pepper.brain import LongTermMemory
 from pepper import config
 
@@ -9,7 +8,7 @@ from time import sleep
 
 
 class BaseApp(AbstractApp):
-    def __init__(self, intention, camera, openface, microphone, asr, text_to_speech):
+    def __init__(self, intention, openface, asr, camera, microphone, text_to_speech):
         """
         Initialize Base Application -> Base for all Applications and BDI
 
