@@ -9,7 +9,7 @@ import qi
 
 
 class NaoqiApp(BaseApp):
-    def __init__(self, intention = AbstractIntention()):
+    def __init__(self, intention):
         """
         Run Application on Naoqi System (Pepper/Nao)
 

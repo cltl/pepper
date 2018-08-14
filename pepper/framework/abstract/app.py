@@ -156,7 +156,7 @@ class AbstractApp(object):
         """
         pass
 
-    def on_transcript(self, transcript):
+    def on_transcript(self, transcript, audio):
         """
         On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.
 
@@ -164,15 +164,17 @@ class AbstractApp(object):
         ----------
         transcript: list of (str, float)
             Hypotheses (confidence, text) about the corresponding utterance
+        audio: np.ndarray
+            Microphone Samples containing speech
         """
         pass
 
 
 class AbstractIntention(AbstractApp):
-    def __init__(self):
+    def __init__(self, app):
         """Create Abstract Intention"""
 
-        self._app = None
+        self._app = app
         self._log = logging.getLogger(self.__class__.__name__)
 
     @property

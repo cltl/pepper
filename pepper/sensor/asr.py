@@ -22,7 +22,7 @@ class AbstractASR(object):
 
 
 class GoogleASR(AbstractASR):
-    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives = 10, phrases=()):
+    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives = 10):
         """
         Transcribe Speech using Google Speech API
 
@@ -34,25 +34,17 @@ class GoogleASR(AbstractASR):
             Input Audio Sample Rate
         max_alternatives: int
             Maximum Number of Alternatives Google will provide
-        phrases: tuple of str
-            Phrases or words to add to Google Speech's Vocabulary
         """
         super(GoogleASR, self).__init__()
 
-        self._config = speech.types.RecognitionConfig(
-            encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz = sample_rate,
-            language_code = language,
-            max_alternatives = max_alternatives,
-            speech_contexts=[speech.types.SpeechContext(
-                phrases=phrases
-            )]
-        )
+        self._sample_rate = sample_rate
+        self._language = language
+        self._max_alternatives = max_alternatives
 
         self._log = logging.getLogger(self.__class__.__name__)
         self._log.debug("Booted")
 
-    def transcribe(self, audio):
+    def transcribe(self, audio, hints=()):
         """
         Transcribe Speech in Audio
 
@@ -65,7 +57,11 @@ class GoogleASR(AbstractASR):
         transcript: List
             List of (<transcript>, <confidence>) pairs
         """
-        response = speech.SpeechClient().recognize(self._config,speech.types.RecognitionAudio(content=audio.tobytes()))
+        response = speech.SpeechClient().recognize(speech.types.RecognitionConfig(
+                encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16, sample_rate_hertz = self._sample_rate,
+                language_code = self._language, max_alternatives = self._max_alternatives,
+                speech_contexts = [speech.types.SpeechContext(phrases=hints)]),
+            speech.types.RecognitionAudio(content=audio.tobytes()))
         hypotheses = []
 
         for result in response.results:
@@ -73,6 +69,6 @@ class GoogleASR(AbstractASR):
                 hypotheses.append([alternative.transcript, alternative.confidence])
 
         if hypotheses:
-            self._log.debug(hypotheses[0][0])
+            self._log.debug("'{}' ({:3.0%})".format(hypotheses[0][0], hypotheses[0][1]))
 
         return hypotheses

@@ -8,7 +8,7 @@ from time import sleep
 
 
 class BaseApp(AbstractApp):
-    def __init__(self, intention, openface, asr, camera, microphone, text_to_speech):
+    def __init__(self, openface, asr, camera, microphone, text_to_speech):
         """
         Initialize Base Application -> Base for all Applications and BDI
 
@@ -23,13 +23,13 @@ class BaseApp(AbstractApp):
         camera: pepper.framework.abstract.AbstractCamera
         openface: pepper.framework.OpenFace
         microphone: pepper.framework.AbstractMicrophone
-        asr: pepper.framework.AbstractASR
+        asr: pepper.sensor.asr.AbstractASR
         text_to_speech: pepper.framework.abstract.AbstractTextToSpeech
         """
         super(BaseApp, self).__init__()
 
         # Set Intention
-        self._intention = intention
+        self._intention = self
         self._intention.app = self
 
         # Add Camera
@@ -81,9 +81,7 @@ class BaseApp(AbstractApp):
         """
 
         self.log.info("Switch Intention: {} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
-
         self._intention = value
-        self._intention.app = self
 
     @property
     def log(self):
@@ -266,7 +264,7 @@ class BaseApp(AbstractApp):
         """
         self.intention.on_utterance(audio)
 
-    def on_transcript(self, transcript):
+    def on_transcript(self, transcript, audio):
         """
         On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.
 
@@ -275,7 +273,7 @@ class BaseApp(AbstractApp):
         transcript: list of (str, float)
             Hypotheses (text, confidence) about the corresponding utterance
         """
-        self.intention.on_transcript(transcript)
+        self.intention.on_transcript(transcript, audio)
 
     def _on_image(self, image):
         """
@@ -317,6 +315,6 @@ class BaseApp(AbstractApp):
         # If Transcript, call On Transcript Event
         hypotheses = self.asr.transcribe(audio)
         if hypotheses:
-            self.on_transcript(hypotheses)
+            self.on_transcript(hypotheses, audio)
 
 

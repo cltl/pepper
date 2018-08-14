@@ -86,7 +86,7 @@ def extract_named_entities(np_list):
     recognized_entities = []
 
     ner_text = ner.tag(np_list)
-    print('NER', ner_text)
+    LOG.debug('NER: {}'.format(ner_text))
 
     for n in ner_text:
         if n[1] != 'O':
@@ -216,7 +216,7 @@ def analyze_verb_question(words, speaker, viewed_objects):
         if np_info['pronoun']['person'] == 'second':
             rdf['subject'] = 'leolani'
         elif np_info['pronoun']['person'] == 'first':
-            rdf['subject']=speaker
+            rdf['subject'] = speaker
 
     if 'human' in np_info:
         rdf['subject'] = np_info['human']

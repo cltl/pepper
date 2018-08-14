@@ -6,7 +6,7 @@ from pepper import config
 
 
 class SystemApp(BaseApp):
-    def __init__(self, intention = AbstractIntention()):
+    def __init__(self):
         """
         Run Application on Host System
 
@@ -15,8 +15,7 @@ class SystemApp(BaseApp):
         intention: AbstractIntention
             Intention to start program with
         """
-        super(SystemApp, self).__init__(intention,
-                                        OpenFace(),
+        super(SystemApp, self).__init__(OpenFace(),
                                         GoogleASR(config.LANGUAGE),
                                         SystemCamera(config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
                                         SystemMicrophone(config.MICROPHONE_SAMPLE_RATE, config.MICROPHONE_CHANNELS),
