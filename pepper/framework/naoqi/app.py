@@ -9,19 +9,17 @@ import qi
 
 
 class NaoqiApp(BaseApp):
-    def __init__(self, intention):
-        """
-        Run Application on Naoqi System (Pepper/Nao)
+    def __init__(self):
+        """Run Application on Naoqi System (Pepper/Nao)"""
+        self._session = NaoqiApp.create_session()
 
-        Parameters
-        ----------
-        intention: AbstractIntention
-            Intention to start program with
-        """
-        self._application = qi.Application([self.__class__.__name__, "--qi-url={}".format(config.NAOQI_URL)])
-        self._application.start()
+        super(NaoqiApp, self).__init__(OpenFace(), GoogleASR(config.LANGUAGE),
+            NaoqiCamera(self._session, config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
+            NaoqiMicrophone(self._session, config.NAOQI_MICROPHONE_INDEX),
+            NaoqiTextToSpeech(self._session))
 
-        super(NaoqiApp, self).__init__(intention, OpenFace(), GoogleASR(config.LANGUAGE),
-            NaoqiCamera(self._application.session, config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
-            NaoqiMicrophone(self._application.session, config.NAOQI_MICROPHONE_INDEX),
-            NaoqiTextToSpeech(self._application.session))
+    @staticmethod
+    def create_session():
+        application = qi.Application([NaoqiApp.__name__, "--qi-url={}".format(config.NAOQI_URL)])
+        application.start()
+        return application.session

@@ -1,4 +1,5 @@
 from pepper.framework.system import SystemApp
+from pepper.framework.naoqi import NaoqiApp
 from pepper.framework import AbstractIntention
 from pepper.language import classify_and_process_utterance, reply_to_question
 from pepper.language.names import NameParser
@@ -36,7 +37,8 @@ class ReactiveIntention(AbstractIntention):
 
 
 if __name__ == '__main__':
-    app = SystemApp()
+    # app = SystemApp()
+    app = NaoqiApp()
     intention = ReactiveIntention(app)
     app.intention = intention
     app.start()
