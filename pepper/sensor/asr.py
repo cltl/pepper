@@ -22,7 +22,7 @@ class AbstractASR(object):
 
 
 class GoogleASR(AbstractASR):
-    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives = 10):
+    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives=20):
         """
         Transcribe Speech using Google Speech API
 
@@ -69,6 +69,6 @@ class GoogleASR(AbstractASR):
                 hypotheses.append([alternative.transcript, alternative.confidence])
 
         if hypotheses:
-            self._log.debug("'{}' ({:3.0%})".format(hypotheses[0][0], hypotheses[0][1]))
+            self._log.debug(hypotheses)
 
         return hypotheses

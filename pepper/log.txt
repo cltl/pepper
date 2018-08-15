@@ -10345,3 +10345,1413 @@
 08/15/18 11:42:12 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
 08/15/18 11:42:12 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
 08/15/18 11:42:12 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:45:19 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:45:20 DEBUG    OpenFace                  Booted
+08/15/18 11:45:20 DEBUG    GoogleASR                 Booted
+08/15/18 11:45:23 DEBUG    SystemCamera              Booted
+08/15/18 11:45:23 DEBUG    SystemMicrophone          Booted
+08/15/18 11:45:23 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:45:23 DEBUG    VAD                       Booted
+08/15/18 11:45:23 DEBUG    LongTermMemory            Booted
+08/15/18 11:45:23 DEBUG    SystemApp                 Booted
+08/15/18 11:45:23 DEBUG    NER                       Booted: (localhost:54038)
+08/15/18 11:45:23 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:45:25 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+
+08/15/18 11:45:28 DEBUG    VAD                       Utterance 1.66s
+08/15/18 11:45:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:45:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:45:28 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:45:34 INFO     ReactiveIntention         Bram
+08/15/18 11:45:35 DEBUG    VAD                       Utterance 1.87s
+08/15/18 11:45:35 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:45:35 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:45:35 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:45:37 DEBUG    VAD                       Utterance 2.48s
+08/15/18 11:45:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:45:37 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:45:38 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:45:38 DEBUG    GoogleASR                 'my name is Elena' (93%)
+08/15/18 11:48:49 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:48:50 DEBUG    OpenFace                  Booted
+08/15/18 11:48:50 DEBUG    GoogleASR                 Booted
+08/15/18 11:48:53 DEBUG    SystemCamera              Booted
+08/15/18 11:48:53 DEBUG    SystemMicrophone          Booted
+08/15/18 11:48:53 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:48:53 DEBUG    VAD                       Booted
+08/15/18 11:48:53 DEBUG    LongTermMemory            Booted
+08/15/18 11:48:53 DEBUG    SystemApp                 Booted
+08/15/18 11:48:53 DEBUG    NER                       Booted: (localhost:54194)
+08/15/18 11:48:53 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:48:55 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+
+08/15/18 11:48:58 DEBUG    VAD                       Utterance 1.56s
+08/15/18 11:48:58 INFO     ReactiveIntention         Bram
+08/15/18 11:48:58 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:48:58 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:48:58 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:49:03 DEBUG    VAD                       Utterance 1.59s
+08/15/18 11:49:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:49:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:49:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:49:05 DEBUG    VAD                       Utterance 2.37s
+08/15/18 11:49:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:49:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:49:05 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:49:05 DEBUG    GoogleASR                 'my name is Elena' (97%)
+08/15/18 11:49:36 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:49:37 DEBUG    OpenFace                  Booted
+08/15/18 11:49:37 DEBUG    GoogleASR                 Booted
+08/15/18 11:49:40 DEBUG    SystemCamera              Booted
+08/15/18 11:49:40 DEBUG    SystemMicrophone          Booted
+08/15/18 11:49:40 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:49:40 DEBUG    VAD                       Booted
+08/15/18 11:49:40 DEBUG    LongTermMemory            Booted
+08/15/18 11:49:40 DEBUG    SystemApp                 Booted
+08/15/18 11:49:40 DEBUG    NER                       Booted: (localhost:54365)
+08/15/18 11:49:40 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:49:41 INFO     ReactiveIntention         Bram
+08/15/18 11:49:42 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+
+08/15/18 11:49:44 DEBUG    VAD                       Utterance 4.64s
+08/15/18 11:49:44 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:49:44 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:49:44 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:49:48 DEBUG    VAD                       Utterance 3.24s
+08/15/18 11:49:48 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:49:48 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:49:48 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:49:49 DEBUG    GoogleASR                 'my name is Selena' (94%)
+08/15/18 11:50:06 DEBUG    VAD                       Utterance 2.51s
+08/15/18 11:50:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:09 DEBUG    VAD                       Utterance 2.44s
+08/15/18 11:50:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:10 DEBUG    GoogleASR                 'my name is Bruno' (89%)
+08/15/18 11:50:17 DEBUG    VAD                       Utterance 2.50s
+08/15/18 11:50:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:17 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:17 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:17 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 11:50:40 DEBUG    VAD                       Utterance 1.71s
+08/15/18 11:50:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:42 DEBUG    VAD                       Utterance 1.56s
+08/15/18 11:50:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:44 DEBUG    VAD                       Utterance 2.43s
+08/15/18 11:50:44 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:44 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:44 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:45 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 11:50:48 DEBUG    VAD                       Utterance 2.12s
+08/15/18 11:50:48 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:50:48 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:50:48 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:50:48 DEBUG    GoogleASR                 'when is Brighton' (97%)
+08/15/18 11:51:18 DEBUG    VAD                       Utterance 1.92s
+08/15/18 11:51:18 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:51:18 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:51:18 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:51:25 DEBUG    VAD                       Utterance 2.53s
+08/15/18 11:51:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:51:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:51:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:51:26 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 11:51:33 DEBUG    VAD                       Utterance 2.17s
+08/15/18 11:51:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:51:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:51:33 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:51:33 DEBUG    GoogleASR                 'my name is Brian' (92%)
+08/15/18 11:51:38 DEBUG    VAD                       Utterance 1.74s
+08/15/18 11:51:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:51:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:51:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:51:41 DEBUG    VAD                       Utterance 2.39s
+08/15/18 11:51:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:51:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:51:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:51:42 DEBUG    GoogleASR                 'my name is Brian' (90%)
+08/15/18 11:51:50 DEBUG    VAD                       Utterance 2.49s
+08/15/18 11:51:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:51:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:51:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:51:51 DEBUG    GoogleASR                 'my name is Elena' (96%)
+08/15/18 11:52:02 DEBUG    VAD                       Utterance 2.77s
+08/15/18 11:52:02 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:02 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:02 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:03 DEBUG    GoogleASR                 'my name is Elena' (90%)
+08/15/18 11:52:08 DEBUG    VAD                       Utterance 2.46s
+08/15/18 11:52:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:08 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:08 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:09 DEBUG    GoogleASR                 'my name is Elena' (97%)
+08/15/18 11:52:13 DEBUG    VAD                       Utterance 2.26s
+08/15/18 11:52:13 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:13 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:13 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:14 DEBUG    GoogleASR                 'my name is Elena' (97%)
+08/15/18 11:52:24 DEBUG    VAD                       Utterance 2.18s
+08/15/18 11:52:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:24 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:27 DEBUG    VAD                       Utterance 2.69s
+08/15/18 11:52:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:28 DEBUG    GoogleASR                 'my name is Elena' (92%)
+08/15/18 11:52:33 DEBUG    VAD                       Utterance 2.37s
+08/15/18 11:52:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:33 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:33 DEBUG    GoogleASR                 'my name is Graham' (81%)
+08/15/18 11:52:39 DEBUG    VAD                       Utterance 2.33s
+08/15/18 11:52:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:40 DEBUG    GoogleASR                 'my name is Pig' (83%)
+08/15/18 11:52:56 DEBUG    VAD                       Utterance 2.45s
+08/15/18 11:52:56 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:52:56 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:52:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:52:57 DEBUG    GoogleASR                 'my name is big' (91%)
+08/15/18 11:53:06 DEBUG    VAD                       Utterance 2.42s
+08/15/18 11:53:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:53:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:53:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:53:10 DEBUG    VAD                       Utterance 3.12s
+08/15/18 11:53:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:53:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:53:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:53:14 DEBUG    VAD                       Utterance 1.72s
+08/15/18 11:53:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:53:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:53:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:53:17 DEBUG    VAD                       Utterance 2.34s
+08/15/18 11:53:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:53:17 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:53:17 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:53:53 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:53:55 DEBUG    OpenFace                  Booted
+08/15/18 11:53:55 DEBUG    GoogleASR                 Booted
+08/15/18 11:53:57 DEBUG    SystemCamera              Booted
+08/15/18 11:53:57 DEBUG    SystemMicrophone          Booted
+08/15/18 11:53:57 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:53:57 DEBUG    VAD                       Booted
+08/15/18 11:53:57 DEBUG    LongTermMemory            Booted
+08/15/18 11:53:57 DEBUG    SystemApp                 Booted
+08/15/18 11:53:57 DEBUG    NER                       Booted: (localhost:55426)
+08/15/18 11:53:57 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:53:58 INFO     ReactiveIntention         Bram
+08/15/18 11:53:59 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.9 sec].
+
+08/15/18 11:54:01 DEBUG    VAD                       Utterance 4.77s
+08/15/18 11:54:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:04 DEBUG    VAD                       Utterance 2.36s
+08/15/18 11:54:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:05 DEBUG    GoogleASR                 'my name is Brennan' (92%)
+08/15/18 11:54:10 DEBUG    VAD                       Utterance 2.48s
+08/15/18 11:54:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:29 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:54:31 DEBUG    OpenFace                  Booted
+08/15/18 11:54:31 DEBUG    GoogleASR                 Booted
+08/15/18 11:54:33 DEBUG    SystemCamera              Booted
+08/15/18 11:54:33 DEBUG    SystemMicrophone          Booted
+08/15/18 11:54:33 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:54:33 DEBUG    VAD                       Booted
+08/15/18 11:54:33 DEBUG    LongTermMemory            Booted
+08/15/18 11:54:33 DEBUG    SystemApp                 Booted
+08/15/18 11:54:33 DEBUG    NER                       Booted: (localhost:55500)
+08/15/18 11:54:33 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:54:34 INFO     ReactiveIntention         Bram
+08/15/18 11:54:36 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.9 sec].
+
+08/15/18 11:54:40 DEBUG    VAD                       Utterance 6.92s
+08/15/18 11:54:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:41 DEBUG    VAD                       Utterance 1.76s
+08/15/18 11:54:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:42 DEBUG    VAD                       Utterance 1.95s
+08/15/18 11:54:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:43 DEBUG    VAD                       Utterance 1.65s
+08/15/18 11:54:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:43 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:48 DEBUG    VAD                       Utterance 1.99s
+08/15/18 11:54:48 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:48 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:48 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:52 DEBUG    VAD                       Utterance 2.00s
+08/15/18 11:54:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:52 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:56 DEBUG    VAD                       Utterance 2.09s
+08/15/18 11:54:56 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:56 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:57 DEBUG    VAD                       Utterance 1.64s
+08/15/18 11:54:57 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:57 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:57 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:54:58 DEBUG    VAD                       Utterance 1.86s
+08/15/18 11:54:58 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:54:58 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:54:58 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 11:58:15 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:58:16 DEBUG    OpenFace                  Booted
+08/15/18 11:58:16 DEBUG    GoogleASR                 Booted
+08/15/18 11:58:18 DEBUG    SystemCamera              Booted
+08/15/18 11:58:19 DEBUG    SystemMicrophone          Booted
+08/15/18 11:58:19 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:58:19 DEBUG    VAD                       Booted
+08/15/18 11:58:19 DEBUG    LongTermMemory            Booted
+08/15/18 11:58:19 DEBUG    SystemApp                 Booted
+08/15/18 11:58:19 DEBUG    NER                       Booted: (localhost:55664)
+08/15/18 11:58:19 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:59:41 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 11:59:42 DEBUG    OpenFace                  Booted
+08/15/18 11:59:42 DEBUG    GoogleASR                 Booted
+08/15/18 11:59:45 DEBUG    SystemCamera              Booted
+08/15/18 11:59:45 DEBUG    SystemMicrophone          Booted
+08/15/18 11:59:45 DEBUG    SystemTextToSpeech        Booted
+08/15/18 11:59:45 DEBUG    VAD                       Booted
+08/15/18 11:59:45 DEBUG    LongTermMemory            Booted
+08/15/18 11:59:45 DEBUG    SystemApp                 Booted
+08/15/18 11:59:45 DEBUG    NER                       Booted: (localhost:55672)
+08/15/18 11:59:45 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 11:59:47 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+
+08/15/18 11:59:48 INFO     ReactiveIntention         Bram
+08/15/18 11:59:49 DEBUG    VAD                       Utterance 3.90s
+08/15/18 11:59:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 11:59:49 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 11:59:49 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:00:10 DEBUG    VAD                       Utterance 2.52s
+08/15/18 12:00:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:00:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:00:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:00:13 DEBUG    VAD                       Utterance 2.01s
+08/15/18 12:00:16 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:00:18 DEBUG    OpenFace                  Booted
+08/15/18 12:00:18 DEBUG    GoogleASR                 Booted
+08/15/18 12:00:20 DEBUG    SystemCamera              Booted
+08/15/18 12:00:20 DEBUG    SystemMicrophone          Booted
+08/15/18 12:00:20 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:00:20 DEBUG    VAD                       Booted
+08/15/18 12:00:20 DEBUG    LongTermMemory            Booted
+08/15/18 12:00:20 DEBUG    SystemApp                 Booted
+08/15/18 12:00:20 DEBUG    NER                       Booted: (localhost:55792)
+08/15/18 12:00:20 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:00:21 INFO     ReactiveIntention         Bram
+08/15/18 12:00:25 DEBUG    VAD                       Utterance 5.44s
+08/15/18 12:00:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:00:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:00:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:00:31 DEBUG    VAD                       Utterance 1.56s
+08/15/18 12:00:31 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:00:31 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:00:31 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:00:35 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:00:36 DEBUG    OpenFace                  Booted
+08/15/18 12:00:36 DEBUG    GoogleASR                 Booted
+08/15/18 12:00:39 DEBUG    SystemCamera              Booted
+08/15/18 12:00:39 DEBUG    SystemMicrophone          Booted
+08/15/18 12:00:39 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:00:39 DEBUG    VAD                       Booted
+08/15/18 12:00:39 DEBUG    LongTermMemory            Booted
+08/15/18 12:00:39 DEBUG    SystemApp                 Booted
+08/15/18 12:00:39 DEBUG    NER                       Booted: (localhost:55844)
+08/15/18 12:00:39 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:00:40 INFO     ReactiveIntention         Bram
+08/15/18 12:00:42 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.1 sec].
+
+08/15/18 12:00:44 DEBUG    VAD                       Utterance 5.41s
+08/15/18 12:00:44 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:00:44 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:00:44 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:00:45 DEBUG    VAD                       Utterance 1.86s
+08/15/18 12:00:45 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:00:45 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:00:45 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:00:58 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:00:59 DEBUG    OpenFace                  Booted
+08/15/18 12:00:59 DEBUG    GoogleASR                 Booted
+08/15/18 12:01:02 DEBUG    SystemCamera              Booted
+08/15/18 12:01:02 DEBUG    SystemMicrophone          Booted
+08/15/18 12:01:02 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:01:02 DEBUG    VAD                       Booted
+08/15/18 12:01:02 DEBUG    LongTermMemory            Booted
+08/15/18 12:01:02 DEBUG    SystemApp                 Booted
+08/15/18 12:01:02 DEBUG    NER                       Booted: (localhost:55878)
+08/15/18 12:01:02 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:01:04 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.0 sec].
+
+08/15/18 12:01:05 INFO     ReactiveIntention         Bram
+08/15/18 12:01:07 DEBUG    VAD                       Utterance 5.83s
+08/15/18 12:01:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:01:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:01:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:01:17 DEBUG    VAD                       Utterance 2.94s
+08/15/18 12:01:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:01:17 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:01:17 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:01:18 DEBUG    GoogleASR                 'my name is Brian' (85%)
+08/15/18 12:02:23 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:02:24 DEBUG    OpenFace                  Booted
+08/15/18 12:02:24 DEBUG    GoogleASR                 Booted
+08/15/18 12:02:27 DEBUG    SystemCamera              Booted
+08/15/18 12:02:27 DEBUG    SystemMicrophone          Booted
+08/15/18 12:02:27 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:02:27 DEBUG    VAD                       Booted
+08/15/18 12:02:27 DEBUG    LongTermMemory            Booted
+08/15/18 12:02:27 DEBUG    SystemApp                 Booted
+08/15/18 12:02:27 DEBUG    NER                       Booted: (localhost:56000)
+08/15/18 12:02:27 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:02:28 INFO     ReactiveIntention         Bram
+08/15/18 12:02:29 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.9 sec].
+
+08/15/18 12:02:32 DEBUG    VAD                       Utterance 5.10s
+08/15/18 12:02:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:02:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:02:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:02:33 DEBUG    GoogleASR                 'my name is Graham' (79%)
+08/15/18 12:02:39 DEBUG    VAD                       Utterance 2.42s
+08/15/18 12:02:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:02:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:02:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:02:40 DEBUG    GoogleASR                 'my name is Elena' (97%)
+08/15/18 12:02:49 DEBUG    VAD                       Utterance 2.40s
+08/15/18 12:02:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:02:49 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:02:49 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:02:49 DEBUG    GoogleASR                 'my name is Elena' (97%)
+08/15/18 12:02:56 DEBUG    VAD                       Utterance 2.34s
+08/15/18 12:02:56 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:02:56 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:02:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:02:57 DEBUG    GoogleASR                 'my name is Selena' (93%)
+08/15/18 12:03:01 DEBUG    VAD                       Utterance 2.31s
+08/15/18 12:03:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:02 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:02 DEBUG    GoogleASR                 'my name is Lanka' (83%)
+08/15/18 12:03:05 DEBUG    VAD                       Utterance 2.28s
+08/15/18 12:03:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:06 DEBUG    GoogleASR                 'my name is Pig' (86%)
+08/15/18 12:03:11 DEBUG    VAD                       Utterance 2.36s
+08/15/18 12:03:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:11 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:12 DEBUG    GoogleASR                 'my name is Pete' (97%)
+08/15/18 12:03:26 DEBUG    VAD                       Utterance 2.46s
+08/15/18 12:03:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:26 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:27 DEBUG    GoogleASR                 'my name is Abraham' (97%)
+08/15/18 12:03:33 DEBUG    VAD                       Utterance 1.94s
+08/15/18 12:03:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:33 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:39 DEBUG    VAD                       Utterance 2.24s
+08/15/18 12:03:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:43 DEBUG    VAD                       Utterance 2.12s
+08/15/18 12:03:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:43 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:45 DEBUG    VAD                       Utterance 1.94s
+08/15/18 12:03:45 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:45 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:45 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:50 DEBUG    VAD                       Utterance 2.30s
+08/15/18 12:03:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:03:55 DEBUG    VAD                       Utterance 1.92s
+08/15/18 12:03:56 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:03:56 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:03:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:01 DEBUG    VAD                       Utterance 2.29s
+08/15/18 12:04:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:06 DEBUG    VAD                       Utterance 4.63s
+08/15/18 12:04:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:10 DEBUG    VAD                       Utterance 2.19s
+08/15/18 12:04:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:13 DEBUG    VAD                       Utterance 1.60s
+08/15/18 12:04:13 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:13 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:13 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:15 DEBUG    VAD                       Utterance 2.70s
+08/15/18 12:04:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:16 DEBUG    VAD                       Utterance 2.20s
+08/15/18 12:04:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:18 DEBUG    VAD                       Utterance 1.65s
+08/15/18 12:04:18 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:18 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:18 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:21 DEBUG    VAD                       Utterance 3.94s
+08/15/18 12:04:21 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:21 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:21 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:26 DEBUG    VAD                       Utterance 1.68s
+08/15/18 12:04:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:26 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:28 DEBUG    VAD                       Utterance 1.57s
+08/15/18 12:04:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:28 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:29 DEBUG    VAD                       Utterance 2.04s
+08/15/18 12:04:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:29 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:30 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:49 DEBUG    VAD                       Utterance 1.60s
+08/15/18 12:04:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:49 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:49 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:53 DEBUG    VAD                       Utterance 1.58s
+08/15/18 12:04:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:04:54 DEBUG    VAD                       Utterance 1.90s
+08/15/18 12:04:54 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:04:54 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:04:54 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:03 DEBUG    VAD                       Utterance 3.52s
+08/15/18 12:05:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:04 DEBUG    VAD                       Utterance 1.92s
+08/15/18 12:05:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:08 DEBUG    VAD                       Utterance 2.45s
+08/15/18 12:05:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:08 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:08 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:10 DEBUG    VAD                       Utterance 2.13s
+08/15/18 12:05:10 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:10 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:10 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:12 DEBUG    VAD                       Utterance 2.44s
+08/15/18 12:05:12 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:12 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:12 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:13 DEBUG    VAD                       Utterance 2.33s
+08/15/18 12:05:13 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:13 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:13 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:16 DEBUG    VAD                       Utterance 1.68s
+08/15/18 12:05:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:20 DEBUG    VAD                       Utterance 4.99s
+08/15/18 12:05:21 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:21 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:21 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:23 DEBUG    VAD                       Utterance 3.38s
+08/15/18 12:05:23 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:23 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:23 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:25 DEBUG    VAD                       Utterance 2.09s
+08/15/18 12:05:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:32 DEBUG    VAD                       Utterance 3.11s
+08/15/18 12:05:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:37 DEBUG    VAD                       Utterance 2.30s
+08/15/18 12:05:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:37 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:37 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:43 DEBUG    VAD                       Utterance 1.81s
+08/15/18 12:05:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:43 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:53 DEBUG    VAD                       Utterance 2.56s
+08/15/18 12:05:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:05:57 DEBUG    VAD                       Utterance 2.25s
+08/15/18 12:05:57 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:05:57 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:05:57 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:00 DEBUG    VAD                       Utterance 2.24s
+08/15/18 12:06:00 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:00 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:00 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:04 DEBUG    VAD                       Utterance 3.07s
+08/15/18 12:06:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:06 DEBUG    VAD                       Utterance 1.56s
+08/15/18 12:06:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:15 DEBUG    VAD                       Utterance 1.60s
+08/15/18 12:06:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:39 DEBUG    VAD                       Utterance 2.12s
+08/15/18 12:06:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:53 DEBUG    VAD                       Utterance 1.56s
+08/15/18 12:06:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:06:56 DEBUG    VAD                       Utterance 2.04s
+08/15/18 12:06:56 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:06:56 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:06:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:04 DEBUG    VAD                       Utterance 2.09s
+08/15/18 12:07:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:11 DEBUG    VAD                       Utterance 1.97s
+08/15/18 12:07:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:12 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:14 DEBUG    VAD                       Utterance 1.85s
+08/15/18 12:07:14 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:14 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:14 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:19 DEBUG    VAD                       Utterance 2.18s
+08/15/18 12:07:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:24 DEBUG    VAD                       Utterance 1.56s
+08/15/18 12:07:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:24 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:24 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:27 DEBUG    VAD                       Utterance 1.70s
+08/15/18 12:07:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:32 DEBUG    VAD                       Utterance 2.46s
+08/15/18 12:07:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:42 DEBUG    VAD                       Utterance 1.55s
+08/15/18 12:07:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:46 DEBUG    VAD                       Utterance 3.01s
+08/15/18 12:07:46 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:46 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:47 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:49 DEBUG    VAD                       Utterance 3.22s
+08/15/18 12:07:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:50 DEBUG    VAD                       Utterance 1.64s
+08/15/18 12:07:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:52 DEBUG    VAD                       Utterance 1.93s
+08/15/18 12:07:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:52 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:53 DEBUG    VAD                       Utterance 1.92s
+08/15/18 12:07:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:54 DEBUG    VAD                       Utterance 1.66s
+08/15/18 12:07:54 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:54 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:55 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:56 DEBUG    VAD                       Utterance 2.20s
+08/15/18 12:07:56 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:56 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:07:57 DEBUG    VAD                       Utterance 2.22s
+08/15/18 12:07:57 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:07:57 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:07:57 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:12 DEBUG    VAD                       Utterance 1.66s
+08/15/18 12:08:12 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:12 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:12 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:17 DEBUG    VAD                       Utterance 3.89s
+08/15/18 12:08:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:17 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:17 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:19 DEBUG    VAD                       Utterance 2.24s
+08/15/18 12:08:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:22 DEBUG    VAD                       Utterance 2.98s
+08/15/18 12:08:22 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:22 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:22 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:23 DEBUG    VAD                       Utterance 1.62s
+08/15/18 12:08:23 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:23 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:23 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:25 DEBUG    VAD                       Utterance 1.59s
+08/15/18 12:08:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:27 DEBUG    VAD                       Utterance 1.91s
+08/15/18 12:08:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:29 DEBUG    VAD                       Utterance 2.14s
+08/15/18 12:08:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:29 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:29 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:30 DEBUG    VAD                       Utterance 2.32s
+08/15/18 12:08:30 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:30 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:30 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:31 DEBUG    VAD                       Utterance 1.61s
+08/15/18 12:08:31 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:31 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:31 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:34 DEBUG    VAD                       Utterance 3.38s
+08/15/18 12:08:34 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:34 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:34 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:41 DEBUG    VAD                       Utterance 2.45s
+08/15/18 12:08:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:08:42 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 12:08:49 DEBUG    VAD                       Utterance 2.95s
+08/15/18 12:08:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:08:49 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:08:49 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:09:01 DEBUG    VAD                       Utterance 1.96s
+08/15/18 12:09:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:09:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:09:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:09:04 DEBUG    VAD                       Utterance 1.97s
+08/15/18 12:09:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:09:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:09:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:09:11 DEBUG    VAD                       Utterance 4.53s
+08/15/18 12:09:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:09:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:09:11 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:09:40 DEBUG    VAD                       Utterance 2.28s
+08/15/18 12:09:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:09:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:09:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:09:44 DEBUG    VAD                       Utterance 1.58s
+08/15/18 12:09:44 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:09:44 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:09:45 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:28 DEBUG    VAD                       Utterance 4.92s
+08/15/18 12:10:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:28 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:30 DEBUG    VAD                       Utterance 2.27s
+08/15/18 12:10:30 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:30 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:30 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:34 DEBUG    VAD                       Utterance 2.27s
+08/15/18 12:10:34 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:34 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:34 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:36 DEBUG    VAD                       Utterance 2.17s
+08/15/18 12:10:36 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:36 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:36 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:41 DEBUG    VAD                       Utterance 3.34s
+08/15/18 12:10:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:44 DEBUG    VAD                       Utterance 2.88s
+08/15/18 12:10:44 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:44 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:44 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:48 DEBUG    VAD                       Utterance 3.92s
+08/15/18 12:10:48 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:48 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:48 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:49 DEBUG    VAD                       Utterance 1.73s
+08/15/18 12:10:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:49 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:51 DEBUG    VAD                       Utterance 2.69s
+08/15/18 12:10:51 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:51 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:51 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:10:53 DEBUG    VAD                       Utterance 2.34s
+08/15/18 12:10:53 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:10:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:10:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:01 DEBUG    VAD                       Utterance 3.52s
+08/15/18 12:11:01 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:03 DEBUG    VAD                       Utterance 3.03s
+08/15/18 12:11:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:05 DEBUG    VAD                       Utterance 2.32s
+08/15/18 12:11:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:08 DEBUG    VAD                       Utterance 2.32s
+08/15/18 12:11:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:08 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:08 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:13 DEBUG    VAD                       Utterance 2.27s
+08/15/18 12:11:14 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:14 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:14 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:15 DEBUG    VAD                       Utterance 1.72s
+08/15/18 12:11:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:25 DEBUG    VAD                       Utterance 3.43s
+08/15/18 12:11:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:25 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:26 DEBUG    VAD                       Utterance 2.83s
+08/15/18 12:11:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:30 DEBUG    VAD                       Utterance 3.63s
+08/15/18 12:11:30 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:30 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:30 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:34 DEBUG    VAD                       Utterance 1.55s
+08/15/18 12:11:34 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:34 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:34 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:36 DEBUG    VAD                       Utterance 2.09s
+08/15/18 12:11:36 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:36 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:36 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:11:38 DEBUG    VAD                       Utterance 1.65s
+08/15/18 12:11:38 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:11:38 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:11:38 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:12:51 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:12:57 DEBUG    OpenFace                  Booted
+08/15/18 12:12:57 DEBUG    GoogleASR                 Booted
+08/15/18 12:13:00 DEBUG    SystemCamera              Booted
+08/15/18 12:13:00 DEBUG    SystemMicrophone          Booted
+08/15/18 12:13:00 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:13:00 DEBUG    VAD                       Booted
+08/15/18 12:14:28 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:14:35 DEBUG    OpenFace                  Booted
+08/15/18 12:14:35 DEBUG    GoogleASR                 Booted
+08/15/18 12:14:38 DEBUG    SystemCamera              Booted
+08/15/18 12:14:38 DEBUG    SystemMicrophone          Booted
+08/15/18 12:14:38 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:14:38 DEBUG    VAD                       Booted
+08/15/18 12:14:38 DEBUG    LongTermMemory            Booted
+08/15/18 12:14:38 DEBUG    SystemApp                 Booted
+08/15/18 12:14:38 DEBUG    NER                       Booted: (localhost:58557)
+08/15/18 12:14:38 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:14:39 INFO     ReactiveIntention         Bram
+08/15/18 12:14:41 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.3 sec].
+
+08/15/18 12:14:42 DEBUG    VAD                       Utterance 4.40s
+08/15/18 12:14:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:14:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:14:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:15:17 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:15:23 DEBUG    OpenFace                  Booted
+08/15/18 12:15:23 DEBUG    GoogleASR                 Booted
+08/15/18 12:15:25 DEBUG    SystemCamera              Booted
+08/15/18 12:15:26 DEBUG    SystemMicrophone          Booted
+08/15/18 12:15:26 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:15:26 DEBUG    VAD                       Booted
+08/15/18 12:15:26 DEBUG    LongTermMemory            Booted
+08/15/18 12:15:26 DEBUG    SystemApp                 Booted
+08/15/18 12:15:26 DEBUG    NER                       Booted: (localhost:58610)
+08/15/18 12:15:26 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:15:27 INFO     ReactiveIntention         Bram
+08/15/18 12:15:28 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.9 sec].
+
+08/15/18 12:15:48 DEBUG    VAD                       Utterance 2.26s
+08/15/18 12:15:48 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:15:48 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:15:48 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:15:49 DEBUG    GoogleASR                 'my name is Brian' (81%)
+08/15/18 12:16:02 DEBUG    VAD                       Utterance 2.46s
+08/15/18 12:16:02 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:16:02 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:16:02 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:16:02 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 12:16:11 DEBUG    VAD                       Utterance 1.73s
+08/15/18 12:16:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:16:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:16:11 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:16:15 DEBUG    VAD                       Utterance 2.50s
+08/15/18 12:16:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:16:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:16:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:16:15 DEBUG    GoogleASR                 'my name is Elena' (97%)
+08/15/18 12:16:25 DEBUG    VAD                       Utterance 2.37s
+08/15/18 12:16:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:16:26 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:16:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:16:26 DEBUG    GoogleASR                 'my name is Lenny' (97%)
+08/15/18 12:19:42 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:19:43 DEBUG    OpenFace                  Booted
+08/15/18 12:19:43 DEBUG    GoogleASR                 Booted
+08/15/18 12:19:46 DEBUG    SystemCamera              Booted
+08/15/18 12:19:46 DEBUG    SystemMicrophone          Booted
+08/15/18 12:19:46 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:19:46 DEBUG    VAD                       Booted
+08/15/18 12:19:46 DEBUG    LongTermMemory            Booted
+08/15/18 12:19:46 DEBUG    SystemApp                 Booted
+08/15/18 12:19:46 DEBUG    NER                       Booted: (localhost:58942)
+08/15/18 12:19:46 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:19:47 INFO     ReactiveIntention         Bram
+08/15/18 12:19:48 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.0 sec].
+
+08/15/18 12:19:52 DEBUG    VAD                       Utterance 6.79s
+08/15/18 12:19:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:19:53 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:19:53 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:19:54 DEBUG    GoogleASR                 'my name is Brian' (82%)
+08/15/18 12:20:05 DEBUG    VAD                       Utterance 2.43s
+08/15/18 12:20:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:20:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:20:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:20:06 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 12:20:16 DEBUG    VAD                       Utterance 2.53s
+08/15/18 12:20:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:20:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:20:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:20:17 DEBUG    GoogleASR                 'my name is Brian' (90%)
+08/15/18 12:20:31 DEBUG    VAD                       Utterance 1.71s
+08/15/18 12:20:31 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:20:31 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:20:31 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:20:33 DEBUG    VAD                       Utterance 1.71s
+08/15/18 12:20:58 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:21:00 DEBUG    OpenFace                  Booted
+08/15/18 12:21:00 DEBUG    GoogleASR                 Booted
+08/15/18 12:21:03 DEBUG    SystemCamera              Booted
+08/15/18 12:21:03 DEBUG    SystemMicrophone          Booted
+08/15/18 12:21:03 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:21:03 DEBUG    VAD                       Booted
+08/15/18 12:21:03 DEBUG    LongTermMemory            Booted
+08/15/18 12:21:03 DEBUG    SystemApp                 Booted
+08/15/18 12:21:03 DEBUG    NER                       Booted: (localhost:59175)
+08/15/18 12:21:03 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:21:05 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+
+08/15/18 12:21:12 INFO     ReactiveIntention         Bram
+08/15/18 12:21:20 DEBUG    VAD                       Utterance 2.52s
+08/15/18 12:21:20 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:21:20 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:21:20 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:21:21 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 12:21:32 DEBUG    VAD                       Utterance 2.50s
+08/15/18 12:21:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:21:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:21:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:21:32 DEBUG    GoogleASR                 'my name is Lenka' (84%)
+08/15/18 12:21:42 DEBUG    VAD                       Utterance 2.33s
+08/15/18 12:21:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:21:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:21:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:21:43 DEBUG    GoogleASR                 'my name is put on' (75%)
+08/15/18 12:21:52 DEBUG    VAD                       Utterance 2.36s
+08/15/18 12:21:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:21:52 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:21:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:21:53 DEBUG    GoogleASR                 'my name is Elena' (95%)
+08/15/18 12:21:58 DEBUG    VAD                       Utterance 2.48s
+08/15/18 12:21:58 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:21:58 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:21:59 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:21:59 DEBUG    GoogleASR                 'my name is Elena' (92%)
+08/15/18 12:22:16 DEBUG    VAD                       Utterance 2.08s
+08/15/18 12:22:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:22:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:22:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:22:34 DEBUG    VAD                       Utterance 1.83s
+08/15/18 12:22:34 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:22:34 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:22:34 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:22:40 DEBUG    VAD                       Utterance 1.79s
+08/15/18 12:22:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:22:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:22:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:22:42 DEBUG    VAD                       Utterance 2.96s
+08/15/18 12:22:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:22:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:22:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:22:57 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:22:58 DEBUG    OpenFace                  Booted
+08/15/18 12:22:58 DEBUG    GoogleASR                 Booted
+08/15/18 12:23:01 DEBUG    SystemCamera              Booted
+08/15/18 12:23:01 DEBUG    SystemMicrophone          Booted
+08/15/18 12:23:01 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:23:01 DEBUG    VAD                       Booted
+08/15/18 12:23:01 DEBUG    LongTermMemory            Booted
+08/15/18 12:23:01 DEBUG    SystemApp                 Booted
+08/15/18 12:23:01 DEBUG    NER                       Booted: (localhost:59646)
+08/15/18 12:23:01 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:23:02 INFO     ReactiveIntention         Bram
+08/15/18 12:23:03 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+
+08/15/18 12:23:05 DEBUG    VAD                       Utterance 4.65s
+08/15/18 12:23:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:05 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:07 DEBUG    GoogleASR                 'my name is Brock' (89%)
+08/15/18 12:23:11 DEBUG    VAD                       Utterance 2.40s
+08/15/18 12:23:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:11 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:11 DEBUG    GoogleASR                 'my name is Brian' (97%)
+08/15/18 12:23:19 DEBUG    VAD                       Utterance 2.42s
+08/15/18 12:23:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:20 DEBUG    GoogleASR                 'my name is Elena' (95%)
+08/15/18 12:23:27 DEBUG    VAD                       Utterance 2.35s
+08/15/18 12:23:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:28 DEBUG    GoogleASR                 'my name is Lenny' (97%)
+08/15/18 12:23:32 DEBUG    VAD                       Utterance 2.37s
+08/15/18 12:23:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:32 DEBUG    GoogleASR                 'my name is a meal' (91%)
+08/15/18 12:23:42 DEBUG    VAD                       Utterance 2.00s
+08/15/18 12:23:42 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:42 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:42 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:45 DEBUG    VAD                       Utterance 1.98s
+08/15/18 12:23:46 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:46 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:46 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:50 DEBUG    VAD                       Utterance 1.80s
+08/15/18 12:23:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:55 DEBUG    VAD                       Utterance 2.73s
+08/15/18 12:23:55 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:23:55 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:23:56 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:23:56 DEBUG    GoogleASR                 'my name is a meal' (97%)
+08/15/18 12:24:02 DEBUG    VAD                       Utterance 2.26s
+08/15/18 12:24:02 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:24:02 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:24:02 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:24:03 DEBUG    GoogleASR                 'my name is Pig' (89%)
+08/15/18 12:24:11 DEBUG    VAD                       Utterance 2.18s
+08/15/18 12:24:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:24:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:24:11 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:24:12 DEBUG    GoogleASR                 'my name is Lenka' (87%)
+08/15/18 12:24:19 DEBUG    VAD                       Utterance 2.31s
+08/15/18 12:24:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:24:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:24:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:24:19 DEBUG    GoogleASR                 'my name is Linda' (97%)
+08/15/18 12:24:24 DEBUG    VAD                       Utterance 2.05s
+08/15/18 12:24:24 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:24:24 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:24:24 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:24:28 DEBUG    VAD                       Utterance 1.57s
+08/15/18 12:24:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:24:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:24:29 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:25:56 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 12:25:57 DEBUG    OpenFace                  Booted
+08/15/18 12:25:57 DEBUG    GoogleASR                 Booted
+08/15/18 12:26:00 DEBUG    SystemCamera              Booted
+08/15/18 12:26:00 DEBUG    SystemMicrophone          Booted
+08/15/18 12:26:00 DEBUG    SystemTextToSpeech        Booted
+08/15/18 12:26:00 DEBUG    VAD                       Booted
+08/15/18 12:26:00 DEBUG    LongTermMemory            Booted
+08/15/18 12:26:00 DEBUG    SystemApp                 Booted
+08/15/18 12:26:00 DEBUG    NER                       Booted: (localhost:60104)
+08/15/18 12:26:00 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 12:26:02 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.9 sec].
+
+08/15/18 12:26:03 INFO     ReactiveIntention         Bram
+08/15/18 12:26:04 DEBUG    VAD                       Utterance 4.95s
+08/15/18 12:26:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:05 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:06 DEBUG    VAD                       Utterance 1.82s
+08/15/18 12:26:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:11 DEBUG    VAD                       Utterance 2.41s
+08/15/18 12:26:11 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:11 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:11 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:12 DEBUG    GoogleASR                 'have you met Brown' (84%)
+08/15/18 12:26:32 DEBUG    VAD                       Utterance 1.65s
+08/15/18 12:26:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:33 DEBUG    VAD                       Utterance 1.83s
+08/15/18 12:26:33 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:33 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:33 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:37 DEBUG    VAD                       Utterance 3.09s
+08/15/18 12:26:37 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:37 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:37 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:38 DEBUG    GoogleASR                 'have you met Brian' (97%)
+08/15/18 12:26:41 DEBUG    VAD                       Utterance 2.69s
+08/15/18 12:26:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:42 DEBUG    GoogleASR                 'have you met Ryan' (91%)
+08/15/18 12:26:46 DEBUG    VAD                       Utterance 2.52s
+08/15/18 12:26:46 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:46 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:46 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:46 DEBUG    GoogleASR                 'have you met Ryan' (94%)
+08/15/18 12:26:51 DEBUG    VAD                       Utterance 2.53s
+08/15/18 12:26:51 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:51 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:52 DEBUG    GoogleASR                 'have you eaten Brian' (85%)
+08/15/18 12:26:58 DEBUG    VAD                       Utterance 2.52s
+08/15/18 12:26:58 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:26:58 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:26:58 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:26:59 DEBUG    GoogleASR                 'what does RAM like' (89%)
+08/15/18 12:27:02 DEBUG    VAD                       Utterance 2.55s
+08/15/18 12:27:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:27:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:27:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:27:03 DEBUG    GoogleASR                 'what does Abraham like' (75%)
+08/15/18 12:27:08 DEBUG    VAD                       Utterance 3.18s
+08/15/18 12:27:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:27:08 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:27:08 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:27:08 DEBUG    GoogleASR                 'what does bran like' (89%)
+08/15/18 12:27:17 DEBUG    VAD                       Utterance 2.29s
+08/15/18 12:27:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:27:17 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:27:17 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:27:19 DEBUG    VAD                       Utterance 2.37s
+08/15/18 12:27:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:27:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:27:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 12:27:20 DEBUG    VAD                       Utterance 1.89s
+08/15/18 12:27:20 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 12:27:20 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 12:27:20 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:22:23 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 13:22:25 DEBUG    OpenFace                  Booted
+08/15/18 13:22:25 DEBUG    GoogleASR                 Booted
+08/15/18 13:22:27 DEBUG    SystemCamera              Booted
+08/15/18 13:22:27 DEBUG    SystemMicrophone          Booted
+08/15/18 13:22:27 DEBUG    SystemTextToSpeech        Booted
+08/15/18 13:22:27 DEBUG    VAD                       Booted
+08/15/18 13:22:27 DEBUG    LongTermMemory            Booted
+08/15/18 13:22:27 DEBUG    SystemApp                 Booted
+08/15/18 13:22:27 DEBUG    NER                       Booted: (localhost:60720)
+08/15/18 13:22:27 DEBUG    GoogleASR                 Booted
+08/15/18 13:22:27 DEBUG    GoogleASR                 Booted
+08/15/18 13:22:27 DEBUG    GoogleASR                 Booted
+08/15/18 13:22:27 DEBUG    NER                       Booted: (localhost:60721)
+08/15/18 13:22:27 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 13:22:30 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.6 sec].
+
+08/15/18 13:22:31 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.7 sec].
+
+08/15/18 13:22:32 DEBUG    VAD                       Utterance 5.11s
+08/15/18 13:22:32 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:22:32 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:22:32 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:22:36 DEBUG    VAD                       Utterance 2.18s
+08/15/18 13:22:36 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:22:36 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:22:36 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:22:37 INFO     ReactiveIntention         Bram
+08/15/18 13:22:40 DEBUG    VAD                       Utterance 1.81s
+08/15/18 13:22:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:22:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:22:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:22:41 DEBUG    VAD                       Utterance 1.76s
+08/15/18 13:22:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:22:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:22:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:22:43 DEBUG    VAD                       Utterance 1.58s
+08/15/18 13:22:43 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:22:43 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:22:43 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:22:50 DEBUG    VAD                       Utterance 1.60s
+08/15/18 13:22:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:22:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:22:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:23:43 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 13:23:44 DEBUG    OpenFace                  Booted
+08/15/18 13:23:44 DEBUG    GoogleASR                 Booted
+08/15/18 13:23:47 DEBUG    SystemCamera              Booted
+08/15/18 13:23:47 DEBUG    SystemMicrophone          Booted
+08/15/18 13:23:47 DEBUG    SystemTextToSpeech        Booted
+08/15/18 13:23:47 DEBUG    VAD                       Booted
+08/15/18 13:23:47 DEBUG    LongTermMemory            Booted
+08/15/18 13:23:47 DEBUG    SystemApp                 Booted
+08/15/18 13:23:47 DEBUG    NER                       Booted: (localhost:60845)
+08/15/18 13:23:47 DEBUG    GoogleASR                 Booted
+08/15/18 13:23:47 DEBUG    GoogleASR                 Booted
+08/15/18 13:23:47 DEBUG    GoogleASR                 Booted
+08/15/18 13:23:47 DEBUG    NER                       Booted: (localhost:60846)
+08/15/18 13:23:47 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 13:23:50 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.3 sec].
+08/15/18 13:23:50 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.5 sec].
+08/15/18 13:23:57 INFO     ReactiveIntention         Bram
+08/15/18 13:24:00 DEBUG    VAD                       Utterance 3.01s
+08/15/18 13:24:00 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:01 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:01 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:03 DEBUG    VAD                       Utterance 2.55s
+08/15/18 13:24:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:04 DEBUG    GoogleASR                 [[u'my name is Brian', 0.9118955731391907], [u'my name is Brennan', 0.7698932886123657], [u'my name is Graham', 0.7698932886123657], [u'my name is Brom', 0.7992711067199707], [u'my name is Bryan', 0.7992711067199707], [u'my name is brown', 0.754132091999054], [u'my name is Bruno', 0.754132091999054], [u'my name is Brum', 0.7992711067199707], [u'my name is Brock', 0.7698932886123657], [u'my name is Bram', 0.7992711067199707], [u'my name is Brad', 0.7992711067199707], [u'my name is Brahma', 0.7992711067199707], [u'my name is bran', 0.7992711067199707], [u'my name is bronn', 0.7992711067199707], [u'my name is Brianna', 0.7992711067199707], [u'my name is Bear on', 0.6610329747200012], [u'my name is boron', 0.7992711067199707], [u'my name is Bratz', 0.7992711067199707], [u'my name is Britain', 0.7992711067199707], [u'my name is Barack', 0.7698932886123657]]
+08/15/18 13:24:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:05 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:06 DEBUG    GoogleASR                 [[u'my name is Brian', 0.9118954539299011], [u'my name is Brennan', 0.7698932886123657], [u'my name is Graham', 0.7698932886123657], [u'my name is Brom', 0.7992711067199707], [u'my name is Bryan', 0.7992711067199707], [u'my name is brown', 0.754132091999054], [u'my name is Bruno', 0.754132091999054], [u'my name is Brum', 0.7992711067199707], [u'my name is Brock', 0.7698932886123657], [u'my name is Bram', 0.7992711067199707], [u'my name is Brad', 0.7992711067199707], [u'my name is Brahma', 0.7992711067199707], [u'my name is bran', 0.7992711067199707], [u'my name is bronn', 0.7992711067199707], [u'my name is Brianna', 0.7992711067199707], [u'my name is Bear on', 0.6610329747200012], [u'my name is boron', 0.7992711067199707], [u'my name is Bratz', 0.7992711067199707], [u'my name is Britain', 0.7992711067199707], [u'my name is Barack', 0.7698932886123657]]
+08/15/18 13:24:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:07 DEBUG    GoogleASR                 [[u'My name is Bram', 0.9504976272583008], [u'My name is Brown', 0.7905451655387878], [u'My name is bruin', 0.7905451655387878], [u'My name is Braun', 0.7905451655387878], [u'My name is Bran', 0.7905451655387878]]
+08/15/18 13:24:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:08 DEBUG    GoogleASR                 [[u'my name is program', 0.8705865144729614], [u'my name is brown', 0.8364156484603882], [u'my name is from', 0.7939141392707825], [u'my name is programme', 0.7939141392707825], [u'my name is prom', 0.7939141392707825], [u'my name is Programm', 0.7939141392707825], [u'my name is programa', 0.7939141392707825], [u'my name is Frank', 0.7939141392707825], [u'my name is problem', 0.7939141392707825], [u'mai neim is program', 0.509343683719635]]
+08/15/18 13:24:25 DEBUG    VAD                       Utterance 1.62s
+08/15/18 13:24:25 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:25 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:27 DEBUG    VAD                       Utterance 1.63s
+08/15/18 13:24:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:38 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 13:24:39 DEBUG    OpenFace                  Booted
+08/15/18 13:24:39 DEBUG    GoogleASR                 Booted
+08/15/18 13:24:42 DEBUG    SystemCamera              Booted
+08/15/18 13:24:42 DEBUG    SystemMicrophone          Booted
+08/15/18 13:24:42 DEBUG    SystemTextToSpeech        Booted
+08/15/18 13:24:42 DEBUG    VAD                       Booted
+08/15/18 13:24:42 DEBUG    LongTermMemory            Booted
+08/15/18 13:24:42 DEBUG    SystemApp                 Booted
+08/15/18 13:24:42 DEBUG    NER                       Booted: (localhost:61081)
+08/15/18 13:24:42 DEBUG    GoogleASR                 Booted
+08/15/18 13:24:42 DEBUG    GoogleASR                 Booted
+08/15/18 13:24:42 DEBUG    GoogleASR                 Booted
+08/15/18 13:24:42 DEBUG    NER                       Booted: (localhost:61082)
+08/15/18 13:24:42 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 13:24:43 INFO     ReactiveIntention         Bram
+08/15/18 13:24:45 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.5 sec].
+08/15/18 13:24:45 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [2.5 sec].
+08/15/18 13:24:49 DEBUG    VAD                       Utterance 2.53s
+08/15/18 13:24:49 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:49 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:49 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:50 DEBUG    GoogleASR                 [[u'my name is Brian', 0.8202512860298157], [u'my name is brown', 0.7630645632743835], [u'my name is Brennan', 0.7704623937606812], [u'my name is bronn', 0.7992711067199707], [u'my name is Graham', 0.7704509496688843], [u'my name is Brum', 0.7992711067199707], [u'my name is Brom', 0.7992711067199707], [u'my name is Brock', 0.7704509496688843], [u'my name is from', 0.7704509496688843], [u'my name is brun', 0.7992711067199707], [u'my name is Bear on', 0.6614977121353149], [u'my name is Brad', 0.7992711067199707], [u'my name is Darren', 0.7592860460281372], [u'my name is brawn', 0.7992711067199707], [u'my name is Bram', 0.7992711067199707], [u'my name is bran', 0.7992711067199707], [u'my name is Bruno', 0.7992711067199707], [u'my name is banana', 0.7992711067199707], [u'my name is Bryan', 0.7992711067199707], [u'my name is Braun', 0.7992711067199707]]
+08/15/18 13:24:50 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:50 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:50 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:51 DEBUG    GoogleASR                 [[u'my name is Brian', 0.8202512860298157], [u'my name is brown', 0.7630645036697388], [u'my name is Brennan', 0.7704623937606812], [u'my name is bronn', 0.7992711067199707], [u'my name is Graham', 0.7704509496688843], [u'my name is Brum', 0.7992711067199707], [u'my name is Brom', 0.7992711067199707], [u'my name is Brock', 0.7704509496688843], [u'my name is from', 0.7704509496688843], [u'my name is brun', 0.7992711067199707], [u'my name is Bear on', 0.6614977121353149], [u'my name is Brad', 0.7992711067199707], [u'my name is Darren', 0.7592859864234924], [u'my name is brawn', 0.7992711067199707], [u'my name is Bram', 0.7992711067199707], [u'my name is bran', 0.7992711067199707], [u'my name is Bruno', 0.7992711067199707], [u'my name is banana', 0.7992711067199707], [u'my name is Bryan', 0.7992711067199707], [u'my name is Braun', 0.7992711067199707]]
+08/15/18 13:24:51 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:51 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:52 DEBUG    GoogleASR                 [[u'My name is Bram', 0.9504976272583008], [u'My name is Brown', 0.7905451655387878], [u'My name is Braun', 0.7905451655387878]]
+08/15/18 13:24:52 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:24:52 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:24:52 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:24:53 DEBUG    GoogleASR                 [[u'my name is prom', 0.8457757234573364], [u'my name is from', 0.8235108256340027], [u'my name is brown', 0.7984899282455444], [u'my name is Frank', 0.7939141392707825], [u'my name is program', 0.7939141392707825], [u'my name is wrong', 0.7939141392707825], [u'my name is Rome', 0.7939141392707825], [u'my name is Chrome', 0.7939141392707825], [u'my name is perd\xf3n', 0.7939141392707825], [u'my name is pron', 0.7939141392707825], [u'my name is Pro', 0.7521114349365234], [u'my name is programa', 0.7939141392707825], [u'my name is programme', 0.7939141392707825], [u'my name is Fran', 0.7939141392707825], [u'my name is plan', 0.7939141392707825], [u'my name is Bond', 0.7939141392707825], [u'mai neim is prom', 0.4845329225063324], [u'my name is problem', 0.7939141392707825], [u'my name is front', 0.7939141392707825], [u'my name is the prom', 0.716738224029541]]
+08/15/18 13:25:03 DEBUG    VAD                       Utterance 2.45s
+08/15/18 13:25:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:03 DEBUG    GoogleASR                 [[u'my name is Linda', 0.9231568574905396], [u'my name is Lenka', 0.8013157844543457], [u'my name is Lanka', 0.7992711067199707], [u'my name is Lincoln', 0.7437520027160645], [u'my name is Lanta', 0.7992711067199707], [u'my name is langster', 0.7992711067199707], [u'my name is linked to', 0.6581920981407166], [u'my name is langta', 0.7992711067199707], [u'my name is Leinster', 0.7992711067199707], [u'my name is lenta', 0.7992711067199707], [u'my name is LinkedIn', 0.7992711067199707], [u'my name is lento', 0.7992711067199707], [u'my name is lengthy', 0.7992711067199707], [u'my name is Lancer', 0.7992711067199707], [u'my name is leg day', 0.6476041674613953]]
+08/15/18 13:25:03 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:03 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:03 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:04 DEBUG    GoogleASR                 [[u'my name is Linda', 0.9231568574905396], [u'my name is Lenka', 0.8013157844543457], [u'my name is Lanka', 0.7992711067199707], [u'my name is Lincoln', 0.7437520623207092], [u'my name is Lanta', 0.7992711067199707], [u'my name is langster', 0.7992711067199707], [u'my name is linked to', 0.6581920981407166], [u'my name is langta', 0.7992711067199707], [u'my name is Leinster', 0.7992711067199707], [u'my name is lenta', 0.7992711067199707], [u'my name is LinkedIn', 0.7992711067199707], [u'my name is lento', 0.7992711067199707], [u'my name is lengthy', 0.7992711067199707], [u'my name is Lancer', 0.7992711067199707], [u'my name is leg day', 0.6476041674613953]]
+08/15/18 13:25:04 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:04 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:04 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:05 DEBUG    GoogleASR                 [[u'My name is like a', 0.7381828427314758], [u'My name is Lanka', 0.7963086366653442], [u'My name is Lenka', 0.7928880453109741], [u'My name is lengte', 0.7927073836326599], [u'My name is Luca', 0.7905451655387878], [u'My Name is Luka', 0.7905451655387878], [u'My name is Lyca', 0.7905451655387878], [u'My name is de lengte', 0.6284374594688416], [u'My name is lanta', 0.7905451655387878]]
+08/15/18 13:25:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:05 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:06 DEBUG    GoogleASR                 [[u'my name is Luka', 0.8575834035873413], [u'my name is Luca', 0.8011325001716614], [u'my name is blanca', 0.7687629461288452], [u'my name is linda', 0.790001630783081], [u'my name is life', 0.7794266939163208], [u'my name is life tab', 0.6734998822212219], [u'my name is lenta', 0.7939141392707825], [u'my name is like a', 0.6734998822212219], [u'my name is live', 0.7794266939163208], [u'my name is Lucas', 0.7939141392707825], [u'my name is Laika', 0.7939141392707825], [u'my name is lifetime', 0.790001630783081], [u'my name is live touch', 0.6734998822212219], [u'my name is Lanka', 0.7939141392707825], [u'my name is life est\xe1', 0.6734998822212219], [u'my name is lisa', 0.790001630783081], [u'my name is Laila', 0.790001630783081], [u'my name is Laura', 0.7687629461288452], [u'my name is life cap', 0.6734998822212219], [u'my name is live cam', 0.6734998822212219]]
+08/15/18 13:25:13 DEBUG    VAD                       Utterance 2.67s
+08/15/18 13:25:13 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:13 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:13 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:14 DEBUG    GoogleASR                 [[u'my name is Lenka', 0.8374559283256531], [u'my name is Lincoln', 0.7886843681335449], [u'my name is linka', 0.7998651266098022], [u'my name is Linda', 0.7994330525398254], [u'my name is Lanka', 0.7992711067199707], [u'my name is linke', 0.7992711067199707], [u'my name is Linker', 0.7992711067199707]]
+08/15/18 13:25:14 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:14 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:14 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:15 DEBUG    GoogleASR                 [[u'my name is Lenka', 0.8374559283256531], [u'my name is Lincoln', 0.7886843681335449], [u'my name is linka', 0.7998651266098022], [u'my name is Linda', 0.7994330525398254], [u'my name is Lanka', 0.7992711067199707], [u'my name is linke', 0.7992711067199707], [u'my name is Linker', 0.7992711067199707]]
+08/15/18 13:25:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:16 DEBUG    GoogleASR                 [[u'My name is Lenka', 0.8756012916564941], [u'My name is Lanka', 0.7971967458724976], [u'My name is Luca', 0.7905451655387878], [u'My name is lenca', 0.7905451655387878], [u'My Name is Luka', 0.7905451655387878], [u'My name is like a', 0.6839101910591125], [u'My name is lengte', 0.7905451655387878]]
+08/15/18 13:25:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:17 DEBUG    GoogleASR                 [[u'my name is Luka', 0.8624035716056824], [u'my name is Luca', 0.8023030161857605], [u'my name is Lenka', 0.7939141392707825], [u'my name is lenca', 0.7939141392707825], [u'my name is Leica', 0.7939141392707825], [u'my name is like a', 0.6734998822212219], [u'my name is link', 0.7894576191902161], [u'my name is Lanka', 0.7939141392707825], [u'my name is Laika', 0.7939141392707825], [u'my name is lenta', 0.7939141392707825], [u'my name is Lucas', 0.7939141392707825], [u'my name is link a', 0.6734998822212219], [u'my name is life', 0.7894576191902161], [u'my name is Lenny', 0.7669323682785034], [u'my name is letra', 0.7669323682785034], [u'my name is like', 0.7894576191902161], [u'my name is loca', 0.7669323682785034], [u'my name is la Inca', 0.6734998822212219], [u'my name is like us', 0.6734998822212219], [u'my name is Lake', 0.7894576191902161]]
+08/15/18 13:25:27 DEBUG    VAD                       Utterance 2.39s
+08/15/18 13:25:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:28 DEBUG    GoogleASR                 [[u'my name is Graham', 0.9695637822151184], [u'my name is Brian', 0.7992711067199707]]
+08/15/18 13:25:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:28 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:29 DEBUG    GoogleASR                 [[u'my name is Graham', 0.9695637822151184], [u'my name is Brian', 0.7992711067199707]]
+08/15/18 13:25:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:29 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:29 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:29 DEBUG    GoogleASR                 [[u'My name is Graham', 0.9004818201065063], [u'My name is breeam', 0.7905451655387878], [u'My name is Brian', 0.7905451655387878], [u'My name is Bram', 0.7434065341949463], [u'My name is Green', 0.7905451655387878], [u'My name is Breda', 0.7905451655387878], [u'My name is grahame', 0.7905451655387878], [u'My name is Breejen', 0.7905451655387878]]
+08/15/18 13:25:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:29 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:30 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:30 DEBUG    GoogleASR                 [[u'my name is Brian', 0.9745355844497681], [u'my name is Ryan', 0.7939141392707825], [u'my name is crying', 0.7939141392707825], [u'my name is Bryan', 0.7939141392707825], [u'my name is Khan', 0.7939141392707825], [u'my name is Prince', 0.7939141392707825], [u'my name is crime', 0.7939141392707825], [u'my name is Brayan', 0.7939141392707825], [u'mai neim is Brian', 0.5397728085517883], [u'my name is Prime', 0.7939141392707825]]
+08/15/18 13:25:39 DEBUG    VAD                       Utterance 2.35s
+08/15/18 13:25:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:39 DEBUG    GoogleASR                 [[u'my name is Thomas', 0.9699059724807739]]
+08/15/18 13:25:39 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:39 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:39 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:40 DEBUG    GoogleASR                 [[u'my name is Thomas', 0.9699059724807739]]
+08/15/18 13:25:40 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:40 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:40 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:41 DEBUG    GoogleASR                 [[u'My name is Thomas', 0.9504976272583008], [u'My name is Tom', 0.7254544496536255], [u'My name is Tom As', 0.6839101910591125], [u'My name is Tom is', 0.6839101910591125], [u'My name is stom is', 0.6839101910591125]]
+08/15/18 13:25:41 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:25:41 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:25:41 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:25:42 DEBUG    GoogleASR                 [[u'my name is Thomas', 0.6333801746368408], [u'maineles Tom\xe1s', 0.38445088267326355], [u'ma\xf1ana es Tom\xe1s', 0.30809327960014343], [u'MINED estomas', 0.37246420979499817], [u'ma\xf1ana Tom\xe1s', 0.38445088267326355], [u'main in stomach', 0.2972053289413452], [u'no hay nada m\xe1s', 0.2502589821815491], [u'main en estomas', 0.2972053289413452], [u'mine eres Tom\xe1s', 0.30809327960014343], [u'maineles Thomas', 0.4803410470485687], [u'my name is Tom', 0.5077909827232361], [u'mine en estomas', 0.2972053289413452], [u'mainel estomas', 0.37246420979499817], [u'my name is Tom\xe1s', 0.5470308065414429], [u'mining Tom\xe1s', 0.38270315527915955], [u'Maine mes Tom\xe1s', 0.30809327960014343], [u'mining Thomas', 0.46437719464302063], [u'mainades Tom\xe1s', 0.3869815170764923], [u'main eres Tom\xe1s', 0.30809327960014343], [u'maineles tomas', 0.37246420979499817]]
+08/15/18 13:33:06 DEBUG    rdflib                    RDFLib Version: 4.2.2
+08/15/18 13:33:07 DEBUG    OpenFace                  Booted
+08/15/18 13:33:07 DEBUG    GoogleASR                 Booted
+08/15/18 13:33:10 DEBUG    SystemCamera              Booted
+08/15/18 13:33:10 DEBUG    SystemMicrophone          Booted
+08/15/18 13:33:10 DEBUG    SystemTextToSpeech        Booted
+08/15/18 13:33:10 DEBUG    VAD                       Booted
+08/15/18 13:33:10 DEBUG    LongTermMemory            Booted
+08/15/18 13:33:10 DEBUG    SystemApp                 Booted
+08/15/18 13:33:10 DEBUG    GoogleASR                 Booted
+08/15/18 13:33:10 DEBUG    GoogleASR                 Booted
+08/15/18 13:33:10 DEBUG    GoogleASR                 Booted
+08/15/18 13:33:10 DEBUG    NER                       Booted: (localhost:61738)
+08/15/18 13:33:10 DEBUG    SystemApp                 SystemApp -> ReactiveIntention
+08/15/18 13:33:12 DEBUG    NER                       Loading classifier from D:\Documents\Pepper\pepper\pepper\language\stanford-ner\english.all.3class.distsim.crf.ser ... done [1.8 sec].
+08/15/18 13:33:14 INFO     ReactiveIntention         Bram
+08/15/18 13:33:15 DEBUG    VAD                       Utterance 1.57s
+08/15/18 13:33:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:19 DEBUG    VAD                       Utterance 2.31s
+08/15/18 13:33:19 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:19 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:19 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:20 DEBUG    GoogleASR                 [[u'my name is Brian', 0.8955327272415161], [u'my name is Brennan', 0.7823702096939087], [u'my name is brown', 0.7992711067199707], [u'my name is Bruno', 0.7659310102462769], [u'my name is Bryan', 0.7992711067199707], [u'my name is put on', 0.6855144500732422], [u'my name is Graham', 0.7603728175163269], [u'my name is ruin', 0.7603728175163269], [u'my name is Britain', 0.7992711067199707], [u'my name is Brett on', 0.6855144500732422], [u'my name is Peru on', 0.6639771461486816], [u'my name is Breton', 0.7734262347221375], [u'my name is Browne', 0.7992711067199707], [u'my name is Prion', 0.7992711067199707], [u'my name is Priya on', 0.6855144500732422], [u'my name is Priya', 0.7659310102462769], [u'my name is proton', 0.7992711067199707], [u'my name is prawn', 0.7992711067199707], [u'my name is Tyrone', 0.7734262347221375], [u'my name is brawn', 0.7992711067199707]]
+08/15/18 13:33:20 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:20 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:20 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:21 DEBUG    GoogleASR                 [[u'my name is Brian', 0.8955327868461609], [u'my name is Brennan', 0.7823702096939087], [u'my name is brown', 0.7992711067199707], [u'my name is Bruno', 0.7659310102462769], [u'my name is Bryan', 0.7992711067199707], [u'my name is put on', 0.6855144500732422], [u'my name is Graham', 0.7603728175163269], [u'my name is ruin', 0.7603728175163269], [u'my name is Britain', 0.7992711067199707], [u'my name is Brett on', 0.6855144500732422], [u'my name is Peru on', 0.6639771461486816], [u'my name is Breton', 0.7734262347221375], [u'my name is Browne', 0.7992711067199707], [u'my name is Prion', 0.7992711067199707], [u'my name is Priya on', 0.6855144500732422], [u'my name is Priya', 0.7659310102462769], [u'my name is proton', 0.7992711067199707], [u'my name is prawn', 0.7992711067199707], [u'my name is Tyrone', 0.7734262347221375], [u'my name is brawn', 0.7992711067199707]]
+08/15/18 13:33:21 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:21 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:21 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:22 DEBUG    GoogleASR                 [[u'My name is Bram', 0.830661952495575], [u'mijn naam is Bram', 0.4698390066623688], [u'My name is Brown', 0.6711890697479248], [u'My name is from', 0.6711890697479248], [u'My name from', 0.6247227787971497], [u'Mijn name is Bram', 0.704919695854187], [u'My Name Is Wrong', 0.6711890697479248], [u'minimumloon', 0.550616443157196], [u'My name is bruin', 0.6711890697479248], [u'My name is RAM', 0.6711890697479248], [u'minimum ram', 0.4173227548599243], [u'minimum from', 0.4173227548599243], [u'My name is Braun', 0.6711890697479248], [u'My name is Bran', 0.6711890697479248], [u'Mijn name from', 0.49389973282814026]]
+08/15/18 13:33:22 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:22 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:22 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:22 DEBUG    GoogleASR                 [[u'my name is from', 0.9380429983139038], [u'my name is prom', 0.7949196100234985], [u'my name is brown', 0.7939141392707825], [u'my name is Frank', 0.7939141392707825], [u'my name from', 0.8713585138320923], [u'main email from', 0.46048104763031006], [u'my name EPROM', 0.7487587928771973], [u'many men from', 0.47736644744873047], [u'my name el prom', 0.6142982244491577], [u'my name sport', 0.7487587928771973], [u'main image from', 0.47736644744873047], [u'my name es broma', 0.6132927536964417], [u'my name is Chrome', 0.7939141392707825], [u'Maine me from', 0.4372349977493286], [u'my name Efron', 0.7487587928771973], [u'mai neim is from', 0.5768002271652222], [u'my name is front', 0.7939141392707825], [u'my name is program', 0.7939141392707825], [u'Man y men from', 0.35012975335121155], [u'main event from', 0.47736644744873047]]
+08/15/18 13:33:26 DEBUG    VAD                       Utterance 2.52s
+08/15/18 13:33:26 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:26 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:26 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:27 DEBUG    GoogleASR                 [[u'my name is from', 0.8399993777275085], [u'my name is Graham', 0.8223295211791992], [u'my name is Ron', 0.8074764013290405], [u'my name is wrong', 0.7992711067199707], [u'my name is ruin', 0.7950364351272583], [u'my name is Brum', 0.7992711067199707], [u'my name is Leon', 0.7950364351272583], [u'my name is rum', 0.7992711067199707], [u'my name is Brom', 0.7992711067199707], [u'my name is John', 0.7950364351272583], [u'my name is Trump', 0.7992711067199707], [u'my name is Tom', 0.7992711067199707], [u'my name is drum', 0.7992711067199707], [u'my name is rom', 0.7992711067199707], [u'my name is bronn', 0.7992711067199707], [u'my name is RAM', 0.7992711067199707], [u'my name is brown', 0.7992711067199707], [u'my name is Gran', 0.7992711067199707], [u'my name is bran', 0.7992711067199707], [u'my name is gram', 0.7992711067199707]]
+08/15/18 13:33:27 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:27 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:27 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:28 DEBUG    GoogleASR                 [[u'my name is from', 0.8399994969367981], [u'my name is Graham', 0.8223295211791992], [u'my name is Ron', 0.8074764013290405], [u'my name is wrong', 0.7992711067199707], [u'my name is ruin', 0.7950364351272583], [u'my name is Brum', 0.7992711067199707], [u'my name is Leon', 0.7950364351272583], [u'my name is rum', 0.7992711067199707], [u'my name is Brom', 0.7992711067199707], [u'my name is John', 0.7950364351272583], [u'my name is Trump', 0.7992711067199707], [u'my name is Tom', 0.7992711067199707], [u'my name is drum', 0.7992711067199707], [u'my name is rom', 0.7992711067199707], [u'my name is bronn', 0.7992711067199707], [u'my name is RAM', 0.7992711067199707], [u'my name is brown', 0.7992711067199707], [u'my name is Gran', 0.7992711067199707], [u'my name is bran', 0.7992711067199707], [u'my name is gram', 0.7992711067199707]]
+08/15/18 13:33:28 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:28 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:28 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:29 DEBUG    GoogleASR                 [[u'My name is Bram', 0.9504976272583008], [u'My name is from', 0.7905451655387878], [u'mijn naam is Bram', 0.4557124972343445], [u'My name is prom', 0.7905451655387878], [u'My name is RAM', 0.7905451655387878]]
+08/15/18 13:33:29 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:33:29 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:33:29 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:33:30 DEBUG    GoogleASR                 [[u'my name is from', 0.8818615674972534], [u'my name is brown', 0.7950800657272339], [u'my name is prom', 0.7939141392707825], [u'my name is Rome', 0.7939141392707825], [u'my name is Chrome', 0.7939141392707825], [u'my name is wrong', 0.7558820843696594], [u'my name is rom', 0.7939141392707825], [u'my name is Frank', 0.7939141392707825], [u'my name is rock', 0.7939141392707825], [u'my name is Ralph', 0.7939141392707825], [u'my name is Juan', 0.7939141392707825], [u'my name is rap', 0.7939141392707825], [u'my name is program', 0.7939141392707825], [u'my name is root', 0.7939141392707825], [u'my name is one', 0.713575005531311], [u'my name is Sam', 0.7939141392707825], [u'my name is John', 0.7558820843696594], [u'my name is Tom', 0.7939141392707825], [u'my name is love', 0.7939141392707825], [u'my name is Krom', 0.7939141392707825]]
+08/15/18 13:34:05 DEBUG    VAD                       Utterance 2.41s
+08/15/18 13:34:05 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:05 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:06 DEBUG    GoogleASR                 [[u'my name is Lenka', 0.8805042505264282], [u'my name is Lincoln', 0.7702146768569946], [u'my name is linka', 0.8004849553108215], [u'my name is Lanka', 0.7992711067199707], [u'my name is Linda', 0.7992711067199707], [u'my name is Linker', 0.7992711067199707]]
+08/15/18 13:34:06 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:06 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:06 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:07 DEBUG    GoogleASR                 [[u'my name is Lenka', 0.8805042505264282], [u'my name is Lincoln', 0.7702146768569946], [u'my name is linka', 0.8004849553108215], [u'my name is Lanka', 0.7992711067199707], [u'my name is Linda', 0.7992711067199707], [u'my name is Linker', 0.7992711067199707]]
+08/15/18 13:34:07 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:07 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:07 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:08 DEBUG    GoogleASR                 [[u'My name is Lenka', 0.8254801034927368], [u'My name is like a', 0.7044562697410583], [u'My name is Lanka', 0.802514910697937], [u'My name is lenca', 0.7905451655387878], [u'My name is Luca', 0.7905451655387878], [u'My Name is Luka', 0.7905451655387878], [u'My name is Lyca', 0.7905451655387878]]
+08/15/18 13:34:08 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:08 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:08 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:09 DEBUG    GoogleASR                 [[u'my name is Luka', 0.8493169546127319], [u'my name is Luca', 0.7999387979507446], [u'my name is like a', 0.6773591637611389], [u'my name is Laika', 0.7939141392707825], [u'my name is life', 0.7709585428237915], [u'my name is la Inca', 0.6734998822212219], [u'my name is link a', 0.6754977107048035], [u'my name is live cam', 0.6734998822212219], [u'my name is life cap', 0.6734998822212219], [u'my name is like', 0.7733312845230103], [u'my name is live', 0.7709585428237915], [u'my name is Lucas', 0.7939141392707825], [u'my name is like us', 0.6754772067070007], [u'my name is laica', 0.7939141392707825], [u'my name is life K', 0.6734998822212219], [u'my name is linecar', 0.7939141392707825], [u'my name is life ca', 0.6734998822212219], [u'my name is la hinca', 0.6734998822212219], [u'my name is line K', 0.6734998822212219], [u'my name is line ac\xe1', 0.6734998822212219]]
+08/15/18 13:34:15 DEBUG    VAD                       Utterance 2.42s
+08/15/18 13:34:15 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:15 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:15 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:16 DEBUG    GoogleASR                 [[u'my name is Thomas', 0.8869255185127258], [u'my name is Tomas', 0.8626998066902161], [u'my name is so much', 0.6855144500732422], [u'my name is Domus', 0.7992711067199707], [u'my name is Belmarsh', 0.7992711067199707]]
+08/15/18 13:34:16 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:16 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:16 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:17 DEBUG    GoogleASR                 [[u'my name is Thomas', 0.8869255185127258], [u'my name is Tomas', 0.8626996874809265], [u'my name is so much', 0.6855144500732422], [u'my name is Domus', 0.7992711067199707], [u'my name is Belmarsh', 0.7992711067199707]]
+08/15/18 13:34:17 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:17 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:17 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:17 DEBUG    GoogleASR                 [[u'My name is Thomas', 0.9498997926712036], [u'mijn naam is Thomas', 0.48347657918930054], [u'My name is Tomas', 0.7899473309516907]]
+08/15/18 13:34:18 DEBUG    google.auth.transport.requests Making request: POST https://accounts.google.com/o/oauth2/token
+08/15/18 13:34:18 DEBUG    urllib3.connectionpool    Starting new HTTPS connection (1): accounts.google.com
+08/15/18 13:34:18 DEBUG    urllib3.connectionpool    https://accounts.google.com:443 "POST /o/oauth2/token HTTP/1.1" 200 None
+08/15/18 13:34:18 DEBUG    GoogleASR                 [[u'my name is Thomas', 0.9745355844497681], [u'my name is Tom\xe1s', 0.7939141392707825], [u'my name es Tom\xe1s', 0.6132927536964417], [u'Maine mis Tom\xe1s', 0.2972053289413452], [u'my name estomas', 0.7487587928771973], [u'Maine mes Tom\xe1s', 0.2972053289413452], [u'my name is Tom as', 0.6734998822212219], [u'my name is too much', 0.6734998822212219], [u'my name is tomas', 0.7939141392707825], [u'Maine mis Thomas', 0.46326422691345215], [u'my name is to Mars', 0.6734998822212219]]

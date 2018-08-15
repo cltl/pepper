@@ -47,8 +47,8 @@ class NER(object):
             self._log_subprocess_output(self._ner_server_process.stdout)
 
     def _log_subprocess_output(self, pipe):
-        for line in iter(pipe.readline, b''):  # b'\n'-separated lines
-            self._log.debug(line)
+        for line in iter(pipe.readline, b''):
+            self._log.debug(line.replace('\n', ''))
 
     def _find_free_port(self):
         with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
@@ -60,7 +60,7 @@ class NER(object):
     def _connect(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            while sock.connect_ex(('localhost', self._port)):
+            while sock.connect_ex((self.IP, self._port)):
                 sleep(0.1)
             yield sock
         finally:

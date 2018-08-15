@@ -17,7 +17,8 @@ class ReactiveIntention(AbstractIntention):
         self._speaker = name
 
     def on_transcript(self, transcript, audio):
-        print(self._parser.parse(transcript, audio))
+        print(self._parser.parse_known(transcript))
+        print(self._parser.parse_new(audio))
 
         # if self._speaker:
         #     expression = classify_and_process_utterance(transcript[0][0], self._speaker, 0, 0, [])  # TODO: Add Objects!!
