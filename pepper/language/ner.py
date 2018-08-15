@@ -41,7 +41,14 @@ class NER(object):
     def _start_server(self, classifier):
         self._ner_server_process = subprocess.Popen([
             'java', '-cp', os.path.join(NER.ROOT, 'stanford-ner.jar'), 'edu.stanford.nlp.ie.NERServer',
-            '-port', str(self._port), '-loadClassifier', os.path.join(NER.ROOT, classifier)])
+            '-port', str(self._port), '-loadClassifier', os.path.join(NER.ROOT, classifier)],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        with self._ner_server_process.stdout:
+            self._log_subprocess_output(self._ner_server_process.stdout)
+
+    def _log_subprocess_output(self, pipe):
+        for line in iter(pipe.readline, b''):  # b'\n'-separated lines
+            self._log.debug(line)
 
     def _find_free_port(self):
         with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
@@ -74,10 +81,13 @@ class NER(object):
 
         return buffer.decode('utf-8')
 
-    def __del__(self):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
 
 if __name__ == '__main__':
-    ner = NER()
-    ner.tag("Marie, how'd you like an ice cream?")
+    with NER() as ner:
+        print(ner.tag("Marie, how'd you like an ice cream?"))

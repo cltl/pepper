@@ -1,11 +1,14 @@
 .idea/
-people/
 *.pyc
 
-.DS_Store
-Pepper-9293d23935fa.json
-brain_log.trig
+people/
 knowledge_representation/
-pepper/.DS_Store
+Pepper-9293d23935fa.json
 tokens.json
+
+log.txt
+brain_log.trig
+
+pepper/.DS_Store
+.DS_Store
 venv/

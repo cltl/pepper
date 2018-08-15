@@ -59,7 +59,7 @@ class BaseApp(AbstractApp):
 
         # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)
-        self._log.debug("Booted -> {}".format(self.intention.__class__.__name__))
+        self._log.debug("Booted")
 
         self._running = False
 
@@ -80,7 +80,7 @@ class BaseApp(AbstractApp):
         value: pepper.framework.AbstractIntention
         """
 
-        self.log.info("Switch Intention: {} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
+        self.log.debug("{} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
         self._intention = value
 
     @property

@@ -107,7 +107,7 @@ class VAD(object):
         audio: np.ndarray
             Audio containing utterance
         """
-        self._log.info("Utterance {:3.2f}s".format(len(audio) / float(self.rate)))
+        self._log.debug("Utterance {:3.2f}s".format(len(audio) / float(self.rate)))
 
         for callback in self.callbacks:
             callback(audio)

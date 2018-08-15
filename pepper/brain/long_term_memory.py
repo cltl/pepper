@@ -12,8 +12,18 @@ import logging
 
 class LongTermMemory(object):
 
-    ONE_TO_ONE_PREDICATES = ['age', 'born_in', 'faceID', 'favorite', 'favorite_of', 'id', 'is_from', 'manufactured_in',
-                             'mother_is', 'name']
+    ONE_TO_ONE_PREDICATES = [
+        'age',
+        'born_in',
+        'faceID',
+        'favorite',
+        'favorite_of',
+        'id',
+        'is_from',
+        'manufactured_in',
+        'mother_is',
+        'name'
+    ]
 
     def __init__(self, address=config.LOCAL_BRAIN):
         """

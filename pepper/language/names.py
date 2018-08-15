@@ -1,4 +1,3 @@
-from pepper.sensor.asr import GoogleASR
 from pepper.language.ner import NER
 from nltk.metrics.distance import edit_distance
 import os
@@ -8,14 +7,12 @@ class NameParser:
 
     STANFORD_ROOT = os.path.join(os.path.dirname(__file__), 'stanford-ner')
     TAGS_OF_INTEREST = ['PERSON', 'LOCATION', 'ORGANISATION']
-    MAX_NAME_DISTANCE = 5
+    MAX_NAME_DISTANCE = 3
 
     def __init__(self, names, languages = ("en-GB", 'nl-NL', 'es-ES')):
         self._names = names
         self._languages = languages
         self._tagger = NER()
-
-        print(self._names)
 
     def parse(self, transcript, audio):
 
