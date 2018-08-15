@@ -1,4 +1,4 @@
-from contextlib import contextmanager
+from contextlib import contextmanager, closing
 from threading import Thread
 
 import socket
@@ -8,18 +8,23 @@ import os
 
 from time import sleep
 
+
 class NER(object):
 
     ROOT = os.path.join(os.path.dirname(__file__), 'stanford-ner')
-    PORT = 9199
-    ADDRESS = ('localhost', PORT)
+    IP = 'localhost'
 
     def __init__(self, classifier = 'english.all.3class.distsim.crf.ser'):
         self._log = logging.getLogger(self.__class__.__name__)
+        self._port = self._find_free_port()
+
+        self._ner_server_process = None
 
         self._ner_server_thread = Thread(target=self._start_server, args=(classifier,))
         self._ner_server_thread.daemon = True
         self._ner_server_thread.start()
+
+        self._log.debug("Booted: ({}:{})".format(self.IP, self._port))
 
     def tag(self, text):
         with self._connect() as s:
@@ -30,16 +35,26 @@ class NER(object):
                 if len(s.rsplit('/', 1)) == 2
             ]
 
+    def close(self):
+        self._ner_server_process.kill()
+
     def _start_server(self, classifier):
-        subprocess.call([
+        self._ner_server_process = subprocess.Popen([
             'java', '-cp', os.path.join(NER.ROOT, 'stanford-ner.jar'), 'edu.stanford.nlp.ie.NERServer',
-            '-port', str(NER.PORT), '-loadClassifier', os.path.join(NER.ROOT, classifier)])
+            '-port', str(self._port), '-loadClassifier', os.path.join(NER.ROOT, classifier)])
+
+    def _find_free_port(self):
+        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+            s.bind(('', 0))
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            return s.getsockname()[1]
 
     @contextmanager
     def _connect(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            sock.connect(NER.ADDRESS)
+            while sock.connect_ex(('localhost', self._port)):
+                sleep(0.1)
             yield sock
         finally:
             try:
@@ -58,3 +73,14 @@ class NER(object):
             buffer.extend(data)
 
         return buffer.decode('utf-8')
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+
+if __name__ == '__main__':
+    with NER() as ner:
+        print(ner.tag("Marie, how'd you like an ice cream?"))
