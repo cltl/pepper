@@ -74,13 +74,10 @@ class NER(object):
 
         return buffer.decode('utf-8')
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __del__(self):
         self.close()
 
 
 if __name__ == '__main__':
-    with NER() as ner:
-        print(ner.tag("Marie, how'd you like an ice cream?"))
+    ner = NER()
+    ner.tag("Marie, how'd you like an ice cream?")
