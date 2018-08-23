@@ -6,7 +6,7 @@ LANGUAGE = 'en-GB'
 
 REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
 LOCAL_BRAIN = "http://localhost:7200/repositories/leolani"
-BRAIN_LOG = "brain_log"
+BRAIN_LOG = os.path.join(os.path.dirname(__file__), "brain_log")
 
 MICROPHONE_SAMPLE_RATE = 16000
 MICROPHONE_CHANNELS = 1

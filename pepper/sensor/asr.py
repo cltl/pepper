@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from google.cloud import speech
 import logging
 
@@ -41,7 +43,7 @@ class GoogleASR(AbstractASR):
         self._language = language
         self._max_alternatives = max_alternatives
 
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logging.getLogger("{} ({})".format(self.__class__.__name__, self._language))
         self._log.debug("Booted")
 
     def transcribe(self, audio, hints=()):
@@ -69,6 +71,6 @@ class GoogleASR(AbstractASR):
                 hypotheses.append([alternative.transcript, alternative.confidence])
 
         if hypotheses:
-            self._log.debug(hypotheses)
+            self._log.info("[{:3.0%}] {}".format(hypotheses[0][1], hypotheses[0][0]))
 
         return hypotheses
