@@ -3,7 +3,7 @@ import os
 
 
 # Global Logging Setup
-LOGGING_LEVEL = logging.DEBUGgit
+LOGGING_LEVEL = logging.DEBUG
 LOGGING_FILE = 'log.txt'
 LOGGING_FORMAT = '%(asctime)s %(levelname)-8s %(name)-25s %(message)s'
 LOGGING_DATE_FORMAT = '%x %X'
