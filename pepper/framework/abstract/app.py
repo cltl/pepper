@@ -69,6 +69,16 @@ class AbstractApp(object):
         """
         raise NotImplementedError()
 
+    def say(self, text):
+        """
+        Say Text (Proxy for text_to_speech.say)
+
+        Parameters
+        ----------
+        text: str
+        """
+        raise NotImplementedError()
+
     def on_image(self, image):
         """
         On Image Event. Called every time the camera captures a frame
@@ -257,3 +267,13 @@ class AbstractIntention(AbstractApp):
         openface: pepper.framework.OpenFace
         """
         return self.app.openface
+
+    def say(self, text):
+        """
+        Say Text (Proxy for text_to_speech.say)
+
+        Parameters
+        ----------
+        text
+        """
+        return self.app.say(text)

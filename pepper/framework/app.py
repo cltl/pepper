@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
-from pepper.brain import LongTermMemory
+from pepper.brain import LongTermMemory, base_cases
 from pepper import config
 
 import logging
@@ -55,6 +55,7 @@ class BaseApp(AbstractApp):
         self._vad = VAD(microphone, [self._on_utterance])
         self._asr = asr
 
+        # Initialize Brain
         self._brain = LongTermMemory()
 
         # Get Logger
@@ -180,6 +181,11 @@ class BaseApp(AbstractApp):
 
         while self._running:
             sleep(1)
+
+    def say(self, text):
+        self.microphone.stop()
+        self.text_to_speech.say(text)
+        self.microphone.start()
 
     def on_image(self, image):
         """
@@ -309,7 +315,6 @@ class BaseApp(AbstractApp):
                 self.on_face_new(bounds, face)
             elif confidence > config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD:
                 self.on_face_known(bounds, face, name)
-
 
     def _on_utterance(self, audio):
 

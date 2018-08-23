@@ -1,5 +1,6 @@
 from pepper.framework import AbstractIntention
 from pepper.framework.system import SystemApp
+from pepper.framework.naoqi import NaoqiApp
 from pepper.language.names import NameParser
 from pepper.knowledge import sentences
 
@@ -28,7 +29,7 @@ class MeetIntention(AbstractIntention):
 
         self._action = MeetAction.LISTENING_FOR_NAME
 
-        self.text_to_speech.say("{} {} {}".format(
+        self.say("{} {} {}".format(
             choice(sentences.GREETING),
             choice(sentences.INTRODUCE),
             choice(sentences.ASK_NAME)))
@@ -40,18 +41,18 @@ class MeetIntention(AbstractIntention):
         if self._action == MeetAction.LISTENING_FOR_NAME:
 
             # Try to parse name
-            self.text_to_speech.say(choice(sentences.THINKING))
+            self.say(choice(sentences.THINKING))
             parsed_name = self._name_parser.parse_new(audio)
 
             # If name was heard, ask person to verify it
             if parsed_name:
                 self._name, confidence = parsed_name
-                self.text_to_speech.say(choice(sentences.VERIFY_NAME).format(self._name))
+                self.say(choice(sentences.VERIFY_NAME).format(self._name))
                 self._action = MeetAction.VERIFYING_NAME
 
             # If no name was heard, kindly ask person to repeat it
             else:
-                self.text_to_speech.say("{} {}".format(
+                self.say("{} {}".format(
                     choice(sentences.DIDNT_HEAR_NAME),
                     choice(sentences.REPEAT_NAME)))
 
@@ -63,15 +64,15 @@ class MeetIntention(AbstractIntention):
                 if word in sentences.AFFIRMATION:
                     # And enough face samples have been gathered
                     if len(self._face) < self.MIN_SAMPLES:
-                        self.text_to_speech.say("{} {}".format(
+                        self.say("{} {}".format(
                             choice(sentences.JUST_MET).format(self._name),
                             choice(sentences.MORE_FACE_SAMPLES)))
                         while len(self._face) < self.MIN_SAMPLES:
                             sleep(1)
-                        self.text_to_speech.say(choice(sentences.THANK))
+                        self.say(choice(sentences.THANK))
 
                     # The meeting is official!
-                    self.text_to_speech.say("{} {}".format(
+                    self.say("{} {}".format(
                         choice(sentences.HAPPY),
                         choice(sentences.JUST_MET).format(self._name)))
                     return
@@ -83,13 +84,13 @@ class MeetIntention(AbstractIntention):
                     parsed_name = self._name_parser.parse_new(audio)
                     if parsed_name and parsed_name[1] > 0.8:
                         self._name, confidence = parsed_name
-                        self.text_to_speech.say("{} {}".format(
+                        self.say("{} {}".format(
                             choice(sentences.UNDERSTAND),
                             choice(sentences.VERIFY_NAME).format(self._name)))
 
                     # Else ask person to repeat name
                     else:
-                        self.text_to_speech.say("{} {}".format(
+                        self.say("{} {}".format(
                             choice(sentences.SORRY),
                             choice(sentences.REPEAT_NAME)))
                         self._action = MeetAction.LISTENING_FOR_NAME
@@ -97,7 +98,15 @@ class MeetIntention(AbstractIntention):
 
 
 if __name__ == '__main__':
-    app = SystemApp()
+    # Boot Application
+    # app = SystemApp()  # Run on PC
+    app = NaoqiApp()  # Run on Robot
+
+    # Boot Intention
     intention = MeetIntention(app)
+
+    # Link Intention to App
     app.intention = intention
+
+    # Start App (a.k.a. Start Microphone and Camera)
     app.start()
