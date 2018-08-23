@@ -4,6 +4,7 @@ TODO
 - Add base cases to GraphDB 'leolani' (I get errors?)
 - Fix lower/upper-case names in brain (pushing to brain works, pulling from does not)
 - Fix double mentioning of items 'likes baseball and likes baseball and likes baseball'
+- Fix ``IndexError: list index out of range``, when sentence is weirdly formed (e.g. some word is missing)
 
 How To Git
 ----------

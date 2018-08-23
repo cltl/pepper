@@ -115,5 +115,6 @@ class AbstractMicrophone(object):
 
             self._t0 = t1
 
-            for callback in self.callbacks:
-                callback(audio)
+            if self._running:
+                for callback in self.callbacks:
+                    callback(audio)

@@ -49,6 +49,5 @@ class NaoqiMicrophone(AbstractMicrophone):
         buffer: bytes
             Audio Buffer
         """
-        if self._running:
-            audio = np.frombuffer(buffer, np.int16)
-            self.on_audio(audio)
+        audio = np.frombuffer(buffer, np.int16)
+        self.on_audio(audio)
