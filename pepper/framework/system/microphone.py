@@ -34,7 +34,6 @@ class SystemMicrophone(AbstractMicrophone):
         ----------
         in_data: bytes
         """
-        if self._running:
-            audio = np.frombuffer(in_data, np.int16)
-            self.on_audio(audio)
-            return (None, pyaudio.paContinue)
+        audio = np.frombuffer(in_data, np.int16)
+        self.on_audio(audio)
+        return (None, pyaudio.paContinue)

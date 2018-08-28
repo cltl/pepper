@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
-from pepper.brain import LongTermMemory
+from pepper.brain import LongTermMemory, base_cases
 from pepper import config
 
 import logging
@@ -12,7 +12,7 @@ class BaseApp(AbstractApp):
         """
         Initialize Base Application -> Base for all Applications and BDI
 
-        The base application takes platform specific inputs as parameters and sets up event callbacks,
+        The base application takes platform specific inputs as parameters and sets up new callbacks,
         this allows keeping the same application structure over a range of hardware (Pepper/Nao/PC for now)
 
         # TODO: Solve Weird Error when Loading OpenFace after loading SystemMicrophone
@@ -55,6 +55,7 @@ class BaseApp(AbstractApp):
         self._vad = VAD(microphone, [self._on_utterance])
         self._asr = asr
 
+        # Initialize Brain
         self._brain = LongTermMemory()
 
         # Get Logger
@@ -80,7 +81,7 @@ class BaseApp(AbstractApp):
         value: pepper.framework.AbstractIntention
         """
 
-        self.log.debug("{} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
+        self.log.info("{} -> {}".format(self._intention.__class__.__name__, value.__class__.__name__))
         self._intention = value
 
     @property
@@ -147,6 +148,10 @@ class BaseApp(AbstractApp):
         return self._openface
 
     @property
+    def faces(self):
+        return self._faces
+
+    @property
     def brain(self):
         """
         Returns
@@ -176,6 +181,11 @@ class BaseApp(AbstractApp):
 
         while self._running:
             sleep(1)
+
+    def say(self, text):
+        self.microphone.stop()
+        self.text_to_speech.say(text)
+        self.microphone.start()
 
     def on_image(self, image):
         """
@@ -299,13 +309,12 @@ class BaseApp(AbstractApp):
             bounds, face = representation
 
             name, confidence, distance = self._face_classifier.classify(face)
+            self.on_face(bounds, face)
 
             if distance > config.FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD:
                 self.on_face_new(bounds, face)
             elif confidence > config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD:
                 self.on_face_known(bounds, face, name)
-            else:
-                self.on_face(bounds, face)
 
     def _on_utterance(self, audio):
 

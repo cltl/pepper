@@ -815,7 +815,7 @@ class LongTermMemory(object):
         interaction_graph.add((actor, RDF.type, actor_type1))
         interaction_graph.add((actor, RDF.type, actor_type2))
 
-        # TODO Add leolani sensed event
+        # TODO Add leolani sensed new
         interaction_graph.add((leolani, self.namespaces['N2MU']['sense'], actor))
 
         # Chat and turn
