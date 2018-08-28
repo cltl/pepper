@@ -10,6 +10,8 @@ if __name__ == "__main__":
 
     # brain.update(statements[0])
 
-    brain.experience(experiences[0])
+    # brain.experience(experiences[0])
+
+    brain.get_last_chat_id()
 
 

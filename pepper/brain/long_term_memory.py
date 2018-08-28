@@ -1,6 +1,6 @@
 from .utils.helper_functions import hash_statement_id, casefold_label
 from pepper import config
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold_label
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold_label, read_query
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
@@ -154,25 +154,10 @@ class LongTermMemory(object):
         Get the id for the last interaction recorded
         :return: id
         """
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            
-            select ?chatid where { 
-                ?chat rdf:type grasp:Chat .
-                ?chat n2mu:id ?chatid .
-            } ORDER BY DESC (?chatid) LIMIT 1
-        """
-
+        query = read_query('last_chat_id')
         response = self._submit_query(query)
 
-        if response:
-            last_chat = int(response[0]['chatid']['value'])
-        else:
-            last_chat = 0
-
-        return last_chat
+        return int(response[0]['chatid']['value']) if response else 0
 
     def get_last_turn_id(self, chat_id):
         """
@@ -180,16 +165,7 @@ class LongTermMemory(object):
         :param chat_id: id for chat of interest
         :return:  id
         """
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select ?s where { 
-            ?s rdf:type sem:Event .
-            FILTER(regex(str(?s), "chat%s_turn")) .
-            }
-        """ % chat_id
-
+        query = read_query('last_turn_id').format(chat_id)
         response = self._submit_query(query)
 
         last_turn = 0
@@ -205,163 +181,99 @@ class LongTermMemory(object):
 
     ########## brain structure exploration ##########
     def get_predicates(self):
-        query = """
-            select distinct ?p where { 
-            ?s ?p ?o .
-            FILTER(regex(str(?p), "n2mu")) .
-        } ORDER BY str(?p)
         """
-
+        Get predicates in social ontology
+        :return:
+        """
+        query = read_query('predicates')
         response = self._submit_query(query)
-        predicates = [elem['p']['value'].split('/')[-1] for elem in response]
 
-        return predicates
+        return [elem['p']['value'].split('/')[-1] for elem in response]
 
     def get_classes(self):
-        query = """
-            select distinct ?o where { 
-            ?s a ?o .
-            FILTER(regex(str(?o), "n2mu")) .
-        } ORDER BY (str(?p))
         """
-
+        Get classes in social ontology
+        :return:
+        """
+        query = read_query('classes')
         response = self._submit_query(query)
-        classes = [elem['o']['value'].split('/')[-1] for elem in response]
 
-        return classes
+        return [elem['o']['value'].split('/')[-1] for elem in response]
 
     ########## learned facts exploration ##########
     def count_statements(self):
         """
-
+        Count statements or 'facts' in the brain
         :return:
         """
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-
-            select (COUNT(?stat) AS ?count) where { 
-            ?stat rdf:type grasp:Statement .
-            }
-        """
-
+        query = read_query('count_statements')
         response = self._submit_query(query)
-        response = response[0]['count']['value']
-
-        return response
+        return response[0]['count']['value']
 
     def count_friends(self):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select (COUNT(?act) AS ?count) where { 
-            ?act rdf:type sem:Actor .
-            }
         """
-
+        Count number of people I have talked to
+        :return:
+        """
+        query = read_query('count_friends')
         response = self._submit_query(query)
-        response = response[0]['count']['value']
-
-        return response
+        return response[0]['count']['value']
 
     def get_my_friends(self):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-            select distinct ?name where { 
-                ?act rdf:type sem:Actor .
-                ?act rdfs:label ?name
-            }
         """
-
+        Get names of people I have talked to
+        :return:
+        """
+        query = read_query('my_friends')
         response = self._submit_query(query)
-        friends = [elem['name']['value'].split('/')[-1] for elem in response]
-
-        return friends
+        return [elem['name']['value'].split('/')[-1] for elem in response]
 
     def get_best_friends(self):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        
-            select distinct ?name (count(distinct ?chat) as ?num_chat) where { 
-                ?act rdf:type sem:Actor .
-                ?act rdfs:label ?name .
-                ?chat sem:hasActor ?act .
-                ?chat sem:hasSubevent ?t
-            }    GROUP BY ?name
-            ORDER BY DESC (?num_chat) 
-            LIMIT 5
         """
-
+        Get names of the 5 people I have talked to the most
+        :return:
+        """
+        query = read_query('best_friends')
         response = self._submit_query(query)
-        best_friends = [elem['name']['value'] for elem in response]
-
-        return best_friends
+        return [elem['name']['value'] for elem in response]
 
     def get_instance_of_type(self, instance_type):
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select distinct ?name where { 
-                ?s a n2mu:%s .
-                ?s rdfs:label ?name
-            } 
-        """ % instance_type
-
+        """
+        Get isntances of a certain class type
+        :param instance_type: name of class in ontology
+        :return:
+        """
+        query = read_query('instance_of_type').format(instance_type)
         response = self._submit_query(query)
-        instances = [elem['name']['value'] for elem in response]
-
-        return instances
+        return [elem['name']['value'] for elem in response]
 
     def when_last_chat_with(self, actor_label):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        
-            select distinct ?time where { 
-                ?act rdf:type sem:Actor .
-                ?act rdfs:label "%s" .
-                ?chat sem:hasActor ?act .
-                ?chat sem:hasSubevent ?turn .
-                ?chat sem:hasTime ?time
-            }  ORDER BY DESC (?time)
-            LIMIT 1
-        """ % actor_label
-
+        """
+        Get time value for the last time I chatted with this person
+        :param actor_label: name of person
+        :return:
+        """
+        query = read_query('when_last_chat_with').format(actor_label)
         response = self._submit_query(query)
-        response = response[0]['time']['value'].split('/')[-1]
-
-        return response
+        return response[0]['time']['value'].split('/')[-1]
 
     def get_triples_with_predicate(self, predicate):
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select ?sname ?oname where { 
-                ?s n2mu:%s ?o .
-                ?s rdfs:label ?sname .
-                ?o rdfs:label ?oname
-            }  
-        """ % predicate
-
+        """
+        Get triples that contain this predicate
+        :param predicate:
+        :return:
+        """
+        query = read_query('triples_with_predicate') % predicate
         response = self._submit_query(query)
-        triples = [(elem['sname']['value'], elem['oname']['value']) for elem in response]
-
-        return triples
+        return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
 
     ########## conflicts ##########
     def get_all_conflicts(self):
-
+        """
+        Aggregate all conflicts in brain
+        :return:
+        """
         conflicts = []
-
         for predicate in self.ONE_TO_ONE_PREDICATES:
             conflicts.extend(self._get_conflicts_with_predicate(predicate))
 
@@ -369,37 +281,16 @@ class LongTermMemory(object):
 
     ########## semantic web ##########
     def get_type_description(self, item):
-        query = """
-            PREFIX dbo: <http://dbpedia.org/ontology/>
-            PREFIX dbr: <http://dbpedia.org/resource/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            
-            SELECT DISTINCT ?label_type ?description
-            WHERE {
-                SERVICE <http://dbpedia.org/sparql> { 
-                    ?thing rdf:type owl:Thing ;
-                           rdfs:label "%s"@en ;
-                           dbo:abstract ?description ;
-                           rdf:type ?type .
-                    ?type rdfs:label ?label_type
-                filter(regex(str(?type), "dbpedia"))
-                    filter(langMatches(lang(?description),"EN"))
-                    filter(langMatches(lang(?label_type),"EN"))
-                }
-            }
-            LIMIT 1
-        """ % item
-
+        """
+        Query dbpedia for information on this item to get it's semantic type and description.
+        :param item:
+        :return:
+        """
+        query = read_query('dbpedia_type_and_description').format(item)
         response = self._submit_query(query)
 
-        if response:
-            class_type = response[0]['label_type']['value']
-            description = response[0]['description']['value'].split('.')[0]
-        else:
-            class_type = None
-            description = None
+        class_type = response[0]['label_type']['value'] if response else None
+        description = response[0]['description']['value'].split('.')[0] if response else None
 
         return class_type, description
 
@@ -482,40 +373,24 @@ class LongTermMemory(object):
     ######################################## Helpers for statement processing ########################################
 
     def create_chat_id(self, actor, date):
+        """
+        Determine chat id depending on my last conversation with this person
+        :param actor:
+        :param date:
+        :return:
+        """
         self._log.debug('Chat with {} on {}'.format(actor, date))
 
-        query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-                PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-                PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                PREFIX time: <http://www.w3.org/TR/owl-time/#>
-                
-                select ?chatid ?day ?month ?year where { 
-                    ?chat rdf:type grasp:Chat .
-                    ?chat n2mu:id ?chatid .
-                    ?chat sem:hasActor ?actor .
-                    ?actor rdfs:label "%s" .
-                    ?chat sem:hasTime ?time . 
-                    ?time time:day ?day . 
-                    ?time time:month ?month . 
-                    ?time time:year ?year .
-                    FILTER(!regex(str(?chat), "turn")) .
-                } ORDER BY DESC (?chat)
-                LIMIT 1
-        """ % (actor)
-
+        query = read_query('last_chat_with').format(actor)
         response = self._submit_query(query)
 
-        if not response:
-            # have never chatted with this person, so add one to latest chat
-            chat_id = self.get_last_chat_id() + 1
-        elif int(response[0]['day']['value']) == int(date.day) and int(response[0]['month']['value']) == int(date.month) and int(response[0]['year']['value']) == int(date.year):
+        if response and int(response[0]['day']['value']) == int(date.day) \
+                and int(response[0]['month']['value']) == int(date.month) \
+                and int(response[0]['year']['value']) == int(date.year):
             # Chatted with this person today so same chat id
             chat_id = int(response[0]['chatid']['value'])
         else:
-            # have chatted with this person (either today or ever), so add one to latest chat
+            # Either have never chatted with this person, or I have but not today. Add one to latest chat
             chat_id = self.get_last_chat_id() + 1
 
         return chat_id
@@ -523,31 +398,9 @@ class LongTermMemory(object):
     def create_turn_id(self, chat_id):
         self._log.debug('Turn in chat {}'.format(chat_id))
 
-        query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-                PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-                PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-                select ?turnid where { 
-                    ?chat rdf:type grasp:Chat .
-                    ?chat n2mu:id "%s" .
-                    ?chat sem:hasSubevent ?turn .
-                    ?turn n2mu:id ?turnid .
-                } ORDER BY DESC (?turnid)
-                LIMIT 1
-        """ % (chat_id)
-
+        query = read_query('last_turn_in_chat').format(chat_id)
         response = self._submit_query(query)
-
-        if not response:
-            # no turns in this chat, start from 1
-            turn_id = 1
-        else:
-            # Add one to latest chat
-            turn_id = int(response['turnid']['value']) + 1
-
-        return turn_id
+        return int(response['turnid']['value']) + 1 if response else 1
 
     def _generate_leolani(self, instance_graph):
         # Create Leolani

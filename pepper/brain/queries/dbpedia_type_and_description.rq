@@ -1,0 +1,20 @@
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?label_type ?description
+WHERE {
+    SERVICE <http://dbpedia.org/sparql> {
+        ?thing rdf:type owl:Thing ;
+               rdfs:label "{}"@en ;
+               dbo:abstract ?description ;
+               rdf:type ?type .
+        ?type rdfs:label ?label_type
+    filter(regex(str(?type), "dbpedia"))
+        filter(langMatches(lang(?description),"EN"))
+        filter(langMatches(lang(?label_type),"EN"))
+    }
+}
+LIMIT 1

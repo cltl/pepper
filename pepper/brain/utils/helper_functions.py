@@ -1,4 +1,11 @@
+import os
 import random
+
+
+def read_query(query_filename):
+    with open(os.path.join(os.path.dirname(__file__), "../queries/{}.rq".format(query_filename))) as fr:
+        query = fr.read()
+    return query
 
 
 def casefold_label(instance):
