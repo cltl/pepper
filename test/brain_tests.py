@@ -8,10 +8,14 @@ if __name__ == "__main__":
     # Create brain connection
     brain = LongTermMemory()
 
-    # brain.update(statements[0])
+    # Re import base
+    for stat in statements:
+        brain.update(stat)
 
-    # brain.experience(experiences[0])
+    brain.experience(experiences[0])
 
-    brain.get_last_chat_id()
+    brain.process_visual('fruit')
+    brain.process_visual('chair')
+    brain.process_visual('Red')
 
 

@@ -1,6 +1,5 @@
-from .utils.helper_functions import hash_statement_id, casefold_label
 from pepper import config
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold_label, read_query
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
@@ -80,6 +79,9 @@ class LongTermMemory(object):
         :param statement: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
+        # Case fold
+        capsule = {k: casefold(v) for k, v in capsule.items()}
+
         # Create graphs and triples
         self._model_graphs_(capsule)
 
@@ -93,48 +95,60 @@ class LongTermMemory(object):
 
         return output
 
-    def experience(self, experience):
+    def experience(self, capsule):
         """
         Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
         transforms them to triples, and posts them to the triple store
-        :param experience: Structured data of a parsed statement
+        :param capsule: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
+        # Case fold
+        capsule = {k: casefold(v) for k, v in capsule.items()}
+
         # Create graphs and triples
-        self._model_sensor_graphs_(experience)
+        self._model_sensor_graphs_(capsule)
 
         data = self._serialize(config.BRAIN_LOG)
 
         code = self._upload_to_brain(data)
 
         # Create JSON output
-        experience["date"] = str(experience["date"])
-        output = {'response': code, 'statement': experience}
+        capsule["date"] = str(capsule["date"])
+        output = {'response': code, 'statement': capsule}
 
         return output
 
-    def query_brain(self, question):
+    def query_brain(self, capsule):
         """
         Main function to interact with if a question is coming into the brain. Takes in a structured parsed question,
         transforms it into a query, and queries the triple store for a response
-        :param question: Structured data of a parsed question
+        :param capsule: Structured data of a parsed question
         :return: json response containing the results of the query, and the original question
         """
+        # Case fold
+        capsule = {k: casefold(v) for k, v in capsule.items()}
+
         # Generate query
-        query = self._create_query(question)
+        query = self._create_query(capsule)
 
         # Perform query
         response = self._submit_query(query)
 
         # Create JSON output
-        if 'date' in question.keys():
-            question["date"] = str(question["date"])
-        output = {'response': response, 'question': question}
+        if 'date' in capsule.keys():
+            capsule["date"] = str(capsule["date"])
+        output = {'response': response, 'capsule': capsule}
 
         return output
 
     def process_visual(self, item):
-        if item in self.get_classes():
+        """
+        Main function to determine if this item can be recognized by the brain, learned, or none
+        :param item:
+        :return:
+        """
+
+        if casefold(item) in self.get_classes():
             # If this is in the ontology already, create sensor triples directly
             print('I know about %s, I will remember this object' % item)
         else:
@@ -165,7 +179,7 @@ class LongTermMemory(object):
         :param chat_id: id for chat of interest
         :return:  id
         """
-        query = read_query('last_turn_id').format(chat_id)
+        query = read_query('last_turn_id') % (chat_id)
         response = self._submit_query(query)
 
         last_turn = 0
@@ -243,7 +257,7 @@ class LongTermMemory(object):
         :param instance_type: name of class in ontology
         :return:
         """
-        query = read_query('instance_of_type').format(instance_type)
+        query = read_query('instance_of_type') % (instance_type)
         response = self._submit_query(query)
         return [elem['name']['value'] for elem in response]
 
@@ -253,7 +267,7 @@ class LongTermMemory(object):
         :param actor_label: name of person
         :return:
         """
-        query = read_query('when_last_chat_with').format(actor_label)
+        query = read_query('when_last_chat_with') % (actor_label)
         response = self._submit_query(query)
         return response[0]['time']['value'].split('/')[-1]
 
@@ -286,7 +300,7 @@ class LongTermMemory(object):
         :param item:
         :return:
         """
-        query = read_query('dbpedia_type_and_description').format(item)
+        query = read_query('dbpedia_type_and_description') % (item)
         response = self._submit_query(query)
 
         class_type = response[0]['label_type']['value'] if response else None
@@ -381,7 +395,7 @@ class LongTermMemory(object):
         """
         self._log.debug('Chat with {} on {}'.format(actor, date))
 
-        query = read_query('last_chat_with').format(actor)
+        query = read_query('last_chat_with') % (actor)
         response = self._submit_query(query)
 
         if response and int(response[0]['day']['value']) == int(date.day) \
@@ -398,18 +412,18 @@ class LongTermMemory(object):
     def create_turn_id(self, chat_id):
         self._log.debug('Turn in chat {}'.format(chat_id))
 
-        query = read_query('last_turn_in_chat').format(chat_id)
+        query = read_query('last_turn_in_chat') % (chat_id)
         response = self._submit_query(query)
         return int(response['turnid']['value']) + 1 if response else 1
 
     def _generate_leolani(self, instance_graph):
         # Create Leolani
-        leolani_id = 'Leolani'
-        leolani_label = 'Leolani'
+        leolani_id = 'leolani'
+        leolani_label = 'leolani'
 
         leolani = URIRef(to_iri(self.namespaces['LW'] + leolani_id))
         leolani_label = Literal(leolani_label)
-        leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'Robot'))
+        leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'robot'))
         leolani_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
 
         instance_graph.add((leolani, RDFS.label, leolani_label))
@@ -420,20 +434,15 @@ class LongTermMemory(object):
 
         return leolani
 
-    def _create_leolani_world(self, parsed_statement):
-        # Instance graph
-        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
-        instance_graph = self.dataset.graph(instance_graph_uri)
-
-        # Subject
-        if parsed_statement['subject']['type'] == '':  # We only get the label
+    def _generate_subject(self, capsule, instance_graph):
+        if capsule['subject']['type'] == '':  # We only get the label
             subject_vocab = OWL
             subject_type = 'Thing'
         else:
             subject_vocab = self.namespaces['N2MU']
-            subject_type = parsed_statement['subject']['type']
+            subject_type = capsule['subject']['type']
 
-        subject_id = casefold_label(parsed_statement['subject']['label'])
+        subject_id = capsule['subject']['label']
 
         subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
         subject_label = Literal(subject_id)
@@ -444,15 +453,29 @@ class LongTermMemory(object):
         instance_graph.add((subject, RDF.type, subject_type1))
         instance_graph.add((subject, RDF.type, subject_type2))
 
+        return subject, subject_label
+
+    def _create_leolani_world(self, capsule, type='Statement'):
+        # Instance graph
+        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
+        instance_graph = self.dataset.graph(instance_graph_uri)
+
+        # Subject
+        if type == 'Statement':
+            subject, subject_label = self._generate_subject(capsule, instance_graph)
+        elif type == 'Experience':
+            subject = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
+            subject_label = 'leolani'
+
         # Object
-        if parsed_statement['object']['type'] == '':  # We only get the label
+        if capsule['object']['type'] == '':  # We only get the label
             object_vocab = OWL
             object_type = 'Thing'
         else:
             object_vocab = self.namespaces['N2MU']
-            object_type = parsed_statement['object']['type']
+            object_type = capsule['object']['type']
 
-        object_id = casefold_label(parsed_statement['object']['label'])
+        object_id = capsule['object']['label']
 
         object = URIRef(to_iri(self.namespaces['LW'] + object_id))
         object_label = Literal(object_id)
@@ -463,23 +486,25 @@ class LongTermMemory(object):
         instance_graph.add((object, RDF.type, object_type1))
         instance_graph.add((object, RDF.type, object_type2))
 
-        claim_graph, statement = self._create_claim_graph(parsed_statement, subject, subject_label, object, object_label)
+        if type == 'Statement':
+            claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
+                                                          capsule['predicate']['type'], type='Statement')
+        elif type == 'Experience':
+            claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
+                                                               'saw', type='Experience')
 
         return instance_graph, claim_graph, subject, object, statement
 
-    def _create_claim_graph(self, parsed_statement, subject, subject_label, object, object_label):
+    def _create_claim_graph(self, subject, subject_label, object, object_label, predicate, type='Statement'):
         # Claim graph
         claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
         claim_graph = self.dataset.graph(claim_graph_uri)
-
-        # Predicate
-        predicate = parsed_statement['predicate']['type'].replace(" ", "_")
 
         # Statement
         statement_id = hash_statement_id([subject_label, predicate, object_label])
 
         statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
-        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Statement'))
+        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + type))
         statement_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
         statement_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
 
@@ -725,62 +750,6 @@ class LongTermMemory(object):
         return response["results"]["bindings"]
 
     ########################################## Helpers for sensor processing ##########################################
-    def _create_leolani_world_sens(self, sensed_visual):
-        # Instance graph
-        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
-        instance_graph = self.dataset.graph(instance_graph_uri)
-
-        # Subject
-        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
-
-        # Object
-        if sensed_visual['object']['type'] == '':  # We only get the label
-            object_vocab = OWL
-            object_type = 'Thing'
-        else:
-            object_vocab = self.namespaces['N2MU']
-            object_type = sensed_visual['object']['type']
-
-        object_id = casefold_label(sensed_visual['object']['label'])
-
-        object = URIRef(to_iri(self.namespaces['LW'] + object_id))
-        object_label = Literal(object_id)
-        object_type1 = URIRef(to_iri(object_vocab + object_type))
-        object_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-
-        instance_graph.add((object, RDFS.label, object_label))
-        instance_graph.add((object, RDF.type, object_type1))
-        instance_graph.add((object, RDF.type, object_type2))
-
-        claim_graph, experience = self._create_claim_graph_sens(leolani, 'Leolani', object, object_label)
-
-        return instance_graph, claim_graph, leolani, object, experience
-
-    def _create_claim_graph_sens(self, subject, subject_label, object, object_label):
-        # Claim graph
-        claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
-        claim_graph = self.dataset.graph(claim_graph_uri)
-
-        # Predicate
-        predicate = 'saw'
-
-        # Statement
-        experience_id = hash_statement_id([subject_label, predicate, object_label])
-
-        experience = URIRef(to_iri(self.namespaces['LW'] + experience_id))
-        experience_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Experience'))
-        experience_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-        experience_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-
-        # Create graph and add triple
-        graph = self.dataset.graph(experience)
-        graph.add((subject, self.namespaces['N2MU'][predicate], object))
-
-        claim_graph.add((experience, RDF.type, experience_type1))
-        claim_graph.add((experience, RDF.type, experience_type2))
-        claim_graph.add((experience, RDF.type, experience_type3))
-
-        return claim_graph, experience
 
     def _create_leolani_talk_sens(self, sensed_visual, leolani):
         # Interaction graph
@@ -880,7 +849,7 @@ class LongTermMemory(object):
 
     def _model_sensor_graphs_(self, experience):
         # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world_sens(experience)
+        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(experience, type='Experience')
 
         # Identity
         leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri

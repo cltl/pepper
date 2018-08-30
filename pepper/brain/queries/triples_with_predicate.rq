@@ -2,7 +2,7 @@ PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 select ?sname ?oname where {
-    ?s n2mu:{} ?o .
+    ?s n2mu:%s ?o .
     ?s rdfs:label ?sname .
     ?o rdfs:label ?oname
 }

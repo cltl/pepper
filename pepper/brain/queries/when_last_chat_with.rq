@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 select distinct ?time where {
     ?act rdf:type sem:Actor .
-    ?act rdfs:label "{}" .
+    ?act rdfs:label "%s" .
     ?chat sem:hasActor ?act .
     ?chat sem:hasSubevent ?turn .
     ?chat sem:hasTime ?time

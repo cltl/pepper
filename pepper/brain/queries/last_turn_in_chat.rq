@@ -5,7 +5,7 @@ PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
 select ?turnid where {
     ?chat rdf:type grasp:Chat .
-    ?chat n2mu:id "{}" .
+    ?chat n2mu:id "%s" .
     ?chat sem:hasSubevent ?turn .
     ?turn n2mu:id ?turnid .
 } ORDER BY DESC (?turnid)

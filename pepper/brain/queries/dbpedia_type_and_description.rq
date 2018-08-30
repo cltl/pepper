@@ -8,7 +8,7 @@ SELECT DISTINCT ?label_type ?description
 WHERE {
     SERVICE <http://dbpedia.org/sparql> {
         ?thing rdf:type owl:Thing ;
-               rdfs:label "{}"@en ;
+               rdfs:label "%s"@en ;
                dbo:abstract ?description ;
                rdf:type ?type .
         ?type rdfs:label ?label_type
