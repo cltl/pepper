@@ -4,6 +4,7 @@ from pepper.brain.utils.helper_functions import hash_statement_id, casefold, rea
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
 from SPARQLWrapper import SPARQLWrapper, JSON
+from fuzzywuzzy import process
 
 import requests
 import logging
@@ -141,7 +142,7 @@ class LongTermMemory(object):
 
         return output
 
-    def process_visual(self, item):
+    def process_visual(self, item, exact_only=True):
         """
         Main function to determine if this item can be recognized by the brain, learned, or none
         :param item:
@@ -150,20 +151,29 @@ class LongTermMemory(object):
 
         if casefold(item) in self.get_classes():
             # If this is in the ontology already, create sensor triples directly
-            print('I know about %s, I will remember this object' % item)
+            print('I know about %s. I will remember this object' % item)
             return None
-        else:
-            # Query the web for information
-            class_type, description = self.get_type_description(item)
+
+        # Query the web for information
+        class_type, description = self.exact_match_dbpedia(item)
+        if class_type is not None:
+            # Had to learn it, but I can create triples now
+            print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
+                  'I will remember this object' % (item, class_type))
+            return casefold(class_type)
+
+        if not exact_only:
+            # Second go at dbpedia, relaxed approach
+            class_type, description = self.keyword_match_dbpedia(item)
             if class_type is not None:
-                # Had to learn it, but I can create triples now
-                print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
+                # Had to really search for it to learn it, but I can create triples now
+                print('I did not know what %s is, but I searched for fuzzy matches on the web and I found that it is a %s. '
                       'I will remember this object' % (item, class_type))
-                return class_type
-            else:
-                # Failure, nothing found
-                print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
-                return None
+                return casefold(class_type)
+
+        # Failure, nothing found
+        print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
+        return None
 
     ########## management system for keeping track of chats and turns ##########
     def get_last_chat_id(self):
@@ -297,19 +307,49 @@ class LongTermMemory(object):
         return conflicts
 
     ########## semantic web ##########
-    def get_type_description(self, item):
+    def exact_match_dbpedia(self, item):
         """
         Query dbpedia for information on this item to get it's semantic type and description.
         :param item:
         :return:
         """
-        query = read_query('dbpedia_type_and_description') % (item)
-        response = self._submit_query(query)
+
+        # Gather combinations
+        combinations = [item, item.lower(), item.capitalize(), item.title()]
+
+        for comb in combinations:
+            # Try exact matching query
+            query = read_query('dbpedia_type_and_description') % (comb)
+            response = self._submit_query(query)
+
+            # break if we have a hit
+            if response:
+                break
 
         class_type = response[0]['label_type']['value'] if response else None
         description = response[0]['description']['value'].split('.')[0] if response else None
 
         return class_type, description
+
+    def keyword_match_dbpedia(self, item):
+        # Query API
+        r = requests.get('http://lookup.dbpedia.org/api/search.asmx/KeywordSearch',
+                         params={'QueryString': item, 'MaxHits': '10'},
+                         headers={'Accept': 'application/json'}).json()['results']
+
+        # Fuzzy match
+        choices = [e['label'] for e in r]
+        best_match = process.extractOne("item", choices)
+
+        # Get best match object
+        r = [{'label': e['label'], 'classes': e['classes'],'description': e['description']} for e in r if e['label'] == best_match[0]]
+        r = r[0] if r else {'label': None, 'classes': None,'description': None}
+
+        # process dbpedia classes only
+        r['classes'] = [c['label'] for c in r['classes'] if 'dbpedia' in c['uri']]
+
+        return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
+
 
     ######################################## Helpers for setting up connection ########################################
 
