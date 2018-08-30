@@ -151,6 +151,7 @@ class LongTermMemory(object):
         if casefold(item) in self.get_classes():
             # If this is in the ontology already, create sensor triples directly
             print('I know about %s, I will remember this object' % item)
+            return None
         else:
             # Query the web for information
             class_type, description = self.get_type_description(item)
@@ -158,9 +159,11 @@ class LongTermMemory(object):
                 # Had to learn it, but I can create triples now
                 print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
                       'I will remember this object' % (item, class_type))
+                return class_type
             else:
                 # Failure, nothing found
                 print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
+                return None
 
     ########## management system for keeping track of chats and turns ##########
     def get_last_chat_id(self):
