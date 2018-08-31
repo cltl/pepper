@@ -10,8 +10,7 @@ if __name__ == "__main__":
     brain = LongTermMemory()
 
     # Re import base
-    # for stat in statements:
-    #     brain.update(stat)
+    for stat in statements:®
     #
     # brain.experience(experiences[0])
 
@@ -52,17 +51,18 @@ if __name__ == "__main__":
     #
     # print('yes: {}\t no: {}'.format(yes, no))
 
-    yes = 0
-    no = 0
-
-    for item in sample_coco:
-        x = brain.process_visual(item, exact_only=False)
-        if x is None:
-            no = no + 1
-        else:
-            yes = yes + 1
-
-    print('yes: {}\t no: {}'.format(yes, no))
+    # yes = 0
+    # no = 0
+    #
+    # for item in sample_coco:
+    #     x, y = brain.process_visual(item, exact_only=False)
+    #     if x is None:
+    #         no = no + 1
+    #     else:
+    #         yes = yes + 1
+    #         print(y)
+    #
+    # print('yes: {}\t no: {}'.format(yes, no))
 
 
 

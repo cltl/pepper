@@ -94,7 +94,7 @@ def reply_to_question(brain_response, viewed_objects):
 
         print(brain_response['question'])
 
-        if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'Leolani':
+        if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
             say = 'I see '
             for obj in viewed_objects:
                 if len(viewed_objects)>1 and obj == viewed_objects[len(viewed_objects)-1]:
@@ -257,12 +257,36 @@ def reply_to_statement(template, speaker, viewed_objects, self):
 
         response = subject+' '+predicate+' a '+object
 
-        self.app.brain.process_visual(object)
-
         if object.lower() in viewed_objects:
             response+=', I see a '+object+', too!'
         else:
             response += ', but I don\'t see it!'
+
+        class_recognized, text = self.app.brain.process_visual(object)
+
+        if class_recognized is not None:
+            capsule = {
+                "subject": {
+                    "label": "",
+                    "type": ""
+                },
+                "predicate": {
+                    "type": ""
+                },
+                "object": {
+                    "label": "apple",
+                    "type": class_recognized
+                },
+                "author": "front_camera",
+                "chat": None,
+                "turn": None,
+                "position": "0-15-0-15",
+                "date": date.today()
+            }
+
+            self.app.brain.experience(capsule)
+
+        response += text
 
     elif predicate.strip() == 'sees-not':
         response = 'You don\'t see a ' + object

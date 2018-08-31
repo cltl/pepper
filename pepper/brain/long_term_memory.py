@@ -138,7 +138,7 @@ class LongTermMemory(object):
         # Create JSON output
         if 'date' in capsule.keys():
             capsule["date"] = str(capsule["date"])
-        output = {'response': response, 'capsule': capsule}
+        output = {'response': response, 'question': capsule}
 
         return output
 
@@ -151,29 +151,35 @@ class LongTermMemory(object):
 
         if casefold(item) in self.get_classes():
             # If this is in the ontology already, create sensor triples directly
-            print('I know about %s. I will remember this object' % item)
-            return None
+            text = 'I know about %s. I will remember this object' % item
+            return item, text
+
+        temp = self.get_labels_and_classes()
+        if casefold(item) in temp.keys():
+            # If this is in the ontology already, create sensor triples directly
+            text = 'I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
+            return item, text
 
         # Query the web for information
         class_type, description = self.exact_match_dbpedia(item)
         if class_type is not None:
             # Had to learn it, but I can create triples now
-            print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
-                  'I will remember this object' % (item, class_type))
-            return casefold(class_type)
+            text = 'I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
+                   'I will remember this object' % (item, class_type)
+            return casefold(class_type), text
 
         if not exact_only:
             # Second go at dbpedia, relaxed approach
             class_type, description = self.keyword_match_dbpedia(item)
             if class_type is not None:
                 # Had to really search for it to learn it, but I can create triples now
-                print('I did not know what %s is, but I searched for fuzzy matches on the web and I found that it is a %s. '
-                      'I will remember this object' % (item, class_type))
-                return casefold(class_type)
+                text = 'I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
+                       'is a %s. I will remember this object' % (item, class_type)
+                return casefold(class_type), text
 
         # Failure, nothing found
-        print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
-        return None
+        text = 'I am sorry, I could not learn anything on %s so I will not remember it' % item
+        return None, text
 
     ########## management system for keeping track of chats and turns ##########
     def get_last_chat_id(self):
@@ -226,6 +232,20 @@ class LongTermMemory(object):
         response = self._submit_query(query)
 
         return [elem['o']['value'].split('/')[-1] for elem in response]
+
+    def get_labels_and_classes(self):
+        """
+        Get classes in social ontology
+        :return:
+        """
+        query = read_query('labels_and_classes')
+        response = self._submit_query(query)
+
+        temp = dict()
+        for r in response:
+            temp[r['l']['value']] = r['o']['value'].split('/')[-1]
+
+        return temp
 
     ########## learned facts exploration ##########
     def count_statements(self):
@@ -343,10 +363,17 @@ class LongTermMemory(object):
 
         # Get best match object
         r = [{'label': e['label'], 'classes': e['classes'],'description': e['description']} for e in r if e['label'] == best_match[0]]
-        r = r[0] if r else {'label': None, 'classes': None,'description': None}
 
-        # process dbpedia classes only
-        r['classes'] = [c['label'] for c in r['classes'] if 'dbpedia' in c['uri']]
+        if r:
+            r = r[0]
+
+            if r['classes']:
+                # process dbpedia classes only
+                r['classes'] = [c['label'] for c in r['classes'] if 'dbpedia' in c['uri']]
+
+        else:
+            r = {'label': None, 'classes': None,'description': None}
+
 
         return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
 
