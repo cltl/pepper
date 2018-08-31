@@ -10,7 +10,8 @@ if __name__ == "__main__":
     brain = LongTermMemory()
 
     # Re import base
-    for stat in statements:®
+    for stat in statements:
+        brain.update(stat)
     #
     # brain.experience(experiences[0])
 

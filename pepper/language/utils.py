@@ -90,7 +90,7 @@ def reply_to_question(brain_response, viewed_objects):
     previous_predicate = ''
 
 
-    if len(brain_response['response'])==0: #FIX
+    if len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees': #FIX
 
         print(brain_response['question'])
 
@@ -309,7 +309,7 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
 
             if pos_list[2][0] in grammar['possessive']:
                 morph = analyzers.analyze_np(words[2:], speaker)
-                print(morph)
+                #print(morph)
                 if morph['predicate'].endswith('-is'):
                     rdf['predicate'] = 'owns'
                     rdf['object'] = morph['predicate'][:-3]
@@ -341,7 +341,7 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
         for pos in pos_list:
             if pos[1].startswith('V') or wnl.lemmatize(words[i]) in grammar['verbs']:
                 if pos_list[i+1] and pos_list[i+1][0]=='from':
-                    rdf['predicate'] = 'isFrom'
+                    rdf['predicate'] = 'is_from'
                     i+=1
                 else:
                     rdf['predicate'] = words[i]+'s'if not words[i].endswith('s') else words[i]
@@ -374,6 +374,10 @@ def pack_rdf_from_np_info(np_info, speaker, rdf):
 
     if 'human' in np_info.keys():
         rdf['subject'] = np_info['human']
+
+    if 'entities' in np_info.keys():
+        print(np_info['entities'])
+        rdf['subject'] = np_info['entities']
 
     if 'pronoun' in np_info.keys() and 'person' in np_info['pronoun'].keys():
         rdf['subject'] = fix_pronouns(np_info['pronoun'], speaker)

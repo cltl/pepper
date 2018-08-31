@@ -146,7 +146,7 @@
     "own":{}
 
   },
-  "predicates": ["likes", "knows", "isFrom", "lives", "loves", "enjoys","sees","owns"],
+  "predicates": ["likes", "knows", "is_from", "lives", "loves", "enjoys","sees","owns"],
   "modal_verbs":["can", "have", "has"],
   "categories": ["book", "movie", "friend", "food", "laptop"]
 

@@ -43,7 +43,8 @@ def analyze_np(np_list, speaker):
         morphology = analyze_possessive_np(first_word, np_list)
 
     else:
-        morphology['entities'] = extract_named_entities(np_list)
+        morphology['entities'] = first_word #FIX TODO
+        #morphology['entities'] = extract_named_entities(np_list)
 
     return morphology
 
@@ -174,7 +175,7 @@ def analyze_wh_question(words, speaker, response_type, viewed_object):
     third_word = words[2].lower().strip()
     third_pos = pos_tag([third_word])[0][1]
 
-    if third_pos in ['PRP$', 'NN','PRP']:
+    if third_pos in ['PRP$', 'NN','PRP','NNS']:
         np = [third_word]
 
         for pos in tagged[3:]:

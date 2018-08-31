@@ -561,7 +561,7 @@ class LongTermMemory(object):
                                                           capsule['predicate']['type'], type='Statement')
         elif type == 'Experience':
             claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
-                                                               'saw', type='Experience')
+                                                               'sees', type='Experience')
 
         return instance_graph, claim_graph, subject, object, statement
 
