@@ -157,12 +157,19 @@ def analyze_wh_question(words, speaker, response_type, viewed_object):
         to_be = words[1].strip()
         morphology = grammar['to be'][to_be]
 
-    elif words[1].strip() in grammar['verbs'].keys()+grammar['predicates']:
+    elif words[1].strip() in grammar['verbs'].keys()+grammar['predicates']+grammar["modal_verbs"]:
         rdf['predicate'] = words[1].strip()
-        rdf['object'] = words[2]
+        if rdf['predicate'] not in grammar['modal_verbs']:
+            for w in words[2:]:
+                if w not in ['a', 'the']: rdf['object'] += w+' '
 
     else:
         LOG.error("I seem to have misunderstood the word "+words[1].strip()+" in your question")
+        return
+
+    if len(words)<3 :
+        LOG.error("Too few words in this question")
+        return
 
     third_word = words[2].lower().strip()
     third_pos = pos_tag([third_word])[0][1]
@@ -226,6 +233,8 @@ def analyze_verb_question(words, speaker, viewed_objects):
 
     verb = words[index + 1]
     verb_info = analyze_verb(verb)
+
+    print("VERB", verb, str(verb_info))
 
     if 'predicate' in verb_info:
         rdf['predicate'] = verb_info['predicate']  # 'knows' instead of 'know' - predicate mapping

@@ -55,18 +55,19 @@ class ReactiveIntention(AbstractIntention):
 
             # Cancel if not a valid expression
             if not expression or not 'utterance_type' in expression:
+                print('I heard: '+utterance+', and I do not understand')
                 return
 
             # Process Questions
             elif expression['utterance_type'] == 'question':
                 result = self.app.brain.query_brain(expression)
-                response = reply_to_question(result)
+                response = reply_to_question(result, list(self._objects))
                 self.say(response)
 
             # Process Statements
             elif expression['utterance_type'] == 'statement':
                 result = self.app.brain.update(expression)
-                response = reply_to_statement(result, self._speaker)
+                response = reply_to_statement(result, self._speaker, list(self._objects), self)
                 self.text_to_speech.say(response)
 
 

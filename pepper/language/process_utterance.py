@@ -45,8 +45,8 @@ def analyze_statement(speaker, words, chat_id, chat_turn, viewed_objects):
 
     rdf = extract_roles_from_statement(words, speaker, viewed_objects)
 
-    if rdf['subject'].split()[0].lower() in (grammar['possessive'].keys() + grammar['pronouns'].keys()) \
-            or rdf['object'].split()[0].lower() in (grammar['possessive'].keys() + grammar['pronouns'].keys()):
+    if (rdf['subject'].split() and rdf['subject'].split()[0].lower() in (grammar['possessive'].keys() + grammar['pronouns'].keys())) \
+            or (rdf['object'].split() and rdf['object'].split()[0].lower() in (grammar['possessive'].keys() + grammar['pronouns'].keys())):
         rdf = dereference_pronouns_for_statement(words, rdf, speaker)
 
     LOG.debug('extracted roles from statement', rdf)
@@ -72,7 +72,11 @@ def classify_and_process_utterance(utterance, speaker, chat_id, chat_turn, viewe
 
     words = tokenize(utterance)
 
-    if words[0] in grammar['question words'].keys() + grammar['to be'].keys() + grammar['modal verbs']:
+    if words[0]=='tell' and words[1]=='me': words = words[2:]
+    elif words[0] == 'can' and words[1] == 'you' and  words[2]=='tell' and words[3]=='me': words = words[4:]
+
+
+    if words[0] in grammar['question words'].keys() + grammar['to be'].keys() + grammar['modal_verbs']:
         return classify_and_analyze_question(speaker, words, chat_id, chat_turn, viewed_objects)
     else:
         return analyze_statement(speaker, words, chat_id, chat_turn, viewed_objects)

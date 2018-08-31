@@ -141,12 +141,14 @@
     },
     "live":{},
     "love":{},
-    "enjoy":{}
+    "enjoy":{},
+    "see":{},
+    "own":{}
 
   },
-  "predicates": ["likes", "knows", "is_from", "lives", "loves", "enjoys"],
-  "modal verbs":["can", "have", "has"],
-  "categories": ["book", "movie", "friend", "food"]
+  "predicates": ["likes", "knows", "isFrom", "lives", "loves", "enjoys","sees","owns"],
+  "modal_verbs":["can", "have", "has"],
+  "categories": ["book", "movie", "friend", "food", "laptop"]
 
   }
 }
