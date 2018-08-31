@@ -1,15 +1,21 @@
+import os
 import random
 
 
-def casefold_label(instance):
-    return instance.lower()
+def read_query(query_filename):
+    with open(os.path.join(os.path.dirname(__file__), "../queries/{}.rq".format(query_filename))) as fr:
+        query = fr.read()
+    return query
+
+
+def casefold(text):
+    return text.lower().replace(" ", "_") if isinstance(text, basestring) else text
 
 
 def hash_statement_id(triple, debug=False):
     if debug:
         print('This is the triple: {}'.format(triple))
-    temp = '_'.join(triple)
-    temp.replace(" ", "_")
+    temp = '-'.join(triple)
 
     return temp
 

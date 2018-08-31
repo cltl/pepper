@@ -1,10 +1,10 @@
-from .utils.helper_functions import hash_statement_id, casefold_label
 from pepper import config
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold_label
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
 from SPARQLWrapper import SPARQLWrapper, JSON
+from fuzzywuzzy import process
 
 import requests
 import logging
@@ -80,6 +80,9 @@ class LongTermMemory(object):
         :param statement: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
+        # Case fold
+        capsule = {k: casefold(v) for k, v in capsule.items()}
+
         # Create graphs and triples
         self._model_graphs_(capsule)
 
@@ -93,60 +96,84 @@ class LongTermMemory(object):
 
         return output
 
-    def experience(self, experience):
+    def experience(self, capsule):
         """
         Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
         transforms them to triples, and posts them to the triple store
-        :param experience: Structured data of a parsed statement
+        :param capsule: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
+        # Case fold
+        capsule = {k: casefold(v) for k, v in capsule.items()}
+
         # Create graphs and triples
-        self._model_sensor_graphs_(experience)
+        self._model_sensor_graphs_(capsule)
 
         data = self._serialize(config.BRAIN_LOG)
 
         code = self._upload_to_brain(data)
 
         # Create JSON output
-        experience["date"] = str(experience["date"])
-        output = {'response': code, 'statement': experience}
+        capsule["date"] = str(capsule["date"])
+        output = {'response': code, 'statement': capsule}
 
         return output
 
-    def query_brain(self, question):
+    def query_brain(self, capsule):
         """
         Main function to interact with if a question is coming into the brain. Takes in a structured parsed question,
         transforms it into a query, and queries the triple store for a response
-        :param question: Structured data of a parsed question
+        :param capsule: Structured data of a parsed question
         :return: json response containing the results of the query, and the original question
         """
+        # Case fold
+        capsule = {k: casefold(v) for k, v in capsule.items()}
+
         # Generate query
-        query = self._create_query(question)
+        query = self._create_query(capsule)
 
         # Perform query
         response = self._submit_query(query)
 
         # Create JSON output
-        if 'date' in question.keys():
-            question["date"] = str(question["date"])
-        output = {'response': response, 'question': question}
+        if 'date' in capsule.keys():
+            capsule["date"] = str(capsule["date"])
+        output = {'response': response, 'capsule': capsule}
 
         return output
 
-    def process_visual(self, item):
-        if item in self.get_classes():
+    def process_visual(self, item, exact_only=True):
+        """
+        Main function to determine if this item can be recognized by the brain, learned, or none
+        :param item:
+        :return:
+        """
+
+        if casefold(item) in self.get_classes():
             # If this is in the ontology already, create sensor triples directly
-            print('I know about %s, I will remember this object' % item)
-        else:
-            # Query the web for information
-            class_type, description = self.get_type_description(item)
+            print('I know about %s. I will remember this object' % item)
+            return None
+
+        # Query the web for information
+        class_type, description = self.exact_match_dbpedia(item)
+        if class_type is not None:
+            # Had to learn it, but I can create triples now
+            print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
+                  'I will remember this object' % (item, class_type))
+            return casefold(class_type)
+
+        if not exact_only:
+            # Second go at dbpedia, relaxed approach
+            class_type, description = self.keyword_match_dbpedia(item)
             if class_type is not None:
-                # Had to learn it, but I can create triples now
-                print('I did not know what %s is, but I searched on the web and I found that it is a %s. '
+                # Had to really search for it to learn it, but I can create triples now
+                print('I did not know what %s is, but I searched for fuzzy matches on the web and I found that it is a %s. '
                       'I will remember this object' % (item, class_type))
-            else:
-                # Failure, nothing found
-                print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
+                return casefold(class_type)
+
+        # Failure, nothing found
+        print('I am sorry, I could not learn anything on %s so I will not remember it' % item)
+        return None
 
     ########## management system for keeping track of chats and turns ##########
     def get_last_chat_id(self):
@@ -154,25 +181,10 @@ class LongTermMemory(object):
         Get the id for the last interaction recorded
         :return: id
         """
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            
-            select ?chatid where { 
-                ?chat rdf:type grasp:Chat .
-                ?chat n2mu:id ?chatid .
-            } ORDER BY DESC (?chatid) LIMIT 1
-        """
-
+        query = read_query('last_chat_id')
         response = self._submit_query(query)
 
-        if response:
-            last_chat = int(response[0]['chatid']['value'])
-        else:
-            last_chat = 0
-
-        return last_chat
+        return int(response[0]['chatid']['value']) if response else 0
 
     def get_last_turn_id(self, chat_id):
         """
@@ -180,16 +192,7 @@ class LongTermMemory(object):
         :param chat_id: id for chat of interest
         :return:  id
         """
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select ?s where { 
-            ?s rdf:type sem:Event .
-            FILTER(regex(str(?s), "chat%s_turn")) .
-            }
-        """ % chat_id
-
+        query = read_query('last_turn_id') % (chat_id)
         response = self._submit_query(query)
 
         last_turn = 0
@@ -205,203 +208,148 @@ class LongTermMemory(object):
 
     ########## brain structure exploration ##########
     def get_predicates(self):
-        query = """
-            select distinct ?p where { 
-            ?s ?p ?o .
-            FILTER(regex(str(?p), "n2mu")) .
-        } ORDER BY str(?p)
         """
-
+        Get predicates in social ontology
+        :return:
+        """
+        query = read_query('predicates')
         response = self._submit_query(query)
-        predicates = [elem['p']['value'].split('/')[-1] for elem in response]
 
-        return predicates
+        return [elem['p']['value'].split('/')[-1] for elem in response]
 
     def get_classes(self):
-        query = """
-            select distinct ?o where { 
-            ?s a ?o .
-            FILTER(regex(str(?o), "n2mu")) .
-        } ORDER BY (str(?p))
         """
-
+        Get classes in social ontology
+        :return:
+        """
+        query = read_query('classes')
         response = self._submit_query(query)
-        classes = [elem['o']['value'].split('/')[-1] for elem in response]
 
-        return classes
+        return [elem['o']['value'].split('/')[-1] for elem in response]
 
     ########## learned facts exploration ##########
     def count_statements(self):
         """
-
+        Count statements or 'facts' in the brain
         :return:
         """
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-
-            select (COUNT(?stat) AS ?count) where { 
-            ?stat rdf:type grasp:Statement .
-            }
-        """
-
+        query = read_query('count_statements')
         response = self._submit_query(query)
-        response = response[0]['count']['value']
-
-        return response
+        return response[0]['count']['value']
 
     def count_friends(self):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select (COUNT(?act) AS ?count) where { 
-            ?act rdf:type sem:Actor .
-            }
         """
-
+        Count number of people I have talked to
+        :return:
+        """
+        query = read_query('count_friends')
         response = self._submit_query(query)
-        response = response[0]['count']['value']
-
-        return response
+        return response[0]['count']['value']
 
     def get_my_friends(self):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-            select distinct ?name where { 
-                ?act rdf:type sem:Actor .
-                ?act rdfs:label ?name
-            }
         """
-
+        Get names of people I have talked to
+        :return:
+        """
+        query = read_query('my_friends')
         response = self._submit_query(query)
-        friends = [elem['name']['value'].split('/')[-1] for elem in response]
-
-        return friends
+        return [elem['name']['value'].split('/')[-1] for elem in response]
 
     def get_best_friends(self):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        
-            select distinct ?name (count(distinct ?chat) as ?num_chat) where { 
-                ?act rdf:type sem:Actor .
-                ?act rdfs:label ?name .
-                ?chat sem:hasActor ?act .
-                ?chat sem:hasSubevent ?t
-            }    GROUP BY ?name
-            ORDER BY DESC (?num_chat) 
-            LIMIT 5
         """
-
+        Get names of the 5 people I have talked to the most
+        :return:
+        """
+        query = read_query('best_friends')
         response = self._submit_query(query)
-        best_friends = [elem['name']['value'] for elem in response]
-
-        return best_friends
+        return [elem['name']['value'] for elem in response]
 
     def get_instance_of_type(self, instance_type):
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select distinct ?name where { 
-                ?s a n2mu:%s .
-                ?s rdfs:label ?name
-            } 
-        """ % instance_type
-
+        """
+        Get isntances of a certain class type
+        :param instance_type: name of class in ontology
+        :return:
+        """
+        query = read_query('instance_of_type') % (instance_type)
         response = self._submit_query(query)
-        instances = [elem['name']['value'] for elem in response]
-
-        return instances
+        return [elem['name']['value'] for elem in response]
 
     def when_last_chat_with(self, actor_label):
-        query = """
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        
-            select distinct ?time where { 
-                ?act rdf:type sem:Actor .
-                ?act rdfs:label "%s" .
-                ?chat sem:hasActor ?act .
-                ?chat sem:hasSubevent ?turn .
-                ?chat sem:hasTime ?time
-            }  ORDER BY DESC (?time)
-            LIMIT 1
-        """ % actor_label
-
+        """
+        Get time value for the last time I chatted with this person
+        :param actor_label: name of person
+        :return:
+        """
+        query = read_query('when_last_chat_with') % (actor_label)
         response = self._submit_query(query)
-        response = response[0]['time']['value'].split('/')[-1]
-
-        return response
+        return response[0]['time']['value'].split('/')[-1]
 
     def get_triples_with_predicate(self, predicate):
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select ?sname ?oname where { 
-                ?s n2mu:%s ?o .
-                ?s rdfs:label ?sname .
-                ?o rdfs:label ?oname
-            }  
-        """ % predicate
-
+        """
+        Get triples that contain this predicate
+        :param predicate:
+        :return:
+        """
+        query = read_query('triples_with_predicate') % predicate
         response = self._submit_query(query)
-        triples = [(elem['sname']['value'], elem['oname']['value']) for elem in response]
-
-        return triples
+        return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
 
     ########## conflicts ##########
     def get_all_conflicts(self):
-
+        """
+        Aggregate all conflicts in brain
+        :return:
+        """
         conflicts = []
-
         for predicate in self.ONE_TO_ONE_PREDICATES:
             conflicts.extend(self._get_conflicts_with_predicate(predicate))
 
         return conflicts
 
     ########## semantic web ##########
-    def get_type_description(self, item):
-        query = """
-            PREFIX dbo: <http://dbpedia.org/ontology/>
-            PREFIX dbr: <http://dbpedia.org/resource/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            
-            SELECT DISTINCT ?label_type ?description
-            WHERE {
-                SERVICE <http://dbpedia.org/sparql> { 
-                    ?thing rdf:type owl:Thing ;
-                           rdfs:label "%s"@en ;
-                           dbo:abstract ?description ;
-                           rdf:type ?type .
-                    ?type rdfs:label ?label_type
-                filter(regex(str(?type), "dbpedia"))
-                    filter(langMatches(lang(?description),"EN"))
-                    filter(langMatches(lang(?label_type),"EN"))
-                }
-            }
-            LIMIT 1
-        """ % item
+    def exact_match_dbpedia(self, item):
+        """
+        Query dbpedia for information on this item to get it's semantic type and description.
+        :param item:
+        :return:
+        """
 
-        response = self._submit_query(query)
+        # Gather combinations
+        combinations = [item, item.lower(), item.capitalize(), item.title()]
 
-        if response:
-            class_type = response[0]['label_type']['value']
-            description = response[0]['description']['value'].split('.')[0]
-        else:
-            class_type = None
-            description = None
+        for comb in combinations:
+            # Try exact matching query
+            query = read_query('dbpedia_type_and_description') % (comb)
+            response = self._submit_query(query)
+
+            # break if we have a hit
+            if response:
+                break
+
+        class_type = response[0]['label_type']['value'] if response else None
+        description = response[0]['description']['value'].split('.')[0] if response else None
 
         return class_type, description
+
+    def keyword_match_dbpedia(self, item):
+        # Query API
+        r = requests.get('http://lookup.dbpedia.org/api/search.asmx/KeywordSearch',
+                         params={'QueryString': item, 'MaxHits': '10'},
+                         headers={'Accept': 'application/json'}).json()['results']
+
+        # Fuzzy match
+        choices = [e['label'] for e in r]
+        best_match = process.extractOne("item", choices)
+
+        # Get best match object
+        r = [{'label': e['label'], 'classes': e['classes'],'description': e['description']} for e in r if e['label'] == best_match[0]]
+        r = r[0] if r else {'label': None, 'classes': None,'description': None}
+
+        # process dbpedia classes only
+        r['classes'] = [c['label'] for c in r['classes'] if 'dbpedia' in c['uri']]
+
+        return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
+
 
     ######################################## Helpers for setting up connection ########################################
 
@@ -482,40 +430,24 @@ class LongTermMemory(object):
     ######################################## Helpers for statement processing ########################################
 
     def create_chat_id(self, actor, date):
+        """
+        Determine chat id depending on my last conversation with this person
+        :param actor:
+        :param date:
+        :return:
+        """
         self._log.debug('Chat with {} on {}'.format(actor, date))
 
-        query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-                PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-                PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                PREFIX time: <http://www.w3.org/TR/owl-time/#>
-                
-                select ?chatid ?day ?month ?year where { 
-                    ?chat rdf:type grasp:Chat .
-                    ?chat n2mu:id ?chatid .
-                    ?chat sem:hasActor ?actor .
-                    ?actor rdfs:label "%s" .
-                    ?chat sem:hasTime ?time . 
-                    ?time time:day ?day . 
-                    ?time time:month ?month . 
-                    ?time time:year ?year .
-                    FILTER(!regex(str(?chat), "turn")) .
-                } ORDER BY DESC (?chat)
-                LIMIT 1
-        """ % (actor)
-
+        query = read_query('last_chat_with') % (actor)
         response = self._submit_query(query)
 
-        if not response:
-            # have never chatted with this person, so add one to latest chat
-            chat_id = self.get_last_chat_id() + 1
-        elif int(response[0]['day']['value']) == int(date.day) and int(response[0]['month']['value']) == int(date.month) and int(response[0]['year']['value']) == int(date.year):
+        if response and int(response[0]['day']['value']) == int(date.day) \
+                and int(response[0]['month']['value']) == int(date.month) \
+                and int(response[0]['year']['value']) == int(date.year):
             # Chatted with this person today so same chat id
             chat_id = int(response[0]['chatid']['value'])
         else:
-            # have chatted with this person (either today or ever), so add one to latest chat
+            # Either have never chatted with this person, or I have but not today. Add one to latest chat
             chat_id = self.get_last_chat_id() + 1
 
         return chat_id
@@ -523,40 +455,18 @@ class LongTermMemory(object):
     def create_turn_id(self, chat_id):
         self._log.debug('Turn in chat {}'.format(chat_id))
 
-        query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-                PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-                PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-                select ?turnid where { 
-                    ?chat rdf:type grasp:Chat .
-                    ?chat n2mu:id "%s" .
-                    ?chat sem:hasSubevent ?turn .
-                    ?turn n2mu:id ?turnid .
-                } ORDER BY DESC (?turnid)
-                LIMIT 1
-        """ % (chat_id)
-
+        query = read_query('last_turn_in_chat') % (chat_id)
         response = self._submit_query(query)
-
-        if not response:
-            # no turns in this chat, start from 1
-            turn_id = 1
-        else:
-            # Add one to latest chat
-            turn_id = int(response['turnid']['value']) + 1
-
-        return turn_id
+        return int(response['turnid']['value']) + 1 if response else 1
 
     def _generate_leolani(self, instance_graph):
         # Create Leolani
-        leolani_id = 'Leolani'
-        leolani_label = 'Leolani'
+        leolani_id = 'leolani'
+        leolani_label = 'leolani'
 
         leolani = URIRef(to_iri(self.namespaces['LW'] + leolani_id))
         leolani_label = Literal(leolani_label)
-        leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'Robot'))
+        leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'robot'))
         leolani_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
 
         instance_graph.add((leolani, RDFS.label, leolani_label))
@@ -567,20 +477,15 @@ class LongTermMemory(object):
 
         return leolani
 
-    def _create_leolani_world(self, parsed_statement):
-        # Instance graph
-        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
-        instance_graph = self.dataset.graph(instance_graph_uri)
-
-        # Subject
-        if parsed_statement['subject']['type'] == '':  # We only get the label
+    def _generate_subject(self, capsule, instance_graph):
+        if capsule['subject']['type'] == '':  # We only get the label
             subject_vocab = OWL
             subject_type = 'Thing'
         else:
             subject_vocab = self.namespaces['N2MU']
-            subject_type = parsed_statement['subject']['type']
+            subject_type = capsule['subject']['type']
 
-        subject_id = casefold_label(parsed_statement['subject']['label'])
+        subject_id = capsule['subject']['label']
 
         subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
         subject_label = Literal(subject_id)
@@ -591,15 +496,29 @@ class LongTermMemory(object):
         instance_graph.add((subject, RDF.type, subject_type1))
         instance_graph.add((subject, RDF.type, subject_type2))
 
+        return subject, subject_label
+
+    def _create_leolani_world(self, capsule, type='Statement'):
+        # Instance graph
+        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
+        instance_graph = self.dataset.graph(instance_graph_uri)
+
+        # Subject
+        if type == 'Statement':
+            subject, subject_label = self._generate_subject(capsule, instance_graph)
+        elif type == 'Experience':
+            subject = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
+            subject_label = 'leolani'
+
         # Object
-        if parsed_statement['object']['type'] == '':  # We only get the label
+        if capsule['object']['type'] == '':  # We only get the label
             object_vocab = OWL
             object_type = 'Thing'
         else:
             object_vocab = self.namespaces['N2MU']
-            object_type = parsed_statement['object']['type']
+            object_type = capsule['object']['type']
 
-        object_id = casefold_label(parsed_statement['object']['label'])
+        object_id = capsule['object']['label']
 
         object = URIRef(to_iri(self.namespaces['LW'] + object_id))
         object_label = Literal(object_id)
@@ -610,23 +529,25 @@ class LongTermMemory(object):
         instance_graph.add((object, RDF.type, object_type1))
         instance_graph.add((object, RDF.type, object_type2))
 
-        claim_graph, statement = self._create_claim_graph(parsed_statement, subject, subject_label, object, object_label)
+        if type == 'Statement':
+            claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
+                                                          capsule['predicate']['type'], type='Statement')
+        elif type == 'Experience':
+            claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
+                                                               'saw', type='Experience')
 
         return instance_graph, claim_graph, subject, object, statement
 
-    def _create_claim_graph(self, parsed_statement, subject, subject_label, object, object_label):
+    def _create_claim_graph(self, subject, subject_label, object, object_label, predicate, type='Statement'):
         # Claim graph
         claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
         claim_graph = self.dataset.graph(claim_graph_uri)
-
-        # Predicate
-        predicate = parsed_statement['predicate']['type'].replace(" ", "_")
 
         # Statement
         statement_id = hash_statement_id([subject_label, predicate, object_label])
 
         statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
-        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Statement'))
+        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + type))
         statement_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
         statement_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
 
@@ -872,62 +793,6 @@ class LongTermMemory(object):
         return response["results"]["bindings"]
 
     ########################################## Helpers for sensor processing ##########################################
-    def _create_leolani_world_sens(self, sensed_visual):
-        # Instance graph
-        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
-        instance_graph = self.dataset.graph(instance_graph_uri)
-
-        # Subject
-        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
-
-        # Object
-        if sensed_visual['object']['type'] == '':  # We only get the label
-            object_vocab = OWL
-            object_type = 'Thing'
-        else:
-            object_vocab = self.namespaces['N2MU']
-            object_type = sensed_visual['object']['type']
-
-        object_id = casefold_label(sensed_visual['object']['label'])
-
-        object = URIRef(to_iri(self.namespaces['LW'] + object_id))
-        object_label = Literal(object_id)
-        object_type1 = URIRef(to_iri(object_vocab + object_type))
-        object_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-
-        instance_graph.add((object, RDFS.label, object_label))
-        instance_graph.add((object, RDF.type, object_type1))
-        instance_graph.add((object, RDF.type, object_type2))
-
-        claim_graph, experience = self._create_claim_graph_sens(leolani, 'Leolani', object, object_label)
-
-        return instance_graph, claim_graph, leolani, object, experience
-
-    def _create_claim_graph_sens(self, subject, subject_label, object, object_label):
-        # Claim graph
-        claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
-        claim_graph = self.dataset.graph(claim_graph_uri)
-
-        # Predicate
-        predicate = 'saw'
-
-        # Statement
-        experience_id = hash_statement_id([subject_label, predicate, object_label])
-
-        experience = URIRef(to_iri(self.namespaces['LW'] + experience_id))
-        experience_type1 = URIRef(to_iri(self.namespaces['GRASP'] + 'Experience'))
-        experience_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-        experience_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-
-        # Create graph and add triple
-        graph = self.dataset.graph(experience)
-        graph.add((subject, self.namespaces['N2MU'][predicate], object))
-
-        claim_graph.add((experience, RDF.type, experience_type1))
-        claim_graph.add((experience, RDF.type, experience_type2))
-        claim_graph.add((experience, RDF.type, experience_type3))
-
-        return claim_graph, experience
 
     def _create_leolani_talk_sens(self, sensed_visual, leolani):
         # Interaction graph
@@ -1027,7 +892,7 @@ class LongTermMemory(object):
 
     def _model_sensor_graphs_(self, experience):
         # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world_sens(experience)
+        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(experience, type='Experience')
 
         # Identity
         leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri

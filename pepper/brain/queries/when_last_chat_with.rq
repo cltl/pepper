@@ -1,0 +1,12 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+select distinct ?time where {
+    ?act rdf:type sem:Actor .
+    ?act rdfs:label "%s" .
+    ?chat sem:hasActor ?act .
+    ?chat sem:hasSubevent ?turn .
+    ?chat sem:hasTime ?time
+}  ORDER BY DESC (?time)
+LIMIT 1

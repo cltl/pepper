@@ -1,0 +1,7 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+select ?s where {
+?s rdf:type sem:Event .
+FILTER(regex(str(?s), "chat%s_turn")) .
+}
