@@ -112,6 +112,11 @@ HAPPY = [
     "That makes my day!"
 ]
 
+ASK_ME = [
+    "Ask me anything!",
+    "Please ask me something",
+]
+
 SORRY = [
     "Sorry!",
     "I am sorry!",
@@ -119,6 +124,12 @@ SORRY = [
     "My apologies!",
     "My humble apologies!",
     "How unfortunate!"
+]
+
+NO_ANSWER = [
+    "I have no idea.",
+    "I wouldn't know!",
+    "I don't know"
 ]
 
 THANK = [
