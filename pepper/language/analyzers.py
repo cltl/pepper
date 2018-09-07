@@ -229,7 +229,9 @@ def analyze_verb_question(words, speaker, viewed_objects):
     if 'human' in np_info:
         rdf['subject'] = np_info['human']
     if not len(np_info):
-        LOG.error('issue  with extracting noun phrase:' + str(np))
+        LOG.error('issue with extracting noun phrase: ' + str(np))
+        return ('Sorry, I am confused')
+    if len(words) -1 < index + 1:
         return ('Sorry, I am confused')
 
     verb = words[index + 1]

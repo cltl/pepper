@@ -90,7 +90,15 @@ class ReactiveIntention(AbstractIntention):
                 if answer:
                     self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
                 else:
-                    print("I heard: {}, but I don't understand it!".format(utterance))
+                    for affirmation in AFFIRMATION:
+                        if " {} ".format(affirmation) in " {} ".format(question.lower()):
+                            self.say(choice(HAPPY))
+                            return
+                    for negation in NEGATION:
+                        if " {} ".format(negation) in " {} ".format(question.lower()):
+                            self.say(choice(SORRY))
+                            return
+                    self.say("I heard: {}, but I don't understand it!".format(utterance))
                 return
 
             # Process Questions
