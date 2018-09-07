@@ -43,6 +43,7 @@ class BaseApp(AbstractApp):
         # Add OpenFace and FaceClassifier
         self._openface = openface
         self._faces = FaceClassifier.load_directory(config.FACE_DIRECTORY)
+        self._faces.update(FaceClassifier.load_directory(config.NEW_FACE_DIRECTORY))
         self._face_classifier = FaceClassifier(self._faces)
 
         # Add Coco Client

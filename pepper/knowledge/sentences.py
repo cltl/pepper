@@ -29,6 +29,39 @@ INTRODUCE = [
     "I am a social robot.",
 ]
 
+TELL_OBJECT = [
+    "Guess what, I saw a {}",
+    "Would you believe, I just saw a {}",
+    "Did you know there's a {} here?",
+    "I'm very happy, I saw a {}",
+    "When you were not looking, I spotted a {}! Unbelievable!",
+    "Have you seen the {}? I'm sure I did!"
+]
+
+OBJECT_NOT_SO_SURE = [
+    "I'm not sure, but I see a {}!",
+    "I don't think I'm correct, but it that a {}?",
+    "Would that be a {}?",
+    "I could be wrong, but I think I see a {}",
+    "hmmmm, Just guessing, a {}?",
+    "Haha, is that a {}?",
+    "It's not clear to me, but would that be a {}?"
+]
+
+OBJECT_QUITE_SURE = [
+    "I think that is a {}!",
+    "That's a {}, if my eyes are not fooling me!",
+    "I think I can see a {}!",
+    "I can see a {}!",
+]
+
+OBJECT_VERY_SURE = [
+    "That's a {}, I'm very very sure!",
+    "I see it clearly, that is a {}!",
+    "Yes, a {}!",
+    "Awesome, that's a {}!"
+]
+
 ASK_NAME = [
     "What is your name?",
     "Who are you?",
@@ -99,6 +132,13 @@ UNDERSTAND = [
     "Right!",
     "Oke",
     "Sure!"
+]
+
+ADDRESSING = [
+    "Well",
+    "Look",
+    "See",
+    "I'll tell you"
 ]
 
 HAPPY = [

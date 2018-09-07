@@ -1,13 +1,18 @@
 from pepper.framework import AbstractIntention
 from pepper.framework.system import SystemApp
 from pepper.framework.naoqi import NaoqiApp
+
 from pepper.language.names import NameParser
 from pepper.knowledge import sentences
+
+from pepper import config
+
+import numpy as np
 
 from random import choice
 from time import sleep
 from enum import Enum
-
+import os
 
 
 class MeetAction(Enum):
@@ -19,8 +24,10 @@ class MeetIntention(AbstractIntention):
 
     MIN_SAMPLES = 25
 
-    def __init__(self, app):
+    def __init__(self, app, return_intention):
         super(MeetIntention, self).__init__(app)
+
+        self._return_intention = return_intention
 
         self._name_parser = NameParser(list(self.app.faces.keys()))
 
@@ -37,7 +44,16 @@ class MeetIntention(AbstractIntention):
     def on_face(self, bounds, face):
         self._face.append(face)
 
+    def on_face_known(self, bounds, face, name):
+        self.say("Oops, I actually do know you already. Sorry, {}!".format(name))
+        self.app.intention = self._return_intention
+
     def on_transcript(self, transcript, audio):
+        for stop in ["stop", "bye", "quit"]:
+            if stop in transcript[0][0]:
+                self.say(choice(sentences.GOODBYE))
+                self.app.intention = self._return_intention
+
         if self._action == MeetAction.LISTENING_FOR_NAME:
 
             # Try to parse name
@@ -72,9 +88,14 @@ class MeetIntention(AbstractIntention):
                         self.say(choice(sentences.THANK))
 
                     # The meeting is official!
+                    np.concatenate(self._face).tofile(os.path.join(config.NEW_FACE_DIRECTORY,
+                                                                   "{}.bin".format(self._name)))
+
                     self.say("{} {}".format(
                         choice(sentences.HAPPY),
                         choice(sentences.JUST_MET).format(self._name)))
+
+                    self.app.intention = self._return_intention
                     return
 
                 # If negation was heard, listen for name again.
@@ -103,7 +124,7 @@ if __name__ == '__main__':
     # app = NaoqiApp()  # Run on Robot
 
     # Boot Intention
-    intention = MeetIntention(app)
+    intention = MeetIntention(app, AbstractIntention(app))
 
     # Link Intention to App
     app.intention = intention

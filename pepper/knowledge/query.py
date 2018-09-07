@@ -1,9 +1,22 @@
+from pepper import config
+
 from fuzzywuzzy import fuzz
+
+from time import strftime
 import datetime
+import os
 
 
 class QnA:
-    QNA = {
+
+    QNA_DYNAMIC = {
+        "What time is it?": lambda: strftime("It is currently %H:%M."),
+        "How many friends?": lambda: "I have {} friends".format(len(os.listdir(config.FACE_DIRECTORY))),
+        "Who are your friends?": lambda: "My friends are {}. I like my friends!".format(
+            ", ".join(name.replace(".bin", "") for name in os.listdir(config.FACE_DIRECTORY)))
+    }
+
+    QNA_STATIC = {
         # Personal Information
         "What is your name?": "My name is Leo Lani, which means \\vct=70\\ 'Voice of an Angel' \\vct=100\\ in Hawaiian",
         "What is your surname?": "I don't need a surname, since my first name is so beautiful!",
@@ -83,10 +96,16 @@ class QnA:
         answer = None
 
         # Fuzzily try to find best matching query
-        for Q, A in self.QNA.items():
+        for Q, A in self.QNA_STATIC.items():
             r = fuzz.partial_ratio(query, Q)
             if r > ratio:
                 answer = A
+                ratio = r
+
+        for Q, A in self.QNA_DYNAMIC.items():
+            r = fuzz.partial_ratio(query, Q)
+            if r > ratio:
+                answer = A()
                 ratio = r
 
         if ratio > 80:

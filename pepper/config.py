@@ -20,13 +20,15 @@ CAMERA_FRAME_RATE = 2
 OBJECT_CONFIDENCE_THRESHOLD = 0.5
 
 FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'friends'))
+NEW_FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'new'))
+
 FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD = 0.9
 FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.0
 
-NAOQI_IP = "192.168.1.176"
+NAOQI_IP = "192.168.1.173"
 NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
-NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
+NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.LEFT
 
 
 # .json file with id tokens, with keys:

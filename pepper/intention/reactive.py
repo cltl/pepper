@@ -1,11 +1,18 @@
 from pepper.framework.system import SystemApp
 from pepper.framework.naoqi import NaoqiApp
+from pepper import config
 
 from pepper.framework import AbstractIntention
 from pepper.language import *
 from pepper.language.names import NameParser
 
-from random import getrandbits
+from pepper.knowledge.wolfram import Wolfram
+from pepper.knowledge.query import QnA
+
+from pepper.intention.meet import MeetIntention
+
+from pepper.knowledge.sentences import *
+from random import getrandbits, choice
 
 
 class ReactiveIntention(AbstractIntention):
@@ -23,27 +30,49 @@ class ReactiveIntention(AbstractIntention):
         # Set of Objects seen (passed to NLP as a list)
         self._objects = set()
 
-    def on_face_known(self, bounds, face, name):
+    def on_face_new(self, bounds, face):
+        self.app.intention = MeetIntention(self.app, self)
 
-        # if recognised person is different from current person greet and initialize conversation
-        if name != self._speaker:
-            self.say("Hello, {}!".format(name))
+    def on_face_known(self, bounds, face, name):
+        if name != self._speaker:  # If person switches
+
+            # Initiate Conversation
             self._speaker = name
             self._chat_id = getrandbits(128)
             self._chat_turn = 0
+            self.log.info("Initiated Conversation with {}".format(self._speaker))
+
+            # Greet Person
+            self.say("{} {}. {}".format(choice(GREETING), name, choice(TELL_KNOWN)))
+
+            # Tell Person about random seen object
+            if self._objects:
+                self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
 
     def on_object(self, image, objects):
+        new_objects = []
 
         # Loop through currently visible objects, which are defined as (<name>, <confidence>, <bounding box>)
         for obj, confidence, bbox in objects:
 
             # if new object is not yet seen, mention it and add it to seen objects
             if obj not in self._objects:
-                self.say("I see a {}".format(obj))
+                new_objects.append((obj, confidence))
                 self._objects.add(obj)
+
+        # Tell about seen objects and add them to seen objects
+        if new_objects:
+            self._tell_objects(new_objects)
 
     def on_transcript(self, transcript, audio):
         if self._speaker:  # If Speaker is Recognized
+            question = transcript[0][0]
+
+            # Try to answer simple QnA
+            answer = QnA().query(question)
+            if answer:
+                self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
+                return
 
             # Parse Names in Utterance
             utterance, confidence = self._name_parser.parse_known(transcript)
@@ -55,7 +84,13 @@ class ReactiveIntention(AbstractIntention):
 
             # Cancel if not a valid expression
             if not expression or not 'utterance_type' in expression:
-                print('I heard: '+utterance+', and I do not understand')
+
+                # Try Wolfram
+                answer = Wolfram().query(question)
+                if answer:
+                    self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
+                else:
+                    print("I heard: {}, but I don't understand it!".format(utterance))
                 return
 
             # Process Questions
@@ -70,6 +105,26 @@ class ReactiveIntention(AbstractIntention):
                 response = reply_to_statement(result, self._speaker, list(self._objects), self)
                 self.text_to_speech.say(response)
 
+        else:  # No speaker is known
+            self.say("I heard something, but I don't know who I'm talking to. Please show yourself to me!")
+
+    def _tell_objects(self, new_objects):
+
+        # If a single new object is seen, mention it with given certainty
+        if len(new_objects) == 1:
+            obj, confidence = new_objects[0]
+
+            if confidence > 1 - config.OBJECT_CONFIDENCE_THRESHOLD / 4:
+                self.say(choice(OBJECT_VERY_SURE).format(obj))
+            elif confidence > 1 - config.OBJECT_CONFIDENCE_THRESHOLD / 2:
+                self.say(choice(OBJECT_QUITE_SURE).format(obj))
+            else:
+                self.say(choice(OBJECT_NOT_SO_SURE).format(obj))
+
+        # If multiple objects are seen, combine them in one happy expression
+        elif len(new_objects) > 1:
+            self.say("{} I see a {} and a {}!".format(
+                choice(HAPPY), ", a ".join(obj for obj, conf in new_objects[:-1]), new_objects[-1][0]))
 
 
 if __name__ == '__main__':
