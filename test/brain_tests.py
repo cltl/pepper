@@ -10,33 +10,40 @@ if __name__ == "__main__":
     brain = LongTermMemory()
 
     # Re import base
-    for stat in statements:
-        brain.update(stat)
-    #
-    # brain.experience(experiences[0])
+    # for stat in statements:
+    #     brain.update(stat)
+    # #
+    # brain.process_visual('person')
 
     # type = brain.keyword_match_dbpedia('Apple')
     #
-    # capsule = {  # Leolani saw an apple
-    #     "subject": {
-    #         "label": "",
-    #         "type": ""
-    #     },
-    #     "predicate": {
-    #         "type": ""
-    #     },
-    #     "object": {
-    #         "label": "apple",
-    #         "type": type
-    #     },
-    #     "author": "front_camera",
-    #     "chat": None,
-    #     "turn": None,
-    #     "position": "0-15-0-15",
-    #     "date": date.today()
-    # }
-    #
-    # brain.experience(capsule)
+
+    with open('/Users/mytomorrows/Downloads/correct_info.txt', 'r') as f:
+        x = f.readlines()
+
+    x = set(x)
+
+    for i in x:
+        capsule = {  # Leolani saw an apple
+            "subject": {
+                "label": "",
+                "type": ""
+            },
+            "predicate": {
+                "type": ""
+            },
+            "object": {
+                "label": "{}".format(i.strip()),
+                "type": ''
+            },
+            "author": "front_camera",
+            "chat": None,
+            "turn": None,
+            "position": "0-15-0-15",
+            "date": date(2018,8,31)
+        }
+
+        brain.experience(capsule)
     # print(brain.get_classes())
     #
 
