@@ -1,0 +1,1665 @@
+@prefix : <http://cltl.nl/leolani/n2mu/> .
+@prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
+@prefix geonames: <http://www.geonames.org/ontology/documentation.html> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ns: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns2: <http://cltl.nl/leolani/world/looks_likes_but_i_don'> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix ns1: <urn:x-rdflib:> .
+@prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix oboInOwl: <http://www.geneontology.org/formats/oboInOwl#> .
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix leolaniTime: <http://cltl.nl/leolani/time/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix time: <http://www.w3.org/TR/owl-time/#> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+leolaniWorld:Instances {
+	leolaniWorld:romantic_movies a owl:Thing , grasp:Instance , :film_genre .
+}
+
+leolaniTalk:Interactions {
+	leolaniTalk:chat1 a sem:Event , grasp:Chat .
+	
+	leolaniTalk:chat1_turn1 a sem:Event , grasp:Turn .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:goulash a grasp:Instance , :dish .
+	
+	leolaniWorld:baseball a grasp:Instance , :sport .
+	
+	leolaniWorld:ice_cream a grasp:Instance , :dish .
+	
+	leolaniWorld:acrobatics a grasp:Instance , :sport .
+	
+	leolaniWorld:action_movies a owl:Thing , grasp:Instance , :film_genre .
+	
+	leolaniWorld:balkenbrij a grasp:Instance , :dish .
+	
+	leolaniWorld:soccer a grasp:Instance , :sport .
+	
+	leolaniWorld:horror_movies a grasp:Instance , :film_genre .
+	
+	leolaniWorld:tacos a grasp:Instance , :dish .
+	
+	leolaniWorld:animated_movies a grasp:Instance , :film_genre .
+	
+	leolaniWorld:lenka a owl:Thing , grasp:Instance , :person .
+	
+	leolaniWorld:serbia a grasp:Instance , :location .
+}
+
+leolaniTalk:Interactions {
+	leolaniFriends:selene a sem:Actor , grasp:Instance .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bram a owl:Thing , grasp:Instance , :person .
+	
+	leolaniWorld:netherlands a grasp:Instance , :location .
+	
+	leolaniWorld:mexico a grasp:Instance , :location .
+	
+	leolaniWorld:selene a grasp:Instance , :person .
+	
+	leolaniWorld:piek a grasp:Instance , :person .
+	
+	leolaniWorld:the_big_lebowski a grasp:Instance , :movie .
+	
+	leolaniWorld:harry_potter a grasp:Instance , :movie .
+	
+	leolaniWorld:2001_a_space_odyssey a grasp:Instance , :movie .
+	
+	leolaniWorld:coco a grasp:Instance , :movie .
+	
+	leolaniWorld:france a grasp:Instance , :location .
+	
+	leolaniWorld:leolani a grasp:Instance , :robot .
+	
+	leolaniWorld:japan a grasp:Instance , :location .
+	
+	leolaniWorld:cake a owl:Thing , grasp:Instance .
+	
+	leolaniWorld:italy a grasp:Instance , :location .
+	
+	leolaniWorld:ljubica a owl:Thing , grasp:Instance .
+}
+
+leolaniTalk:Interactions {
+	leolaniFriends:bram a sem:Actor , grasp:Instance .
+	
+	leolaniFriends:lenka a sem:Actor , grasp:Instance .
+	
+	leolaniTalk:chat2 a sem:Event , grasp:Chat .
+	
+	leolaniTalk:chat3 a sem:Event , grasp:Chat .
+	
+	leolaniTalk:chat4 a sem:Event , grasp:Chat .
+	
+	leolaniTalk:chat5 a sem:Event , grasp:Chat .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:chat1_turn1_char0-25 a grasp:Mention .
+	
+	leolaniTalk:chat1_turn1_char0-25_CERTAIN a grasp:Attribution .
+	
+	leolaniTalk:chat1_turn1_char0-16 a grasp:Mention .
+	
+	leolaniTalk:chat1_turn1_char0-16_CERTAIN a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+	leolaniTime:2018-03-19 a time:DateTimeDescription .
+	
+	leolaniTalk:chat2_turn1 a sem:Event , grasp:Turn .
+	
+	leolaniTalk:chat3_turn1 a sem:Event , grasp:Turn .
+	
+	leolaniTalk:chat4_turn1 a sem:Event , grasp:Turn .
+	
+	leolaniTalk:chat5_turn1 a sem:Event , grasp:Turn .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:chat5_turn1_char0-25 a grasp:Mention .
+	
+	leolaniTalk:chat5_turn1_char0-25_CERTAIN a grasp:Attribution .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:apple a owl:Thing , grasp:Instance .
+}
+
+leolaniTalk:Sensors {
+	leolaniInputs:front_camera a sem:Actor , grasp:Instance .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:selene_k a grasp:Instance , :person .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:lenka-is_from-serbia a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-is_from-netherlands a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:selene-is_from-mexico a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:piek-is_from-netherlands a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:selene_k-is_from-netherlands a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-likes-goulash a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-likes-the_big_lebowski a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-likes-baseball a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-likes-romantic_movies a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:lenka-likes-ice_cream a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:lenka-likes-harry_potter a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:lenka-likes-acrobatics a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:lenka-likes-action_movies a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:piek-likes-balkenbrij a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:piek-likes-2001_a_space_odyssey a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:piek-likes-soccer a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:piek-likes-horror_movies a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:selene-likes-tacos a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:selene-likes-coco a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:selene-likes-soccer a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:selene-likes-animated_movies a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-knows-lenka a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:leolani-is_from-france a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:leolani-is_from-japan a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:lenka-mother_is-ljubica a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-likes-action_movies a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:bram-is_from-italy a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:lenka-favorite-cake a sem:Event , grasp:Statement , grasp:Instance .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:person a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-person a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniTalk:Interactions {
+	leolaniTime:2018-08-31 a time:DateTimeDescription .
+}
+
+leolaniTalk:Sensors {
+	leolaniTime:2018-08-31 a time:DateTimeDescription .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:laptop a owl:Thing , grasp:Instance .
+	
+	leolaniWorld:banana a owl:Thing , grasp:Instance .
+	
+	leolaniWorld:book a owl:Thing , grasp:Instance .
+	
+	leolaniWorld:umbrella a owl:Thing , grasp:Instance .
+	
+	leolaniWorld:frisbee a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-frisbee a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:backpack a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-backpack a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:clock a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-clock a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:potted_plant a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-potted_plant a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bed a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-bed a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:cat a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-cat a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:tv a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-tv a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:dog a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-dog a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:surfboard a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-surfboard a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:mouse a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-mouse a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:baseball_bat a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-baseball_bat a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:tie a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-tie a sem:Event , grasp:Instance , grasp:Experience .
+	
+	leolaniWorld:leolani-sees-cake a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:cell_phone a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-cell_phone a sem:Event , grasp:Instance , grasp:Experience .
+	
+	leolaniWorld:leolani-sees-book a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:refrigerator a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-refrigerator a sem:Event , grasp:Instance , grasp:Experience .
+	
+	leolaniWorld:leolani-sees-laptop a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:chair a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-chair a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bird a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-bird a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:sports_ball a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-sports_ball a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:remote a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-remote a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:table a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-table a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:toothbrush a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-toothbrush a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bottle a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-bottle a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:teddy_bear a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-teddy_bear a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:suitcase a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-suitcase a sem:Event , grasp:Instance , grasp:Experience .
+	
+	leolaniWorld:leolani-sees-apple a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:cup a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-cup a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:tennis_racket a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-tennis_racket a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:handbag a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-handbag a sem:Event , grasp:Instance , grasp:Experience .
+	
+	leolaniWorld:leolani-sees-banana a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:couch a owl:Thing , grasp:Instance .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-sees-couch a sem:Event , grasp:Instance , grasp:Experience .
+	
+	leolaniWorld:leolani-sees-umbrella a sem:Event , grasp:Instance , grasp:Experience .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:visual4_object1_pixel0-15-0-15 a grasp:Mention .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15_CERTAIN a grasp:Attribution .
+}
+
+leolaniTalk:Sensors {
+	leolaniTalk:visual4 a sem:Event , grasp:Visual .
+	
+	leolaniTalk:visual4_object1 a sem:Event , grasp:Object .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:chat4_turn1_char0-25 a grasp:Mention .
+	
+	leolaniTalk:chat4_turn1_char0-25_CERTAIN a grasp:Attribution .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:science_fiction_movies a grasp:Instance , :film_genre .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:bram-likes-science_fiction_movies a sem:Event , grasp:Statement , grasp:Instance .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:chat2_turn1_char0-25 a grasp:Mention .
+	
+	leolaniTalk:chat2_turn1_char0-25_CERTAIN a grasp:Attribution .
+	
+	leolaniTalk:chat3_turn1_char0-25 a grasp:Mention .
+	
+	leolaniTalk:chat3_turn1_char0-25_CERTAIN a grasp:Attribution .
+	
+	leolaniTalk:chat1_turn1_char0-25_CERTAIN rdf:value grasp:CERTAIN .
+	
+	leolaniTalk:chat1_turn1_char0-16_CERTAIN rdf:value grasp:CERTAIN .
+	
+	leolaniTalk:chat5_turn1_char0-25_CERTAIN rdf:value grasp:CERTAIN .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15_CERTAIN rdf:value grasp:CERTAIN .
+	
+	leolaniTalk:chat4_turn1_char0-25_CERTAIN rdf:value grasp:CERTAIN .
+	
+	leolaniTalk:chat2_turn1_char0-25_CERTAIN rdf:value grasp:CERTAIN .
+	
+	leolaniTalk:chat3_turn1_char0-25_CERTAIN rdf:value grasp:CERTAIN .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:romantic_movies rdfs:label "romantic_movies" .
+	
+	leolaniWorld:goulash rdfs:label "goulash" .
+	
+	leolaniWorld:baseball rdfs:label "baseball" .
+	
+	leolaniWorld:ice_cream rdfs:label "ice_cream" .
+	
+	leolaniWorld:acrobatics rdfs:label "acrobatics" .
+	
+	leolaniWorld:action_movies rdfs:label "action_movies" .
+	
+	leolaniWorld:balkenbrij rdfs:label "balkenbrij" .
+	
+	leolaniWorld:soccer rdfs:label "soccer" .
+	
+	leolaniWorld:horror_movies rdfs:label "horror_movies" .
+	
+	leolaniWorld:tacos rdfs:label "tacos" .
+	
+	leolaniWorld:animated_movies rdfs:label "animated_movies" .
+	
+	leolaniWorld:lenka rdfs:label "lenka" .
+	
+	leolaniWorld:serbia rdfs:label "serbia" .
+}
+
+leolaniTalk:Interactions {
+	leolaniFriends:selene rdfs:label "selene" .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bram rdfs:label "bram" .
+	
+	leolaniWorld:netherlands rdfs:label "netherlands" .
+	
+	leolaniWorld:mexico rdfs:label "mexico" .
+	
+	leolaniWorld:selene rdfs:label "selene" .
+	
+	leolaniWorld:piek rdfs:label "piek" .
+	
+	leolaniWorld:the_big_lebowski rdfs:label "the_big_lebowski" .
+	
+	leolaniWorld:harry_potter rdfs:label "harry_potter" .
+	
+	leolaniWorld:2001_a_space_odyssey rdfs:label "2001_a_space_odyssey" .
+	
+	leolaniWorld:coco rdfs:label "coco" .
+	
+	leolaniWorld:france rdfs:label "france" .
+	
+	leolaniWorld:leolani rdfs:label "leolani" .
+	
+	leolaniWorld:japan rdfs:label "japan" .
+	
+	leolaniWorld:cake rdfs:label "cake" .
+	
+	leolaniWorld:italy rdfs:label "italy" .
+	
+	leolaniWorld:ljubica rdfs:label "ljubica" .
+}
+
+leolaniTalk:Interactions {
+	leolaniFriends:bram rdfs:label "bram" .
+	
+	leolaniFriends:lenka rdfs:label "lenka" .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:apple rdfs:label "apple" .
+}
+
+leolaniTalk:Sensors {
+	leolaniInputs:front_camera rdfs:label "front_camera" .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:selene_k rdfs:label "selene_k" .
+	
+	leolaniWorld:person rdfs:label "person" .
+	
+	leolaniWorld:laptop rdfs:label "laptop" .
+	
+	leolaniWorld:banana rdfs:label "banana" .
+	
+	leolaniWorld:book rdfs:label "book" .
+	
+	leolaniWorld:umbrella rdfs:label "umbrella" .
+	
+	leolaniWorld:frisbee rdfs:label "frisbee" .
+	
+	leolaniWorld:backpack rdfs:label "backpack" .
+	
+	leolaniWorld:clock rdfs:label "clock" .
+	
+	leolaniWorld:potted_plant rdfs:label "potted plant" .
+	
+	leolaniWorld:bed rdfs:label "bed" .
+	
+	leolaniWorld:cat rdfs:label "cat" .
+	
+	leolaniWorld:tv rdfs:label "tv" .
+	
+	leolaniWorld:dog rdfs:label "dog" .
+	
+	leolaniWorld:surfboard rdfs:label "surfboard" .
+	
+	leolaniWorld:mouse rdfs:label "mouse" .
+	
+	leolaniWorld:baseball_bat rdfs:label "baseball bat" .
+	
+	leolaniWorld:tie rdfs:label "tie" .
+	
+	leolaniWorld:cell_phone rdfs:label "cell phone" .
+	
+	leolaniWorld:refrigerator rdfs:label "refrigerator" .
+	
+	leolaniWorld:chair rdfs:label "chair" .
+	
+	leolaniWorld:bird rdfs:label "bird" .
+	
+	leolaniWorld:sports_ball rdfs:label "sports ball" .
+	
+	leolaniWorld:remote rdfs:label "remote" .
+	
+	leolaniWorld:table rdfs:label "table" .
+	
+	leolaniWorld:toothbrush rdfs:label "toothbrush" .
+	
+	leolaniWorld:bottle rdfs:label "bottle" .
+	
+	leolaniWorld:teddy_bear rdfs:label "teddy bear" .
+	
+	leolaniWorld:suitcase rdfs:label "suitcase" .
+	
+	leolaniWorld:cup rdfs:label "cup" .
+	
+	leolaniWorld:tennis_racket rdfs:label "tennis racket" .
+	
+	leolaniWorld:handbag rdfs:label "handbag" .
+	
+	leolaniWorld:couch rdfs:label "couch" .
+	
+	leolaniWorld:science_fiction_movies rdfs:label "science_fiction_movies" .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:chat1_turn1_char0-25 grasp:hasAttribution leolaniTalk:chat1_turn1_char0-25_CERTAIN .
+	
+	leolaniTalk:chat1_turn1_char0-16 grasp:hasAttribution leolaniTalk:chat1_turn1_char0-16_CERTAIN .
+	
+	leolaniTalk:chat5_turn1_char0-25 grasp:hasAttribution leolaniTalk:chat5_turn1_char0-25_CERTAIN .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15 grasp:hasAttribution leolaniTalk:visual4_object1_pixel0-15-0-15_CERTAIN .
+	
+	leolaniTalk:chat4_turn1_char0-25 grasp:hasAttribution leolaniTalk:chat4_turn1_char0-25_CERTAIN .
+	
+	leolaniTalk:chat2_turn1_char0-25 grasp:hasAttribution leolaniTalk:chat2_turn1_char0-25_CERTAIN .
+	
+	leolaniTalk:chat3_turn1_char0-25 grasp:hasAttribution leolaniTalk:chat3_turn1_char0-25_CERTAIN .
+	
+	leolaniTalk:chat1_turn1_char0-25 grasp:wasAttributedTo leolaniFriends:selene .
+	
+	leolaniTalk:chat1_turn1_char0-16 grasp:wasAttributedTo leolaniFriends:selene .
+	
+	leolaniTalk:chat5_turn1_char0-25 grasp:wasAttributedTo leolaniFriends:bram .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15 grasp:wasAttributedTo leolaniInputs:front_camera .
+	
+	leolaniTalk:chat4_turn1_char0-25 grasp:wasAttributedTo leolaniFriends:lenka .
+	
+	leolaniTalk:chat2_turn1_char0-25 grasp:wasAttributedTo leolaniFriends:lenka .
+	
+	leolaniTalk:chat3_turn1_char0-25 grasp:wasAttributedTo leolaniFriends:bram .
+	
+	leolaniTalk:chat1_turn1_char0-25_CERTAIN grasp:isAttributionFor leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniTalk:chat1_turn1_char0-16_CERTAIN grasp:isAttributionFor leolaniTalk:chat1_turn1_char0-16 .
+	
+	leolaniTalk:chat5_turn1_char0-25_CERTAIN grasp:isAttributionFor leolaniTalk:chat5_turn1_char0-25 .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15_CERTAIN grasp:isAttributionFor leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniTalk:chat4_turn1_char0-25_CERTAIN grasp:isAttributionFor leolaniTalk:chat4_turn1_char0-25 .
+	
+	leolaniTalk:chat2_turn1_char0-25_CERTAIN grasp:isAttributionFor leolaniTalk:chat2_turn1_char0-25 .
+	
+	leolaniTalk:chat3_turn1_char0-25_CERTAIN grasp:isAttributionFor leolaniTalk:chat3_turn1_char0-25 .
+}
+
+leolaniTalk:Interactions {
+	leolaniTalk:chat1 sem:hasActor leolaniFriends:selene .
+	
+	leolaniTalk:chat1_turn1 sem:hasActor leolaniFriends:selene .
+	
+	leolaniTalk:chat2 sem:hasActor leolaniFriends:lenka .
+	
+	leolaniTalk:chat3 sem:hasActor leolaniFriends:bram .
+	
+	leolaniTalk:chat4 sem:hasActor leolaniFriends:lenka .
+	
+	leolaniTalk:chat5 sem:hasActor leolaniFriends:bram .
+	
+	leolaniTalk:chat2_turn1 sem:hasActor leolaniFriends:lenka .
+	
+	leolaniTalk:chat3_turn1 sem:hasActor leolaniFriends:bram .
+	
+	leolaniTalk:chat4_turn1 sem:hasActor leolaniFriends:lenka .
+	
+	leolaniTalk:chat5_turn1 sem:hasActor leolaniFriends:bram .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:lenka-is_from-serbia sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:bram-is_from-netherlands sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:selene-is_from-mexico sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:piek-is_from-netherlands sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:selene_k-is_from-netherlands sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:bram-likes-goulash sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:bram-likes-the_big_lebowski sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:bram-likes-baseball sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:bram-likes-romantic_movies sem:hasActor leolaniFriends:selene , leolaniFriends:lenka .
+	
+	leolaniWorld:lenka-likes-ice_cream sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:lenka-likes-harry_potter sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:lenka-likes-acrobatics sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:lenka-likes-action_movies sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:piek-likes-balkenbrij sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:piek-likes-2001_a_space_odyssey sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:piek-likes-soccer sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:piek-likes-horror_movies sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:selene-likes-tacos sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:selene-likes-coco sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:selene-likes-soccer sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:selene-likes-animated_movies sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:bram-knows-lenka sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:leolani-is_from-france sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:leolani-is_from-japan sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:lenka-mother_is-ljubica sem:hasActor leolaniFriends:lenka .
+	
+	leolaniWorld:bram-likes-action_movies sem:hasActor leolaniFriends:bram .
+	
+	leolaniWorld:bram-is_from-italy sem:hasActor leolaniFriends:selene .
+	
+	leolaniWorld:lenka-favorite-cake sem:hasActor leolaniFriends:lenka .
+	
+	leolaniWorld:leolani-sees-person sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-frisbee sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-backpack sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-clock sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-potted_plant sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-bed sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-cat sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-tv sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-dog sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-surfboard sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-mouse sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-baseball_bat sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-tie sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-cake sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-cell_phone sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-book sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-refrigerator sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-laptop sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-chair sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-bird sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-sports_ball sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-remote sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-table sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-toothbrush sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-bottle sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-teddy_bear sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-suitcase sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-apple sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-cup sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-tennis_racket sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-handbag sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-banana sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-couch sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniWorld:leolani-sees-umbrella sem:hasActor leolaniInputs:front_camera .
+}
+
+leolaniTalk:Sensors {
+	leolaniTalk:visual4 sem:hasActor leolaniInputs:front_camera .
+	
+	leolaniTalk:visual4_object1 sem:hasActor leolaniInputs:front_camera .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bram-likes-science_fiction_movies sem:hasActor leolaniFriends:bram .
+}
+
+leolaniTalk:Interactions {
+	leolaniTalk:chat1 sem:hasSubevent leolaniTalk:chat1_turn1 .
+	
+	leolaniTalk:chat2 sem:hasSubevent leolaniTalk:chat2_turn1 .
+	
+	leolaniTalk:chat3 sem:hasSubevent leolaniTalk:chat3_turn1 .
+	
+	leolaniTalk:chat4 sem:hasSubevent leolaniTalk:chat4_turn1 .
+	
+	leolaniTalk:chat5 sem:hasSubevent leolaniTalk:chat5_turn1 .
+}
+
+leolaniTalk:Sensors {
+	leolaniTalk:visual4 sem:hasSubevent leolaniTalk:visual4_object1 .
+}
+
+leolaniTalk:Interactions {
+	leolaniTalk:chat1 sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniTalk:chat1_turn1 sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniTalk:chat2 sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniTalk:chat3 sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniTalk:chat4 sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniTalk:chat5 sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniTalk:chat2_turn1 sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniTalk:chat3_turn1 sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniTalk:chat4_turn1 sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniTalk:chat5_turn1 sem:hasTime leolaniTime:2018-08-31 .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:lenka-is_from-serbia sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-is_from-netherlands sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:selene-is_from-mexico sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:piek-is_from-netherlands sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:selene_k-is_from-netherlands sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-likes-goulash sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-likes-the_big_lebowski sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-likes-baseball sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-likes-romantic_movies sem:hasTime leolaniTime:2018-03-19 , leolaniTime:2018-08-31 .
+	
+	leolaniWorld:lenka-likes-ice_cream sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:lenka-likes-harry_potter sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:lenka-likes-acrobatics sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:lenka-likes-action_movies sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:piek-likes-balkenbrij sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:piek-likes-2001_a_space_odyssey sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:piek-likes-soccer sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:piek-likes-horror_movies sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:selene-likes-tacos sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:selene-likes-coco sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:selene-likes-soccer sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:selene-likes-animated_movies sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-knows-lenka sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:leolani-is_from-france sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:leolani-is_from-japan sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:lenka-mother_is-ljubica sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-likes-action_movies sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:bram-is_from-italy sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:lenka-favorite-cake sem:hasTime leolaniTime:2018-03-19 .
+	
+	leolaniWorld:leolani-sees-person sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-frisbee sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-backpack sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-clock sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-potted_plant sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-bed sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-cat sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-tv sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-dog sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-surfboard sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-mouse sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-baseball_bat sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-tie sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-cake sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-cell_phone sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-book sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-refrigerator sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-laptop sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-chair sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-bird sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-sports_ball sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-remote sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-table sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-toothbrush sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-bottle sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-teddy_bear sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-suitcase sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-apple sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-cup sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-tennis_racket sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-handbag sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-banana sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-couch sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniWorld:leolani-sees-umbrella sem:hasTime leolaniTime:2018-08-31 .
+}
+
+leolaniTalk:Sensors {
+	leolaniTalk:visual4 sem:hasTime leolaniTime:2018-08-31 .
+	
+	leolaniTalk:visual4_object1 sem:hasTime leolaniTime:2018-08-31 .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:bram-likes-science_fiction_movies sem:hasTime leolaniTime:2018-08-31 .
+}
+
+leolaniTalk:Interactions {
+	leolaniTime:2018-03-19 time:day "19"^^xml1:gDay .
+	
+	leolaniTime:2018-08-31 time:day "31"^^xml1:gDay .
+}
+
+leolaniTalk:Sensors {
+	leolaniTime:2018-08-31 time:day "31"^^xml1:gDay .
+}
+
+leolaniTalk:Interactions {
+	leolaniTime:2018-03-19 time:month "3"^^xml1:gMonthDay .
+	
+	leolaniTime:2018-08-31 time:month "8"^^xml1:gMonthDay .
+}
+
+leolaniTalk:Sensors {
+	leolaniTime:2018-08-31 time:month "8"^^xml1:gMonthDay .
+}
+
+leolaniTalk:Interactions {
+	leolaniTime:2018-03-19 time:unitType time:unitDay .
+	
+	leolaniTime:2018-08-31 time:unitType time:unitDay .
+}
+
+leolaniTalk:Sensors {
+	leolaniTime:2018-08-31 time:unitType time:unitDay .
+}
+
+leolaniTalk:Interactions {
+	leolaniTime:2018-03-19 time:year "2018"^^xml1:gYear .
+	
+	leolaniTime:2018-08-31 time:year "2018"^^xml1:gYear .
+}
+
+leolaniTalk:Sensors {
+	leolaniTime:2018-08-31 time:year "2018"^^xml1:gYear .
+}
+
+leolaniWorld:lenka-likes-ice_cream {
+	leolaniWorld:lenka :likes leolaniWorld:ice_cream .
+}
+
+leolaniWorld:lenka-likes-acrobatics {
+	leolaniWorld:lenka :likes leolaniWorld:acrobatics .
+}
+
+leolaniWorld:lenka-likes-action_movies {
+	leolaniWorld:lenka :likes leolaniWorld:action_movies .
+}
+
+leolaniWorld:lenka-likes-harry_potter {
+	leolaniWorld:lenka :likes leolaniWorld:harry_potter .
+}
+
+leolaniWorld:bram-likes-romantic_movies {
+	leolaniWorld:bram :likes leolaniWorld:romantic_movies .
+}
+
+leolaniWorld:bram-likes-goulash {
+	leolaniWorld:bram :likes leolaniWorld:goulash .
+}
+
+leolaniWorld:bram-likes-baseball {
+	leolaniWorld:bram :likes leolaniWorld:baseball .
+}
+
+leolaniWorld:bram-likes-action_movies {
+	leolaniWorld:bram :likes leolaniWorld:action_movies .
+}
+
+leolaniWorld:bram-likes-the_big_lebowski {
+	leolaniWorld:bram :likes leolaniWorld:the_big_lebowski .
+}
+
+leolaniWorld:bram-likes-science_fiction_movies {
+	leolaniWorld:bram :likes leolaniWorld:science_fiction_movies .
+}
+
+leolaniWorld:selene-likes-soccer {
+	leolaniWorld:selene :likes leolaniWorld:soccer .
+}
+
+leolaniWorld:selene-likes-tacos {
+	leolaniWorld:selene :likes leolaniWorld:tacos .
+}
+
+leolaniWorld:selene-likes-animated_movies {
+	leolaniWorld:selene :likes leolaniWorld:animated_movies .
+}
+
+leolaniWorld:selene-likes-coco {
+	leolaniWorld:selene :likes leolaniWorld:coco .
+}
+
+leolaniWorld:piek-likes-balkenbrij {
+	leolaniWorld:piek :likes leolaniWorld:balkenbrij .
+}
+
+leolaniWorld:piek-likes-soccer {
+	leolaniWorld:piek :likes leolaniWorld:soccer .
+}
+
+leolaniWorld:piek-likes-horror_movies {
+	leolaniWorld:piek :likes leolaniWorld:horror_movies .
+}
+
+leolaniWorld:piek-likes-2001_a_space_odyssey {
+	leolaniWorld:piek :likes leolaniWorld:2001_a_space_odyssey .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:lenka-is_from-serbia grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram-is_from-netherlands grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene-is_from-mexico grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:piek-is_from-netherlands grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene_k-is_from-netherlands grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram-likes-goulash grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram-likes-the_big_lebowski grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram-likes-baseball grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram-likes-romantic_movies grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 , leolaniTalk:chat4_turn1_char0-25 .
+	
+	leolaniWorld:lenka-likes-ice_cream grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:lenka-likes-harry_potter grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:lenka-likes-acrobatics grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:lenka-likes-action_movies grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:piek-likes-balkenbrij grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:piek-likes-2001_a_space_odyssey grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:piek-likes-soccer grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:piek-likes-horror_movies grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene-likes-tacos grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene-likes-coco grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene-likes-soccer grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene-likes-animated_movies grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram-knows-lenka grasp:denotedBy leolaniTalk:chat1_turn1_char0-16 .
+	
+	leolaniWorld:leolani-is_from-france grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:leolani-is_from-japan grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:lenka-mother_is-ljubica grasp:denotedBy leolaniTalk:chat2_turn1_char0-25 .
+	
+	leolaniWorld:bram-likes-action_movies grasp:denotedBy leolaniTalk:chat3_turn1_char0-25 .
+	
+	leolaniWorld:bram-is_from-italy grasp:denotedBy leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:lenka-favorite-cake grasp:denotedBy leolaniTalk:chat2_turn1_char0-25 .
+	
+	leolaniWorld:leolani-sees-person grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-frisbee grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-backpack grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-clock grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-potted_plant grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-bed grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-cat grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-tv grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-dog grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-surfboard grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-mouse grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-baseball_bat grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-tie grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-cake grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-cell_phone grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-book grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-refrigerator grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-laptop grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-chair grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-bird grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-sports_ball grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-remote grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-table grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-toothbrush grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-bottle grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-teddy_bear grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-suitcase grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-apple grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-cup grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-tennis_racket grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-handbag grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-banana grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-couch grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:leolani-sees-umbrella grasp:denotedBy leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:bram-likes-science_fiction_movies grasp:denotedBy leolaniTalk:chat5_turn1_char0-25 .
+}
+
+leolaniWorld:bram-knows-lenka {
+	leolaniWorld:bram :knows leolaniWorld:lenka .
+}
+
+leolaniTalk:Interactions {
+	leolaniWorld:leolani :knows leolaniFriends:selene , leolaniFriends:bram , leolaniFriends:lenka .
+}
+
+leolaniTalk:Sensors {
+	leolaniWorld:leolani :sense leolaniInputs:front_camera .
+}
+
+leolaniWorld:lenka-is_from-serbia {
+	leolaniWorld:lenka :is_from leolaniWorld:serbia .
+}
+
+leolaniWorld:bram-is_from-netherlands {
+	leolaniWorld:bram :is_from leolaniWorld:netherlands .
+}
+
+leolaniWorld:bram-is_from-italy {
+	leolaniWorld:bram :is_from leolaniWorld:italy .
+}
+
+leolaniWorld:selene-is_from-mexico {
+	leolaniWorld:selene :is_from leolaniWorld:mexico .
+}
+
+leolaniWorld:piek-is_from-netherlands {
+	leolaniWorld:piek :is_from leolaniWorld:netherlands .
+}
+
+leolaniWorld:leolani-is_from-france {
+	leolaniWorld:leolani :is_from leolaniWorld:france .
+}
+
+leolaniWorld:leolani-is_from-japan {
+	leolaniWorld:leolani :is_from leolaniWorld:japan .
+}
+
+leolaniWorld:selene_k-is_from-netherlands {
+	leolaniWorld:selene_k :is_from leolaniWorld:netherlands .
+}
+
+leolaniWorld:lenka-mother_is-ljubica {
+	leolaniWorld:lenka :mother_is leolaniWorld:ljubica .
+}
+
+leolaniWorld:lenka-favorite-cake {
+	leolaniWorld:lenka :favorite leolaniWorld:cake .
+}
+
+leolaniTalk:Perspectives {
+	leolaniTalk:chat1_turn1_char0-25 grasp:containsDenotation leolaniWorld:romantic_movies , leolaniWorld:goulash , leolaniWorld:baseball , leolaniWorld:ice_cream , leolaniWorld:acrobatics , leolaniWorld:action_movies , leolaniWorld:balkenbrij , leolaniWorld:soccer , leolaniWorld:horror_movies , leolaniWorld:tacos , leolaniWorld:animated_movies , leolaniWorld:lenka , leolaniWorld:serbia , leolaniWorld:bram , leolaniWorld:netherlands , leolaniWorld:mexico , leolaniWorld:selene , leolaniWorld:piek , leolaniWorld:the_big_lebowski , leolaniWorld:harry_potter , leolaniWorld:2001_a_space_odyssey , leolaniWorld:coco , leolaniWorld:france , leolaniWorld:leolani , leolaniWorld:japan , leolaniWorld:italy , leolaniWorld:selene_k .
+	
+	leolaniTalk:chat1_turn1_char0-16 grasp:containsDenotation leolaniWorld:lenka , leolaniWorld:bram .
+	
+	leolaniTalk:chat5_turn1_char0-25 grasp:containsDenotation leolaniWorld:bram , leolaniWorld:science_fiction_movies .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15 grasp:containsDenotation leolaniWorld:leolani , leolaniWorld:cake , leolaniWorld:apple , leolaniWorld:person , leolaniWorld:laptop , leolaniWorld:banana , leolaniWorld:book , leolaniWorld:umbrella , leolaniWorld:frisbee , leolaniWorld:backpack , leolaniWorld:clock , leolaniWorld:potted_plant , leolaniWorld:bed , leolaniWorld:cat , leolaniWorld:tv , leolaniWorld:dog , leolaniWorld:surfboard , leolaniWorld:mouse , leolaniWorld:baseball_bat , leolaniWorld:tie , leolaniWorld:cell_phone , leolaniWorld:refrigerator , leolaniWorld:chair , leolaniWorld:bird , leolaniWorld:sports_ball , leolaniWorld:remote , leolaniWorld:table , leolaniWorld:toothbrush , leolaniWorld:bottle , leolaniWorld:teddy_bear , leolaniWorld:suitcase , leolaniWorld:cup , leolaniWorld:tennis_racket , leolaniWorld:handbag , leolaniWorld:couch .
+	
+	leolaniTalk:chat4_turn1_char0-25 grasp:containsDenotation leolaniWorld:romantic_movies , leolaniWorld:bram .
+	
+	leolaniTalk:chat2_turn1_char0-25 grasp:containsDenotation leolaniWorld:lenka , leolaniWorld:cake , leolaniWorld:ljubica .
+	
+	leolaniTalk:chat3_turn1_char0-25 grasp:containsDenotation leolaniWorld:action_movies , leolaniWorld:bram .
+	
+	leolaniTalk:chat1_turn1_char0-25 grasp:denotes leolaniWorld:lenka-is_from-serbia , leolaniWorld:bram-is_from-netherlands , leolaniWorld:selene-is_from-mexico , leolaniWorld:piek-is_from-netherlands , leolaniWorld:selene_k-is_from-netherlands , leolaniWorld:bram-likes-goulash , leolaniWorld:bram-likes-the_big_lebowski , leolaniWorld:bram-likes-baseball , leolaniWorld:bram-likes-romantic_movies , leolaniWorld:lenka-likes-ice_cream , leolaniWorld:lenka-likes-harry_potter , leolaniWorld:lenka-likes-acrobatics , leolaniWorld:lenka-likes-action_movies , leolaniWorld:piek-likes-balkenbrij , leolaniWorld:piek-likes-2001_a_space_odyssey , leolaniWorld:piek-likes-soccer , leolaniWorld:piek-likes-horror_movies , leolaniWorld:selene-likes-tacos , leolaniWorld:selene-likes-coco , leolaniWorld:selene-likes-soccer , leolaniWorld:selene-likes-animated_movies , leolaniWorld:leolani-is_from-france , leolaniWorld:leolani-is_from-japan , leolaniWorld:bram-is_from-italy .
+	
+	leolaniTalk:chat1_turn1_char0-16 grasp:denotes leolaniWorld:bram-knows-lenka .
+	
+	leolaniTalk:chat5_turn1_char0-25 grasp:denotes leolaniWorld:bram-likes-science_fiction_movies .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15 grasp:denotes leolaniWorld:leolani-sees-person , leolaniWorld:leolani-sees-frisbee , leolaniWorld:leolani-sees-backpack , leolaniWorld:leolani-sees-clock , leolaniWorld:leolani-sees-potted_plant , leolaniWorld:leolani-sees-bed , leolaniWorld:leolani-sees-cat , leolaniWorld:leolani-sees-tv , leolaniWorld:leolani-sees-dog , leolaniWorld:leolani-sees-surfboard , leolaniWorld:leolani-sees-mouse , leolaniWorld:leolani-sees-baseball_bat , leolaniWorld:leolani-sees-tie , leolaniWorld:leolani-sees-cake , leolaniWorld:leolani-sees-cell_phone , leolaniWorld:leolani-sees-book , leolaniWorld:leolani-sees-refrigerator , leolaniWorld:leolani-sees-laptop , leolaniWorld:leolani-sees-chair , leolaniWorld:leolani-sees-bird , leolaniWorld:leolani-sees-sports_ball , leolaniWorld:leolani-sees-remote , leolaniWorld:leolani-sees-table , leolaniWorld:leolani-sees-toothbrush , leolaniWorld:leolani-sees-bottle , leolaniWorld:leolani-sees-teddy_bear , leolaniWorld:leolani-sees-suitcase , leolaniWorld:leolani-sees-apple , leolaniWorld:leolani-sees-cup , leolaniWorld:leolani-sees-tennis_racket , leolaniWorld:leolani-sees-handbag , leolaniWorld:leolani-sees-banana , leolaniWorld:leolani-sees-couch , leolaniWorld:leolani-sees-umbrella .
+	
+	leolaniTalk:chat4_turn1_char0-25 grasp:denotes leolaniWorld:bram-likes-romantic_movies .
+	
+	leolaniTalk:chat2_turn1_char0-25 grasp:denotes leolaniWorld:lenka-mother_is-ljubica , leolaniWorld:lenka-favorite-cake .
+	
+	leolaniTalk:chat3_turn1_char0-25 grasp:denotes leolaniWorld:bram-likes-action_movies .
+	
+	leolaniTalk:chat1_turn1_char0-25 prov:wasDerivedFrom leolaniTalk:chat1 , leolaniTalk:chat1_turn1 .
+	
+	leolaniTalk:chat1_turn1_char0-16 prov:wasDerivedFrom leolaniTalk:chat1 , leolaniTalk:chat1_turn1 .
+	
+	leolaniTalk:chat5_turn1_char0-25 prov:wasDerivedFrom leolaniTalk:chat5 , leolaniTalk:chat5_turn1 .
+	
+	leolaniTalk:visual4_object1_pixel0-15-0-15 prov:wasDerivedFrom leolaniTalk:visual4 , leolaniTalk:visual4_object1 .
+	
+	leolaniTalk:chat4_turn1_char0-25 prov:wasDerivedFrom leolaniTalk:chat4 , leolaniTalk:chat4_turn1 .
+	
+	leolaniTalk:chat2_turn1_char0-25 prov:wasDerivedFrom leolaniTalk:chat2 , leolaniTalk:chat2_turn1 .
+	
+	leolaniTalk:chat3_turn1_char0-25 prov:wasDerivedFrom leolaniTalk:chat3 , leolaniTalk:chat3_turn1 .
+}
+
+leolaniWorld:Instances {
+	leolaniWorld:romantic_movies grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 , leolaniTalk:chat4_turn1_char0-25 .
+	
+	leolaniWorld:goulash grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:baseball grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:ice_cream grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:acrobatics grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:action_movies grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 , leolaniTalk:chat3_turn1_char0-25 .
+	
+	leolaniWorld:balkenbrij grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:soccer grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:horror_movies grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:tacos grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:animated_movies grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:lenka grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 , leolaniTalk:chat1_turn1_char0-16 , leolaniTalk:chat2_turn1_char0-25 .
+	
+	leolaniWorld:serbia grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:bram grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 , leolaniTalk:chat1_turn1_char0-16 , leolaniTalk:chat5_turn1_char0-25 , leolaniTalk:chat4_turn1_char0-25 , leolaniTalk:chat3_turn1_char0-25 .
+	
+	leolaniWorld:netherlands grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:mexico grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:selene grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:piek grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:the_big_lebowski grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:harry_potter grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:2001_a_space_odyssey grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:coco grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:france grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:leolani grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 , leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:japan grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:cake grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 , leolaniTalk:chat2_turn1_char0-25 .
+	
+	leolaniWorld:italy grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:ljubica grasp:denotedIn leolaniTalk:chat2_turn1_char0-25 .
+	
+	leolaniWorld:apple grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:selene_k grasp:denotedIn leolaniTalk:chat1_turn1_char0-25 .
+	
+	leolaniWorld:person grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:laptop grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:banana grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:book grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:umbrella grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:frisbee grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:backpack grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:clock grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:potted_plant grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:bed grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:cat grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:tv grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:dog grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:surfboard grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:mouse grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:baseball_bat grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:tie grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:cell_phone grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:refrigerator grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:chair grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:bird grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:sports_ball grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:remote grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:table grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:toothbrush grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:bottle grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:teddy_bear grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:suitcase grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:cup grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:tennis_racket grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:handbag grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:couch grasp:denotedIn leolaniTalk:visual4_object1_pixel0-15-0-15 .
+	
+	leolaniWorld:science_fiction_movies grasp:denotedIn leolaniTalk:chat5_turn1_char0-25 .
+}
+
+leolaniTalk:Interactions {
+	leolaniTalk:chat1 :id "1"^^xsd:integer .
+	
+	leolaniTalk:chat1_turn1 :id "1"^^xsd:integer .
+	
+	leolaniTalk:chat2 :id "2"^^xsd:integer .
+	
+	leolaniTalk:chat3 :id "3"^^xsd:integer .
+	
+	leolaniTalk:chat4 :id "4"^^xsd:integer .
+	
+	leolaniTalk:chat5 :id "5"^^xsd:integer .
+	
+	leolaniTalk:chat2_turn1 :id "1"^^xsd:integer .
+	
+	leolaniTalk:chat3_turn1 :id "1"^^xsd:integer .
+	
+	leolaniTalk:chat4_turn1 :id "1"^^xsd:integer .
+	
+	leolaniTalk:chat5_turn1 :id "1"^^xsd:integer .
+}
+
+leolaniTalk:Sensors {
+	leolaniTalk:visual4 :id "4"^^xsd:integer .
+	
+	leolaniTalk:visual4_object1 :id "1"^^xsd:integer .
+}
+
+leolaniWorld:leolani-sees-cake {
+	leolaniWorld:leolani :sees leolaniWorld:cake .
+}
+
+leolaniWorld:leolani-sees-apple {
+	leolaniWorld:leolani :sees leolaniWorld:apple .
+}
+
+leolaniWorld:leolani-sees-person {
+	leolaniWorld:leolani :sees leolaniWorld:person .
+}
+
+leolaniWorld:leolani-sees-laptop {
+	leolaniWorld:leolani :sees leolaniWorld:laptop .
+}
+
+leolaniWorld:leolani-sees-banana {
+	leolaniWorld:leolani :sees leolaniWorld:banana .
+}
+
+leolaniWorld:leolani-sees-book {
+	leolaniWorld:leolani :sees leolaniWorld:book .
+}
+
+leolaniWorld:leolani-sees-umbrella {
+	leolaniWorld:leolani :sees leolaniWorld:umbrella .
+}
+
+leolaniWorld:leolani-sees-frisbee {
+	leolaniWorld:leolani :sees leolaniWorld:frisbee .
+}
+
+leolaniWorld:leolani-sees-backpack {
+	leolaniWorld:leolani :sees leolaniWorld:backpack .
+}
+
+leolaniWorld:leolani-sees-clock {
+	leolaniWorld:leolani :sees leolaniWorld:clock .
+}
+
+leolaniWorld:leolani-sees-potted_plant {
+	leolaniWorld:leolani :sees leolaniWorld:potted_plant .
+}
+
+leolaniWorld:leolani-sees-bed {
+	leolaniWorld:leolani :sees leolaniWorld:bed .
+}
+
+leolaniWorld:leolani-sees-cat {
+	leolaniWorld:leolani :sees leolaniWorld:cat .
+}
+
+leolaniWorld:leolani-sees-tv {
+	leolaniWorld:leolani :sees leolaniWorld:tv .
+}
+
+leolaniWorld:leolani-sees-dog {
+	leolaniWorld:leolani :sees leolaniWorld:dog .
+}
+
+leolaniWorld:leolani-sees-surfboard {
+	leolaniWorld:leolani :sees leolaniWorld:surfboard .
+}
+
+leolaniWorld:leolani-sees-mouse {
+	leolaniWorld:leolani :sees leolaniWorld:mouse .
+}
+
+leolaniWorld:leolani-sees-baseball_bat {
+	leolaniWorld:leolani :sees leolaniWorld:baseball_bat .
+}
+
+leolaniWorld:leolani-sees-tie {
+	leolaniWorld:leolani :sees leolaniWorld:tie .
+}
+
+leolaniWorld:leolani-sees-cell_phone {
+	leolaniWorld:leolani :sees leolaniWorld:cell_phone .
+}
+
+leolaniWorld:leolani-sees-refrigerator {
+	leolaniWorld:leolani :sees leolaniWorld:refrigerator .
+}
+
+leolaniWorld:leolani-sees-chair {
+	leolaniWorld:leolani :sees leolaniWorld:chair .
+}
+
+leolaniWorld:leolani-sees-bird {
+	leolaniWorld:leolani :sees leolaniWorld:bird .
+}
+
+leolaniWorld:leolani-sees-sports_ball {
+	leolaniWorld:leolani :sees leolaniWorld:sports_ball .
+}
+
+leolaniWorld:leolani-sees-remote {
+	leolaniWorld:leolani :sees leolaniWorld:remote .
+}
+
+leolaniWorld:leolani-sees-table {
+	leolaniWorld:leolani :sees leolaniWorld:table .
+}
+
+leolaniWorld:leolani-sees-toothbrush {
+	leolaniWorld:leolani :sees leolaniWorld:toothbrush .
+}
+
+leolaniWorld:leolani-sees-bottle {
+	leolaniWorld:leolani :sees leolaniWorld:bottle .
+}
+
+leolaniWorld:leolani-sees-teddy_bear {
+	leolaniWorld:leolani :sees leolaniWorld:teddy_bear .
+}
+
+leolaniWorld:leolani-sees-suitcase {
+	leolaniWorld:leolani :sees leolaniWorld:suitcase .
+}
+
+leolaniWorld:leolani-sees-cup {
+	leolaniWorld:leolani :sees leolaniWorld:cup .
+}
+
+leolaniWorld:leolani-sees-tennis_racket {
+	leolaniWorld:leolani :sees leolaniWorld:tennis_racket .
+}
+
+leolaniWorld:leolani-sees-handbag {
+	leolaniWorld:leolani :sees leolaniWorld:handbag .
+}
+
+leolaniWorld:leolani-sees-couch {
+	leolaniWorld:leolani :sees leolaniWorld:couch .
+}

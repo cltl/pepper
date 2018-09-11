@@ -16,8 +16,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 1,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # bram is from the netherlands
         "subject": {
@@ -34,8 +34,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 2,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # selene is from mexico
         "subject": {
@@ -52,8 +52,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 3,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # piek is from the netherlands
         "subject": {
@@ -70,8 +70,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 4,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # selene K is from the netherlands
         "subject": {
@@ -88,8 +88,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 5,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # bram likes goulash
         "subject": {
@@ -107,7 +107,7 @@ statements = [
         "chat": 1,
         "turn": 6,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # bram likes The Big Lebowski
         "subject": {
@@ -125,7 +125,7 @@ statements = [
         "chat": 1,
         "turn": 7,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # bram likes baseball
         "subject": {
@@ -143,7 +143,7 @@ statements = [
         "chat": 1,
         "turn": 8,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # bram likes romantic movies
         "subject": {
@@ -161,7 +161,7 @@ statements = [
         "chat": 1,
         "turn": 9,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # lenka likes ice cream
         "subject": {
@@ -179,7 +179,7 @@ statements = [
         "chat": 1,
         "turn": 10,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # lenka likes Harry Potter
         "subject": {
@@ -197,7 +197,7 @@ statements = [
         "chat": 1,
         "turn": 11,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # lenka likes acrobatics
         "subject": {
@@ -215,7 +215,7 @@ statements = [
         "chat": 1,
         "turn": 12,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # lenka likes action movies
         "subject": {
@@ -233,7 +233,7 @@ statements = [
         "chat": 1,
         "turn": 13,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # piek likes balkenbrij
         "subject": {
@@ -251,7 +251,7 @@ statements = [
         "chat": 1,
         "turn": 14,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # piek likes 2001 A Space Odyssey
         "subject": {
@@ -269,7 +269,7 @@ statements = [
         "chat": 1,
         "turn": 15,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # piek likes soccer
         "subject": {
@@ -287,7 +287,7 @@ statements = [
         "chat": 1,
         "turn": 16,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # piek likes horror movies
         "subject": {
@@ -305,7 +305,7 @@ statements = [
         "chat": 1,
         "turn": 17,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # selene likes tacos
         "subject": {
@@ -323,7 +323,7 @@ statements = [
         "chat": 1,
         "turn": 18,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # selene likes Coco
         "subject": {
@@ -341,7 +341,7 @@ statements = [
         "chat": 1,
         "turn": 19,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # selene likes soccer
         "subject": {
@@ -359,7 +359,7 @@ statements = [
         "chat": 1,
         "turn": 20,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # selene likes animated movies
         "subject": {
@@ -377,7 +377,7 @@ statements = [
         "chat": 1,
         "turn": 21,
         "position": "0-25",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # bram knows lenka
         "subject": {
@@ -395,7 +395,7 @@ statements = [
         "chat": 1,
         "turn": 22,
         "position": "0-16",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     },
     {  # Leolani is from France
         "subject": {
@@ -412,8 +412,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 23,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # Leolani is from Japan
         "subject": {
@@ -430,8 +430,8 @@ statements = [
         "author": "selene",
         "chat": 1,
         "turn": 24,
-        "position": "0-27",
-        "date": date.today()
+        "position": "0-25",
+        "date": date(2018, 3, 19)
     },
     {  # lenka mother is ljubica (lenka)
         u'predicate': {u'type': u'mother_is'},
@@ -441,7 +441,7 @@ statements = [
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
-        u'position': u'',
+        u'position': u'0-25',
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'lenka'}
     },
@@ -453,7 +453,7 @@ statements = [
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
-        u'position': u'',
+        u'position': u'0-25',
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
     },
@@ -465,7 +465,7 @@ statements = [
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
-        u'position': u'',
+        u'position': u'0-25',
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
     },
@@ -477,7 +477,7 @@ statements = [
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
-        u'position': u'',
+        u'position': u'0-25',
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
     },
@@ -489,7 +489,7 @@ statements = [
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
-        u'position': u'',
+        u'position': u'0-25',
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'lenka'}
     }
@@ -629,7 +629,7 @@ experiences = [
         "chat": None,
         "turn": None,
         "position": "0-15-0-15",
-        "date": date.today()
+        "date": date(2018, 3, 19)
     }
 ]
 
