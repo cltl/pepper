@@ -1,5 +1,5 @@
 from pepper import config
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold, casefold_capsule, read_query
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri
@@ -81,7 +81,7 @@ class LongTermMemory(object):
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Case fold
-        capsule = {k: casefold(v) for k, v in capsule.items()}
+        capsule = casefold_capsule(capsule)
 
         # Create graphs and triples
         self._model_graphs_(capsule)
@@ -104,7 +104,7 @@ class LongTermMemory(object):
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Case fold
-        capsule = {k: casefold(v) for k, v in capsule.items()}
+        capsule = casefold_capsule(capsule)
 
         # Create graphs and triples
         self._model_sensor_graphs_(capsule)
@@ -127,7 +127,7 @@ class LongTermMemory(object):
         :return: json response containing the results of the query, and the original question
         """
         # Case fold
-        capsule = {k: casefold(v) for k, v in capsule.items()}
+        capsule = casefold_capsule(capsule)
 
         # Generate query
         query = self._create_query(capsule)

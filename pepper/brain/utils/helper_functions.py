@@ -12,6 +12,16 @@ def casefold(text):
     return text.lower().replace(" ", "_") if isinstance(text, basestring) else text
 
 
+def casefold_capsule(capsule):
+    for k, v in capsule.items():
+        if isinstance(v, dict):
+            capsule[k] = casefold_capsule(v)
+        else:
+            capsule[k] = casefold(v)
+
+    return capsule
+
+
 def hash_statement_id(triple, debug=False):
     if debug:
         print('This is the triple: {}'.format(triple))

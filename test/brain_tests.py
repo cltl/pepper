@@ -10,8 +10,9 @@ if __name__ == "__main__":
     brain = LongTermMemory()
 
     # # Re import base
-    # for stat in statements:
-    #     brain.update(stat)
+    for stat in statements:
+        brain.update(stat)
+        break
     #
     # # Reconstruct from logs 31 aug
     # with open('/Users/mytomorrows/Downloads/correct_info.txt', 'r') as f:
