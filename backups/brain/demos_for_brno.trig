@@ -63,7 +63,7 @@ leolaniWorld:Instances {
 }
 
 leolaniTalk:Interactions {
-	leolaniFriends:selene a sem:Actor , grasp:Instance .
+	leolaniFriends:selene a sem:Actor , grasp:Instance , :person .
 }
 
 leolaniWorld:Instances {
@@ -99,9 +99,9 @@ leolaniWorld:Instances {
 }
 
 leolaniTalk:Interactions {
-	leolaniFriends:bram a sem:Actor , grasp:Instance .
+	leolaniFriends:bram a sem:Actor , grasp:Instance , :person .
 	
-	leolaniFriends:lenka a sem:Actor , grasp:Instance .
+	leolaniFriends:lenka a sem:Actor , grasp:Instance , :person .
 	
 	leolaniTalk:chat2 a sem:Event , grasp:Chat .
 	
@@ -609,7 +609,7 @@ leolaniWorld:Instances {
 	
 	leolaniWorld:clock rdfs:label "clock" .
 	
-	leolaniWorld:potted_plant rdfs:label "potted plant" .
+	leolaniWorld:potted_plant rdfs:label "potted_plant" .
 	
 	leolaniWorld:bed rdfs:label "bed" .
 	
@@ -623,11 +623,11 @@ leolaniWorld:Instances {
 	
 	leolaniWorld:mouse rdfs:label "mouse" .
 	
-	leolaniWorld:baseball_bat rdfs:label "baseball bat" .
+	leolaniWorld:baseball_bat rdfs:label "baseball_bat" .
 	
 	leolaniWorld:tie rdfs:label "tie" .
 	
-	leolaniWorld:cell_phone rdfs:label "cell phone" .
+	leolaniWorld:cell_phone rdfs:label "cell_phone" .
 	
 	leolaniWorld:refrigerator rdfs:label "refrigerator" .
 	
@@ -635,7 +635,7 @@ leolaniWorld:Instances {
 	
 	leolaniWorld:bird rdfs:label "bird" .
 	
-	leolaniWorld:sports_ball rdfs:label "sports ball" .
+	leolaniWorld:sports_ball rdfs:label "sports_ball" .
 	
 	leolaniWorld:remote rdfs:label "remote" .
 	
@@ -645,13 +645,13 @@ leolaniWorld:Instances {
 	
 	leolaniWorld:bottle rdfs:label "bottle" .
 	
-	leolaniWorld:teddy_bear rdfs:label "teddy bear" .
+	leolaniWorld:teddy_bear rdfs:label "teddy_bear" .
 	
 	leolaniWorld:suitcase rdfs:label "suitcase" .
 	
 	leolaniWorld:cup rdfs:label "cup" .
 	
-	leolaniWorld:tennis_racket rdfs:label "tennis racket" .
+	leolaniWorld:tennis_racket rdfs:label "tennis_racket" .
 	
 	leolaniWorld:handbag rdfs:label "handbag" .
 	

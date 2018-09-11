@@ -588,14 +588,14 @@ class LongTermMemory(object):
 
         return claim_graph, statement
 
-    def _create_leolani_talk(self, statement, leolani):
+    def _create_leolani_talk(self, capsule, leolani, type='Statement'):
         # Interaction graph
         interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Interactions'))
         interaction_graph = self.dataset.graph(interaction_graph_uri)
 
         # Time
-        date = statement["date"]
-        time = URIRef(to_iri(self.namespaces['LTi'] + str(statement["date"].isoformat())))
+        date = capsule["date"]
+        time = URIRef(to_iri(self.namespaces['LTi'] + str(capsule["date"].isoformat())))
         time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
         day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
         month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
@@ -609,17 +609,24 @@ class LongTermMemory(object):
         interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
 
         # Actor
-        actor_id = statement['author']
-        actor_label = statement['author']
+        actor_id = capsule['author']
+        actor_label = capsule['author']
 
         actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
         actor_label = Literal(actor_label)
         actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
         actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+        if type == 'Statement':
+            actor_type3 = URIRef(to_iri(self.namespaces['N2MU'] + 'person'))
+        elif type == 'Experience':
+            actor_type3 = URIRef(to_iri(self.namespaces['N2MU'] + 'sensor'))
+        else:
+            actor_type3 = URIRef(to_iri(OWL + 'Thing'))
 
         interaction_graph.add((actor, RDFS.label, actor_label))
         interaction_graph.add((actor, RDF.type, actor_type1))
         interaction_graph.add((actor, RDF.type, actor_type2))
+        interaction_graph.add((actor, RDF.type, actor_type3))
 
         # Add leolani knows actor
         interaction_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
@@ -651,7 +658,7 @@ class LongTermMemory(object):
         interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
         interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
 
-        perspective_graph, mention, attribution = self._create_perspective_graph(statement, turn_label)
+        perspective_graph, mention, attribution = self._create_perspective_graph(capsule, turn_label)
 
         # Link interactions and perspectives
         perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
