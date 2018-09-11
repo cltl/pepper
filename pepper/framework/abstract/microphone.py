@@ -36,6 +36,7 @@ class AbstractMicrophone(object):
         self._t0 = time()
 
         self._running = False
+        self._blocks = 0
 
     @property
     def rate(self):
@@ -88,13 +89,23 @@ class AbstractMicrophone(object):
     def start(self):
         """Start Microphone Stream"""
 
-        self._running = True
-        self._t0 = time()
+        self._blocks = max(0, self._blocks - 1)
+        if self._blocks == 0:
+            self._running = True
+            self._t0 = time()
+
+        self._log.debug("Start: Blocks: {} -> {}".format(self._blocks, self._running))
+
+        # self._running = True
+        # self._t0 = time()
 
     def stop(self):
         """Stop Microphone Stream"""
 
+        self._blocks += 1
         self._running = False
+
+        self._log.debug("Stop: Blocks: {} -> {}".format(self._blocks, self._running))
 
     def _processor(self):
         """

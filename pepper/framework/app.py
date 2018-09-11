@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractApp
+from pepper.framework.abstract import AbstractIntention
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
 from pepper.brain import LongTermMemory, base_cases
 from pepper import config
@@ -29,7 +30,7 @@ class BaseApp(AbstractApp):
         super(BaseApp, self).__init__()
 
         # Set Intention
-        self._intention = self
+        self._intention = AbstractIntention(self)
         self._intention.app = self
 
         # Add Camera

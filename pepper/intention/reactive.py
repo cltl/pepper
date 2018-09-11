@@ -23,7 +23,7 @@ class ReactiveIntention(AbstractIntention):
         self._name_parser = NameParser(list(self.app._faces.keys()))
 
         # Speaker and Conversation info
-        self._speaker = None
+        self._speaker = "human"
         self._chat_id = None
         self._chat_turn = 0
 
@@ -31,9 +31,12 @@ class ReactiveIntention(AbstractIntention):
         self._objects = set()
 
     def on_face_new(self, bounds, face):
-        self.app.intention = MeetIntention(self.app, self)
+        self.initiate_conversation("human")
 
     def on_face_known(self, bounds, face, name):
+        self.initiate_conversation(name)
+
+    def initiate_conversation(self, name):
         if name != self._speaker:  # If person switches
 
             # Initiate Conversation
@@ -105,13 +108,13 @@ class ReactiveIntention(AbstractIntention):
             elif expression['utterance_type'] == 'question':
                 result = self.app.brain.query_brain(expression)
                 response = reply_to_question(result, list(self._objects))
-                self.say(response)
+                self.say(response.replace('_', ' '))
 
             # Process Statements
             elif expression['utterance_type'] == 'statement':
                 result = self.app.brain.update(expression)
                 response = reply_to_statement(result, self._speaker, list(self._objects), self)
-                self.text_to_speech.say(response)
+                self.say(response.replace('_', ' '))
 
         else:  # No speaker is known
             self.say("I heard something, but I don't know who I'm talking to. Please show yourself to me!")

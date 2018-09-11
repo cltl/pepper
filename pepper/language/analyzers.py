@@ -243,4 +243,12 @@ def analyze_verb_question(words, speaker, viewed_objects):
         rdf['predicate'] = verb_info['predicate']  # 'knows' instead of 'know' - predicate mapping
 
     rdf['object'] = words[index + 2:]
+    morphology = analyze_np(rdf['object'], speaker)
+    print(morphology)
+    if 'pronoun' in morphology:
+        if morphology['pronoun']['person'] == 'first':
+            rdf['object'] = speaker.lower()
+        elif morphology['pronoun']['person'] == 'second':
+            rdf['object'] = 'leolani'
+
     return rdf

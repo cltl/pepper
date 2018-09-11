@@ -22,8 +22,8 @@ OBJECT_CONFIDENCE_THRESHOLD = 0.5
 FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'friends'))
 NEW_FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'new'))
 
-FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD = 0.9
-FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.0
+FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD = 0.90
+FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.2
 
 NAOQI_IP = "192.168.1.173"
 NAOQI_PORT = 9559
