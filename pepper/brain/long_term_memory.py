@@ -630,6 +630,8 @@ class LongTermMemory(object):
 
         # Add leolani knows actor
         interaction_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
+        _, _ = self._create_claim_graph(leolani, 'leolani', actor, actor_label,
+                                                          'knows', type='Statement')
 
         # Chat and turn
         chat_id = self.create_chat_id(actor_label, date)

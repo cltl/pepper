@@ -496,7 +496,17 @@ leolaniTalk:Perspectives {
 	leolaniTalk:chat3_turn1_char0-25 a grasp:Mention .
 	
 	leolaniTalk:chat3_turn1_char0-25_CERTAIN a grasp:Attribution .
+}
+
+leolaniWorld:Claims {
+	leolaniWorld:leolani-knows-selene a sem:Event , grasp:Statement , grasp:Instance .
 	
+	leolaniWorld:leolani-knows-lenka a sem:Event , grasp:Statement , grasp:Instance .
+	
+	leolaniWorld:leolani-knows-bram a sem:Event , grasp:Statement , grasp:Instance .
+}
+
+leolaniTalk:Perspectives {
 	leolaniTalk:chat1_turn1_char0-25_CERTAIN rdf:value grasp:CERTAIN .
 	
 	leolaniTalk:chat1_turn1_char0-16_CERTAIN rdf:value grasp:CERTAIN .
@@ -1281,7 +1291,27 @@ leolaniWorld:bram-knows-lenka {
 }
 
 leolaniTalk:Interactions {
-	leolaniWorld:leolani :knows leolaniFriends:selene , leolaniFriends:bram , leolaniFriends:lenka .
+	leolaniWorld:leolani :knows leolaniFriends:selene .
+}
+
+leolaniWorld:leolani-knows-selene {
+	leolaniWorld:leolani :knows leolaniFriends:selene .
+}
+
+leolaniTalk:Interactions {
+	leolaniWorld:leolani :knows leolaniFriends:bram .
+}
+
+leolaniWorld:leolani-knows-bram {
+	leolaniWorld:leolani :knows leolaniFriends:bram .
+}
+
+leolaniTalk:Interactions {
+	leolaniWorld:leolani :knows leolaniFriends:lenka .
+}
+
+leolaniWorld:leolani-knows-lenka {
+	leolaniWorld:leolani :knows leolaniFriends:lenka .
 }
 
 leolaniTalk:Sensors {
