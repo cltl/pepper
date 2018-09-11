@@ -107,7 +107,7 @@ class LongTermMemory(object):
         capsule = casefold_capsule(capsule)
 
         # Create graphs and triples
-        self._model_sensor_graphs_(capsule)
+        self._model_graphs_(capsule, type='Experience')
 
         data = self._serialize(config.BRAIN_LOG)
 
@@ -377,7 +377,6 @@ class LongTermMemory(object):
 
         return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
 
-
     ######################################## Helpers for setting up connection ########################################
 
     def _define_namespaces(self):
@@ -590,7 +589,12 @@ class LongTermMemory(object):
 
     def _create_leolani_talk(self, capsule, leolani, type='Statement'):
         # Interaction graph
-        interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Interactions'))
+        if type == 'Statement':
+            graph_to_write = 'Interactions'
+        elif type == 'Experience':
+            graph_to_write = 'Sensors'
+
+        interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + graph_to_write))
         interaction_graph = self.dataset.graph(interaction_graph_uri)
 
         # Time
@@ -616,51 +620,67 @@ class LongTermMemory(object):
         actor_label = Literal(actor_label)
         actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
         actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+
         if type == 'Statement':
             actor_type3 = URIRef(to_iri(self.namespaces['N2MU'] + 'person'))
         elif type == 'Experience':
             actor_type3 = URIRef(to_iri(self.namespaces['N2MU'] + 'sensor'))
-        else:
-            actor_type3 = URIRef(to_iri(OWL + 'Thing'))
 
         interaction_graph.add((actor, RDFS.label, actor_label))
         interaction_graph.add((actor, RDF.type, actor_type1))
         interaction_graph.add((actor, RDF.type, actor_type2))
         interaction_graph.add((actor, RDF.type, actor_type3))
 
-        # Add leolani knows actor
-        interaction_graph.add((leolani, self.namespaces['N2MU']['knows'], actor))
-        _, _ = self._create_claim_graph(leolani, 'leolani', actor, actor_label,
-                                                          'knows', type='Statement')
+        # Add leolani knows/senses actor
+        if type == 'Statement':
+            predicate = 'knows'
+        elif type == 'Experience':
+            predicate = 'senses'
 
-        # Chat and turn
-        chat_id = self.create_chat_id(actor_label, date)
-        chat_label = 'chat%s' % chat_id
-        turn_id = self.create_turn_id(chat_id)
-        turn_label = chat_label + '_turn%s' % turn_id
+        interaction_graph.add((leolani, self.namespaces['N2MU'][predicate], actor))
+        _, _ = self._create_claim_graph(leolani, 'leolani', actor, actor_label, predicate, type)
 
-        turn = URIRef(to_iri(self.namespaces['LTa'] + turn_label))
+        # Event and subevent
+        event_id = self.create_chat_id(actor_label, date)
+        if type == 'Statement':
+            event_label = 'chat%s' % event_id
+        elif type == 'Experience':
+            event_label = 'visual%s' % event_id
+
+        subevent_id = self.create_turn_id(event_id)
+        if type == 'Statement':
+            subevent_label = event_label + '_turn%s' % subevent_id
+        elif type == 'Experience':
+            subevent_label = event_label + '_object%s' % subevent_id
+
+        turn = URIRef(to_iri(self.namespaces['LTa'] + subevent_label))
         turn_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Turn'))
+        if type == 'Statement':
+            turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Turn'))
+        elif type == 'Experience':
+            turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Object'))
 
         interaction_graph.add((turn, RDF.type, turn_type1))
         interaction_graph.add((turn, RDF.type, turn_type2))
-        interaction_graph.add((turn, self.namespaces['N2MU']['id'], Literal(turn_id)))
+        interaction_graph.add((turn, self.namespaces['N2MU']['id'], Literal(subevent_id)))
         interaction_graph.add((turn, self.namespaces['SEM']['hasActor'], actor))
         interaction_graph.add((turn, self.namespaces['SEM']['hasTime'], time))
 
-        chat = URIRef(to_iri(self.namespaces['LTa'] + chat_label))
+        chat = URIRef(to_iri(self.namespaces['LTa'] + event_label))
         chat_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Chat'))
+        if type == 'Statement':
+            chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Chat'))
+        elif type == 'Experience':
+            chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Visual'))
 
         interaction_graph.add((chat, RDF.type, chat_type1))
         interaction_graph.add((chat, RDF.type, chat_type2))
-        interaction_graph.add((chat, self.namespaces['N2MU']['id'], Literal(chat_id)))
+        interaction_graph.add((chat, self.namespaces['N2MU']['id'], Literal(event_id)))
         interaction_graph.add((chat, self.namespaces['SEM']['hasActor'], actor))
         interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
         interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
 
-        perspective_graph, mention, attribution = self._create_perspective_graph(capsule, turn_label)
+        perspective_graph, mention, attribution = self._create_perspective_graph(capsule, subevent_label)
 
         # Link interactions and perspectives
         perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
@@ -670,13 +690,16 @@ class LongTermMemory(object):
 
         return interaction_graph, perspective_graph, actor, time, mention, attribution
 
-    def _create_perspective_graph(self, parsed_statement, turn_label):
+    def _create_perspective_graph(self, capsule, turn_label, type='Statement'):
         # Perspective graph
         perspective_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Perspectives'))
         perspective_graph = self.dataset.graph(perspective_graph_uri)
 
         # Mention
-        mention_id = turn_label + '_char%s' % parsed_statement['position']
+        if type == 'Statement':
+            mention_id = turn_label + '_char%s' % capsule['position']
+        elif type == 'Experience':
+            mention_id = turn_label + '_pixel%s' % capsule['position']
         mention = URIRef(to_iri(self.namespaces['LTa'] + mention_id))
         mention_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Mention'))
 
@@ -720,27 +743,27 @@ class LongTermMemory(object):
 
         return str(response.status_code)
 
-    def _model_graphs_(self, capsule):
+    def _model_graphs_(self, capsule, type='Statement'):
         # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(capsule)
+        instance_graph, claim_graph, subject, object, instance = self._create_leolani_world(capsule, type)
 
         # Identity
         leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
 
         # Leolani talk (includes interaction and perspective graphs)
-        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(capsule, leolani)
+        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(capsule, leolani, type)
 
         # Interconnections
         instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
         instance_graph.add((object, self.namespaces['GRASP']['denotedIn'], mention))
 
-        instance_graph.add((statement, self.namespaces['GRASP']['denotedBy'], mention))
-        instance_graph.add((statement, self.namespaces['SEM']['hasActor'], actor))
-        instance_graph.add((statement, self.namespaces['SEM']['hasTime'], time))
+        instance_graph.add((instance, self.namespaces['GRASP']['denotedBy'], mention))
+        instance_graph.add((instance, self.namespaces['SEM']['hasActor'], actor))
+        instance_graph.add((instance, self.namespaces['SEM']['hasTime'], time))
 
         perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], subject))
         perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], object))
-        perspective_graph.add((mention, self.namespaces['GRASP']['denotes'], statement))
+        perspective_graph.add((mention, self.namespaces['GRASP']['denotes'], instance))
 
         perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
 
@@ -827,129 +850,6 @@ class LongTermMemory(object):
         response = sparql.query().convert()
 
         return response["results"]["bindings"]
-
-    ########################################## Helpers for sensor processing ##########################################
-
-    def _create_leolani_talk_sens(self, sensed_visual, leolani):
-        # Interaction graph
-        interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Sensors'))
-        interaction_graph = self.dataset.graph(interaction_graph_uri)
-
-        # Time
-        date = sensed_visual["date"]
-        time = URIRef(to_iri(self.namespaces['LTi'] + str(sensed_visual["date"].isoformat())))
-        time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
-        day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
-        month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
-        year = Literal(date.year, datatype=self.namespaces['XML']['gYear'])
-        time_unitType = URIRef(to_iri(self.namespaces['TIME'] + 'unitDay'))
-
-        interaction_graph.add((time, RDF.type, time_type))
-        interaction_graph.add((time, self.namespaces['TIME']['day'], day))
-        interaction_graph.add((time, self.namespaces['TIME']['month'], month))
-        interaction_graph.add((time, self.namespaces['TIME']['year'], year))
-        interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
-
-        # Actor
-        actor_id = sensed_visual['author']
-        actor_label = sensed_visual['author']
-
-        actor = URIRef(to_iri(to_iri(self.namespaces['LI'] + actor_id)))
-        actor_label = Literal(actor_label)
-        actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
-        actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-
-        interaction_graph.add((actor, RDFS.label, actor_label))
-        interaction_graph.add((actor, RDF.type, actor_type1))
-        interaction_graph.add((actor, RDF.type, actor_type2))
-
-        # TODO Add leolani sensed new
-        interaction_graph.add((leolani, self.namespaces['N2MU']['sense'], actor))
-
-        # Chat and turn
-        chat_id = self.create_chat_id(actor_label, date)
-        chat_label = 'visual%s' % chat_id
-        turn_id = self.create_turn_id(chat_id)
-        turn_label = chat_label + '_object%s' % turn_id
-
-        turn = URIRef(to_iri(self.namespaces['LTa'] + turn_label))
-        turn_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Object'))
-
-        interaction_graph.add((turn, RDF.type, turn_type1))
-        interaction_graph.add((turn, RDF.type, turn_type2))
-        interaction_graph.add((turn, self.namespaces['N2MU']['id'], Literal(turn_id)))
-        interaction_graph.add((turn, self.namespaces['SEM']['hasActor'], actor))
-        interaction_graph.add((turn, self.namespaces['SEM']['hasTime'], time))
-
-        chat = URIRef(to_iri(self.namespaces['LTa'] + chat_label))
-        chat_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Visual'))
-
-        interaction_graph.add((chat, RDF.type, chat_type1))
-        interaction_graph.add((chat, RDF.type, chat_type2))
-        interaction_graph.add((chat, self.namespaces['N2MU']['id'], Literal(chat_id)))
-        interaction_graph.add((chat, self.namespaces['SEM']['hasActor'], actor))
-        interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
-        interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
-
-        perspective_graph, mention, attribution = self._create_perspective_graph_sens(sensed_visual, turn_label)
-
-        # Link interactions and perspectives
-        perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
-        perspective_graph.add((mention, self.namespaces['GRASP']['hasAttribution'], attribution))
-        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], chat))
-        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], turn))
-
-        return interaction_graph, perspective_graph, actor, time, mention, attribution
-
-    def _create_perspective_graph_sens(self, sensed_visual, turn_label):
-        # Perspective graph
-        perspective_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Perspectives'))
-        perspective_graph = self.dataset.graph(perspective_graph_uri)
-
-        # Mention
-        mention_id = turn_label + '_pixel%s' % sensed_visual['position']
-        mention = URIRef(to_iri(self.namespaces['LTa'] + mention_id))
-        mention_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Mention'))
-
-        perspective_graph.add((mention, RDF.type, mention_type))
-
-        # Attribution
-        attribution_id = mention_id + '_CERTAIN'
-        attribution = URIRef(to_iri(self.namespaces['LTa'] + attribution_id))
-        attribution_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Attribution'))
-        attribution_value = URIRef(to_iri(self.namespaces['GRASP'] + 'CERTAIN'))
-
-        perspective_graph.add((attribution, RDF.type, attribution_type))
-        perspective_graph.add((attribution, RDF.value, attribution_value))
-
-        return perspective_graph, mention, attribution
-
-    def _model_sensor_graphs_(self, experience):
-        # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, statement = self._create_leolani_world(experience, type='Experience')
-
-        # Identity
-        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
-
-        # Leolani talk (includes interaction and perspective graphs)
-        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk_sens(experience, leolani)
-
-        # Interconnections
-        instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
-        instance_graph.add((object, self.namespaces['GRASP']['denotedIn'], mention))
-
-        instance_graph.add((statement, self.namespaces['GRASP']['denotedBy'], mention))
-        instance_graph.add((statement, self.namespaces['SEM']['hasActor'], actor))
-        instance_graph.add((statement, self.namespaces['SEM']['hasTime'], time))
-
-        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], subject))
-        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], object))
-        perspective_graph.add((mention, self.namespaces['GRASP']['denotes'], statement))
-
-        perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
-
 
     ######################################### Helpers for conflict processing #########################################
     def _get_conflicts_with_predicate(self, one_to_one_predicate):
