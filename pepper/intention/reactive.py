@@ -1,4 +1,4 @@
-from __future__ import unicode_literalss
+from __future__ import unicode_literals
 
 from pepper.framework.system import SystemApp
 from pepper import config
