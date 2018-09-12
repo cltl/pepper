@@ -357,7 +357,7 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
 
 def check_rdf_completeness(rdf):
     for el in ['predicate', 'subject', 'object']:
-        if not len(rdf[el]):
+        if not rdf[el] or not len(rdf[el]):
             LOG.warning("Cannot find {} in statement".format(el))
             return False
     if rdf['predicate'] not in grammar['predicates'] and not rdf['predicate'].endswith('-not'):
