@@ -115,46 +115,47 @@ def reply_to_question(brain_response, viewed_objects):
     for response in brain_response['response']:
         person = ''
         if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
-            if response['authorlabel']['value'] == brain_response['question']['author']:
+            if response['authorlabel']['value'].lower() == brain_response['question']['author'].lower():
                 say+=' you told me '
             else:
                 say += response['authorlabel']['value'] +' told me '
-            previous_author = response['authorlabel']['value']
-        elif 'authorlabel' in response and response['authorlabel']['value']==previous_author:
+            previous_author = response['authorlabel']['value'].lower()
+        elif 'authorlabel' in response and response['authorlabel']['value'].lower()==previous_author:
             if brain_response['question']['predicate']['type'] != previous_predicate:
                 say+=' that '
 
         if 'slabel' in response:
-            if response['slabel']['value']==brain_response['question']['author']:
+            if response['slabel']['value'].lower()==brain_response['question']['author'].lower():
                 say+= 'you'
                 person = 'second'
-            elif response['slabel']['value']=='Leolani':
+            elif response['slabel']['value'].lower()=='leolani':
                 say+='I'
                 person='first'
 
-            elif (response['slabel']['value']==previous_subject) or (response['slabel']['value']==response['authorlabel']['value']):
+            elif (response['slabel']['value'].lower() == previous_subject.lower()) or (response['slabel']['value'].lower() == response['authorlabel']['value'].lower()):
                 if response['slabel']['value'].lower() in ['bram','piek']:
                     say+= 'he'
                 elif response['slabel']['value'].lower() in ['selene','lenka']:
                     say+= 'she'
 
             else:
-                say += response['slabel']['value']
-                previous_subject = response['slabel']['value']
+                say += response['slabel']['value'].lower()
+                previous_subject = response['slabel']['value'].lower()
 
-        elif 'subject' in brain_response['question'] and brain_response['question']['subject']['label']!=previous_subject:
-            if brain_response['question']['subject']['label'] == brain_response['question']['author']:
+        elif 'subject' in brain_response['question'] and brain_response['question']['subject']['label'].lower() != previous_subject.lower():
+            if brain_response['question']['subject']['label'].lower() == brain_response['question']['author'].lower():
                 person = 'second'
                 say+=' you '
-            elif brain_response['question']['subject']['label']=='Leolani':
+            elif brain_response['question']['subject']['label'].lower() == 'leolani':
                 say+=' I '
                 person = 'first'
             else:
-                say += brain_response['question']['subject']['label']
-            previous_subject = brain_response['question']['subject']['label']
+                say += brain_response['question']['subject']['label'].lower()
+            previous_subject = brain_response['question']['subject']['label'].lower()
 
         if brain_response['question']['predicate']['type'] in grammar['predicates']:
-            if brain_response['question']['predicate']['type']==previous_predicate and 'slabel' in response and response['slabel']==previous_subject:
+            if (brain_response['question']['predicate']['type']==previous_predicate or brain_response['question']['predicate']['type'][:-1] == previous_predicate)\
+                    and 'slabel' in response and response['slabel'].lower()==previous_subject:
                 pass
             else:
                 previous_predicate = brain_response['question']['predicate']['type']
@@ -175,11 +176,11 @@ def reply_to_question(brain_response, viewed_objects):
         if 'olabel' in response:
             say += response['olabel']['value']
         elif 'object' in brain_response['question'].keys():
-            if brain_response['question']['object']['label']==brain_response['question']['author']:
+            if brain_response['question']['object']['label'].lower()==brain_response['question']['author'].lower():
                 say+='you'
-            elif brain_response['question']['object']['label']=='Leolani':
+            elif brain_response['question']['object']['label'].lower()=='leolani':
                 say+='me'
-            elif brain_response['question']['predicate']['type'] in ['sees', 'owns']:
+            elif brain_response['question']['predicate']['type'].lower() in ['sees', 'owns']:
                 say+=' a '+brain_response['question']['object']['label']
             else:
                 say += brain_response['question']['object']['label']
@@ -385,10 +386,11 @@ def pack_rdf_from_np_info(np_info, speaker, rdf):
     return rdf
 
 def fix_pronouns(dict, speaker):
-    if dict['person'] == 'first':
-        return speaker
-    elif dict['person'] == 'second':
-        return 'leolani'
+    if 'person' in dict:
+        if dict['person'] == 'first':
+            return speaker
+        elif dict['person'] == 'second':
+            return 'leolani'
 
 def dereference_pronouns_for_statement(words, rdf, speaker):
 

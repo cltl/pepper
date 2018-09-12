@@ -49,8 +49,8 @@ class ReactiveIntention(AbstractIntention):
             self.say("{} {}. {}".format(choice(GREETING), name, choice(TELL_KNOWN)))
 
             # Tell Person about random seen object
-            if self._objects:
-                self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
+            # if self._objects:
+            #     self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
 
     def on_object(self, image, objects):
         new_objects = []
@@ -68,6 +68,9 @@ class ReactiveIntention(AbstractIntention):
             self._tell_objects(new_objects)
 
     def on_transcript(self, transcript, audio):
+
+        self.say(choice(THINKING))
+
         if self._speaker:  # If Speaker is Recognized
             question = transcript[0][0]
 

@@ -11,24 +11,24 @@ BRAIN_LOG = os.path.join(os.path.dirname(__file__), "brain_log")
 MICROPHONE_SAMPLE_RATE = 16000
 MICROPHONE_CHANNELS = 1
 
-VAD_VOICE_THRESHOLD = 0.6
-VAD_NONVOICE_THRESHOLD = 0.1
+VAD_VOICE_THRESHOLD = 0.9
+VAD_NONVOICE_THRESHOLD = 0.4
 
 CAMERA_RESOLUTION = CameraResolution.QVGA
-CAMERA_FRAME_RATE = 2
+CAMERA_FRAME_RATE = 1
 
 OBJECT_CONFIDENCE_THRESHOLD = 0.5
 
 FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'friends'))
 NEW_FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'new'))
 
-FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD = 0.90
-FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.2
+FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD = 0.9
+FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.0
 
 NAOQI_IP = "192.168.1.173"
 NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
-NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.LEFT
+NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
 
 
 # .json file with id tokens, with keys:
