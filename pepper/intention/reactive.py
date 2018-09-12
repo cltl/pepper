@@ -1,5 +1,6 @@
+from __future__ import unicode_literalss
+
 from pepper.framework.system import SystemApp
-from pepper.framework.naoqi import NaoqiApp
 from pepper import config
 
 from pepper.framework import AbstractIntention
@@ -8,8 +9,6 @@ from pepper.language.names import NameParser
 
 from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.query import QnA
-
-from pepper.intention.meet import MeetIntention
 
 from pepper.knowledge.sentences import *
 from random import getrandbits, choice
