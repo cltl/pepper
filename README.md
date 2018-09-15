@@ -13,6 +13,11 @@ This is the (WIP) repository for CLTL Pepper/Nao Applications.
 
 #### Installation
 
+Unfortunately, this project has a lot of components and therefore a lot of dependencies.
+Yet, we have tried our best to make an extensive and comprehensive installation guide:
+
+Steps 0/1 -> 
+
 ##### 0: Python 2.7 (32-bit Windows / 64-bit Linux)
 The CLTL Pepper/Nao Repository is dependent on the ``Naoqi Python SDK`` by Softbank Robotics,
 which is only available for 32-bit Python 2.7 on Windows and 64-bit Python 2.7 on Linux.
@@ -22,11 +27,27 @@ This project builds onto the ``Naoqi Python SDK`` by SoftBank Robotics.
 Please refer to their [install guide](http://doc.aldebaran.com/2-5/dev/python/install_guide.html) for more information.
 Please make sure the ``PYTHONPATH`` environment variable reflects the location of the SDK and you're using Python 2.7!
 
-##### 3: Google Cloud Speech-to-Text
+##### 3: Google Cloud
+
+This projects makes use of Google Cloud services for speech recognition/production.
+This is a paid service, although a trail for a free year is available.
+After following instructions to make a cloud project on their [website](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries),
+download your key as ``google_cloud_key.json`` and place it in the root of this project.
+
+###### 3a. Speech-To-Text
 The [Google Cloud Speech-to-Text API](https://cloud.google.com/speech-to-text/) is used as Speech Recognition solution for this project.
 Please refer to their website for licencing and installation instructions.
 It is of course possible to use a different Automatic Speech Recognition (ASR) solution, if you wish!
-Call ``pip install google-cloud-speech`` in order to install the required libaries.
+Call ``pip install google-cloud-speech`` in order to install the required Python libraries.
+
+###### 3b. Text-To-Speech
+The [Google Cloud Text-To-Speech API](https://cloud.google.com/text-to-speech/) is used a Text to Speech solution
+when running applications on your PC.
+Please, again, refer to their website for licencing and installation instructions.
+Call ``pip install google-cloud-TextToSpeech playsound`` in order to install the required Python libraries.
+
+If your platform happens to be Mac, and the ``playsound`` installation complains about the ``cairo`` dependency,
+try running ``pip install -U PyObjC``.
 
 ##### 4: OpenFace (Docker)
 Face recognition in this project is done using the open source OpenFace project ([Site](http://cmusatyalab.github.io/openface/), [Git](https://github.com/cmusatyalab/openface)),
@@ -42,6 +63,7 @@ Since Tensorflow requires Python 3, this is our way of using Tensorflow in an ot
 
 ##### 6: Natural Language Understanding
 For analyzing utterances, this project relies on [NLTK](https://www.nltk.org/). Make sure to install this library and download ``averaged_perceptron_tagger`` and ``wordnet``.
+For Named Entity Recognition, you need to have Java installed on your machine. Please make sure it is callable from the command line.
 
 ##### 7: Knowledge representation (Brain)
 In this project, knowledge is represented in the form of triples and stored in a triple store. As such, you need to install ``rdflib``, ``iribaker``, and ``SPARQLWrapper`` via pip. 
@@ -49,7 +71,19 @@ Additionally, you have to install [GraphDB](http://graphdb.ontotext.com/). Pleas
 
 GraphDB's UI can be accessed through ``http://localhost:7200/``. From the UI, you will need to set up a new repository called _leolani_. Don't forget to connect to the repository when you start GraphDB.
 
-##### 8: Other Python Dependencies
+##### 8: Wolfram Alpha
+This project makes use of the [Wolfram Alpha Spoken Results API](https://products.wolframalpha.com/spoken-results-api/documentation/)
+A free (academic) licence is available that allows 2000 queries a month (which is plenty, in our experience).
+Please create a file ``tokens.json``, which the following information to the root of this project:
+
+```
+{
+  "wolfram": <YOUR KEY>
+}
+```
+
+
+##### 9: Other Python Dependencies
 This project depends on ``numpy``, ``OpenCV (cv2)``, ``pyaudio`` and ``webrtcvad``.
 Most of these packages can be installed using ``pip``,  with one notable exception being ``OpenCV``,
 which needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html) and build manually (Windows binaries exist).
