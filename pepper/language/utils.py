@@ -89,11 +89,7 @@ def reply_to_question(brain_response, viewed_objects):
     previous_subject = ''
     previous_predicate = ''
 
-
     if len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees': #FIX
-
-        print(brain_response['question'])
-
         if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
             say = 'I see '
             for obj in viewed_objects:
@@ -111,6 +107,9 @@ def reply_to_question(brain_response, viewed_objects):
         else:
             say = random.choice(["I don\'t know","i have no idea","i wouldn\'t know"])
         return say+'\n'
+
+    brain_response['response'].sort(key=lambda x: x['authorlabel']['value'])
+    print(brain_response['response'])
 
     for response in brain_response['response']:
         person = ''
@@ -154,8 +153,7 @@ def reply_to_question(brain_response, viewed_objects):
             previous_subject = brain_response['question']['subject']['label'].lower()
 
         if brain_response['question']['predicate']['type'] in grammar['predicates']:
-            if (brain_response['question']['predicate']['type']==previous_predicate or brain_response['question']['predicate']['type'][:-1] == previous_predicate)\
-                    and 'slabel' in response and response['slabel'].lower()==previous_subject:
+            if brain_response['question']['predicate']['type'] == previous_predicate: #and response['slabel'].lower()==previous_subject.lower():
                 pass
             else:
                 previous_predicate = brain_response['question']['predicate']['type']
