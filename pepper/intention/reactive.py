@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from pepper.framework.system import SystemApp
+from pepper.framework.naoqi import NaoqiApp
+
 from pepper import config
 
 from pepper.framework import AbstractIntention
@@ -83,9 +85,14 @@ class ReactiveIntention(AbstractIntention):
             utterance, confidence = self._name_parser.parse_known(transcript)
 
             # Parse Expression
-            expression = classify_and_process_utterance(
-                utterance, self._speaker, self._chat_id, self._chat_turn, list(self._objects))
-            self._chat_turn += 1
+            expression = None
+
+            try:
+                expression = classify_and_process_utterance(
+                    utterance, self._speaker, self._chat_id, self._chat_turn, list(self._objects))
+                self._chat_turn += 1
+            except Exception as e:
+                self.log.error("NLP ERROR: {}".format(e))
 
             # Cancel if not a valid expression
             if not expression or not 'utterance_type' in expression:
@@ -142,8 +149,8 @@ class ReactiveIntention(AbstractIntention):
 
 if __name__ == '__main__':
     # Boot Application
-    app = SystemApp()  # Run on PC
-    # app = NaoqiApp()  # Run on Robot
+    # app = SystemApp()  # Run on PC
+    app = NaoqiApp()  # Run on Robot
 
     # Boot Intention
     intention = ReactiveIntention(app)
