@@ -94,18 +94,11 @@ class AbstractMicrophone(object):
             self._running = True
             self._t0 = time()
 
-        self._log.debug("Start: Blocks: {} -> {}".format(self._blocks, self._running))
-
-        # self._running = True
-        # self._t0 = time()
-
     def stop(self):
         """Stop Microphone Stream"""
 
         self._blocks += 1
         self._running = False
-
-        self._log.debug("Stop: Blocks: {} -> {}".format(self._blocks, self._running))
 
     def _processor(self):
         """
@@ -120,7 +113,8 @@ class AbstractMicrophone(object):
             dt = (t1 - self._t0)
             self._dt_buffer.append(dt)
 
-            if np.mean(self._dt_buffer) > self._dt_threshold_multiplier * (len(audio) / float(self.rate)):
+            if len(self._dt_buffer) == self._dt_buffer.maxlen and \
+                    np.mean(self._dt_buffer) > self._dt_threshold_multiplier * (len(audio) / float(self.rate)):
                 self._log.warning("<< Frames were skipped, Check Host/Pepper Network Connection/Load >>")
                 self._dt_buffer.clear()
 

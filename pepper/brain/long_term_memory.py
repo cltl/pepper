@@ -25,7 +25,7 @@ class LongTermMemory(object):
         'name'
     ]
 
-    def __init__(self, address=config.LOCAL_BRAIN):
+    def __init__(self, address=config.BRAIN_URL_LOCAL):
         """
         Interact with Triple store
 

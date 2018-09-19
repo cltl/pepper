@@ -1,11 +1,21 @@
 from pepper.framework import *
+
+import enum
 import json
 import os
 
+
+class ApplicationTarget(enum.Enum):
+    SYSTEM = 0
+    NAOQI = 1
+
+
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
+
 LANGUAGE = 'en-GB'
 
-REMOTE_BRAIN = "http://145.100.58.167:50053/sparql"
-LOCAL_BRAIN = "http://localhost:7200/repositories/leolani"
+BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
+BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_LOG = os.path.join(os.path.dirname(__file__), "brain_log")
 
 MICROPHONE_SAMPLE_RATE = 16000
