@@ -2,6 +2,9 @@ from pepper.framework import CameraResolution
 from threading import Thread
 from Queue import Queue
 
+from collections import deque
+from time import time
+
 import numpy as np
 
 
@@ -24,6 +27,10 @@ class AbstractCamera(object):
         self._callbacks = callbacks
 
         self._shape = np.array([self.height, self.width, self.channels])
+
+        self._dt_buffer = deque([], maxlen=10)
+        self._true_rate = rate
+        self._t0 = time()
 
         self._queue = Queue()
         self._processor_thread = Thread(target=self._processor)
@@ -136,6 +143,14 @@ class AbstractCamera(object):
         Calls each callback for each image, threaded, for higher image throughput
         """
         while True:
+
+            t1 = time()
+            dt = (t1 - self._t0)
+            self._dt_buffer.append(dt)
+            self._t0 = t1
+
+            self._true_rate = 1.0 / np.mean(self._dt_buffer)
+
             image = self._queue.get()
             for callback in self.callbacks:
                 callback(image)

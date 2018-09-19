@@ -6,12 +6,12 @@ APP = SystemApp
 
 class VerboseApp(APP):
     def __init__(self):
-        super(VerboseApp, self).__init__(AbstractIntention())
+        super(VerboseApp, self).__init__()
 
     def on_utterance(self, audio):
         self.log.info("on_utterance: {:3.2f}s".format(len(audio) / float(self.microphone.rate)))
 
-    def on_transcript(self, transcript):
+    def on_transcript(self, transcript, audio):
         self.log.info("on_transcript: {}".format(transcript))
 
     def on_understand(self, expression):

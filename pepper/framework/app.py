@@ -4,8 +4,11 @@ from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
 from pepper.brain import LongTermMemory, base_cases
 from pepper import config
 
-import logging
+import numpy as np
+
+from threading import Thread
 from time import sleep
+import logging
 
 
 class BaseApp(AbstractApp):
@@ -59,6 +62,9 @@ class BaseApp(AbstractApp):
 
         # Initialize Brain
         self._brain = LongTermMemory()
+
+        if config.REALTIME_STATISTICS:
+            Thread(target=self._statistics).start()
 
         # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)
@@ -263,6 +269,7 @@ class BaseApp(AbstractApp):
         audio: np.ndarray
             Microphone Samples
         """
+
         self.intention.on_audio(audio)
 
     def on_utterance(self, audio):
@@ -327,5 +334,18 @@ class BaseApp(AbstractApp):
         hypotheses = self.asr.transcribe(audio)
         if hypotheses:
             self.on_transcript(hypotheses, audio)
+
+    def _statistics(self):
+        while True:
+
+            vad_activation = self.vad.activation()
+            vad_activation_int = int(vad_activation * 10)
+
+            print "\rMicrophone {:3.1f} kHz | Camera {:3.1f} Hz | Voice {:12s} {:4s}".format(
+                self._microphone._true_rate / 1000, self._camera._true_rate,
+                ("<{:10s}>" if self.vad._voice else "[{:10s}]").format("|" * vad_activation_int + "." * (10 - vad_activation_int)) if self.microphone._running else "[----------]",
+                "{:4.0%}".format(vad_activation) if self.microphone._running else "   %"
+            ),
+            sleep(0.1)
 
 

@@ -6,7 +6,7 @@ from test.unit.microphone import MicrophoneTest, SystemMicrophoneTest, NaoqiMicr
 
 class VADTest(MicrophoneTest):
     def __init__(self):
-        super(VADTest, self).__init__()
+        MicrophoneTest.__init__(self)
         self._vad = VAD(self.microphone, [self.on_utterance])
 
         print("VAD | Voice: activation > {:3.2f} | Non Voice: activation < {:3.2f}".format(
@@ -14,7 +14,9 @@ class VADTest(MicrophoneTest):
 
     def on_audio(self, audio):
         super(VADTest, self).on_audio(audio)
-        print "| VAD {} (activation: {:3.2f})".format("<VOICE>" if self._vad._voice else "NO VOICE", self._vad.activation()),
+        print "| VAD {} (activation: {:3.2f})".format("VOICE: {:3.2f}s".format(
+            len(self._vad._voice_buffer) / (2 * float(self.microphone.rate))) if self._vad._voice else "NO VOICE",
+                                                      self._vad.activation()),
 
     def on_utterance(self, audio):
         pass

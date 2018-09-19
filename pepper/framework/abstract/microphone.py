@@ -24,16 +24,17 @@ class AbstractMicrophone(object):
         self._channels = channels
         self._callbacks = callbacks
 
+        self._dt_threshold_multiplier = 1.5
+        self._dt_buffer = deque([], maxlen=32)
+        self._true_rate = rate
+        self._t0 = time()
+
         self._queue = Queue()
         self._processor_thread = Thread(target=self._processor)
         self._processor_thread.daemon = True
         self._processor_thread.start()
 
         self._log = logging.getLogger(self.__class__.__name__)
-
-        self._dt_threshold_multiplier = 1.5
-        self._dt_buffer = deque([], maxlen=100)
-        self._t0 = time()
 
         self._running = False
         self._blocks = 0
@@ -112,13 +113,16 @@ class AbstractMicrophone(object):
             t1 = time()
             dt = (t1 - self._t0)
             self._dt_buffer.append(dt)
+            self._t0 = t1
+
+            dt_mean = np.mean(self._dt_buffer)
+
+            self._true_rate = len(audio) / dt_mean
 
             if len(self._dt_buffer) == self._dt_buffer.maxlen and \
-                    np.mean(self._dt_buffer) > self._dt_threshold_multiplier * (len(audio) / float(self.rate)):
+                    dt_mean > self._dt_threshold_multiplier * (len(audio) / float(self.rate)):
                 self._log.warning("<< Frames were skipped, Check Host/Pepper Network Connection/Load >>")
                 self._dt_buffer.clear()
-
-            self._t0 = t1
 
             if self._running:
                 for callback in self.callbacks:

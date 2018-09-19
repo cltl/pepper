@@ -6,10 +6,12 @@ import numpy as np
 from threading import Thread
 import logging
 
+from time import time
+
 
 class VAD(object):
 
-    FRAME_MS = 20  # Must be either 10/20/30 ms, according to webrtcvad specification
+    FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
     BUFFER_SIZE = 100  # Buffer Size
     WINDOW_SIZE = 50  # Sliding Window Length (Multiples of Frame MS)
 
@@ -172,14 +174,14 @@ class VAD(object):
 
         if self._voice:
             if activation > config.VAD_NONVOICE_THRESHOLD:
-                self._voice_buffer.extend(frame.tobytes())  # Add Frame to Voice Buffer
+                self._voice_buffer.extend(frame)  # Add Frame to Voice Buffer
             else:
                 self._voice = False  # Stop Recording Voice
 
                 # Append Last Frame a couple of times, to give Google some room to play
                 # TODO: Update this to some better solution, e.g. just listen a while longer
                 for i in range(self.WINDOW_SIZE//2):
-                    self._voice_buffer.extend(frame.tobytes())
+                    self._voice_buffer.extend(frame)
 
                 # Cast Voice Buffer to Numpy Array
                 result = np.frombuffer(self._voice_buffer, np.int16)

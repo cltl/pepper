@@ -1,8 +1,5 @@
 from __future__ import unicode_literals
 
-from pepper.framework.system import SystemApp
-from pepper.framework.naoqi import NaoqiApp
-
 from pepper import config
 
 from pepper.framework import AbstractIntention
@@ -69,9 +66,6 @@ class ReactiveIntention(AbstractIntention):
             self._tell_objects(new_objects)
 
     def on_transcript(self, transcript, audio):
-
-        self.say(choice(THINKING))
-
         if self._speaker:  # If Speaker is Recognized
             question = transcript[0][0]
 
@@ -81,6 +75,7 @@ class ReactiveIntention(AbstractIntention):
                 self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
                 return
 
+            self.say(choice(THINKING))
             # Parse Names in Utterance
             utterance, confidence = self._name_parser.parse_known(transcript)
 
@@ -149,8 +144,13 @@ class ReactiveIntention(AbstractIntention):
 
 if __name__ == '__main__':
     # Boot Application
-    app = SystemApp()  # Run on PC
-    # app = NaoqiApp()  # Run on Robot
+
+    if config.APPLICATION_TARGET == config.ApplicationTarget.NAOQI:
+        from pepper.framework.naoqi import NaoqiApp
+        app = NaoqiApp()  # Run on Robot
+    else:
+        from pepper.framework.system import SystemApp
+        app = SystemApp()  # Run on PC
 
     # Boot Intention
     intention = ReactiveIntention(app)
