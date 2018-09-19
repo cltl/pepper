@@ -8,7 +8,6 @@ from collections import deque
 from time import time, sleep
 
 
-
 class MicrophoneTest(object):
 
     DT_BUFFER_LENGTH = 16
@@ -56,8 +55,6 @@ class SystemMicrophoneTest(MicrophoneTest):
         from pepper.framework.system import SystemMicrophone
         self._microphone = SystemMicrophone(config.MICROPHONE_SAMPLE_RATE, config.MICROPHONE_CHANNELS, [self.on_audio])
 
-        self.run()
-
     @property
     def microphone(self):
         return self._microphone
@@ -71,8 +68,6 @@ class NaoqiMicrophoneTest(MicrophoneTest):
         self._session = NaoqiApp.create_session()
         self._microphone = NaoqiMicrophone(self._session, config.NAOQI_MICROPHONE_INDEX, [self.on_audio])
 
-        self.run()
-
     @property
     def microphone(self):
         return self._microphone
@@ -80,6 +75,6 @@ class NaoqiMicrophoneTest(MicrophoneTest):
 
 if __name__ == '__main__':
     if config.APPLICATION_TARGET == config.ApplicationTarget.SYSTEM:
-        SystemMicrophoneTest()
+        SystemMicrophoneTest().run()
     elif config.APPLICATION_TARGET == config.ApplicationTarget.NAOQI:
-        NaoqiMicrophoneTest()
+        NaoqiMicrophoneTest().run()

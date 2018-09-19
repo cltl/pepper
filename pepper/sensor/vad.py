@@ -9,7 +9,7 @@ import logging
 
 class VAD(object):
 
-    FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
+    FRAME_MS = 20  # Must be either 10/20/30 ms, according to webrtcvad specification
     BUFFER_SIZE = 100  # Buffer Size
     WINDOW_SIZE = 50  # Sliding Window Length (Multiples of Frame MS)
 
