@@ -1,10 +1,18 @@
-qi
 numpy
-cv2
+scipy
+sklearn
 
 pyaudio
 webrtcvad
 google-cloud-speech
+google-cloud-TextToSpeech
+playsound
+
+pillow
+opencv-python
+
+nltk
+fuzzywuzzy[speedup]
 
 rdflib
 iribaker
