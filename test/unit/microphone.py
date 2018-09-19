@@ -11,7 +11,7 @@ from time import time, sleep
 
 class MicrophoneTest(object):
 
-    DT_BUFFER_LENGTH = 100
+    DT_BUFFER_LENGTH = 16
 
     def __init__(self):
         self._t0 = time()
@@ -32,10 +32,9 @@ class MicrophoneTest(object):
         self._dt_buffer.append(dt)
         self._t0 = t1
 
-        kBs = (audio.nbytes / 1024.0) / float(dt)
-        kBs_average = float(audio.nbytes / 1024.0) / np.mean(self._dt_buffer)
+        kBs = float(audio.nbytes / 1024.0) / np.mean(self._dt_buffer)
 
-        print "\rMicrophone Stream: {:3.2f} kB/s ~ {:3.2f} kB/s (average)".format(kBs, kBs_average),
+        print "\rMicrophone Stream: {:3.2f} kB/s".format(kBs),
 
     def run(self):
         self.microphone.start()
@@ -80,4 +79,7 @@ class NaoqiMicrophoneTest(MicrophoneTest):
 
 
 if __name__ == '__main__':
-    SystemMicrophoneTest()
+    if config.APPLICATION_TARGET == config.ApplicationTarget.SYSTEM:
+        SystemMicrophoneTest()
+    elif config.APPLICATION_TARGET == config.ApplicationTarget.NAOQI:
+        NaoqiMicrophoneTest()

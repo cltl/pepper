@@ -149,8 +149,8 @@ class ReactiveIntention(AbstractIntention):
 
 if __name__ == '__main__':
     # Boot Application
-    # app = SystemApp()  # Run on PC
-    app = NaoqiApp()  # Run on Robot
+    app = SystemApp()  # Run on PC
+    # app = NaoqiApp()  # Run on Robot
 
     # Boot Intention
     intention = ReactiveIntention(app)
