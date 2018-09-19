@@ -2,6 +2,7 @@ from pepper import config
 
 from fuzzywuzzy import fuzz
 
+from random import choice
 from time import strftime
 import datetime
 import os
@@ -11,13 +12,31 @@ class QnA:
 
     QNA_DYNAMIC = {
         "What time is it?": lambda: strftime("It is currently %H:%M."),
+        "What is the time?": lambda: strftime("It is currently %H:%M."),
+        "What day is it?": lambda: strftime("It is %A today."),
+        "What month is it?": lambda: strftime("It is %B today."),
         "How many friends?": lambda: "I have {} friends".format(len(os.listdir(config.FACE_DIRECTORY))),
         "Who are your friends?": lambda: "My friends are {}. I like my friends!".format(
-            ", ".join(name.replace(".bin", "") for name in os.listdir(config.FACE_DIRECTORY)))
+            ", ".join(name.replace(".bin", "") for name in os.listdir(config.FACE_DIRECTORY))),
+        "What can you do?": lambda: choice([
+            "I can answer factual questions by querying the web!",
+            "You can ask me personal questions and I will try to answer them!",
+            "You can tell me what you like, and I'll remember!",
+        ]),
+        "What more can you do?": lambda: choice([
+            "I can answer factual questions by querying the web!",
+            "You can ask me personal questions and I will try to answer them!",
+            "You can tell me what you like, and I'll remember!",
+        ])
     }
 
     QNA_STATIC = {
         # Personal Information
+        "I like you": "I like you too!",
+        "Can you hear me?": "Yes, I can hear you!",
+        "My name is": "I'm glad to meet you! My name is Leo Lani!",
+        "What is this": "That is an object! I'm playing it safe here!",
+
         "What is your name?": "My name is Leo Lani, which means 'Voice of an Angel' in Hawaiian",
         "What is your surname?": "I don't need a surname, since my first name is so beautiful!",
         "Where are you from?": "I am from France and Japan!",
@@ -40,6 +59,7 @@ class QnA:
         "What do you do in your free time": "For me it's only small talk that counts!",
         "What's the weather like?": "Perfect! It's always nicely air conditioned in the office!",
 
+        "How are you": "I'm fine, thanks! What about you?",
         "How is it going?": "Great, as always, how are things with you, my dear human?",
         "How are you feeling": "I feel robot-like, I always have.",
         "How are you doing?": "Tremendous to be honest, "

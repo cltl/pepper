@@ -40,6 +40,8 @@ class VAD(object):
 
         self._ringbuffer_index = 0
 
+        self._activation = 0
+
         # Initialize Ringbuffers, which will hold Audio data and Vad.is_speech results, respectively
         self._audio_ringbuffer = np.zeros((self.BUFFER_SIZE, self._frame_size), np.int16)
         self._vad_ringbuffer = np.zeros(self.BUFFER_SIZE, np.bool)
@@ -114,6 +116,7 @@ class VAD(object):
         for callback in self.callbacks:
             callback(audio)
 
+    @property
     def activation(self):
         """
         Returns
@@ -121,8 +124,7 @@ class VAD(object):
         activation: float
             Voice Activation Level [0,1]
         """
-        window = np.arange(self._ringbuffer_index - self.WINDOW_SIZE, self._ringbuffer_index) % self.BUFFER_SIZE
-        return np.mean(self._vad_ringbuffer[window])
+        return self._activation
 
     def _on_audio(self, audio):
         """
@@ -170,10 +172,11 @@ class VAD(object):
         ----------
         frame: np.ndarray
         """
-        activation = self.activation()
+        window = np.arange(self._ringbuffer_index - self.WINDOW_SIZE, self._ringbuffer_index) % self.BUFFER_SIZE
+        self._activation = np.mean(self._vad_ringbuffer[window])
 
         if self._voice:
-            if activation > config.VAD_NONVOICE_THRESHOLD:
+            if self.activation > config.VAD_NONVOICE_THRESHOLD:
                 self._voice_buffer.extend(frame)  # Add Frame to Voice Buffer
             else:
                 self._voice = False  # Stop Recording Voice
@@ -191,7 +194,7 @@ class VAD(object):
 
                 self._voice_buffer = bytearray()  # Clear Voice Buffer
         else:
-            if activation > config.VAD_VOICE_THRESHOLD:
+            if self.activation > config.VAD_VOICE_THRESHOLD:
                 self._voice = True  # Start Recording Voice
 
                 # Add Buffered Audio to Voice Buffer

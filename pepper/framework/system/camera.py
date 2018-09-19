@@ -4,7 +4,7 @@ from pepper.framework import CameraResolution
 import cv2
 
 from threading import Thread
-from time import sleep
+from time import time, sleep
 import logging
 
 
@@ -45,6 +45,8 @@ class SystemCamera(AbstractCamera):
     def _run(self):
         while True:
 
+            t0 = time()
+
             # Get frame from camera
             status, image = self._camera.read()
 
@@ -62,4 +64,4 @@ class SystemCamera(AbstractCamera):
                 raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))
 
             # Maintain frame rate
-            sleep(1. / self.rate)
+            sleep(max(0, 1. / self.rate - (time() - t0)))

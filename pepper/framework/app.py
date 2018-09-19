@@ -338,13 +338,12 @@ class BaseApp(AbstractApp):
     def _statistics(self):
         while True:
 
-            vad_activation = self.vad.activation()
-            vad_activation_int = int(vad_activation * 10)
+            activation_bars = int(self.vad.activation * 10)
 
-            print "\rMicrophone {:3.1f} kHz | Camera {:3.1f} Hz | Voice {:12s} {:4s}".format(
+            print "\rMicrophone {:3.1f} kHz | Camera {:4.1f} Hz | Voice {:12s} {:4s}".format(
                 self._microphone._true_rate / 1000, self._camera._true_rate,
-                ("<{:10s}>" if self.vad._voice else "[{:10s}]").format("|" * vad_activation_int + "." * (10 - vad_activation_int)) if self.microphone._running else "[----------]",
-                "{:4.0%}".format(vad_activation) if self.microphone._running else "   %"
+                ("<{:10s}>" if self.vad._voice else "[{:10s}]").format("|" * activation_bars + "." * (10 - activation_bars)) if self.microphone._running else "[          ]",
+                "{:4.0%}".format(self.vad.activation) if self.microphone._running else "   %"
             ),
             sleep(0.1)
 

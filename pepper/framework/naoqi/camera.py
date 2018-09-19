@@ -5,7 +5,7 @@ import numpy as np
 
 from random import getrandbits
 from threading import Thread
-from time import sleep
+from time import time, sleep
 import logging
 
 
@@ -69,6 +69,8 @@ class NaoqiCamera(AbstractCamera):
         while True:
             if self._running:
 
+                t0 = time()
+
                 # Get Image from Robot
                 result = self._service.getImageRemote(self._client)
 
@@ -105,4 +107,4 @@ class NaoqiCamera(AbstractCamera):
                     raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))
 
                 # Maintain frame rate
-                sleep(1. / self.rate)
+                sleep(max(0, 1. / self.rate - (time() - t0)))

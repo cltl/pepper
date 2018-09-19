@@ -75,6 +75,17 @@ class ReactiveIntention(AbstractIntention):
                 self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
                 return
 
+            # Respond to Affirmations and Negations
+            if len(question.split(' ')) <= 3:
+                for affirmation in AFFIRMATION:
+                    if " {} ".format(affirmation) in " {} ".format(question.lower()):
+                        self.say(choice(HAPPY))
+                        return
+                for negation in NEGATION:
+                    if " {} ".format(negation) in " {} ".format(question.lower()):
+                        self.say(choice(SORRY))
+                        return
+
             self.say(choice(THINKING))
             # Parse Names in Utterance
             utterance, confidence = self._name_parser.parse_known(transcript)
@@ -97,14 +108,6 @@ class ReactiveIntention(AbstractIntention):
                 if answer:
                     self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
                 else:
-                    for affirmation in AFFIRMATION:
-                        if " {} ".format(affirmation) in " {} ".format(question.lower()):
-                            self.say(choice(HAPPY))
-                            return
-                    for negation in NEGATION:
-                        if " {} ".format(negation) in " {} ".format(question.lower()):
-                            self.say(choice(SORRY))
-                            return
                     self.say("I heard: {}, but I don't understand it!".format(utterance))
                 return
 
