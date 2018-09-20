@@ -61,9 +61,9 @@ class ReactiveIntention(AbstractIntention):
                 new_objects.append((obj, confidence))
                 self._objects.add(obj)
 
-        # Tell about seen objects and add them to seen objects
-        if new_objects:
-            self._tell_objects(new_objects)
+        # # Tell about seen objects and add them to seen objects
+        # if new_objects:
+        #     self._tell_objects(new_objects)
 
     def on_transcript(self, transcript, audio):
         if self._speaker:  # If Speaker is Recognized

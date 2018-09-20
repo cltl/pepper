@@ -44,9 +44,9 @@ class MeetIntention(AbstractIntention):
     def on_face(self, bounds, face):
         self._face.append(face)
 
-    def on_face_known(self, bounds, face, name):
-        self.say("Oops, I actually do know you already. Sorry, {}!".format(name))
-        self.app.intention = self._return_intention
+    # def on_face_known(self, bounds, face, name):
+    #     self.say("Oops, I actually do know you already. Sorry, {}!".format(name))
+    #     self.app.intention = self._return_intention
 
     def on_transcript(self, transcript, audio):
         for stop in ["stop", "bye", "quit"]:
@@ -120,8 +120,13 @@ class MeetIntention(AbstractIntention):
 
 if __name__ == '__main__':
     # Boot Application
-    app = SystemApp()  # Run on PC
-    # app = NaoqiApp()  # Run on Robot
+
+    if config.APPLICATION_TARGET == config.ApplicationTarget.NAOQI:
+        from pepper.framework.naoqi import NaoqiApp
+        app = NaoqiApp()  # Run on Robot
+    else:
+        from pepper.framework.system import SystemApp
+        app = SystemApp()  # Run on PC
 
     # Boot Intention
     intention = MeetIntention(app, AbstractIntention(app))
