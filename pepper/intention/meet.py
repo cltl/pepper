@@ -1,6 +1,4 @@
 from pepper.framework import AbstractIntention
-from pepper.framework.system import SystemApp
-from pepper.framework.naoqi import NaoqiApp
 
 from pepper.language.names import NameParser
 from pepper.knowledge import sentences

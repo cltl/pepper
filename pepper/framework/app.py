@@ -64,7 +64,9 @@ class BaseApp(AbstractApp):
         self._brain = LongTermMemory()
 
         if config.REALTIME_STATISTICS:
-            Thread(target=self._statistics).start()
+            self._statistics_thread = Thread(target=self._statistics)
+            self._statistics_thread.daemon = True
+            self._statistics_thread.start()
 
         # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)

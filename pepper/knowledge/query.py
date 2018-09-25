@@ -52,7 +52,7 @@ class QnA:
             (datetime.date.today() - datetime.date(2017, 7, 11)).days / 365.0),
         "Are you male or female?": "I'm female!",
         "What is your gender?": "I'm a female robot!",
-        "Who are your programmers?": "My programmers are Lenka, Selene, Bram and Piek. I like them!",
+        "Who are your programmers?": "My programmers are Lenka, Selene, Suzana, Bram and Piek. I like them!",
         "What is your job?": "I'm aiding research by having conversations.",
         "What do you do?": "I'm learning about the world through conversations with humans. With this I aid research!",
         "Are you married?": "Although I've met other Pepper robots, I'm a single lady!",
