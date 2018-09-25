@@ -10,7 +10,7 @@ class ApplicationTarget(enum.Enum):
     NAOQI = 1
 
 
-APPLICATION_TARGET = ApplicationTarget.NAOQI
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
 LANGUAGE = 'en-GB'
 

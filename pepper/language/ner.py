@@ -86,8 +86,3 @@ class NER(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
-
-
-if __name__ == '__main__':
-    with NER() as ner:
-        print(ner.tag("Marie, how'd you like an ice cream?"))

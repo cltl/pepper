@@ -21,7 +21,7 @@ LOG = logging.getLogger(__name__)
 wnl = WordNetLemmatizer()
 
 ROOT = os.path.join(os.path.dirname(__file__))
-json_dict = json.load(open(os.path.join(ROOT, 'dict.json')))
+json_dict = json.load(open(os.path.join(ROOT, 'grammar.json')))
 grammar = json_dict["grammar"]
 
 names = ['selene', 'bram', 'leolani', 'piek','selene', 'lenka']

@@ -68,7 +68,7 @@ class GoogleASR(AbstractASR):
 
         for result in response.results:
             for alternative in result.alternatives:
-                hypotheses.append([alternative.transcript, alternative.confidence])
+                hypotheses.append([alternative.tokens, alternative.confidence])
 
         if hypotheses:
             self._log.info("[{:3.0%}] {}".format(hypotheses[0][1], hypotheses[0][0]))

@@ -106,7 +106,7 @@ def extract_named_entities(np_list):
 
 def analyze_pronoun(pronoun, speaker):
     '''
-    This function returns a morphology which it reads from the grammar (dict.json)
+    This function returns a morphology which it reads from the grammar (grammar.json)
     The grammar has information about person (1st, 2nd, 3rd) and number (singular or plural) for regular and possessive pronouns
     '''
     morphology = {}
