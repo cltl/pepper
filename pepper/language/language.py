@@ -15,10 +15,14 @@ class UtteranceType(enum.Enum):
 class UtteranceID(object):
     def __init__(self, chat_id, chat_turn):
         """
+        Construct Utterance Identification Object
+
         Parameters
         ----------
         chat_id: int
+            Unique chat identifier
         chat_turn: int
+            Chat turn
         """
         self._chat_id = chat_id
         self._chat_turn = chat_turn
@@ -29,6 +33,7 @@ class UtteranceID(object):
         Returns
         -------
         chat_id: int
+            Unique chat identifier
         """
         return self._chat_id
 
@@ -38,6 +43,7 @@ class UtteranceID(object):
         Returns
         -------
         chat_turn: int
+            Chat turn
         """
         return self._chat_turn
 
@@ -45,17 +51,22 @@ class UtteranceID(object):
 class Utterance(object):
     def __init__(self, transcript, speaker, utterance_id):
         """
+        Construct Utterance Object
+
         Parameters
         ----------
         transcript: str
+            Uttered text (Natural Language)
         speaker: str
+            Speaker name
         utterance_id: UtteranceID
+            Utterance Identification Object
         """
 
         # TODO: Add Viewed Objects!
 
         self._tokens = self._clean(self._tokenize(transcript))
-        self._speaker = speaker
+        self._speaker = speaker.lower()
         self._utterance_id = utterance_id
 
     @property
@@ -63,7 +74,8 @@ class Utterance(object):
         """
         Returns
         -------
-        transcript: str
+        tokens: list of str
+            Tokenized transcript
         """
         return self._tokens
 
@@ -73,6 +85,7 @@ class Utterance(object):
         Returns
         -------
         speaker: str
+            Speaker name
         """
         return self._speaker
 
@@ -82,6 +95,7 @@ class Utterance(object):
         Returns
         -------
         utterance_id: UtteranceID
+            Utterance Identification Object
         """
         return self._utterance_id
 
@@ -90,11 +104,12 @@ class Utterance(object):
         Parameters
         ----------
         transcript: str
+            Uttered text (Natural Language)
 
         Returns
         -------
         tokens: list of str
-            list of cleaned tokens
+            Tokenized transcript: list of cleaned tokens
                 - remove contractions
         """
 
@@ -110,11 +125,14 @@ class Utterance(object):
         Parameters
         ----------
         tokens: list of str
+            Tokenized transcript
 
         Returns
         -------
         cleaned_tokens: list of str
+            Tokenized & Cleaned transcript
         """
+
         # TODO: Remove Contractions
 
         return tokens
@@ -122,17 +140,22 @@ class Utterance(object):
 
 class Analyzer(object):
 
+    # Load Grammar Json
     GRAMMAR_JSON = os.path.join(os.path.dirname(__file__), 'grammar.json')
     with open(GRAMMAR_JSON) as json_file:
         GRAMMAR = json.load(json_file)['grammar']
 
+    # Load Stanford Named Entity Recognition Server
     STANFORD_NER = NER('english.muc.7class.distsim.crf.ser')
 
     def __init__(self, utterance):
         """
+        Abstract Analyzer Object: call Analyzer.analyze(utterance) factory function
+
         Parameters
         ----------
         utterance: Utterance
+            Utterance to be analyzed
         """
 
         self._utterance = utterance
@@ -141,15 +164,19 @@ class Analyzer(object):
     @staticmethod
     def analyze(utterance):
         """
-        Classify Utterance into Question / Statement
+        Analyzer factory function
+
+        Find appropriate Analyzer for this utterance
 
         Parameters
         ----------
         utterance: Utterance
+            Utterance to be analyzed
 
         Returns
         -------
         analyzer: Analyzer
+            Appropriate Analyzer Subclass
         """
 
         if utterance.tokens:
@@ -161,10 +188,13 @@ class Analyzer(object):
 
             question_cues = question_words + to_be + modal_verbs
 
+            # Classify Utterance as Question / Statement
             if first_token in question_cues:
                 return QuestionAnalyzer.analyze(utterance)
             else:
                 return StatementAnalyzer.analyze(utterance)
+        else:
+            raise ValueError("Utterance should have at least one element")
 
     @property
     def log(self):
@@ -181,6 +211,7 @@ class Analyzer(object):
         Returns
         -------
         utterance: Utterance
+            Utterance to be analyzed
         """
         return self._utterance
 
@@ -190,6 +221,7 @@ class Analyzer(object):
         Returns
         -------
         utterance_type: UtteranceType
+            Utterance Type
         """
         return NotImplementedError()
 
@@ -209,12 +241,33 @@ class Analyzer(object):
         -------
         template: dict or None
         """
-        raise NotImplementedError()
+
+        # TODO: Implement here!
+
+        return None
 
 
 class StatementAnalyzer(Analyzer):
+    """Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function"""
+
     @staticmethod
     def analyze(utterance):
+        """
+        StatementAnalyzer factory function
+
+        Find appropriate StatementAnalyzer for this utterance
+
+        Parameters
+        ----------
+        utterance: Utterance
+            Utterance to be analyzed
+
+        Returns
+        -------
+        analyzer: StatementAnalyzer
+            Appropriate StatementAnalyzer Subclass
+        """
+
         return GeneralStatementAnalyzer(utterance)
 
     @property
@@ -223,6 +276,7 @@ class StatementAnalyzer(Analyzer):
         Returns
         -------
         utterance_type: UtteranceType
+            Utterance Type (Statement)
         """
         return UtteranceType.STATEMENT
 
@@ -239,9 +293,12 @@ class StatementAnalyzer(Analyzer):
 class GeneralStatementAnalyzer(StatementAnalyzer):
     def __init__(self, utterance):
         """
+        General Statement Analyzer
+
         Parameters
         ----------
         utterance: Utterance
+            Utterance to be analyzed
         """
 
         super(GeneralStatementAnalyzer, self).__init__(utterance)
@@ -263,6 +320,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 class ObjectStatementAnalyzer(StatementAnalyzer):
     def __init__(self, utterance):
         """
+        Object Statement Analyzer
+
         Parameters
         ----------
         utterance: Utterance
@@ -285,8 +344,25 @@ class ObjectStatementAnalyzer(StatementAnalyzer):
 
 
 class QuestionAnalyzer(Analyzer):
+    """Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function"""
+
     @staticmethod
     def analyze(utterance):
+        """
+        QuestionAnalyzer factory function
+
+        Find appropriate QuestionAnalyzer for this utterance
+
+        Parameters
+        ----------
+        utterance: Utterance
+            Utterance to be analyzed
+
+        Returns
+        -------
+        analyzer: QuestionAnalyzer
+            Appropriate QuestionAnalyzer Subclass
+        """
         if utterance.tokens:
             first_word = utterance.tokens[0]
 
@@ -301,6 +377,7 @@ class QuestionAnalyzer(Analyzer):
         Returns
         -------
         utterance_type: UtteranceType
+            Utterance Type (Question)
         """
         return UtteranceType.QUESTION
 
@@ -317,6 +394,8 @@ class QuestionAnalyzer(Analyzer):
 class WhQuestionAnalyzer(QuestionAnalyzer):
     def __init__(self, utterance):
         """
+        Wh-Question Analyzer
+
         Parameters
         ----------
         utterance: Utterance
@@ -341,6 +420,8 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 class VerbQuestionAnalyzer(QuestionAnalyzer):
     def __init__(self, utterance):
         """
+        Verb Question Analyzer
+
         Parameters
         ----------
         utterance: Utterance
@@ -365,5 +446,3 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 if __name__ == '__main__':
     utterance = Utterance("I like bananas", "Bram", UtteranceID(0, 0))
     analyzer = Analyzer.analyze(utterance)
-
-    print(analyzer)
