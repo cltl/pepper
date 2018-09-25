@@ -147,9 +147,12 @@ class ReactiveIntention(AbstractIntention):
 
 if __name__ == '__main__':
     # Boot Application
-
-    from pepper.framework.system import SystemApp
-    app = SystemApp()
+    if config.APPLICATION_TARGET == config.ApplicationTarget.NAOQI:
+        from pepper.framework.naoqi import NaoqiApp
+        app = NaoqiApp()  # Run on Robot
+    else:
+        from pepper.framework.system import SystemApp
+        app = SystemApp()  # Run on PC
 
     # Boot Intention
     intention = ReactiveIntention(app)

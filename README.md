@@ -3,7 +3,7 @@ CLTL Pepper/Nao Repository
 
 This is the (WIP) repository for CLTL Pepper/Nao Applications.
 
-#### (To Be Implemented) Features
+#### Features
 - [x] Object-Oriented wrapper around nao(qi)
 - [x] Creating apps that run both on the robot and on host machine
 - [x] Framework for creating BDI applications
@@ -16,13 +16,13 @@ This is the (WIP) repository for CLTL Pepper/Nao Applications.
 Unfortunately, this project has a lot of components and therefore a lot of dependencies.
 Yet, we have tried our best to make an extensive and comprehensive installation guide:
 
-Steps 0/1 -> 
+Steps 1/2 -> Only necessary when using Naoqi to interact with Pepper/Nao robots. 
 
-##### 0: Python 2.7 (32-bit Windows / 64-bit Linux)
+##### 1: Python 2.7 (32-bit Windows / 64-bit Linux)
 The CLTL Pepper/Nao Repository is dependent on the ``Naoqi Python SDK`` by Softbank Robotics,
 which is only available for 32-bit Python 2.7 on Windows and 64-bit Python 2.7 on Linux.
 
-##### 1: Naoqi Python SDK by Softbank Robotics
+##### 2: Naoqi Python SDK by Softbank Robotics
 This project builds onto the ``Naoqi Python SDK`` by SoftBank Robotics.
 Please refer to their [install guide](http://doc.aldebaran.com/2-5/dev/python/install_guide.html) for more information.
 Please make sure the ``PYTHONPATH`` environment variable reflects the location of the SDK and you're using Python 2.7!
@@ -84,9 +84,10 @@ Please create a file ``tokens.json``, which the following information to the roo
 
 
 ##### 9: Other Python Dependencies
-This project depends on ``numpy``, ``OpenCV (cv2)``, ``pyaudio`` and ``webrtcvad``.
-Most of these packages can be installed using ``pip``,  with one notable exception being ``OpenCV``,
-which needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html) and build manually (Windows binaries exist).
+The project requirements are listed in ```requirements.txt``` and can be installed via pip.
+
+On Windows, an OpenCV binary needs to be [downloaded](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_setup/py_table_of_contents_setup/py_table_of_contents_setup.html).
+pip ```opencv-python``` will be sufficient for MacOS platforms.
 
 
 #### Structure
@@ -127,7 +128,7 @@ from pepper.framework.system import SystemApp
 APP = NaoqiApp or SystemApp
 
 class MyApp(APP):
-    def on_transcript(self, transcript):
+    def on_transcript(self, transcript, audio):
         self.text_to_speech.say("Right you are!")
         
 if __name__ == '__main__':
@@ -144,7 +145,6 @@ These intentions act as subgoals within each application. An example is demonstr
 from pepper.framework.system import SystemApp
 from pepper.framework import AbstractIntention
 
-
 class IdleIntention(AbstractIntention):
     def on_face_new(self, bounds, face):
         self.app.intention = MeetNewPersonIntention()
@@ -155,13 +155,24 @@ class MeetNewPersonIntention(AbstractIntention):
         super(MeetNewPersonIntention, self).__init__()
         self.text_to_speech.say("What is your name?")
         
-    def on_transcript(self, transcript):
+    def on_transcript(self, transcript, audio):
         self.text_to_speech.say("Nice to meet you!")
-        self.app.intention = IdleIntention()
+        self.app.intention = IdleIntention(self.app)
         
 if __name__ == '__main__':
-    SystemApp(IdleIntention()).start()
+    # Boot Application
+    app = SystemApp()  # Run on PC
+
+    # Boot Intention
+    intention = IdleIntention(app)
+
+    # Link (Default) Intention to App
+    app.intention = intention
+
+    # Start App (a.k.a. Start Microphone and Camera)
+    app.start()
 ```
+
 ##### 4: Structured data
 In order to store knowledge in the brain, we need to parse unstructured natural language and transform it to triples.
 For this purpose, and following [GRaSP](https://github.com/cltl/GRaSP), we have designed a _json_ template that allows us to transmit this information between modules. 
@@ -232,7 +243,7 @@ In that the classic _reboot-and-try-again_ scheme works wonders.
 
 In order to do object detection, we make use of a COCO model within Tensorflow.
 A COCO service has been implemented in and can be run from the [pepper_tensorflow](https://github.com/cltl/pepper_tensorflow) project.
-Simply run ```python3 pepper_tensorflow/coco.py``` and the service will boot.
+Simply run ```pepper_tensorflow/coco.py``` (using Python 3) and the service will boot.
 
 ##### 3: Face Data
 
@@ -248,3 +259,45 @@ The global config file can be found under ``pepper/config.py``. Please modify th
 
 Running ``test/vebose_app.py``, will print out which events fire when and with what data.
 If you manage to run this without any errors all dependencies are installed correctly and other apps should work too!
+
+HowTo's
+-------
+
+#### How To Boot
+
+1. Start GraphDB Free
+
+2. Start Docker
+
+3. Start COCO (pepper_tensorflow - coco.py - ctrl-shift-F10)
+
+4. Start any app (e.g. ``pepper/intention/reactive.py``)
+
+Enjoy (& Check settings/IP's in ``pepper/config.py``)!
+
+
+#### How to switch between PC/Robot Host
+
+- for Robot
+```python
+from pepper.framework.naoqi import NaoqiApp
+app = NaoqiApp()
+```
+- for PC
+```python
+from pepper.framework.system import SystemApp
+app = SystemApp()
+```
+
+Common Issues
+-------------
+
+- **I receive some error related to Docker/OpenFace**
+    - Reboot Docker & try again! :)
+- **Microphone samples are dropped / stuff is slow on the robot!!**
+    - Make sure network is as optimal as can be
+    - Tweak ``CAMERA_RESOLUTION`` & ``CAMERA_FRAMERATE`` in ``pepper/config.py``
+- **Robot has weird (or local) IP**
+    - Reboot robot and hope for the best!
+
+
