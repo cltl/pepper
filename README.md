@@ -292,12 +292,14 @@ app = SystemApp()
 Common Issues
 -------------
 
-- **I receive some error related to Docker/OpenFace**
-    - Reboot Docker & try again! :)
-- **Microphone samples are dropped / stuff is slow on the robot!!**
-    - Make sure network is as optimal as can be
-    - Tweak ``CAMERA_RESOLUTION`` & ``CAMERA_FRAMERATE`` in ``pepper/config.py``
-- **Robot has weird (or local) IP**
-    - Reboot robot and hope for the best!
+##### I receive some error related to Docker/OpenFace
+Reboot Docker & try again! :)
+
+##### Microphone samples are dropped / stuff is slow on the robot!!
+1. Make sure network is as optimal as can be, a LAN or 5GHz wifi connection is highly recommended!
+2.  Tweak ``CAMERA_RESOLUTION`` & ``CAMERA_FRAMERATE`` in ``pepper/config.py`` for optimal throughput.
+
+##### Robot has weird (or local) IP
+Reboot robot and hope for the best!
 
 
