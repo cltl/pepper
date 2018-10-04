@@ -96,7 +96,7 @@ class VAD(object):
 
     def start(self):
         """Start Detecting Utterances"""
-        self.microphone.run()
+        self.microphone.start()
 
     def stop(self):
         """Stop Detecting Utterances"""

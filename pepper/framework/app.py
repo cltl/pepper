@@ -79,7 +79,7 @@ class BaseApp(AbstractApp):
 
             self._image_annotator = ImageAnnotator()
 
-            self._video_feed_application_thread = Thread(target=self._video_feed_application.run)
+            self._video_feed_application_thread = Thread(target=self._video_feed_application.start)
             self._video_feed_application_thread.daemon = True
             self._video_feed_application_thread.start()
 

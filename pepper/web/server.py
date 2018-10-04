@@ -39,9 +39,9 @@ class VideoFeedApplication(tornado.web.Application):
 
         super(VideoFeedApplication, self).__init__([(r'/ws', WSHandler), (r'/', BaseHandler)])
 
-    def run(self):
+    def start(self):
         self.listen(self.PORT)
-        webbrowser.open("localhost:{}".format(self.PORT))
+        webbrowser.open("http://localhost:{}".format(self.PORT))
         self._log.info("Booted")
 
         tornado.ioloop.IOLoop.instance().start()
@@ -71,7 +71,3 @@ class VideoFeedApplication(tornado.web.Application):
             image.save(png, 'png')
             png.seek(0)
             return base64.b64encode(png.read())
-
-
-if __name__ == "__main__":
-    VideoFeedApplication().run()
