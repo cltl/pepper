@@ -17,7 +17,6 @@ import logging
 LOG = logging.getLogger(__name__)
 
 
-
 wnl = WordNetLemmatizer()
 
 ROOT = os.path.join(os.path.dirname(__file__))
