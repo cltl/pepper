@@ -6,6 +6,7 @@ from pepper.brain import LongTermMemory
 
 from pepper.web.server import VideoFeedApplication
 from pepper.util.image import ImageAnnotator
+from pepper.util.image import ImageWriter
 
 from pepper import config
 
@@ -69,10 +70,15 @@ class BaseApp(AbstractApp):
         # Initialize Brain
         self._brain = LongTermMemory()
 
+        # Add-ons
         if config.REALTIME_STATISTICS:
             self._statistics_thread = Thread(target=self._statistics)
             self._statistics_thread.daemon = True
             self._statistics_thread.start()
+
+        if config.SAVE_VIDEO_FEED:
+            self._image_writer = ImageWriter()
+            self.camera.callbacks.append(self._image_writer.write)
 
         if config.SHOW_VIDEO_FEED:
             self._video_feed_application = VideoFeedApplication()

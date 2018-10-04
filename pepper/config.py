@@ -9,7 +9,7 @@ class ApplicationTarget(enum.Enum):
     SYSTEM = 0
     NAOQI = 1
 
-APPLICATION_TARGET = ApplicationTarget.NAOQI
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
 
 PACKAGE_ROOT = os.path.dirname(__file__)
@@ -46,6 +46,7 @@ NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
 # Add-ons
 REALTIME_STATISTICS = True
 SHOW_VIDEO_FEED = True
+SAVE_VIDEO_FEED = False
 
 
 # .json file with id tokens, with keys:
