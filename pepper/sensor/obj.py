@@ -66,9 +66,10 @@ class InceptionClassifyClient:
 
 class CocoClassifyClient:
 
+    CLASSES = 90
     PORT = 35621
 
-    def __init__(self, address = ('localhost', PORT)):
+    def __init__(self, address=('localhost', PORT)):
         self.address = address
         self._log = logging.getLogger(self.__class__.__name__)
 

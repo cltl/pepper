@@ -68,7 +68,6 @@ class GoogleASR(AbstractASR):
 
         for result in response.results:
             for alternative in result.alternatives:
-                print(dir(alternative))
                 hypotheses.append([alternative.transcript, alternative.confidence])
 
         if hypotheses:

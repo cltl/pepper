@@ -9,8 +9,11 @@ class ApplicationTarget(enum.Enum):
     SYSTEM = 0
     NAOQI = 1
 
-
 APPLICATION_TARGET = ApplicationTarget.SYSTEM
+
+
+PACKAGE_ROOT = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.join(*os.path.split(PACKAGE_ROOT)[:-1])
 
 LANGUAGE = 'en-GB'
 
@@ -24,7 +27,7 @@ MICROPHONE_CHANNELS = 1
 VAD_VOICE_THRESHOLD = 0.9
 VAD_NONVOICE_THRESHOLD = 0.2
 
-CAMERA_RESOLUTION = CameraResolution.QVGA
+CAMERA_RESOLUTION = CameraResolution.VGA
 CAMERA_FRAME_RATE = 5
 
 OBJECT_CONFIDENCE_THRESHOLD = 0.5

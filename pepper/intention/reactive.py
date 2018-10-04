@@ -10,12 +10,19 @@ from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.query import QnA
 
 from pepper.knowledge.sentences import *
+
+from pepper.util.image import ImageWriter
+
 from random import getrandbits, choice
 
 
 class ReactiveIntention(AbstractIntention):
     def __init__(self, app):
         super(ReactiveIntention, self).__init__(app)
+
+        # Setup Image Writer
+        self._image_writer = ImageWriter()
+        self.camera.callbacks.append(self._image_writer.write)
 
         # The name parser is used to name-correct Google Speech outputs
         self._name_parser = NameParser(list(self.app._faces.keys()))
