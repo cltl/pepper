@@ -32,7 +32,7 @@ class AbstractCamera(object):
         self._true_rate = rate
         self._t0 = time()
 
-        self._queue = Queue()
+        self._queue = Queue(maxsize=2)
         self._processor_thread = Thread(target=self._processor)
         self._processor_thread.daemon = True
         self._processor_thread.start()
@@ -124,7 +124,8 @@ class AbstractCamera(object):
         ----------
         image: np.ndarray
         """
-        self._queue.put(image)
+        if not self._queue.full():
+            self._queue.put(image)
 
     def start(self):
         """Start Streaming Images from Camera"""

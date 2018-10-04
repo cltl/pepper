@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pepper Web</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <style>
+        html,body{
+            margin:0;
+            height:100%;
+            overflow:hidden;
+        }
+        img {
+            height: 100%;
+            position:absolute;
+            top:-100%; bottom:-100%;
+            left:-100%; right:-100%;
+            margin:auto;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <img id="preview" src=''/>
+</div>
+</body>
+</html>
+
+<script>
+    var host = "ws://localhost:9090/ws";
+    var socket = new WebSocket(host);
+
+    socket.onopen = function() { console.log("Connection Opened!"); }
+
+    socket.onmessage = function(msg){
+        console.log("Got Data!");
+        $('#preview').attr('src', 'data:image/png;base64,' + msg.data);
+    }
+
+    socket.onclose = function() { console.log("Connection Closed!"); }
+
+</script>
