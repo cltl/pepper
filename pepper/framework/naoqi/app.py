@@ -21,7 +21,7 @@ class NaoqiApp(BaseApp):
     @staticmethod
     def create_session():
         application = qi.Application([NaoqiApp.__name__, "--qi-url={}".format(config.NAOQI_URL)])
-        try: application.start()
+        try: application.run()
         except RuntimeError as e:
             raise RuntimeError("Couldn't connect to robot, check if robot IP is set correctly in pepper/config.py"
                                "\n\tOriginal Error: {}".format(e))

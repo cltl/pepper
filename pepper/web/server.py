@@ -1,48 +1,59 @@
-from pepper.framework.system import SystemCamera
-from pepper.framework import CameraResolution
-
-from pepper.util.image import ImageAnnotator
-
-from PIL import Image
-from io import BytesIO
-import base64
-
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import tornado.template
 
+from PIL import Image
 import webbrowser
 
+from io import BytesIO
+import base64
+import os
 
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        loader = tornado.template.Loader(".")
-        self.write(loader.load("index.html").generate())
+import logging
 
 
-class WSHandler(tornado.websocket.WebSocketHandler):
-    def open(self):
-        print 'connection opened...'
+class VideoFeedApplication(tornado.web.Application):
 
-        self._annotator = ImageAnnotator()
+    HANDLERS = set()
+    PORT = 9090
 
-        self._camera = SystemCamera(CameraResolution.QVGA, 5, [self.on_frame])
-        self._camera.start()
+    def __init__(self):
 
-    def on_message(self, message):
-        print 'received:', message
+        self._log = logging.getLogger(self.__class__.__name__)
 
-    def on_close(self):
-        print 'connection closed...'
+        class BaseHandler(tornado.web.RequestHandler):
+            def get(self):
+                loader = tornado.template.Loader(os.path.dirname(__file__))
+                self.write(loader.load("index.html").generate())
 
-    def on_frame(self, image):
+        class WSHandler(tornado.websocket.WebSocketHandler):
+            def __init__(self, application, request, **kwargs):
+                super(WSHandler, self).__init__(application, request, **kwargs)
 
-        image = Image.fromarray(image)
-        image = self._annotator.annotate(image)
-        image = self.encode_image(image)
+            def open(self):
+                VideoFeedApplication.HANDLERS.add(self)
 
-        self.write_message(image)
+            def on_close(self):
+                VideoFeedApplication.HANDLERS.remove(self)
+
+        super(VideoFeedApplication, self).__init__([(r'/ws', WSHandler), (r'/', BaseHandler)])
+
+    def run(self):
+        self.listen(self.PORT)
+        webbrowser.open("localhost:{}".format(self.PORT))
+        self._log.info("Booted")
+
+        tornado.ioloop.IOLoop.instance().start()
+
+    def update(self, image):
+        """
+        Parameters
+        ----------
+        image: Image.Image
+        """
+        for handler in self.HANDLERS:
+            handler.write_message(self.encode_image(image))
 
     @staticmethod
     def encode_image(image):
@@ -63,15 +74,4 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
 
 if __name__ == "__main__":
-
-    PORT = 9090
-
-    application = tornado.web.Application([
-        (r'/ws', WSHandler),
-        (r'/', MainHandler),
-        (r"/(.*)", tornado.web.StaticFileHandler, {"path": "./resources"}),
-    ])
-
-    application.listen(PORT)
-    webbrowser.open("localhost:{}".format(PORT))
-    tornado.ioloop.IOLoop.instance().start()
+    VideoFeedApplication().run()

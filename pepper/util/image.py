@@ -51,25 +51,9 @@ class ImageAnnotator(object):
             Folder with stored faces
         """
 
-        self._coco = CocoClassifyClient()
-        self._openface = OpenFace()
-        self._face_classifier = FaceClassifier.from_directory(config.FACE_DIRECTORY)
-
         self._font_size = 12
         self._font_name = "Montserrat-Regular.ttf"
         self._font = ImageFont.truetype(os.path.join(os.path.dirname(__file__), self._font_name), self._font_size)
-
-    @property
-    def coco(self):
-        return self._coco
-
-    @property
-    def openface(self):
-        return self._openface
-
-    @property
-    def face_classifier(self):
-        return self._face_classifier
 
     def annotate_batch(self, directory, output_directory=None, extension='.png',
                        object_threshold=config.OBJECT_CONFIDENCE_THRESHOLD,
@@ -81,14 +65,24 @@ class ImageAnnotator(object):
 
         image_paths = [path for path in os.listdir(directory) if os.path.isfile(os.path.join(directory, path))]
 
+        coco = CocoClassifyClient()
+        openface = OpenFace()
+        face_classifier = FaceClassifier.from_directory(config.FACE_DIRECTORY)
+
         for index, image_path in enumerate(image_paths):
             print "\rAnnotating Image {:d}/{:d}".format(index + 1, len(image_paths)),
             image = Image.open(os.path.join(directory, image_path))
-            image = self.annotate(image, object_threshold, face_threshold)
+
+            image_np = np.array(image)
+            coco_info = coco.classify(image_np)
+            face_info = openface.represent(image_np)
+            name_info = face_classifier.classify(face_info[1]) if face_info else None
+
+            image = self.annotate(image, coco_info, face_info, name_info, object_threshold, face_threshold)
             image.save(os.path.join(output_directory, image_path.replace(os.path.splitext(image_path)[1], extension)))
         print("\n")
 
-    def annotate(self, image,
+    def annotate(self, image, coco_info, face_info, name_info,
                  object_threshold=config.OBJECT_CONFIDENCE_THRESHOLD,
                  face_threshold=config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD):
         """
@@ -98,6 +92,12 @@ class ImageAnnotator(object):
         ----------
         image: Image.Image
             Input Image
+        coco_info: list
+            tuple of [<object infos>, <confidences>, <object bounds>] (return of CocoClassifyClient.classify())
+        face_info: tuple or None
+            tuple of (FaceBounds, representation) (return of OpenFace.represent())
+        name_info: tuple or None
+            tuple of (name, confidence, distance) (return of FaceClassifier.classify())
         object_threshold: float
             Confidence Threshold for Object Recognition Annotations
         face_threshold: float
@@ -109,16 +109,13 @@ class ImageAnnotator(object):
             Annotated Image
         """
         draw = ImageDraw.Draw(image)
-        image_np = np.array(image)
 
         # Annotate Objects
-        object_infos = self.coco.classify(image_np)
-        for object_info, confidence, bounds in zip(*object_infos):
+        for object_info, confidence, bounds in zip(*coco_info):
             if confidence > object_threshold:
-
                 text = "[{:4.0%}] {}".format(confidence, object_info['name'])
 
-                color = colorsys.hsv_to_rgb(float(object_info['id'] - 1) / self.coco.CLASSES, 1, 1)
+                color = colorsys.hsv_to_rgb(float(object_info['id'] - 1) / CocoClassifyClient.CLASSES, 1, 1)
                 color = tuple((np.array(color) * 255).astype(np.uint8))
 
                 y0, x0, y1, x1 = bounds
@@ -131,21 +128,19 @@ class ImageAnnotator(object):
                 self._draw_text(draw, [x0, y0, x1, y1], text, color, (0, 0, 0))
 
         # Annotate Faces
-        face = self.openface.represent(image_np)
+        if face_info:
+            bounds, representation = face_info
+            name, confidence, distance = name_info
 
-        if face:
-            bounds, representation = face
-            name, confidence, distance = self._face_classifier.classify(representation)
+            if confidence > face_threshold:
+                text = "[{:4.0%}] {}".format(confidence, name)
 
-            text = "[{:4.0%}] {}".format(confidence, name)
+                x0, y0, x1, y1 = int(bounds.x), int(bounds.y), int(bounds.x+bounds.width), int(bounds.y+bounds.height)
 
-            x0, y0, x1, y1 = int(bounds.x), int(bounds.y), int(bounds.x + bounds.width), int(bounds.y + bounds.height)
+                color = (255, 255, 255)
 
-
-            color = (255, 255, 255)
-
-            self._draw_bounds(draw, [x0, y0, x1, y1], color, 3)
-            self._draw_text(draw, [x0, y0, x1, y1], text, color, (0, 0, 0))
+                self._draw_bounds(draw, [x0, y0, x1, y1], color, 3)
+                self._draw_text(draw, [x0, y0, x1, y1], text, color, (0, 0, 0))
 
         return image
 

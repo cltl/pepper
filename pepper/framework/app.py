@@ -1,9 +1,15 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.framework.abstract import AbstractIntention
 from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
-from pepper.brain import LongTermMemory, base_cases
+
+from pepper.brain import LongTermMemory
+
+from pepper.web.server import VideoFeedApplication
+from pepper.util.image import ImageAnnotator
+
 from pepper import config
 
+from PIL import Image
 import numpy as np
 
 from threading import Thread
@@ -67,6 +73,15 @@ class BaseApp(AbstractApp):
             self._statistics_thread = Thread(target=self._statistics)
             self._statistics_thread.daemon = True
             self._statistics_thread.start()
+
+        if config.SHOW_VIDEO_FEED:
+            self._video_feed_application = VideoFeedApplication()
+
+            self._image_annotator = ImageAnnotator()
+
+            self._video_feed_application_thread = Thread(target=self._video_feed_application.run)
+            self._video_feed_application_thread.daemon = True
+            self._video_feed_application_thread.start()
 
         # Get Logger
         self._log = logging.getLogger(self.__class__.__name__)
@@ -316,6 +331,7 @@ class BaseApp(AbstractApp):
 
         # Represent Faces and call appropriate events when they are known or new
         representation = self.openface.represent(image)
+
         if representation:
             bounds, face = representation
 
@@ -326,6 +342,11 @@ class BaseApp(AbstractApp):
                 self.on_face_new(bounds, face)
             elif confidence > config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD:
                 self.on_face_known(bounds, face, name)
+
+        if config.SHOW_VIDEO_FEED:
+            image = Image.fromarray(image)
+            image = self._image_annotator.annotate(image, [classes, scores, boxes], representation, [name, confidence, distance] if representation else None)
+            self._video_feed_application.update(image)
 
     def _on_utterance(self, audio):
 
