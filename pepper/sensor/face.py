@@ -108,6 +108,8 @@ class OpenFace(object):
             (Face Bouding Box, Face Representation)
         """
 
+        faces = []
+
         try:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client.connect((self.HOST, self.PORT))
@@ -115,15 +117,17 @@ class OpenFace(object):
             client.send(np.array(image.shape, np.int32))
             client.sendall(image.tobytes())
 
-            success = np.frombuffer(client.recv(4), np.int32)[0]
+            n_faces = np.frombuffer(client.recv(4), np.int32)[0]
 
-            if success:
+            for i in range(n_faces):
                 bounds = FaceBounds(*np.frombuffer(client.recv(4*4), np.float32))
                 representation_length = np.frombuffer(client.recv(4), np.int32)[0]
                 representation = np.frombuffer(client.recv(representation_length * 4), np.float32)
-                return bounds, representation
+                faces.append((bounds, representation))
         except socket.error as e:
             raise RuntimeError("Couldn't connect to OpenFace Docker service, please restart Docker.")
+        finally:
+            return faces
 
     def stop(self):
         """Stop OpenFace Image"""

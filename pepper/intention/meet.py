@@ -46,9 +46,12 @@ class MeetIntention(AbstractIntention):
     #     self.say("Oops, I actually do know you already. Sorry, {}!".format(name))
     #     self.app.intention = self._return_intention
 
-    def on_transcript(self, transcript, audio):
+    def on_transcript(self, hypotheses, audio):
+
+        hypothesis = hypotheses[0]
+
         for stop in ["stop", "bye", "quit"]:
-            if stop in transcript[0][0]:
+            if stop in hypothesis.transcript:
                 self.say(choice(sentences.GOODBYE))
                 self.app.intention = self._return_intention
 
@@ -72,8 +75,7 @@ class MeetIntention(AbstractIntention):
 
         # If a name was heard, make sure to verify
         elif self._action == MeetAction.VERIFYING_NAME:
-            text, confidence = transcript[0]
-            for word in text.split():
+            for word in hypothesis.transcript.split():
                 # If affirmation was heard
                 if word in sentences.AFFIRMATION:
                     # And enough face samples have been gathered

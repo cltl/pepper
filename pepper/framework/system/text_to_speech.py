@@ -1,4 +1,5 @@
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
+from pepper import config
 
 from google.cloud import texttospeech
 from playsound import playsound
@@ -10,6 +11,8 @@ import os
 
 
 class SystemTextToSpeech(AbstractTextToSpeech):
+
+    ROOT = os.path.join(config.PROJECT_ROOT, 'tmp', 'speech')
 
     def __init__(self):
         """System Text to Speech"""
@@ -30,6 +33,8 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         self._log = logging.getLogger(self.__class__.__name__)
         self._log.debug("Booted")
 
+        if not os.path.exists(self.ROOT): os.makedirs(self.ROOT)
+
     def say(self, text):
         """
         Say something through Text to Speech
@@ -47,7 +52,7 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         synthesis_input = texttospeech.types.SynthesisInput(text=text)
         response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
 
-        file_hash = "{}.mp3".format(str(getrandbits(128)))
+        file_hash = os.path.join(self.ROOT, "{}.mp3".format(str(getrandbits(128))))
         with open(file_hash, 'wb') as out:
             out.write(response.audio_content)
 

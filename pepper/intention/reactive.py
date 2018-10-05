@@ -66,9 +66,9 @@ class ReactiveIntention(AbstractIntention):
         # if new_objects:
         #     self._tell_objects(new_objects)
 
-    def on_transcript(self, transcript, audio):
+    def on_transcript(self, hypotheses, audio):
         if self._speaker:  # If Speaker is Recognized
-            question = transcript[0][0]
+            question = hypotheses[0].transcript
 
             # Try to answer simple QnA
             answer = QnA().query(question)
@@ -89,14 +89,14 @@ class ReactiveIntention(AbstractIntention):
 
             self.say(choice(THINKING))
             # Parse Names in Utterance
-            utterance, confidence = self._name_parser.parse_known(transcript)
+            hypothesis = self._name_parser.parse_known(hypotheses)
 
             # Parse Expression
             expression = None
 
             try:
                 expression = classify_and_process_utterance(
-                    utterance, self._speaker, self._chat_id, self._chat_turn, list(self._objects))
+                    hypothesis.transcript, self._speaker, self._chat_id, self._chat_turn, list(self._objects))
                 self._chat_turn += 1
             except Exception as e:
                 self.log.error("NLP ERROR: {}".format(e))
@@ -109,7 +109,7 @@ class ReactiveIntention(AbstractIntention):
                 if answer:
                     self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
                 else:
-                    self.say("I heard: {}, but I don't understand it!".format(utterance))
+                    self.say("I heard: {}, but I don't understand it!".format(hypothesis.transcript))
                 return
 
             # Process Questions
@@ -128,7 +128,6 @@ class ReactiveIntention(AbstractIntention):
             self.say("I heard something, but I don't know who I'm talking to. Please show yourself to me!")
 
     def _tell_objects(self, new_objects):
-
         # If a single new object is seen, mention it with given certainty
         if len(new_objects) == 1:
             obj, confidence = new_objects[0]

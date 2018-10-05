@@ -1,5 +1,4 @@
 from pepper.framework.system import SystemApp
-from pepper.framework.naoqi import NaoqiApp
 
 from pepper.framework import AbstractIntention
 
@@ -28,8 +27,8 @@ class QueryIntention(AbstractIntention):
             self._name = name
             self.say("{} {} {}".format(choice(GREETING), name, choice(TELL_KNOWN)))
 
-    def on_transcript(self, transcript, audio):
-        question = transcript[0][0]
+    def on_transcript(self, hypotheses, audio):
+        question = hypotheses[0].transcript
 
         answer = self._qna.query(question)
 
@@ -47,8 +46,7 @@ class QueryIntention(AbstractIntention):
 
 if __name__ == '__main__':
     # Boot Application
-    # app = SystemApp()  # Run on PC
-    app = NaoqiApp()  # Run on Robot
+    app = SystemApp()  # Run on PC
 
     # Boot Intention
     intention = QueryIntention(app)

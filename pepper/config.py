@@ -11,7 +11,6 @@ class ApplicationTarget(enum.Enum):
 
 APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
-
 PACKAGE_ROOT = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.join(*os.path.split(PACKAGE_ROOT)[:-1])
 
