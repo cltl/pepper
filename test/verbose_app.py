@@ -12,7 +12,8 @@ class VerboseApp(APP):
         self.log.info("on_utterance: {:3.2f}s".format(len(audio) / float(self.microphone.rate)))
 
     def on_transcript(self, hypotheses, audio):
-        self.log.info("on_transcript: {}".format(hypotheses))
+        for hypothesis in hypotheses:
+            self.log.info("\ton_transcript: [{:4.0%}] {}".format(hypothesis.confidence, hypothesis.transcript))
 
     def on_face(self, bounds, face):
         self.log.info("on_face: {} {}".format(bounds, face.shape))
