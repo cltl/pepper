@@ -1,5 +1,7 @@
 from pepper.language.ner import NER
 
+from random import getrandbits
+
 import logging
 import enum
 import json
@@ -10,6 +12,80 @@ import os
 class UtteranceType(enum.Enum):
     STATEMENT = 0
     QUESTION = 1
+
+
+class Chat(object):
+    def __init__(self, speaker):
+        """
+        Create Chat
+
+        Parameters
+        ----------
+        speaker: str
+            Name of speaker (a.k.a. the person Pepper has a chat with)
+        """
+        # TODO: Add contextual information (e.g. datetime, location, ...)
+
+        self._id = getrandbits(128)
+        self._speaker = speaker
+        self._utterances = []
+
+    @property
+    def id(self):
+        """
+        Returns
+        -------
+        id: int
+            Unique (random) identifier of this chat
+        """
+        return self._id
+
+    @property
+    def speaker(self):
+        """
+        Returns
+        -------
+        speaker: str
+            Name of speaker (a.k.a. the person Pepper has a chat with)
+        """
+        return self._speaker
+
+    @property
+    def utterances(self):
+        """
+        Returns
+        -------
+        utterances: list of Utterance
+            List of utterances that occurred in this chat
+        """
+        return self._utterances
+
+    @property
+    def last_utterance(self):
+        """
+        Returns
+        -------
+        last_utterance: Utterance
+            Most recent Utterance
+        """
+        return self._utterances[-1]
+
+    def add_utterance(self, text):
+        """
+        Add Utterance to Conversation
+
+        Parameters
+        ----------
+        text: str
+            Utterance Text to add to conversation
+
+        Returns
+        -------
+        utterance: Utterance
+        """
+        utterance = Utterance(text, self._speaker, UtteranceID(self._id, len(self._utterances)))
+        self._utterances.append(utterance)
+        return utterance
 
 
 class UtteranceID(object):
@@ -148,21 +224,21 @@ class Analyzer(object):
     # Load Stanford Named Entity Recognition Server
     STANFORD_NER = NER('english.muc.7class.distsim.crf.ser')
 
-    def __init__(self, utterance):
+    def __init__(self, chat):
         """
         Abstract Analyzer Object: call Analyzer.analyze(utterance) factory function
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
             Utterance to be analyzed
         """
 
-        self._utterance = utterance
+        self._chat = chat
         self._log = logging.getLogger(self.__class__.__name__)
 
     @staticmethod
-    def analyze(utterance):
+    def analyze(chat):
         """
         Analyzer factory function
 
@@ -170,7 +246,7 @@ class Analyzer(object):
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
             Utterance to be analyzed
 
         Returns
@@ -179,20 +255,20 @@ class Analyzer(object):
             Appropriate Analyzer Subclass
         """
 
-        if utterance.tokens:
-            first_token = utterance.tokens[0]
+        if chat.last_utterance.tokens:
+            first_token = chat.last_utterance.tokens[0]
 
             question_words = Analyzer.GRAMMAR['question words'].keys()
             to_be = Analyzer.GRAMMAR['to be'].keys()
-            modal_verbs = Analyzer.GRAMMAR['modal verbs']
+            modal_verbs = Analyzer.GRAMMAR['modal_verbs']
 
             question_cues = question_words + to_be + modal_verbs
 
             # Classify Utterance as Question / Statement
             if first_token in question_cues:
-                return QuestionAnalyzer.analyze(utterance)
+                return QuestionAnalyzer.analyze(chat)
             else:
-                return StatementAnalyzer.analyze(utterance)
+                return StatementAnalyzer.analyze(chat)
         else:
             raise ValueError("Utterance should have at least one element")
 
@@ -206,14 +282,14 @@ class Analyzer(object):
         return self._log
 
     @property
-    def utterance(self):
+    def chat(self):
         """
         Returns
         -------
-        utterance: Utterance
+        chat: Chat
             Utterance to be analyzed
         """
-        return self._utterance
+        return self._chat
 
     @property
     def utterance_type(self):
@@ -251,7 +327,7 @@ class StatementAnalyzer(Analyzer):
     """Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function"""
 
     @staticmethod
-    def analyze(utterance):
+    def analyze(chat):
         """
         StatementAnalyzer factory function
 
@@ -259,7 +335,7 @@ class StatementAnalyzer(Analyzer):
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
             Utterance to be analyzed
 
         Returns
@@ -268,7 +344,7 @@ class StatementAnalyzer(Analyzer):
             Appropriate StatementAnalyzer Subclass
         """
 
-        return GeneralStatementAnalyzer(utterance)
+        return GeneralStatementAnalyzer(chat)
 
     @property
     def utterance_type(self):
@@ -291,19 +367,19 @@ class StatementAnalyzer(Analyzer):
 
 
 class GeneralStatementAnalyzer(StatementAnalyzer):
-    def __init__(self, utterance):
+    def __init__(self, chat):
         """
         General Statement Analyzer
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
             Utterance to be analyzed
         """
 
-        super(GeneralStatementAnalyzer, self).__init__(utterance)
+        super(GeneralStatementAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Utterance -> RDF
+        # TODO: Implement Chat -> RDF
 
         self._rdf = {}
 
@@ -318,18 +394,18 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
 
 class ObjectStatementAnalyzer(StatementAnalyzer):
-    def __init__(self, utterance):
+    def __init__(self, chat):
         """
         Object Statement Analyzer
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
         """
 
-        super(ObjectStatementAnalyzer, self).__init__(utterance)
+        super(ObjectStatementAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Utterance -> RDF
+        # TODO: Implement Chat -> RDF
 
         self._rdf = {}
 
@@ -347,7 +423,7 @@ class QuestionAnalyzer(Analyzer):
     """Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function"""
 
     @staticmethod
-    def analyze(utterance):
+    def analyze(chat):
         """
         QuestionAnalyzer factory function
 
@@ -355,7 +431,7 @@ class QuestionAnalyzer(Analyzer):
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
             Utterance to be analyzed
 
         Returns
@@ -363,13 +439,13 @@ class QuestionAnalyzer(Analyzer):
         analyzer: QuestionAnalyzer
             Appropriate QuestionAnalyzer Subclass
         """
-        if utterance.tokens:
-            first_word = utterance.tokens[0]
+        if chat.last_utterance.tokens:
+            first_word = chat.last_utterance.tokens[0]
 
             if first_word in Analyzer.GRAMMAR['question words']:
-                return WhQuestionAnalyzer(utterance)
+                return WhQuestionAnalyzer(chat)
             else:
-                return VerbQuestionAnalyzer(utterance)
+                return VerbQuestionAnalyzer(chat)
 
     @property
     def utterance_type(self):
@@ -392,18 +468,18 @@ class QuestionAnalyzer(Analyzer):
 
 
 class WhQuestionAnalyzer(QuestionAnalyzer):
-    def __init__(self, utterance):
+    def __init__(self, chat):
         """
         Wh-Question Analyzer
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
         """
 
-        super(WhQuestionAnalyzer, self).__init__(utterance)
+        super(WhQuestionAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Utterance -> RDF
+        # TODO: Implement Chat -> RDF
 
         self._rdf = {}
 
@@ -418,18 +494,18 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
 
 class VerbQuestionAnalyzer(QuestionAnalyzer):
-    def __init__(self, utterance):
+    def __init__(self, chat):
         """
         Verb Question Analyzer
 
         Parameters
         ----------
-        utterance: Utterance
+        chat: Chat
         """
 
-        super(VerbQuestionAnalyzer, self).__init__(utterance)
+        super(VerbQuestionAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Utterance -> RDF
+        # TODO: Implement Chat -> RDF
 
         self._rdf = {}
 
@@ -444,6 +520,8 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
 
 if __name__ == '__main__':
-    #testing git skills
-    utterance = Utterance("I like bananas", "Bram", UtteranceID(0, 0))
-    analyzer = Analyzer.analyze(utterance)
+    chat = Chat("Bram")
+    chat.add_utterance("I like bananas")
+    analyzer = Analyzer.analyze(chat)
+
+    print(analyzer.__class__.__name__)
