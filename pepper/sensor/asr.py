@@ -4,6 +4,28 @@ from google.cloud import speech
 import logging
 
 
+class ASRHypothesis(object):
+    def __init__(self, transcript, confidence):
+        """
+        Automatic Speech Recognition Hypothesis
+
+        Parameters
+        ----------
+        transcript: str
+        confidence: float
+        """
+        self._transcript = transcript
+        self._confidence = confidence
+
+    @property
+    def transcript(self):
+        return self._transcript
+
+    @property
+    def confidence(self):
+        return self._confidence
+
+
 class AbstractASR(object):
     """Abstract Speech Recognition Class"""
 
@@ -56,21 +78,22 @@ class GoogleASR(AbstractASR):
 
         Returns
         -------
-        transcript: List
-            List of (<transcript>, <confidence>) pairs
+        hypotheses: List[ASRHypothesis]
         """
         response = speech.SpeechClient().recognize(speech.types.RecognitionConfig(
-                encoding = speech.enums.RecognitionConfig.AudioEncoding.LINEAR16, sample_rate_hertz = self._sample_rate,
-                language_code = self._language, max_alternatives = self._max_alternatives,
-                speech_contexts = [speech.types.SpeechContext(phrases=hints)]),
+                encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+                sample_rate_hertz=self._sample_rate,
+                language_code=self._language,
+                max_alternatives=self._max_alternatives,
+                speech_contexts=[speech.types.SpeechContext(phrases=hints)]),
             speech.types.RecognitionAudio(content=audio.tobytes()))
-        hypotheses = []
 
+        hypotheses = []
         for result in response.results:
             for alternative in result.alternatives:
-                hypotheses.append([alternative.transcript, alternative.confidence])
+                hypotheses.append(ASRHypothesis(alternative.transcript, alternative.confidence))
 
         if hypotheses:
-            self._log.info("[{:3.0%}] {}".format(hypotheses[0][1], hypotheses[0][0]))
+            self._log.info("[{:3.0%}] {}".format(hypotheses[0].confidence, hypotheses[0].transcript))
 
         return hypotheses

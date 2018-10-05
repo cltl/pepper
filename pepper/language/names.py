@@ -49,12 +49,14 @@ class NameParser:
         for language, asr in zip(self._languages, self._asrs):
             transcript = asr.transcribe(audio)
 
-            for i, (string, confidence) in enumerate(transcript):
-                for word, tag in self._tagger.tag(string):
+            for i, hypothesis in enumerate(transcript):
+
+
+                for word, tag in self._tagger.tag(hypothesis.transcript):
                     if tag in NameParser.TAGS_OF_INTEREST:
-                        if confidence > name_match_confidence:
+                        if hypothesis.confidence > name_match_confidence:
                             name_match = word
-                            name_match_confidence = confidence
+                            name_match_confidence = hypothesis.confidence
 
         if name_match:
             return name_match, name_match_confidence

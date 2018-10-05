@@ -1,7 +1,6 @@
-from pepper.sensor import VAD
+from pepper.sensor import VAD, ASRHypothesis
 
 import numpy as np
-
 import logging
 
 
@@ -166,14 +165,14 @@ class AbstractApp(object):
         """
         pass
 
-    def on_transcript(self, transcript, audio):
+    def on_transcript(self, hypotheses, audio):
         """
         On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.
 
         Parameters
         ----------
-        transcript: list of (str, float)
-            Hypotheses (confidence, text) about the corresponding utterance
+        hypotheses: List[ASRHypothesis]
+            Hypotheses about the corresponding utterance
         audio: np.ndarray
             Microphone Samples containing speech
         """

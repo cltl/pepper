@@ -66,9 +66,9 @@ class ReactiveIntention(AbstractIntention):
         # if new_objects:
         #     self._tell_objects(new_objects)
 
-    def on_transcript(self, transcript, audio):
+    def on_transcript(self, hypotheses, audio):
         if self._speaker:  # If Speaker is Recognized
-            question = transcript[0][0]
+            question = hypotheses[0].transcript
 
             # Try to answer simple QnA
             answer = QnA().query(question)
@@ -89,7 +89,7 @@ class ReactiveIntention(AbstractIntention):
 
             self.say(choice(THINKING))
             # Parse Names in Utterance
-            utterance, confidence = self._name_parser.parse_known(transcript)
+            utterance, confidence = self._name_parser.parse_known(hypotheses)
 
             # Parse Expression
             expression = None
@@ -128,7 +128,6 @@ class ReactiveIntention(AbstractIntention):
             self.say("I heard something, but I don't know who I'm talking to. Please show yourself to me!")
 
     def _tell_objects(self, new_objects):
-
         # If a single new object is seen, mention it with given certainty
         if len(new_objects) == 1:
             obj, confidence = new_objects[0]

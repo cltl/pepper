@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.framework.abstract import AbstractIntention
-from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD
+from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD, ASRHypothesis
 
 from pepper.brain import LongTermMemory
 
@@ -306,16 +306,16 @@ class BaseApp(AbstractApp):
         """
         self.intention.on_utterance(audio)
 
-    def on_transcript(self, transcript, audio):
+    def on_transcript(self, hypotheses, audio):
         """
         On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.
 
         Parameters
         ----------
-        transcript: list of (str, float)
-            Hypotheses (text, confidence) about the corresponding utterance
+        hypotheses: List[ASRHypothesis]
+            Hypotheses about the corresponding utterance
         """
-        self.intention.on_transcript(transcript, audio)
+        self.intention.on_transcript(hypotheses, audio)
 
     def _on_image(self, image):
         """
@@ -336,11 +336,7 @@ class BaseApp(AbstractApp):
         if objects: self.on_object(image, objects)
 
         # Represent Faces and call appropriate events when they are known or new
-        representation = self.openface.represent(image)
-
-        if representation:
-            bounds, face = representation
-
+        for bounds, face in self.openface.represent(image):
             name, confidence, distance = self._face_classifier.classify(face)
             self.on_face(bounds, face)
 
@@ -351,7 +347,7 @@ class BaseApp(AbstractApp):
 
         if config.SHOW_VIDEO_FEED:
             image = Image.fromarray(image)
-            image = self._image_annotator.annotate(image, [classes, scores, boxes], representation, [name, confidence, distance] if representation else None)
+            image = self._image_annotator.annotate(image, [classes, scores, boxes], None, None)
             self._video_feed_application.update(image)
 
     def _on_utterance(self, audio):

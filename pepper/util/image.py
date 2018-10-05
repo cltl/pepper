@@ -113,7 +113,6 @@ class ImageAnnotator(object):
         # Annotate Objects
         for object_info, confidence, bounds in zip(*coco_info):
             if confidence > object_threshold:
-                text = "[{:4.0%}] {}".format(confidence, object_info['name'])
 
                 color = colorsys.hsv_to_rgb(float(object_info['id'] - 1) / CocoClassifyClient.CLASSES, 1, 1)
                 color = tuple((np.array(color) * 255).astype(np.uint8))
@@ -125,7 +124,8 @@ class ImageAnnotator(object):
                 y1 *= image.height
 
                 self._draw_bounds(draw, [x0, y0, x1, y1], color, 3)
-                self._draw_text(draw, [x0, y0, x1, y1], text, color, (0, 0, 0))
+                self._draw_text(draw, [x0, y0, x1, y1], object_info['name'], color, (0, 0, 0))
+                self._draw_text(draw, [x0, y0, x1, y0], "[{:4.0%}]".format(confidence), color, (0, 0, 0))
 
         # Annotate Faces
         if face_info:
