@@ -89,14 +89,14 @@ class ReactiveIntention(AbstractIntention):
 
             self.say(choice(THINKING))
             # Parse Names in Utterance
-            utterance, confidence = self._name_parser.parse_known(hypotheses)
+            hypothesis = self._name_parser.parse_known(hypotheses)
 
             # Parse Expression
             expression = None
 
             try:
                 expression = classify_and_process_utterance(
-                    utterance, self._speaker, self._chat_id, self._chat_turn, list(self._objects))
+                    hypothesis.transcript, self._speaker, self._chat_id, self._chat_turn, list(self._objects))
                 self._chat_turn += 1
             except Exception as e:
                 self.log.error("NLP ERROR: {}".format(e))
@@ -109,7 +109,7 @@ class ReactiveIntention(AbstractIntention):
                 if answer:
                     self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
                 else:
-                    self.say("I heard: {}, but I don't understand it!".format(utterance))
+                    self.say("I heard: {}, but I don't understand it!".format(hypothesis.transcript))
                 return
 
             # Process Questions

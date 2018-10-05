@@ -16,14 +16,14 @@ class NameParser:
 
         self._tagger = NER()
 
-    def parse_known(self, transcript):
+    def parse_known(self, hypotheses):
         toi = None  # Transcript of Interest
         words = []
 
-        for i, (string, confidence) in enumerate(transcript):
-            for word, tag in self._tagger.tag(string):
+        for i, (hypothesis) in enumerate(hypotheses):
+            for word, tag in self._tagger.tag(hypothesis.transcript):
                 if tag in NameParser.TAGS_OF_INTEREST:
-                    words.append((word, confidence))
+                    words.append((word, hypothesis.confidence))
 
                     if toi is None: toi = i
 
@@ -38,9 +38,9 @@ class NameParser:
                     closest = distance
 
             if closest_name:
-                return transcript[toi][0].replace(words[0][0], closest_name), transcript[toi][1]
+                return hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence
 
-        return transcript[0]
+        return hypotheses[0]
 
     def parse_new(self, audio):
         name_match = None

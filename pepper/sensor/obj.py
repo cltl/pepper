@@ -123,6 +123,20 @@ class Bounds(object):
         return min(self.intersection(bounds).area / self.area, 1)
 
 
+class CocoObject(object):
+    def __init__(self, id, name):
+        self._id = id
+        self._name = name
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+
+
 class InceptionClassifyClient:
     def __init__(self, address=('localhost', 9999)):
         """
