@@ -231,7 +231,7 @@ class Analyzer(object):
         Parameters
         ----------
         chat: Chat
-            Utterance to be analyzed
+            Chat to be analyzed
         """
 
         self._chat = chat
@@ -247,7 +247,7 @@ class Analyzer(object):
         Parameters
         ----------
         chat: Chat
-            Utterance to be analyzed
+            Chat to be analyzed
 
         Returns
         -------
@@ -287,7 +287,7 @@ class Analyzer(object):
         Returns
         -------
         chat: Chat
-            Utterance to be analyzed
+            Chat to be analyzed
         """
         return self._chat
 
@@ -336,7 +336,7 @@ class StatementAnalyzer(Analyzer):
         Parameters
         ----------
         chat: Chat
-            Utterance to be analyzed
+            Chat to be analyzed
 
         Returns
         -------
@@ -374,7 +374,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         Parameters
         ----------
         chat: Chat
-            Utterance to be analyzed
+            Chat to be analyzed
         """
 
         super(GeneralStatementAnalyzer, self).__init__(chat)
@@ -432,7 +432,7 @@ class QuestionAnalyzer(Analyzer):
         Parameters
         ----------
         chat: Chat
-            Utterance to be analyzed
+            Chat to be analyzed
 
         Returns
         -------
