@@ -444,5 +444,6 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
 
 if __name__ == '__main__':
+    #testing git skills
     utterance = Utterance("I like bananas", "Bram", UtteranceID(0, 0))
     analyzer = Analyzer.analyze(utterance)
