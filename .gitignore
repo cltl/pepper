@@ -1,9 +1,11 @@
 .idea/
 *.pyc
 
-people/
 knowledge_representation/
-Pepper-9293d23935fa.json
+people/
+tmp/
+
+google_cloud_key.json
 tokens.json
 
 log.txt

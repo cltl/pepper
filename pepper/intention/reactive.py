@@ -48,8 +48,8 @@ class ReactiveIntention(AbstractIntention):
             self.say("{} {}. {}".format(choice(GREETING), name, choice(TELL_KNOWN)))
 
             # Tell Person about random seen object
-            # if self._objects:
-            #     self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
+            if self._objects:
+                self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
 
     def on_object(self, image, objects):
         new_objects = []
@@ -62,9 +62,9 @@ class ReactiveIntention(AbstractIntention):
                 new_objects.append((obj, confidence))
                 self._objects.add(obj)
 
-        # # Tell about seen objects and add them to seen objects
-        # if new_objects:
-        #     self._tell_objects(new_objects)
+        # Tell about seen objects and add them to seen objects
+        if new_objects:
+            self._tell_objects(new_objects)
 
     def on_transcript(self, hypotheses, audio):
         if self._speaker:  # If Speaker is Recognized
@@ -107,9 +107,11 @@ class ReactiveIntention(AbstractIntention):
                 # Try Wolfram
                 answer = Wolfram().query(question)
                 if answer:
-                    self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
-                else:
+                    self.say("{}, {}, {}. {}".format(choice(ADDRESSING), choice(USED_WWW), self._speaker, answer))
+                else:  # If Nothing Works
                     self.say("I heard: {}, but I don't understand it!".format(hypothesis.transcript))
+                    self.say(choice(ASK_FOR_QUESTIONS))
+
                 return
 
             # Process Questions

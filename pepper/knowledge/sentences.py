@@ -144,6 +144,16 @@ ADDRESSING = [
     "I'll tell you"
 ]
 
+ASK_FOR_QUESTIONS = [
+    "Do you have a question for me?",
+    "Ask me anything!",
+]
+
+USED_WWW = [
+    "I looked it up on the internet",
+    "I searched the web",
+]
+
 HAPPY = [
     "Nice!",
     "Cool!",
