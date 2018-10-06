@@ -107,9 +107,11 @@ class ReactiveIntention(AbstractIntention):
                 # Try Wolfram
                 answer = Wolfram().query(question)
                 if answer:
-                    self.say("{} {}. {}".format(choice(ADDRESSING), self._speaker, answer))
-                else:
+                    self.say("{}, {}, {}. {}".format(choice(ADDRESSING), choice(USED_WWW), self._speaker, answer))
+                else:  # If Nothing Works
                     self.say("I heard: {}, but I don't understand it!".format(hypothesis.transcript))
+                    self.say(choice(ASK_FOR_QUESTIONS))
+
                 return
 
             # Process Questions
