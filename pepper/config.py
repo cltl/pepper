@@ -9,7 +9,7 @@ class ApplicationTarget(enum.Enum):
     SYSTEM = 0
     NAOQI = 1
 
-APPLICATION_TARGET = ApplicationTarget.SYSTEM
+APPLICATION_TARGET = ApplicationTarget.NAOQI
 
 PACKAGE_ROOT = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.join(*os.path.split(PACKAGE_ROOT)[:-1])
@@ -27,7 +27,7 @@ VAD_VOICE_THRESHOLD = 0.9
 VAD_NONVOICE_THRESHOLD = 0.2
 
 CAMERA_RESOLUTION = CameraResolution.QVGA
-CAMERA_FRAME_RATE = 5
+CAMERA_FRAME_RATE = 2
 
 OBJECT_CONFIDENCE_THRESHOLD = 0.5
 
@@ -44,8 +44,8 @@ NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
 
 # Add-ons
 REALTIME_STATISTICS = True
-SHOW_VIDEO_FEED = False
-SAVE_VIDEO_FEED = False
+SHOW_VIDEO_FEED = True
+SAVE_VIDEO_FEED = True
 
 
 # .json file with id tokens, with keys:
