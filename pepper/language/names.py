@@ -1,4 +1,4 @@
-from pepper.sensor.asr import GoogleASR
+from pepper.sensor.asr import GoogleASR, ASRHypothesis
 from pepper.language.ner import NER
 from nltk.metrics.distance import edit_distance
 
@@ -38,7 +38,7 @@ class NameParser:
                     closest = distance
 
             if closest_name:
-                return hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence
+                return ASRHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence)
 
         return hypotheses[0]
 
