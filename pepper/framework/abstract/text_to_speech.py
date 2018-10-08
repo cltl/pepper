@@ -1,7 +1,23 @@
 class AbstractTextToSpeech(object):
-    def __init__(self):
-        """Abstract Text to Speech"""
+    def __init__(self, language):
+        """
+        Parameters
+        ----------
+        language: str
+            Language Code, See: https://cloud.google.com/speech/docs/languages
+        """
+        self._language = language
         pass
+
+    @property
+    def language(self):
+        """
+        Returns
+        -------
+        language: str
+            Language Code, See: https://cloud.google.com/speech/docs/languages
+        """
+        return self._language
 
     def say(self, text):
         """

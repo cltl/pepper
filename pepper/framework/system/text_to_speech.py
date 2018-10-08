@@ -1,7 +1,7 @@
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
 from pepper import config
 
-from google.cloud import texttospeech
+from google.cloud import texttospeech, translate_v2
 from playsound import playsound
 
 import logging
@@ -14,19 +14,20 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
     ROOT = os.path.join(config.PROJECT_ROOT, 'tmp', 'speech')
 
-    def __init__(self):
-        """System Text to Speech"""
-
-        super(AbstractTextToSpeech, self).__init__()
+    def __init__(self, language):
+        """
+        Parameters
+        ----------
+        language: str
+            Language Code, See: https://cloud.google.com/speech/docs/languages
+        """
+        super(SystemTextToSpeech, self).__init__(language)
 
         self._client = texttospeech.TextToSpeechClient()
-        self._voice = texttospeech.types.VoiceSelectionParams(
-            language_code='en-US',
-            name="en-US-Wavenet-F")
+        self._voice = texttospeech.types.VoiceSelectionParams(language_code=language)
 
         # Select the type of audio file you want returned
-        self._audio_config = texttospeech.types.AudioConfig(
-            audio_encoding=texttospeech.enums.AudioEncoding.MP3)
+        self._audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.MP3)
 
         self._busy = False
 
@@ -47,7 +48,12 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         while self._busy: sleep(0.1)
         self._busy = True
 
-        self._log.info(text)
+        if 'en-' not in self.language:
+            new_text = translate_v2.Client().translate(text, target_language=self.language)['translatedText']
+            self._log.info("{} <- {}".format(new_text, text))
+            text = new_text
+        else:
+            self._log.info(text)
 
         synthesis_input = texttospeech.types.SynthesisInput(text=text)
         response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)

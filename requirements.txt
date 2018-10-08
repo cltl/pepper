@@ -6,6 +6,7 @@ pyaudio
 webrtcvad
 google-cloud-speech
 google-cloud-TextToSpeech
+google-cloud-translate
 playsound
 
 pillow

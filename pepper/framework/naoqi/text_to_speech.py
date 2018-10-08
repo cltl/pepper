@@ -6,7 +6,7 @@ class NaoqiTextToSpeech(AbstractTextToSpeech):
 
     SERVICE = "ALAnimatedSpeech"
 
-    def __init__(self, session):
+    def __init__(self, session, language):
         """
         Naoqi Text to Speech
 
@@ -15,7 +15,7 @@ class NaoqiTextToSpeech(AbstractTextToSpeech):
         session: qi.Session
             Qi Application Session
         """
-        super(NaoqiTextToSpeech, self).__init__()
+        super(NaoqiTextToSpeech, self).__init__(language)
 
         # Subscribe to Naoqi Text to Speech Service
         self._service = session.service(NaoqiTextToSpeech.SERVICE)

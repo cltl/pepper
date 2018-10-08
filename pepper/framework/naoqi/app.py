@@ -16,7 +16,7 @@ class NaoqiApp(BaseApp):
         super(NaoqiApp, self).__init__(OpenFace(), GoogleASR(config.LANGUAGE),
             NaoqiCamera(self._session, config.CAMERA_RESOLUTION, config.CAMERA_FRAME_RATE),
             NaoqiMicrophone(self._session, config.NAOQI_MICROPHONE_INDEX),
-            NaoqiTextToSpeech(self._session))
+            NaoqiTextToSpeech(self._session, config.LANGUAGE))
 
     @staticmethod
     def create_session():

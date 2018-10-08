@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from google.cloud import speech
+from google.cloud import speech, translate_v2
 import logging
 
 
@@ -92,7 +92,14 @@ class GoogleASR(AbstractASR):
             for alternative in result.alternatives:
                 hypotheses.append(ASRHypothesis(alternative.transcript, alternative.confidence))
 
-        if hypotheses:
-            self._log.info("[{:3.0%}] {}".format(hypotheses[0].confidence, hypotheses[0].transcript))
+        if 'en-' not in self._language:
 
-        return hypotheses
+            # Translate Input Speech into English if not already in English
+            client = translate_v2.Client()
+            new_hypotheses = [ASRHypothesis(client.translate(hypothesis.transcript)['translatedText'], hypothesis.confidence) for hypothesis in hypotheses]
+            if hypotheses: self._log.info("[{:3.0%}] {} -> {}".format(hypotheses[0].confidence, hypotheses[0].transcript, new_hypotheses[0].transcript))
+            return new_hypotheses
+
+        else:
+            if hypotheses: self._log.info("[{:3.0%}] {}".format(hypotheses[0].confidence, hypotheses[0].transcript))
+            return hypotheses
