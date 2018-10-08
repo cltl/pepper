@@ -1,5 +1,4 @@
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
-import logging
 
 
 class NaoqiTextToSpeech(AbstractTextToSpeech):
@@ -20,7 +19,6 @@ class NaoqiTextToSpeech(AbstractTextToSpeech):
         # Subscribe to Naoqi Text to Speech Service
         self._service = session.service(NaoqiTextToSpeech.SERVICE)
 
-        self._log = logging.getLogger(self.__class__.__name__)
         self._log.debug("Booted")
 
     def say(self, text):

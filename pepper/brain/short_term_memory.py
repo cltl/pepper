@@ -1,4 +1,4 @@
-import logging
+from pepper import logger
 
 
 class ShortTermMemory(object):
@@ -9,7 +9,7 @@ class ShortTermMemory(object):
         self.uniqueObjects = set()
         self.allObjects = list()
 
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
     def object_seen(self, object):

@@ -6,8 +6,6 @@ import numpy as np
 from random import getrandbits
 from threading import Thread
 from time import time, sleep
-import logging
-
 
 class NaoqiCamera(AbstractCamera):
 
@@ -56,14 +54,12 @@ class NaoqiCamera(AbstractCamera):
         self._client = self._service.subscribeCamera(
             self._id, int(index), NaoqiCamera.RESOLUTION_CODE[resolution], NaoqiCamera.COLOR_SPACE, rate)
 
-        # Get logger for this device
-        self._log = logging.getLogger(self.__class__.__name__)
-        self._log.debug("Booted")
-
         # Run image acquisition in Thread
         self._thread = Thread(target=self._run)
         self._thread.setDaemon(True)
         self._thread.start()
+
+        self._log.debug("Booted")
 
     def _run(self):
         while True:

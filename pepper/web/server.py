@@ -1,3 +1,5 @@
+from pepper import logger
+
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
@@ -10,8 +12,6 @@ from io import BytesIO
 import base64
 import os
 
-import logging
-
 
 class VideoFeedApplication(tornado.web.Application):
 
@@ -19,9 +19,6 @@ class VideoFeedApplication(tornado.web.Application):
     PORT = 9090
 
     def __init__(self):
-
-        self._log = logging.getLogger(self.__class__.__name__)
-
         class BaseHandler(tornado.web.RequestHandler):
             def get(self):
                 loader = tornado.template.Loader(os.path.dirname(__file__))
@@ -38,6 +35,7 @@ class VideoFeedApplication(tornado.web.Application):
                 VideoFeedApplication.HANDLERS.remove(self)
 
         super(VideoFeedApplication, self).__init__([(r'/ws', WSHandler), (r'/', BaseHandler)])
+        self._log = logger.getChild(self.__class__.__name__)
 
     def start(self):
         self.listen(self.PORT)

@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 
+from pepper import logger
+
 from google.cloud import speech, translate_v2
-import logging
 
 
 class ASRHypothesis(object):
@@ -27,7 +28,20 @@ class ASRHypothesis(object):
 
 
 class AbstractASR(object):
-    """Abstract Speech Recognition Class"""
+    def __init__(self, language):
+        """
+        Abstract Automatic Speech Recognition Class
+
+        Parameters
+        ----------
+        language: str
+        """
+        self._language = language
+        self._log = logger.getChild("{} ({})".format(self.__class__.__name__, self.language))
+
+    @property
+    def language(self):
+        return self._language
 
     def transcribe(self, audio):
         """
@@ -58,13 +72,11 @@ class GoogleASR(AbstractASR):
         max_alternatives: int
             Maximum Number of Alternatives Google will provide
         """
-        super(GoogleASR, self).__init__()
+        super(GoogleASR, self).__init__(language)
 
         self._sample_rate = sample_rate
-        self._language = language
         self._max_alternatives = max_alternatives
 
-        self._log = logging.getLogger("{} ({})".format(self.__class__.__name__, self._language))
         self._log.debug("Booted")
 
     def transcribe(self, audio, hints=()):
@@ -92,7 +104,7 @@ class GoogleASR(AbstractASR):
             for alternative in result.alternatives:
                 hypotheses.append(ASRHypothesis(alternative.transcript, alternative.confidence))
 
-        if 'en-' not in self._language:
+        if 'en-' not in self.language:
 
             # Translate Input Speech into English if not already in English
             client = translate_v2.Client()

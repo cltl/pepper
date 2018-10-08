@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from pepper import logger
+
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
@@ -11,10 +13,8 @@ import re
 import os
 import analyzers
 
-import logging
 
-
-LOG = logging.getLogger(__name__)
+LOG = logger.getChild(__name__)
 
 
 wnl = WordNetLemmatizer()

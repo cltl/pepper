@@ -1,9 +1,10 @@
+from pepper import logger
+
 from contextlib import contextmanager, closing
 from threading import Thread
 
 import socket
 import subprocess
-import logging
 import os
 
 from time import sleep
@@ -15,7 +16,7 @@ class NER(object):
     IP = 'localhost'
 
     def __init__(self, classifier = 'english.all.3class.distsim.crf.ser'):
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
         self._port = self._find_free_port()
 
         self._ner_server_process = None

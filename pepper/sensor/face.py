@@ -1,4 +1,5 @@
 from pepper.sensor.obj import Bounds
+from pepper import logger
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
@@ -8,8 +9,6 @@ from time import sleep
 import subprocess
 import socket
 import os
-
-import logging
 
 
 class Face(object):
@@ -104,7 +103,7 @@ class OpenFace(object):
     def __init__(self):
         """Run OpenFace Client (& Server, if it is not yet running)"""
 
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
 
         if not self._openface_running():
 

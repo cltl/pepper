@@ -1,4 +1,4 @@
-from pepper import config
+from pepper import config, logger
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, casefold_capsule, read_query
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
@@ -7,7 +7,6 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from fuzzywuzzy import process
 
 import requests
-import logging
 
 
 class LongTermMemory(object):
@@ -68,7 +67,7 @@ class LongTermMemory(object):
 
         self.my_uri = None
 
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
     #################################### Main functions to interact with the brain ####################################

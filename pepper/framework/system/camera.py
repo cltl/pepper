@@ -5,7 +5,6 @@ import cv2
 
 from threading import Thread
 from time import time, sleep
-import logging
 
 
 class SystemCamera(AbstractCamera):
@@ -33,14 +32,12 @@ class SystemCamera(AbstractCamera):
         if not self._camera.isOpened():
             raise RuntimeError("{} could not be opened".format(self.__class__.__name__))
 
-        # Get device logger
-        self._log = logging.getLogger(self.__class__.__name__)
-        self._log.debug("Booted")
-
         # Run Image acquisition in Thread
         self._thread = Thread(target=self._run)
         self._thread.setDaemon(True)
         self._thread.start()
+
+        self._log.debug("Booted")
 
     def _run(self):
         while True:

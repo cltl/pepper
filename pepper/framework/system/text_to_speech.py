@@ -4,7 +4,6 @@ from pepper import config
 from google.cloud import texttospeech, translate_v2
 from playsound import playsound
 
-import logging
 from random import getrandbits
 from time import sleep
 import os
@@ -23,6 +22,8 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         """
         super(SystemTextToSpeech, self).__init__(language)
 
+        if not os.path.exists(self.ROOT): os.makedirs(self.ROOT)
+
         self._client = texttospeech.TextToSpeechClient()
         self._voice = texttospeech.types.VoiceSelectionParams(language_code=language)
 
@@ -31,10 +32,7 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
         self._busy = False
 
-        self._log = logging.getLogger(self.__class__.__name__)
         self._log.debug("Booted")
-
-        if not os.path.exists(self.ROOT): os.makedirs(self.ROOT)
 
     def say(self, text):
         """

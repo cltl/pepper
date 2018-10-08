@@ -1,3 +1,5 @@
+from pepper import logger
+
 import numpy as np
 
 from threading import Thread
@@ -5,8 +7,6 @@ from Queue import Queue
 from time import time
 
 from collections import deque
-
-import logging
 
 
 class AbstractMicrophone(object):
@@ -34,7 +34,7 @@ class AbstractMicrophone(object):
         self._processor_thread.daemon = True
         self._processor_thread.start()
 
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
 
         self._running = False
         self._blocks = 0

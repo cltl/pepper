@@ -1,9 +1,9 @@
+from pepper import logger
+
 from .analyzers import *
 
-import logging
 
-
-LOG = logging.getLogger(__name__)
+LOG = logger.getChild(__name__)
 
 
 def classify_and_analyze_question(speaker, words, chat_id, chat_turn, viewed_objects):

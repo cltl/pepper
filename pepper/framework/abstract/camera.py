@@ -1,4 +1,6 @@
 from pepper.framework import CameraResolution
+from pepper import logger
+
 from threading import Thread
 from Queue import Queue
 
@@ -38,6 +40,8 @@ class AbstractCamera(object):
         self._processor_thread.start()
 
         self._running = False
+
+        self._log = logger.getChild(self.__class__.__name__)
 
     @property
     def resolution(self):

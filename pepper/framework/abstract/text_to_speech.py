@@ -1,3 +1,5 @@
+from pepper import logger
+
 class AbstractTextToSpeech(object):
     def __init__(self, language):
         """
@@ -6,8 +8,9 @@ class AbstractTextToSpeech(object):
         language: str
             Language Code, See: https://cloud.google.com/speech/docs/languages
         """
+
         self._language = language
-        pass
+        self._log = logger.getChild(self.__class__.__name__)
 
     @property
     def language(self):

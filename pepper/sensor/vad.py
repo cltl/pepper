@@ -1,4 +1,4 @@
-from pepper import config
+from pepper import config, logger
 
 from webrtcvad import Vad
 import numpy as np
@@ -51,7 +51,7 @@ class VAD(object):
 
         self._voice = False  # No Voice is present at start
 
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
     @property
@@ -111,7 +111,7 @@ class VAD(object):
         audio: np.ndarray
             Audio containing utterance
         """
-        self._log.info("Utterance {:3.2f}s".format(len(audio) / float(self.rate)))
+        self._log.debug("Utterance {:3.2f}s".format(len(audio) / float(self.rate)))
 
         for callback in self.callbacks:
             callback(audio)

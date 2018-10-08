@@ -1,7 +1,6 @@
-from pepper.sensor import VAD, ASRHypothesis
+from pepper import logger
 
 import numpy as np
-import logging
 
 
 class AbstractApp(object):
@@ -165,7 +164,7 @@ class AbstractIntention(AbstractApp):
         """Create Abstract Intention"""
 
         self._app = app
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
 
     @property
     def app(self):

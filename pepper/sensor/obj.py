@@ -5,8 +5,6 @@ from PIL import Image
 import numpy as np
 import json
 
-import logging
-
 
 class Bounds(object):
     def __init__(self, x0, y0, x1, y1):
@@ -254,7 +252,6 @@ class InceptionClassifyClient:
             Address of Inception Model Host
         """
         self.address = address
-        self._log = logging.getLogger(self.__class__.__name__)
 
     def classify(self, image):
         """
@@ -313,7 +310,6 @@ class CocoClassifyClient:
         address
         """
         self.address = address
-        self._log = logging.getLogger(self.__class__.__name__)
 
     def classify(self, image):
         """

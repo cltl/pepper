@@ -9,6 +9,7 @@ class ApplicationTarget(enum.Enum):
     SYSTEM = 0
     NAOQI = 1
 
+
 APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
 PACKAGE_ROOT = os.path.dirname(__file__)

@@ -8,7 +8,7 @@ from pepper.web.server import VideoFeedApplication
 from pepper.util.image import ImageAnnotator
 from pepper.util.image import ImageWriter
 
-from pepper import config
+from pepper import config, logger
 
 from PIL import Image
 import numpy as np
@@ -16,7 +16,6 @@ import numpy as np
 from threading import Thread
 from Queue import Queue
 from time import sleep
-import logging
 
 
 class BaseApp(AbstractApp):
@@ -103,7 +102,7 @@ class BaseApp(AbstractApp):
             self._video_feed_application_thread.start()
 
         # Get Logger
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
         self._running = False
