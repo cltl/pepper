@@ -1,3 +1,5 @@
+from pepper.sensor.obj import Bounds
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
 import numpy as np
@@ -10,52 +12,81 @@ import os
 import logging
 
 
-def docker_openface_running():
-    """
-    Check if OpenFace service is currently running
+class Face(object):
+    def __init__(self, representation, bounds):
+        """
+        OpenFace Face Information
 
-    Returns
-    -------
-    is_running: bool
-    """
-    try: return 'openface' in subprocess.check_output(['docker', 'ps'])
-    except Exception as e: return False
-
-
-class FaceBounds:
-    def __init__(self, x, y, width, height):
-        self._x = x
-        self._y = y
-        self._width = width
-        self._height = height
+        Parameters
+        ----------
+        representation: np.ndarray
+            Face Feature Vector
+        bounds: Bounds
+            Face Bounding Box
+        """
+        self._representation = representation
+        self._bounds = bounds
 
     @property
-    def x(self):
-        return self._x
+    def representation(self):
+        """
+        Returns
+        -------
+        representation: np.ndarray
+            Face Feature Vector
+        """
+        return self._representation
 
     @property
-    def y(self):
-        return self._y
+    def bounds(self):
+        """
+        Returns
+        -------
+        bounds: Bounds
+            Face Bounding Box
+        """
+        return self._bounds
+
+
+class Person(Face):
+    def __init__(self, face, name, confidence):
+        """
+        Parameters
+        ----------
+        face: Face
+            OpenFace Face
+        name: str
+            Name of Person
+        confidence: float
+            Name Confidence
+        """
+        super(Person, self).__init__(face.representation, face.bounds)
+
+        self._name = name
+        self._confidence = confidence
 
     @property
-    def width(self):
-        return self._width
+    def name(self):
+        """
+        Returns
+        -------
+        name: str
+            Name of Person
+        """
+        return self._name
 
     @property
-    def height(self):
-        return self._height
+    def confidence(self):
+        """
+        Returns
+        -------
+        confidence: float
+            Name Confidence
+        """
+        return self._confidence
 
-    @property
-    def center(self):
-        return self.x + self.width / 2, self.y + self.height / 2
-
-    @property
-    def area(self):
-        return self.width * self.height
-
-    def __str__(self):
-        return "FaceBounds({:1.2f},{:1.2f},{:1.2f},{:1.2f}): {:1.2f}".format(
-            self.x, self.y, self.width, self.height, self.area)
+    def __repr__(self):
+        return "{}[{:3.0%}]: '{}'".format(self.__class__.__name__, self.confidence, self.name)
 
 
 class OpenFace(object):
@@ -66,14 +97,16 @@ class OpenFace(object):
     SCRIPT_NAME = '_openface.py'
     SCRIPT_PATH = os.path.join(os.path.dirname(__file__), 'util', SCRIPT_NAME)
 
+    FEATURE_DIM = 128
+
     HOST, PORT = '127.0.0.1', 8989
 
     def __init__(self):
-        """Run OpenFace Client (& Server)"""
+        """Run OpenFace Client (& Server, if it is not yet running)"""
 
         self._log = logging.getLogger(self.__class__.__name__)
 
-        if not docker_openface_running():
+        if not self._openface_running():
 
             self._log.debug("{} is not running -> booting it!".format(OpenFace.DOCKER_IMAGE))
 
@@ -100,43 +133,56 @@ class OpenFace(object):
         Parameters
         ----------
         image: np.ndarray
-            Image (containing a human face)
+            Image (possibly containing a human face)
 
         Returns
         -------
-        result: FaceBounds, np.ndarray
-            (Face Bouding Box, Face Representation)
+        result: list of Face
+            List of Face objects
         """
 
-        faces = []
-
         try:
+            # Connect to OpenFace Service
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client.connect((self.HOST, self.PORT))
 
+            # Send Image
             client.send(np.array(image.shape, np.int32))
             client.sendall(image.tobytes())
 
+            # Receive Number of Faces in Image
             n_faces = np.frombuffer(client.recv(4), np.int32)[0]
 
+            # Wrap information into Face instances
+            faces = []
             for i in range(n_faces):
-                bounds = FaceBounds(*np.frombuffer(client.recv(4*4), np.float32))
-                representation_length = np.frombuffer(client.recv(4), np.int32)[0]
-                representation = np.frombuffer(client.recv(representation_length * 4), np.float32)
-                faces.append((bounds, representation))
-        except socket.error as e:
-            raise RuntimeError("Couldn't connect to OpenFace Docker service, please restart Docker.")
-        finally:
+                bounds = Bounds(*np.frombuffer(client.recv(4*4), np.float32)).scaled(1.0 / image.shape[1], 1.0 / image.shape[0])
+                representation = np.frombuffer(client.recv(self.FEATURE_DIM * 4), np.float32)
+                faces.append(Face(representation, bounds))
             return faces
+
+        except socket.error as e:
+            raise RuntimeError("Couldn't connect to OpenFace Docker service.")
 
     def stop(self):
         """Stop OpenFace Image"""
         subprocess.call(['docker', 'stop', self.DOCKER_NAME])
 
+    def _openface_running(self):
+        """
+        Check if OpenFace service is currently running
+
+        Returns
+        -------
+        is_running: bool
+        """
+        try:
+            return 'openface' in subprocess.check_output(['docker', 'ps'])
+        except Exception as e:
+            return False
+
 
 class FaceClassifier:
-
-    FEATURE_DIM = 128
 
     def __init__(self, people, n_neighbors=20):
         """
@@ -168,30 +214,78 @@ class FaceClassifier:
         return self._people
 
     def classify(self, face):
-        if self.people:
-            distances, indices = self._classifier.kneighbors(face.reshape(-1, self.FEATURE_DIM))
-            distances, indices = distances[0], indices[0]
+        """
+        Classify Face as Person
 
-            labels = self._labels[indices]
-            label = np.bincount(labels).argmax()
-            name = self._names[label]
-            confidence = np.mean(labels == label)
-            distance = np.mean(distances[labels == label])
-            return name, confidence, distance
-        return "", 0, 0
+        Parameters
+        ----------
+        face: Face
+
+        Returns
+        -------
+        person: Person
+        """
+
+        if not self.people:
+            return Person(face, "human", 0.0)
+
+        # Get distances to nearest Neighbours
+        distances, indices = self._classifier.kneighbors(face.representation.reshape(-1, OpenFace.FEATURE_DIM))
+        distances, indices = distances[0], indices[0]
+
+        # Get numerical label associated with closest face
+        labels = self._labels[indices]
+        label = np.bincount(labels).argmax()
+
+        # Retrieve name and calculate confidence
+        name = self._names[label]
+        confidence = float(np.mean(labels == label))
+        # distance = float(np.mean(distances[labels == label]))
+
+        return Person(face, name, confidence)
 
     def accuracy(self):
-        return np.mean(cross_val_score(self._classifier, self._features, self._labels, cv=5))
+        """
+        Calculate Classifier Cross Validation Accuracy
+
+        Returns
+        -------
+        accuracy: float
+        """
+        return float(np.mean(cross_val_score(self._classifier, self._features, self._labels, cv=5)))
 
     @classmethod
     def from_directory(cls, directory):
+        """
+        Construct FaceClassifier from directory of <name>.bin files
+
+        Parameters
+        ----------
+        directory: str
+
+        Returns
+        -------
+        face_classifier: FaceClassifier
+        """
         return cls(FaceClassifier.load_directory(directory))
 
     @staticmethod
     def load_directory(directory):
+        """
+        Load Directory of <name>.bin files
+
+        Parameters
+        ----------
+        directory: str
+
+        Returns
+        -------
+        people: dict
+            Dictionary of <name>: <representations> pairs
+        """
         people = {}
         for path in os.listdir(directory):
             name = os.path.splitext(path)[0]
-            features = np.fromfile(os.path.join(directory, path), np.float32).reshape(-1, FaceClassifier.FEATURE_DIM)
+            features = np.fromfile(os.path.join(directory, path), np.float32).reshape(-1, OpenFace.FEATURE_DIM)
             people[name] = features
         return people

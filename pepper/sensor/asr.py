@@ -39,8 +39,7 @@ class AbstractASR(object):
 
         Returns
         -------
-        transcript: list of (str, float)
-            List of (<transcript>, <confidence>) pairs, one for each hypothesis
+        transcript: list of ASRHypothesis
         """
         raise NotImplementedError()
 

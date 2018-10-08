@@ -9,7 +9,7 @@ class ApplicationTarget(enum.Enum):
     SYSTEM = 0
     NAOQI = 1
 
-APPLICATION_TARGET = ApplicationTarget.NAOQI
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
 PACKAGE_ROOT = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.join(*os.path.split(PACKAGE_ROOT)[:-1])
@@ -34,7 +34,7 @@ OBJECT_CONFIDENCE_THRESHOLD = 0.5
 FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'friends'))
 NEW_FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'new'))
 
-FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD = 0.9
+FACE_RECOGNITION_THRESHOLD = 0.9
 FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.2
 
 NAOQI_IP = "192.168.1.176"
@@ -45,7 +45,7 @@ NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
 # Add-ons
 REALTIME_STATISTICS = True
 SHOW_VIDEO_FEED = True
-SAVE_VIDEO_FEED = True
+SAVE_VIDEO_FEED = False
 
 
 # .json file with id tokens, with keys:

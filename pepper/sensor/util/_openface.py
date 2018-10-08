@@ -39,7 +39,7 @@ try:
 
             for bounding_box in bounding_boxes:
                 bounds = np.array([[bounding_box.left() , bounding_box.top()],
-                                   [bounding_box.width(), bounding_box.height()]],
+                                   [bounding_box.right(), bounding_box.bottom()]],
                                   np.float32)
 
                 connection.sendall(bounds)
@@ -47,7 +47,6 @@ try:
                 aligned_face = align.align(DIM, image, bounding_box,
                                            landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
                 representation = net.forward(aligned_face)
-                connection.sendall(np.int32(len(representation)))
                 connection.sendall(representation.astype(np.float32))
         else:
             connection.sendall(np.int32(0))

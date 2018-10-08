@@ -39,7 +39,7 @@ class MeetIntention(AbstractIntention):
             choice(sentences.INTRODUCE),
             choice(sentences.ASK_NAME)))
 
-    def on_face(self, bounds, face):
+    def on_face(self, face):
         self._face.append(face)
 
     # def on_face_known(self, bounds, face, name):

@@ -57,7 +57,7 @@ class ImageAnnotator(object):
 
     def annotate_batch(self, directory, output_directory=None, extension='.png',
                        object_threshold=config.OBJECT_CONFIDENCE_THRESHOLD,
-                       face_threshold=config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD):
+                       face_threshold=config.FACE_RECOGNITION_THRESHOLD):
 
         if not output_directory:
             output_directory = os.path.join(directory, 'annotated')
@@ -72,19 +72,19 @@ class ImageAnnotator(object):
         for index, image_path in enumerate(image_paths):
             print "\rAnnotating Image {:d}/{:d}".format(index + 1, len(image_paths)),
             image = Image.open(os.path.join(directory, image_path))
-
             image_np = np.array(image)
-            coco_info = coco.classify(image_np)
-            face_info = openface.represent(image_np)
-            name_info = face_classifier.classify(face_info[1]) if face_info else None
 
-            image = self.annotate(image, coco_info, face_info, name_info, object_threshold, face_threshold)
+            objects = coco.classify(image_np)
+            persons = [face_classifier.classify(face) for face in openface.represent(image_np)]
+
+            image = self.annotate(image, objects, persons, object_threshold, face_threshold)
             image.save(os.path.join(output_directory, image_path.replace(os.path.splitext(image_path)[1], extension)))
+
         print("\n")
 
-    def annotate(self, image, coco_info, face_info, name_info,
+    def annotate(self, image, objects, persons,
                  object_threshold=config.OBJECT_CONFIDENCE_THRESHOLD,
-                 face_threshold=config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD):
+                 face_threshold=config.FACE_RECOGNITION_THRESHOLD):
         """
         Annotate Image
 
@@ -92,12 +92,9 @@ class ImageAnnotator(object):
         ----------
         image: Image.Image
             Input Image
-        coco_info: list
-            tuple of [<object infos>, <confidences>, <object bounds>] (return of CocoClassifyClient.classify())
-        face_info: tuple or None
-            tuple of (FaceBounds, representation) (return of OpenFace.represent())
-        name_info: tuple or None
-            tuple of (name, confidence, distance) (return of FaceClassifier.classify())
+        objects: list of pepper.sensor.obj.CocoObject
+        faces: list of pepper.sensor.face.Face
+        persons: list of pepper.sensor.face.Person
         object_threshold: float
             Confidence Threshold for Object Recognition Annotations
         face_threshold: float
@@ -108,39 +105,32 @@ class ImageAnnotator(object):
         image: Image.Image
             Annotated Image
         """
+
         draw = ImageDraw.Draw(image)
 
         # Annotate Objects
-        for object_info, confidence, bounds in zip(*coco_info):
-            if confidence > object_threshold:
+        for obj in objects:
 
-                color = colorsys.hsv_to_rgb(float(object_info['id'] - 1) / CocoClassifyClient.CLASSES, 1, 1)
+            if obj.confidence > object_threshold:
+
+                color = colorsys.hsv_to_rgb(float(obj.id - 1) / CocoClassifyClient.CLASSES, 1, 1)
                 color = tuple((np.array(color) * 255).astype(np.uint8))
 
-                y0, x0, y1, x1 = bounds
-                x0 *= image.width
-                y0 *= image.height
-                x1 *= image.width
-                y1 *= image.height
+                bounds = obj.bounds.scaled(image.width, image.height)
 
-                self._draw_bounds(draw, [x0, y0, x1, y1], color, 3)
-                self._draw_text(draw, [x0, y0, x1, y1], object_info['name'], color, (0, 0, 0))
-                self._draw_text(draw, [x0, y0, x1, y0], "[{:4.0%}]".format(confidence), color, (0, 0, 0))
+                self._draw_bounds(draw, bounds, color, 3)
+                self._draw_text(draw, bounds, obj.name, color, (0, 0, 0))
+                self._draw_text(draw, bounds, "[{:4.0%}]".format(obj.confidence), color, (0, 0, 0))
 
-        # Annotate Faces
-        if face_info:
-            bounds, representation = face_info
-            name, confidence, distance = name_info
+        # Annotate Persons
+        for person in persons:
+            text = "[{:4.0%}] {}".format(person.confidence, person.name if person.confidence > face_threshold else "human")
+            bounds = person.bounds.scaled(image.width, image.height)
 
-            if confidence > face_threshold:
-                text = "[{:4.0%}] {}".format(confidence, name)
+            color = (255, 255, 255)
 
-                x0, y0, x1, y1 = int(bounds.x), int(bounds.y), int(bounds.x+bounds.width), int(bounds.y+bounds.height)
-
-                color = (255, 255, 255)
-
-                self._draw_bounds(draw, [x0, y0, x1, y1], color, 3)
-                self._draw_text(draw, [x0, y0, x1, y1], text, color, (0, 0, 0))
+            self._draw_bounds(draw, bounds, color, 3)
+            self._draw_text(draw, bounds, text, color, (0, 0, 0))
 
         return image
 
@@ -151,14 +141,14 @@ class ImageAnnotator(object):
         ----------
         draw: ImageDraw.ImageDraw
             ImageDraw Object
-        bounds: list
+        bounds: pepper.sensor.obj.Bounds
             [x0, y0, x1, y1]
         """
-        x0, y0, x1, y1 = bounds
-        draw.line([x0, y0, x0, y1], fill, width)
-        draw.line([x0, y0, x1, y0], fill, width)
-        draw.line([x1, y1, x0, y1], fill, width)
-        draw.line([x1, y1, x1, y0], fill, width)
+
+        draw.line([bounds.x0, bounds.y0, bounds.x0, bounds.y1], fill, width)
+        draw.line([bounds.x0, bounds.y0, bounds.x1, bounds.y0], fill, width)
+        draw.line([bounds.x1, bounds.y1, bounds.x0, bounds.y1], fill, width)
+        draw.line([bounds.x1, bounds.y1, bounds.x1, bounds.y0], fill, width)
 
     def _draw_text(self, draw, bounds, text, fill, color):
         """
@@ -166,13 +156,11 @@ class ImageAnnotator(object):
         ----------
         draw: ImageDraw.ImageDraw
             ImageDraw Object
-        bounds: list
-            [x0, y0, x1, y1]
+        bounds: pepper.sensor.obj.Bounds
         text: str
         """
-        x0, y0, x1, y1 = bounds
-        draw.rectangle([x0, y1 - self._font_size, x1, y1], fill)
-        draw.text([x0 + 5, y1 - self._font_size], text, color, self._font)
+        draw.rectangle([bounds.x0, bounds.y1 - self._font_size, bounds.x1, bounds.y1], fill)
+        draw.text([bounds.x0 + 5, bounds.y1 - self._font_size], text, color, self._font)
 
 
 if __name__ == '__main__':

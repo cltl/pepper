@@ -1,5 +1,5 @@
 from pepper.framework.system import SystemApp
-from pepper.framework import AbstractIntention
+
 
 APP = SystemApp
 
@@ -15,17 +15,15 @@ class VerboseApp(APP):
         for hypothesis in hypotheses:
             self.log.info("\ton_transcript: [{:4.0%}] {}".format(hypothesis.confidence, hypothesis.transcript))
 
-    def on_face(self, bounds, face):
-        self.log.info("on_face: {} {}".format(bounds, face.shape))
+    def on_face(self, faces):
+        self.log.info("on_face: {}".format(faces))
 
-    def on_face_known(self, bounds, face, name):
-        self.log.info("on_face_known: {} {} {}".format(bounds, face.shape, name))
-
-    def on_face_new(self, bounds, face):
-        self.log.info("on_face_new: {} {}".format(bounds, face.shape))
+    def on_face_known(self, persons):
+        self.log.info("on_face_known: {}".format(persons))
 
     def on_object(self, image, objects):
-        self.log.info("on_object: {} -> {}".format(image.shape, [cls for (cls, scr, box) in objects]))
+        self.log.info("on_object: {} -> {}".format(image.shape, [obj.name for obj in objects]))
+
 
 if __name__ == '__main__':
     VerboseApp().start()

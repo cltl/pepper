@@ -97,49 +97,30 @@ class AbstractApp(object):
         ----------
         image: np.ndarray
             Camera Frame
-        objects: list of tuple
-            List of Objects: [(name, confidence score, bounding box)]
+        objects: list of CocoObject
+            List of CocoObject instances
         """
         pass
 
-    def on_face(self, bounds, face):
+    def on_face(self, faces):
         """
         On Face Event. Called every time a face is detected.
 
         Parameters
         ----------
-        bounds: list of float
-            Bounding Box for Face
-        face: np.ndarray
-            128-dimensional OpenFace representation of Face
+        faces: list of pepper.sensor.face.Face
+            Face Object
         """
         pass
 
-    def on_face_known(self, bounds, face, name):
+    def on_face_known(self, persons):
         """
         On Face Known Event. Called every time a known face is detected.
 
         Parameters
         ----------
-        bounds: list of float
-            Bounding Box for Face
-        face: np.ndarray
-            128-dimensional OpenFace representation of Face
-        name: str
-            Name associated with Face
-        """
-        pass
-
-    def on_face_new(self, bounds, face):
-        """
-        On Face New Event. Called every time a new face is detected.
-
-        Parameters
-        ----------
-        bounds: list of float
-            Bounding Box for Face
-        face: np.ndarray
-            128-dimensional OpenFace representation of Face
+        persons: list of pepper.sensor.face.Person
+            Person Object
         """
         pass
 

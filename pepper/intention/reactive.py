@@ -29,38 +29,19 @@ class ReactiveIntention(AbstractIntention):
         # Set of Objects seen (passed to NLP as a list)
         self._objects = set()
 
-    def on_face_new(self, bounds, face):
-        self.initiate_conversation("human")
-
-    def on_face_known(self, bounds, face, name):
-        self.initiate_conversation(name)
-
-    def initiate_conversation(self, name):
-        if name != self._speaker:  # If person switches
-
-            # Initiate Conversation
-            self._speaker = name
-            self._chat_id = getrandbits(128)
-            self._chat_turn = 0
-            self.log.info("Initiated Conversation with {}".format(self._speaker))
-
-            # Greet Person
-            self.say("{} {}. {}".format(choice(GREETING), name, choice(TELL_KNOWN)))
-
-            # Tell Person about random seen object
-            if self._objects:
-                self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
+    def on_face_known(self, persons):
+        self._initiate_conversation(persons[0].name)
 
     def on_object(self, image, objects):
         new_objects = []
 
-        # Loop through currently visible objects, which are defined as (<name>, <confidence>, <bounding box>)
-        for obj, confidence, bbox in objects:
+        # Loop through currently visible objects
+        for obj in objects:
 
             # if new object is not yet seen, mention it and add it to seen objects
-            if obj not in self._objects:
-                new_objects.append((obj, confidence))
-                self._objects.add(obj)
+            if obj.name not in self._objects:
+                new_objects.append((obj.name, obj.confidence))
+                self._objects.add(obj.name)
 
         # Tell about seen objects and add them to seen objects
         if new_objects:
@@ -128,6 +109,22 @@ class ReactiveIntention(AbstractIntention):
 
         else:  # No speaker is known
             self.say("I heard something, but I don't know who I'm talking to. Please show yourself to me!")
+
+    def _initiate_conversation(self, name):
+        if name != self._speaker:  # If person switches
+
+            # Initiate Conversation
+            self._speaker = name
+            self._chat_id = getrandbits(128)
+            self._chat_turn = 0
+            self.log.info("Initiated Conversation with {}".format(self._speaker))
+
+            # Greet Person
+            self.say("{} {}. {}".format(choice(GREETING), name, choice(TELL_KNOWN)))
+
+            # Tell Person about random seen object
+            if self._objects:
+                self.say(choice(TELL_OBJECT).format(choice(list(self._objects))))
 
     def _tell_objects(self, new_objects):
         # If a single new object is seen, mention it with given certainty

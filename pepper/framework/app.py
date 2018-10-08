@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractApp
 from pepper.framework.abstract import AbstractIntention
-from pepper.sensor import FaceClassifier, CocoClassifyClient, VAD, ASRHypothesis
+from pepper.sensor import FaceClassifier, CocoClassifyClient, CocoObject, VAD
 
 from pepper.brain import LongTermMemory
 
@@ -14,6 +14,7 @@ from PIL import Image
 import numpy as np
 
 from threading import Thread
+from Queue import Queue
 from time import sleep
 import logging
 
@@ -46,6 +47,18 @@ class BaseApp(AbstractApp):
         # Add Camera
         self._camera = camera
         self._camera.callbacks += [self._on_image]
+
+        # Object Queue & Worker
+        self._object_queue = Queue()
+        self._object_thread = Thread(target=self._on_object_worker)
+        self._object_thread.daemon = True
+        self._object_thread.start()
+
+        # Face Queue & Worker
+        self._face_queue = Queue()
+        self._face_thread = Thread(target=self._on_face_worker)
+        self._face_thread.daemon = True
+        self._face_thread.start()
 
         # Add Microphone
         self._microphone = microphone
@@ -237,51 +250,31 @@ class BaseApp(AbstractApp):
         ----------
         image: np.ndarray
             Camera Frame
-        objects: list of tuple
-            List of Objects: [(name, confidence score, bounding box)]
+        objects: list of CocoObject
+            List of CocoObject instances
         """
         self.intention.on_object(image, objects)
 
-    def on_face(self, bounds, face):
+    def on_face(self, faces):
         """
         On Face Event. Called every time a face is detected.
 
         Parameters
         ----------
-        bounds: list of float
-            Bounding Box for Face
-        face: np.ndarray
-            128-dimensional OpenFace representation of Face
+        faces: list of pepper.sensor.face.Face
+            Face Object
         """
-        self.intention.on_face(bounds, face)
+        self.intention.on_face(faces)
 
-    def on_face_known(self, bounds, face, name):
+    def on_face_known(self, persons):
         """
         On Face Known Event. Called every time a known face is detected.
 
         Parameters
         ----------
-        bounds: list of float
-            Bounding Box for Face
-        face: np.ndarray
-            128-dimensional OpenFace representation of Face
-        name: str
-            Name associated with Face
+        persons: list of pepper.sensor.face.Person
         """
-        self.intention.on_face_known(bounds, face, name)
-
-    def on_face_new(self, bounds, face):
-        """
-        On Face New Event. Called every time a new face is detected.
-
-        Parameters
-        ----------
-        bounds: list of float
-            Bounding Box for Face
-        face: np.ndarray
-            128-dimensional OpenFace representation of Face
-        """
-        self.intention.on_face_new(bounds, face)
+        self.intention.on_face_known(persons)
 
     def on_audio(self, audio):
         """
@@ -317,6 +310,16 @@ class BaseApp(AbstractApp):
         """
         self.intention.on_transcript(hypotheses, audio)
 
+    def _on_utterance(self, audio):
+
+        # Call On Utterance Event
+        self.on_utterance(audio)
+
+        # If Transcript, call On Transcript Event
+        hypotheses = self.asr.transcribe(audio)
+        if hypotheses:
+            self.on_transcript(hypotheses, audio)
+
     def _on_image(self, image):
         """
         Raw On Image Event. Called every time the camera yields a frame.
@@ -330,35 +333,29 @@ class BaseApp(AbstractApp):
         self.on_image(image)
 
         # Classify Objects in Frame, calling On Object if any are found
-        classes, scores, boxes = self._coco.classify(image)
-        objects = [(cls['name'], scr, box)
-                   for cls, scr, box in zip(classes, scores, boxes) if scr > config.OBJECT_CONFIDENCE_THRESHOLD]
-        if objects: self.on_object(image, objects)
+        objects = [obj for obj in self._coco.classify(image) if obj.confidence > config.OBJECT_CONFIDENCE_THRESHOLD]
 
         # Represent Faces and call appropriate events when they are known or new
-        for bounds, face in self.openface.represent(image):
-            name, confidence, distance = self._face_classifier.classify(face)
-            self.on_face(bounds, face)
+        persons = [self._face_classifier.classify(face) for face in self.openface.represent(image)]
+        persons = [person for person in persons if person.confidence > config.FACE_RECOGNITION_THRESHOLD]
 
-            if distance > config.FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD:
-                self.on_face_new(bounds, face)
-            elif confidence > config.FACE_RECOGNITION_KNOWN_CONFIDENCE_THRESHOLD:
-                self.on_face_known(bounds, face, name)
+        self._object_queue.put((image, objects))
+        self._face_queue.put(persons)
 
         if config.SHOW_VIDEO_FEED:
             image = Image.fromarray(image)
-            image = self._image_annotator.annotate(image, [classes, scores, boxes], None, None)
+            image = self._image_annotator.annotate(image, objects, persons)
             self._video_feed_application.update(image)
 
-    def _on_utterance(self, audio):
+    def _on_object_worker(self):
+        while True:
+            image, objects = self._object_queue.get()
+            if objects: self.on_object(image, objects)
 
-        # Call On Utterance Event
-        self.on_utterance(audio)
-
-        # If Transcript, call On Transcript Event
-        hypotheses = self.asr.transcribe(audio)
-        if hypotheses:
-            self.on_transcript(hypotheses, audio)
+    def _on_face_worker(self):
+        while True:
+            persons = self._face_queue.get()
+            if persons: self.on_face_known(persons)
 
     def _statistics(self):
         while True:
