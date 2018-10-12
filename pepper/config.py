@@ -10,12 +10,12 @@ class ApplicationTarget(enum.Enum):
     NAOQI = 1
 
 
-APPLICATION_TARGET = ApplicationTarget.SYSTEM
+APPLICATION_TARGET = ApplicationTarget.NAOQI
 
 PACKAGE_ROOT = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.join(*os.path.split(PACKAGE_ROOT)[:-1])
 
-LANGUAGE = 'en-GB'
+LANGUAGE = 'en'
 
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
