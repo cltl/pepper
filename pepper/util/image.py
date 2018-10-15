@@ -36,7 +36,7 @@ class ImageWriter(object):
         return self._extension
 
     def write(self, image):
-        Image.fromarray(image).save(os.path.join(self._path, "{:05d}{}".format(self._index, self.extension)))
+        Image.fromarray(image).save_person(os.path.join(self._path, "{:05d}{}".format(self._index, self.extension)))
         self._index += 1
 
 

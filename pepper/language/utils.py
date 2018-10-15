@@ -104,7 +104,7 @@ def reply_to_question(brain_response, viewed_objects):
                     say = 'no, I cannot see a ' + brain_response['question']['object']['label']
 
         else:
-            say = random.choice(["I don\'t know","i have no idea","i wouldn\'t know"])
+            return None
         return say+'\n'
 
     brain_response['response'].sort(key=lambda x: x['authorlabel']['value'])

@@ -4,16 +4,13 @@ from webrtcvad import Vad
 import numpy as np
 
 from threading import Thread
-import logging
-
-from time import time
 
 
 class VAD(object):
 
     FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
     BUFFER_SIZE = 100  # Buffer Size
-    WINDOW_SIZE = 50  # Sliding Window Length (Multiples of Frame MS)
+    WINDOW_SIZE = config.VAD_WINDOW_SIZE * FRAME_MS  # Sliding Window Length (Multiples of Frame MS)
 
     def __init__(self, microphone, callbacks, mode=3):
         """

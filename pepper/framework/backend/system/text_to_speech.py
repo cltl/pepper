@@ -48,7 +48,7 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         while self._busy: sleep(0.1)
         self._busy = True
 
-        if 'en-' not in self.language:
+        if not self.language.startswith('en'):
             new_text = translate_v2.Client().translate(text, target_language=self.language)['translatedText']
             self._log.info("{} <- {}".format(new_text, text))
             text = new_text

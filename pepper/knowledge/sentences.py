@@ -90,7 +90,7 @@ REPEAT_NAME = [
     "What did you say your name was?",
     "I don't understand single words that well, please try a sentence instead!",
     "I'm not good with all names, maybe try an English nickname if you will!",
-    "Sorry, names are not my strong point",
+    "Sorry, names are not my strong point. Could you repeat yours?",
 ]
 
 JUST_MET = [
@@ -194,9 +194,12 @@ THANK = [
 
 GOODBYE = [
     "Bye!",
-    "ByeBye",
-    "Leo Lani out!",
+    "Bye Bye",
+    "See you"
     "See you later!",
+    "Goodbye",
+    "Have a nice day",
+    "Nice talking to you"
 ]
 
 AFFIRMATION = [

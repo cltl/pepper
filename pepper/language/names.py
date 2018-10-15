@@ -1,6 +1,7 @@
 from pepper.sensor.asr import GoogleASR, ASRHypothesis
 from pepper.language.ner import NER
 from nltk.metrics.distance import edit_distance
+from concurrent import futures
 
 
 class NameParser:
@@ -10,6 +11,7 @@ class NameParser:
         self._names = names
         self._languages = languages
         self._asrs = [GoogleASR(language) for language in languages]
+        self._pool = futures.ThreadPoolExecutor(len(self._asrs))
 
         self._max_name_distance = max_name_distance
         self._min_alternatives = min_alternatives
@@ -43,20 +45,26 @@ class NameParser:
         return hypotheses[0]
 
     def parse_new(self, audio):
-        name_match = None
-        name_match_confidence = 0
+        threads = [self._pool.submit(self._parse_new, asr, audio) for asr in self._asrs]
+        results = [result.result() for result in futures.as_completed(threads)]
 
-        for language, asr in zip(self._languages, self._asrs):
-            transcript = asr.transcribe(audio)
+        best_name = None
+        best_confidence = 0.0
 
-            for i, hypothesis in enumerate(transcript):
+        for result in results:
+            if result:
+                name, confidence = result
+                if confidence > best_confidence:
+                    best_name = name
+                    best_confidence = confidence
 
+        if best_name:
+            return best_name, best_confidence
 
-                for word, tag in self._tagger.tag(hypothesis.transcript):
-                    if tag in NameParser.TAGS_OF_INTEREST:
-                        if hypothesis.confidence > name_match_confidence:
-                            name_match = word
-                            name_match_confidence = hypothesis.confidence
+    def _parse_new(self, asr, audio):
+        transcript = asr.transcribe(audio)
 
-        if name_match:
-            return name_match, name_match_confidence
+        for i, hypothesis in enumerate(transcript):
+            for word, tag in self._tagger.tag(hypothesis.transcript):
+                if tag in NameParser.TAGS_OF_INTEREST:
+                    return word, hypothesis.confidence

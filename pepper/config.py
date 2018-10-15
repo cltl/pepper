@@ -1,4 +1,4 @@
-from pepper.framework import *
+from pepper.framework import CameraResolution, NaoqiMicrophoneIndex
 
 import enum
 import json
@@ -10,12 +10,24 @@ class ApplicationTarget(enum.Enum):
     NAOQI = 1
 
 
-APPLICATION_TARGET = ApplicationTarget.NAOQI
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
+
+
+def get_backend():
+    backend = None
+    if APPLICATION_TARGET == ApplicationTarget.SYSTEM:
+        from pepper.framework.backend.system import SystemBackend
+        backend = SystemBackend()
+    elif APPLICATION_TARGET == ApplicationTarget.NAOQI:
+        from pepper.framework.backend.naoqi import NaoqiBackend
+        backend = NaoqiBackend()
+    return backend
+
 
 PACKAGE_ROOT = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.join(*os.path.split(PACKAGE_ROOT)[:-1])
 
-LANGUAGE = 'en'
+LANGUAGE = 'en-GB'
 
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
@@ -26,6 +38,7 @@ MICROPHONE_CHANNELS = 1
 
 VAD_VOICE_THRESHOLD = 0.9
 VAD_NONVOICE_THRESHOLD = 0.2
+VAD_WINDOW_SIZE = 3  # * VAD_FRAME_MS
 
 CAMERA_RESOLUTION = CameraResolution.QVGA
 CAMERA_FRAME_RATE = 2

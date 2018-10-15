@@ -128,6 +128,6 @@ class QnA:
                 answer = A()
                 ratio = r
 
-        if ratio > 80:
+        if ratio > 90:
             return answer
 

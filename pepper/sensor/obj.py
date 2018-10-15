@@ -292,7 +292,7 @@ class InceptionClassifyClient:
         """
 
         with BytesIO() as jpeg_buffer:
-            Image.fromarray(image).save(jpeg_buffer, format='JPEG')
+            Image.fromarray(image).save_person(jpeg_buffer, format='JPEG')
             return jpeg_buffer.getvalue()
 
 
