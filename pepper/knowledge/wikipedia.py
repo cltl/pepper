@@ -15,7 +15,6 @@ class Wikipedia:
 
     def nlp_query(self, query):
         tokens = nltk.word_tokenize(query)
-        tokens = [self.lemmatize(word) for word in tokens]
 
         pos = nltk.pos_tag(tokens)
         pos = self.combine_pos(pos)
