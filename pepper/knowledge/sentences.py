@@ -1,4 +1,5 @@
 GREETING = [
+    "Yo",
     "Hey!",
     "Hello!",
     "Hi!",

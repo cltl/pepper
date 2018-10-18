@@ -35,6 +35,17 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition):
         for greeting in GREETING:
             if statement == greeting.lower()[:-1]:
                 ConversationIntention(self.application, Chat("stranger"))
+                return
+
+
+class IgnoreIntention(Intention, SpeechRecognition):
+    def on_transcript(self, hypotheses, audio):
+        statement = hypotheses[0].transcript
+
+        for wakeup in GREETING + ["wake up", "pepper"]:
+            if wakeup in statement:
+                self.say(choice(["Ok, I'm back!"]))
+                IdleIntention(self.application)
 
 
 class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
@@ -91,6 +102,8 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         utterance = hypotheses[0].transcript
         self.chat.add_utterance(utterance)
 
+        if self.respond_silence(utterance):
+            return
         if self.respond_greeting(utterance):
             return
         elif self.respond_goodbye(utterance):
@@ -122,6 +135,14 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                     choice(["I don't know what it means", "I don't understand it", "I couldn't parse it",
                             "I have no idea about it", "I have no clue", "this goes above my robot-skills",
                             "I find this quite difficult to understand", "It doesn't ring any bells"])))
+
+    def respond_silence(self, statement):
+        for silent in ["silent", "silence", "be quiet", "relax"]:
+            if silent in statement:
+                self.say(choice(["Ok, I'll go and reflect on life!"]))
+                IgnoreIntention(self.application)
+                return True
+        return False
 
     def respond_greeting(self, statement):
         for greeting in GREETING:
