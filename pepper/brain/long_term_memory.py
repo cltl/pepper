@@ -1,5 +1,5 @@
-from pepper import config, logger
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, casefold_capsule, read_query
+from pepper import config, logger
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
 from iribaker import to_iri

@@ -260,7 +260,7 @@ def reply_to_statement(template, speaker, viewed_objects, self):
         else:
             response += ', but I don\'t see it!'
 
-        class_recognized, text = self.app.brain.process_visual(object)
+        class_recognized, text = self.application.brain.process_visual(object)
 
         if class_recognized is not None:
             capsule = {
@@ -282,7 +282,7 @@ def reply_to_statement(template, speaker, viewed_objects, self):
                 "date": date.today()
             }
 
-            self.app.brain.experience(capsule)
+            self.application.brain.experience(capsule)
 
         response += text
 

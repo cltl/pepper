@@ -20,11 +20,18 @@ class Wikipedia:
         pos = nltk.pos_tag(tokens)
         pos = self.combine_pos(pos)
 
-        # Parse proper questions about a noun
+        print(pos)
+
+        # If this is a proper question about a Noun
         if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0].lower() in ["what", "who"]:
-            for word, tag in pos[::-1]:
-                if tag.startswith('NN') or tag.startswith("JJ"):
-                    return self.query(word)
+
+            # And there is only one Noun in Question (a.k.a., question is simple enough)
+            if sum([tag == "NN" for word, tag in pos]) == 1:
+
+                # Query Wikipedia About last object
+                for word, tag in pos[::-1]:
+                    if tag.startswith('NN') or tag.startswith("JJ"):
+                        return self.query(word)
         return None
 
     def query(self, query):
