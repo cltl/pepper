@@ -16,7 +16,7 @@ from random import choice
 from time import time, sleep
 
 
-class DefaultApp(Application, Statistics, ObjectDetection, FaceDetection, SpeechRecognition):
+class DefaultApp(Application, VideoDisplay, Statistics, ObjectDetection, FaceDetection, SpeechRecognition):
     pass
 
 
@@ -30,6 +30,7 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition):
         for meeting in ["my name is", "meet", "I am", "who are you", "what is your name", "how are you"]:
             if meeting in statement:
                 MeetIntention(self.application)
+                return
 
         for greeting in GREETING:
             if statement == greeting.lower()[:-1]:
@@ -39,7 +40,7 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition):
 class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
 
     _face_detection = None  # type: FaceDetection
-    CONVERSATION_TIMEOUT = 15
+    CONVERSATION_TIMEOUT = 30
 
     def __init__(self, application, chat):
         """
@@ -53,6 +54,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         super(ConversationIntention, self).__init__(application)
 
         self._face_detection = self.require_dependency(FaceDetection)
+        self._name_parser = NameParser(list(self._face_detection.known_people.keys()))
 
         self._chat = chat
         self._last_seen = time()
@@ -70,6 +72,8 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             self._last_seen = time()
 
     def on_person(self, persons):
+        if self.chat.speaker not in self._face_detection.known_people:
+            ConversationIntention(self.application, Chat(persons[0].name))
         if self.chat.speaker in [person.name for person in persons]:
             self._last_seen = time()
 
@@ -83,7 +87,6 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         self._seen_objects.update([obj.name for obj in objects])
 
     def on_transcript(self, hypotheses, audio):
-
         # Process Utterance
         utterance = hypotheses[0].transcript
         self.chat.add_utterance(utterance)
@@ -94,12 +97,20 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             return
         elif self.respond_affirmation_negation(utterance):
             return
+        elif self.respond_meeting(utterance):
+            return
+        elif self.respond_qna(utterance):
+            return
 
         # Parse only sentences within bounds
         elif 3 <= len(utterance.split()) <= 10:
-            if self.respond_qna(utterance):
-                return
-            elif self.respond_brain(utterance):
+
+            # Parse Names
+            utterance = self._name_parser.parse_known(hypotheses).transcript
+
+            self.say(choice(THINKING))
+
+            if self.respond_brain(utterance):
                 return
             elif self.respond_wikipedia(utterance):
                 return
@@ -107,15 +118,24 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                 return
             else:
                 self.say("{}: {}, but {}!".format(
-                    choice(["I think you said", "I heard", "I picked up"]), utterance,
+                    choice(["I think you said", "I heard", "I picked up", "I'm guessing you told me"]), utterance,
                     choice(["I don't know what it means", "I don't understand it", "I couldn't parse it",
                             "I have no idea about it", "I have no clue", "this goes above my robot-skills",
-                            "I find this quite difficult", "It doesn't ring any bells"])))
+                            "I find this quite difficult to understand", "It doesn't ring any bells"])))
 
     def respond_greeting(self, statement):
         for greeting in GREETING:
-            if statement == re.sub('[?!.;,]', '', greeting.lower()):
-                self.say("{}, {}!".format(choice(GREETING), self.chat.speaker))
+            greet = re.sub('[?!.;,]', '', greeting.lower())
+            for word in statement.split():
+                if word.lower() == greet:
+                    self.say("{}, {}!".format(choice(GREETING), self.chat.speaker))
+                    return True
+        return False
+
+    def respond_meeting(self, statement):
+        for meeting in ["my name is", "let's meet", "I am"]:
+            if meeting in statement:
+                MeetIntention(self.application)
                 return True
         return False
 
@@ -203,7 +223,10 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         IdleIntention(self.application)
 
 
-class MeetIntention(Intention, FaceDetection, SpeechRecognition):
+class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
+
+    MEET_TIMEOUT = 30
+    UTTERANCE_TIMEOUT = 15
 
     MIN_SAMPLES = 25
     NAME_CONFIDENCE = 0.8
@@ -216,15 +239,34 @@ class MeetIntention(Intention, FaceDetection, SpeechRecognition):
         self._face_detection = self.require_dependency(FaceDetection)
         self._name_parser = NameParser(list(self._face_detection.known_people.keys()))
 
+        self._last_seen = time()
+        self._last_utterance = time()
+
         self._name = ""
         self._face = []
 
         self.say("{} {} {}".format(choice(GREETING), choice(INTRODUCE), choice(ASK_NAME)))
 
+    def on_image(self, image):
+        # If meeting times out, go back to idle!
+        if time() - self._last_seen > self.MEET_TIMEOUT:
+            self.end_conversation()
+
+        # If silence was observed, ask away!
+        if time() - self._last_utterance > self.UTTERANCE_TIMEOUT:
+            self._last_utterance = time()
+            if self._name:
+                self.say("{} {}".format(choice(UNDERSTAND), choice(VERIFY_NAME).format(self._name)))
+            else:
+                self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)))
+
     def on_face(self, faces):
         self._face.append(faces[0].representation)
+        self._last_seen = time()
 
     def on_transcript(self, hypotheses, audio):
+        self._last_utterance = time()
+
         utterance = hypotheses[0].transcript
 
         if self.goodbye(utterance):
@@ -239,7 +281,9 @@ class MeetIntention(Intention, FaceDetection, SpeechRecognition):
             # If not enough face samples have been gathered, gather more!
             if len(self._face) < self.MIN_SAMPLES:
                 self.say("{} {}".format(choice(JUST_MET).format(self._name), choice(MORE_FACE_SAMPLES)))
-                while len(self._face) < self.MIN_SAMPLES: sleep(1)
+                while len(self._face) < self.MIN_SAMPLES:
+                    self._last_utterance = time()
+                    sleep(1)
                 self.say(choice(THANK))
 
             # Save person to Disk
@@ -283,6 +327,11 @@ class MeetIntention(Intention, FaceDetection, SpeechRecognition):
             if statement == re.sub('[?!.;,]', '', bye.lower()):
                 return True
         return False
+
+    def end_conversation(self):
+        self.say("{}!".format(
+            choice(["See you later", "ByeBye", "Till another time", "It was good having talked to you", "Goodbye"])))
+        IdleIntention(self.application)
 
     def save_person(self):
         np.concatenate(self._face).tofile(os.path.join(config.NEW_FACE_DIRECTORY, "{}.bin".format(self._name)))

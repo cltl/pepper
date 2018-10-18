@@ -162,7 +162,9 @@ HAPPY = [
     "Superduper!",
     "Amazing!",
     "I like it!",
-    "That makes my day!"
+    "That makes my day!",
+    "Incredible",
+    "Mesmerizing"
 ]
 
 ASK_ME = [
@@ -214,7 +216,9 @@ AFFIRMATION = [
     "correctamundo",
     "splendid",
     "indeed",
-    "superduper"
+    "superduper",
+    "wow",
+    "amazing"
 ]
 
 NEGATION = [

@@ -17,7 +17,8 @@ class Wikipedia:
 
         print(pos)
 
-        if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0] in ["What", "Who"]:  # If Question
+        # Parse proper questions about a noun
+        if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0].lower() in ["what", "who"]:
             for word, tag in pos[::-1]:
                 if tag.startswith('NN'):
                     return self.query(word)

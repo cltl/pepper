@@ -1,3 +1,4 @@
+from pepper.knowledge.sentences import *
 from pepper import config
 
 from fuzzywuzzy import fuzz
@@ -11,6 +12,7 @@ import os
 class QnA:
 
     QNA_DYNAMIC = {
+        "I'm doing": lambda: choice(HAPPY),
         "What time is it?": lambda: strftime("It is currently %H:%M."),
         "What is the time?": lambda: strftime("It is currently %H:%M."),
         "What day is it?": lambda: strftime("It is %A today."),
@@ -62,6 +64,7 @@ class QnA:
         "How are you": "I'm fine, thanks! What about you?",
         "How is it going?": "Great, as always, how are things with you, my dear human?",
         "How are you feeling": "I feel robot-like, I always have.",
+        "How do you feel?": "I feel electric!",
         "How are you doing?": "Tremendous to be honest, "
                               "although you have to consider that I'm a robot and I do not feel emotions. "
                               "I'm programmed to sound happy all the time!",
