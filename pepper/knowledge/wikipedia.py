@@ -1,4 +1,6 @@
+from nltk.corpus import wordnet as wn
 import nltk
+
 
 import requests
 import urllib
@@ -13,13 +15,14 @@ class Wikipedia:
 
     def nlp_query(self, query):
         tokens = nltk.word_tokenize(query)
-        pos = self.combine_pos(nltk.pos_tag(tokens))
+        tokens = [self.lemmatize(word) for word in tokens]
 
-        print(pos)
+        pos = nltk.pos_tag(tokens)
+        pos = self.combine_pos(pos)
 
         if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0] in ["What", "Who"]:  # If Question
             for word, tag in pos[::-1]:
-                if tag.startswith('NN'):
+                if tag.startswith('NN') or tag.startswith("JJ"):
                     return self.query(word)
         return None
 
@@ -45,6 +48,17 @@ class Wikipedia:
                 combined_pos.append([word, p])
         return combined_pos
 
+    def lemmatize(self, word):
+        synsets = wn.synsets(word)
+        if synsets:
+            lemmas = synsets[0]._lemma_names
+            if lemmas:
+                return lemmas[0]
+        return word
 
 if __name__ == '__main__':
-    print(Wikipedia().nlp_query("What is the Eiffel Tower?"))
+    synset = wn.synsets("clouds")[0]
+
+    print(dir(synset))
+    print(synset._lemma_names[0])
+    print(Wikipedia().nlp_query("What are clouds?"))
