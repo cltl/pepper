@@ -77,11 +77,6 @@ NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
 
-# Add-ons
-REALTIME_STATISTICS = True
-SHOW_VIDEO_FEED = False
-SAVE_VIDEO_FEED = False
-
 
 # .json file with id tokens, with keys:
 #   "wolfram": <appid>
