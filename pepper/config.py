@@ -82,3 +82,6 @@ NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
 #   "wolfram": <appid>
 with open(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tokens.json'))) as tokens:
     TOKENS = json.load(tokens)
+
+# Set GOOGLE CREDENTIALS
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(os.path.dirname(__file__), "../google_cloud_key.json")
