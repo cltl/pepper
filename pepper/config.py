@@ -1,5 +1,3 @@
-from pepper.framework import CameraResolution, NaoqiMicrophoneIndex
-
 import enum
 import json
 import os
@@ -10,7 +8,31 @@ class ApplicationTarget(enum.Enum):
     NAOQI = 1
 
 
-APPLICATION_TARGET = ApplicationTarget.NAOQI
+class CameraResolution(enum.Enum):
+    NATIVE = -1, -1
+    QQQQVGA = 30, 40
+    QQQVGA = 60, 80
+    QQVGA = 120, 160
+    QVGA = 240, 320
+    VGA = 480, 640
+    VGA4 = 960, 1280
+
+
+class NaoqiCameraIndex(enum.IntEnum):
+    TOP = 0
+    BOTTOM = 1
+    DEPTH = 2
+
+
+class NaoqiMicrophoneIndex(enum.IntEnum):
+    ALL = 0
+    LEFT = 1
+    RIGHT = 2
+    FRONT = 3
+    REAR = 4
+
+
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
 
 def get_backend():
@@ -41,15 +63,14 @@ VAD_NONVOICE_THRESHOLD = 0.2
 VAD_WINDOW_SIZE = 2  # * VAD_FRAME_MS
 
 CAMERA_RESOLUTION = CameraResolution.QVGA
-CAMERA_FRAME_RATE = 4
+CAMERA_FRAME_RATE = 5
 
 OBJECT_CONFIDENCE_THRESHOLD = 0.5
 
 FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'friends'))
 NEW_FACE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'people', 'new'))
 
-FACE_RECOGNITION_THRESHOLD = 0.9
-FACE_RECOGNITION_NEW_DISTANCE_THRESHOLD = 1.2
+FACE_RECOGNITION_THRESHOLD = 0.5
 
 NAOQI_IP = "192.168.1.176"
 NAOQI_PORT = 9559

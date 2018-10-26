@@ -63,6 +63,7 @@ class Application(AbstractComponent):
     def run(self):
         self.backend.camera.start()
         self.backend.microphone.start()
+
         while True:
             sleep(1)
 

@@ -6,6 +6,7 @@ from concurrent import futures
 
 class NameParser:
     TAGS_OF_INTEREST = ['PERSON', 'LOCATION', 'ORGANISATION']
+    TAGGER = NER()
 
     def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2.5, min_alternatives=4):
         self._names = names
@@ -16,14 +17,12 @@ class NameParser:
         self._max_name_distance = max_name_distance
         self._min_alternatives = min_alternatives
 
-        self._tagger = NER()
-
     def parse_known(self, hypotheses):
         toi = None  # Transcript of Interest
         words = []
 
         for i, (hypothesis) in enumerate(hypotheses):
-            for word, tag in self._tagger.tag(hypothesis.transcript):
+            for word, tag in self.TAGGER.tag(hypothesis.transcript):
                 if tag in NameParser.TAGS_OF_INTEREST:
                     words.append((word, hypothesis.confidence))
 
@@ -65,6 +64,6 @@ class NameParser:
         transcript = asr.transcribe(audio)
 
         for i, hypothesis in enumerate(transcript):
-            for word, tag in self._tagger.tag(hypothesis.transcript):
+            for word, tag in self.TAGGER.tag(hypothesis.transcript):
                 if tag in NameParser.TAGS_OF_INTEREST:
                     return word, hypothesis.confidence

@@ -119,8 +119,7 @@ class ImageAnnotator(object):
                 bounds = obj.bounds.scaled(image.width, image.height)
 
                 self._draw_bounds(draw, bounds, color, 3)
-                self._draw_text(draw, bounds, obj.name, color, (0, 0, 0))
-                self._draw_text(draw, bounds, "[{:4.0%}]".format(obj.confidence), color, (0, 0, 0))
+                self._draw_text(draw, bounds, "[{:4.0%}] {}".format(obj.confidence, obj.name), color, (0, 0, 0))
 
         # Annotate Persons
         for person in persons:

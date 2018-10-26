@@ -1,8 +1,8 @@
-from pepper.framework import CameraResolution
+from pepper.framework.util import Mailbox
+from pepper.config import CameraResolution
 from pepper import logger
 
 from threading import Thread
-from Queue import Queue
 
 from collections import deque
 from time import time
@@ -34,7 +34,7 @@ class AbstractCamera(object):
         self._true_rate = rate
         self._t0 = time()
 
-        self._queue = Queue(maxsize=2)
+        self._mailbox = Mailbox()
         self._processor_thread = Thread(target=self._processor)
         self._processor_thread.daemon = True
         self._processor_thread.start()
@@ -128,8 +128,7 @@ class AbstractCamera(object):
         ----------
         image: np.ndarray
         """
-        if not self._queue.full():
-            self._queue.put(image)
+        self._mailbox.put(image)
 
     def start(self):
         """Start Streaming Images from Camera"""
@@ -156,6 +155,6 @@ class AbstractCamera(object):
 
             self._true_rate = 1.0 / np.mean(self._dt_buffer)
 
-            image = self._queue.get()
+            image = self._mailbox.get()
             for callback in self.callbacks:
                 callback(image)

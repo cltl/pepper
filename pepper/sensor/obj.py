@@ -106,19 +106,22 @@ class Bounds(object):
 
         return None if x0 >= x1 or y0 >= y1 else Bounds(x0, y0, x1, y1)
 
-    def overlap(self, bounds):
+    def overlap(self, other):
         """
         Calculate Overlap Factor
 
         Parameters
         ----------
-        bounds: Bounds
+        other: Bounds
 
         Returns
         -------
         overlap: float
         """
-        return min(self.intersection(bounds).area / self.area, 1)
+
+        intersection = self.intersection(other)
+
+        return min(intersection.area / self.area, self.area / intersection.area)
 
     def is_subset_of(self, other):
         """

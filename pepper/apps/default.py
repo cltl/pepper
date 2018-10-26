@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.language import *
+from pepper.sensor.face import FaceClassifier
 from pepper import config
 
 from pepper.knowledge.sentences import *
@@ -23,6 +24,9 @@ class DefaultApp(Application, VideoDisplay, Statistics, ObjectDetection, FaceDet
 class IdleIntention(Intention, FaceDetection, SpeechRecognition):
     def on_person(self, persons):
         ConversationIntention(self.application, Chat(persons[0].name))
+
+    def on_new_person(self, persons):
+        MeetIntention(self.application)
 
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript
@@ -64,26 +68,25 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         """
         super(ConversationIntention, self).__init__(application)
 
-        self._face_detection = self.require_dependency(FaceDetection)
-        self._name_parser = NameParser(list(self._face_detection.known_people.keys()))
-
         self._chat = chat
         self._last_seen = time()
-
         self._seen_objects = set()
 
-        self.say("{} {}.".format(choice(GREETING), self.chat.speaker))  # Greet Person
+        self._face_detection = self.require_dependency(FaceDetection)
+        self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
+
+        self.say("{}, {}.".format(choice(GREETING), self.chat.speaker))  # Greet Person
 
     @property
     def chat(self):
         return self._chat
 
     def on_face(self, faces):
-        if self.chat.speaker not in self._face_detection.known_people:
+        if self.chat.speaker not in self._face_detection.face_classifier.people:
             self._last_seen = time()
 
     def on_person(self, persons):
-        if self.chat.speaker not in self._face_detection.known_people:
+        if self.chat.speaker not in self._face_detection.face_classifier.people:
             ConversationIntention(self.application, Chat(persons[0].name))
         if self.chat.speaker in [person.name for person in persons]:
             self._last_seen = time()
@@ -249,7 +252,7 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
     MEET_TIMEOUT = 30
     UTTERANCE_TIMEOUT = 15
 
-    MIN_SAMPLES = 25
+    MIN_SAMPLES = 30
     NAME_CONFIDENCE = 0.8
 
     _face_detection = None  # type: FaceDetection
@@ -258,7 +261,7 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
         super(MeetIntention, self).__init__(application)
 
         self._face_detection = self.require_dependency(FaceDetection)
-        self._name_parser = NameParser(list(self._face_detection.known_people.keys()))
+        self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self._last_seen = time()
         self._last_utterance = time()
@@ -355,6 +358,12 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
         IdleIntention(self.application)
 
     def save_person(self):
+        people = self._face_detection.face_classifier.people
+
+        if self._name not in people:
+            people[str(self._name)] = self._face
+            self._face_detection.face_classifier = FaceClassifier(people)
+
         np.concatenate(self._face).tofile(os.path.join(config.NEW_FACE_DIRECTORY, "{}.bin".format(self._name)))
 
 

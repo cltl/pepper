@@ -41,13 +41,6 @@ class ObjectDetection(AbstractComponent):
             while True:
                 image, objects = queue.get()
 
-                # Call on_image Event Function
-                self.on_image(image)
-
-                # Call on_image Callback Functions
-                for callback in self.on_image_callbacks:
-                    callback(image)
-
                 if objects:
                     # Call on_object Event Function
                     self.on_object(image, objects)
@@ -55,6 +48,13 @@ class ObjectDetection(AbstractComponent):
                     # Call on_object Callback Functions
                     for callback in self.on_object_callbacks:
                         callback(image, objects)
+
+                # Call on_image Event Function
+                self.on_image(image)
+
+                # Call on_image Callback Functions
+                for callback in self.on_image_callbacks:
+                    callback(image)
 
         # Initialize Object Queue & Worker
         thread = Thread(target=worker)

@@ -183,6 +183,8 @@ class OpenFace(object):
 
 class FaceClassifier:
 
+    NEW = "NEW"
+
     def __init__(self, people, n_neighbors=20):
         """
         Classify Faces of Known People
@@ -190,18 +192,24 @@ class FaceClassifier:
         Parameters
         ----------
         people: dict
+        new: dict
         n_neighbors: int
         """
 
         self._people = people
-        self._names = sorted(people.keys())
+        self._n_neighbors = n_neighbors
+
+        self._names = sorted(self.people.keys())
         self._indices = range(len(self._names))
 
         if self.people:
-            self._labels = np.concatenate([[index] * len(people[name]) for name, index in zip(self._names, self._indices)])
-            self._features = np.concatenate([people[name] for name in self._names])
-            self._classifier = KNeighborsClassifier(n_neighbors)
+            self._labels = np.concatenate([[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
+            self._features = np.concatenate([self.people[name] for name in self._names])
+            self._classifier = KNeighborsClassifier(self._n_neighbors)
             self._classifier.fit(self._features, self._labels)
+
+        self._log = logger.getChild(self.__class__.__name__)
+        self._log.debug("Booted")
 
     @property
     def people(self):
@@ -239,7 +247,6 @@ class FaceClassifier:
         # Retrieve name and calculate confidence
         name = self._names[label]
         confidence = float(np.mean(labels == label))
-        # distance = float(np.mean(distances[labels == label]))
 
         return Person(face, name, confidence)
 

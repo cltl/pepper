@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractCamera
-from pepper.framework import CameraResolution
+from pepper.config import CameraResolution
 
 import cv2
 

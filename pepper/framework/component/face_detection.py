@@ -19,16 +19,17 @@ class FaceDetection(AbstractComponent):
 
         self.on_face_callbacks = []
         self.on_person_callbacks = []
+        self.on_new_person_callbacks = []
 
         # Initialize OpenFace
         open_face = OpenFace()
 
         # Import Face Data
-        self.known_people = FaceClassifier.load_directory(config.FACE_DIRECTORY)
-        self.known_people.update(FaceClassifier.load_directory(config.NEW_FACE_DIRECTORY))
+        people = FaceClassifier.load_directory(config.FACE_DIRECTORY)
+        people.update(FaceClassifier.load_directory(config.NEW_FACE_DIRECTORY))
 
         # Initialize Face Classifier
-        face_classifier = FaceClassifier(self.known_people)
+        self.face_classifier = FaceClassifier(people)
 
         face_queue = Queue()
         person_queue = Queue()
@@ -44,7 +45,7 @@ class FaceDetection(AbstractComponent):
 
             # Find Persons
             faces = open_face.represent(image)
-            persons = [face_classifier.classify(face) for face in faces]
+            persons = [self.face_classifier.classify(face) for face in faces]
             persons = [person for person in persons if person.confidence > config.FACE_RECOGNITION_THRESHOLD]
 
             face_queue.put(faces)
@@ -65,12 +66,17 @@ class FaceDetection(AbstractComponent):
                 persons = person_queue.get()
                 if persons:
 
-                    # Call on_person Event Function
-                    self.on_person(persons)
+                    if persons[0].name == FaceClassifier.NEW:
+                        self.on_new_person(persons)
+                        for callback in self.on_new_person_callbacks:
+                            callback(persons)
+                    else:
+                        # Call on_person Event Function
+                        self.on_person(persons)
 
-                    # Call Callback Functions
-                    for callback in self.on_person_callbacks:
-                        callback(persons)
+                        # Call Callback Functions
+                        for callback in self.on_person_callbacks:
+                            callback(persons)
 
         # Initialize Queue & Worker
         thread = Thread(target=worker)
@@ -94,6 +100,16 @@ class FaceDetection(AbstractComponent):
     def on_person(self, persons):
         """
         On Person Event. Called every time a known face is detected.
+
+        Parameters
+        ----------
+        persons: list of pepper.sensor.face.Person
+        """
+        pass
+
+    def on_new_person(self, persons):
+        """
+        On New Person Event. Called every time an unknown face is detected.
 
         Parameters
         ----------
