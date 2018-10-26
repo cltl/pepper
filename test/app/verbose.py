@@ -1,5 +1,5 @@
 from pepper.framework import *
-from pepper.config import get_backend
+from pepper import config
 
 
 class VerboseApp(Application, ObjectDetection, FaceDetection, SpeechRecognition):
@@ -23,4 +23,4 @@ class VerboseApp(Application, ObjectDetection, FaceDetection, SpeechRecognition)
 
 
 if __name__ == '__main__':
-    VerboseApp(get_backend()).run()
+    VerboseApp(config.get_backend()).run()
