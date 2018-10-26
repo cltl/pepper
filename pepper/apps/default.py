@@ -46,10 +46,11 @@ class IgnoreIntention(Intention, SpeechRecognition):
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript
 
-        for wakeup in GREETING + ["wake up", "pepper"]:
+        for wakeup in [greeting.lower()[:-1] for greeting in GREETING] + ["wake up", "pepper"]:
             if wakeup in statement:
-                self.say(choice(["Ok, I'm back!"]))
+                self.say(choice(["Ok, I'm back!", "Hello, I'm back!"]))
                 IdleIntention(self.application)
+                return
 
 
 class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
@@ -113,6 +114,8 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             return
         elif self.respond_affirmation_negation(utterance):
             return
+        elif self.respond_please_repeat_me(utterance):
+            return
         elif self.respond_meeting(utterance):
             return
         elif self.respond_qna(utterance):
@@ -142,7 +145,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
     def respond_silence(self, statement):
         for silent in ["silent", "silence", "be quiet", "relax"]:
             if silent in statement:
-                self.say(choice(["Ok, I'll go and reflect on life!"]))
+                self.say(choice(["Ok, I'll be quiet for a bit.", "Right, I'll be there when you need me!", "Bye, I'm going to browse for knowledge on the web!"]))
                 IgnoreIntention(self.application)
                 return True
         return False
@@ -182,6 +185,12 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                     self.say(choice(SORRY))
                     return True
         return False
+
+    def respond_please_repeat_me(self, statement):
+        s = statement.lower()
+
+        if s.startswith("please repeat"):
+            self.say(statement.replace("please repeat", ""))
 
     def respond_qna(self, question):
         answer = QnA().query(question)
