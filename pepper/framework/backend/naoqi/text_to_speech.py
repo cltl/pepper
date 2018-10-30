@@ -21,13 +21,18 @@ class NaoqiTextToSpeech(AbstractTextToSpeech):
 
         self._log.debug("Booted")
 
-    def say(self, text):
+    def say(self, text, animation=None):
         """
         Say something through Text to Speech
 
         Parameters
         ----------
         text: str
+        animation: str
         """
         self._log.info(text)
-        self._service.say(text)
+
+        if animation:
+            self._service.say("^startTag({1}){0}^waitTag({1})".format(text, animation))
+        else:
+            self._service.say(text)

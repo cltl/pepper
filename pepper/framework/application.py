@@ -55,9 +55,9 @@ class Application(AbstractComponent):
         """
         return self._brain
 
-    def say(self, text):
+    def say(self, text, animation=None):
         self.backend.microphone.stop()
-        self.backend.text_to_speech.say(text)
+        self.backend.text_to_speech.say(text, animation)
         self.backend.microphone.start()
 
     def run(self):
@@ -112,8 +112,8 @@ class Intention(object):
                     not issubclass(cls, Application) and not issubclass(cls, Intention):
                 yield cls
 
-    def say(self, text):
-        self.application.say(text)
+    def say(self, text, animation=None):
+        self.application.say(text, animation)
 
     def require_dependency(self, dependency):
         """

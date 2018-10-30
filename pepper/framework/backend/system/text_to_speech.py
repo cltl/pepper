@@ -36,13 +36,14 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
         self._log.debug("Booted")
 
-    def say(self, text):
+    def say(self, text, animation=None):
         """
         Say something through Text to Speech
 
         Parameters
         ----------
         text: str
+        animation: str
         """
 
         while self._busy: sleep(0.1)

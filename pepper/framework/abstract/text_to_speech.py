@@ -16,18 +16,19 @@ class AbstractTextToSpeech(object):
     def language(self):
         """
         Returns
-        -------
+        -------s
         language: str
             Language Code, See: https://cloud.google.com/speech/docs/languages
         """
         return self._language
 
-    def say(self, text):
+    def say(self, text, animation=None):
         """
         Say something through Text to Speech
 
         Parameters
         ----------
         text: str
+        animation: str
         """
         raise NotImplementedError()

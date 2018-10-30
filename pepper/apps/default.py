@@ -83,9 +83,9 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
     def chat(self):
         return self._chat
 
-    def say(self, text):
+    def say(self, text, animation=None):
         self._last_seen = time()
-        super(ConversationIntention, self).say(text)
+        super(ConversationIntention, self).say(text, animation)
         self._last_seen = time()
 
     def on_face(self, faces):
