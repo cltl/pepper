@@ -38,12 +38,11 @@ class VideoDisplay(AbstractComponent):
 
         def worker():
             while True:
-                image = image_mailbox.get()
+                # image = image_mailbox.get()
 
-                objects = persons = []
+                persons = []
 
-                try: image, objects = object_mailbox.get(False)
-                except Empty: pass
+                image, objects = object_mailbox.get()
 
                 try: persons = person_mailbox.get(False)
                 except Empty: pass

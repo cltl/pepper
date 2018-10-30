@@ -25,11 +25,11 @@ class Wikipedia:
         if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0].lower() in ["what", "who"]:
 
             # And there is only one Noun in Question (a.k.a., question is simple enough)
-            if sum([tag == "NN" for word, tag in pos]) == 1:
+            if sum([self.is_queryable(tag) for word, tag in pos]) == 1:
 
                 # Query Wikipedia About last object
                 for word, tag in pos[::-1]:
-                    if tag.startswith('NN') or tag.startswith("JJ"):
+                    if self.is_queryable(tag):
                         return self.query(word)
         return None
 
@@ -55,17 +55,9 @@ class Wikipedia:
                 combined_pos.append([word, p])
         return combined_pos
 
-    def lemmatize(self, word):
-        synsets = wn.synsets(word)
-        if synsets:
-            lemmas = synsets[0]._lemma_names
-            if lemmas:
-                return lemmas[0]
-        return word
+    def is_queryable(self, tag):
+        return tag.startswith('NN') or tag.startswith("JJ")
+
 
 if __name__ == '__main__':
-    synset = wn.synsets("clouds")[0]
-
-    print(dir(synset))
-    print(synset._lemma_names[0])
-    print(Wikipedia().nlp_query("What are clouds?"))
+    print(Wikipedia().nlp_query("Do you know Harry Potter"))

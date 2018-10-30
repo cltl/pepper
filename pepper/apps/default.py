@@ -26,7 +26,8 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition):
         ConversationIntention(self.application, Chat(persons[0].name))
 
     def on_new_person(self, persons):
-        MeetIntention(self.application)
+        pass
+        # MeetIntention(self.application)
 
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript
@@ -44,10 +45,10 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition):
 
 class IgnoreIntention(Intention, SpeechRecognition):
     def on_transcript(self, hypotheses, audio):
-        statement = hypotheses[0].transcript
+        statement = hypotheses[0].transcript.lower()
 
         for wakeup in [greeting.lower()[:-1] for greeting in GREETING] + ["wake up", "pepper"]:
-            if wakeup in statement:
+            if wakeup == statement:
                 self.say(choice(["Ok, I'm back!", "Hello, I'm back!"]))
                 IdleIntention(self.application)
                 return
@@ -56,7 +57,7 @@ class IgnoreIntention(Intention, SpeechRecognition):
 class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
 
     _face_detection = None  # type: FaceDetection
-    CONVERSATION_TIMEOUT = 30
+    CONVERSATION_TIMEOUT = 15
 
     def __init__(self, application, chat):
         """
@@ -82,6 +83,11 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
     def chat(self):
         return self._chat
 
+    def say(self, text):
+        self._last_seen = time()
+        super(ConversationIntention, self).say(text)
+        self._last_seen = time()
+
     def on_face(self, faces):
         if self.chat.speaker not in self._face_detection.face_classifier.people:
             self._last_seen = time()
@@ -106,9 +112,13 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         utterance = hypotheses[0].transcript
         self.chat.add_utterance(utterance)
 
+        self._last_seen = time()
+
         if self.respond_silence(utterance):
             return
-        if self.respond_greeting(utterance):
+        elif self.respond_forget_me(utterance):
+            return
+        elif self.respond_greeting(utterance):
             return
         elif self.respond_goodbye(utterance):
             return
@@ -148,6 +158,20 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                 self.say(choice(["Ok, I'll be quiet for a bit.", "Right, I'll be there when you need me!", "Bye, I'm going to browse for knowledge on the web!"]))
                 IgnoreIntention(self.application)
                 return True
+        return False
+
+    def respond_forget_me(self, statement):
+        for forget in ["forget", "delete", "erase"]:
+            for data in ["data", "face", "me"]:
+                if forget in statement.lower() and data in statement:
+                    if self.chat.speaker + ".bin" in os.listdir(config.NEW_FACE_DIRECTORY):
+                        self.say("Ok {}, I will erase your data according to the EU General Data Protection Regulation!".format(self.chat.speaker))
+                        os.remove(os.path.join(config.NEW_FACE_DIRECTORY, self.chat.speaker + ".bin"))
+                    else:
+                        self.say("Look {}, your data is already deleted!".format(self.chat.speaker))
+
+
+                    return True
         return False
 
     def respond_greeting(self, statement):
@@ -239,7 +263,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
     def respond_wikipedia(self, question):
         answer = Wikipedia().nlp_query(question)
         if answer:
-            answer = answer.split('.')[0]
+            answer = answer.split('. ')[0]
             self.say("{}, {}, {}. {}".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker, answer))
         return answer
 
@@ -321,7 +345,6 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
 
             # Save person to Disk
             self.save_person()
-
             self.say("{} {}".format(choice(HAPPY), choice(JUST_MET).format(self._name)))
 
             # Start Conversation with New Person

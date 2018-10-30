@@ -199,7 +199,7 @@ GOODBYE = [
     "Bye!",
     "Bye Bye",
     "See you"
-    "See you later!",
+    "See you later",
     "Goodbye",
     "Have a nice day",
     "Nice talking to you"
