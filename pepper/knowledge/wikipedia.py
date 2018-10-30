@@ -17,7 +17,7 @@ class Wikipedia:
         tokens = nltk.word_tokenize(query)
 
         pos = nltk.pos_tag(tokens)
-        pos = self.combine_pos(pos)
+        pos = self.combine_nouns(pos)
 
         print(pos)
 
@@ -46,13 +46,13 @@ class Wikipedia:
             if isinstance(v, dict): return self.find_key(v, key)
         return None
 
-    def combine_pos(self, pos):
+    def combine_nouns(self, pos):
         combined_pos = [list(pos[0])]
-        for (word, p) in pos[1:]:
-            if combined_pos[-1][1] == p:
+        for (word, tag) in pos[1:]:
+            if self.is_queryable(tag) and self.is_queryable(combined_pos[-1][1]):
                 combined_pos[-1][0] += " " + word
             else:
-                combined_pos.append([word, p])
+                combined_pos.append([word, tag])
         return combined_pos
 
     def is_queryable(self, tag):
@@ -60,4 +60,4 @@ class Wikipedia:
 
 
 if __name__ == '__main__':
-    print(Wikipedia().nlp_query("Do you know Harry Potter"))
+    print(Wikipedia().nlp_query("Who is Nicolas Cage"))

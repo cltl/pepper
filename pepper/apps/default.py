@@ -6,6 +6,7 @@ from pepper.sensor.face import FaceClassifier
 from pepper import config
 
 from pepper.knowledge.sentences import *
+from pepper.knowledge import animations
 
 from pepper.knowledge.wikipedia import Wikipedia
 from pepper.knowledge.wolfram import Wolfram
@@ -17,17 +18,31 @@ from random import choice
 from time import time, sleep
 
 
-class DefaultApp(Application, VideoDisplay, Statistics, ObjectDetection, FaceDetection, SpeechRecognition):
+class DefaultApp(Application, Statistics, ObjectDetection, FaceDetection, SpeechRecognition):
     pass
 
 
 class IdleIntention(Intention, FaceDetection, SpeechRecognition):
+
+    GREET_TIMEOUT = 60
+    BORED_TIMEOUT = 120
+
+    def __init__(self, application):
+        super(IdleIntention, self).__init__(application)
+        self._last_event = time()
+
+    def on_face(self, faces):
+        if time() - self._last_event > self.BORED_TIMEOUT:
+            self.say("", animations.BORED)
+            self._last_event = time()
+
     def on_person(self, persons):
         ConversationIntention(self.application, Chat(persons[0].name))
 
     def on_new_person(self, persons):
-        pass
-        # MeetIntention(self.application)
+        if time() - self._last_event > self.GREET_TIMEOUT:
+            self.say(choice(GREETING), animations.HELLO)
+            self._last_event = time()
 
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript
@@ -49,7 +64,7 @@ class IgnoreIntention(Intention, SpeechRecognition):
 
         for wakeup in [greeting.lower()[:-1] for greeting in GREETING] + ["wake up", "pepper"]:
             if wakeup == statement:
-                self.say(choice(["Ok, I'm back!", "Hello, I'm back!"]))
+                self.say(choice(["Ok, I'm back!", "Hello, I'm back!"]), animations.EXCITED)
                 IdleIntention(self.application)
                 return
 
@@ -77,7 +92,8 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         self._face_detection = self.require_dependency(FaceDetection)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
-        self.say("{}, {}.".format(choice(GREETING), self.chat.speaker))  # Greet Person
+        self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
+                 choice([animations.BOW, animations.FRIENDLY, animations.HI]))  # Greet Person
 
     @property
     def chat(self):
@@ -139,7 +155,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             # Parse Names
             utterance = self._name_parser.parse_known(hypotheses).transcript
 
-            self.say(choice(THINKING))
+            self.say(choice(THINKING), animations.THINK)
 
             if self.respond_brain(utterance):
                 return
@@ -152,12 +168,17 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                     choice(["I think you said", "I heard", "I picked up", "I'm guessing you told me"]), utterance,
                     choice(["I don't know what it means", "I don't understand it", "I couldn't parse it",
                             "I have no idea about it", "I have no clue", "this goes above my robot-skills",
-                            "I find this quite difficult to understand", "It doesn't ring any bells"])))
+                            "I find this quite difficult to understand", "It doesn't ring any bells"])),
+                    choice([animations.NOT_KNOW, animations.UNFAMILIAR, animations.UNCOMFORTABLE, animations.SHAMEFACED]))
 
     def respond_silence(self, statement):
         for silent in ["silent", "silence", "be quiet", "relax"]:
             if silent in statement:
-                self.say(choice(["Ok, I'll be quiet for a bit.", "Right, I'll be there when you need me!", "Bye, I'm going to browse for knowledge on the web!"]))
+                self.say(choice([
+                    "Ok, I'll be quiet for a bit.",
+                    "Right, I'll be there when you need me!",
+                    "Bye, I'm going to browse for knowledge on the web!"]),
+                    animations.TIMID)
                 IgnoreIntention(self.application)
                 return True
         return False
@@ -165,7 +186,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
     def respond_identity(self, statement):
         for ask_identity in ["who am i", "my name"]:
             if ask_identity in statement.lower():
-                self.say("You're {}".format(self.chat.speaker))
+                self.say("You are {}".format(self.chat.speaker), animations.YOU)
                 return True
         return False
 
@@ -174,12 +195,12 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             for data in ["data", "face", "me"]:
                 if forget in statement.lower() and data in statement:
                     if self.chat.speaker + ".bin" in os.listdir(config.NEW_FACE_DIRECTORY):
-                        self.say("Ok {}, I will erase your data according to the EU General Data Protection Regulation!".format(self.chat.speaker))
+                        self.say("Ok {}, I will erase your data according to the EU General Data Protection Regulation!".format(self.chat.speaker), animations.FRIENDLY)
                         os.remove(os.path.join(config.NEW_FACE_DIRECTORY, self.chat.speaker + ".bin"))
                         sleep(1)
-                        self.say("Boom, Done! You're still in my Random Access Memory, but as soon as I get rebooted, I will not remember you!")
+                        self.say("Boom, Done! You're still in my Random Access Memory, but as soon as I get rebooted, I will not remember you!", animations.CRAZY)
                     else:
-                        self.say("Look {}, your data is already deleted!".format(self.chat.speaker))
+                        self.say("Look {}, your data is already deleted!".format(self.chat.speaker), animations.AFFIRMATIVE)
                     return True
         return False
 
@@ -188,7 +209,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             greet = re.sub('[?!.;,]', '', greeting.lower())
             for word in statement.split():
                 if word.lower() == greet:
-                    self.say("{}, {}!".format(choice(GREETING), self.chat.speaker))
+                    self.say("{}, {}!".format(choice(GREETING), self.chat.speaker), animations.HI)
                     return True
         return False
 
@@ -201,7 +222,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
 
     def respond_goodbye(self, statement):
         for bye in GOODBYE:
-            if statement.lower() == re.sub('[?!.;,]', '', bye.lower()):
+            if statement.lower() == bye.lower():
                 self.end_conversation()
                 return True
         return False
@@ -211,11 +232,11 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         if len(statement.split(' ')) <= 3:
             for affirmation in AFFIRMATION:
                 if " {} ".format(affirmation) in " {} ".format(statement.lower()):
-                    self.say(choice(HAPPY))
+                    self.say(choice(HAPPY), animations.HAPPY)
                     return True
             for negation in NEGATION:
                 if " {} ".format(negation) in " {} ".format(statement.lower()):
-                    self.say(choice(SORRY))
+                    self.say(choice(SORRY), animations.ASHAMED)
                     return True
         return False
 
@@ -228,7 +249,8 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
     def respond_qna(self, question):
         answer = QnA().query(question)
         if answer:
-            self.say("{} {}. {}".format(choice(ADDRESSING), self.chat.speaker, answer))
+            self.say("{} {}. {}".format(choice(ADDRESSING), self.chat.speaker, answer),
+                     choice([animations.BODY_LANGUAGE, animations.EXCITED]))
         return answer
 
     def respond_brain(self, question):
@@ -248,12 +270,13 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                 response = reply_to_question(result, objects)
 
                 if response:
-                    self.say(response.replace('_', ' '))
+                    self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
                     return True
                 else:
                     self.say("{}, but {}!".format(
                         choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
-                        choice(["I'll look it up online", "let me search the web", "I will check my internet sources"])
+                        choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
+                        animations.THINK
                     ))
                     return False
 
@@ -261,31 +284,34 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
             elif expression['utterance_type'] == 'statement':
                 result = self.application.brain.update(expression)
                 response = reply_to_statement(result, self.chat.speaker, objects, self)
-                self.say(response.replace('_', ' '))
+                self.say(response.replace('_', ' '), animations.EXCITED)
 
             return True
 
         except Exception as e:
             self.log.error("NLP ERROR: {}".format(e))
-            return False
+
+        return False
 
     def respond_wikipedia(self, question):
         answer = Wikipedia().nlp_query(question)
         if answer:
             answer = answer.split('. ')[0]
-            self.say("{}, {}, {}. {}".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker, answer))
+            self.say("{}, {}, {}.".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker), animations.CLOUD)
+            self.say(answer, animations.EXPLAIN)
         return answer
 
     def respond_wolfram(self, question):
         answer = Wolfram().query(question)
         if answer:
-            self.say("{}, {}, {}. {}".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker, answer))
+            self.say("{}, {}, {}.".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker), animations.CLOUD)
+            self.say(answer, animations.EXPLAIN)
         return answer
 
     def end_conversation(self):
         self.say("{}, {}!".format(
             choice(["See you later", "ByeBye", "Till another time", "It was good having talked to you", "Goodbye"]),
-            self.chat.speaker))
+            self.chat.speaker), animations.BOW)
         IdleIntention(self.application)
 
 
@@ -311,19 +337,18 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
         self._name = ""
         self._face = []
 
-        self.say("{} {}".format(choice(GREETING), choice(INTRODUCE)))
+        self.say("{}, {}".format(choice(GREETING), choice(INTRODUCE)))
 
         for sentence in [
                 "I wish to meet you!",
                 "By continuing to meet me, you agree with locally storing your face features and name.",
                 "Your personal data is only used for the purpose of meeting you and not shared with third parties.",
                 "After meeting, you can always ask me to erase your personal data, no hard feelings!",
-                "Ok, enough legal stuff!",
-                choice(ASK_NAME)]:
+                "Ok, enough legal stuff! {}".format(choice(ASK_NAME))]:
 
             self.say(sentence)
             self._last_utterance = time()
-            sleep(0.5)
+            sleep(0.25)
 
     def on_image(self, image):
         # If meeting times out, go back to idle!
@@ -334,9 +359,9 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
         if time() - self._last_utterance > self.UTTERANCE_TIMEOUT:
             self._last_utterance = time()
             if self._name:
-                self.say("{} {}".format(choice(UNDERSTAND), choice(VERIFY_NAME).format(self._name)))
+                self.say("{} {}".format(choice(UNDERSTAND), choice(VERIFY_NAME).format(self._name)), animations.YOUR)
             else:
-                self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)))
+                self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)), animations.UNKNOWN)
 
     def on_face(self, faces):
         self._face.append(faces[0].representation)
@@ -349,7 +374,7 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
 
         if self.goodbye(utterance):
             self.say(choice(["See you later", "ByeBye", "Till another time",
-                             "It was good having talked to you", "Goodbye"]))
+                             "It was good having talked to you", "Goodbye"]), animations.BOW)
             IdleIntention(self.application)
             return
 
@@ -358,31 +383,31 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
 
             # If not enough face samples have been gathered, gather more!
             if len(self._face) < self.MIN_SAMPLES:
-                self.say("{} {}".format(choice(JUST_MET).format(self._name), choice(MORE_FACE_SAMPLES)))
+                self.say("{} {}".format(choice(JUST_MET).format(self._name), choice(MORE_FACE_SAMPLES)), animations.FRIENDLY)
                 while len(self._face) < self.MIN_SAMPLES:
                     self._last_utterance = time()
                     sleep(1)
-                self.say(choice(THANK))
+                self.say(choice(THANK), animations.HAPPY)
 
             # Save person to Disk
             self.save_person()
-            self.say("{} {}".format(choice(HAPPY), choice(JUST_MET).format(self._name)))
+            self.say("{} {}".format(choice(HAPPY), choice(JUST_MET).format(self._name)), animations.HI)
 
             # Start Conversation with New Person
             ConversationIntention(self.application, Chat(self._name))
 
         else:  # Try to parse name
-            self.say(choice(THINKING))
+            self.say(choice(THINKING), animations.THINK)
 
             # Parse Name
             parsed_name = self._name_parser.parse_new(audio)
             if parsed_name and parsed_name[0] > self.NAME_CONFIDENCE:
                 self._name, confidence = parsed_name
-                self.say("{} {}".format(choice(UNDERSTAND), choice(VERIFY_NAME).format(self._name)))
+                self.say("{} {}".format(choice(UNDERSTAND), choice(VERIFY_NAME).format(self._name)), animations.FRIENDLY)
             elif self.is_negation(utterance):
-                self.say("{} {}".format(choice(SORRY), choice(REPEAT_NAME)))
+                self.say("{} {}".format(choice(SORRY), choice(REPEAT_NAME)), animations.ASHAMED)
             else:
-                self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)))
+                self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)), animations.ASHAMED)
 
     @staticmethod
     def is_affirmation(statement):
@@ -407,7 +432,7 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
 
     def end_conversation(self):
         self.say("{}!".format(
-            choice(["See you later", "ByeBye", "Till another time", "It was good having talked to you", "Goodbye"])))
+            choice(["See you later", "ByeBye", "Till another time", "It was good having talked to you", "Goodbye"])), animations.BOW)
         IdleIntention(self.application)
 
     def save_person(self):

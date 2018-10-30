@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
 
 
