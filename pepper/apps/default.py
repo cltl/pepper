@@ -116,6 +116,8 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
 
         if self.respond_silence(utterance):
             return
+        elif self.respond_identity(utterance):
+            return
         elif self.respond_forget_me(utterance):
             return
         elif self.respond_greeting(utterance):
@@ -160,17 +162,24 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
                 return True
         return False
 
+    def respond_identity(self, statement):
+        for ask_identity in ["who am i", "my name"]:
+            if ask_identity in statement.lower():
+                self.say("You're {}".format(self.chat.speaker))
+                return True
+        return False
+
     def respond_forget_me(self, statement):
-        for forget in ["forget", "delete", "erase"]:
+        for forget in ["forget", "delete", "erase", "remove", "destroy"]:
             for data in ["data", "face", "me"]:
                 if forget in statement.lower() and data in statement:
                     if self.chat.speaker + ".bin" in os.listdir(config.NEW_FACE_DIRECTORY):
                         self.say("Ok {}, I will erase your data according to the EU General Data Protection Regulation!".format(self.chat.speaker))
                         os.remove(os.path.join(config.NEW_FACE_DIRECTORY, self.chat.speaker + ".bin"))
+                        sleep(1)
+                        self.say("Boom, Done! You're still in my Random Access Memory, but as soon as I get rebooted, I will not remember you!")
                     else:
                         self.say("Look {}, your data is already deleted!".format(self.chat.speaker))
-
-
                     return True
         return False
 
@@ -192,7 +201,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
 
     def respond_goodbye(self, statement):
         for bye in GOODBYE:
-            if statement == re.sub('[?!.;,]', '', bye.lower()):
+            if statement.lower() == re.sub('[?!.;,]', '', bye.lower()):
                 self.end_conversation()
                 return True
         return False
@@ -302,7 +311,19 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
         self._name = ""
         self._face = []
 
-        self.say("{} {} {}".format(choice(GREETING), choice(INTRODUCE), choice(ASK_NAME)))
+        self.say("{} {}".format(choice(GREETING), choice(INTRODUCE)))
+
+        for sentence in [
+                "I wish to meet you!",
+                "By continuing to meet me, you agree with locally storing your face features and name.",
+                "Your personal data is only used for the purpose of meeting you and not shared with third parties.",
+                "After meeting, you can always ask me to erase your personal data, no hard feelings!",
+                "Ok, enough legal stuff!",
+                choice(ASK_NAME)]:
+
+            self.say(sentence)
+            self._last_utterance = time()
+            sleep(0.5)
 
     def on_image(self, image):
         # If meeting times out, go back to idle!
@@ -380,7 +401,7 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
     @staticmethod
     def goodbye(statement):
         for bye in GOODBYE:
-            if statement == re.sub('[?!.;,]', '', bye.lower()):
+            if statement.lower() == re.sub('[?!.;,]', '', bye.lower()):
                 return True
         return False
 
@@ -391,12 +412,17 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
 
     def save_person(self):
         people = self._face_detection.face_classifier.people
+        name = self._name
 
-        if self._name not in people:
-            people[str(self._name)] = self._face
-            self._face_detection.face_classifier = FaceClassifier(people)
+        if name in people:
+            name_index = 2
+            while name in people:
+                name = "{}{}".format(self._name, name_index)
+                name_index += 1
 
-        np.concatenate(self._face).tofile(os.path.join(config.NEW_FACE_DIRECTORY, "{}.bin".format(self._name)))
+        people[str(self._name)] = self._face
+        self._face_detection.face_classifier = FaceClassifier(people)
+        np.concatenate(self._face).tofile(os.path.join(config.NEW_FACE_DIRECTORY, "{}.bin".format(name)))
 
 
 if __name__ == '__main__':
