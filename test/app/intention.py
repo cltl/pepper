@@ -17,7 +17,6 @@ class TalkIntention(Intention, SpeechRecognition):
         self.say("Hello, Human!")
 
     def on_transcript(self, hypotheses, audio):
-
         utterance = hypotheses[0].transcript
 
         if utterance == "bye bye":
