@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractBackend
+from pepper.framework.backend.system import SystemMicrophone
 from pepper.framework.backend.naoqi import NaoqiCamera, NaoqiMicrophone, NaoqiTextToSpeech
 from pepper import config
 
@@ -27,7 +28,7 @@ class NaoqiBackend(AbstractBackend):
         self._session = self.create_session(self._url)
 
         super(NaoqiBackend, self).__init__(NaoqiCamera(self.session, camera_resolution, camera_rate),
-                                           NaoqiMicrophone(self.session, microphone_index),
+                                           SystemMicrophone(16000, 1) if config.USE_SYSTEM_MICROPHONE else NaoqiMicrophone(self.session, microphone_index),
                                            NaoqiTextToSpeech(self.session, language))
 
     @property

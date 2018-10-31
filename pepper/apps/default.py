@@ -18,13 +18,13 @@ from random import choice
 from time import time, sleep
 
 
-class DefaultApp(Application, Statistics, ObjectDetection, FaceDetection, SpeechRecognition):
+class DefaultApp(Application, VideoDisplay, Statistics, ObjectDetection, FaceDetection, SpeechRecognition):
     pass
 
 
 class IdleIntention(Intention, FaceDetection, SpeechRecognition):
 
-    GREET_TIMEOUT = 60
+    GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120
 
     def __init__(self, application):
@@ -32,8 +32,8 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition):
         self._last_event = time()
 
     def on_face(self, faces):
-        if time() - self._last_event > self.BORED_TIMEOUT:
-            self.say("", animations.BORED)
+        if time() - self._last_event > self.GREET_TIMEOUT:
+            self.say("Hello!", animations.HELLO)
             self._last_event = time()
 
     def on_person(self, persons):
