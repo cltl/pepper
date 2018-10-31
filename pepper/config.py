@@ -32,7 +32,7 @@ class NaoqiMicrophoneIndex(enum.IntEnum):
     REAR = 4
 
 
-APPLICATION_TARGET = ApplicationTarget.NAOQI
+APPLICATION_TARGET = ApplicationTarget.SYSTEM
 
 
 def get_backend():
