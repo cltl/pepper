@@ -13,33 +13,17 @@ from pepper.knowledge.wikipedia import Wikipedia
 from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.query import QnA
 
-from threading import Thread
-
 import numpy as np
 
 from random import choice
 from time import time, sleep
 
 
-class DefaultApp(Application, ObjectDetection, FaceDetection, SpeechRecognition):
-    def run(self):
-        self.backend.camera.start()
-        # self.backend.microphone.start()
-
-        Thread(target=self.input_loop).start()
-
-        while True:
-            sleep(1)
-
-    def input_loop(self):
-        while True:
-
-            transcript = raw_input("Say: ")
-            self.say("You Said: {}".format(transcript))
-            self.on_transcript([ASRHypothesis(transcript, 1.0)], np.ndarray(0, np.int16))
+class DefaultApp(Application, Statistics, ObjectDetection, FaceDetection, StreamingSpeechRecognition):
+    pass
 
 
-class IdleIntention(Intention, FaceDetection, SpeechRecognition):
+class IdleIntention(Intention, FaceDetection, SpeechRecognition, ObjectDetection):
 
     GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120

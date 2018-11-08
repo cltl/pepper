@@ -31,4 +31,4 @@ class AbstractTextToSpeech(object):
         text: str
         animation: str
         """
-        raise NotImplementedError()
+        pass

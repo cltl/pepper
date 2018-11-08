@@ -4,7 +4,7 @@ import numpy as np
 
 from threading import Thread
 from Queue import Queue
-from time import time
+from time import time, sleep
 
 from collections import deque
 
@@ -30,7 +30,7 @@ class AbstractMicrophone(object):
         self._t0 = time()
 
         self._queue = Queue()
-        self._processor_thread = Thread(target=self._processor)
+        self._processor_thread = Thread(name="MicrophoneThread", target=self._processor)
         self._processor_thread.daemon = True
         self._processor_thread.start()
 
@@ -111,18 +111,9 @@ class AbstractMicrophone(object):
             audio = self._queue.get()
 
             t1 = time()
-            dt = (t1 - self._t0)
-            self._dt_buffer.append(dt)
+            self._dt_buffer.append((t1 - self._t0))
             self._t0 = t1
-
-            dt_mean = np.mean(self._dt_buffer)
-
-            self._true_rate = len(audio) / dt_mean
-
-            if len(self._dt_buffer) == self._dt_buffer.maxlen and \
-                    dt_mean > self._dt_threshold_multiplier * (len(audio) / float(self.rate)):
-                self._log.warning("<< Frames were skipped, Check Host/Pepper Network Connection/Load >>")
-                self._dt_buffer.clear()
+            self._true_rate = len(audio) / np.mean(self._dt_buffer)
 
             if self._running:
                 for callback in self.callbacks:

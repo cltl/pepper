@@ -3,6 +3,7 @@ from pepper.brain import LongTermMemory
 from pepper import logger
 
 from time import sleep
+from Queue import Queue
 
 
 class IntentionDependencyError(Exception): pass
@@ -65,7 +66,7 @@ class Application(AbstractComponent):
         self.backend.microphone.start()
 
         while True:
-            sleep(1)
+            sleep(0.1)
 
     def _reset_events(self):
         for event_name, event_function in self._events.items():

@@ -33,7 +33,7 @@ class SystemCamera(AbstractCamera):
             raise RuntimeError("{} could not be opened".format(self.__class__.__name__))
 
         # Run Image acquisition in Thread
-        self._thread = Thread(target=self._run)
+        self._thread = Thread(name="SystemCameraThread", target=self._run)
         self._thread.setDaemon(True)
         self._thread.start()
 

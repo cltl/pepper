@@ -8,9 +8,11 @@ google-cloud-speech
 google-cloud-TextToSpeech
 google-cloud-translate
 playsound
+requests
 
 pillow
 opencv-python
+av
 
 nltk
 fuzzywuzzy[speedup]

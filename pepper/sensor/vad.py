@@ -12,7 +12,7 @@ class VAD(object):
     BUFFER_SIZE = 100  # Buffer Size
     WINDOW_SIZE = config.VAD_WINDOW_SIZE * FRAME_MS  # Sliding Window Length (Multiples of Frame MS)
 
-    def __init__(self, microphone, callbacks, mode=3):
+    def __init__(self, microphone, callbacks=(), stream_callbacks=(), mode=3):
         """
         Detect Utterances of People using Voice Activity Detection
 
@@ -30,6 +30,7 @@ class VAD(object):
         self._rate = microphone.rate
 
         self._callbacks = callbacks
+        self._stream_callbacks = stream_callbacks
         self._vad = Vad(mode)
 
         # Number of Elements (np.int16) in Frame
@@ -72,6 +73,10 @@ class VAD(object):
         return self._callbacks
 
     @property
+    def stream_callbacks(self):
+        return self._stream_callbacks
+
+    @property
     def rate(self):
         """
         Returns
@@ -91,6 +96,16 @@ class VAD(object):
         """
         return self._vad
 
+    @property
+    def activation(self):
+        """
+        Returns
+        -------
+        activation: float
+            Voice Activation Level [0,1]
+        """
+        return self._activation
+
     def start(self):
         """Start Detecting Utterances"""
         self.microphone.start()
@@ -108,20 +123,8 @@ class VAD(object):
         audio: np.ndarray
             Audio containing utterance
         """
-        self._log.debug("Utterance {:3.2f}s".format(len(audio) / float(self.rate)))
-
         for callback in self.callbacks:
             callback(audio)
-
-    @property
-    def activation(self):
-        """
-        Returns
-        -------
-        activation: float
-            Voice Activation Level [0,1]
-        """
-        return self._activation
 
     def _on_audio(self, audio):
         """
@@ -131,6 +134,10 @@ class VAD(object):
         ----------
         audio: np.ndarray
         """
+
+        # Call Streaming Callback with Audio
+        for callback in self._stream_callbacks:
+            callback(audio, self._voice)
 
         # Put Microphone Audio at the end of the Audio Buffer
         self._audio_buffer.extend(audio.tobytes())
@@ -190,6 +197,9 @@ class VAD(object):
                 Thread(target=self.on_utterance, args=(result,)).start()
 
                 self._voice_buffer = bytearray()  # Clear Voice Buffer
+
+                for callback in self._stream_callbacks:
+                    callback(np.array(0, np.int16), self._voice)
         else:
             if self.activation > config.VAD_VOICE_THRESHOLD:
                 self._voice = True  # Start Recording Voice
@@ -197,3 +207,7 @@ class VAD(object):
                 # Add Buffered Audio to Voice Buffer
                 self._voice_buffer.extend(self._audio_ringbuffer[self._ringbuffer_index:].tobytes())
                 self._voice_buffer.extend(self._audio_ringbuffer[:self._ringbuffer_index].tobytes())
+
+                for callback in self._stream_callbacks:
+                    callback(np.array(0, np.int16), self._voice)
+                    callback(np.frombuffer(self._voice_buffer, np.int16), self._voice)

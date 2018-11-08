@@ -26,6 +26,9 @@ class ASRHypothesis(object):
     def confidence(self):
         return self._confidence
 
+    def __repr__(self):
+        return "<'{}' [{:3.2%}]>".format(self.transcript, self.confidence)
+
 
 class AbstractASR(object):
     def __init__(self, language):
@@ -56,6 +59,37 @@ class AbstractASR(object):
         transcript: list of ASRHypothesis
         """
         raise NotImplementedError()
+
+
+class StreamedGoogleASR(AbstractASR):
+    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives=20, hints=()):
+        super(AbstractASR, self).__init__()
+
+        self._client = speech.SpeechClient()
+
+        self._config = speech.types.RecognitionConfig(
+            encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            sample_rate_hertz=sample_rate,
+            language_code=language,
+            max_alternatives=max_alternatives,
+            speech_contexts=[speech.types.SpeechContext(phrases=hints)])
+
+        self._streaming_config = speech.types.StreamingRecognitionConfig(config=self._config)
+
+    def transcribe(self, audio):
+        hypotheses = []
+        for response in self._client.streaming_recognize(self._streaming_config, self.request(audio)):
+            for result in response.results:
+                if result.is_final:
+                    for alternative in result.alternatives:
+                        hypotheses.append(ASRHypothesis(alternative.transcript, alternative.confidence))
+
+        return hypotheses
+
+    @staticmethod
+    def request(audio):
+        for frame in audio:
+            yield speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
 
 
 class GoogleASR(AbstractASR):

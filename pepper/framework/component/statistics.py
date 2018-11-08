@@ -31,6 +31,6 @@ class Statistics(AbstractComponent):
                 ),
                 sleep(0.1)
 
-        thread = Thread(target=worker)
+        thread = Thread(name="StatisticsThread", target=worker)
         thread.daemon = True
         thread.start()

@@ -14,6 +14,8 @@ import os
 class SystemTextToSpeech(AbstractTextToSpeech):
 
     ROOT = os.path.join(config.PROJECT_ROOT, 'tmp', 'speech')
+    GENDER = 2 # "Female" or 1 "Male"
+    TYPE = "Standard"
 
     def __init__(self, language):
         """
@@ -27,7 +29,7 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         if not os.path.exists(self.ROOT): os.makedirs(self.ROOT)
 
         self._client = texttospeech.TextToSpeechClient()
-        self._voice = texttospeech.types.VoiceSelectionParams(language_code=language)
+        self._voice = texttospeech.types.VoiceSelectionParams(language_code=language, ssml_gender=self.GENDER)
 
         # Select the type of audio file you want returned
         self._audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.MP3)

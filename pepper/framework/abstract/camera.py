@@ -5,7 +5,7 @@ from pepper import logger
 from threading import Thread
 
 from collections import deque
-from time import time
+from time import time, sleep
 
 import numpy as np
 
@@ -35,7 +35,7 @@ class AbstractCamera(object):
         self._t0 = time()
 
         self._mailbox = Mailbox()
-        self._processor_thread = Thread(target=self._processor)
+        self._processor_thread = Thread(name="CameraThread", target=self._processor)
         self._processor_thread.daemon = True
         self._processor_thread.start()
 
@@ -149,12 +149,11 @@ class AbstractCamera(object):
         while True:
 
             t1 = time()
-            dt = (t1 - self._t0)
-            self._dt_buffer.append(dt)
+            self._dt_buffer.append((t1 - self._t0))
             self._t0 = t1
-
             self._true_rate = 1.0 / np.mean(self._dt_buffer)
 
             image = self._mailbox.get()
+
             for callback in self.callbacks:
                 callback(image)

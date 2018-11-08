@@ -1,8 +1,12 @@
 from threading import Lock
 from Queue import Empty
+from time import sleep
 
 
 class Mailbox(object):
+
+    EPSILSON = 1E-5
+
     def __init__(self):
         """Create Mailbox Object"""
 
@@ -36,7 +40,7 @@ class Mailbox(object):
         with self._mutex:
             if block:
                 while self._mail is None:
-                    pass
+                    sleep(Mailbox.EPSILSON)
                 return self._get()
 
             else:
