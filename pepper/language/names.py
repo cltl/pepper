@@ -1,4 +1,4 @@
-from pepper.sensor.asr import GoogleASR, ASRHypothesis
+from pepper.sensor.asr import SynchronousGoogleASR, ASRHypothesis
 from pepper.language.ner import NER
 from nltk.metrics.distance import edit_distance
 from concurrent import futures
@@ -11,7 +11,7 @@ class NameParser:
     def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2.5, min_alternatives=4):
         self._names = names
         self._languages = languages
-        self._asrs = [GoogleASR(language) for language in languages]
+        self._asrs = [SynchronousGoogleASR(language) for language in languages]
         self._pool = futures.ThreadPoolExecutor(len(self._asrs))
 
         self._max_name_distance = max_name_distance

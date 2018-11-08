@@ -1,5 +1,5 @@
 from pepper.framework import AbstractComponent, Application
-from pepper.sensor import VAD, GoogleASR, StreamedGoogleASR
+from pepper.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR
 from pepper import config
 
 from threading import Thread
@@ -12,7 +12,7 @@ class SpeechRecognition(AbstractComponent):
         """
         Returns
         -------
-        asr: pepper.sensor.asr.GoogleASR
+        asr: pepper.sensor.asr.SynchronousGoogleASR
         """
         raise NotImplementedError()
 
@@ -51,7 +51,7 @@ class SynchronousSpeechRecognition(SpeechRecognition):
         super(SynchronousSpeechRecognition, self).__init__(backend)
 
         self.on_transcript_callbacks = []
-        self._asr = GoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
+        self._asr = SynchronousGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
         def on_utterance(audio):
             hypotheses = self.asr.transcribe(audio)
@@ -71,7 +71,7 @@ class SynchronousSpeechRecognition(SpeechRecognition):
         """
         Returns
         -------
-        asr: pepper.sensor.asr.GoogleASR
+        asr: pepper.sensor.asr.SynchronousGoogleASR
         """
         return self._asr
 
@@ -151,7 +151,7 @@ class StreamingSpeechRecognition(SpeechRecognition):
         """
         Returns
         -------
-        asr: pepper.sensor.asr.GoogleASR
+        asr: pepper.sensor.asr.SynchronousGoogleASR
         """
         return self._asr
 

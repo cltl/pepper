@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from pepper import logger
+from pepper import config, logger
 
 from google.cloud import speech, translate_v2
 
@@ -31,7 +31,10 @@ class ASRHypothesis(object):
 
 
 class AbstractASR(object):
-    def __init__(self, language):
+
+    MAX_ALTERNATIVES = 1
+
+    def __init__(self, language='en-GB'):
         """
         Abstract Automatic Speech Recognition Class
 
@@ -40,11 +43,24 @@ class AbstractASR(object):
         language: str
         """
         self._language = language
+
+        self._translate_client = None
+        self._source_language = language[:2]
+
+        if self._source_language != 'en':
+            self._translate_client = translate_v2.Client()
+
         self._log = logger.getChild("{} ({})".format(self.__class__.__name__, self.language))
 
     @property
     def language(self):
         return self._language
+
+    def translate(self, transcript):
+        if self._translate_client is not None:
+            return self._translate_client.translate(transcript, source_language=self._source_language)['translatedText']
+        else:
+            return transcript
 
     def transcribe(self, audio):
         """
@@ -61,59 +77,47 @@ class AbstractASR(object):
         raise NotImplementedError()
 
 
-class StreamedGoogleASR(AbstractASR):
-    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives=20, hints=()):
-        super(AbstractASR, self).__init__()
+class BaseGoogleASR(AbstractASR):
+    def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
+        super(BaseGoogleASR, self).__init__(language)
 
         self._client = speech.SpeechClient()
-
         self._config = speech.types.RecognitionConfig(
             encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
             sample_rate_hertz=sample_rate,
             language_code=language,
-            max_alternatives=max_alternatives,
+            max_alternatives=self.MAX_ALTERNATIVES,
             speech_contexts=[speech.types.SpeechContext(phrases=hints)])
+        self._log = logger.getChild(self.__class__.__name__)
 
+
+class StreamedGoogleASR(BaseGoogleASR):
+    def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
+        super(StreamedGoogleASR, self).__init__(language, sample_rate, hints)
         self._streaming_config = speech.types.StreamingRecognitionConfig(config=self._config)
+        self._log.debug("Booted")
 
     def transcribe(self, audio):
         hypotheses = []
-        for response in self._client.streaming_recognize(self._streaming_config, self.request(audio)):
+        for response in self._client.streaming_recognize(self._streaming_config, self._request(audio)):
             for result in response.results:
                 if result.is_final:
                     for alternative in result.alternatives:
-                        hypotheses.append(ASRHypothesis(alternative.transcript, alternative.confidence))
-
+                        hypotheses.append(ASRHypothesis(self.translate(alternative.transcript), alternative.confidence))
         return hypotheses
 
     @staticmethod
-    def request(audio):
+    def _request(audio):
         for frame in audio:
             yield speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
 
 
-class GoogleASR(AbstractASR):
-    def __init__(self, language='en-GB', sample_rate=16000, max_alternatives=20):
-        """
-        Transcribe Speech using Google Speech API
-
-        Parameters
-        ----------
-        language: str
-            Language Code, See: https://cloud.google.com/speech/docs/languages
-        sample_rate: int
-            Input Audio Sample Rate
-        max_alternatives: int
-            Maximum Number of Alternatives Google will provide
-        """
-        super(GoogleASR, self).__init__(language)
-
-        self._sample_rate = sample_rate
-        self._max_alternatives = max_alternatives
-
+class SynchronousGoogleASR(BaseGoogleASR):
+    def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
+        super(SynchronousGoogleASR, self).__init__(language, sample_rate, hints)
         self._log.debug("Booted")
 
-    def transcribe(self, audio, hints=()):
+    def transcribe(self, audio):
         """
         Transcribe Speech in Audio
 
@@ -125,26 +129,12 @@ class GoogleASR(AbstractASR):
         -------
         hypotheses: List[ASRHypothesis]
         """
-        response = speech.SpeechClient().recognize(speech.types.RecognitionConfig(
-                encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
-                sample_rate_hertz=self._sample_rate,
-                language_code=self._language,
-                max_alternatives=self._max_alternatives,
-                speech_contexts=[speech.types.SpeechContext(phrases=hints)]),
-            speech.types.RecognitionAudio(content=audio.tobytes()))
-
         hypotheses = []
-        for result in response.results:
+        for result in self._client.recognize(self._config, self._request(audio)).results:
             for alternative in result.alternatives:
-                hypotheses.append(ASRHypothesis(alternative.transcript, alternative.confidence))
+                hypotheses.append(ASRHypothesis(self.translate(alternative.transcript), alternative.confidence))
+        return hypotheses
 
-        if not self.language.startswith('en'):
-            # Translate Input Speech into English if not already in English
-            client = translate_v2.Client()
-            new_hypotheses = [ASRHypothesis(client.translate(hypothesis.transcript)['translatedText'], hypothesis.confidence) for hypothesis in hypotheses]
-            if hypotheses: self._log.debug("[{:3.0%}] {} -> {}".format(hypotheses[0].confidence, hypotheses[0].transcript, new_hypotheses[0].transcript))
-            return new_hypotheses
-
-        else:
-            if hypotheses: self._log.debug("[{:3.0%}] {}".format(hypotheses[0].confidence, hypotheses[0].transcript))
-            return hypotheses
+    @staticmethod
+    def _request(audio):
+        return speech.types.RecognitionAudio(content=audio.tobytes())
