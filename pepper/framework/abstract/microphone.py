@@ -4,7 +4,7 @@ import numpy as np
 
 from threading import Thread
 from Queue import Queue
-from time import time, sleep
+from time import time
 
 from collections import deque
 
@@ -37,7 +37,6 @@ class AbstractMicrophone(object):
         self._log = logger.getChild(self.__class__.__name__)
 
         self._running = False
-        self._blocks = 0
 
     @property
     def rate(self):
@@ -48,6 +47,16 @@ class AbstractMicrophone(object):
             Audio bit rate
         """
         return self._rate
+
+    @property
+    def true_rate(self):
+        """
+        Returns
+        -------
+        true_rate:
+            Actual Audio bit rate
+        """
+        return self._true_rate
 
     @property
     def channels(self):
@@ -77,6 +86,15 @@ class AbstractMicrophone(object):
         """
         self._callbacks = value
 
+    @property
+    def running(self):
+        """
+        Returns
+        -------
+        running: bool
+        """
+        return self._running
+
     def on_audio(self, audio):
         """
         On Audio Event
@@ -89,16 +107,10 @@ class AbstractMicrophone(object):
 
     def start(self):
         """Start Microphone Stream"""
-
-        self._blocks = max(0, self._blocks - 1)
-        if self._blocks == 0:
-            self._running = True
-            self._t0 = time()
+        self._running = True
 
     def stop(self):
         """Stop Microphone Stream"""
-
-        self._blocks += 1
         self._running = False
 
     def _processor(self):
@@ -109,12 +121,13 @@ class AbstractMicrophone(object):
         """
         while True:
             audio = self._queue.get()
-
-            t1 = time()
-            self._dt_buffer.append((t1 - self._t0))
-            self._t0 = t1
-            self._true_rate = len(audio) / np.mean(self._dt_buffer)
-
             if self._running:
                 for callback in self.callbacks:
                     callback(audio)
+            self._update_dt(len(audio))
+
+    def _update_dt(self, n_bytes):
+        t1 = time()
+        self._dt_buffer.append((t1 - self._t0))
+        self._t0 = t1
+        self._true_rate = n_bytes / np.mean(self._dt_buffer)

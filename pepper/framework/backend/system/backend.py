@@ -9,7 +9,7 @@ class SystemBackend(AbstractBackend):
                  camera_rate=config.CAMERA_FRAME_RATE,
                  microphone_channels=config.MICROPHONE_CHANNELS,
                  microphone_rate=config.MICROPHONE_SAMPLE_RATE,
-                 language=config.LANGUAGE):
+                 language=config.APPLICATION_LANGUAGE):
         """
         Initialize System Backend
 

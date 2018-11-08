@@ -56,7 +56,7 @@ class ImageAnnotator(object):
         self._font = ImageFont.truetype(os.path.join(os.path.dirname(__file__), self._font_name), self._font_size)
 
     def annotate_batch(self, directory, output_directory=None, extension='.png',
-                       object_threshold=config.OBJECT_CONFIDENCE_THRESHOLD,
+                       object_threshold=config.OBJECT_RECOGNITION_THRESHOLD,
                        face_threshold=config.FACE_RECOGNITION_THRESHOLD):
 
         if not output_directory:
@@ -67,7 +67,7 @@ class ImageAnnotator(object):
 
         coco = CocoClassifyClient()
         openface = OpenFace()
-        face_classifier = FaceClassifier.from_directory(config.FACE_DIRECTORY)
+        face_classifier = FaceClassifier.from_directory(config.PEOPLE_FRIENDS_ROOT)
 
         for index, image_path in enumerate(image_paths):
             print "\rAnnotating Image {:d}/{:d}".format(index + 1, len(image_paths)),
@@ -83,7 +83,7 @@ class ImageAnnotator(object):
         print("\n")
 
     def annotate(self, image, objects, persons,
-                 object_threshold=config.OBJECT_CONFIDENCE_THRESHOLD,
+                 object_threshold=config.OBJECT_RECOGNITION_THRESHOLD,
                  face_threshold=config.FACE_RECOGNITION_THRESHOLD):
         """
         Annotate Image

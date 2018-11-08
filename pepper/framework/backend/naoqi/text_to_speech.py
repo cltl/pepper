@@ -23,7 +23,7 @@ class NaoqiTextToSpeech(AbstractTextToSpeech):
 
         self._log.debug("Booted")
 
-    def say(self, text, animation=None):
+    def on_text_to_speech(self, text, animation=None):
         """
         Say something through Text to Speech
 

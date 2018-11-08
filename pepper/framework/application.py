@@ -3,7 +3,7 @@ from pepper.brain import LongTermMemory
 from pepper import logger
 
 from time import sleep
-from Queue import Queue
+from threading import Lock
 
 
 class IntentionDependencyError(Exception): pass
@@ -27,6 +27,8 @@ class Application(AbstractComponent):
 
         self._events = {attr: self.__getattribute__(attr) for attr in dir(self)
                         if attr.startswith(self.EVENT_TAG) and callable(self.__getattribute__(attr))}
+
+        self._mutex = Lock()
 
         self._log = logger.getChild(self.__class__.__name__)
         self.log.debug("Booted")
@@ -57,16 +59,21 @@ class Application(AbstractComponent):
         return self._brain
 
     def say(self, text, animation=None):
-        self.backend.microphone.stop()
-        self.backend.text_to_speech.say(text, animation)
-        self.backend.microphone.start()
+
+        with self._mutex:
+            if self.backend.microphone.running:
+                self.backend.microphone.stop()
+            self.backend.text_to_speech.say(text, animation)
 
     def run(self):
         self.backend.camera.start()
         self.backend.microphone.start()
 
         while True:
-            sleep(0.1)
+            with self._mutex:
+                if not self.backend.text_to_speech.talking and not self.backend.microphone.running:
+                    self.backend.microphone.start()
+            sleep(0.01)
 
     def _reset_events(self):
         for event_name, event_function in self._events.items():

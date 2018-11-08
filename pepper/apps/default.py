@@ -23,7 +23,7 @@ class DefaultApp(Application, Statistics, ObjectDetection, FaceDetection, Stream
     pass
 
 
-class IdleIntention(Intention, FaceDetection, SpeechRecognition, ObjectDetection):
+class IdleIntention(Intention, FaceDetection, StreamingSpeechRecognition, ObjectDetection):
 
     GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120
@@ -59,7 +59,7 @@ class IdleIntention(Intention, FaceDetection, SpeechRecognition, ObjectDetection
                 return
 
 
-class IgnoreIntention(Intention, SpeechRecognition):
+class IgnoreIntention(Intention, StreamingSpeechRecognition):
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript.lower()
 
@@ -70,7 +70,7 @@ class IgnoreIntention(Intention, SpeechRecognition):
                 return
 
 
-class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
+class ConversationIntention(Intention, ObjectDetection, FaceDetection, StreamingSpeechRecognition):
 
     _face_detection = None  # type: FaceDetection
     CONVERSATION_TIMEOUT = 15
@@ -195,9 +195,9 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         for forget in ["forget", "delete", "erase", "remove", "destroy"]:
             for data in ["data", "face", "me"]:
                 if forget in statement.lower() and data in statement:
-                    if self.chat.speaker + ".bin" in os.listdir(config.NEW_FACE_DIRECTORY):
+                    if self.chat.speaker + ".bin" in os.listdir(config.PEOPLE_NEW_ROOT):
                         self.say("Ok {}, I will erase your data according to the EU General Data Protection Regulation!".format(self.chat.speaker), animations.FRIENDLY)
-                        os.remove(os.path.join(config.NEW_FACE_DIRECTORY, self.chat.speaker + ".bin"))
+                        os.remove(os.path.join(config.PEOPLE_NEW_ROOT, self.chat.speaker + ".bin"))
                         sleep(1)
                         self.say("Boom, Done! You're still in my Random Access Memory, but as soon as I get rebooted, I will not remember you!", animations.CRAZY)
                     else:
@@ -295,7 +295,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         return False
 
     def respond_wikipedia(self, question):
-        answer = Wikipedia().nlp_query(question)
+        answer = Wikipedia().query(question)
         if answer:
             answer = answer.split('. ')[0]
             self.say("{}, {}, {}.".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker), animations.CLOUD)
@@ -316,7 +316,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, SpeechRec
         IdleIntention(self.application)
 
 
-class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition):
+class MeetIntention(Intention, ObjectDetection, FaceDetection, StreamingSpeechRecognition):
 
     MEET_TIMEOUT = 30
     UTTERANCE_TIMEOUT = 15
@@ -448,7 +448,7 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, SpeechRecognition
 
         people[str(self._name)] = self._face
         self._face_detection.face_classifier = FaceClassifier(people)
-        np.concatenate(self._face).tofile(os.path.join(config.NEW_FACE_DIRECTORY, "{}.bin".format(name)))
+        np.concatenate(self._face).tofile(os.path.join(config.PEOPLE_NEW_ROOT, "{}.bin".format(name)))
 
 
 if __name__ == '__main__':

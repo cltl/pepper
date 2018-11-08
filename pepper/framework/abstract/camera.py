@@ -93,6 +93,16 @@ class AbstractCamera(object):
         return self._rate
 
     @property
+    def true_rate(self):
+        """
+        Returns
+        -------
+        true_rate: float
+            Actual Image Rate
+        """
+        return self._true_rate
+
+    @property
     def shape(self):
         """
         Returns
@@ -120,6 +130,15 @@ class AbstractCamera(object):
         """
         self._callbacks = value
 
+    @property
+    def running(self):
+        """
+        Returns
+        -------
+        running: bool
+        """
+        return self._running
+
     def on_image(self, image):
         """
         On Image Event
@@ -132,12 +151,10 @@ class AbstractCamera(object):
 
     def start(self):
         """Start Streaming Images from Camera"""
-
         self._running = True
 
     def stop(self):
         """Stop Streaming Images from Camera"""
-
         self._running = False
 
     def _processor(self):
@@ -147,13 +164,14 @@ class AbstractCamera(object):
         Calls each callback for each image, threaded, for higher image throughput
         """
         while True:
-
-            t1 = time()
-            self._dt_buffer.append((t1 - self._t0))
-            self._t0 = t1
-            self._true_rate = 1.0 / np.mean(self._dt_buffer)
-
             image = self._mailbox.get()
+            if self._running:
+                for callback in self.callbacks:
+                    callback(image)
+            self._update_dt()
 
-            for callback in self.callbacks:
-                callback(image)
+    def _update_dt(self):
+        t1 = time()
+        self._dt_buffer.append((t1 - self._t0))
+        self._t0 = t1
+        self._true_rate = 1 / np.mean(self._dt_buffer)

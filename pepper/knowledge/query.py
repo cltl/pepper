@@ -17,12 +17,12 @@ class QnA:
         "What is the time?": lambda: strftime("It is currently %H:%M."),
         "day is it?": lambda: strftime("It is %A today."),
         "month is it?": lambda: strftime("It is %B today."),
-        "How many friends?": lambda: "I have {} friends".format(len(os.listdir(config.FACE_DIRECTORY))),
+        "How many friends?": lambda: "I have {} friends".format(len(os.listdir(config.PEOPLE_FRIENDS_ROOT))),
         "Who are your friends?": lambda: "My friends are {}. I like my friends!".format(
-            ", ".join(name.replace(".bin", "") for name in os.listdir(config.FACE_DIRECTORY))),
-        "How many people did you meet?": lambda: "I met {} people today!".format(len(os.listdir(config.NEW_FACE_DIRECTORY))-1),
+            ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_FRIENDS_ROOT))),
+        "How many people did you meet?": lambda: "I met {} people today!".format(len(os.listdir(config.PEOPLE_NEW_ROOT)) - 1),
         "Who did you meet?": lambda: "I met {}!".format(
-            ", ".join(name.replace(".bin", "") for name in os.listdir(config.NEW_FACE_DIRECTORY) if name != "NEW.bin")),
+            ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_NEW_ROOT) if name != "NEW.bin")),
         "What can you do?": lambda: choice([
             "I can answer factual questions by querying the web!",
             "You can ask me personal questions and I will try to answer them!",

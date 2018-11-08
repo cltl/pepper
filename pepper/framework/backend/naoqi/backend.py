@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractBackend
-from pepper.framework.backend.system import SystemMicrophone
+from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
 from pepper.framework.backend.naoqi import NaoqiCamera, NaoqiMicrophone, NaoqiTextToSpeech
 from pepper import config
 
@@ -7,12 +7,9 @@ import qi
 
 
 class NaoqiBackend(AbstractBackend):
-    def __init__(self,
-                 url=config.NAOQI_URL,
-                 camera_resolution=config.CAMERA_RESOLUTION,
-                 camera_rate=config.CAMERA_FRAME_RATE,
-                 microphone_index=config.NAOQI_MICROPHONE_INDEX,
-                 language=config.LANGUAGE):
+    def __init__(self, url=config.NAOQI_URL, camera_resolution=config.CAMERA_RESOLUTION,
+                 camera_rate=config.CAMERA_FRAME_RATE, microphone_index=config.NAOQI_MICROPHONE_INDEX,
+                 language=config.APPLICATION_LANGUAGE, system_camera=False, system_microphone=False, system_text_to_speech=False):
         """
         Initialize Naoqi Backend
 
@@ -27,9 +24,10 @@ class NaoqiBackend(AbstractBackend):
         self._url = url
         self._session = self.create_session(self._url)
 
-        super(NaoqiBackend, self).__init__(NaoqiCamera(self.session, camera_resolution, camera_rate),
-                                           SystemMicrophone(16000, 1) if config.USE_SYSTEM_MICROPHONE else NaoqiMicrophone(self.session, microphone_index),
-                                           NaoqiTextToSpeech(self.session, language))
+        super(NaoqiBackend, self).__init__(
+            SystemCamera(camera_resolution, camera_rate) if system_camera else NaoqiCamera(self.session, camera_resolution, camera_rate),
+            SystemMicrophone(16000, 1) if system_microphone else NaoqiMicrophone(self.session, microphone_index),
+            SystemTextToSpeech(language) if system_text_to_speech else NaoqiTextToSpeech(self.session, language))
 
     @property
     def url(self):

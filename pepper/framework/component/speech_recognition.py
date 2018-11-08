@@ -51,7 +51,7 @@ class SynchronousSpeechRecognition(SpeechRecognition):
         super(SynchronousSpeechRecognition, self).__init__(backend)
 
         self.on_transcript_callbacks = []
-        self._asr = GoogleASR(config.LANGUAGE, self.backend.microphone.rate)
+        self._asr = GoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
         def on_utterance(audio):
             hypotheses = self.asr.transcribe(audio)
@@ -112,7 +112,7 @@ class StreamingSpeechRecognition(SpeechRecognition):
         super(StreamingSpeechRecognition, self).__init__(backend)
 
         self.on_transcript_callbacks = []
-        self._asr = StreamedGoogleASR(config.LANGUAGE, self.backend.microphone.rate)
+        self._asr = StreamedGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
         frame_queue = Queue()
         self._vad = VAD(self.backend.microphone, stream_callbacks=[

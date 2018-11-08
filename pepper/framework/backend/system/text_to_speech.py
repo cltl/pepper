@@ -34,11 +34,9 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         # Select the type of audio file you want returned
         self._audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.MP3)
 
-        self._busy = False
-
         self._log.debug("Booted")
 
-    def say(self, text, animation=None):
+    def on_text_to_speech(self, text, animation=None):
         """
         Say something through Text to Speech
 
@@ -47,27 +45,19 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         text: str
         animation: str
         """
-
-        while self._busy: sleep(0.1)
-        self._busy = True
-
-        if not self.language.startswith('en'):
-            new_text = translate_v2.Client().translate(text, target_language=self.language)['translatedText']
-            self._log.info("{} <- {}".format(new_text, text))
-            text = new_text
-        else:
-            self._log.info(text)
-
         synthesis_input = texttospeech.types.SynthesisInput(text=text)
         response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
+        self._play_sound(response.audio_content)
 
+    def _play_sound(self, mp3):
         file_hash = os.path.join(self.ROOT, "{}.mp3".format(str(getrandbits(128))))
-        with open(file_hash, 'wb') as out:
-            out.write(response.audio_content)
 
-        playsound(file_hash)
-        os.remove(file_hash)
-
-        self._busy = False
+        try:
+            with open(file_hash, 'wb') as out:
+                out.write(mp3)
+            playsound(file_hash)
+        finally:
+            if os.path.exists(file_hash):
+                os.remove(file_hash)
 
 

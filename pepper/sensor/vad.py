@@ -10,9 +10,11 @@ class VAD(object):
 
     FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
     BUFFER_SIZE = 100  # Buffer Size
-    WINDOW_SIZE = config.VAD_WINDOW_SIZE * FRAME_MS  # Sliding Window Length (Multiples of Frame MS)
+    WINDOW_SIZE = 3 * FRAME_MS  # Sliding Window Length (Multiples of Frame MS)
 
-    def __init__(self, microphone, callbacks=(), stream_callbacks=(), mode=3):
+    def __init__(self, microphone, callbacks=(), stream_callbacks=(), mode=3,
+                 voice_threshold=config.VOICE_ACTIVITY_DETECTION_THRESHOLD,
+                 nonvoice_threshold=config.VOICE_ACTIVITY_DETECTION_THRESHOLD):
         """
         Detect Utterances of People using Voice Activity Detection
 
@@ -31,6 +33,10 @@ class VAD(object):
 
         self._callbacks = callbacks
         self._stream_callbacks = stream_callbacks
+
+        self._voice_threshold = voice_threshold
+        self._nonvoice_threshold = nonvoice_threshold
+
         self._vad = Vad(mode)
 
         # Number of Elements (np.int16) in Frame
@@ -180,7 +186,7 @@ class VAD(object):
         self._activation = np.mean(self._vad_ringbuffer[window])
 
         if self._voice:
-            if self.activation > config.VAD_NONVOICE_THRESHOLD:
+            if self.activation > self._nonvoice_threshold:
                 self._voice_buffer.extend(frame)  # Add Frame to Voice Buffer
             else:
                 self._voice = False  # Stop Recording Voice
@@ -201,7 +207,7 @@ class VAD(object):
                 for callback in self._stream_callbacks:
                     callback(np.array(0, np.int16), self._voice)
         else:
-            if self.activation > config.VAD_VOICE_THRESHOLD:
+            if self.activation > self._voice_threshold:
                 self._voice = True  # Start Recording Voice
 
                 # Add Buffered Audio to Voice Buffer

@@ -33,7 +33,7 @@ class ObjectDetection(AbstractComponent):
             ----------
             image: np.ndarray
             """
-            objects = [obj for obj in coco.classify(image) if obj.confidence > config.OBJECT_CONFIDENCE_THRESHOLD]
+            objects = [obj for obj in coco.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
             queue.put((image, objects))
 
         def worker():

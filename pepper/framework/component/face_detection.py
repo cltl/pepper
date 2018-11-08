@@ -25,8 +25,8 @@ class FaceDetection(AbstractComponent):
         open_face = OpenFace()
 
         # Import Face Data
-        people = FaceClassifier.load_directory(config.FACE_DIRECTORY)
-        people.update(FaceClassifier.load_directory(config.NEW_FACE_DIRECTORY))
+        people = FaceClassifier.load_directory(config.PEOPLE_FRIENDS_ROOT)
+        people.update(FaceClassifier.load_directory(config.PEOPLE_NEW_ROOT))
 
         # Initialize Face Classifier
         self.face_classifier = FaceClassifier(people)

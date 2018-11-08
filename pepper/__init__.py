@@ -1,4 +1,5 @@
 import logging
+import enum
 import os
 
 
@@ -21,3 +22,32 @@ console_logger.setFormatter(logging.Formatter(LOGGING_FORMAT_CONSOLE, LOGGING_DA
 logger = logging.getLogger("pepper")
 
 logger.addHandler(console_logger)
+
+
+class ApplicationBackend(enum.Enum):
+    SYSTEM = 0
+    NAOQI = 1
+
+
+class CameraResolution(enum.Enum):
+    NATIVE = -1, -1
+    QQQQVGA = 30, 40
+    QQQVGA = 60, 80
+    QQVGA = 120, 160
+    QVGA = 240, 320
+    VGA = 480, 640
+    VGA4 = 960, 1280
+
+
+class NaoqiCameraIndex(enum.IntEnum):
+    TOP = 0
+    BOTTOM = 1
+    DEPTH = 2
+
+
+class NaoqiMicrophoneIndex(enum.IntEnum):
+    ALL = 0
+    LEFT = 1
+    RIGHT = 2
+    FRONT = 3
+    REAR = 4
