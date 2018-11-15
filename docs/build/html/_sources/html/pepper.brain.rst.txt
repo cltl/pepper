@@ -1,0 +1,25 @@
+pepper.brain package
+====================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    pepper.brain.utils
+
+Submodules
+----------
+
+.. toctree::
+
+   pepper.brain.long_term_memory
+   pepper.brain.short_term_memory
+
+Module contents
+---------------
+
+.. automodule:: pepper.brain
+    :members:
+    :undoc-members:
+    :show-inheritance:

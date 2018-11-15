@@ -1,0 +1,17 @@
+pepper.apps package
+===================
+
+Submodules
+----------
+
+.. toctree::
+
+   pepper.apps.default
+
+Module contents
+---------------
+
+.. automodule:: pepper.apps
+    :members:
+    :undoc-members:
+    :show-inheritance:

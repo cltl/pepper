@@ -1,0 +1,27 @@
+pepper.sensor package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    pepper.sensor.util
+
+Submodules
+----------
+
+.. toctree::
+
+   pepper.sensor.asr
+   pepper.sensor.face
+   pepper.sensor.obj
+   pepper.sensor.vad
+
+Module contents
+---------------
+
+.. automodule:: pepper.sensor
+    :members:
+    :undoc-members:
+    :show-inheritance:

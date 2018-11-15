@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.abstract.camera module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pepper.framework.abstract.backend module" href="pepper.framework.abstract.backend.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.abstract.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.sensor.html">pepper.sensor package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.abstract.html">pepper.framework.abstract package</a> &raquo;</li>
+        
+      <li>pepper.framework.abstract.camera module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.abstract.camera.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.abstract.camera">
+<span id="pepper-framework-abstract-camera-module"></span><h1>pepper.framework.abstract.camera module<a class="headerlink" href="#module-pepper.framework.abstract.camera" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.abstract.camera.AbstractCamera">
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractCamera</code><span class="sig-paren">(</span><em>resolution</em>, <em>rate</em>, <em>callbacks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.callbacks" title="pepper.framework.abstract.camera.AbstractCamera.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.channels" title="pepper.framework.abstract.camera.AbstractCamera.channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.height" title="pepper.framework.abstract.camera.AbstractCamera.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.rate" title="pepper.framework.abstract.camera.AbstractCamera.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.resolution" title="pepper.framework.abstract.camera.AbstractCamera.resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolution</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.running" title="pepper.framework.abstract.camera.AbstractCamera.running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.shape" title="pepper.framework.abstract.camera.AbstractCamera.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.true_rate" title="pepper.framework.abstract.camera.AbstractCamera.true_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.width" title="pepper.framework.abstract.camera.AbstractCamera.width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="pepper.framework.abstract.camera.AbstractCamera.on_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_image</span></code></a>(image)</td>
+<td>On Image Event</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.start" title="pepper.framework.abstract.camera.AbstractCamera.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
+<td>Start Streaming Images from Camera</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.stop" title="pepper.framework.abstract.camera.AbstractCamera.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</td>
+<td>Stop Streaming Images from Camera</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.callbacks">
+<code class="descname">callbacks</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.callbacks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>callbacks: list of callable</strong></dt>
+<dd><p class="first last">on_image callbacks</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.channels">
+<code class="descname">channels</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.channels" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>channels: int</strong></dt>
+<dd><p class="first last">Image channels</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.height">
+<code class="descname">height</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.height" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>height: int</strong></dt>
+<dd><p class="first last">Image height</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.on_image">
+<code class="descname">on_image</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.on_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>On Image Event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>image: np.ndarray</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.rate">
+<code class="descname">rate</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rate: int</strong></dt>
+<dd><p class="first last">Image rate</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.resolution">
+<code class="descname">resolution</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.resolution" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>resolution: CameraResolution</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.running">
+<code class="descname">running</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.running" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>running: bool</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.shape">
+<code class="descname">shape</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.shape" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>shape: np.ndarray</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start Streaming Images from Camera</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop Streaming Images from Camera</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.true_rate">
+<code class="descname">true_rate</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.true_rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>true_rate: float</strong></dt>
+<dd><p class="first last">Actual Image Rate</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractCamera.width">
+<code class="descname">width</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.width" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>width: int</strong></dt>
+<dd><p class="first last">Image width</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="pepper.framework.abstract.backend.html" class="btn btn-neutral" title="pepper.framework.abstract.backend module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

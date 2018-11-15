@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.analyzers module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pepper.language.analyzers module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/html/pepper.language.analyzers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.language.analyzers">
+<span id="pepper-language-analyzers-module"></span><h1>pepper.language.analyzers module<a class="headerlink" href="#module-pepper.language.analyzers" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_np">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_np</code><span class="sig-paren">(</span><em>np_list</em>, <em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_np" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyzes a noun phrase (consists of pronouns, nouns, names, or possessive pronouns + prepositions)
+Morphological information which is stored in pronouns is extracted, names are simply marked as ‘human’ and
+possessive syntax constructions are analyzed</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_possessive_np">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_possessive_np</code><span class="sig-paren">(</span><em>poss</em>, <em>np_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_possessive_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_possessive_np" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called to analyze possessive constructions like “my name”
+It extracts the person who is possessing and what does the person possess - the category in this case would be “name” and the person possessing is the speaker
+The predicate is created by adding a suffix “-is” to the category e.g. “name-is”</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_pronoun">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_pronoun</code><span class="sig-paren">(</span><em>pronoun</em>, <em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_pronoun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_pronoun" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns a morphology which it reads from the grammar (grammar.json)
+The grammar has information about person (1st, 2nd, 3rd) and number (singular or plural) for regular and possessive pronouns</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_question_word">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_question_word</code><span class="sig-paren">(</span><em>question_word</em>, <em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_question_word"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_question_word" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the response type of a question based on its first word</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_verb">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_verb</code><span class="sig-paren">(</span><em>verb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_verb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_verb" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called when a verb is detected, it can be either the verb to be or one of the verbs from the predicate list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_verb_question">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_verb_question</code><span class="sig-paren">(</span><em>words</em>, <em>speaker</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_verb_question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_verb_question" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyzes questions which start with a verb to be or a modal verb</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.analyze_wh_question">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">analyze_wh_question</code><span class="sig-paren">(</span><em>words</em>, <em>speaker</em>, <em>response_type</em>, <em>viewed_object</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#analyze_wh_question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.analyze_wh_question" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyzes questions which start with who, what, where (why and when are also in this category but are not yet comprehended by Leolani)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.analyzers.extract_named_entities">
+<code class="descclassname">pepper.language.analyzers.</code><code class="descname">extract_named_entities</code><span class="sig-paren">(</span><em>np_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/analyzers.html#extract_named_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzers.extract_named_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the Stanford NER package, this function tries to extract named entities such as persons, locations, organizations etc.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+pepper.sensor.util package
+==========================
+
+Module contents
+---------------
+
+.. automodule:: pepper.sensor.util
+    :members:
+    :undoc-members:
+    :show-inheritance:

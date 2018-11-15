@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.process_utterance module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pepper.language.process_utterance module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/html/pepper.language.process_utterance.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.language.process_utterance">
+<span id="pepper-language-process-utterance-module"></span><h1>pepper.language.process_utterance module<a class="headerlink" href="#module-pepper.language.process_utterance" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pepper.language.process_utterance.analyze_statement">
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">analyze_statement</code><span class="sig-paren">(</span><em>speaker</em>, <em>words</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/process_utterance.html#analyze_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.analyze_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyzes statements, by extracting an rdf
+A complete rdf is stored in the brain, while an incomplete one should raise an error and trigger asking-for-clarification #TODO</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.process_utterance.analyze_utterance">
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">analyze_utterance</code><span class="sig-paren">(</span><em>utterance</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>brain</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/process_utterance.html#analyze_utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.analyze_utterance" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the microphone creates a transcript of text-to-speech, this function is the first to be called
+After the utterance is classified and processed, we get a json template to either query the brain or to store it
+The brain returns a response after querying/storing the template</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.process_utterance.classify_and_analyze_question">
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">classify_and_analyze_question</code><span class="sig-paren">(</span><em>speaker</em>, <em>words</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/process_utterance.html#classify_and_analyze_question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.classify_and_analyze_question" title="Permalink to this definition">¶</a></dt>
+<dd><p>If an utterance is classified as a question, this function is called to determine
+whether it is a <a href="#id1"><span class="problematic" id="id2">wh_</span></a> or a verb question (depending on the first word)
+Based on this, we extract an RDF triple of subject-predicate-object, and then pack it in the template
+The template is a json formatted to query the brain</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.process_utterance.classify_and_process_utterance">
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">classify_and_process_utterance</code><span class="sig-paren">(</span><em>utterance</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/process_utterance.html#classify_and_process_utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.classify_and_process_utterance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depending on the first word, the utterance is classified as a question or a statement and then processed accordingly</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.process_utterance.reply">
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">reply</code><span class="sig-paren">(</span><em>response</em>, <em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pepper/language/process_utterance.html#reply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.reply" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called to generate the response to be said aloud by Leolani
+It needs the response generated from the brain as input, and based on its type (response to question or a statement) it triggers different reply functions</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

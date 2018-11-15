@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.backend.file.backend &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.framework.backend.file.backend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.framework.backend.file.backend</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractBackend</span><span class="p">,</span> <span class="n">AbstractCamera</span><span class="p">,</span> <span class="n">AbstractMicrophone</span><span class="p">,</span> <span class="n">AbstractTextToSpeech</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
+
+<span class="kn">import</span> <span class="nn">av</span>
+<span class="kn">from</span> <span class="nn">av.audio.resampler</span> <span class="k">import</span> <span class="n">AudioResampler</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+
+
+<div class="viewcode-block" id="FileBackend"><a class="viewcode-back" href="../../../../../pepper.framework.backend.file.backend.html#pepper.framework.backend.file.backend.FileBackend">[docs]</a><span class="k">class</span> <span class="nc">FileBackend</span><span class="p">(</span><span class="n">AbstractBackend</span><span class="p">):</span>
+
+    <span class="n">INT16_MAX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span>
+                 <span class="n">camera_resolution</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">CAMERA_RESOLUTION</span><span class="p">,</span>
+                 <span class="n">camera_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">CAMERA_FRAME_RATE</span><span class="p">,</span>
+                 <span class="n">microphone_channels</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_CHANNELS</span><span class="p">,</span>
+                 <span class="n">microphone_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span>
+                 <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame_offset</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_rate</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_channels</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resampler</span> <span class="o">=</span> <span class="n">AudioResampler</span><span class="p">(</span><span class="s2">&quot;s16&quot;</span><span class="p">,</span> <span class="s2">&quot;mono&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_container</span> <span class="o">=</span> <span class="n">av</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streams</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;video&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_frame_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">camera_rate</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_streams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;audio&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_rate</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">rate</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_channels</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">channels</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_streams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">FileBackend</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">AbstractCamera</span><span class="p">(</span><span class="n">camera_resolution</span><span class="p">,</span> <span class="n">camera_rate</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">AbstractMicrophone</span><span class="p">(</span><span class="n">microphone_rate</span><span class="p">,</span> <span class="n">microphone_channels</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">AbstractTextToSpeech</span><span class="p">(</span><span class="n">language</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">container</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">streams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streams</span>
+
+<div class="viewcode-block" id="FileBackend.run"><a class="viewcode-back" href="../../../../../pepper.framework.backend.file.backend.html#pepper.framework.backend.file.backend.FileBackend.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">packet</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">demux</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">packet</span><span class="o">.</span><span class="n">decode</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">packet</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;video&quot;</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">to_image</span><span class="p">())</span>
+                    <span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">resolution</span><span class="o">.</span><span class="n">value</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span></div></div>
+                <span class="c1"># elif packet.stream.type == &quot;audio&quot;:</span>
+                <span class="c1">#     data = self._resampler.resample(frame).to_ndarray()</span>
+                <span class="c1">#     self.microphone.on_audio(data)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="o">*</span>
+    <span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemBackend</span>
+
+    <span class="k">class</span> <span class="nc">MyApp</span><span class="p">(</span><span class="n">Application</span><span class="p">,</span> <span class="n">VideoDisplay</span><span class="p">,</span> <span class="n">Statistics</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">,</span> <span class="n">SpeechRecognition</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># backend = FileBackend(&quot;/Users/bram/Documents/pepper/data/video/Maker Faire 2017 Interview with DFRobot.mp4&quot;)</span>
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">SystemBackend</span><span class="p">()</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">MyApp</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -29,6 +29,8 @@ class Face(object):
     @property
     def representation(self):
         """
+        Face Representation
+
         Returns
         -------
         representation: np.ndarray
@@ -39,6 +41,8 @@ class Face(object):
     @property
     def bounds(self):
         """
+        Face Bounds (Relative to Image)
+
         Returns
         -------
         bounds: Bounds
@@ -89,9 +93,9 @@ class Person(Face):
 
 
 class OpenFace(object):
+    DOCKER_NAME = "openface"
     DOCKER_IMAGE = "bamos/openface"
     DOCKER_WORKING_DIRECTORY = "/root/openface"
-    DOCKER_NAME = "openface"
 
     SCRIPT_NAME = '_openface.py'
     SCRIPT_PATH = os.path.join(os.path.dirname(__file__), 'util', SCRIPT_NAME)
@@ -155,12 +159,19 @@ class OpenFace(object):
             # Wrap information into Face instances
             faces = []
             for i in range(n_faces):
-                bounds = Bounds(*np.frombuffer(client.recv(4*4), np.float32)).scaled(1.0 / image.shape[1], 1.0 / image.shape[0])
+
+                # Face Bounds
+                bounds = Bounds(*np.frombuffer(client.recv(4*4), np.float32))
+                bounds = bounds.scaled(1.0 / image.shape[1], 1.0 / image.shape[0])
+
+                # Face Representation
                 representation = np.frombuffer(client.recv(self.FEATURE_DIM * 4), np.float32)
+
                 faces.append(Face(representation, bounds))
+
             return faces
 
-        except socket.error as e:
+        except socket.error:
             raise RuntimeError("Couldn't connect to OpenFace Docker service.")
 
     def stop(self):
@@ -176,9 +187,73 @@ class OpenFace(object):
         is_running: bool
         """
         try:
-            return 'openface' in subprocess.check_output(['docker', 'ps'])
+            return self.DOCKER_NAME in subprocess.check_output(['docker', 'ps'])
         except Exception as e:
             return False
+
+
+class FaceStore(object):
+
+    EXTENSION = ".bin"
+
+    @staticmethod
+    def load_directories(*directories):
+        faces = {}
+        for directory in directories:
+            faces.update(FaceStore.load_directory(directory))
+        return faces
+
+    @staticmethod
+    def load_directory(directory):
+        """
+        Load all faces from directory with <name>.<FaceStore.EXTENSION> files
+
+        Parameters
+        ----------
+        directory: str
+            Directory containing Face Data
+
+        Returns
+        -------
+        faces: Dict[str, np.ndarray]
+            Dictionary of {name: representation} pairs
+        """
+        faces = {}
+        faces.update(FaceStore.load_face(os.path.join(directory, path)) for path in os.listdir(directory))
+        return faces
+
+    @staticmethod
+    def load_face(path):
+        """
+        Load Face in a <name>.<FaceStore.EXTENSION> file
+
+        Parameters
+        ----------
+        path: str
+
+        Returns
+        -------
+        name, representation: str, np.ndarray
+        """
+        name = os.path.splitext(os.path.basename(path))[0]
+        representation = np.fromfile(path, np.float32).reshape(-1, OpenFace.FEATURE_DIM)
+        return name, representation
+
+    @staticmethod
+    def save_face(directory, name, data):
+        """
+        Save Face to directory in a <name>.<FaceStore.EXTENSION> file
+
+        Parameters
+        ----------
+        directory: str
+            Directory containing Face Data
+        name: str
+            Name of Person
+        data: List[np.ndarray]
+            List of Representations: See OpenFace.represent(image) -> Face
+        """
+        np.concatenate(data).tofile(os.path.join(directory, name + FaceStore.EXTENSION))
 
 
 class FaceClassifier:

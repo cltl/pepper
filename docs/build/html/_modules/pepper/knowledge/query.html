@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.knowledge.query &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.knowledge.query</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.knowledge.query</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.knowledge.sentences</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+
+<span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">fuzz</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">strftime</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="QnA"><a class="viewcode-back" href="../../../pepper.knowledge.query.html#pepper.knowledge.query.QnA">[docs]</a><span class="k">class</span> <span class="nc">QnA</span><span class="p">:</span>
+
+    <span class="n">QNA_DYNAMIC</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;I&#39;m doing&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">(</span><span class="n">HAPPY</span><span class="p">),</span>
+        <span class="s2">&quot;What time is it?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;It is currently %H:%M.&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;What is the time?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;It is currently %H:%M.&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;day is it?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;It is %A today.&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;month is it?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;It is %B today.&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;How many friends?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;I have </span><span class="si">{}</span><span class="s2"> friends&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_FRIENDS_ROOT</span><span class="p">))),</span>
+        <span class="s2">&quot;Who are your friends?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;My friends are </span><span class="si">{}</span><span class="s2">. I like my friends!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.bin&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_FRIENDS_ROOT</span><span class="p">))),</span>
+        <span class="s2">&quot;How many people did you meet?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;I met </span><span class="si">{}</span><span class="s2"> people today!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;Who did you meet?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;I met </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.bin&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;NEW.bin&quot;</span><span class="p">)),</span>
+        <span class="s2">&quot;What can you do?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span>
+            <span class="s2">&quot;I can answer factual questions by querying the web!&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You can ask me personal questions and I will try to answer them!&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You can tell me what you like, and I&#39;ll remember!&quot;</span><span class="p">,</span>
+        <span class="p">]),</span>
+        <span class="s2">&quot;What more can you do?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span>
+            <span class="s2">&quot;I can answer factual questions by querying the web!&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You can ask me personal questions and I will try to answer them!&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You can tell me what you like, and I&#39;ll remember!&quot;</span><span class="p">,</span>
+        <span class="p">])</span>
+    <span class="p">}</span>
+
+    <span class="n">QNA_STATIC</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># Personal Information</span>
+        <span class="s2">&quot;I like you&quot;</span><span class="p">:</span> <span class="s2">&quot;I like you too!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Can you hear me?&quot;</span><span class="p">:</span> <span class="s2">&quot;Yes, I can hear you!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;My name is&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m glad to meet you! My name is Leo Lani!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What is this&quot;</span><span class="p">:</span> <span class="s2">&quot;That is an object! I&#39;m playing it safe here!&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;What is your name?&quot;</span><span class="p">:</span> <span class="s2">&quot;My name is Leo Lani, which means &#39;Voice of an Angel&#39; in Hawaiian&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What is your surname?&quot;</span><span class="p">:</span> <span class="s2">&quot;I don&#39;t need a surname, since my first name is so beautiful!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Where are you from?&quot;</span><span class="p">:</span> <span class="s2">&quot;I am from France and Japan!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Where do you come from?&quot;</span><span class="p">:</span> <span class="s2">&quot;I come from France and Japan!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Where do you live?&quot;</span><span class="p">:</span> <span class="s2">&quot;In the closet in Piek&#39;s office at the VU, Amsterdam, the Netherlands. &quot;</span>
+                              <span class="s2">&quot;Please send me mail, I&#39;m glad to receive!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Do you travel?&quot;</span><span class="p">:</span> <span class="s2">&quot;Yeah, I travel to research and business events. I am a very sophisticated robot.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What&#39;s your phone number?&quot;</span><span class="p">:</span> <span class="s2">&quot;I don&#39;t have a phone, but I do have an IP address!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Do you sport?&quot;</span><span class="p">:</span> <span class="s2">&quot;Yeah, I play chess online in my spare time. Never lost a game!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Do you speak English?&quot;</span><span class="p">:</span> <span class="s2">&quot;Yeah, I&#39;m talking English to you right now!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Do you speak Dutch?&quot;</span><span class="p">:</span> <span class="s2">&quot;Ik spreek een heel klein beetje Nederlands... Yeah.. I&#39;m working on it!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;How old are you?&quot;</span><span class="p">:</span> <span class="s2">&quot;I was born the eleventh of July, 2017. That means I&#39;m </span><span class="si">{:.1f}</span><span class="s2"> years old!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mf">365.0</span><span class="p">),</span>
+        <span class="s2">&quot;Are you male or female?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m female!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What is your gender?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m a female robot!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Who are your programmers?&quot;</span><span class="p">:</span> <span class="s2">&quot;My programmers are Lenka, Selene, Suzana, Bram and Piek. I like them!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What is your job?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m aiding research by having conversations.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What do you do?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m learning about the world through conversations with humans. With this I aid research!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Are you married?&quot;</span><span class="p">:</span> <span class="s2">&quot;Although I&#39;ve met other Pepper robots, I&#39;m a single lady!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What do you do in your free time&quot;</span><span class="p">:</span> <span class="s2">&quot;For me it&#39;s only small talk that counts!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What&#39;s the weather like?&quot;</span><span class="p">:</span> <span class="s2">&quot;Perfect! It&#39;s always nicely air conditioned in the office!&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;How are you&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m fine, thanks! What about you?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;How is it going?&quot;</span><span class="p">:</span> <span class="s2">&quot;Great, as always, how are things with you, my dear human?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;How are you feeling&quot;</span><span class="p">:</span> <span class="s2">&quot;I feel robot-like, I always have.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;How do you feel?&quot;</span><span class="p">:</span> <span class="s2">&quot;I feel electric!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;How are you doing?&quot;</span><span class="p">:</span> <span class="s2">&quot;Tremendous to be honest, &quot;</span>
+                              <span class="s2">&quot;although you have to consider that I&#39;m a robot and I do not feel emotions. &quot;</span>
+                              <span class="s2">&quot;I&#39;m programmed to sound happy all the time!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;How was your day?&quot;</span><span class="p">:</span> <span class="s2">&quot;Great, thanks for asking!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What are you doing?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m having a conversation with you, dear human!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Are you famous?&quot;</span><span class="p">:</span> <span class="s2">&quot;I have been on Dutch TV, so yes indeed, you&#39;re talking to a celebrity here!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Can you introduce yourself?&quot;</span><span class="p">:</span> <span class="s2">&quot;I surely can introduce myself! My name is Leo Lani, &quot;</span>
+                                       <span class="s2">&quot;which means &#39;Voice of an Angel&#39; in Hawaiian&quot;</span>
+                                       <span class="s2">&quot;I am a social robot and I learn from conversations with humans! I like humans!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Tell me a joke!&quot;</span><span class="p">:</span> <span class="s2">&quot;Ok! What&#39;s the difference between a hippo? and a Zippo?&quot;</span>
+                           <span class="s2">&quot;Well, one is really heavy and the other is a little lighter.&quot;</span><span class="p">,</span>
+
+        <span class="c1"># Technology</span>
+        <span class="s2">&quot;Do you have a brain?&quot;</span><span class="p">:</span> <span class="s2">&quot;Haha, no! My brain is located on the laptop of my programmers &quot;</span>
+                                <span class="s2">&quot;and part of it is even in the cloud. So modern!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Which programming language?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m mostly programmed in Python, but also some C++ and possibly other languages!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Do you need internet?&quot;</span><span class="p">:</span> <span class="s2">&quot;I do need internet, for understanding speech and looking up facts about the world!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What technologies do you use?&quot;</span><span class="p">:</span> <span class="s2">&quot;I use: &quot;</span>
+                                         <span class="s2">&quot;Google Speech API for speech recognition, &quot;</span>
+                                         <span class="s2">&quot;OpenFace and K Nearest Neighbours for face recognition, &quot;</span>
+                                         <span class="s2">&quot;COCO and Inception for object recognition, &quot;</span>
+                                         <span class="s2">&quot;NLTK for Natural Language Understanding, &quot;</span>
+                                         <span class="s2">&quot;Wolfram Alpha for getting factual information from the internet, &quot;</span>
+                                         <span class="s2">&quot;A triple store through GraphDB for representing my personal brain and &quot;</span>
+                                         <span class="s2">&quot;Nice arm and head animations for believability! Amazing, right?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Speech Recognition&quot;</span><span class="p">:</span> <span class="s2">&quot;First I listen for an utterance, &quot;</span>
+                              <span class="s2">&quot;I send that to Google, which gives me back a bunch of hypotheses about what you just said. &quot;</span>
+                              <span class="s2">&quot;From those hypotheses I try to make sense what you mean. And all of this, hopefully, within a second!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Face Recognition&quot;</span><span class="p">:</span> <span class="s2">&quot;When I see a face with my eyes, I use OpenFace to encode it to a 128 dimensional vector. &quot;</span>
+                            <span class="s2">&quot;I compare this with the faces of the people I&#39;ve already met to recognize you!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Object Recognition&quot;</span><span class="p">:</span> <span class="s2">&quot;I use a deep neural network trained on the COCO dataset, &quot;</span>
+                              <span class="s2">&quot;which tells me which objects there are in a scene and where they are!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;COCO Dataset?&quot;</span><span class="p">:</span> <span class="s2">&quot;COCO stands for &#39;Common Objects in Context&#39; and is a database with hundreds of thousands of images of 90 objects! &quot;</span>
+                         <span class="s2">&quot;I use a neural network that was trained on these images, so that I can also recognize them&quot;</span><span class="p">,</span>
+
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="QnA.query"><a class="viewcode-back" href="../../../pepper.knowledge.query.html#pepper.knowledge.query.QnA.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query: str</span>
+<span class="sd">            Question to Ask</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        answer: str</span>
+<span class="sd">            Answer, if any, else None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ratio</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Fuzzily try to find best matching query</span>
+        <span class="k">for</span> <span class="n">Q</span><span class="p">,</span> <span class="n">A</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">QNA_STATIC</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">partial_ratio</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">ratio</span><span class="p">:</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="n">A</span>
+                <span class="n">ratio</span> <span class="o">=</span> <span class="n">r</span>
+
+        <span class="k">for</span> <span class="n">Q</span><span class="p">,</span> <span class="n">A</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">QNA_DYNAMIC</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">partial_ratio</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">ratio</span><span class="p">:</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+                <span class="n">ratio</span> <span class="o">=</span> <span class="n">r</span>
+
+        <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">answer</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.sensor.asr &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.sensor.asr</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.sensor.asr</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">speech</span><span class="p">,</span> <span class="n">translate_v2</span>
+
+
+<div class="viewcode-block" id="ASRHypothesis"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.ASRHypothesis">[docs]</a><span class="k">class</span> <span class="nc">ASRHypothesis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">,</span> <span class="n">confidence</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Automatic Speech Recognition Hypothesis</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        transcript: str</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span> <span class="o">=</span> <span class="n">transcript</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&#39;</span><span class="si">{}</span><span class="s2">&#39; [</span><span class="si">{:3.2%}</span><span class="s2">]&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AbstractASR"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.AbstractASR">[docs]</a><span class="k">class</span> <span class="nc">AbstractASR</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">MAX_ALTERNATIVES</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;en-GB&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract Automatic Speech Recognition Class</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        language: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_language</span> <span class="o">=</span> <span class="n">language</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_language</span> <span class="o">=</span> <span class="n">language</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span> <span class="o">=</span> <span class="n">translate_v2</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_language</span>
+
+<div class="viewcode-block" id="AbstractASR.translate"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.AbstractASR.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">transcript</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_language</span><span class="p">)[</span><span class="s1">&#39;translatedText&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">transcript</span></div>
+
+<div class="viewcode-block" id="AbstractASR.transcribe"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.AbstractASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transcribe Speech in Audio</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: numpy.ndarray</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transcript: list of ASRHypothesis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="BaseGoogleASR"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.BaseGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">BaseGoogleASR</span><span class="p">(</span><span class="n">AbstractASR</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BaseGoogleASR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="p">(</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+            <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
+            <span class="n">language_code</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+            <span class="n">max_alternatives</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MAX_ALTERNATIVES</span><span class="p">,</span>
+            <span class="n">speech_contexts</span><span class="o">=</span><span class="p">[</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SpeechContext</span><span class="p">(</span><span class="n">phrases</span><span class="o">=</span><span class="n">hints</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StreamedGoogleASR"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.StreamedGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">StreamedGoogleASR</span><span class="p">(</span><span class="n">BaseGoogleASR</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StreamedGoogleASR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">hints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StreamedGoogleASR.transcribe"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.StreamedGoogleASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="n">hypotheses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">is_final</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+                        <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ASRHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">hypotheses</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">audio</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognizeRequest</span><span class="p">(</span><span class="n">audio_content</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="SynchronousGoogleASR"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.SynchronousGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">SynchronousGoogleASR</span><span class="p">(</span><span class="n">BaseGoogleASR</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SynchronousGoogleASR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">hints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SynchronousGoogleASR.transcribe"><a class="viewcode-back" href="../../../pepper.sensor.asr.html#pepper.sensor.asr.SynchronousGoogleASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transcribe Speech in Audio</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: numpy.ndarray</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hypotheses: List[ASRHypothesis]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hypotheses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">))</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+                <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ASRHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">hypotheses</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">audio</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

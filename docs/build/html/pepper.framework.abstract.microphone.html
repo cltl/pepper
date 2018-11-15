@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.abstract.microphone module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.sensor.html">pepper.sensor package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.abstract.html">pepper.framework.abstract package</a> &raquo;</li>
+        
+      <li>pepper.framework.abstract.microphone module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.abstract.microphone.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.abstract.microphone">
+<span id="pepper-framework-abstract-microphone-module"></span><h1>pepper.framework.abstract.microphone module<a class="headerlink" href="#module-pepper.framework.abstract.microphone" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone">
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.microphone.</code><code class="descname">AbstractMicrophone</code><span class="sig-paren">(</span><em>rate</em>, <em>channels</em>, <em>callbacks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/microphone.html#AbstractMicrophone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.callbacks" title="pepper.framework.abstract.microphone.AbstractMicrophone.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.channels" title="pepper.framework.abstract.microphone.AbstractMicrophone.channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.rate" title="pepper.framework.abstract.microphone.AbstractMicrophone.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.running" title="pepper.framework.abstract.microphone.AbstractMicrophone.running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.true_rate" title="pepper.framework.abstract.microphone.AbstractMicrophone.true_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.on_audio" title="pepper.framework.abstract.microphone.AbstractMicrophone.on_audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_audio</span></code></a>(audio)</td>
+<td>On Audio Event</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.start" title="pepper.framework.abstract.microphone.AbstractMicrophone.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
+<td>Start Microphone Stream</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.stop" title="pepper.framework.abstract.microphone.AbstractMicrophone.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</td>
+<td>Stop Microphone Stream</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.callbacks">
+<code class="descname">callbacks</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.callbacks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>callbacks: list of callable</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.channels">
+<code class="descname">channels</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.channels" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>channels: int</strong></dt>
+<dd><p class="first last">Audio channels</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.on_audio">
+<code class="descname">on_audio</code><span class="sig-paren">(</span><em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/microphone.html#AbstractMicrophone.on_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.on_audio" title="Permalink to this definition">¶</a></dt>
+<dd><p>On Audio Event</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>audio: np.ndarray</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.rate">
+<code class="descname">rate</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rate: int</strong></dt>
+<dd><p class="first last">Audio bit rate</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.running">
+<code class="descname">running</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.running" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>running: bool</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/microphone.html#AbstractMicrophone.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start Microphone Stream</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/microphone.html#AbstractMicrophone.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop Microphone Stream</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.microphone.AbstractMicrophone.true_rate">
+<code class="descname">true_rate</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.true_rate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>true_rate:</strong></dt>
+<dd><p class="first last">Actual Audio bit rate</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

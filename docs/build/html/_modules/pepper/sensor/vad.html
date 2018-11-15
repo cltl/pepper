@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.sensor.vad &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.sensor.vad</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.sensor.vad</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
+
+<span class="kn">from</span> <span class="nn">webrtcvad</span> <span class="k">import</span> <span class="n">Vad</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+
+
+<div class="viewcode-block" id="VAD"><a class="viewcode-back" href="../../../pepper.sensor.vad.html#pepper.sensor.vad.VAD">[docs]</a><span class="k">class</span> <span class="nc">VAD</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">FRAME_MS</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Must be either 10/20/30 ms, according to webrtcvad specification</span>
+    <span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Buffer Size</span>
+    <span class="n">WINDOW_SIZE</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">FRAME_MS</span>  <span class="c1"># Sliding Window Length (Multiples of Frame MS)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">microphone</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">(),</span> <span class="n">stream_callbacks</span><span class="o">=</span><span class="p">(),</span> <span class="n">mode</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">voice_threshold</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span><span class="p">,</span>
+                 <span class="n">nonvoice_threshold</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Detect Utterances of People using Voice Activity Detection</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        microphone: AbstractMicrophone</span>
+<span class="sd">            Microphone to extract Utterances from</span>
+<span class="sd">        callbacks: list of callable</span>
+<span class="sd">            On Utterance Callback</span>
+<span class="sd">        mode: int</span>
+<span class="sd">            Voice Activity Detection (VAD) &#39;Aggressiveness&#39; (1..3)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_microphone</span> <span class="o">=</span> <span class="n">microphone</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_microphone</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_audio</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">microphone</span><span class="o">.</span><span class="n">rate</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stream_callbacks</span> <span class="o">=</span> <span class="n">stream_callbacks</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_voice_threshold</span> <span class="o">=</span> <span class="n">voice_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nonvoice_threshold</span> <span class="o">=</span> <span class="n">nonvoice_threshold</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vad</span> <span class="o">=</span> <span class="n">Vad</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+        <span class="c1"># Number of Elements (np.int16) in Frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FRAME_MS</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">//</span> <span class="mi">1000</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_activation</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Initialize Ringbuffers, which will hold Audio data and Vad.is_speech results, respectively</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_audio_ringbuffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">BUFFER_SIZE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_size</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vad_ringbuffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BUFFER_SIZE</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_audio_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>  <span class="c1"># Audio Buffer will be filled with raw Microphone Audio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>  <span class="c1"># Voice Buffer will be filled with Voiced Audio</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># No Voice is present at start</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">microphone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        microphone: Microphone</span>
+<span class="sd">            Microphone to extract Utterances from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callback: list of callable</span>
+<span class="sd">            On Utterance Callback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">stream_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_callbacks</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sample_rate: int</span>
+<span class="sd">            Microphone Sample Rate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        vad: Vad</span>
+<span class="sd">            Voice Activity Detection Class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vad</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">activation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        activation: float</span>
+<span class="sd">            Voice Activation Level [0,1]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_activation</span>
+
+<div class="viewcode-block" id="VAD.start"><a class="viewcode-back" href="../../../pepper.sensor.vad.html#pepper.sensor.vad.VAD.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start Detecting Utterances&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VAD.stop"><a class="viewcode-back" href="../../../pepper.sensor.vad.html#pepper.sensor.vad.VAD.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stop Detecting Utterances&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VAD.on_utterance"><a class="viewcode-back" href="../../../pepper.sensor.vad.html#pepper.sensor.vad.VAD.on_utterance">[docs]</a>    <span class="k">def</span> <span class="nf">on_utterance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        On Utterance Callback, user specified callback(s) should have same signature</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: np.ndarray</span>
+<span class="sd">            Audio containing utterance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_on_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Microphone On Audio Event, Processes Audio to filter out Utterances</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Call Streaming Callback with Audio</span>
+        <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_callbacks</span><span class="p">:</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">)</span>
+
+        <span class="c1"># Put Microphone Audio at the end of the Audio Buffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_audio_buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">audio</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+
+        <span class="c1"># Process Each Frame-Length of Audio in Buffer</span>
+        <span class="c1"># 2 * self._frame_size, because we&#39;re counting bytes, not np.int16&#39;s</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_audio_buffer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_size</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_audio_buffer</span><span class="p">[:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame_size</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process_voice</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_buffer</span><span class="p">[:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame_size</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_process_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Process Single Frame of Audio, must be of length self._frame_size and of dtype np.int16</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frame: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Put Frame on Audio Ringbuffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_audio_ringbuffer</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span>
+
+        <span class="c1"># Check if Frame contains speech and put result on VAD Ringbuffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vad_ringbuffer</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vad</span><span class="o">.</span><span class="n">is_speech</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+
+        <span class="c1"># Update Ringbuffer Index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">BUFFER_SIZE</span>
+
+    <span class="k">def</span> <span class="nf">_process_voice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if Utterance is currently starting/happening/stopping and act accordingly</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frame: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">WINDOW_SIZE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">BUFFER_SIZE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_activation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vad_ringbuffer</span><span class="p">[</span><span class="n">window</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nonvoice_threshold</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>  <span class="c1"># Add Frame to Voice Buffer</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Stop Recording Voice</span>
+
+                <span class="c1"># Append Last Frame a couple of times, to give Google some room to play</span>
+                <span class="c1"># TODO: Update this to some better solution, e.g. just listen a while longer</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WINDOW_SIZE</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+                <span class="c1"># Cast Voice Buffer to Numpy Array</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+
+                <span class="c1"># Call Utterance Callback in Thread, to prevent blocking</span>
+                <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_utterance</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">result</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>  <span class="c1"># Clear Voice Buffer</span>
+
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_callbacks</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice_threshold</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Start Recording Voice</span>
+
+                <span class="c1"># Add Buffered Audio to Voice Buffer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_audio_ringbuffer</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span><span class="p">:]</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_audio_ringbuffer</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_ringbuffer_index</span><span class="p">]</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_callbacks</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">)</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_voice_buffer</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

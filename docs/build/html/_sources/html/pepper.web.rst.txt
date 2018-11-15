@@ -1,0 +1,17 @@
+pepper.web package
+==================
+
+Submodules
+----------
+
+.. toctree::
+
+   pepper.web.server
+
+Module contents
+---------------
+
+.. automodule:: pepper.web
+    :members:
+    :undoc-members:
+    :show-inheritance:

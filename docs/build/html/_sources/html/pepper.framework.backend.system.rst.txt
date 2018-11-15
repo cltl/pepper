@@ -1,0 +1,20 @@
+pepper.framework.backend.system package
+=======================================
+
+Submodules
+----------
+
+.. toctree::
+
+   pepper.framework.backend.system.backend
+   pepper.framework.backend.system.camera
+   pepper.framework.backend.system.microphone
+   pepper.framework.backend.system.text_to_speech
+
+Module contents
+---------------
+
+.. automodule:: pepper.framework.backend.system
+    :members:
+    :undoc-members:
+    :show-inheritance:

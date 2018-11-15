@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.config &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.config</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">ApplicationBackend</span><span class="p">,</span> <span class="n">CameraResolution</span><span class="p">,</span> <span class="n">NaoqiMicrophoneIndex</span><span class="p">,</span> <span class="n">LOGGING_FILE</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="c1"># Application Settings</span>
+
+<span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
+<span class="c1"># More Backends will be added in the future!</span>
+<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
+
+<span class="c1"># Application Language to use</span>
+<span class="c1"># Full list of Languages and their formats can be found at</span>
+<span class="c1">#   https://cloud.google.com/speech-to-text/docs/languages</span>
+<span class="c1"># Please keep in mind that the internal system is English (en) only</span>
+<span class="c1">#   Translation happens during Speech-to-Text &amp; Text-to-Speech steps</span>
+<span class="n">APPLICATION_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
+
+
+<span class="c1"># Application Paths</span>
+
+<span class="c1"># pepper/                  PROJECT_ROOT</span>
+<span class="c1">#   people/                 PEOPLE_ROOT</span>
+<span class="c1">#       friends/             PEOPLE_FRIENDS_ROOT</span>
+<span class="c1">#           friend001.bin     files containing OpenFace feature data (nx128, for any n &gt; 0)</span>
+<span class="c1">#           friend002.bin     the name of each file represents the name of a friend</span>
+<span class="c1">#           friend003.bin     drag &#39;n drop people from people/new/ to people/friends to update their status</span>
+<span class="c1">#           ...</span>
+<span class="c1">#       new/                 PEOPLE_NEW_ROOT</span>
+<span class="c1">#           NEW.bin           special file containing OpenFace feature data for all faces in LFW dataset</span>
+<span class="c1">#           new_person1.bin   files containing OpenFace feature data for each new person met</span>
+<span class="c1">#           ...</span>
+<span class="c1">#   pepper/                 PACKAGE_ROOT</span>
+<span class="c1">#       apps/                application implementations</span>
+<span class="c1">#       brain/               brain (triple store) interactions</span>
+<span class="c1">#       framework/           application building blocks</span>
+<span class="c1">#       knowledge/           knowledge sources</span>
+<span class="c1">#       language/            natural language processing</span>
+<span class="c1">#       sensor/              sensory processing</span>
+<span class="c1">#       ...</span>
+<span class="c1">#       config.py            &lt;&lt; this file &gt;&gt;</span>
+<span class="c1">#       log.txt              LOG</span>
+<span class="c1">#       brain_log.trig       BRAIN_LOG</span>
+<span class="c1">#       ...</span>
+<span class="c1">#   README.md               ReadMe File</span>
+<span class="c1">#   google_cloud_key.json   Google Cloud Key</span>
+<span class="c1">#</span>
+
+<span class="c1"># Path to Package Root (see tree above)</span>
+<span class="n">PACKAGE_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+<span class="c1"># Path to Project Root (see tree above)</span>
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="o">*</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># People Root</span>
+<span class="n">PEOPLE_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;../people&#39;</span><span class="p">)</span>
+
+<span class="c1"># Root of Robot&#39;s &quot;friends&quot;</span>
+<span class="n">PEOPLE_FRIENDS_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PEOPLE_ROOT</span><span class="p">,</span> <span class="s1">&#39;friends&#39;</span><span class="p">)</span>
+
+<span class="c1"># Root of people Robot has &quot;just met&quot;</span>
+<span class="n">PEOPLE_NEW_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PEOPLE_ROOT</span><span class="p">,</span> <span class="s1">&#39;new&#39;</span><span class="p">)</span>
+
+<span class="c1"># Path to GOOGLE_APPLICATION_CREDENTIALS file (.json)</span>
+<span class="c1"># See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries</span>
+<span class="n">KEY_GOOGLE_CLOUD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../google_cloud_key.json&quot;</span><span class="p">)</span>
+
+<span class="c1"># Path to other tokens (currently just WolframAlpha)</span>
+<span class="c1"># See for more details: https://products.wolframalpha.com/spoken-results-api/documentation/</span>
+<span class="c1"># Please make sure you create this .json file with the following formatting:</span>
+<span class="c1"># {</span>
+<span class="c1">#  &quot;wolfram&quot;: &quot;&lt;Your Wolfram Alpha Key&gt;&quot;</span>
+<span class="c1"># }</span>
+<span class="n">KEY_WOLFRAM</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;../tokens.json&#39;</span><span class="p">)</span>
+
+<span class="c1"># General Logging</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">LOGGING_FILE</span>
+
+<span class="c1"># Brain Logging</span>
+<span class="n">BRAIN_LOG</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">,</span> <span class="s2">&quot;brain_log&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Application URLs</span>
+
+<span class="c1"># Brain URL (Local GraphDB or Remote Database)</span>
+<span class="n">BRAIN_URL_LOCAL</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:7200/repositories/leolani&quot;</span>
+<span class="n">BRAIN_URL_REMOTE</span> <span class="o">=</span> <span class="s2">&quot;http://145.100.58.167:50053/sparql&quot;</span>
+
+<span class="c1"># NAOqi Robot URL</span>
+<span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span><span class="p">,</span> <span class="mi">9559</span>
+<span class="n">NAOQI_URL</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span><span class="p">)</span>
+
+
+<span class="c1"># Application Sensor Parameters</span>
+<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="n">MICROPHONE_SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">16000</span>
+<span class="n">MICROPHONE_CHANNELS</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span>
+<span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># NAOqi Specific Overrides</span>
+<span class="n">NAOQI_USE_SYSTEM_CAMERA</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">NaoqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
+
+
+<span class="c1"># .json file with id tokens, with keys:</span>
+<span class="c1">#   &quot;wolfram&quot;: &lt;appid&gt;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">KEY_WOLFRAM</span><span class="p">)</span> <span class="k">as</span> <span class="n">tokens</span><span class="p">:</span>
+    <span class="n">TOKENS</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+<span class="c1"># Set GOOGLE CREDENTIALS</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GOOGLE_APPLICATION_CREDENTIALS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_GOOGLE_CLOUD</span>
+
+
+<div class="viewcode-block" id="get_backend"><a class="viewcode-back" href="../../pepper.config.html#pepper.config.get_backend">[docs]</a><span class="k">def</span> <span class="nf">get_backend</span><span class="p">():</span>
+    <span class="n">backend</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemBackend</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">SystemBackend</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pepper.framework.backend.naoqi</span> <span class="k">import</span> <span class="n">NaoqiBackend</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">NaoqiBackend</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">backend</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

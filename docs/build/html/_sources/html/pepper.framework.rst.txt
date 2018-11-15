@@ -1,0 +1,27 @@
+pepper.framework package
+========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    pepper.framework.abstract
+    pepper.framework.backend
+    pepper.framework.component
+
+Submodules
+----------
+
+.. toctree::
+
+   pepper.framework.application
+   pepper.framework.util
+
+Module contents
+---------------
+
+.. automodule:: pepper.framework
+    :members:
+    :undoc-members:
+    :show-inheritance:

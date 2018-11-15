@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.apps.default &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.apps.default</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.apps.default</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper.sensor.face</span> <span class="k">import</span> <span class="n">FaceClassifier</span>
+<span class="kn">from</span> <span class="nn">pepper.sensor.asr</span> <span class="k">import</span> <span class="n">ASRHypothesis</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+
+<span class="kn">from</span> <span class="nn">pepper.knowledge.sentences</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper.knowledge</span> <span class="k">import</span> <span class="n">animations</span>
+
+<span class="kn">from</span> <span class="nn">pepper.knowledge.wikipedia</span> <span class="k">import</span> <span class="n">Wikipedia</span>
+<span class="kn">from</span> <span class="nn">pepper.knowledge.wolfram</span> <span class="k">import</span> <span class="n">Wolfram</span>
+<span class="kn">from</span> <span class="nn">pepper.knowledge.query</span> <span class="k">import</span> <span class="n">QnA</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+
+
+<div class="viewcode-block" id="DefaultApp"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.DefaultApp">[docs]</a><span class="k">class</span> <span class="nc">DefaultApp</span><span class="p">(</span><span class="n">Application</span><span class="p">,</span> <span class="n">Statistics</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">,</span> <span class="n">StreamingSpeechRecognition</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="IdleIntention"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IdleIntention">[docs]</a><span class="k">class</span> <span class="nc">IdleIntention</span><span class="p">(</span><span class="n">Intention</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">,</span> <span class="n">StreamingSpeechRecognition</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">):</span>
+
+    <span class="n">GREET_TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">BORED_TIMEOUT</span> <span class="o">=</span> <span class="mi">120</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IdleIntention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_event</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+<div class="viewcode-block" id="IdleIntention.on_face"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IdleIntention.on_face">[docs]</a>    <span class="k">def</span> <span class="nf">on_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_event</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GREET_TIMEOUT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">HELLO</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_event</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IdleIntention.on_person"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IdleIntention.on_person">[docs]</a>    <span class="k">def</span> <span class="nf">on_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persons</span><span class="p">):</span>
+        <span class="n">ConversationIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">Chat</span><span class="p">(</span><span class="n">persons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="IdleIntention.on_new_person"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IdleIntention.on_new_person">[docs]</a>    <span class="k">def</span> <span class="nf">on_new_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persons</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_event</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GREET_TIMEOUT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">GREETING</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">HELLO</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_event</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IdleIntention.on_transcript"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IdleIntention.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="n">statement</span> <span class="o">=</span> <span class="n">hypotheses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span>
+
+        <span class="k">for</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;my name is&quot;</span><span class="p">,</span> <span class="s2">&quot;meet&quot;</span><span class="p">,</span> <span class="s2">&quot;I am&quot;</span><span class="p">,</span> <span class="s2">&quot;who are you&quot;</span><span class="p">,</span> <span class="s2">&quot;what is your name&quot;</span><span class="p">,</span> <span class="s2">&quot;how are you&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="n">statement</span><span class="p">:</span>
+                <span class="n">MeetIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">greeting</span> <span class="ow">in</span> <span class="n">GREETING</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">statement</span> <span class="o">==</span> <span class="n">greeting</span><span class="o">.</span><span class="n">lower</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">ConversationIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;stranger&quot;</span><span class="p">))</span>
+                <span class="k">return</span></div></div>
+
+
+<div class="viewcode-block" id="IgnoreIntention"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IgnoreIntention">[docs]</a><span class="k">class</span> <span class="nc">IgnoreIntention</span><span class="p">(</span><span class="n">Intention</span><span class="p">,</span> <span class="n">StreamingSpeechRecognition</span><span class="p">):</span>
+<div class="viewcode-block" id="IgnoreIntention.on_transcript"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.IgnoreIntention.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="n">statement</span> <span class="o">=</span> <span class="n">hypotheses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">wakeup</span> <span class="ow">in</span> <span class="p">[</span><span class="n">greeting</span><span class="o">.</span><span class="n">lower</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">greeting</span> <span class="ow">in</span> <span class="n">GREETING</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;wake up&quot;</span><span class="p">,</span> <span class="s2">&quot;pepper&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">wakeup</span> <span class="o">==</span> <span class="n">statement</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;Ok, I&#39;m back!&quot;</span><span class="p">,</span> <span class="s2">&quot;Hello, I&#39;m back!&quot;</span><span class="p">]),</span> <span class="n">animations</span><span class="o">.</span><span class="n">EXCITED</span><span class="p">)</span>
+                <span class="n">IdleIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
+                <span class="k">return</span></div></div>
+
+
+<div class="viewcode-block" id="ConversationIntention"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention">[docs]</a><span class="k">class</span> <span class="nc">ConversationIntention</span><span class="p">(</span><span class="n">Intention</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">,</span> <span class="n">StreamingSpeechRecognition</span><span class="p">):</span>
+
+    <span class="n">_face_detection</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: FaceDetection</span>
+    <span class="n">CONVERSATION_TIMEOUT</span> <span class="o">=</span> <span class="mi">15</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize Conversation Intention</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        application: Application</span>
+<span class="sd">        chat: Chat</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConversationIntention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span> <span class="o">=</span> <span class="n">chat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seen_objects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">FaceDetection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser</span> <span class="o">=</span> <span class="n">NameParser</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">GREETING</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span>
+                 <span class="n">choice</span><span class="p">([</span><span class="n">animations</span><span class="o">.</span><span class="n">BOW</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">FRIENDLY</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">HI</span><span class="p">]))</span>  <span class="c1"># Greet Person</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span>
+
+<div class="viewcode-block" id="ConversationIntention.say"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConversationIntention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.on_face"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.on_face">[docs]</a>    <span class="k">def</span> <span class="nf">on_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.on_person"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.on_person">[docs]</a>    <span class="k">def</span> <span class="nf">on_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persons</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
+            <span class="n">ConversationIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">Chat</span><span class="p">(</span><span class="n">persons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="ow">in</span> <span class="p">[</span><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">persons</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.on_image"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># If conversation times out, go back to idle!</span>
+        <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONVERSATION_TIMEOUT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_conversation</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.on_object"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.on_object">[docs]</a>    <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+        <span class="c1"># Update seen_objects with the objects seen in this frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seen_objects</span><span class="o">.</span><span class="n">update</span><span class="p">([</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.on_transcript"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="c1"># Process Utterance</span>
+        <span class="n">utterance</span> <span class="o">=</span> <span class="n">hypotheses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">add_utterance</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_silence</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_identity</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_forget_me</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_greeting</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_goodbye</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_affirmation_negation</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_please_repeat_me</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_meeting</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_qna</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Parse only sentences within bounds</span>
+        <span class="k">elif</span> <span class="mi">3</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
+
+            <span class="c1"># Parse Names</span>
+            <span class="n">utterance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser</span><span class="o">.</span><span class="n">parse_known</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">)</span><span class="o">.</span><span class="n">transcript</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">THINKING</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">THINK</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_brain</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_wikipedia</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">respond_wolfram</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">, but </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">choice</span><span class="p">([</span><span class="s2">&quot;I think you said&quot;</span><span class="p">,</span> <span class="s2">&quot;I heard&quot;</span><span class="p">,</span> <span class="s2">&quot;I picked up&quot;</span><span class="p">,</span> <span class="s2">&quot;I&#39;m guessing you told me&quot;</span><span class="p">]),</span> <span class="n">utterance</span><span class="p">,</span>
+                    <span class="n">choice</span><span class="p">([</span><span class="s2">&quot;I don&#39;t know what it means&quot;</span><span class="p">,</span> <span class="s2">&quot;I don&#39;t understand it&quot;</span><span class="p">,</span> <span class="s2">&quot;I couldn&#39;t parse it&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;I have no idea about it&quot;</span><span class="p">,</span> <span class="s2">&quot;I have no clue&quot;</span><span class="p">,</span> <span class="s2">&quot;this goes above my robot-skills&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;I find this quite difficult to understand&quot;</span><span class="p">,</span> <span class="s2">&quot;It doesn&#39;t ring any bells&quot;</span><span class="p">])),</span>
+                    <span class="n">choice</span><span class="p">([</span><span class="n">animations</span><span class="o">.</span><span class="n">NOT_KNOW</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">UNFAMILIAR</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">UNCOMFORTABLE</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">SHAMEFACED</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_silence"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_silence">[docs]</a>    <span class="k">def</span> <span class="nf">respond_silence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">silent</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;silent&quot;</span><span class="p">,</span> <span class="s2">&quot;silence&quot;</span><span class="p">,</span> <span class="s2">&quot;be quiet&quot;</span><span class="p">,</span> <span class="s2">&quot;relax&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">silent</span> <span class="ow">in</span> <span class="n">statement</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">([</span>
+                    <span class="s2">&quot;Ok, I&#39;ll be quiet for a bit.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Right, I&#39;ll be there when you need me!&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Bye, I&#39;m going to browse for knowledge on the web!&quot;</span><span class="p">]),</span>
+                    <span class="n">animations</span><span class="o">.</span><span class="n">TIMID</span><span class="p">)</span>
+                <span class="n">IgnoreIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_identity"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_identity">[docs]</a>    <span class="k">def</span> <span class="nf">respond_identity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ask_identity</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;who am i&quot;</span><span class="p">,</span> <span class="s2">&quot;my name&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">ask_identity</span> <span class="ow">in</span> <span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;You are </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">YOU</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_forget_me"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_forget_me">[docs]</a>    <span class="k">def</span> <span class="nf">respond_forget_me</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">forget</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;forget&quot;</span><span class="p">,</span> <span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="s2">&quot;erase&quot;</span><span class="p">,</span> <span class="s2">&quot;remove&quot;</span><span class="p">,</span> <span class="s2">&quot;destroy&quot;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;face&quot;</span><span class="p">,</span> <span class="s2">&quot;me&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">forget</span> <span class="ow">in</span> <span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">statement</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="o">+</span> <span class="s2">&quot;.bin&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Ok </span><span class="si">{}</span><span class="s2">, I will erase your data according to the EU General Data Protection Regulation!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">FRIENDLY</span><span class="p">)</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="o">+</span> <span class="s2">&quot;.bin&quot;</span><span class="p">))</span>
+                        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Boom, Done! You&#39;re still in my Random Access Memory, but as soon as I get rebooted, I will not remember you!&quot;</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">CRAZY</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Look </span><span class="si">{}</span><span class="s2">, your data is already deleted!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">AFFIRMATIVE</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_greeting"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_greeting">[docs]</a>    <span class="k">def</span> <span class="nf">respond_greeting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">greeting</span> <span class="ow">in</span> <span class="n">GREETING</span><span class="p">:</span>
+            <span class="n">greet</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[?!.;,]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">greeting</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">statement</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">greet</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">GREETING</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">HI</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_meeting"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_meeting">[docs]</a>    <span class="k">def</span> <span class="nf">respond_meeting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;my name is&quot;</span><span class="p">,</span> <span class="s2">&quot;let&#39;s meet&quot;</span><span class="p">,</span> <span class="s2">&quot;I am&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="n">statement</span><span class="p">:</span>
+                <span class="n">MeetIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_goodbye"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_goodbye">[docs]</a>    <span class="k">def</span> <span class="nf">respond_goodbye</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">bye</span> <span class="ow">in</span> <span class="n">GOODBYE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">bye</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end_conversation</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_affirmation_negation"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_affirmation_negation">[docs]</a>    <span class="k">def</span> <span class="nf">respond_affirmation_negation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="c1"># Respond to Affirmations and Negations</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">statement</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">affirmation</span> <span class="ow">in</span> <span class="n">AFFIRMATION</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">affirmation</span><span class="p">)</span> <span class="ow">in</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">HAPPY</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">HAPPY</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">negation</span> <span class="ow">in</span> <span class="n">NEGATION</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">negation</span><span class="p">)</span> <span class="ow">in</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">SORRY</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">ASHAMED</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_please_repeat_me"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_please_repeat_me">[docs]</a>    <span class="k">def</span> <span class="nf">respond_please_repeat_me</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;please repeat&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">statement</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;please repeat&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_qna"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_qna">[docs]</a>    <span class="k">def</span> <span class="nf">respond_qna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">QnA</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ADDRESSING</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">,</span> <span class="n">answer</span><span class="p">),</span>
+                     <span class="n">choice</span><span class="p">([</span><span class="n">animations</span><span class="o">.</span><span class="n">BODY_LANGUAGE</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">EXCITED</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">answer</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_brain"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_brain">[docs]</a>    <span class="k">def</span> <span class="nf">respond_brain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seen_objects</span><span class="p">)</span>
+
+            <span class="n">expression</span> <span class="o">=</span> <span class="n">classify_and_process_utterance</span><span class="p">(</span>
+                <span class="n">question</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">utterance_id</span><span class="o">.</span><span class="n">chat_turn</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
+
+            <span class="c1"># Cancel if not a valid expression</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">expression</span> <span class="ow">or</span> <span class="s1">&#39;utterance_type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expression</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1"># Process Questions</span>
+            <span class="k">elif</span> <span class="n">expression</span><span class="p">[</span><span class="s1">&#39;utterance_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;question&#39;</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">query_brain</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">reply_to_question</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">choice</span><span class="p">([</span><span class="n">animations</span><span class="o">.</span><span class="n">BODY_LANGUAGE</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">EXCITED</span><span class="p">]))</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, but </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">choice</span><span class="p">([</span><span class="s2">&quot;I don&#39;t know&quot;</span><span class="p">,</span> <span class="s2">&quot;I haven&#39;t heard it before&quot;</span><span class="p">,</span> <span class="s2">&quot;I have know idea about it&quot;</span><span class="p">]),</span>
+                        <span class="n">choice</span><span class="p">([</span><span class="s2">&quot;I&#39;ll look it up online&quot;</span><span class="p">,</span> <span class="s2">&quot;let me search the web&quot;</span><span class="p">,</span> <span class="s2">&quot;I will check my internet sources&quot;</span><span class="p">]),</span>
+                        <span class="n">animations</span><span class="o">.</span><span class="n">THINK</span>
+                    <span class="p">))</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1"># Process Statements</span>
+            <span class="k">elif</span> <span class="n">expression</span><span class="p">[</span><span class="s1">&#39;utterance_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;statement&#39;</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">reply_to_statement</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">,</span> <span class="n">objects</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">EXCITED</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;NLP ERROR: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_wikipedia"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_wikipedia">[docs]</a>    <span class="k">def</span> <span class="nf">respond_wikipedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;. &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ADDRESSING</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">USED_WWW</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">CLOUD</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">EXPLAIN</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">answer</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.respond_wolfram"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.respond_wolfram">[docs]</a>    <span class="k">def</span> <span class="nf">respond_wolfram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">Wolfram</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ADDRESSING</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">USED_WWW</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">CLOUD</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">EXPLAIN</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">answer</span></div>
+
+<div class="viewcode-block" id="ConversationIntention.end_conversation"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.ConversationIntention.end_conversation">[docs]</a>    <span class="k">def</span> <span class="nf">end_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">choice</span><span class="p">([</span><span class="s2">&quot;See you later&quot;</span><span class="p">,</span> <span class="s2">&quot;ByeBye&quot;</span><span class="p">,</span> <span class="s2">&quot;Till another time&quot;</span><span class="p">,</span> <span class="s2">&quot;It was good having talked to you&quot;</span><span class="p">,</span> <span class="s2">&quot;Goodbye&quot;</span><span class="p">]),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">BOW</span><span class="p">)</span>
+        <span class="n">IdleIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MeetIntention"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention">[docs]</a><span class="k">class</span> <span class="nc">MeetIntention</span><span class="p">(</span><span class="n">Intention</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">,</span> <span class="n">StreamingSpeechRecognition</span><span class="p">):</span>
+
+    <span class="n">MEET_TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">UTTERANCE_TIMEOUT</span> <span class="o">=</span> <span class="mi">15</span>
+
+    <span class="n">MIN_SAMPLES</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">NAME_CONFIDENCE</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+    <span class="n">_face_detection</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: FaceDetection</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MeetIntention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">FaceDetection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser</span> <span class="o">=</span> <span class="n">NameParser</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_utterance</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">GREETING</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">INTRODUCE</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="s2">&quot;I wish to meet you!&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;By continuing to meet me, you agree with locally storing your face features and name.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Your personal data is only used for the purpose of meeting you and not shared with third parties.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;After meeting, you can always ask me to erase your personal data, no hard feelings!&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Ok, enough legal stuff! </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">ASK_NAME</span><span class="p">))]:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_utterance</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MeetIntention.on_image"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># If meeting times out, go back to idle!</span>
+        <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MEET_TIMEOUT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_conversation</span><span class="p">()</span>
+
+        <span class="c1"># If silence was observed, ask away!</span>
+        <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_utterance</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">UTTERANCE_TIMEOUT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_utterance</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">UNDERSTAND</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">VERIFY_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">YOUR</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">DIDNT_HEAR_NAME</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">REPEAT_NAME</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MeetIntention.on_face"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.on_face">[docs]</a>    <span class="k">def</span> <span class="nf">on_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">representation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_seen</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MeetIntention.on_transcript"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_utterance</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+        <span class="n">utterance</span> <span class="o">=</span> <span class="n">hypotheses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">goodbye</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;See you later&quot;</span><span class="p">,</span> <span class="s2">&quot;ByeBye&quot;</span><span class="p">,</span> <span class="s2">&quot;Till another time&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;It was good having talked to you&quot;</span><span class="p">,</span> <span class="s2">&quot;Goodbye&quot;</span><span class="p">]),</span> <span class="n">animations</span><span class="o">.</span><span class="n">BOW</span><span class="p">)</span>
+            <span class="n">IdleIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># If name is heard and affirmation is given by new person</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_affirmation</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+
+            <span class="c1"># If not enough face samples have been gathered, gather more!</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MIN_SAMPLES</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">JUST_MET</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">MORE_FACE_SAMPLES</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">FRIENDLY</span><span class="p">)</span>
+                <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MIN_SAMPLES</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_last_utterance</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+                    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">THANK</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">HAPPY</span><span class="p">)</span>
+
+            <span class="c1"># Save person to Disk</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_person</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">HAPPY</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">JUST_MET</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">HI</span><span class="p">)</span>
+
+            <span class="c1"># Start Conversation with New Person</span>
+            <span class="n">ConversationIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">Chat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Try to parse name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">THINKING</span><span class="p">),</span> <span class="n">animations</span><span class="o">.</span><span class="n">THINK</span><span class="p">)</span>
+
+            <span class="c1"># Parse Name</span>
+            <span class="n">parsed_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_parser</span><span class="o">.</span><span class="n">parse_new</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parsed_name</span> <span class="ow">and</span> <span class="n">parsed_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAME_CONFIDENCE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">parsed_name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">UNDERSTAND</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">VERIFY_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">FRIENDLY</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_negation</span><span class="p">(</span><span class="n">utterance</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">SORRY</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">REPEAT_NAME</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">ASHAMED</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">DIDNT_HEAR_NAME</span><span class="p">),</span> <span class="n">choice</span><span class="p">(</span><span class="n">REPEAT_NAME</span><span class="p">)),</span> <span class="n">animations</span><span class="o">.</span><span class="n">ASHAMED</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MeetIntention.is_affirmation"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.is_affirmation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_affirmation</span><span class="p">(</span><span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">statement</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">AFFIRMATION</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="MeetIntention.is_negation"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.is_negation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_negation</span><span class="p">(</span><span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">statement</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">NEGATION</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="MeetIntention.goodbye"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.goodbye">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">goodbye</span><span class="p">(</span><span class="n">statement</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">bye</span> <span class="ow">in</span> <span class="n">GOODBYE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">statement</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[?!.;,]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">bye</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="MeetIntention.end_conversation"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.end_conversation">[docs]</a>    <span class="k">def</span> <span class="nf">end_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">choice</span><span class="p">([</span><span class="s2">&quot;See you later&quot;</span><span class="p">,</span> <span class="s2">&quot;ByeBye&quot;</span><span class="p">,</span> <span class="s2">&quot;Till another time&quot;</span><span class="p">,</span> <span class="s2">&quot;It was good having talked to you&quot;</span><span class="p">,</span> <span class="s2">&quot;Goodbye&quot;</span><span class="p">])),</span> <span class="n">animations</span><span class="o">.</span><span class="n">BOW</span><span class="p">)</span>
+        <span class="n">IdleIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MeetIntention.save_person"><a class="viewcode-back" href="../../../pepper.apps.default.html#pepper.apps.default.MeetIntention.save_person">[docs]</a>    <span class="k">def</span> <span class="nf">save_person</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">people</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">people</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">people</span><span class="p">:</span>
+            <span class="n">name_index</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">while</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">people</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">name_index</span><span class="p">)</span>
+                <span class="n">name_index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">people</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face_detection</span><span class="o">.</span><span class="n">face_classifier</span> <span class="o">=</span> <span class="n">FaceClassifier</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="p">)</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.bin&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">DefaultApp</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_backend</span><span class="p">())</span>
+    <span class="n">IdleIntention</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

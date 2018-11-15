@@ -1,0 +1,1160 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.language module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pepper.language.analyzers module" href="pepper.language.analyzers.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzers.html">pepper.language.analyzers module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.language.language module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.names.html">pepper.language.names module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.process_utterance.html">pepper.language.process_utterance module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.sensor.html">pepper.sensor package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
+        
+      <li>pepper.language.language module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.language.language.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.language.language">
+<span id="pepper-language-language-module"></span><h1>pepper.language.language module<a class="headerlink" href="#module-pepper.language.language" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.language.language.Analyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Analyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Analyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Analyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.language.language.Analyzer.chat" title="pepper.language.language.Analyzer.chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Analyzer.log" title="pepper.language.language.Analyzer.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Analyzer.rdf" title="pepper.language.language.Analyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Analyzer.template" title="pepper.language.language.Analyzer.template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Analyzer.utterance_type" title="pepper.language.language.Analyzer.utterance_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.Analyzer.analyze" title="pepper.language.language.Analyzer.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>(chat)</td>
+<td>Analyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.GRAMMAR">
+<code class="descname">GRAMMAR</code><em class="property"> = {u'categories': [u'book', u'movie', u'friend', u'food', u'laptop'], u'modal_verbs': [u'can', u'have', u'has'], u'possessive': {u'my': {u'person': u'first'}, u'your': {u'person': u'second'}}, u'predicates': [u'likes', u'knows', u'is_from', u'lives', u'loves', u'enjoys', u'sees', u'owns'], u'pronouns': {u'he': {u'gender': u'male', u'number': u'singular', u'person': u'third', u'possessive': [u'his']}, u'him': {u'gender': u'male', u'person': u'third'}, u'i': {u'number': u'singular', u'person': u'first', u'possessive': [u'my', u'mine']}, u'it': {u'number': u'neutral', u'person': u'third', u'possessive': [u'its']}, u'me': {u'person': u'first'}, u'she': {u'gender': u'female', u'number': u'singular', u'person': u'third', u'possessive': [u'her', u'hers']}, u'they': {u'number': u'plural', u'person': u'third', u'possessive': [u'their', u'theirs']}, u'we': {u'number': u'plural', u'person': u'first', u'possessive': [u'our', u'ours']}, u'you': {u'number': [u'singular', u'plural'], u'person': u'second', u'possessive': [u'your', u'yours']}}, u'question words': {u'how': {u'response': u'manner'}, u'what': {u'response': u'object'}, u'when': {u'response': u'time'}, u'where': {u'response': u'location'}, u'who': {u'response': u'person'}, u'why': {u'response': u'reason'}}, u'to be': {u'am': {u'person': u'i', u'tense': u'present'}, u'are': {u'person': [u'you', u'we', u'they'], u'tense': u'present'}, u'did': {u'tense': u'past'}, u'do': {u'tense': u'present'}, u'does': {u'person': [u'he', u'she', u'it'], u'tense': u'present'}, u'is': {u'person': [u'he', u'she', u'it'], u'tense': u'present'}, u'was': {u'person': [u'i', u'he', u'she', u'it'], u'tense': u'past'}, u'were': {u'person': [u'we', u'you', u'they'], u'tense': u'past'}, u'will': {u'tense': u'future'}}, u'verbs': {u'dislike': {u'sentiment': u'negative'}, u'enjoy': {}, u'know': {u'certainty': u'high'}, u'like': {u'past': u'liked', u'sentiment': u'positive'}, u'live': {}, u'love': {}, u'meet': {u'past': u'met'}, u'own': {}, u'see': {}, u'think': {u'certainty': u'medium'}}}</em><a class="headerlink" href="#pepper.language.language.Analyzer.GRAMMAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.GRAMMAR_JSON">
+<code class="descname">GRAMMAR_JSON</code><em class="property"> = '../pepper/language/grammar.json'</em><a class="headerlink" href="#pepper.language.language.Analyzer.GRAMMAR_JSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.STANFORD_NER">
+<code class="descname">STANFORD_NER</code><em class="property"> = &lt;pepper.language.ner.NER object&gt;</em><a class="headerlink" href="#pepper.language.language.Analyzer.STANFORD_NER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pepper.language.language.Analyzer.analyze">
+<em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Analyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Analyzer.analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzer factory function</p>
+<p>Find appropriate Analyzer for this utterance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>chat: Chat</strong></dt>
+<dd><p class="first last">Chat to be analyzed</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>analyzer: Analyzer</strong></dt>
+<dd><p class="first last">Appropriate Analyzer Subclass</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.chat">
+<code class="descname">chat</code><a class="headerlink" href="#pepper.language.language.Analyzer.chat" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>chat: Chat</strong></dt>
+<dd><p class="first last">Chat to be analyzed</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.json_file">
+<code class="descname">json_file</code><em class="property"> = &lt;closed file '../pepper/language/grammar.json', mode 'r'&gt;</em><a class="headerlink" href="#pepper.language.language.Analyzer.json_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.log">
+<code class="descname">log</code><a class="headerlink" href="#pepper.language.language.Analyzer.log" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>log: logging.Logger</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.Analyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.template">
+<code class="descname">template</code><a class="headerlink" href="#pepper.language.language.Analyzer.template" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>template: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Analyzer.utterance_type">
+<code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.language.Analyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>utterance_type: UtteranceType</strong></dt>
+<dd><p class="first last">Utterance Type</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.Chat">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Chat</code><span class="sig-paren">(</span><em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Chat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Chat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.language.language.Chat.id" title="pepper.language.language.Chat.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Chat.last_utterance" title="pepper.language.language.Chat.last_utterance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_utterance</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Chat.speaker" title="pepper.language.language.Chat.speaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">speaker</span></code></a></dt>
+<dd><p class="first last">Returns ——- speaker: str Name of speaker (a.k.a.</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Chat.utterances" title="pepper.language.language.Chat.utterances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterances</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.Chat.add_utterance" title="pepper.language.language.Chat.add_utterance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_utterance</span></code></a>(text)</td>
+<td>Add Utterance to Conversation</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pepper.language.language.Chat.add_utterance">
+<code class="descname">add_utterance</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Chat.add_utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Chat.add_utterance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Utterance to Conversation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>text: str</strong></dt>
+<dd><p class="first last">Utterance Text to add to conversation</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>utterance: Utterance</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Chat.id">
+<code class="descname">id</code><a class="headerlink" href="#pepper.language.language.Chat.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>id: int</strong></dt>
+<dd><p class="first last">Unique (random) identifier of this chat</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Chat.last_utterance">
+<code class="descname">last_utterance</code><a class="headerlink" href="#pepper.language.language.Chat.last_utterance" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>last_utterance: Utterance</strong></dt>
+<dd><p class="first last">Most recent Utterance</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Chat.speaker">
+<code class="descname">speaker</code><a class="headerlink" href="#pepper.language.language.Chat.speaker" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>speaker: str</strong></dt>
+<dd><p class="first last">Name of speaker (a.k.a. the person Pepper has a chat with)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Chat.utterances">
+<code class="descname">utterances</code><a class="headerlink" href="#pepper.language.language.Chat.utterances" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>utterances: list of Utterance</strong></dt>
+<dd><p class="first last">List of utterances that occurred in this chat</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.GeneralStatementAnalyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">GeneralStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#GeneralStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.GeneralStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.language.language.StatementAnalyzer" title="pepper.language.language.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.language.StatementAnalyzer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.GeneralStatementAnalyzer.rdf" title="pepper.language.language.GeneralStatementAnalyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
+<td>StatementAnalyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.GeneralStatementAnalyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.GeneralStatementAnalyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.ObjectStatementAnalyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">ObjectStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#ObjectStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.ObjectStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.language.language.StatementAnalyzer" title="pepper.language.language.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.language.StatementAnalyzer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.ObjectStatementAnalyzer.rdf" title="pepper.language.language.ObjectStatementAnalyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
+<td>StatementAnalyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.ObjectStatementAnalyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.ObjectStatementAnalyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.QuestionAnalyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">QuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#QuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.QuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.language.language.Analyzer" title="pepper.language.language.Analyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.language.Analyzer</span></code></a></p>
+<p>Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.QuestionAnalyzer.rdf" title="pepper.language.language.QuestionAnalyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.QuestionAnalyzer.utterance_type" title="pepper.language.language.QuestionAnalyzer.utterance_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.QuestionAnalyzer.analyze" title="pepper.language.language.QuestionAnalyzer.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>(chat)</td>
+<td>QuestionAnalyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="pepper.language.language.QuestionAnalyzer.analyze">
+<em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#QuestionAnalyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.QuestionAnalyzer.analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>QuestionAnalyzer factory function</p>
+<p>Find appropriate QuestionAnalyzer for this utterance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>chat: Chat</strong></dt>
+<dd><p class="first last">Chat to be analyzed</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>analyzer: QuestionAnalyzer</strong></dt>
+<dd><p class="first last">Appropriate QuestionAnalyzer Subclass</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.QuestionAnalyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.QuestionAnalyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.QuestionAnalyzer.utterance_type">
+<code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.language.QuestionAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>utterance_type: UtteranceType</strong></dt>
+<dd><p class="first last">Utterance Type (Question)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.StatementAnalyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">StatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#StatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.StatementAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.language.language.Analyzer" title="pepper.language.language.Analyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.language.Analyzer</span></code></a></p>
+<p>Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.StatementAnalyzer.rdf" title="pepper.language.language.StatementAnalyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.StatementAnalyzer.utterance_type" title="pepper.language.language.StatementAnalyzer.utterance_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.StatementAnalyzer.analyze" title="pepper.language.language.StatementAnalyzer.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>(chat)</td>
+<td>StatementAnalyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="pepper.language.language.StatementAnalyzer.analyze">
+<em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#StatementAnalyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.StatementAnalyzer.analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>StatementAnalyzer factory function</p>
+<p>Find appropriate StatementAnalyzer for this utterance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>chat: Chat</strong></dt>
+<dd><p class="first last">Chat to be analyzed</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>analyzer: StatementAnalyzer</strong></dt>
+<dd><p class="first last">Appropriate StatementAnalyzer Subclass</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.StatementAnalyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.StatementAnalyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.StatementAnalyzer.utterance_type">
+<code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.language.StatementAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>utterance_type: UtteranceType</strong></dt>
+<dd><p class="first last">Utterance Type (Statement)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.Utterance">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Utterance</code><span class="sig-paren">(</span><em>transcript</em>, <em>speaker</em>, <em>utterance_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.language.language.Utterance.speaker" title="pepper.language.language.Utterance.speaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">speaker</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Utterance.tokens" title="pepper.language.language.Utterance.tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tokens</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Utterance.utterance_id" title="pepper.language.language.Utterance.utterance_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_id</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.Utterance.speaker">
+<code class="descname">speaker</code><a class="headerlink" href="#pepper.language.language.Utterance.speaker" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>speaker: str</strong></dt>
+<dd><p class="first last">Speaker name</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Utterance.tokens">
+<code class="descname">tokens</code><a class="headerlink" href="#pepper.language.language.Utterance.tokens" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>tokens: list of str</strong></dt>
+<dd><p class="first last">Tokenized transcript</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Utterance.utterance_id">
+<code class="descname">utterance_id</code><a class="headerlink" href="#pepper.language.language.Utterance.utterance_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>utterance_id: UtteranceID</strong></dt>
+<dd><p class="first last">Utterance Identification Object</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.UtteranceID">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">UtteranceID</code><span class="sig-paren">(</span><em>chat_id</em>, <em>chat_turn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#UtteranceID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.UtteranceID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.language.language.UtteranceID.chat_id" title="pepper.language.language.UtteranceID.chat_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_id</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.UtteranceID.chat_turn" title="pepper.language.language.UtteranceID.chat_turn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_turn</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.UtteranceID.chat_id">
+<code class="descname">chat_id</code><a class="headerlink" href="#pepper.language.language.UtteranceID.chat_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>chat_id: int</strong></dt>
+<dd><p class="first last">Unique chat identifier</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.UtteranceID.chat_turn">
+<code class="descname">chat_turn</code><a class="headerlink" href="#pepper.language.language.UtteranceID.chat_turn" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>chat_turn: int</strong></dt>
+<dd><p class="first last">Chat turn</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.UtteranceType">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">UtteranceType</code><a class="reference internal" href="_modules/pepper/language/language.html#UtteranceType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.UtteranceType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<dl class="attribute">
+<dt id="pepper.language.language.UtteranceType.QUESTION">
+<code class="descname">QUESTION</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.language.language.UtteranceType.QUESTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.UtteranceType.STATEMENT">
+<code class="descname">STATEMENT</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.language.language.UtteranceType.STATEMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.VerbQuestionAnalyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">VerbQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#VerbQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.VerbQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.language.language.QuestionAnalyzer" title="pepper.language.language.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.language.QuestionAnalyzer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.VerbQuestionAnalyzer.rdf" title="pepper.language.language.VerbQuestionAnalyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
+<td>QuestionAnalyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.VerbQuestionAnalyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.VerbQuestionAnalyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.language.WhQuestionAnalyzer">
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">WhQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#WhQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.WhQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.language.language.QuestionAnalyzer" title="pepper.language.language.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.language.QuestionAnalyzer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.WhQuestionAnalyzer.rdf" title="pepper.language.language.WhQuestionAnalyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
+<td>QuestionAnalyzer factory function</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.language.language.WhQuestionAnalyzer.rdf">
+<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.language.WhQuestionAnalyzer.rdf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>rdf: dict or None</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.language.getrandbits">
+<code class="descclassname">pepper.language.language.</code><code class="descname">getrandbits</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span> &#x2192; x.  Generates a long int with k random bits.<a class="headerlink" href="#pepper.language.language.getrandbits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="pepper.language.analyzers.html" class="btn btn-neutral" title="pepper.language.analyzers module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
