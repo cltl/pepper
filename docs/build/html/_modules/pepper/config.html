@@ -55,10 +55,6 @@
           
             
             
-              <div class="version">
-                1.0
-              </div>
-            
           
 
           
@@ -151,7 +147,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.config</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">ApplicationBackend</span><span class="p">,</span> <span class="n">CameraResolution</span><span class="p">,</span> <span class="n">NaoqiMicrophoneIndex</span><span class="p">,</span> <span class="n">LOGGING_FILE</span>
+<span></span><span class="sd">&quot;&quot;&quot;Pepper Configuration File&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">ApplicationBackend</span><span class="p">,</span> <span class="n">CameraResolution</span><span class="p">,</span> <span class="n">NaoqiMicrophoneIndex</span><span class="p">,</span> <span class="n">LOGGING_FILE</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -273,6 +271,13 @@
 
 
 <div class="viewcode-block" id="get_backend"><a class="viewcode-back" href="../../pepper.config.html#pepper.config.get_backend">[docs]</a><span class="k">def</span> <span class="nf">get_backend</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get Backend based on config.py settings</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">backend</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemBackend</span>

@@ -55,10 +55,6 @@
           
             
             
-              <div class="version">
-                1.0
-              </div>
-            
           
 
           
@@ -85,6 +81,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
@@ -187,16 +184,18 @@
 <dt id="pepper.framework.abstract.component.AbstractComponent">
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.component.</code><code class="descname">AbstractComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#AbstractComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract Base Component on which all Components are Based</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.backend" title="pepper.framework.abstract.component.AbstractComponent.backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Backend</p>
 </dd>
-<dt><strong>log</strong></dt>
-<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.log" title="pepper.framework.abstract.component.AbstractComponent.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
+<dd><p class="first last">Component Logger</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -210,14 +209,15 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.require_dependency" title="pepper.framework.abstract.component.AbstractComponent.require_dependency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code></a>(cls,&nbsp;dependency)</td>
-<td>Require Component</td>
+<td>Specify Component requirement</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="pepper.framework.abstract.component.AbstractComponent.backend">
 <code class="descname">backend</code><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.backend" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Application Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -234,27 +234,43 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.component.AbstractComponent.log">
 <code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.log" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Component Logger</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>logger: logging.Logger</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.abstract.component.AbstractComponent.require_dependency">
 <code class="descname">require_dependency</code><span class="sig-paren">(</span><em>cls</em>, <em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#AbstractComponent.require_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.require_dependency" title="Permalink to this definition">¶</a></dt>
-<dd><p>Require Component</p>
+<dd><p>Specify Component requirement</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>cls: type</strong></dt>
-<dd></dd>
+<dd><p class="first last">Component Type requiring dependency</p>
+</dd>
 <dt><strong>dependency: type</strong></dt>
-<dd></dd>
+<dd><p class="first last">Component Type being dependency</p>
+</dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>dependency: AbstractComponent</strong></dt>
-<dd></dd>
+<dd><p class="first last">Requested Dependency</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -268,6 +284,7 @@
 <dt id="pepper.framework.abstract.component.ComponentDependencyError">
 <em class="property">exception </em><code class="descclassname">pepper.framework.abstract.component.</code><code class="descname">ComponentDependencyError</code><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#ComponentDependencyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.ComponentDependencyError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised when a Component Dependency is not met</p>
 </dd></dl>
 
 </div>

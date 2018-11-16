@@ -56,10 +56,6 @@
           
             
             
-              <div class="version">
-                1.0
-              </div>
-            
           
 
           
@@ -182,20 +178,22 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>application</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></dt>
+<dd><p class="first last">Application Intention is based on</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Backend</p>
 </dd>
 <dt><strong>chat</strong></dt>
 <dd></dd>
-<dt><strong>dependencies</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></dt>
+<dd><p class="first last">Intention Dependencies</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Intention Loggeer</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></dt>
 <dd><p class="first last">Returns</p>
@@ -463,7 +461,24 @@
 <dl class="method">
 <dt id="pepper.apps.default.ConversationIntention.say">
 <code class="descname">say</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/apps/default.html#ConversationIntention.say"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.apps.default.ConversationIntention.say" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Say Text (with Animation) through Text-to-Speech</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>text: str</strong></dt>
+<dd><p class="first last">Text to Say through Text-to-Speech</p>
+</dd>
+<dt><strong>animation: str or None</strong></dt>
+<dd><p class="first last">(Naoqi) Animation to Play</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -480,15 +495,16 @@
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Backend</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">brain</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Brain associated with Application</p>
 </dd>
-<dt><strong>dependencies</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></dt>
+<dd><p class="first last">Application Dependencies</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Logger</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></dt>
 <dd><p class="first last">Returns</p>
@@ -524,21 +540,13 @@
 <td>On Transcript Event.</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
-<td>Require Component</td>
+<td>Specify Component requirement</td>
 </tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="41%" />
-<col width="59%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>run</strong></td>
-<td>&#160;</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>()</td>
+<td>Run Application</td>
 </tr>
-<tr class="row-even"><td><strong>say</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">say</span></code>(text[,&nbsp;animation])</td>
+<td>Say Text (with Animation) through Text-to-Speech</td>
 </tr>
 </tbody>
 </table>
@@ -553,18 +561,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>application</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></dt>
+<dd><p class="first last">Application Intention is based on</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Backend</p>
 </dd>
-<dt><strong>dependencies</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></dt>
+<dd><p class="first last">Intention Dependencies</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Intention Loggeer</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></dt>
 <dd><p class="first last">Returns</p>
@@ -590,6 +600,9 @@
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(dependency)</td>
 <td>Require Component Dependency</td>
 </tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">say</span></code>(text[,&nbsp;animation])</td>
+<td>Say Text (with Animation) through Text-to-Speech</td>
+</tr>
 </tbody>
 </table>
 <table border="1" class="docutils">
@@ -608,9 +621,6 @@
 <td>&#160;</td>
 </tr>
 <tr class="row-even"><td><strong>on_transcript</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>say</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -713,18 +723,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>application</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></dt>
+<dd><p class="first last">Application Intention is based on</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Backend</p>
 </dd>
-<dt><strong>dependencies</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></dt>
+<dd><p class="first last">Intention Dependencies</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Intention Loggeer</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></dt>
 <dd><p class="first last">Returns</p>
@@ -744,6 +756,9 @@
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(dependency)</td>
 <td>Require Component Dependency</td>
 </tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">say</span></code>(text[,&nbsp;animation])</td>
+<td>Say Text (with Animation) through Text-to-Speech</td>
+</tr>
 </tbody>
 </table>
 <table border="1" class="docutils">
@@ -753,9 +768,6 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><strong>on_transcript</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>say</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -793,18 +805,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>application</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></dt>
+<dd><p class="first last">Application Intention is based on</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Application Backend</p>
 </dd>
-<dt><strong>dependencies</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></dt>
+<dd><p class="first last">Intention Dependencies</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Intention Loggeer</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></dt>
 <dd><p class="first last">Returns</p>
@@ -832,6 +846,9 @@
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(dependency)</td>
 <td>Require Component Dependency</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">say</span></code>(text[,&nbsp;animation])</td>
+<td>Say Text (with Animation) through Text-to-Speech</td>
 </tr>
 </tbody>
 </table>
@@ -863,9 +880,6 @@
 <td>&#160;</td>
 </tr>
 <tr class="row-even"><td><strong>save_person</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>say</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>

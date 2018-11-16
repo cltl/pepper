@@ -55,10 +55,6 @@
           
             
             
-              <div class="version">
-                1.0
-              </div>
-            
           
 
           
@@ -155,10 +151,14 @@
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 
 
-<div class="viewcode-block" id="ComponentDependencyError"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.ComponentDependencyError">[docs]</a><span class="k">class</span> <span class="nc">ComponentDependencyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
+<div class="viewcode-block" id="ComponentDependencyError"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.ComponentDependencyError">[docs]</a><span class="k">class</span> <span class="nc">ComponentDependencyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raised when a Component Dependency is not met&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="AbstractComponent"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent">[docs]</a><span class="k">class</span> <span class="nc">AbstractComponent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract Base Component on which all Components are Based&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Component</span>
@@ -166,6 +166,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        backend: AbstractBackend</span>
+<span class="sd">            Application Backend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -174,11 +175,20 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Component Logger</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        logger: logging.Logger</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">backend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Application Backend</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        backend: AbstractBackend</span>
@@ -187,16 +197,19 @@
 
 <div class="viewcode-block" id="AbstractComponent.require_dependency"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Require Component</span>
+<span class="sd">        Specify Component requirement</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cls: type</span>
+<span class="sd">            Component Type requiring dependency</span>
 <span class="sd">        dependency: type</span>
+<span class="sd">            Component Type being dependency</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dependency: AbstractComponent</span>
+<span class="sd">            Requested Dependency</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">ComponentDependencyError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> depends on </span><span class="si">{}</span><span class="s2">, which is not a superclass of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
