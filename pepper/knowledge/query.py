@@ -32,7 +32,8 @@ class QnA:
             "I can answer factual questions by querying the web!",
             "You can ask me personal questions and I will try to answer them!",
             "You can tell me what you like, and I'll remember!",
-        ])
+        ]),
+        "Tell me a joke!": lambda: choice(JOKE)
     }
 
     QNA_STATIC = {
@@ -77,8 +78,6 @@ class QnA:
         "Can you introduce yourself?": "I surely can introduce myself! My name is Leo Lani, "
                                        "which means 'Voice of an Angel' in Hawaiian"
                                        "I am a social robot and I learn from conversations with humans! I like humans!",
-        "Tell me a joke!": "Ok! What's the difference between a hippo? and a Zippo?"
-                           "Well, one is really heavy and the other is a little lighter.",
 
         # Technology
         "Do you have a brain?": "Haha, no! My brain is located on the laptop of my programmers "

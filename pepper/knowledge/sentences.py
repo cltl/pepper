@@ -231,3 +231,31 @@ NEGATION = [
     "bad",
     "stupid"
 ]
+
+ELOQUENCE = [
+    "I see",
+    "Interesting",
+    "Good to know",
+    "I do not know, but I have a joke {insert joke}",
+    "As the prophecy foretold",
+    "But at what cost?",
+    "So let it be written, ... so let it be done",
+    "So ... it   has come to this",
+    "That's just what he/she/they would've said",
+    "Is this why fate brought us together?",
+    "And thus, I die",
+    "... just like in my dream",
+    "Be that as it may, still may it be as it may be",
+    "There is no escape from destiny",
+    "Wise words by wise men write wise deeds in wise pen",
+    "In this economy?",
+    "and then the wolves came",
+    "Many of us feel that way"
+    ]
+
+JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is really heavy and the other is a little lighter.",
+        "What's the difference between ignorance and apathy? I don't know and I don't care.",
+        "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
+        "Did you hear about the crook who stole a calendar? He got twelve months.",
+        "Why is an island like the letter T? They're both in the middle of water!",
+        "Did you hear the one about the little mountain? It's hilarious!"]
