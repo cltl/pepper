@@ -1,20 +1,36 @@
-.. pepper documentation master file, created by
-   sphinx-quickstart on Thu Nov 15 13:05:21 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+CLTL Pepper/Nao Framework Documentation
+=======================================
 
-Welcome to pepper's documentation!
-==================================
+This is the main repository for Pepper/Nao Applications created as part of the
+Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
+
+CLTL/Pepper Features
+--------------------
+ - A Platform-Agnostic, Object-Oriented Framework for creating Robot Applications
+ - The necessary Machine Learning for enabling Human-Robot conversation
+ - Language Understanding through Grammars
+ - Knowledge Representation of Learned Facts through RDF Graph
+ - Realtime visualisation in web browser (WIP)
+
+
+Repository
+----------
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+   :maxdepth: 2
 
    pepper
 
 
+Highlighted Modules
+-------------------
+.. toctree::
+   pepper.framework.application
+   pepper.framework.component
+
+
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
