@@ -1,0 +1,10 @@
+U -> S | Q
+Q -> W VP | V NP VP
+W -> WRB | WP
+S -> NP VP | NP AP
+AP -> V JJ
+VP -> V NP | V PP | V NP V
+V -> VBD | VBP | VBZ | VB | MD
+PP -> IN NP | NP JJ
+NP -> N NP| DT NP | JJ NP | PRPPOS N | N CC N | PRP | N
+N -> NN | NNS
