@@ -1,3 +1,5 @@
+"""Pepper Configuration File"""
+
 from pepper import ApplicationBackend, CameraResolution, NaoqiMicrophoneIndex, LOGGING_FILE
 import json
 import os
@@ -120,6 +122,13 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = KEY_GOOGLE_CLOUD
 
 
 def get_backend():
+    """
+    Get Backend based on config.py settings
+
+    Returns
+    -------
+    backend: AbstractBackend
+    """
     backend = None
     if APPLICATION_BACKEND == ApplicationBackend.SYSTEM:
         from pepper.framework.backend.system import SystemBackend
