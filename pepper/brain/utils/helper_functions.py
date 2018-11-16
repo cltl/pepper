@@ -1,5 +1,6 @@
 import os
 import random
+from datetime import datetime
 
 
 def read_query(query_filename):
@@ -31,7 +32,7 @@ def hash_statement_id(triple, debug=False):
 
 
 # TODO to be moved to NLP layer
-def phrase_conflicts(conflicts):
+def phrase_all_conflicts(conflicts):
     say = 'I have %s conflicts in my brain.' % len(conflicts)
 
     conflict = random.choice(conflicts)
@@ -44,6 +45,17 @@ def phrase_conflicts(conflicts):
         subject = 'I' if conflict['subject'] == 'Leolani' else conflict['subject']
 
         say = say + ' For example, I do not know if %s %s %s'% (subject, predicate, options)
+
+    return say
+
+
+def phrase_negation_conflicts(conflict):
+    say = 'I am surprised. '
+
+    say += '%s told me in %s that %s %s %s, but in %s %s told me that %s did not' \
+        %(conflict['positive']['authorlabel'], datetime.strptime(conflict['positive']['date'], "%Y-%m-%d").strftime("%B"),
+          conflict['capsule']['subject']['label'], conflict['capsule']['predicate']['type'], conflict['capsule']['object']['label'],
+          datetime.strptime(conflict['negative']['date'], "%Y-%m-%d").strftime("%B"), conflict['negative']['authorlabel'], conflict['capsule']['subject']['label'])
 
     return say
 
