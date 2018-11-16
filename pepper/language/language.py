@@ -83,49 +83,13 @@ class Chat(object):
         -------
         utterance: Utterance
         """
-        utterance = Utterance(text, self._speaker, UtteranceID(self._id, len(self._utterances)))
+        utterance = Utterance(text, self._speaker, self._id, len(self._utterances))
         self._utterances.append(utterance)
         return utterance
 
 
-class UtteranceID(object):
-    def __init__(self, chat_id, chat_turn):
-        """
-        Construct Utterance Identification Object
-
-        Parameters
-        ----------
-        chat_id: int
-            Unique chat identifier
-        chat_turn: int
-            Chat turn
-        """
-        self._chat_id = chat_id
-        self._chat_turn = chat_turn
-
-    @property
-    def chat_id(self):
-        """
-        Returns
-        -------
-        chat_id: int
-            Unique chat identifier
-        """
-        return self._chat_id
-
-    @property
-    def chat_turn(self):
-        """
-        Returns
-        -------
-        chat_turn: int
-            Chat turn
-        """
-        return self._chat_turn
-
-
 class Utterance(object):
-    def __init__(self, transcript, speaker, utterance_id):
+    def __init__(self, transcript, speaker, chat_id, chat_turn):
         """
         Construct Utterance Object
 
@@ -135,15 +99,28 @@ class Utterance(object):
             Uttered text (Natural Language)
         speaker: str
             Speaker name
-        utterance_id: UtteranceID
-            Utterance Identification Object
+        chat_id: int
+            Unique chat identifier
+        chat_turn: int
+            Chat turn
         """
 
         # TODO: Add Viewed Objects!
 
+        self._transcript = transcript
         self._tokens = self._clean(self._tokenize(transcript))
         self._speaker = speaker.lower()
-        self._utterance_id = utterance_id
+        self._chat_id = chat_id
+        self._chat_turn = chat_turn
+
+    @property
+    def transcript(self):
+        """
+        Returns
+        -------
+        transcript: str
+        """
+        return self._transcript
 
     @property
     def tokens(self):
@@ -166,14 +143,24 @@ class Utterance(object):
         return self._speaker
 
     @property
-    def utterance_id(self):
+    def chat_id(self):
         """
         Returns
         -------
-        utterance_id: UtteranceID
-            Utterance Identification Object
+        chat_id: int
+            Unique chat identifier
         """
-        return self._utterance_id
+        return self._chat_id
+
+    @property
+    def chat_turn(self):
+        """
+        Returns
+        -------
+        chat_turn: int
+            Chat turn
+        """
+        return self._chat_turn
 
     def _tokenize(self, transcript):
         """
