@@ -1,3 +1,8 @@
+"""
+This is the main repository for Pepper/Nao Applications created as part of the
+Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
+"""
+
 import logging
 import enum
 import os

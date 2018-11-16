@@ -1,6 +1,7 @@
 from pepper.language.ner import NER
 
 from random import getrandbits
+from nltk import pos_tag, CFG, RecursiveDescentParser
 
 import logging
 import enum
@@ -83,49 +84,13 @@ class Chat(object):
         -------
         utterance: Utterance
         """
-        utterance = Utterance(text, self._speaker, UtteranceID(self._id, len(self._utterances)))
+        utterance = Utterance(text, self._speaker, self._id, len(self._utterances))
         self._utterances.append(utterance)
         return utterance
 
 
-class UtteranceID(object):
-    def __init__(self, chat_id, chat_turn):
-        """
-        Construct Utterance Identification Object
-
-        Parameters
-        ----------
-        chat_id: int
-            Unique chat identifier
-        chat_turn: int
-            Chat turn
-        """
-        self._chat_id = chat_id
-        self._chat_turn = chat_turn
-
-    @property
-    def chat_id(self):
-        """
-        Returns
-        -------
-        chat_id: int
-            Unique chat identifier
-        """
-        return self._chat_id
-
-    @property
-    def chat_turn(self):
-        """
-        Returns
-        -------
-        chat_turn: int
-            Chat turn
-        """
-        return self._chat_turn
-
-
 class Utterance(object):
-    def __init__(self, transcript, speaker, utterance_id):
+    def __init__(self, transcript, speaker, chat_id, chat_turn):
         """
         Construct Utterance Object
 
@@ -135,15 +100,28 @@ class Utterance(object):
             Uttered text (Natural Language)
         speaker: str
             Speaker name
-        utterance_id: UtteranceID
-            Utterance Identification Object
+        chat_id: int
+            Unique chat identifier
+        chat_turn: int
+            Chat turn
         """
 
         # TODO: Add Viewed Objects!
 
+        self._transcript = transcript
         self._tokens = self._clean(self._tokenize(transcript))
         self._speaker = speaker.lower()
-        self._utterance_id = utterance_id
+        self._chat_id = chat_id
+        self._chat_turn = chat_turn
+
+    @property
+    def transcript(self):
+        """
+        Returns
+        -------
+        transcript: str
+        """
+        return self._transcript
 
     @property
     def tokens(self):
@@ -166,14 +144,24 @@ class Utterance(object):
         return self._speaker
 
     @property
-    def utterance_id(self):
+    def chat_id(self):
         """
         Returns
         -------
-        utterance_id: UtteranceID
-            Utterance Identification Object
+        chat_id: int
+            Unique chat identifier
         """
-        return self._utterance_id
+        return self._chat_id
+
+    @property
+    def chat_turn(self):
+        """
+        Returns
+        -------
+        chat_turn: int
+            Chat turn
+        """
+        return self._chat_turn
 
     def _tokenize(self, transcript):
         """
@@ -213,6 +201,32 @@ class Utterance(object):
 
         return tokens
 
+class Parser(object):
+
+    CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'cfg.txt')
+
+    def __init__(self):
+        with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
+            self._cfg = cfg_file.read()
+
+    def parse(self, chat):
+        last_utterance = chat.utterances[-1]
+        tokenized_sentence = last_utterance.tokens
+        pos = pos_tag(tokenized_sentence)
+        #print(pos)
+        for el in pos:
+            if el[1].endswith('$'):
+                new_rule = el[1][:-1] + 'POS -> \'' + el[0] + '\'\n'
+            else:
+                new_rule = el[1] + ' -> \'' + el[0] + '\'\n'
+            if new_rule not in self._cfg:
+                self._cfg += new_rule
+
+        cfg_parser = CFG.fromstring(self._cfg)
+        RD = RecursiveDescentParser(cfg_parser)
+        parsed = RD.parse(tokenized_sentence)
+        return parsed
+
 
 class Analyzer(object):
 
@@ -238,7 +252,7 @@ class Analyzer(object):
         self._log = logging.getLogger(self.__class__.__name__)
 
     @staticmethod
-    def analyze(chat):
+    def analyze(parsed_tree):
         """
         Analyzer factory function
 
@@ -255,6 +269,10 @@ class Analyzer(object):
             Appropriate Analyzer Subclass
         """
 
+        print(parsed_tree)
+
+
+        '''
         if chat.last_utterance.tokens:
             first_token = chat.last_utterance.tokens[0]
 
@@ -271,6 +289,7 @@ class Analyzer(object):
                 return StatementAnalyzer.analyze(chat)
         else:
             raise ValueError("Utterance should have at least one element")
+        '''
 
     @property
     def log(self):
@@ -322,7 +341,7 @@ class Analyzer(object):
 
         return None
 
-
+'''
 class StatementAnalyzer(Analyzer):
     """Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function"""
 
@@ -517,11 +536,13 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         rdf: dict or None
         """
         return self._rdf
-
+'''
 
 if __name__ == '__main__':
     chat = Chat("Bram")
     chat.add_utterance("I like bananas")
-    analyzer = Analyzer.analyze(chat)
+    cfg_parser = Parser()
+    parsed_tree = cfg_parser.parse(chat)
+    analyzer = Analyzer.analyze(parsed_tree)
 
     print(analyzer.__class__.__name__)

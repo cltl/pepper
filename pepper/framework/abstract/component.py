@@ -2,10 +2,14 @@ from pepper.framework.abstract import AbstractBackend
 from pepper import logger
 
 
-class ComponentDependencyError(Exception): pass
+class ComponentDependencyError(Exception):
+    """Raised when a Component Dependency is not met"""
+    pass
 
 
 class AbstractComponent(object):
+    """Abstract Base Component on which all Components are Based"""
+
     def __init__(self, backend):
         """
         Construct Component
@@ -13,6 +17,7 @@ class AbstractComponent(object):
         Parameters
         ----------
         backend: AbstractBackend
+            Application Backend
         """
         super(AbstractComponent, self).__init__()
 
@@ -21,11 +26,20 @@ class AbstractComponent(object):
 
     @property
     def log(self):
+        """
+        Component Logger
+
+        Returns
+        -------
+        logger: logging.Logger
+        """
         return self._log
 
     @property
     def backend(self):
         """
+        Application Backend
+
         Returns
         -------
         backend: AbstractBackend
@@ -34,16 +48,19 @@ class AbstractComponent(object):
 
     def require_dependency(self, cls, dependency):
         """
-        Require Component
+        Specify Component requirement
 
         Parameters
         ----------
         cls: type
+            Component Type requiring dependency
         dependency: type
+            Component Type being dependency
 
         Returns
         -------
         dependency: AbstractComponent
+            Requested Dependency
         """
         if not isinstance(self, dependency):
             raise ComponentDependencyError("{} depends on {}, which is not a superclass of {}".format(
