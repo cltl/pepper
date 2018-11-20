@@ -822,20 +822,26 @@
 
 <dl class="class">
 <dt id="pepper.language.language.Utterance">
-<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Utterance</code><span class="sig-paren">(</span><em>transcript</em>, <em>speaker</em>, <em>utterance_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Utterance</code><span class="sig-paren">(</span><em>transcript</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.language.language.Utterance.chat_id" title="pepper.language.language.Utterance.chat_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_id</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.language.language.Utterance.chat_turn" title="pepper.language.language.Utterance.chat_turn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_turn</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
 <dt><a class="reference internal" href="#pepper.language.language.Utterance.speaker" title="pepper.language.language.Utterance.speaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">speaker</span></code></a></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.language.language.Utterance.tokens" title="pepper.language.language.Utterance.tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tokens</span></code></a></dt>
 <dd><p class="first last">Returns</p>
 </dd>
-<dt><a class="reference internal" href="#pepper.language.language.Utterance.utterance_id" title="pepper.language.language.Utterance.utterance_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_id</span></code></a></dt>
+<dt><a class="reference internal" href="#pepper.language.language.Utterance.transcript" title="pepper.language.language.Utterance.transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcript</span></code></a></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 </dl>
@@ -843,6 +849,42 @@
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pepper.language.language.Utterance.chat_id">
+<code class="descname">chat_id</code><a class="headerlink" href="#pepper.language.language.Utterance.chat_id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>chat_id: int</strong></dt>
+<dd><p class="first last">Unique chat identifier</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.language.Utterance.chat_turn">
+<code class="descname">chat_turn</code><a class="headerlink" href="#pepper.language.language.Utterance.chat_turn" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>chat_turn: int</strong></dt>
+<dd><p class="first last">Chat turn</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pepper.language.language.Utterance.speaker">
 <code class="descname">speaker</code><a class="headerlink" href="#pepper.language.language.Utterance.speaker" title="Permalink to this definition">¶</a></dt>
@@ -880,74 +922,15 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pepper.language.language.Utterance.utterance_id">
-<code class="descname">utterance_id</code><a class="headerlink" href="#pepper.language.language.Utterance.utterance_id" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.language.language.Utterance.transcript">
+<code class="descname">transcript</code><a class="headerlink" href="#pepper.language.language.Utterance.transcript" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>utterance_id: UtteranceID</strong></dt>
-<dd><p class="first last">Utterance Identification Object</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.language.UtteranceID">
-<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">UtteranceID</code><span class="sig-paren">(</span><em>chat_id</em>, <em>chat_turn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#UtteranceID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.UtteranceID" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.language.language.UtteranceID.chat_id" title="pepper.language.language.UtteranceID.chat_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_id</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.language.UtteranceID.chat_turn" title="pepper.language.language.UtteranceID.chat_turn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_turn</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.language.language.UtteranceID.chat_id">
-<code class="descname">chat_id</code><a class="headerlink" href="#pepper.language.language.UtteranceID.chat_id" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>chat_id: int</strong></dt>
-<dd><p class="first last">Unique chat identifier</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.language.UtteranceID.chat_turn">
-<code class="descname">chat_turn</code><a class="headerlink" href="#pepper.language.language.UtteranceID.chat_turn" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>chat_turn: int</strong></dt>
-<dd><p class="first last">Chat turn</p>
-</dd>
+<dt><strong>transcript: str</strong></dt>
+<dd></dd>
 </dl>
 </td>
 </tr>

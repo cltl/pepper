@@ -232,49 +232,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        utterance: Utterance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">utterance</span> <span class="o">=</span> <span class="n">Utterance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span><span class="p">,</span> <span class="n">UtteranceID</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">)))</span>
+        <span class="n">utterance</span> <span class="o">=</span> <span class="n">Utterance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">utterance</span></div></div>
 
 
-<div class="viewcode-block" id="UtteranceID"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.UtteranceID">[docs]</a><span class="k">class</span> <span class="nc">UtteranceID</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat_id</span><span class="p">,</span> <span class="n">chat_turn</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct Utterance Identification Object</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat_id: int</span>
-<span class="sd">            Unique chat identifier</span>
-<span class="sd">        chat_turn: int</span>
-<span class="sd">            Chat turn</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span> <span class="o">=</span> <span class="n">chat_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_turn</span> <span class="o">=</span> <span class="n">chat_turn</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">chat_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        chat_id: int</span>
-<span class="sd">            Unique chat identifier</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">chat_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        chat_turn: int</span>
-<span class="sd">            Chat turn</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_turn</span></div>
-
-
 <div class="viewcode-block" id="Utterance"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance">[docs]</a><span class="k">class</span> <span class="nc">Utterance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">utterance_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">chat_id</span><span class="p">,</span> <span class="n">chat_turn</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Utterance Object</span>
 
@@ -284,15 +248,28 @@
 <span class="sd">            Uttered text (Natural Language)</span>
 <span class="sd">        speaker: str</span>
 <span class="sd">            Speaker name</span>
-<span class="sd">        utterance_id: UtteranceID</span>
-<span class="sd">            Utterance Identification Object</span>
+<span class="sd">        chat_id: int</span>
+<span class="sd">            Unique chat identifier</span>
+<span class="sd">        chat_turn: int</span>
+<span class="sd">            Chat turn</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># TODO: Add Viewed Objects!</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span> <span class="o">=</span> <span class="n">transcript</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tokenize</span><span class="p">(</span><span class="n">transcript</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span> <span class="o">=</span> <span class="n">speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_utterance_id</span> <span class="o">=</span> <span class="n">utterance_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span> <span class="o">=</span> <span class="n">chat_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_turn</span> <span class="o">=</span> <span class="n">chat_turn</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transcript: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -315,14 +292,24 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">utterance_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">chat_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        utterance_id: UtteranceID</span>
-<span class="sd">            Utterance Identification Object</span>
+<span class="sd">        chat_id: int</span>
+<span class="sd">            Unique chat identifier</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_utterance_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chat_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        chat_turn: int</span>
+<span class="sd">            Chat turn</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_turn</span>
 
     <span class="k">def</span> <span class="nf">_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

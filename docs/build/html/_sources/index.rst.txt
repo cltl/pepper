@@ -4,6 +4,7 @@ CLTL Pepper/Nao Framework Documentation
 This is the main repository for Pepper/Nao Applications created as part of the
 Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
 
+
 CLTL/Pepper Features
 ====================
  - A Platform-Agnostic, Object-Oriented Framework for creating Robot Applications
