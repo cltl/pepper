@@ -1,5 +1,5 @@
 from pepper.framework.abstract.camera import AbstractCamera
-from pepper.config import NaoqiCameraIndex, CameraResolution
+from pepper import NaoqiCameraIndex, CameraResolution
 
 import numpy as np
 
@@ -7,7 +7,25 @@ from random import getrandbits
 from threading import Thread
 from time import time, sleep
 
-class NaoqiCamera(AbstractCamera):
+
+class NAOqiCamera(AbstractCamera):
+    """
+    NAOqi Camera
+
+    Parameters
+    ----------
+    session: qi.Session
+        NAOqi Application Session
+    resolution: CameraResolution
+        NAOqi Camera Resolution
+    rate: int
+        NAOqi Camera Rate
+    callbacks: list of callable
+        On Image Event Callbacks
+    index: int
+        Which NAOqi Camera to use
+    """
+
 
     SERVICE = "ALVideoDevice"
     COLOR_SPACE = 9 # YUV442
@@ -22,25 +40,8 @@ class NaoqiCamera(AbstractCamera):
         CameraResolution.VGA4: 3,
     }
 
-
     def __init__(self, session, resolution, rate, callbacks=[], index=NaoqiCameraIndex.TOP):
-        """
-        Naoqi Camera
-
-        Parameters
-        ----------
-        session: qi.Session
-            Qi Application Session
-        resolution: CameraResolution
-            Camera Resolution
-        rate: int
-            Camera Rate
-        callbacks: list of callable
-            On Image Event Callbacks
-        index: int
-            Which Camera to choose
-        """
-        super(NaoqiCamera, self).__init__(resolution, rate, callbacks)
+        super(NAOqiCamera, self).__init__(resolution, rate, callbacks)
 
         # Get random camera id, to prevent name collision
         self._id = str(getrandbits(128))
@@ -50,9 +51,9 @@ class NaoqiCamera(AbstractCamera):
         self._index = index
 
         # Connect to Camera Service and Subscribe with Settings
-        self._service = session.service(NaoqiCamera.SERVICE)
+        self._service = session.service(NAOqiCamera.SERVICE)
         self._client = self._service.subscribeCamera(
-            self._id, int(index), NaoqiCamera.RESOLUTION_CODE[resolution], NaoqiCamera.COLOR_SPACE, rate)
+            self._id, int(index), NAOqiCamera.RESOLUTION_CODE[resolution], NAOqiCamera.COLOR_SPACE, rate)
 
         # Run image acquisition in Thread
         self._thread = Thread(target=self._run)

@@ -81,6 +81,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -153,24 +154,29 @@
 
 
 <div class="viewcode-block" id="SystemBackend"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.backend.html#pepper.framework.backend.system.backend.SystemBackend">[docs]</a><span class="k">class</span> <span class="nc">SystemBackend</span><span class="p">(</span><span class="n">AbstractBackend</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize System Backend</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    camera_resolution: CameraResolution</span>
+<span class="sd">        System Camera Resolution</span>
+<span class="sd">    camera_rate: int</span>
+<span class="sd">        System Camera Rate</span>
+<span class="sd">    microphone_channels: int</span>
+<span class="sd">        Number of System Microphone Channels</span>
+<span class="sd">    microphone_rate: int</span>
+<span class="sd">        System Microphone Bit Rate</span>
+<span class="sd">    language: str</span>
+<span class="sd">        System Language</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">camera_resolution</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">CAMERA_RESOLUTION</span><span class="p">,</span>
                  <span class="n">camera_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">CAMERA_FRAME_RATE</span><span class="p">,</span>
                  <span class="n">microphone_channels</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_CHANNELS</span><span class="p">,</span>
                  <span class="n">microphone_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span>
                  <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize System Backend</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        camera_resolution: pepper.framework.abstract.camera.CameraResolution</span>
-<span class="sd">        camera_rate: int</span>
-<span class="sd">        microphone_channels: int</span>
-<span class="sd">        microphone_rate: int</span>
-<span class="sd">        language: str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="nb">super</span><span class="p">(</span><span class="n">SystemBackend</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">SystemCamera</span><span class="p">(</span><span class="n">camera_resolution</span><span class="p">,</span> <span class="n">camera_rate</span><span class="p">),</span>
                                             <span class="n">SystemMicrophone</span><span class="p">(</span><span class="n">microphone_rate</span><span class="p">,</span> <span class="n">microphone_channels</span><span class="p">),</span>
                                             <span class="n">SystemTextToSpeech</span><span class="p">(</span><span class="n">language</span><span class="p">))</span></div>

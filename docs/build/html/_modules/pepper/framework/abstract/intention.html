@@ -81,6 +81,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -147,24 +148,24 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.abstract.intention</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">Application</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractApplication</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.abstract.component</span> <span class="k">import</span> <span class="n">ComponentDependencyError</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 
 
-<div class="viewcode-block" id="Intention"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention">[docs]</a><span class="k">class</span> <span class="nc">Intention</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractIntention"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention">[docs]</a><span class="k">class</span> <span class="nc">AbstractIntention</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Intention class is at the base of more involved robot applications.</span>
-<span class="sd">    They build on top of :class:`~Application` instances an allow for switching of robot contexts.</span>
+<span class="sd">    They build on top of :class:`~pepper.framework.abstract.application.AbstractApplication`</span>
+<span class="sd">    instances and allow for switching of robot contexts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    application: AbstractApplication</span>
+<span class="sd">        :class:`~pepper.framework.abstract.application.AbstractApplication` to base Intention on</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        application: Application</span>
-<span class="sd">            Application to base Intention on</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_application</span> <span class="o">=</span> <span class="n">application</span>
 
         <span class="c1"># Reset Application Events to their default</span>
@@ -195,11 +196,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :class:`~Application` Intention is based on</span>
+<span class="sd">        :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        application: Application</span>
+<span class="sd">        application: AbstractApplication</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span>
 
@@ -214,14 +215,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractComponent</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span> <span class="o">==</span> <span class="n">AbstractComponent</span> <span class="ow">and</span> \
-                    <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Application</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Intention</span><span class="p">):</span>
+                    <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractApplication</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractIntention</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="bp">cls</span>
 
-<div class="viewcode-block" id="Intention.require_dependency"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractIntention.require_dependency"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enforce Component Dependency</span>
 
-<span class="sd">        Checks whether Component is included in Application</span>
+<span class="sd">        Checks whether Component is included in :class:`~pepper.framework.abstract.application.AbstractApplication`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -239,7 +240,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">dependency</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">dependency</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Application</span><span class="o">.</span><span class="n">_EVENT_TAG</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">AbstractApplication</span><span class="o">.</span><span class="n">_EVENT_TAG</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">attribute</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span></div></div>

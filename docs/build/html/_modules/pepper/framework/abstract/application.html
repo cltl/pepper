@@ -81,6 +81,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -153,27 +154,25 @@
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
 
 
-<div class="viewcode-block" id="Application"><a class="viewcode-back" href="../../../../pepper.framework.abstract.application.html#pepper.framework.abstract.application.Application">[docs]</a><span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractApplication"><a class="viewcode-back" href="../../../../pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication">[docs]</a><span class="k">class</span> <span class="nc">AbstractApplication</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Application class is at the base of every robot application.</span>
 <span class="sd">    It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`</span>
-<span class="sd">    and allows for instances of :class:`~Intention` to be build in top of it.</span>
+<span class="sd">    and allows for instances of :class:`~pepper.framework.abstract.intention.AbstractIntention` to be build in top of it.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_EVENT_TAG</span> <span class="o">=</span> <span class="s1">&#39;on_&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create Application from Backend</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AbstractApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        backend: AbstractBackend</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Application</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_events</span> <span class="o">=</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_EVENT_TAG</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">))}</span>
+        <span class="c1"># Find Events associated with Application (inherited from Components)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_events</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_EVENT_TAG</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">)}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
@@ -189,25 +188,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Yields the Dependencies which are fulfilled by this Application</span>
-
-<span class="sd">        Yields</span>
-<span class="sd">        ------</span>
-<span class="sd">        components: iterable of AbstractComponent</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractComponent</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span> <span class="o">==</span> <span class="n">AbstractComponent</span> <span class="ow">and</span> \
-                    <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Application</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Intention</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="bp">cls</span>
-
-<div class="viewcode-block" id="Application.run"><a class="viewcode-back" href="../../../../pepper.framework.abstract.application.html#pepper.framework.abstract.application.Application.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractApplication.run"><a class="viewcode-back" href="../../../../pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run Application</span>
 
-<span class="sd">        Starts Camera &amp; Microphone and sleeps Main Thread</span>
+<span class="sd">        Starts Camera &amp; Microphone and Sleeps</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -216,7 +201,7 @@
             <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_reset_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reset Events Callbacks to their (unimplemented) defaults&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Reset Event Callbacks to their (unimplemented) defaults&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_function</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">event_function</span><span class="p">)</span></div>
 </pre></div>

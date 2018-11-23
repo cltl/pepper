@@ -1,7 +1,7 @@
 .idea/
 *.pyc
 
-people/
+people/friends/
 tmp/
 
 google_cloud_key.json

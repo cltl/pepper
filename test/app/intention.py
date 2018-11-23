@@ -2,16 +2,16 @@ from pepper.framework import *
 from pepper import config
 
 
-class MyApplication(Application, StatisticsComponent, FaceDetectionComponent, StreamingSpeechRecognitionComponent, TextToSpeechComponent):
+class MyApplication(AbstractApplication, StatisticsComponent, FaceDetectionComponent, StreamingSpeechRecognitionComponent, TextToSpeechComponent):
     pass
 
 
-class IdleIntention(Intention, MyApplication):
+class IdleIntention(AbstractIntention, MyApplication):
     def on_face(self, faces):
         TalkIntention(self.application)
 
 
-class TalkIntention(Intention, MyApplication):
+class TalkIntention(AbstractIntention, MyApplication):
     def __init__(self, application):
         super(TalkIntention, self).__init__(application)
         self.say("Hello, Human!")

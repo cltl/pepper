@@ -106,21 +106,6 @@
 </ul>
 </li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.abstract.application module</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -193,24 +178,28 @@
   <div class="section" id="module-pepper.framework.abstract.application">
 <span id="pepper-framework-abstract-application-module"></span><h1>pepper.framework.abstract.application module<a class="headerlink" href="#module-pepper.framework.abstract.application" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.abstract.application.Application">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.application.</code><code class="descname">Application</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#Application"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.Application" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.application.AbstractApplication">
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.application.</code><code class="descname">AbstractApplication</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#AbstractApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
 <p>The Application class is at the base of every robot application.
 It keeps track of events from different instances of <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractComponent</span></code></a>
-and allows for instances of <code class="xref py py-class docutils literal notranslate"><span class="pre">Intention</span></code> to be build in top of it.</p>
+and allows for instances of <a class="reference internal" href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention" title="pepper.framework.abstract.intention.AbstractIntention"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractIntention</span></code></a> to be build in top of it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>backend: AbstractBackend</strong></dt>
+<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.Application.dependencies" title="pepper.framework.abstract.application.Application.dependencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></a></dt>
-<dd><p class="first last">Yields the Dependencies which are fulfilled by this Application</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.Application.log" title="pepper.framework.abstract.application.Application.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.log" title="pepper.framework.abstract.application.AbstractApplication.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
 <dd><p class="first last">Application Logger</p>
 </dd>
 </dl>
@@ -228,32 +217,14 @@ and allows for instances of <code class="xref py py-class docutils literal notra
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
 <td>Enforce Component Dependency</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.application.Application.run" title="pepper.framework.abstract.application.Application.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.run" title="pepper.framework.abstract.application.AbstractApplication.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>()</td>
 <td>Run Application</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="pepper.framework.abstract.application.Application.dependencies">
-<code class="descname">dependencies</code><a class="headerlink" href="#pepper.framework.abstract.application.Application.dependencies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Yields the Dependencies which are fulfilled by this Application</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Yields:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>components: iterable of AbstractComponent</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.application.Application.log">
-<code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.application.Application.log" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.application.AbstractApplication.log">
+<code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Application Logger</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -270,10 +241,10 @@ and allows for instances of <code class="xref py py-class docutils literal notra
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.abstract.application.Application.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#Application.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.Application.run" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.application.AbstractApplication.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#AbstractApplication.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Application</p>
-<p>Starts Camera &amp; Microphone and sleeps Main Thread</p>
+<p>Starts Camera &amp; Microphone and Sleeps</p>
 </dd></dl>
 
 </dd></dl>

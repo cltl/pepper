@@ -106,21 +106,6 @@
 </ul>
 </li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.abstract.camera module</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -196,12 +181,23 @@
 <dt id="pepper.framework.abstract.camera.AbstractCamera">
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractCamera</code><span class="sig-paren">(</span><em>resolution</em>, <em>rate</em>, <em>callbacks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstract Camera on which all Backend Cameras are based</p>
+<p>Abstract Camera</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>resolution: CameraResolution</strong></dt>
+<dd><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></p>
+</dd>
+<dt><strong>rate: int</strong></dt>
+<dd></dd>
+<dt><strong>callbacks: list of callable</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.callbacks" title="pepper.framework.abstract.camera.AbstractCamera.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></dt>
 <dd><p class="first last">Get/Set <a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="pepper.framework.abstract.camera.AbstractCamera.on_image"><code class="xref py py-func docutils literal notranslate"><span class="pre">on_image()</span></code></a> Callbacks</p>
 </dd>
@@ -313,6 +309,7 @@
 <dt id="pepper.framework.abstract.camera.AbstractCamera.on_image">
 <code class="descname">on_image</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.on_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Image Event, Called for every Image captured by Camera</p>
+<p>Camera Modules should call this function for every frame acquired by the Camera</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

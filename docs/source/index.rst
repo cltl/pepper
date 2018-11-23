@@ -1,5 +1,5 @@
-CLTL Pepper/Nao Framework Documentation
-=======================================
+CLTL Pepper/Nao Framework - API Reference
+=========================================
 
 This is the main repository for Pepper/Nao Applications created as part of the
 Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
@@ -26,7 +26,10 @@ Repository
 Highlighted Modules
 ===================
 .. toctree::
+   :maxdepth: 2
+
    pepper.framework.abstract
+   pepper.framework.backend
    pepper.framework.component
 
 

@@ -10,16 +10,17 @@ from collections import deque
 
 
 class AbstractMicrophone(object):
-    def __init__(self, rate, channels, callbacks):
-        """
-        Abstract Microphone
+    """
+    Abstract Microphone
 
-        Parameters
-        ----------
-        rate: int
-        channels: int
-        callbacks: list of callable
-        """
+    Parameters
+    ----------
+    rate: int
+    channels: int
+    callbacks: list of callable
+    """
+
+    def __init__(self, rate, channels, callbacks):
         self._rate = rate
         self._channels = channels
         self._callbacks = callbacks
@@ -41,6 +42,8 @@ class AbstractMicrophone(object):
     @property
     def rate(self):
         """
+        Audio bit rate
+
         Returns
         -------
         rate: int
@@ -51,6 +54,10 @@ class AbstractMicrophone(object):
     @property
     def true_rate(self):
         """
+        Actual Audio bit rate
+
+        Audio bit rate after accounting for latency & performance realities
+
         Returns
         -------
         true_rate:
@@ -61,6 +68,8 @@ class AbstractMicrophone(object):
     @property
     def channels(self):
         """
+        Audio channels
+
         Returns
         -------
         channels: int
@@ -71,6 +80,8 @@ class AbstractMicrophone(object):
     @property
     def callbacks(self):
         """
+        Get/Set :func:`~AbstractCamera.on_audio` Callbacks
+
         Returns
         -------
         callbacks: list of callable
@@ -80,6 +91,8 @@ class AbstractMicrophone(object):
     @callbacks.setter
     def callbacks(self, value):
         """
+        Get/Set :func:`~AbstractCamera.on_audio` Callbacks
+
         Parameters
         ----------
         value: list of callable
@@ -89,6 +102,8 @@ class AbstractMicrophone(object):
     @property
     def running(self):
         """
+        Returns whether Microphone is Running
+
         Returns
         -------
         running: bool
@@ -97,7 +112,9 @@ class AbstractMicrophone(object):
 
     def on_audio(self, audio):
         """
-        On Audio Event
+        On Audio Event, Called for every frame of audio captured by Microphone
+
+        Microphone Modules should call this function for every frame of audio acquired by Microphone
 
         Parameters
         ----------

@@ -3,29 +3,29 @@ from pepper.config import NaoqiMicrophoneIndex
 import numpy as np
 
 
-class NaoqiMicrophone(AbstractMicrophone):
+class NAOqiMicrophone(AbstractMicrophone):
 
     SERVICE = "ALAudioDevice"
     RATE = 16000
 
     def __init__(self, session, index, callbacks = []):
         """
-        Naoqi Microphone
+        NAOqi Microphone
 
         Parameters
         ----------
         session: qi.Session
             Qi Application Session
-        index: NaoqiMicrophoneIndex
+        index: NaoqiMicrophoneIndex or int
             Which Microphone to Use
         callbacks: list of callable
             On Audio Callbacks
         """
-        super(NaoqiMicrophone, self).__init__(
-            NaoqiMicrophone.RATE, 4 if index == NaoqiMicrophoneIndex.ALL else 1, callbacks)
+        super(NAOqiMicrophone, self).__init__(
+            NAOqiMicrophone.RATE, 4 if index == NaoqiMicrophoneIndex.ALL else 1, callbacks)
 
         # Register Service and Subscribe this class as callback
-        self._service = session.service(NaoqiMicrophone.SERVICE)
+        self._service = session.service(NAOqiMicrophone.SERVICE)
         session.registerService(self.__class__.__name__, self)
         self._service.setClientPreferences(self.__class__.__name__, self.rate, int(index), 0)
         self._service.subscribe(self.__class__.__name__)

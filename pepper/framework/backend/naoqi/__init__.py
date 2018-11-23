@@ -1,4 +1,8 @@
-from .camera import NaoqiCamera
-from .microphone import NaoqiMicrophone
-from .text_to_speech import NaoqiTextToSpeech
-from .backend import NaoqiBackend
+"""
+NAOqi Backend
+"""
+
+from .camera import NAOqiCamera
+from .microphone import NAOqiMicrophone
+from .text_to_speech import NAOqiTextToSpeech
+from .backend import NAOqiBackend

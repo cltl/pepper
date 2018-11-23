@@ -3,23 +3,23 @@ from __future__ import unicode_literals
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
 
 
-class NaoqiTextToSpeech(AbstractTextToSpeech):
+class NAOqiTextToSpeech(AbstractTextToSpeech):
 
     SERVICE = "ALAnimatedSpeech"
 
     def __init__(self, session, language):
         """
-        Naoqi Text to Speech
+        NAOqi Text to Speech
 
         Parameters
         ----------
         session: qi.Session
             Qi Application Session
         """
-        super(NaoqiTextToSpeech, self).__init__(language)
+        super(NAOqiTextToSpeech, self).__init__(language)
 
-        # Subscribe to Naoqi Text to Speech Service
-        self._service = session.service(NaoqiTextToSpeech.SERVICE)
+        # Subscribe to NAOqi Text to Speech Service
+        self._service = session.service(NAOqiTextToSpeech.SERVICE)
 
         self._log.debug("Booted")
 

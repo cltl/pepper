@@ -105,21 +105,6 @@
 </ul>
 </li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.abstract.intention module</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -192,23 +177,31 @@
   <div class="section" id="module-pepper.framework.abstract.intention">
 <span id="pepper-framework-abstract-intention-module"></span><h1>pepper.framework.abstract.intention module<a class="headerlink" href="#module-pepper.framework.abstract.intention" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.abstract.intention.Intention">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.intention.</code><code class="descname">Intention</code><span class="sig-paren">(</span><em>application</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/intention.html#Intention"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.intention.Intention" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.intention.AbstractIntention">
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.intention.</code><code class="descname">AbstractIntention</code><span class="sig-paren">(</span><em>application</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/intention.html#AbstractIntention"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>The Intention class is at the base of more involved robot applications.
-They build on top of <code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code> instances an allow for switching of robot contexts.</p>
+They build on top of <a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a>
+instances and allow for switching of robot contexts.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.abstract.intention.Intention.application" title="pepper.framework.abstract.intention.Intention.application"><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></a></dt>
-<dd><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code> Intention is based on</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>application: AbstractApplication</strong></dt>
+<dd><p class="first last"><a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> to base Intention on</p>
 </dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.intention.Intention.dependencies" title="pepper.framework.abstract.intention.Intention.dependencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></a></dt>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.application" title="pepper.framework.abstract.intention.AbstractIntention.application"><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></a></dt>
+<dd><p class="first last"><a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> Intention is based on</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.dependencies" title="pepper.framework.abstract.intention.AbstractIntention.dependencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></a></dt>
 <dd><p class="first last">Intention Dependencies</p>
 </dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.intention.Intention.log" title="pepper.framework.abstract.intention.Intention.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
+<dt><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.log" title="pepper.framework.abstract.intention.AbstractIntention.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
 <dd><p class="first last">Intention Logger</p>
 </dd>
 </dl>
@@ -223,21 +216,21 @@ They build on top of <code class="xref py py-class docutils literal notranslate"
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.intention.Intention.require_dependency" title="pepper.framework.abstract.intention.Intention.require_dependency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code></a>(dependency)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.require_dependency" title="pepper.framework.abstract.intention.AbstractIntention.require_dependency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code></a>(dependency)</td>
 <td>Enforce Component Dependency</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="pepper.framework.abstract.intention.Intention.application">
-<code class="descname">application</code><a class="headerlink" href="#pepper.framework.abstract.intention.Intention.application" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code> Intention is based on</p>
+<dt id="pepper.framework.abstract.intention.AbstractIntention.application">
+<code class="descname">application</code><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention.application" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> Intention is based on</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>application: Application</strong></dt>
+<dt><strong>application: AbstractApplication</strong></dt>
 <dd></dd>
 </dl>
 </td>
@@ -247,8 +240,8 @@ They build on top of <code class="xref py py-class docutils literal notranslate"
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pepper.framework.abstract.intention.Intention.dependencies">
-<code class="descname">dependencies</code><a class="headerlink" href="#pepper.framework.abstract.intention.Intention.dependencies" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.intention.AbstractIntention.dependencies">
+<code class="descname">dependencies</code><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention.dependencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Intention Dependencies</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -265,8 +258,8 @@ They build on top of <code class="xref py py-class docutils literal notranslate"
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pepper.framework.abstract.intention.Intention.log">
-<code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.intention.Intention.log" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.intention.AbstractIntention.log">
+<code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Intention Logger</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -283,10 +276,10 @@ They build on top of <code class="xref py py-class docutils literal notranslate"
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.abstract.intention.Intention.require_dependency">
-<code class="descname">require_dependency</code><span class="sig-paren">(</span><em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/intention.html#Intention.require_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.intention.Intention.require_dependency" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.intention.AbstractIntention.require_dependency">
+<code class="descname">require_dependency</code><span class="sig-paren">(</span><em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/intention.html#AbstractIntention.require_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention.require_dependency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enforce Component Dependency</p>
-<p>Checks whether Component is included in Application</p>
+<p>Checks whether Component is included in <a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
