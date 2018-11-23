@@ -86,13 +86,30 @@ class LongTermMemory(object):
         capsule = casefold_capsule(capsule)
 
         # Create graphs and triples
-        self._model_graphs_(capsule)
+        instance_url = self._model_graphs_(capsule)
+
+        # Check if this knowledge already exists on the brain
+        novelty = self.check_statement_existence(instance_url)
+
+        # Check how many items of the same type as subject and object we have
+        items_like_subject = self.get_instance_of_type(capsule['subject']['type'])
+        items_like_object = self.get_instance_of_type(capsule['object']['type'])
+
+        # Finish process of uploading new knowledge to the triple store
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
+        # Check for conflicts after adding the knowledge
+        negation_conflicts = self.get_negation_conflicts_with_statement(capsule)
+        object_conflict = self.get_object_cardinality_conflicts_with_statement(capsule)
+
         # Create JSON output
         capsule["date"] = str(capsule["date"])
-        output = {'response': code, 'statement': capsule}
+        output = {'response': code, 'statement': capsule,
+                  'statement_novelty': novelty,
+                  'entity_novelty': {'subject': capsule['subject']['label'] in items_like_subject, 'object': capsule['object']['label'] in items_like_object},
+                  'negation_conflicts': negation_conflicts, 'cardinality_conflicts': object_conflict,
+                  'gaps': []}
 
         return output
 
@@ -107,7 +124,7 @@ class LongTermMemory(object):
         capsule = casefold_capsule(capsule)
 
         # Create graphs and triples
-        self._model_graphs_(capsule, type='Experience')
+        instance_url = self._model_graphs_(capsule, type='Experience')
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
@@ -312,6 +329,15 @@ class LongTermMemory(object):
         response = self._submit_query(query)
         return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
 
+    def check_statement_existence(self, instance_url):
+        query = read_query('instance_existence') % (instance_url)
+        response = self._submit_query(query)
+
+        if response[0] != {}:
+            response = [{'date': elem['date']['value'].split('/')[-1], 'authorlabel': elem['authorlabel']['value']} for elem in response]
+
+        return response
+
     ########## conflicts ##########
     def get_all_conflicts(self):
         """
@@ -320,47 +346,50 @@ class LongTermMemory(object):
         """
         conflicts = []
         for predicate in self._ONE_TO_ONE_PREDICATES:
-            conflicts.extend(self._get_conflicts_with_one_to_one_predicate(predicate))
+            conflicts.extend(self.get_conflicts_with_one_to_one_predicate(predicate))
 
         return conflicts
+
+    def get_conflicts_with_one_to_one_predicate(self, one_to_one_predicate):
+        query = read_query('one_to_one_conflicts') % one_to_one_predicate
+
+        response = self._submit_query(query)
+        conflicts = []
+        for item in response:
+            conflict = {'subject': item['sname']['value'], 'predicate': one_to_one_predicate, 'objects': []}
+
+            for x in item['pairs']['value'].split(';'):
+                [val, auth] = x.split(',')
+                option = {'value': val, 'author': auth}
+                conflict['objects'].append(option)
+
+            conflicts.append(conflict)
+
+        return conflicts
+
+    def get_object_cardinality_conflicts_with_statement(self, capsule):
+        # Case fold
+        capsule = casefold_capsule(capsule)
+
+        query = read_query('object_cardinality_conflicts') % (capsule['predicate']['type'], capsule['subject']['label'])
+
+        response = self._submit_query(query)
+
+        if response[0] != {}:
+            response = [{'date': elem['date']['value'].split('/')[-1], 'authorlabel': elem['authorlabel']['value'], 'oname': elem['oname']['value']} for elem in response]
+
+        return response
 
     def get_negation_conflicts_with_statement(self, capsule):
         # Case fold
         capsule = casefold_capsule(capsule)
 
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-            PREFIX prov: <http://www.w3.org/ns/prov#>
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-
-            select ?pred ?authorlabel ?date
-            where { 
-                GRAPH ?g {
-                    ?s ?pred ?o .
-                } .
-
-                ?s rdfs:label '%s' .
-                ?o rdfs:label '%s' .
-                VALUES (?pred) { (n2mu:%s-not) (n2mu:%s) } .
-
-                ?g grasp:denotedBy ?m . 
-
-                ?m prov:wasDerivedFrom ?chat .
-                ?chat rdf:type grasp:Chat .
-                ?chat sem:hasTime ?date .
-
-                ?m grasp:wasAttributedTo ?author . 
-                ?author rdfs:label ?authorlabel .
-            }
-        """ % (capsule['subject']['label'], capsule['object']['label'],
+        query = read_query('negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
                capsule['predicate']['type'], capsule['predicate']['type'])
 
         response = self._submit_query(query)
 
-        conflict = {'capsule': capsule, 'positive': {}, 'negative': {}}
+        conflict = {'positive': {}, 'negative': {}}
 
         for item in response:
             item['authorlabel'] = item['authorlabel']['value']
@@ -815,6 +844,8 @@ class LongTermMemory(object):
 
         perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
 
+        return instance
+
     ######################################### Helpers for question processing #########################################
 
     def _create_query(self, parsed_question):
@@ -899,42 +930,3 @@ class LongTermMemory(object):
 
         return response["results"]["bindings"]
 
-    ######################################### Helpers for conflict processing #########################################
-    def _get_conflicts_with_one_to_one_predicate(self, one_to_one_predicate):
-        query = """
-            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-
-            select ?sname 
-                    (group_concat(?oname ; separator=";") as ?onames) 
-                    (group_concat(?authorlabel ; separator=";") as ?authorlabels) 
-            where { 
-                GRAPH ?g {
-                    ?s n2mu:%s ?o .
-                    } .
-                ?s rdfs:label ?sname .
-                ?o rdfs:label ?oname .
-
-                ?g grasp:denotedBy ?m . 
-                ?m grasp:wasAttributedTo ?author . 
-                ?author rdfs:label ?authorlabel .
-
-            } group by ?sname having (count(distinct ?oname) > 1)
-        """ % one_to_one_predicate
-
-        response = self._submit_query(query)
-        conflicts = []
-        for item in response:
-            conflict = {'subject': item['sname']['value'], 'predicate': one_to_one_predicate, 'objects': []}
-
-            values = item['onames']['value'].split(';')
-            authors = item['authorlabels']['value'].split(';')
-
-            for val, auth in zip(values, authors):
-                option = {'value': val, 'author': auth}
-                conflict['objects'].append(option)
-
-            conflicts.append(conflict)
-
-        return conflicts
