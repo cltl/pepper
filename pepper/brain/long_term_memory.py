@@ -6,12 +6,13 @@ from iribaker import to_iri
 from SPARQLWrapper import SPARQLWrapper, JSON
 from fuzzywuzzy import process
 
+from datetime import datetime
 import requests
 
 
 class LongTermMemory(object):
 
-    ONE_TO_ONE_PREDICATES = [
+    _ONE_TO_ONE_PREDICATES = [
         'age',
         'born_in',
         'faceID',
@@ -70,13 +71,15 @@ class LongTermMemory(object):
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
+        self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
+
     #################################### Main functions to interact with the brain ####################################
 
     def update(self, capsule):
         """
-        Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
-        transforms them to triples, and posts them to the triple store
-        :param statement: Structured data of a parsed statement
+        Main function to interact with if a statement is coming into the brain. Takes in a structured capsule containing
+        a parsed statement, transforms them to triples, and posts them to the triple store
+        :param capsule: Structured data of a parsed statement
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Case fold
@@ -84,9 +87,7 @@ class LongTermMemory(object):
 
         # Create graphs and triples
         self._model_graphs_(capsule)
-
-        data = self._serialize(config.BRAIN_LOG)
-
+        data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
         # Create JSON output
@@ -97,9 +98,9 @@ class LongTermMemory(object):
 
     def experience(self, capsule):
         """
-        Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
-        transforms them to triples, and posts them to the triple store
-        :param capsule: Structured data of a parsed statement
+        Main function to interact with if an experience is coming into the brain. Takes in a structured capsule
+        containing parsed experience, transforms them to triples, and posts them to the triple store
+        :param capsule: Structured data of a parsed experience
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Case fold
@@ -107,9 +108,7 @@ class LongTermMemory(object):
 
         # Create graphs and triples
         self._model_graphs_(capsule, type='Experience')
-
-        data = self._serialize(config.BRAIN_LOG)
-
+        data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
         # Create JSON output
@@ -149,21 +148,21 @@ class LongTermMemory(object):
         """
 
         if casefold(item) in self.get_classes():
-            # If this is in the ontology already, create sensor triples directly
+            # If this is in the ontology already as a class, create sensor triples directly
             text = 'I know about %s. I will remember this object' % item
             return item, text
 
         temp = self.get_labels_and_classes()
         if casefold(item) in temp.keys():
-            # If this is in the ontology already, create sensor triples directly
-            text = 'I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
+            # If this is in the ontology already as a label, create sensor triples directly
+            text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
             return item, text
 
         # Query the web for information
         class_type, description = self.exact_match_dbpedia(item)
         if class_type is not None:
             # Had to learn it, but I can create triples now
-            text = 'I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
+            text = ' I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
                    'I will remember this object' % (item, class_type)
             return casefold(class_type), text
 
@@ -172,12 +171,12 @@ class LongTermMemory(object):
             class_type, description = self.keyword_match_dbpedia(item)
             if class_type is not None:
                 # Had to really search for it to learn it, but I can create triples now
-                text = 'I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
+                text = ' I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
                        'is a %s. I will remember this object' % (item, class_type)
                 return casefold(class_type), text
 
         # Failure, nothing found
-        text = 'I am sorry, I could not learn anything on %s so I will not remember it' % item
+        text = ' I am sorry, I could not learn anything on %s so I will not remember it' % item
         return None, text
 
     ########## management system for keeping track of chats and turns ##########
@@ -320,10 +319,60 @@ class LongTermMemory(object):
         :return:
         """
         conflicts = []
-        for predicate in self.ONE_TO_ONE_PREDICATES:
-            conflicts.extend(self._get_conflicts_with_predicate(predicate))
+        for predicate in self._ONE_TO_ONE_PREDICATES:
+            conflicts.extend(self._get_conflicts_with_one_to_one_predicate(predicate))
 
         return conflicts
+
+    def get_negation_conflicts_with_statement(self, capsule):
+        # Case fold
+        capsule = casefold_capsule(capsule)
+
+        query = """
+            PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+            select ?pred ?authorlabel ?date
+            where { 
+                GRAPH ?g {
+                    ?s ?pred ?o .
+                } .
+
+                ?s rdfs:label '%s' .
+                ?o rdfs:label '%s' .
+                VALUES (?pred) { (n2mu:%s-not) (n2mu:%s) } .
+
+                ?g grasp:denotedBy ?m . 
+
+                ?m prov:wasDerivedFrom ?chat .
+                ?chat rdf:type grasp:Chat .
+                ?chat sem:hasTime ?date .
+
+                ?m grasp:wasAttributedTo ?author . 
+                ?author rdfs:label ?authorlabel .
+            }
+        """ % (capsule['subject']['label'], capsule['object']['label'],
+               capsule['predicate']['type'], capsule['predicate']['type'])
+
+        response = self._submit_query(query)
+
+        conflict = {'capsule': capsule, 'positive': {}, 'negative': {}}
+
+        for item in response:
+            item['authorlabel'] = item['authorlabel']['value']
+            item['date'] = item['date']['value'].split('/')[-1]
+            item['pred'] = item['pred']['value'].split('/')[-1]
+
+            if item['pred'].split('-')[-1] == 'not':
+                conflict['negative'] = item
+            else:
+                conflict['positive'] = item
+
+        return conflict
 
     ########## semantic web ##########
     def exact_match_dbpedia(self, item):
@@ -851,7 +900,7 @@ class LongTermMemory(object):
         return response["results"]["bindings"]
 
     ######################################### Helpers for conflict processing #########################################
-    def _get_conflicts_with_predicate(self, one_to_one_predicate):
+    def _get_conflicts_with_one_to_one_predicate(self, one_to_one_predicate):
         query = """
             PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

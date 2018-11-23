@@ -42,7 +42,7 @@ APPLICATION_LANGUAGE = 'en-GB'
 #       ...
 #       config.py            << this file >>
 #       log.txt              LOG
-#       brain_log.trig       BRAIN_LOG
+#       brain_log.trig       BRAIN_LOG_ROOT
 #       ...
 #   README.md               ReadMe File
 #   google_cloud_key.json   Google Cloud Key
@@ -79,7 +79,7 @@ KEY_WOLFRAM = os.path.join(os.path.dirname(__file__), '../tokens.json')
 LOG = LOGGING_FILE
 
 # Brain Logging
-BRAIN_LOG = os.path.join(PACKAGE_ROOT, "brain_log")
+BRAIN_LOG_ROOT = os.path.join(PACKAGE_ROOT, "../backups/brain/brain_log_{}")
 
 
 # Application URLs
