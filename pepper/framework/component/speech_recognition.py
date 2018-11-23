@@ -1,4 +1,4 @@
-from pepper.framework import AbstractComponent, Application
+from pepper.framework import AbstractComponent, AbstractApplication
 from pepper.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR
 from pepper import config
 
@@ -99,7 +99,7 @@ class SynchronousSpeechRecognitionComponent(SpeechRecognitionComponent):
 
 
 class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
-    _application = None  # type: Application
+    _application = None  # type: AbstractApplication
 
     def __init__(self, backend):
         """

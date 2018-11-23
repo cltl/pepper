@@ -105,21 +105,6 @@
 </ul>
 </li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.abstract.microphone module</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -195,25 +180,36 @@
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone">
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.microphone.</code><code class="descname">AbstractMicrophone</code><span class="sig-paren">(</span><em>rate</em>, <em>channels</em>, <em>callbacks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/microphone.html#AbstractMicrophone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract Microphone</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>rate: int</strong></dt>
+<dd></dd>
+<dt><strong>channels: int</strong></dt>
+<dd></dd>
+<dt><strong>callbacks: list of callable</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.callbacks" title="pepper.framework.abstract.microphone.AbstractMicrophone.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Get/Set <code class="xref py py-func docutils literal notranslate"><span class="pre">on_audio()</span></code> Callbacks</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.channels" title="pepper.framework.abstract.microphone.AbstractMicrophone.channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Audio channels</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.rate" title="pepper.framework.abstract.microphone.AbstractMicrophone.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Audio bit rate</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.running" title="pepper.framework.abstract.microphone.AbstractMicrophone.running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns whether Microphone is Running</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.true_rate" title="pepper.framework.abstract.microphone.AbstractMicrophone.true_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Actual Audio bit rate</p>
 </dd>
 </dl>
 </td>
@@ -228,7 +224,7 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.on_audio" title="pepper.framework.abstract.microphone.AbstractMicrophone.on_audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_audio</span></code></a>(audio)</td>
-<td>On Audio Event</td>
+<td>On Audio Event, Called for every frame of audio captured by Microphone</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.microphone.AbstractMicrophone.start" title="pepper.framework.abstract.microphone.AbstractMicrophone.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
 <td>Start Microphone Stream</td>
@@ -241,7 +237,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone.callbacks">
 <code class="descname">callbacks</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.callbacks" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Get/Set <code class="xref py py-func docutils literal notranslate"><span class="pre">on_audio()</span></code> Callbacks</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -258,7 +255,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone.channels">
 <code class="descname">channels</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.channels" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Audio channels</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -276,7 +274,8 @@
 <dl class="method">
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone.on_audio">
 <code class="descname">on_audio</code><span class="sig-paren">(</span><em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/microphone.html#AbstractMicrophone.on_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.on_audio" title="Permalink to this definition">¶</a></dt>
-<dd><p>On Audio Event</p>
+<dd><p>On Audio Event, Called for every frame of audio captured by Microphone</p>
+<p>Microphone Modules should call this function for every frame of audio acquired by Microphone</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -294,7 +293,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone.rate">
 <code class="descname">rate</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.rate" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Audio bit rate</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -312,7 +312,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone.running">
 <code class="descname">running</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.running" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Returns whether Microphone is Running</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -341,7 +342,9 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.microphone.AbstractMicrophone.true_rate">
 <code class="descname">true_rate</code><a class="headerlink" href="#pepper.framework.abstract.microphone.AbstractMicrophone.true_rate" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Actual Audio bit rate</p>
+<p>Audio bit rate after accounting for latency &amp; performance realities</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

@@ -2,7 +2,7 @@ from pepper.framework import *
 from pepper import config
 
 
-class VerboseApp(Application, StatisticsComponent, StreamingSpeechRecognitionComponent, ObjectDetectionComponent, FaceDetectionComponent):
+class VerboseApp(AbstractApplication, StatisticsComponent, StreamingSpeechRecognitionComponent, ObjectDetectionComponent, FaceDetectionComponent):
     def on_image(self, image):
         self.log.info("on_image: {}".format(image.shape))
 

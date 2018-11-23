@@ -8,17 +8,16 @@ class ComponentDependencyError(Exception):
 
 
 class AbstractComponent(object):
-    """Abstract Base Component on which all Components are Based"""
+    """
+    Abstract Base Component on which all Components are Based
+
+    Parameters
+    ----------
+    backend: AbstractBackend
+        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
+    """
 
     def __init__(self, backend):
-        """
-        Construct Component
-
-        Parameters
-        ----------
-        backend: AbstractBackend
-            Application Backend
-        """
         super(AbstractComponent, self).__init__()
 
         self._backend = backend

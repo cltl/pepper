@@ -134,6 +134,6 @@ def get_backend():
         from pepper.framework.backend.system import SystemBackend
         backend = SystemBackend()
     elif APPLICATION_BACKEND == ApplicationBackend.NAOQI:
-        from pepper.framework.backend.naoqi import NaoqiBackend
-        backend = NaoqiBackend()
+        from pepper.framework.backend.naoqi import NAOqiBackend
+        backend = NAOqiBackend()
     return backend

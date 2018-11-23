@@ -19,7 +19,7 @@ from random import choice
 from time import time, sleep
 
 
-class DefaultApp(Application,
+class DefaultApp(AbstractApplication,
                  StatisticsComponent,
                  BrainComponent,
                  ObjectDetectionComponent,
@@ -29,7 +29,7 @@ class DefaultApp(Application,
     pass
 
 
-class IdleIntention(Intention, DefaultApp):
+class IdleIntention(AbstractIntention, DefaultApp):
 
     GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120
@@ -65,7 +65,7 @@ class IdleIntention(Intention, DefaultApp):
                 return
 
 
-class IgnoreIntention(Intention, DefaultApp):
+class IgnoreIntention(AbstractIntention, DefaultApp):
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript.lower()
 
@@ -76,7 +76,7 @@ class IgnoreIntention(Intention, DefaultApp):
                 return
 
 
-class ConversationIntention(Intention, DefaultApp):
+class ConversationIntention(AbstractIntention, DefaultApp):
 
     _face_detection = None  # type: FaceDetectionComponent
     CONVERSATION_TIMEOUT = 15
@@ -331,7 +331,7 @@ class ConversationIntention(Intention, DefaultApp):
         IdleIntention(self.application)
 
 
-class MeetIntention(Intention, DefaultApp):
+class MeetIntention(AbstractIntention, DefaultApp):
 
     MEET_TIMEOUT = 30
     UTTERANCE_TIMEOUT = 15

@@ -1,21 +1,21 @@
-from pepper.framework.abstract import AbstractComponent, Application
+from pepper.framework.abstract import AbstractComponent, AbstractApplication
 from pepper.framework.abstract.component import ComponentDependencyError
 from pepper import logger
 
 
-class Intention(object):
+class AbstractIntention(object):
     """
     The Intention class is at the base of more involved robot applications.
-    They build on top of :class:`~Application` instances an allow for switching of robot contexts.
+    They build on top of :class:`~pepper.framework.abstract.application.AbstractApplication`
+    instances and allow for switching of robot contexts.
+
+    Parameters
+    ----------
+    application: AbstractApplication
+        :class:`~pepper.framework.abstract.application.AbstractApplication` to base Intention on
     """
 
     def __init__(self, application):
-        """
-        Parameters
-        ----------
-        application: Application
-            Application to base Intention on
-        """
         self._application = application
 
         # Reset Application Events to their default
@@ -46,11 +46,11 @@ class Intention(object):
     @property
     def application(self):
         """
-        :class:`~Application` Intention is based on
+        :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on
 
         Returns
         -------
-        application: Application
+        application: AbstractApplication
         """
         return self._application
 
@@ -65,14 +65,14 @@ class Intention(object):
         """
         for cls in self.__class__.mro():
             if issubclass(cls, AbstractComponent) and not cls == AbstractComponent and \
-                    not issubclass(cls, Application) and not issubclass(cls, Intention):
+                    not issubclass(cls, AbstractApplication) and not issubclass(cls, AbstractIntention):
                 yield cls
 
     def require_dependency(self, dependency):
         """
         Enforce Component Dependency
 
-        Checks whether Component is included in Application
+        Checks whether Component is included in :class:`~pepper.framework.abstract.application.AbstractApplication`
 
         Parameters
         ----------
@@ -90,7 +90,7 @@ class Intention(object):
                 self.__class__.__name__, dependency.__name__, self.application.__class__.__name__))
 
         for attribute in dir(dependency):
-            if attribute.startswith(Application._EVENT_TAG):
+            if attribute.startswith(AbstractApplication._EVENT_TAG):
                 self._application.__setattr__(attribute, self.__getattribute__(attribute))
 
         return self.application

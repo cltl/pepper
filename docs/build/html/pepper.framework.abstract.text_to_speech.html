@@ -105,21 +105,6 @@
 </ul>
 </li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.abstract.text_to_speech module</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -195,16 +180,24 @@
 <dt id="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech">
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.text_to_speech.</code><code class="descname">AbstractTextToSpeech</code><span class="sig-paren">(</span><em>language</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/text_to_speech.html#AbstractTextToSpeech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract Text To Speech</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>language: str</strong></dt>
+<dd><p class="first last">Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language"><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.talking" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.talking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">talking</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns whether system is currently producing speech</p>
 </dd>
 </dl>
 </td>
@@ -229,7 +222,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language">
 <code class="descname">language</code><a class="headerlink" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -248,6 +242,8 @@
 <dt id="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech">
 <code class="descname">on_text_to_speech</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/text_to_speech.html#AbstractTextToSpeech.on_text_to_speech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Say something through Text to Speech (Implementation)</p>
+<p>Text To Speech Modules should implement this function
+This function should block while speech is being produced</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -287,7 +283,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.talking">
 <code class="descname">talking</code><a class="headerlink" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.talking" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Returns whether system is currently producing speech</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

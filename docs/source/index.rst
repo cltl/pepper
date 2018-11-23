@@ -26,7 +26,9 @@ Repository
 Highlighted Modules
 ===================
 .. toctree::
+   :maxdepth: 2
    pepper.framework.abstract
+   pepper.framework.backend
    pepper.framework.component
 
 

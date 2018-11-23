@@ -2,18 +2,25 @@ from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech
 
 
 class AbstractBackend(object):
-    """Abstract Backend on which all Backends are based"""
+    """
+    Abstract Backend on which all Backends are based
+
+    Exposes
+    :class:`~pepper.framework.abstract.camera.AbstractCamera`,
+    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` and
+    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`.
+
+    Parameters
+    ----------
+    camera: AbstractCamera
+        Backend :class:`~pepper.framework.abstract.camera.AbstractCamera`
+    microphone: AbstractMicrophone
+        Backend :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`
+    text_to_speech: AbstractTextToSpeech
+        Backend :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`
+    """
 
     def __init__(self, camera, microphone, text_to_speech):
-        """
-        Backend Template
-
-        Parameters
-        ----------
-        camera: AbstractCamera
-        microphone: AbstractMicrophone
-        text_to_speech: AbstractTextToSpeech
-        """
         self._camera = camera
         self._microphone = microphone
         self._text_to_speech = text_to_speech

@@ -79,10 +79,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -147,7 +143,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.component.speech_recognition</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">Application</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractApplication</span>
 <span class="kn">from</span> <span class="nn">pepper.sensor</span> <span class="k">import</span> <span class="n">VAD</span><span class="p">,</span> <span class="n">SynchronousGoogleASR</span><span class="p">,</span> <span class="n">StreamedGoogleASR</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
 
@@ -248,7 +244,7 @@
 
 
 <div class="viewcode-block" id="StreamingSpeechRecognitionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent">[docs]</a><span class="k">class</span> <span class="nc">StreamingSpeechRecognitionComponent</span><span class="p">(</span><span class="n">SpeechRecognitionComponent</span><span class="p">):</span>
-    <span class="n">_application</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Application</span>
+    <span class="n">_application</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: AbstractApplication</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

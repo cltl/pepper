@@ -12,19 +12,17 @@ import numpy as np
 
 class AbstractCamera(object):
     """
-    Abstract Camera on which all Backend Cameras are based
+    Abstract Camera
+
+    Parameters
+    ----------
+    resolution: CameraResolution
+        :class:`~pepper.config.CameraResolution`
+    rate: int
+    callbacks: list of callable
     """
 
     def __init__(self, resolution, rate, callbacks):
-        """
-        Abstract Camera
-
-        Parameters
-        ----------
-        resolution: CameraResolution
-        rate: int
-        callbacks: list of callable
-        """
         self._resolution = resolution
         self._width = self._resolution.value[1]
         self._height = self._resolution.value[0]
@@ -169,6 +167,8 @@ class AbstractCamera(object):
     def on_image(self, image):
         """
         On Image Event, Called for every Image captured by Camera
+
+        Camera Modules should call this function for every frame acquired by the Camera
 
         Parameters
         ----------

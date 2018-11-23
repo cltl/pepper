@@ -101,10 +101,6 @@
 </ul>
 </li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -188,19 +184,19 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Get/Set <code class="xref py py-func docutils literal notranslate"><span class="pre">on_audio()</span></code> Callbacks</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Audio channels</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Audio bit rate</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns whether Microphone is Running</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Actual Audio bit rate</p>
 </dd>
 </dl>
 </td>
@@ -215,7 +211,7 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_audio</span></code>(audio)</td>
-<td>On Audio Event</td>
+<td>On Audio Event, Called for every frame of audio captured by Microphone</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code>()</td>
 <td>Start Microphone Stream</td>
