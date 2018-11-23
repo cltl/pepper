@@ -2,16 +2,25 @@ from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech
 
 
 class AbstractBackend(object):
-    def __init__(self, camera, microphone, text_to_speech):
-        """
-        Backend Template
+    """
+    Abstract Backend on which all Backends are based
 
-        Parameters
-        ----------
-        camera: AbstractCamera
-        microphone: AbstractMicrophone
-        text_to_speech: AbstractTextToSpeech
-        """
+    Exposes
+    :class:`~pepper.framework.abstract.camera.AbstractCamera`,
+    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` and
+    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`.
+
+    Parameters
+    ----------
+    camera: AbstractCamera
+        Backend :class:`~pepper.framework.abstract.camera.AbstractCamera`
+    microphone: AbstractMicrophone
+        Backend :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`
+    text_to_speech: AbstractTextToSpeech
+        Backend :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`
+    """
+
+    def __init__(self, camera, microphone, text_to_speech):
         self._camera = camera
         self._microphone = microphone
         self._text_to_speech = text_to_speech
@@ -19,6 +28,8 @@ class AbstractBackend(object):
     @property
     def camera(self):
         """
+        Reference to :class:`~pepper.framework.abstract.camera.AbstractCamera`
+
         Returns
         -------
         camera: AbstractCamera
@@ -28,6 +39,8 @@ class AbstractBackend(object):
     @property
     def microphone(self):
         """
+        Reference to :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`
+
         Returns
         -------
         microphone: AbstractMicrophone
@@ -37,6 +50,8 @@ class AbstractBackend(object):
     @property
     def text_to_speech(self):
         """
+        Reference to :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`
+
         Returns
         -------
         text_to_speech: AbstractTextToSpeech

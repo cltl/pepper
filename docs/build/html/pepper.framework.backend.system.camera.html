@@ -79,7 +79,6 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
@@ -91,7 +90,6 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
@@ -103,10 +101,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -191,31 +185,31 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Get/Set <code class="xref py py-func docutils literal notranslate"><span class="pre">on_image()</span></code> Callbacks</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image (Color) Channels</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Height</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Rate</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolution</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns whether Camera is Running</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Shape</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Actual Image Rate</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Width</p>
 </dd>
 </dl>
 </td>
@@ -230,7 +224,7 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_image</span></code>(image)</td>
-<td>On Image Event</td>
+<td>On Image Event, Called for every Image captured by Camera</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code>()</td>
 <td>Start Streaming Images from Camera</td>

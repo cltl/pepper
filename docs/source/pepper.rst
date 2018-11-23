@@ -9,7 +9,6 @@ pepper package
 
 .. toctree::
 
-    pepper.apps
     pepper.brain
     pepper.framework
     pepper.knowledge

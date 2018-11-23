@@ -16,6 +16,5 @@ pepper.framework package
 
 .. toctree::
 
-   pepper.framework.application
    pepper.framework.util
 

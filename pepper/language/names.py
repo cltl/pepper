@@ -1,14 +1,18 @@
 from pepper.sensor.asr import SynchronousGoogleASR, ASRHypothesis
-from pepper.language.ner import NER
+from pepper.language import NER
 from nltk.metrics.distance import edit_distance
 from concurrent import futures
 
 
 class NameParser:
     TAGS_OF_INTEREST = ['PERSON', 'LOCATION', 'ORGANISATION']
-    TAGGER = NER()
+
+    TAGGER = None  # type: NER
 
     def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2.5, min_alternatives=4):
+        if not NameParser.TAGGER:
+            NameParser.TAGGER = NER()
+
         self._names = names
         self._languages = languages
         self._asrs = [SynchronousGoogleASR(language) for language in languages]

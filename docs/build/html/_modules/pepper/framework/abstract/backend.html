@@ -80,7 +80,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -151,16 +152,25 @@
 
 
 <div class="viewcode-block" id="AbstractBackend"><a class="viewcode-back" href="../../../../pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend">[docs]</a><span class="k">class</span> <span class="nc">AbstractBackend</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">microphone</span><span class="p">,</span> <span class="n">text_to_speech</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Backend Template</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Backend on which all Backends are based</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        camera: AbstractCamera</span>
-<span class="sd">        microphone: AbstractMicrophone</span>
-<span class="sd">        text_to_speech: AbstractTextToSpeech</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Exposes</span>
+<span class="sd">    :class:`~pepper.framework.abstract.camera.AbstractCamera`,</span>
+<span class="sd">    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` and</span>
+<span class="sd">    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    camera: AbstractCamera</span>
+<span class="sd">        Backend :class:`~pepper.framework.abstract.camera.AbstractCamera`</span>
+<span class="sd">    microphone: AbstractMicrophone</span>
+<span class="sd">        Backend :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`</span>
+<span class="sd">    text_to_speech: AbstractTextToSpeech</span>
+<span class="sd">        Backend :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">microphone</span><span class="p">,</span> <span class="n">text_to_speech</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_camera</span> <span class="o">=</span> <span class="n">camera</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_microphone</span> <span class="o">=</span> <span class="n">microphone</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text_to_speech</span> <span class="o">=</span> <span class="n">text_to_speech</span>
@@ -168,6 +178,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">camera</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference to :class:`~pepper.framework.abstract.camera.AbstractCamera`</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        camera: AbstractCamera</span>
@@ -177,6 +189,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">microphone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference to :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        microphone: AbstractMicrophone</span>
@@ -186,6 +200,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">text_to_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference to :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        text_to_speech: AbstractTextToSpeech</span>

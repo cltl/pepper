@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.framework.component.face_detection module" href="pepper.framework.component.face_detection.html" /> 
+    <link rel="next" title="pepper.framework.component.brain module" href="pepper.framework.component.brain.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -79,22 +79,22 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.component package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.object_detection.html">pepper.framework.component.object_detection module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.speech_recognition.html">pepper.framework.component.speech_recognition module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.video_display.html">pepper.framework.component.video_display module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.video_writer.html">pepper.framework.component.video_writer module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
@@ -104,18 +104,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
-</ul>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">pepper.framework.component package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.object_detection.html">pepper.framework.component.object_detection module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.speech_recognition.html">pepper.framework.component.speech_recognition module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.video_display.html">pepper.framework.component.video_display module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.video_writer.html">pepper.framework.component.video_writer module</a></li>
 </ul>
 </li>
 </ul>
@@ -190,6 +178,9 @@
 <span id="pepper-framework-component-package"></span><h1>pepper.framework.component package<a class="headerlink" href="#module-pepper.framework.component" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a><ul class="simple">
 </ul>
 </li>
@@ -200,6 +191,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.video_display.html">pepper.framework.component.video_display module</a><ul class="simple">
@@ -220,7 +214,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.framework.component.face_detection.html" class="btn btn-neutral float-right" title="pepper.framework.component.face_detection module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.framework.component.brain.html" class="btn btn-neutral float-right" title="pepper.framework.component.brain module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

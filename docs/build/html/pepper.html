@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.apps package" href="pepper.apps.html" />
+    <link rel="next" title="pepper.brain package" href="pepper.brain.html" />
     <link rel="prev" title="CLTL Pepper/Nao Framework Documentation" href="index.html" /> 
 
   
@@ -80,7 +80,6 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pepper package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
@@ -91,10 +90,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -274,12 +269,6 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.apps.default.html">pepper.apps.default module</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.utils.base_cases.html">pepper.brain.utils.base_cases module</a></li>
@@ -297,11 +286,17 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a><ul class="simple">
@@ -340,6 +335,9 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a><ul class="simple">
 </ul>
 </li>
@@ -352,15 +350,15 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a><ul class="simple">
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.video_display.html">pepper.framework.component.video_display module</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.video_writer.html">pepper.framework.component.video_writer module</a><ul class="simple">
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a><ul class="simple">
@@ -436,7 +434,7 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.apps.html" class="btn btn-neutral float-right" title="pepper.apps package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.brain.html" class="btn btn-neutral float-right" title="pepper.brain package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="CLTL Pepper/Nao Framework Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

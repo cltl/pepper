@@ -5,14 +5,16 @@ from Queue import Queue
 
 
 class AbstractTextToSpeech(object):
-    def __init__(self, language):
-        """
-        Parameters
-        ----------
-        language: str
-            Language Code, See: https://cloud.google.com/speech/docs/languages
-        """
+    """
+    Abstract Text To Speech
 
+    Parameters
+    ----------
+    language: str
+        Language Code, See: https://cloud.google.com/speech/docs/languages
+    """
+
+    def __init__(self, language):
         self._language = language
 
         self._queue = Queue()
@@ -27,6 +29,8 @@ class AbstractTextToSpeech(object):
     @property
     def language(self):
         """
+        Language Code, See: https://cloud.google.com/speech/docs/languages
+
         Returns
         -------
         language: str
@@ -37,6 +41,8 @@ class AbstractTextToSpeech(object):
     @property
     def talking(self):
         """
+        Returns whether system is currently producing speech
+
         Returns
         -------
         talking: bool
@@ -60,6 +66,9 @@ class AbstractTextToSpeech(object):
     def on_text_to_speech(self, text, animation=None):
         """
         Say something through Text to Speech (Implementation)
+
+        Text To Speech Modules should implement this function
+        This function should block while speech is being produced
 
         Parameters
         ----------

@@ -80,7 +80,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -147,7 +148,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.application</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractBackend</span><span class="p">,</span> <span class="n">AbstractComponent</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains :class:`~Application` &amp; :class:`~Intention` classes for building Robot Applications</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractBackend</span><span class="p">,</span> <span class="n">AbstractComponent</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.abstract.component</span> <span class="k">import</span> <span class="n">ComponentDependencyError</span>
 <span class="kn">from</span> <span class="nn">pepper.brain</span> <span class="k">import</span> <span class="n">LongTermMemory</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
@@ -159,8 +164,8 @@
 <div class="viewcode-block" id="Application"><a class="viewcode-back" href="../../../pepper.framework.application.html#pepper.framework.application.Application">[docs]</a><span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Application class is at the base of every robot application.</span>
-<span class="sd">    It keeps track of events from different Components</span>
-<span class="sd">    and allows for Intentions to be build in top of it.</span>
+<span class="sd">    It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`</span>
+<span class="sd">    and allows for instances of :class:`~Intention` to be build in top of it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_EVENT_TAG</span> <span class="o">=</span> <span class="s1">&#39;on_&#39;</span>
@@ -199,7 +204,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Application Dependencies</span>
+<span class="sd">        Yields the Dependencies which are fulfilled by this Application</span>
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
@@ -230,13 +235,19 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        text: str</span>
-<span class="sd">            Text to Say through Text-to-Speech</span>
+<span class="sd">            Text to say through Text-to-Speech</span>
 <span class="sd">        animation: str or None</span>
-<span class="sd">            (Naoqi) Animation to Play</span>
+<span class="sd">            (Naoqi) Animation to play</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Acquire Microphone Lock</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span><span class="p">:</span>
+
+            <span class="c1"># Stop Microhpone if running</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+            <span class="c1"># Say Text through Text-to-Speech</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Application.run"><a class="viewcode-back" href="../../../pepper.framework.application.html#pepper.framework.application.Application.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -249,13 +260,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+            <span class="c1"># Acquire Microphone Lock</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span><span class="p">:</span>
+
+                <span class="c1"># If talking is over &amp; microhpone is not yet running -&gt; Start Microphone</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">talking</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_reset_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reset Events Callbacks to their (unimplemented) Defaults&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Reset Events Callbacks to their (unimplemented) defaults&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_function</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">event_function</span><span class="p">)</span></div>
 
@@ -263,7 +278,7 @@
 <div class="viewcode-block" id="Intention"><a class="viewcode-back" href="../../../pepper.framework.application.html#pepper.framework.application.Intention">[docs]</a><span class="k">class</span> <span class="nc">Intention</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Intention class is at the base of more involved robot applications.</span>
-<span class="sd">    They build on top of applications an allow for switching of robot contexts.</span>
+<span class="sd">    They build on top of :class:`~Application` instances an allow for switching of robot contexts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
@@ -289,7 +304,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Intention Loggeer</span>
+<span class="sd">        Intention Logger</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -300,7 +315,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Application Intention is based on</span>
+<span class="sd">        :class:`~Application` Intention is based on</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -337,7 +352,9 @@
 
 <div class="viewcode-block" id="Intention.require_dependency"><a class="viewcode-back" href="../../../pepper.framework.application.html#pepper.framework.application.Intention.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Require Component Dependency</span>
+<span class="sd">        Enforce Component Dependency</span>
+
+<span class="sd">        Checks whether Component is included in Application</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

@@ -6,7 +6,12 @@ from Queue import Queue
 from threading import Thread
 
 
-class FaceDetection(AbstractComponent):
+class FaceDetectionComponent(AbstractComponent):
+    """
+    Perform Face Detection using :class:`~pepper.sensor.face.OpenFace` and :class:`~pepper.sensor.face.FaceClassifier`
+    on every :class:`~pepper.framework.abstract.camera.AbstractCamera` on_image event.
+    """
+
     def __init__(self, backend):
         """
         Construct Face Detection Component
@@ -15,7 +20,7 @@ class FaceDetection(AbstractComponent):
         ----------
         backend: AbstractBackend
         """
-        super(FaceDetection, self).__init__(backend)
+        super(FaceDetectionComponent, self).__init__(backend)
 
         self.on_face_callbacks = []
         self.on_person_callbacks = []

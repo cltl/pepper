@@ -1,10 +1,10 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.component.speech_recognition import SpeechRecognition
+from pepper.framework.component.speech_recognition import SpeechRecognitionComponent
 from threading import Thread
 from time import sleep
 
 
-class Statistics(AbstractComponent):
+class StatisticsComponent(AbstractComponent):
     def __init__(self, backend):
         """
         Construct Statistics Component
@@ -13,9 +13,9 @@ class Statistics(AbstractComponent):
         ----------
         backend: Backend
         """
-        super(Statistics, self).__init__(backend)
+        super(StatisticsComponent, self).__init__(backend)
 
-        speech_recognition = self.require_dependency(Statistics, SpeechRecognition)  # type: SpeechRecognition
+        speech_recognition = self.require_dependency(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
 
         def worker():
             vad = speech_recognition.vad
