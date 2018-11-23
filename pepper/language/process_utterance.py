@@ -1,5 +1,4 @@
 from pepper import logger
-
 from .analyzers import *
 
 

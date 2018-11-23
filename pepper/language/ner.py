@@ -15,7 +15,7 @@ class NER(object):
     ROOT = os.path.join(os.path.dirname(__file__), 'stanford-ner')
     IP = 'localhost'
 
-    def __init__(self, classifier = 'english.all.3class.distsim.crf.ser'):
+    def __init__(self, classifier='english.all.3class.distsim.crf.ser'):
         self._log = logger.getChild(self.__class__.__name__)
         self._port = self._find_free_port()
 

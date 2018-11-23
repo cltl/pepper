@@ -1,3 +1,4 @@
+from pepper.language import NER
 from pepper.language.ner import NER
 
 from random import getrandbits
@@ -236,7 +237,7 @@ class Analyzer(object):
         GRAMMAR = json.load(json_file)['grammar']
 
     # Load Stanford Named Entity Recognition Server
-    STANFORD_NER = NER('english.muc.7class.distsim.crf.ser')
+    NER = None  # type: NER
 
     def __init__(self, chat):
         """
@@ -247,6 +248,9 @@ class Analyzer(object):
         chat: Chat
             Chat to be analyzed
         """
+
+        if not Analyzer.NER:
+            Analyzer.NER = NER('english.muc.7class.distsim.crf.ser')
 
         self._chat = chat
         self._log = logging.getLogger(self.__class__.__name__)
