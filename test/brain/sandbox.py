@@ -31,14 +31,14 @@ capsule_sees = {  # lenka saw a dog
 
 capsule_serbia = {  # lenka is from Serbia
         "subject": {
-            "label": "lenka",
+            "label": "bram",
             "type": "person"
         },
         "predicate": {
             "type": "is_from"
         },
         "object": {
-            "label": "italy",
+            "label": "mongolia",
             "type": "location"
         },
         "author": "selene",
@@ -55,6 +55,8 @@ print(phrase_negation_conflicts(x['negation_conflicts'], capsule_serbia))
 print(phrase_statement_novelty(x['statement_novelty']))
 print(phrase_type_novelty(x['entity_novelty'], capsule_serbia))
 
+
+print('\n\n')
 print(phrase_update(x))
 
 

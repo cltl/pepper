@@ -91,7 +91,7 @@ def phrase_negation_conflicts(conflict, capsule):
 
 def phrase_statement_novelty(novelty):
     # I do not know this before
-    if novelty == []:
+    if novelty[0] == {}:
         say = random.choice(NEW_KNOWLEDGE)
 
     # I already knew this
