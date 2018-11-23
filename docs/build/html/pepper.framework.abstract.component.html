@@ -191,7 +191,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.backend" title="pepper.framework.abstract.component.AbstractComponent.backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></a></dt>
-<dd><p class="first last">Application Backend</p>
+<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.log" title="pepper.framework.abstract.component.AbstractComponent.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
 <dd><p class="first last">Component Logger</p>
@@ -209,14 +209,14 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.require_dependency" title="pepper.framework.abstract.component.AbstractComponent.require_dependency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code></a>(cls,&nbsp;dependency)</td>
-<td>Specify Component requirement</td>
+<td>Enforce Component Dependency</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="pepper.framework.abstract.component.AbstractComponent.backend">
 <code class="descname">backend</code><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.backend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Application Backend</p>
+<dd><p>Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -252,17 +252,18 @@
 <dl class="method">
 <dt id="pepper.framework.abstract.component.AbstractComponent.require_dependency">
 <code class="descname">require_dependency</code><span class="sig-paren">(</span><em>cls</em>, <em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#AbstractComponent.require_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.require_dependency" title="Permalink to this definition">¶</a></dt>
-<dd><p>Specify Component requirement</p>
+<dd><p>Enforce Component Dependency</p>
+<p>Checks whether Dependency Component is present Dependent Component in mro</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>cls: type</strong></dt>
-<dd><p class="first last">Component Type requiring dependency</p>
+<dd><p class="first last">Dependent: Component Type requiring dependency</p>
 </dd>
 <dt><strong>dependency: type</strong></dt>
-<dd><p class="first last">Component Type being dependency</p>
+<dd><p class="first last">Dependency: Component Type being dependency</p>
 </dd>
 </dl>
 </td>

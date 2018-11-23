@@ -185,37 +185,38 @@
 <dt id="pepper.framework.abstract.camera.AbstractCamera">
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractCamera</code><span class="sig-paren">(</span><em>resolution</em>, <em>rate</em>, <em>callbacks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract Camera on which all Backend Cameras are based</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.callbacks" title="pepper.framework.abstract.camera.AbstractCamera.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Get/Set <a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="pepper.framework.abstract.camera.AbstractCamera.on_image"><code class="xref py py-func docutils literal notranslate"><span class="pre">on_image()</span></code></a> Callbacks</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.channels" title="pepper.framework.abstract.camera.AbstractCamera.channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image (Color) Channels</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.height" title="pepper.framework.abstract.camera.AbstractCamera.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Height</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.rate" title="pepper.framework.abstract.camera.AbstractCamera.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Rate</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.resolution" title="pepper.framework.abstract.camera.AbstractCamera.resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolution</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.running" title="pepper.framework.abstract.camera.AbstractCamera.running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Returns whether Camera is Running</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.shape" title="pepper.framework.abstract.camera.AbstractCamera.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Shape</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.true_rate" title="pepper.framework.abstract.camera.AbstractCamera.true_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Actual Image Rate</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.width" title="pepper.framework.abstract.camera.AbstractCamera.width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Image Width</p>
 </dd>
 </dl>
 </td>
@@ -230,7 +231,7 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="pepper.framework.abstract.camera.AbstractCamera.on_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_image</span></code></a>(image)</td>
-<td>On Image Event</td>
+<td>On Image Event, Called for every Image captured by Camera</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.start" title="pepper.framework.abstract.camera.AbstractCamera.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
 <td>Start Streaming Images from Camera</td>
@@ -243,7 +244,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.callbacks">
 <code class="descname">callbacks</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.callbacks" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Get/Set <a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="pepper.framework.abstract.camera.AbstractCamera.on_image"><code class="xref py py-func docutils literal notranslate"><span class="pre">on_image()</span></code></a> Callbacks</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -261,13 +263,14 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.channels">
 <code class="descname">channels</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.channels" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Image (Color) Channels</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>channels: int</strong></dt>
-<dd><p class="first last">Image channels</p>
+<dd><p class="first last">Image (Color) channels</p>
 </dd>
 </dl>
 </td>
@@ -279,7 +282,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.height">
 <code class="descname">height</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.height" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Image Height</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -297,7 +301,7 @@
 <dl class="method">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.on_image">
 <code class="descname">on_image</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.on_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>On Image Event</p>
+<dd><p>On Image Event, Called for every Image captured by Camera</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -315,7 +319,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.rate">
 <code class="descname">rate</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.rate" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Image Rate</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -333,7 +338,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.resolution">
 <code class="descname">resolution</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.resolution" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -350,7 +356,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.running">
 <code class="descname">running</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.running" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Returns whether Camera is Running</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -367,13 +374,15 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.shape">
 <code class="descname">shape</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.shape" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Image Shape</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>shape: np.ndarray</strong></dt>
-<dd></dd>
+<dd><p class="first last">Image Shape</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -396,7 +405,9 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.true_rate">
 <code class="descname">true_rate</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.true_rate" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Actual Image Rate</p>
+<p>Image rate after accounting for latency &amp; performance realities</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -414,7 +425,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractCamera.width">
 <code class="descname">width</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.width" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Image Width</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

@@ -6,7 +6,7 @@ from threading import Thread
 from Queue import Queue
 
 
-class ObjectDetection(AbstractComponent):
+class ObjectDetectionComponent(AbstractComponent):
     def __init__(self, backend):
         """
         Construct Object Detection Component
@@ -15,7 +15,7 @@ class ObjectDetection(AbstractComponent):
         ----------
         backend: AbstractBackend
         """
-        super(ObjectDetection, self).__init__(backend)
+        super(ObjectDetectionComponent, self).__init__(backend)
 
         # Callbacks
         self.on_image_callbacks = []

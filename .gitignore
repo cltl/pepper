@@ -7,6 +7,9 @@ tmp/
 google_cloud_key.json
 tokens.json
 
+log.txt
+*.trig
+
 pepper/.DS_Store
 .DS_Store
 venv/

@@ -192,8 +192,8 @@
   <div class="section" id="module-pepper.framework.component.object_detection">
 <span id="pepper-framework-component-object-detection-module"></span><h1>pepper.framework.component.object_detection module<a class="headerlink" href="#module-pepper.framework.component.object_detection" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.component.object_detection.ObjectDetection">
-<em class="property">class </em><code class="descclassname">pepper.framework.component.object_detection.</code><code class="descname">ObjectDetection</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/object_detection.html#ObjectDetection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.object_detection.ObjectDetection" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.object_detection.ObjectDetectionComponent">
+<em class="property">class </em><code class="descclassname">pepper.framework.component.object_detection.</code><code class="descname">ObjectDetectionComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/object_detection.html#ObjectDetectionComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.object_detection.ObjectDetectionComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -201,7 +201,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Application Backend</p>
+<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
 <dd><p class="first last">Component Logger</p>
@@ -218,20 +218,20 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.object_detection.ObjectDetection.on_image" title="pepper.framework.component.object_detection.ObjectDetection.on_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_image</span></code></a>(image)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.object_detection.ObjectDetectionComponent.on_image" title="pepper.framework.component.object_detection.ObjectDetectionComponent.on_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_image</span></code></a>(image)</td>
 <td>On Image Event.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.object_detection.ObjectDetection.on_object" title="pepper.framework.component.object_detection.ObjectDetection.on_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_object</span></code></a>(image,&nbsp;objects)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object" title="pepper.framework.component.object_detection.ObjectDetectionComponent.on_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_object</span></code></a>(image,&nbsp;objects)</td>
 <td>On Object Event.</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
-<td>Specify Component requirement</td>
+<td>Enforce Component Dependency</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pepper.framework.component.object_detection.ObjectDetection.on_image">
-<code class="descname">on_image</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/object_detection.html#ObjectDetection.on_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.object_detection.ObjectDetection.on_image" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.object_detection.ObjectDetectionComponent.on_image">
+<code class="descname">on_image</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/object_detection.html#ObjectDetectionComponent.on_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.object_detection.ObjectDetectionComponent.on_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Image Event. Called every time an image was taken by Backend</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -249,8 +249,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.component.object_detection.ObjectDetection.on_object">
-<code class="descname">on_object</code><span class="sig-paren">(</span><em>image</em>, <em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/object_detection.html#ObjectDetection.on_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.object_detection.ObjectDetection.on_object" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.object_detection.ObjectDetectionComponent.on_object">
+<code class="descname">on_object</code><span class="sig-paren">(</span><em>image</em>, <em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/object_detection.html#ObjectDetectionComponent.on_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Object Event. Called every time one or more objects are detected in a camera frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

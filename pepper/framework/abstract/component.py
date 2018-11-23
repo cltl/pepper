@@ -38,7 +38,7 @@ class AbstractComponent(object):
     @property
     def backend(self):
         """
-        Application Backend
+        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
 
         Returns
         -------
@@ -48,14 +48,16 @@ class AbstractComponent(object):
 
     def require_dependency(self, cls, dependency):
         """
-        Specify Component requirement
+        Enforce Component Dependency
+
+        Checks whether Dependency Component is present Dependent Component in mro
 
         Parameters
         ----------
         cls: type
-            Component Type requiring dependency
+            Dependent: Component Type requiring dependency
         dependency: type
-            Component Type being dependency
+            Dependency: Component Type being dependency
 
         Returns
         -------

@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -155,7 +155,7 @@
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
 
 
-<div class="viewcode-block" id="SpeechRecognition"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognition">[docs]</a><span class="k">class</span> <span class="nc">SpeechRecognition</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="SpeechRecognitionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognitionComponent">[docs]</a><span class="k">class</span> <span class="nc">SpeechRecognitionComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">asr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -174,7 +174,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-<div class="viewcode-block" id="SpeechRecognition.on_transcript"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognition.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+<div class="viewcode-block" id="SpeechRecognitionComponent.on_transcript"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.</span>
 
@@ -188,7 +188,7 @@
         <span class="k">pass</span></div></div>
 
 
-<div class="viewcode-block" id="SynchronousSpeechRecognition"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognition">[docs]</a><span class="k">class</span> <span class="nc">SynchronousSpeechRecognition</span><span class="p">(</span><span class="n">SpeechRecognition</span><span class="p">):</span>
+<div class="viewcode-block" id="SynchronousSpeechRecognitionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent">[docs]</a><span class="k">class</span> <span class="nc">SynchronousSpeechRecognitionComponent</span><span class="p">(</span><span class="n">SpeechRecognitionComponent</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Speech Recognition Component</span>
@@ -197,7 +197,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        backend: Backend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SynchronousSpeechRecognition</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SynchronousSpeechRecognitionComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">on_transcript_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_asr</span> <span class="o">=</span> <span class="n">SynchronousGoogleASR</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
@@ -233,7 +233,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vad</span>
 
-<div class="viewcode-block" id="SynchronousSpeechRecognition.on_transcript"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognition.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+<div class="viewcode-block" id="SynchronousSpeechRecognitionComponent.on_transcript"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.</span>
 
@@ -247,7 +247,7 @@
         <span class="k">pass</span></div></div>
 
 
-<div class="viewcode-block" id="StreamingSpeechRecognition"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognition">[docs]</a><span class="k">class</span> <span class="nc">StreamingSpeechRecognition</span><span class="p">(</span><span class="n">SpeechRecognition</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamingSpeechRecognitionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent">[docs]</a><span class="k">class</span> <span class="nc">StreamingSpeechRecognitionComponent</span><span class="p">(</span><span class="n">SpeechRecognitionComponent</span><span class="p">):</span>
     <span class="n">_application</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Application</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
@@ -258,7 +258,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        backend: Backend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">StreamingSpeechRecognition</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StreamingSpeechRecognitionComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">on_transcript_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_asr</span> <span class="o">=</span> <span class="n">StreamedGoogleASR</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
@@ -313,7 +313,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vad</span>
 
-<div class="viewcode-block" id="StreamingSpeechRecognition.on_transcript"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognition.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamingSpeechRecognitionComponent.on_transcript"><a class="viewcode-back" href="../../../../pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.on_transcript">[docs]</a>    <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.</span>
 

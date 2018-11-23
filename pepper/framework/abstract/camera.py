@@ -11,6 +11,10 @@ import numpy as np
 
 
 class AbstractCamera(object):
+    """
+    Abstract Camera on which all Backend Cameras are based
+    """
+
     def __init__(self, resolution, rate, callbacks):
         """
         Abstract Camera
@@ -46,6 +50,8 @@ class AbstractCamera(object):
     @property
     def resolution(self):
         """
+        Returns :class:`~pepper.config.CameraResolution`
+
         Returns
         -------
         resolution: CameraResolution
@@ -55,6 +61,8 @@ class AbstractCamera(object):
     @property
     def width(self):
         """
+        Image Width
+
         Returns
         -------
         width: int
@@ -65,6 +73,8 @@ class AbstractCamera(object):
     @property
     def height(self):
         """
+        Image Height
+
         Returns
         -------
         height: int
@@ -75,16 +85,20 @@ class AbstractCamera(object):
     @property
     def channels(self):
         """
+        Image (Color) Channels
+
         Returns
         -------
         channels: int
-            Image channels
+            Image (Color) channels
         """
         return 3
 
     @property
     def rate(self):
         """
+        Image Rate
+
         Returns
         -------
         rate: int
@@ -95,6 +109,10 @@ class AbstractCamera(object):
     @property
     def true_rate(self):
         """
+        Actual Image Rate
+
+        Image rate after accounting for latency & performance realities
+
         Returns
         -------
         true_rate: float
@@ -105,15 +123,20 @@ class AbstractCamera(object):
     @property
     def shape(self):
         """
+        Image Shape
+
         Returns
         -------
         shape: np.ndarray
+            Image Shape
         """
         return self._shape
 
     @property
     def callbacks(self):
         """
+        Get/Set :func:`~AbstractCamera.on_image` Callbacks
+
         Returns
         -------
         callbacks: list of callable
@@ -124,6 +147,8 @@ class AbstractCamera(object):
     @callbacks.setter
     def callbacks(self, value):
         """
+        Get/Set :func:`~AbstractCamera.on_image` Callbacks
+
         Parameters
         ----------
         value: list of callable
@@ -133,6 +158,8 @@ class AbstractCamera(object):
     @property
     def running(self):
         """
+        Returns whether Camera is Running
+
         Returns
         -------
         running: bool
@@ -141,7 +168,7 @@ class AbstractCamera(object):
 
     def on_image(self, image):
         """
-        On Image Event
+        On Image Event, Called for every Image captured by Camera
 
         Parameters
         ----------

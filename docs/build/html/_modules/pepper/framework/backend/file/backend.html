@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -228,7 +228,7 @@
     <span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="o">*</span>
     <span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemBackend</span>
 
-    <span class="k">class</span> <span class="nc">MyApp</span><span class="p">(</span><span class="n">Application</span><span class="p">,</span> <span class="n">VideoDisplay</span><span class="p">,</span> <span class="n">Statistics</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">,</span> <span class="n">SpeechRecognition</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">MyApp</span><span class="p">(</span><span class="n">Application</span><span class="p">,</span> <span class="n">VideoDisplayComponent</span><span class="p">,</span> <span class="n">StatisticsComponent</span><span class="p">,</span> <span class="n">ObjectDetectionComponent</span><span class="p">,</span> <span class="n">FaceDetectionComponent</span><span class="p">,</span> <span class="n">SpeechRecognition</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="c1"># backend = FileBackend(&quot;/Users/bram/Documents/pepper/data/video/Maker Faire 2017 Interview with DFRobot.mp4&quot;)</span>

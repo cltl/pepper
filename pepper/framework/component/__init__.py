@@ -1,6 +1,8 @@
-from .face_detection import FaceDetection
-from .object_detection import ObjectDetection
-from .speech_recognition import StreamingSpeechRecognition, SynchronousSpeechRecognition
-from .statistics import Statistics
-from .video_display import VideoDisplay
-from .video_writer import VideoWriter
+from .brain import BrainComponent
+from .face_detection import FaceDetectionComponent
+from .object_detection import ObjectDetectionComponent
+from .text_to_speech import TextToSpeechComponent
+from .speech_recognition import StreamingSpeechRecognitionComponent, SynchronousSpeechRecognitionComponent
+from .statistics import StatisticsComponent
+from .video_display import VideoDisplayComponent
+from .video_writer import VideoWriterComponent

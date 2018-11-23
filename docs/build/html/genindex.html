@@ -81,7 +81,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -237,20 +237,20 @@
 </li>
       <li><a href="pepper.knowledge.wolfram.html#pepper.knowledge.wolfram.Wolfram.API_SPOKEN">API_SPOKEN (pepper.knowledge.wolfram.Wolfram attribute)</a>
 </li>
-      <li><a href="pepper.framework.application.html#pepper.framework.application.Application">Application (class in pepper.framework.application)</a>
+      <li><a href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.Application">Application (class in pepper.framework.abstract.application)</a>
 </li>
-      <li><a href="pepper.framework.application.html#pepper.framework.application.Intention.application">application (pepper.framework.application.Intention attribute)</a>
+      <li><a href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention.application">application (pepper.framework.abstract.intention.Intention attribute)</a>
 </li>
       <li><a href="pepper.html#pepper.ApplicationBackend">ApplicationBackend (class in pepper)</a>
 </li>
       <li><a href="pepper.sensor.obj.html#pepper.sensor.obj.Bounds.area">area (pepper.sensor.obj.Bounds attribute)</a>
 </li>
-      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognition.asr">asr (pepper.framework.component.speech_recognition.SpeechRecognition attribute)</a>
+      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.asr">asr (pepper.framework.component.speech_recognition.SpeechRecognitionComponent attribute)</a>
 
       <ul>
-        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognition.asr">(pepper.framework.component.speech_recognition.StreamingSpeechRecognition attribute)</a>
+        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.asr">(pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent attribute)</a>
 </li>
-        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognition.asr">(pepper.framework.component.speech_recognition.SynchronousSpeechRecognition attribute)</a>
+        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent.asr">(pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent attribute)</a>
 </li>
       </ul></li>
       <li><a href="pepper.sensor.asr.html#pepper.sensor.asr.ASRHypothesis">ASRHypothesis (class in pepper.sensor.asr)</a>
@@ -277,7 +277,9 @@
         <li><a href="pepper.sensor.obj.html#pepper.sensor.obj.CocoObject.bounds">(pepper.sensor.obj.CocoObject attribute)</a>
 </li>
       </ul></li>
-      <li><a href="pepper.framework.application.html#pepper.framework.application.Application.brain">brain (pepper.framework.application.Application attribute)</a>
+      <li><a href="pepper.framework.component.brain.html#pepper.framework.component.brain.BrainComponent.brain">brain (pepper.framework.component.brain.BrainComponent attribute)</a>
+</li>
+      <li><a href="pepper.framework.component.brain.html#pepper.framework.component.brain.BrainComponent">BrainComponent (class in pepper.framework.component.brain)</a>
 </li>
       <li><a href="pepper.sensor.vad.html#pepper.sensor.vad.VAD.BUFFER_SIZE">BUFFER_SIZE (pepper.sensor.vad.VAD attribute)</a>
 </li>
@@ -367,10 +369,10 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pepper.framework.application.html#pepper.framework.application.Application.dependencies">dependencies (pepper.framework.application.Application attribute)</a>
+      <li><a href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.Application.dependencies">dependencies (pepper.framework.abstract.application.Application attribute)</a>
 
       <ul>
-        <li><a href="pepper.framework.application.html#pepper.framework.application.Intention.dependencies">(pepper.framework.application.Intention attribute)</a>
+        <li><a href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention.dependencies">(pepper.framework.abstract.intention.Intention attribute)</a>
 </li>
       </ul></li>
       <li><a href="pepper.html#pepper.NaoqiCameraIndex.DEPTH">DEPTH (pepper.NaoqiCameraIndex attribute)</a>
@@ -429,7 +431,7 @@
 </li>
       <li><a href="pepper.sensor.face.html#pepper.sensor.face.FaceClassifier">FaceClassifier (class in pepper.sensor.face)</a>
 </li>
-      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetection">FaceDetection (class in pepper.framework.component.face_detection)</a>
+      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent">FaceDetectionComponent (class in pepper.framework.component.face_detection)</a>
 </li>
       <li><a href="pepper.sensor.face.html#pepper.sensor.face.FaceStore">FaceStore (class in pepper.sensor.face)</a>
 </li>
@@ -545,7 +547,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pepper.framework.application.html#pepper.framework.application.Intention">Intention (class in pepper.framework.application)</a>
+      <li><a href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention">Intention (class in pepper.framework.abstract.intention)</a>
 </li>
       <li><a href="pepper.sensor.obj.html#pepper.sensor.obj.Bounds.intersection">intersection() (pepper.sensor.obj.Bounds method)</a>
 </li>
@@ -603,12 +605,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pepper.sensor.face.html#pepper.sensor.face.FaceStore.load_face">load_face() (pepper.sensor.face.FaceStore static method)</a>
 </li>
-      <li><a href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.log">log (pepper.framework.abstract.component.AbstractComponent attribute)</a>
+      <li><a href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.Application.log">log (pepper.framework.abstract.application.Application attribute)</a>
 
       <ul>
-        <li><a href="pepper.framework.application.html#pepper.framework.application.Application.log">(pepper.framework.application.Application attribute)</a>
+        <li><a href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.log">(pepper.framework.abstract.component.AbstractComponent attribute)</a>
 </li>
-        <li><a href="pepper.framework.application.html#pepper.framework.application.Intention.log">(pepper.framework.application.Intention attribute)</a>
+        <li><a href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention.log">(pepper.framework.abstract.intention.Intention attribute)</a>
 </li>
         <li><a href="pepper.language.language.html#pepper.language.language.Analyzer.log">(pepper.language.language.Analyzer attribute)</a>
 </li>
@@ -669,27 +671,27 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pepper.brain.short_term_memory.html#pepper.brain.short_term_memory.ShortTermMemory.object_seen">object_seen() (pepper.brain.short_term_memory.ShortTermMemory method)</a>
 </li>
-      <li><a href="pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetection">ObjectDetection (class in pepper.framework.component.object_detection)</a>
+      <li><a href="pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent">ObjectDetectionComponent (class in pepper.framework.component.object_detection)</a>
 </li>
       <li><a href="pepper.language.language.html#pepper.language.language.ObjectStatementAnalyzer">ObjectStatementAnalyzer (class in pepper.language.language)</a>
 </li>
       <li><a href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone.on_audio">on_audio() (pepper.framework.abstract.microphone.AbstractMicrophone method)</a>
 </li>
-      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetection.on_face">on_face() (pepper.framework.component.face_detection.FaceDetection method)</a>
+      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent.on_face">on_face() (pepper.framework.component.face_detection.FaceDetectionComponent method)</a>
 </li>
       <li><a href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera.on_image">on_image() (pepper.framework.abstract.camera.AbstractCamera method)</a>
 
       <ul>
-        <li><a href="pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetection.on_image">(pepper.framework.component.object_detection.ObjectDetection method)</a>
+        <li><a href="pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_image">(pepper.framework.component.object_detection.ObjectDetectionComponent method)</a>
 </li>
       </ul></li>
-      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetection.on_new_person">on_new_person() (pepper.framework.component.face_detection.FaceDetection method)</a>
+      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent.on_new_person">on_new_person() (pepper.framework.component.face_detection.FaceDetectionComponent method)</a>
 </li>
-      <li><a href="pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetection.on_object">on_object() (pepper.framework.component.object_detection.ObjectDetection method)</a>
+      <li><a href="pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object">on_object() (pepper.framework.component.object_detection.ObjectDetectionComponent method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetection.on_person">on_person() (pepper.framework.component.face_detection.FaceDetection method)</a>
+      <li><a href="pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent.on_person">on_person() (pepper.framework.component.face_detection.FaceDetectionComponent method)</a>
 </li>
       <li><a href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech">on_text_to_speech() (pepper.framework.abstract.text_to_speech.AbstractTextToSpeech method)</a>
 
@@ -697,12 +699,12 @@
         <li><a href="pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.on_text_to_speech">(pepper.framework.backend.system.text_to_speech.SystemTextToSpeech method)</a>
 </li>
       </ul></li>
-      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognition.on_transcript">on_transcript() (pepper.framework.component.speech_recognition.SpeechRecognition method)</a>
+      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript">on_transcript() (pepper.framework.component.speech_recognition.SpeechRecognitionComponent method)</a>
 
       <ul>
-        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognition.on_transcript">(pepper.framework.component.speech_recognition.StreamingSpeechRecognition method)</a>
+        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.on_transcript">(pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent method)</a>
 </li>
-        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognition.on_transcript">(pepper.framework.component.speech_recognition.SynchronousSpeechRecognition method)</a>
+        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent.on_transcript">(pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent method)</a>
 </li>
       </ul></li>
       <li><a href="pepper.sensor.vad.html#pepper.sensor.vad.VAD.on_utterance">on_utterance() (pepper.sensor.vad.VAD method)</a>
@@ -751,11 +753,15 @@
 </li>
       <li><a href="pepper.framework.abstract.html#module-pepper.framework.abstract">pepper.framework.abstract (module)</a>
 </li>
+      <li><a href="pepper.framework.abstract.application.html#module-pepper.framework.abstract.application">pepper.framework.abstract.application (module)</a>
+</li>
       <li><a href="pepper.framework.abstract.backend.html#module-pepper.framework.abstract.backend">pepper.framework.abstract.backend (module)</a>
 </li>
       <li><a href="pepper.framework.abstract.camera.html#module-pepper.framework.abstract.camera">pepper.framework.abstract.camera (module)</a>
 </li>
       <li><a href="pepper.framework.abstract.component.html#module-pepper.framework.abstract.component">pepper.framework.abstract.component (module)</a>
+</li>
+      <li><a href="pepper.framework.abstract.intention.html#module-pepper.framework.abstract.intention">pepper.framework.abstract.intention (module)</a>
 </li>
       <li><a href="pepper.framework.abstract.microphone.html#module-pepper.framework.abstract.microphone">pepper.framework.abstract.microphone (module)</a>
 </li>
@@ -781,15 +787,19 @@
 </li>
       <li><a href="pepper.framework.component.html#module-pepper.framework.component">pepper.framework.component (module)</a>
 </li>
+      <li><a href="pepper.framework.component.brain.html#module-pepper.framework.component.brain">pepper.framework.component.brain (module)</a>
+</li>
       <li><a href="pepper.framework.component.face_detection.html#module-pepper.framework.component.face_detection">pepper.framework.component.face_detection (module)</a>
 </li>
       <li><a href="pepper.framework.component.object_detection.html#module-pepper.framework.component.object_detection">pepper.framework.component.object_detection (module)</a>
 </li>
-      <li><a href="pepper.framework.component.speech_recognition.html#module-pepper.framework.component.speech_recognition">pepper.framework.component.speech_recognition (module)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pepper.framework.component.speech_recognition.html#module-pepper.framework.component.speech_recognition">pepper.framework.component.speech_recognition (module)</a>
+</li>
       <li><a href="pepper.framework.component.statistics.html#module-pepper.framework.component.statistics">pepper.framework.component.statistics (module)</a>
+</li>
+      <li><a href="pepper.framework.component.text_to_speech.html#module-pepper.framework.component.text_to_speech">pepper.framework.component.text_to_speech (module)</a>
 </li>
       <li><a href="pepper.framework.component.video_display.html#module-pepper.framework.component.video_display">pepper.framework.component.video_display (module)</a>
 </li>
@@ -944,7 +954,7 @@
       <li><a href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.require_dependency">require_dependency() (pepper.framework.abstract.component.AbstractComponent method)</a>
 
       <ul>
-        <li><a href="pepper.framework.application.html#pepper.framework.application.Intention.require_dependency">(pepper.framework.application.Intention method)</a>
+        <li><a href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.Intention.require_dependency">(pepper.framework.abstract.intention.Intention method)</a>
 </li>
       </ul></li>
       <li><a href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera.resolution">resolution (pepper.framework.abstract.camera.AbstractCamera attribute)</a>
@@ -953,7 +963,7 @@
 </li>
       <li><a href="pepper.language.ner.html#pepper.language.ner.NER.ROOT">ROOT (pepper.language.ner.NER attribute)</a>
 </li>
-      <li><a href="pepper.framework.application.html#pepper.framework.application.Application.run">run() (pepper.framework.application.Application method)</a>
+      <li><a href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.Application.run">run() (pepper.framework.abstract.application.Application method)</a>
 
       <ul>
         <li><a href="pepper.framework.backend.file.backend.html#pepper.framework.backend.file.backend.FileBackend.run">(pepper.framework.backend.file.backend.FileBackend method)</a>
@@ -976,9 +986,7 @@
       <li><a href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.say">say() (pepper.framework.abstract.text_to_speech.AbstractTextToSpeech method)</a>
 
       <ul>
-        <li><a href="pepper.framework.application.html#pepper.framework.application.Application.say">(pepper.framework.application.Application method)</a>
-</li>
-        <li><a href="pepper.framework.application.html#pepper.framework.application.Intention.say">(pepper.framework.application.Intention method)</a>
+        <li><a href="pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent.say">(pepper.framework.component.text_to_speech.TextToSpeechComponent method)</a>
 </li>
       </ul></li>
       <li><a href="pepper.sensor.obj.html#pepper.sensor.obj.Bounds.scaled">scaled() (pepper.sensor.obj.Bounds method)</a>
@@ -999,7 +1007,7 @@
         <li><a href="pepper.language.language.html#pepper.language.language.Utterance.speaker">(pepper.language.language.Utterance attribute)</a>
 </li>
       </ul></li>
-      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognition">SpeechRecognition (class in pepper.framework.component.speech_recognition)</a>
+      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognitionComponent">SpeechRecognitionComponent (class in pepper.framework.component.speech_recognition)</a>
 </li>
       <li><a href="pepper.language.language.html#pepper.language.language.Analyzer.STANFORD_NER">STANFORD_NER (pepper.language.language.Analyzer attribute)</a>
 </li>
@@ -1013,13 +1021,13 @@
         <li><a href="pepper.web.server.html#pepper.web.server.VideoFeedApplication.start">(pepper.web.server.VideoFeedApplication method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pepper.language.language.html#pepper.language.language.UtteranceType.STATEMENT">STATEMENT (pepper.language.language.UtteranceType attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pepper.language.language.html#pepper.language.language.StatementAnalyzer">StatementAnalyzer (class in pepper.language.language)</a>
 </li>
-      <li><a href="pepper.framework.component.statistics.html#pepper.framework.component.statistics.Statistics">Statistics (class in pepper.framework.component.statistics)</a>
+      <li><a href="pepper.framework.component.statistics.html#pepper.framework.component.statistics.StatisticsComponent">StatisticsComponent (class in pepper.framework.component.statistics)</a>
 </li>
       <li><a href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera.stop">stop() (pepper.framework.abstract.camera.AbstractCamera method)</a>
 
@@ -1035,7 +1043,7 @@
 </li>
       <li><a href="pepper.sensor.asr.html#pepper.sensor.asr.StreamedGoogleASR">StreamedGoogleASR (class in pepper.sensor.asr)</a>
 </li>
-      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognition">StreamingSpeechRecognition (class in pepper.framework.component.speech_recognition)</a>
+      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent">StreamingSpeechRecognitionComponent (class in pepper.framework.component.speech_recognition)</a>
 </li>
       <li><a href="pepper.framework.backend.file.backend.html#pepper.framework.backend.file.backend.FileBackend.streams">streams (pepper.framework.backend.file.backend.FileBackend attribute)</a>
 </li>
@@ -1043,7 +1051,7 @@
 </li>
       <li><a href="pepper.sensor.asr.html#pepper.sensor.asr.SynchronousGoogleASR">SynchronousGoogleASR (class in pepper.sensor.asr)</a>
 </li>
-      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognition">SynchronousSpeechRecognition (class in pepper.framework.component.speech_recognition)</a>
+      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent">SynchronousSpeechRecognitionComponent (class in pepper.framework.component.speech_recognition)</a>
 </li>
       <li><a href="pepper.html#pepper.ApplicationBackend.SYSTEM">SYSTEM (pepper.ApplicationBackend attribute)</a>
 </li>
@@ -1072,6 +1080,8 @@
       <li><a href="pepper.language.language.html#pepper.language.language.Analyzer.template">template (pepper.language.language.Analyzer attribute)</a>
 </li>
       <li><a href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend.text_to_speech">text_to_speech (pepper.framework.abstract.backend.AbstractBackend attribute)</a>
+</li>
+      <li><a href="pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent">TextToSpeechComponent (class in pepper.framework.component.text_to_speech)</a>
 </li>
       <li><a href="pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.TMP">TMP (pepper.framework.backend.system.text_to_speech.SystemTextToSpeech attribute)</a>
 </li>
@@ -1149,12 +1159,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pepper.sensor.vad.html#pepper.sensor.vad.VAD">VAD (class in pepper.sensor.vad)</a>
 </li>
-      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognition.vad">vad (pepper.framework.component.speech_recognition.SpeechRecognition attribute)</a>
+      <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.vad">vad (pepper.framework.component.speech_recognition.SpeechRecognitionComponent attribute)</a>
 
       <ul>
-        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognition.vad">(pepper.framework.component.speech_recognition.StreamingSpeechRecognition attribute)</a>
+        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.vad">(pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent attribute)</a>
 </li>
-        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognition.vad">(pepper.framework.component.speech_recognition.SynchronousSpeechRecognition attribute)</a>
+        <li><a href="pepper.framework.component.speech_recognition.html#pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent.vad">(pepper.framework.component.speech_recognition.SynchronousSpeechRecognitionComponent attribute)</a>
 </li>
         <li><a href="pepper.sensor.vad.html#pepper.sensor.vad.VAD.vad">(pepper.sensor.vad.VAD attribute)</a>
 </li>
@@ -1167,11 +1177,11 @@
 </li>
       <li><a href="pepper.html#pepper.CameraResolution.VGA4">VGA4 (pepper.CameraResolution attribute)</a>
 </li>
-      <li><a href="pepper.framework.component.video_display.html#pepper.framework.component.video_display.VideoDisplay">VideoDisplay (class in pepper.framework.component.video_display)</a>
+      <li><a href="pepper.framework.component.video_display.html#pepper.framework.component.video_display.VideoDisplayComponent">VideoDisplayComponent (class in pepper.framework.component.video_display)</a>
 </li>
       <li><a href="pepper.web.server.html#pepper.web.server.VideoFeedApplication">VideoFeedApplication (class in pepper.web.server)</a>
 </li>
-      <li><a href="pepper.framework.component.video_writer.html#pepper.framework.component.video_writer.VideoWriter">VideoWriter (class in pepper.framework.component.video_writer)</a>
+      <li><a href="pepper.framework.component.video_writer.html#pepper.framework.component.video_writer.VideoWriterComponent">VideoWriterComponent (class in pepper.framework.component.video_writer)</a>
 </li>
   </ul></td>
 </tr></table>

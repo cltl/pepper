@@ -6,7 +6,7 @@ from threading import Thread
 from Queue import Queue
 
 
-class SpeechRecognition(AbstractComponent):
+class SpeechRecognitionComponent(AbstractComponent):
     @property
     def asr(self):
         """
@@ -39,7 +39,7 @@ class SpeechRecognition(AbstractComponent):
         pass
 
 
-class SynchronousSpeechRecognition(SpeechRecognition):
+class SynchronousSpeechRecognitionComponent(SpeechRecognitionComponent):
     def __init__(self, backend):
         """
         Construct Speech Recognition Component
@@ -48,7 +48,7 @@ class SynchronousSpeechRecognition(SpeechRecognition):
         ----------
         backend: Backend
         """
-        super(SynchronousSpeechRecognition, self).__init__(backend)
+        super(SynchronousSpeechRecognitionComponent, self).__init__(backend)
 
         self.on_transcript_callbacks = []
         self._asr = SynchronousGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
@@ -98,7 +98,7 @@ class SynchronousSpeechRecognition(SpeechRecognition):
         pass
 
 
-class StreamingSpeechRecognition(SpeechRecognition):
+class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
     _application = None  # type: Application
 
     def __init__(self, backend):
@@ -109,7 +109,7 @@ class StreamingSpeechRecognition(SpeechRecognition):
         ----------
         backend: Backend
         """
-        super(StreamingSpeechRecognition, self).__init__(backend)
+        super(StreamingSpeechRecognitionComponent, self).__init__(backend)
 
         self.on_transcript_callbacks = []
         self._asr = StreamedGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)

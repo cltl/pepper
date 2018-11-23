@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -155,7 +155,7 @@
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
 
 
-<div class="viewcode-block" id="ObjectDetection"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetection">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetection</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectDetectionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Object Detection Component</span>
@@ -164,7 +164,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        backend: AbstractBackend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ObjectDetection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ObjectDetectionComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="c1"># Callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_image_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -213,7 +213,7 @@
         <span class="c1"># Add on_image to Camera Callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">on_image</span><span class="p">]</span>
 
-<div class="viewcode-block" id="ObjectDetection.on_image"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetection.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectDetectionComponent.on_image"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Image Event. Called every time an image was taken by Backend</span>
 
@@ -223,7 +223,7 @@
 <span class="sd">            Camera Frame</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="ObjectDetection.on_object"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetection.on_object">[docs]</a>    <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectDetectionComponent.on_object"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object">[docs]</a>    <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Object Event. Called every time one or more objects are detected in a camera frame.</span>
 

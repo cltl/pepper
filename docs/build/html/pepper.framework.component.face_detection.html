@@ -193,16 +193,18 @@
   <div class="section" id="module-pepper.framework.component.face_detection">
 <span id="pepper-framework-component-face-detection-module"></span><h1>pepper.framework.component.face_detection module<a class="headerlink" href="#module-pepper.framework.component.face_detection" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.component.face_detection.FaceDetection">
-<em class="property">class </em><code class="descclassname">pepper.framework.component.face_detection.</code><code class="descname">FaceDetection</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetection" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.face_detection.FaceDetectionComponent">
+<em class="property">class </em><code class="descclassname">pepper.framework.component.face_detection.</code><code class="descname">FaceDetectionComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetectionComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetectionComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
+<p>Perform Face Detection using <a class="reference internal" href="pepper.sensor.face.html#pepper.sensor.face.OpenFace" title="pepper.sensor.face.OpenFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenFace</span></code></a> and <a class="reference internal" href="pepper.sensor.face.html#pepper.sensor.face.FaceClassifier" title="pepper.sensor.face.FaceClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FaceClassifier</span></code></a>
+on every <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a> on_image event.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Application Backend</p>
+<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
 <dd><p class="first last">Component Logger</p>
@@ -219,23 +221,23 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.face_detection.FaceDetection.on_face" title="pepper.framework.component.face_detection.FaceDetection.on_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_face</span></code></a>(faces)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.face_detection.FaceDetectionComponent.on_face" title="pepper.framework.component.face_detection.FaceDetectionComponent.on_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_face</span></code></a>(faces)</td>
 <td>On Face Event.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.face_detection.FaceDetection.on_new_person" title="pepper.framework.component.face_detection.FaceDetection.on_new_person"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_new_person</span></code></a>(persons)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.face_detection.FaceDetectionComponent.on_new_person" title="pepper.framework.component.face_detection.FaceDetectionComponent.on_new_person"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_new_person</span></code></a>(persons)</td>
 <td>On New Person Event.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.face_detection.FaceDetection.on_person" title="pepper.framework.component.face_detection.FaceDetection.on_person"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_person</span></code></a>(persons)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.face_detection.FaceDetectionComponent.on_person" title="pepper.framework.component.face_detection.FaceDetectionComponent.on_person"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_person</span></code></a>(persons)</td>
 <td>On Person Event.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
-<td>Specify Component requirement</td>
+<td>Enforce Component Dependency</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pepper.framework.component.face_detection.FaceDetection.on_face">
-<code class="descname">on_face</code><span class="sig-paren">(</span><em>faces</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetection.on_face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetection.on_face" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.face_detection.FaceDetectionComponent.on_face">
+<code class="descname">on_face</code><span class="sig-paren">(</span><em>faces</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetectionComponent.on_face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetectionComponent.on_face" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Face Event. Called every time a face is detected.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -253,8 +255,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.component.face_detection.FaceDetection.on_new_person">
-<code class="descname">on_new_person</code><span class="sig-paren">(</span><em>persons</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetection.on_new_person"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetection.on_new_person" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.face_detection.FaceDetectionComponent.on_new_person">
+<code class="descname">on_new_person</code><span class="sig-paren">(</span><em>persons</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetectionComponent.on_new_person"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetectionComponent.on_new_person" title="Permalink to this definition">¶</a></dt>
 <dd><p>On New Person Event. Called every time an unknown face is detected.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -271,8 +273,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.component.face_detection.FaceDetection.on_person">
-<code class="descname">on_person</code><span class="sig-paren">(</span><em>persons</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetection.on_person"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetection.on_person" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.face_detection.FaceDetectionComponent.on_person">
+<code class="descname">on_person</code><span class="sig-paren">(</span><em>persons</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/face_detection.html#FaceDetectionComponent.on_person"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.face_detection.FaceDetectionComponent.on_person" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Person Event. Called every time a known face is detected.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

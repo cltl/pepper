@@ -192,8 +192,8 @@
   <div class="section" id="module-pepper.framework.component.video_writer">
 <span id="pepper-framework-component-video-writer-module"></span><h1>pepper.framework.component.video_writer module<a class="headerlink" href="#module-pepper.framework.component.video_writer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.component.video_writer.VideoWriter">
-<em class="property">class </em><code class="descclassname">pepper.framework.component.video_writer.</code><code class="descname">VideoWriter</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/video_writer.html#VideoWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.video_writer.VideoWriter" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.video_writer.VideoWriterComponent">
+<em class="property">class </em><code class="descclassname">pepper.framework.component.video_writer.</code><code class="descname">VideoWriterComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/video_writer.html#VideoWriterComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.video_writer.VideoWriterComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -201,7 +201,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Application Backend</p>
+<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
 <dd><p class="first last">Component Logger</p>
@@ -219,7 +219,7 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
-<td>Specify Component requirement</td>
+<td>Enforce Component Dependency</td>
 </tr>
 </tbody>
 </table>

@@ -26,7 +26,7 @@ Repository
 Highlighted Modules
 ===================
 .. toctree::
-   pepper.framework.application
+   pepper.framework.abstract
    pepper.framework.component
 
 

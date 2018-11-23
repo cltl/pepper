@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -148,12 +148,12 @@
             
   <h1>Source code for pepper.framework.component.statistics</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.component.speech_recognition</span> <span class="k">import</span> <span class="n">SpeechRecognition</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.component.speech_recognition</span> <span class="k">import</span> <span class="n">SpeechRecognitionComponent</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
 
 
-<div class="viewcode-block" id="Statistics"><a class="viewcode-back" href="../../../../pepper.framework.component.statistics.html#pepper.framework.component.statistics.Statistics">[docs]</a><span class="k">class</span> <span class="nc">Statistics</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="StatisticsComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.statistics.html#pepper.framework.component.statistics.StatisticsComponent">[docs]</a><span class="k">class</span> <span class="nc">StatisticsComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Statistics Component</span>
@@ -162,9 +162,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        backend: Backend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Statistics</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
-        <span class="n">speech_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">Statistics</span><span class="p">,</span> <span class="n">SpeechRecognition</span><span class="p">)</span>  <span class="c1"># type: SpeechRecognition</span>
+        <span class="n">speech_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="n">SpeechRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: SpeechRecognitionComponent</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
             <span class="n">vad</span> <span class="o">=</span> <span class="n">speech_recognition</span><span class="o">.</span><span class="n">vad</span>

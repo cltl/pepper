@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -187,7 +187,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">backend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Application Backend</span>
+<span class="sd">        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -197,14 +197,16 @@
 
 <div class="viewcode-block" id="AbstractComponent.require_dependency"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Specify Component requirement</span>
+<span class="sd">        Enforce Component Dependency</span>
+
+<span class="sd">        Checks whether Dependency Component is present Dependent Component in mro</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cls: type</span>
-<span class="sd">            Component Type requiring dependency</span>
+<span class="sd">            Dependent: Component Type requiring dependency</span>
 <span class="sd">        dependency: type</span>
-<span class="sd">            Component Type being dependency</span>
+<span class="sd">            Dependency: Component Type being dependency</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

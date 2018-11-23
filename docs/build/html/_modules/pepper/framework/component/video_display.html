@@ -80,7 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -148,7 +148,7 @@
             
   <h1>Source code for pepper.framework.component.video_display</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.component</span> <span class="k">import</span> <span class="n">ObjectDetection</span><span class="p">,</span> <span class="n">FaceDetection</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.component</span> <span class="k">import</span> <span class="n">ObjectDetectionComponent</span><span class="p">,</span> <span class="n">FaceDetectionComponent</span>
 <span class="kn">from</span> <span class="nn">pepper.web.server</span> <span class="k">import</span> <span class="n">VideoFeedApplication</span>
 <span class="kn">from</span> <span class="nn">pepper.util.image</span> <span class="k">import</span> <span class="n">ImageAnnotator</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Mailbox</span>
@@ -159,7 +159,7 @@
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
 
 
-<div class="viewcode-block" id="VideoDisplay"><a class="viewcode-back" href="../../../../pepper.framework.component.video_display.html#pepper.framework.component.video_display.VideoDisplay">[docs]</a><span class="k">class</span> <span class="nc">VideoDisplay</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoDisplayComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.video_display.html#pepper.framework.component.video_display.VideoDisplayComponent">[docs]</a><span class="k">class</span> <span class="nc">VideoDisplayComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct VideoDisplay Component</span>
@@ -168,7 +168,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        backend: Backend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">VideoDisplay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VideoDisplayComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="n">image_mailbox</span> <span class="o">=</span> <span class="n">Mailbox</span><span class="p">()</span>
         <span class="n">object_mailbox</span> <span class="o">=</span> <span class="n">Mailbox</span><span class="p">()</span>
@@ -176,10 +176,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">image</span><span class="p">:</span> <span class="n">image_mailbox</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
 
-        <span class="n">object_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">VideoDisplay</span><span class="p">,</span> <span class="n">ObjectDetection</span><span class="p">)</span>  <span class="c1"># type: ObjectDetection</span>
+        <span class="n">object_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">VideoDisplayComponent</span><span class="p">,</span> <span class="n">ObjectDetectionComponent</span><span class="p">)</span>  <span class="c1"># type: ObjectDetectionComponent</span>
         <span class="n">object_detection</span><span class="o">.</span><span class="n">on_object_callbacks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">:</span> <span class="n">object_mailbox</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)))</span>
 
-        <span class="n">face_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">VideoDisplay</span><span class="p">,</span> <span class="n">FaceDetection</span><span class="p">)</span>  <span class="c1"># type: FaceDetection</span>
+        <span class="n">face_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">VideoDisplayComponent</span><span class="p">,</span> <span class="n">FaceDetectionComponent</span><span class="p">)</span>  <span class="c1"># type: FaceDetectionComponent</span>
         <span class="n">face_detection</span><span class="o">.</span><span class="n">on_person_callbacks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">persons</span><span class="p">:</span> <span class="n">person_mailbox</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">persons</span><span class="p">))</span>
 
         <span class="n">webapp</span> <span class="o">=</span> <span class="n">VideoFeedApplication</span><span class="p">()</span>

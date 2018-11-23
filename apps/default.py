@@ -19,11 +19,17 @@ from random import choice
 from time import time, sleep
 
 
-class DefaultApp(Application, Statistics, ObjectDetection, FaceDetection, StreamingSpeechRecognition):
+class DefaultApp(Application,
+                 StatisticsComponent,
+                 BrainComponent,
+                 ObjectDetectionComponent,
+                 FaceDetectionComponent,
+                 StreamingSpeechRecognitionComponent,
+                 TextToSpeechComponent):
     pass
 
 
-class IdleIntention(Intention, FaceDetection, StreamingSpeechRecognition, ObjectDetection):
+class IdleIntention(Intention, DefaultApp):
 
     GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120
@@ -59,7 +65,7 @@ class IdleIntention(Intention, FaceDetection, StreamingSpeechRecognition, Object
                 return
 
 
-class IgnoreIntention(Intention, StreamingSpeechRecognition):
+class IgnoreIntention(Intention, DefaultApp):
     def on_transcript(self, hypotheses, audio):
         statement = hypotheses[0].transcript.lower()
 
@@ -70,9 +76,9 @@ class IgnoreIntention(Intention, StreamingSpeechRecognition):
                 return
 
 
-class ConversationIntention(Intention, ObjectDetection, FaceDetection, StreamingSpeechRecognition):
+class ConversationIntention(Intention, DefaultApp):
 
-    _face_detection = None  # type: FaceDetection
+    _face_detection = None  # type: FaceDetectionComponent
     CONVERSATION_TIMEOUT = 15
 
     def __init__(self, application, chat):
@@ -81,7 +87,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, Streaming
 
         Parameters
         ----------
-        application: Application
+        application: DefaultApp
         chat: Chat
         """
         super(ConversationIntention, self).__init__(application)
@@ -90,11 +96,20 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, Streaming
         self._last_seen = time()
         self._seen_objects = set()
 
-        self._face_detection = self.require_dependency(FaceDetection)
+        self._face_detection = self.require_dependency(FaceDetectionComponent)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
                  choice([animations.BOW, animations.FRIENDLY, animations.HI]))  # Greet Person
+
+    @property
+    def application(self):
+        """
+        Returns
+        -------
+        application: DefaultApp
+        """
+        return super(ConversationIntention, self).application
 
     @property
     def chat(self):
@@ -259,7 +274,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, Streaming
             objects = list(self._seen_objects)
 
             expression = classify_and_process_utterance(
-                question, self.chat.speaker, self.chat.id, self.chat.last_utterance.utterance_id.chat_turn, objects)
+                question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
 
             # Cancel if not a valid expression
             if not expression or 'utterance_type' not in expression:
@@ -316,7 +331,7 @@ class ConversationIntention(Intention, ObjectDetection, FaceDetection, Streaming
         IdleIntention(self.application)
 
 
-class MeetIntention(Intention, ObjectDetection, FaceDetection, StreamingSpeechRecognition):
+class MeetIntention(Intention, DefaultApp):
 
     MEET_TIMEOUT = 30
     UTTERANCE_TIMEOUT = 15
@@ -324,12 +339,12 @@ class MeetIntention(Intention, ObjectDetection, FaceDetection, StreamingSpeechRe
     MIN_SAMPLES = 30
     NAME_CONFIDENCE = 0.8
 
-    _face_detection = None  # type: FaceDetection
+    _face_detection = None  # type: FaceDetectionComponent
 
     def __init__(self, application):
         super(MeetIntention, self).__init__(application)
 
-        self._face_detection = self.require_dependency(FaceDetection)
+        self._face_detection = self.require_dependency(FaceDetectionComponent)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self._last_seen = time()
