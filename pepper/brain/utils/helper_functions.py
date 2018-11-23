@@ -109,10 +109,12 @@ def phrase_type_novelty(novelty, capsule):
     entity_role = random.choice(novelty.keys())
 
     if not novelty[entity_role]:
-        say = 'I have never heard about %s before! I am glad to have learned something new.' % capsule[entity_role]['label']
+        say = random.choice(NEW_KNOWLEDGE)
+        say += ' I have never heard about %s before!' % capsule[entity_role]['label']
 
     else:
-        say = 'I know about %s.' % capsule[entity_role]['label']
+        say = random.choice(EXISTING_KNWOLEDGE)
+        say += ' I know about %s.' % capsule[entity_role]['label']
 
     return say
 

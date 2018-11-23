@@ -260,7 +260,8 @@ JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is re
         "Why is an island like the letter T? They're both in the middle of water!",
         "Did you hear the one about the little mountain? It's hilarious!"]
 
-NEW_KNOWLEDGE = ["I did not know that!", "This is news to me.", "Interesting", "Exciting news!"]
+NEW_KNOWLEDGE = ["I did not know that!", "This is news to me.", "Interesting", "Exciting news!",
+                 "I just learned something", "I am glad to have learned something new."]
 
 EXISTING_KNWOLEDGE = ["This sounds familiar.", "That rings a bell.", "I have heard this before.", "I know."]
 
