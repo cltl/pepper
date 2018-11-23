@@ -9,6 +9,4 @@ This is the main repository for Pepper/Nao Applications created as part of the C
  - Knowledge Representation of Learned Facts through RDF Graph
  - Realtime visualisation in web browser (WIP)
 
-Check out our [WIKI](https://github.com/cltl/pepper/wiki) for more details:
-- Have a look at [How it works](https://github.com/cltl/pepper/wiki/How-it-works).
-- Check how to [Install the package](https://github.com/cltl/pepper/wiki/Installation)
+Check out our [WIKI](https://github.com/cltl/pepper/wiki) for information on [how it works](https://github.com/cltl/pepper/wiki/How-it-works) and [how to Install the package](https://github.com/cltl/pepper/wiki/Installation).
