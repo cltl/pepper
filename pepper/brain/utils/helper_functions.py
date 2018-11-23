@@ -115,3 +115,21 @@ def phrase_type_novelty(novelty, capsule):
         say = 'I know about %s.' % capsule[entity_role]['label']
 
     return say
+
+
+def phrase_update(update):
+    approach = random.choice(['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty'])
+
+    if approach == 'cardinality_conflicts':
+        say = phrase_cardinality_conflicts(update['cardinality_conflicts'], update['statement'])
+
+    elif approach == 'negation_conflicts':
+        say = phrase_negation_conflicts(update['negation_conflicts'], update['statement'])
+
+    elif approach == 'statement_novelty':
+        say = phrase_statement_novelty(update['statement_novelty'])
+
+    elif approach == 'entity_novelty':
+        say = phrase_type_novelty(update['entity_novelty'], update['statement'])
+
+    return say

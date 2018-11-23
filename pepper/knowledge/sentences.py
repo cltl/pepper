@@ -260,9 +260,9 @@ JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is re
         "Why is an island like the letter T? They're both in the middle of water!",
         "Did you hear the one about the little mountain? It's hilarious!"]
 
-NEW_KNOWLEDGE = ["I did not know that!",
-                 "This is news to me."]
+NEW_KNOWLEDGE = ["I did not know that!", "This is news to me.", "Interesting", "Exciting news!"]
 
 EXISTING_KNWOLEDGE = ["This sounds familiar.", "That rings a bell.", "I have heard this before.", "I know."]
 
-CONFLICTING_KNOWLEDGE = ["I am surprised.", "Really?"]
+CONFLICTING_KNOWLEDGE = ["I am surprised.", "Really?", "This seems hard to believe.", "Odd!", "Are you sure?",
+                         "I don't know what to make of this.", "Strange."]

@@ -73,6 +73,9 @@ class LongTermMemory(object):
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
 
+        # Launch first query
+        self.count_statements()
+
     #################################### Main functions to interact with the brain ####################################
 
     def update(self, capsule):
