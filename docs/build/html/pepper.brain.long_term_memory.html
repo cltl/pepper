@@ -79,7 +79,6 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.apps.html">pepper.apps package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.brain.long_term_memory module</a><ul class="simple">
@@ -99,7 +98,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -195,7 +194,7 @@
 <td>Query dbpedia for information on this item to get it’s semantic type and description.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.experience" title="pepper.brain.long_term_memory.LongTermMemory.experience"><code class="xref py py-obj docutils literal notranslate"><span class="pre">experience</span></code></a>(capsule)</td>
-<td>Main function to interact with if a statement is coming into the brain.</td>
+<td>Main function to interact with if an experience is coming into the brain.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts" title="pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_conflicts</span></code></a>()</td>
 <td>Aggregate all conflicts in brain :return:</td>
@@ -243,23 +242,21 @@
 </table>
 <table border="1" class="docutils">
 <colgroup>
-<col width="71%" />
-<col width="29%" />
+<col width="80%" />
+<col width="20%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><strong>create_turn_id</strong></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td><strong>keyword_match_dbpedia</strong></td>
+<tr class="row-even"><td><strong>get_negation_conflicts_with_statement</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>keyword_match_dbpedia</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.ONE_TO_ONE_PREDICATES">
-<code class="descname">ONE_TO_ONE_PREDICATES</code><em class="property"> = ['age', 'born_in', 'faceID', 'favorite', 'favorite_of', 'id', 'is_from', 'manufactured_in', 'mother_is', 'name']</em><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.ONE_TO_ONE_PREDICATES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.count_friends">
 <code class="descname">count_friends</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.count_friends"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.count_friends" title="Permalink to this definition">¶</a></dt>
@@ -299,9 +296,9 @@
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.experience">
 <code class="descname">experience</code><span class="sig-paren">(</span><em>capsule</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.experience"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.experience" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
-transforms them to triples, and posts them to the triple store
-:param capsule: Structured data of a parsed statement
+<dd><p>Main function to interact with if an experience is coming into the brain. Takes in a structured capsule
+containing parsed experience, transforms them to triples, and posts them to the triple store
+:param capsule: Structured data of a parsed experience
 :return: json response containing the status for posting the triples, and the original statement</p>
 </dd></dl>
 
@@ -364,6 +361,11 @@ transforms them to triples, and posts them to the triple store
 </dd></dl>
 
 <dl class="method">
+<dt id="pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts_with_statement">
+<code class="descname">get_negation_conflicts_with_statement</code><span class="sig-paren">(</span><em>capsule</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_negation_conflicts_with_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts_with_statement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.get_predicates">
 <code class="descname">get_predicates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_predicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_predicates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get predicates in social ontology
@@ -403,9 +405,9 @@ transforms it into a query, and queries the triple store for a response
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>capsule</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,
-transforms them to triples, and posts them to the triple store
-:param statement: Structured data of a parsed statement
+<dd><p>Main function to interact with if a statement is coming into the brain. Takes in a structured capsule containing
+a parsed statement, transforms them to triples, and posts them to the triple store
+:param capsule: Structured data of a parsed statement
 :return: json response containing the status for posting the triples, and the original statement</p>
 </dd></dl>
 

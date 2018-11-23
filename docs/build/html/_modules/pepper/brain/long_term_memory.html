@@ -155,12 +155,13 @@
 <span class="kn">from</span> <span class="nn">SPARQLWrapper</span> <span class="k">import</span> <span class="n">SPARQLWrapper</span><span class="p">,</span> <span class="n">JSON</span>
 <span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">process</span>
 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 
 <div class="viewcode-block" id="LongTermMemory"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory">[docs]</a><span class="k">class</span> <span class="nc">LongTermMemory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="n">ONE_TO_ONE_PREDICATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">_ONE_TO_ONE_PREDICATES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s1">&#39;age&#39;</span><span class="p">,</span>
         <span class="s1">&#39;born_in&#39;</span><span class="p">,</span>
         <span class="s1">&#39;faceID&#39;</span><span class="p">,</span>
@@ -219,13 +220,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">BRAIN_LOG_ROOT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">-%H-%M&#39;</span><span class="p">))</span>
+
     <span class="c1">#################################### Main functions to interact with the brain ####################################</span>
 
 <div class="viewcode-block" id="LongTermMemory.update"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,</span>
-<span class="sd">        transforms them to triples, and posts them to the triple store</span>
-<span class="sd">        :param statement: Structured data of a parsed statement</span>
+<span class="sd">        Main function to interact with if a statement is coming into the brain. Takes in a structured capsule containing</span>
+<span class="sd">        a parsed statement, transforms them to triples, and posts them to the triple store</span>
+<span class="sd">        :param capsule: Structured data of a parsed statement</span>
 <span class="sd">        :return: json response containing the status for posting the triples, and the original statement</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Case fold</span>
@@ -233,9 +236,7 @@
 
         <span class="c1"># Create graphs and triples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
-
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_LOG</span><span class="p">)</span>
-
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_to_brain</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="c1"># Create JSON output</span>
@@ -246,9 +247,9 @@
 
 <div class="viewcode-block" id="LongTermMemory.experience"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.experience">[docs]</a>    <span class="k">def</span> <span class="nf">experience</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Main function to interact with if a statement is coming into the brain. Takes in a structured parsed statement,</span>
-<span class="sd">        transforms them to triples, and posts them to the triple store</span>
-<span class="sd">        :param capsule: Structured data of a parsed statement</span>
+<span class="sd">        Main function to interact with if an experience is coming into the brain. Takes in a structured capsule</span>
+<span class="sd">        containing parsed experience, transforms them to triples, and posts them to the triple store</span>
+<span class="sd">        :param capsule: Structured data of a parsed experience</span>
 <span class="sd">        :return: json response containing the status for posting the triples, and the original statement</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Case fold</span>
@@ -256,9 +257,7 @@
 
         <span class="c1"># Create graphs and triples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">capsule</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Experience&#39;</span><span class="p">)</span>
-
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_LOG</span><span class="p">)</span>
-
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_to_brain</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="c1"># Create JSON output</span>
@@ -298,21 +297,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">casefold</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classes</span><span class="p">():</span>
-            <span class="c1"># If this is in the ontology already, create sensor triples directly</span>
+            <span class="c1"># If this is in the ontology already as a class, create sensor triples directly</span>
             <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;I know about </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="n">item</span>
             <span class="k">return</span> <span class="n">item</span><span class="p">,</span> <span class="n">text</span>
 
         <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels_and_classes</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">casefold</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">in</span> <span class="n">temp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="c1"># If this is in the ontology already, create sensor triples directly</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;I know about </span><span class="si">%s</span><span class="s1">. It is of type </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">temp</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+            <span class="c1"># If this is in the ontology already as a label, create sensor triples directly</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I know about </span><span class="si">%s</span><span class="s1">. It is of type </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">temp</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">item</span><span class="p">,</span> <span class="n">text</span>
 
         <span class="c1"># Query the web for information</span>
         <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exact_match_dbpedia</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">class_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Had to learn it, but I can create triples now</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched on the web and I found that it is a </span><span class="si">%s</span><span class="s1">. &#39;</span> \
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched on the web and I found that it is a </span><span class="si">%s</span><span class="s1">. &#39;</span> \
                    <span class="s1">&#39;I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">class_type</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">casefold</span><span class="p">(</span><span class="n">class_type</span><span class="p">),</span> <span class="n">text</span>
 
@@ -321,12 +320,12 @@
             <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyword_match_dbpedia</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">class_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Had to really search for it to learn it, but I can create triples now</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched for fuzzy matches on the web and I found that it &#39;</span> \
+                <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched for fuzzy matches on the web and I found that it &#39;</span> \
                        <span class="s1">&#39;is a </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">class_type</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">casefold</span><span class="p">(</span><span class="n">class_type</span><span class="p">),</span> <span class="n">text</span>
 
         <span class="c1"># Failure, nothing found</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;I am sorry, I could not learn anything on </span><span class="si">%s</span><span class="s1"> so I will not remember it&#39;</span> <span class="o">%</span> <span class="n">item</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I am sorry, I could not learn anything on </span><span class="si">%s</span><span class="s1"> so I will not remember it&#39;</span> <span class="o">%</span> <span class="n">item</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span></div>
 
     <span class="c1">########## management system for keeping track of chats and turns ##########</span>
@@ -469,10 +468,60 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">predicate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ONE_TO_ONE_PREDICATES</span><span class="p">:</span>
-            <span class="n">conflicts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_conflicts_with_predicate</span><span class="p">(</span><span class="n">predicate</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">predicate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ONE_TO_ONE_PREDICATES</span><span class="p">:</span>
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="n">predicate</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">conflicts</span></div>
+
+<div class="viewcode-block" id="LongTermMemory.get_negation_conflicts_with_statement"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts_with_statement">[docs]</a>    <span class="k">def</span> <span class="nf">get_negation_conflicts_with_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
+        <span class="c1"># Case fold</span>
+        <span class="n">capsule</span> <span class="o">=</span> <span class="n">casefold_capsule</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            PREFIX n2mu: &lt;http://cltl.nl/leolani/n2mu/&gt;</span>
+<span class="s2">            PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span class="s2">            PREFIX grasp: &lt;http://groundedannotationframework.org/grasp#&gt;</span>
+<span class="s2">            PREFIX prov: &lt;http://www.w3.org/ns/prov#&gt;</span>
+<span class="s2">            PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
+<span class="s2">            PREFIX sem: &lt;http://semanticweb.cs.vu.nl/2009/11/sem/&gt;</span>
+
+<span class="s2">            select ?pred ?authorlabel ?date</span>
+<span class="s2">            where { </span>
+<span class="s2">                GRAPH ?g {</span>
+<span class="s2">                    ?s ?pred ?o .</span>
+<span class="s2">                } .</span>
+
+<span class="s2">                ?s rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .</span>
+<span class="s2">                ?o rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .</span>
+<span class="s2">                VALUES (?pred) { (n2mu:</span><span class="si">%s</span><span class="s2">-not) (n2mu:</span><span class="si">%s</span><span class="s2">) } .</span>
+
+<span class="s2">                ?g grasp:denotedBy ?m . </span>
+
+<span class="s2">                ?m prov:wasDerivedFrom ?chat .</span>
+<span class="s2">                ?chat rdf:type grasp:Chat .</span>
+<span class="s2">                ?chat sem:hasTime ?date .</span>
+
+<span class="s2">                ?m grasp:wasAttributedTo ?author . </span>
+<span class="s2">                ?author rdfs:label ?authorlabel .</span>
+<span class="s2">            }</span>
+<span class="s2">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+               <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="n">conflict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;capsule&#39;</span><span class="p">:</span> <span class="n">capsule</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;negative&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;pred&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;pred&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;not&#39;</span><span class="p">:</span>
+                <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+
+        <span class="k">return</span> <span class="n">conflict</span></div>
 
     <span class="c1">########## semantic web ##########</span>
 <div class="viewcode-block" id="LongTermMemory.exact_match_dbpedia"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.exact_match_dbpedia">[docs]</a>    <span class="k">def</span> <span class="nf">exact_match_dbpedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
@@ -1000,7 +1049,7 @@
         <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;bindings&quot;</span><span class="p">]</span>
 
     <span class="c1">######################################### Helpers for conflict processing #########################################</span>
-    <span class="k">def</span> <span class="nf">_get_conflicts_with_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">one_to_one_predicate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">one_to_one_predicate</span><span class="p">):</span>
         <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            PREFIX n2mu: &lt;http://cltl.nl/leolani/n2mu/&gt;</span>
 <span class="s2">            PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>

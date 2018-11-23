@@ -150,6 +150,7 @@
 <span></span><span class="kn">from</span> <span class="nn">pepper.language.ner</span> <span class="k">import</span> <span class="n">NER</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">pos_tag</span><span class="p">,</span> <span class="n">CFG</span><span class="p">,</span> <span class="n">RecursiveDescentParser</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">enum</span>
@@ -349,6 +350,32 @@
 
         <span class="k">return</span> <span class="n">tokens</span></div>
 
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">CFG_GRAMMAR_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;cfg.txt&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Parser</span><span class="o">.</span><span class="n">CFG_GRAMMAR_FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfg_file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Parser.parse"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Parser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
+        <span class="n">last_utterance</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">utterances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">tokenized_sentence</span> <span class="o">=</span> <span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
+        <span class="c1">#print(pos)</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+                <span class="n">new_rule</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;POS -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_rule</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">new_rule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">+=</span> <span class="n">new_rule</span>
+
+        <span class="n">cfg_parser</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
+        <span class="n">RD</span> <span class="o">=</span> <span class="n">RecursiveDescentParser</span><span class="p">(</span><span class="n">cfg_parser</span><span class="p">)</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">RD</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parsed</span></div></div>
+
 
 <div class="viewcode-block" id="Analyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Analyzer">[docs]</a><span class="k">class</span> <span class="nc">Analyzer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
@@ -374,7 +401,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Analyzer.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Analyzer.analyze">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">parsed_tree</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Analyzer factory function</span>
 
@@ -391,22 +418,27 @@
 <span class="sd">            Appropriate Analyzer Subclass</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
-            <span class="n">first_token</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">parsed_tree</span><span class="p">)</span>
 
-            <span class="n">question_words</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">GRAMMAR</span><span class="p">[</span><span class="s1">&#39;question words&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-            <span class="n">to_be</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">GRAMMAR</span><span class="p">[</span><span class="s1">&#39;to be&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-            <span class="n">modal_verbs</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">GRAMMAR</span><span class="p">[</span><span class="s1">&#39;modal_verbs&#39;</span><span class="p">]</span>
 
-            <span class="n">question_cues</span> <span class="o">=</span> <span class="n">question_words</span> <span class="o">+</span> <span class="n">to_be</span> <span class="o">+</span> <span class="n">modal_verbs</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        if chat.last_utterance.tokens:</span>
+<span class="sd">            first_token = chat.last_utterance.tokens[0]</span>
 
-            <span class="c1"># Classify Utterance as Question / Statement</span>
-            <span class="k">if</span> <span class="n">first_token</span> <span class="ow">in</span> <span class="n">question_cues</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">QuestionAnalyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">StatementAnalyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Utterance should have at least one element&quot;</span><span class="p">)</span></div>
+<span class="sd">            question_words = Analyzer.GRAMMAR[&#39;question words&#39;].keys()</span>
+<span class="sd">            to_be = Analyzer.GRAMMAR[&#39;to be&#39;].keys()</span>
+<span class="sd">            modal_verbs = Analyzer.GRAMMAR[&#39;modal_verbs&#39;]</span>
+
+<span class="sd">            question_cues = question_words + to_be + modal_verbs</span>
+
+<span class="sd">            # Classify Utterance as Question / Statement</span>
+<span class="sd">            if first_token in question_cues:</span>
+<span class="sd">                return QuestionAnalyzer.analyze(chat)</span>
+<span class="sd">            else:</span>
+<span class="sd">                return StatementAnalyzer.analyze(chat)</span>
+<span class="sd">        else:</span>
+<span class="sd">            raise ValueError(&quot;Utterance should have at least one element&quot;)</span>
+<span class="sd">        &#39;&#39;&#39;</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -458,13 +490,13 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">class StatementAnalyzer(Analyzer):</span>
+<span class="sd">    &quot;&quot;&quot;Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="StatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.StatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">StatementAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="StatementAnalyzer.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.StatementAnalyzer.analyze">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @staticmethod</span>
+<span class="sd">    def analyze(chat):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        StatementAnalyzer factory function</span>
 
 <span class="sd">        Find appropriate StatementAnalyzer for this utterance</span>
@@ -480,31 +512,31 @@
 <span class="sd">            Appropriate StatementAnalyzer Subclass</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">GeneralStatementAnalyzer</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span></div>
+<span class="sd">        return GeneralStatementAnalyzer(chat)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">utterance_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def utterance_type(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        utterance_type: UtteranceType</span>
 <span class="sd">            Utterance Type (Statement)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span>
+<span class="sd">        return UtteranceType.STATEMENT</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def rdf(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rdf: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+<span class="sd">        raise NotImplementedError()</span>
 
 
-<div class="viewcode-block" id="GeneralStatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.GeneralStatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">GeneralStatementAnalyzer</span><span class="p">(</span><span class="n">StatementAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">class GeneralStatementAnalyzer(StatementAnalyzer):</span>
+<span class="sd">    def __init__(self, chat):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        General Statement Analyzer</span>
 
 <span class="sd">        Parameters</span>
@@ -513,25 +545,25 @@
 <span class="sd">            Chat to be analyzed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">GeneralStatementAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+<span class="sd">        super(GeneralStatementAnalyzer, self).__init__(chat)</span>
 
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
+<span class="sd">        # TODO: Implement Chat -&gt; RDF</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">        self._rdf = {}</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def rdf(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rdf: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
+<span class="sd">        return self._rdf</span>
 
 
-<div class="viewcode-block" id="ObjectStatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.ObjectStatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">ObjectStatementAnalyzer</span><span class="p">(</span><span class="n">StatementAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">class ObjectStatementAnalyzer(StatementAnalyzer):</span>
+<span class="sd">    def __init__(self, chat):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Object Statement Analyzer</span>
 
 <span class="sd">        Parameters</span>
@@ -539,28 +571,28 @@
 <span class="sd">        chat: Chat</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">ObjectStatementAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+<span class="sd">        super(ObjectStatementAnalyzer, self).__init__(chat)</span>
 
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
+<span class="sd">        # TODO: Implement Chat -&gt; RDF</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">        self._rdf = {}</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def rdf(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rdf: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
+<span class="sd">        return self._rdf</span>
 
 
-<div class="viewcode-block" id="QuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.QuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">QuestionAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function&quot;&quot;&quot;</span>
+<span class="sd">class QuestionAnalyzer(Analyzer):</span>
+<span class="sd">    &quot;&quot;&quot;Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="QuestionAnalyzer.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.QuestionAnalyzer.analyze">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @staticmethod</span>
+<span class="sd">    def analyze(chat):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        QuestionAnalyzer factory function</span>
 
 <span class="sd">        Find appropriate QuestionAnalyzer for this utterance</span>
@@ -575,37 +607,37 @@
 <span class="sd">        analyzer: QuestionAnalyzer</span>
 <span class="sd">            Appropriate QuestionAnalyzer Subclass</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
-            <span class="n">first_word</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="sd">        if chat.last_utterance.tokens:</span>
+<span class="sd">            first_word = chat.last_utterance.tokens[0]</span>
 
-            <span class="k">if</span> <span class="n">first_word</span> <span class="ow">in</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">GRAMMAR</span><span class="p">[</span><span class="s1">&#39;question words&#39;</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">WhQuestionAnalyzer</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">VerbQuestionAnalyzer</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span></div>
+<span class="sd">            if first_word in Analyzer.GRAMMAR[&#39;question words&#39;]:</span>
+<span class="sd">                return WhQuestionAnalyzer(chat)</span>
+<span class="sd">            else:</span>
+<span class="sd">                return VerbQuestionAnalyzer(chat)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">utterance_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def utterance_type(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        utterance_type: UtteranceType</span>
 <span class="sd">            Utterance Type (Question)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">QUESTION</span>
+<span class="sd">        return UtteranceType.QUESTION</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def rdf(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rdf: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+<span class="sd">        raise NotImplementedError()</span>
 
 
-<div class="viewcode-block" id="WhQuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.WhQuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">WhQuestionAnalyzer</span><span class="p">(</span><span class="n">QuestionAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">class WhQuestionAnalyzer(QuestionAnalyzer):</span>
+<span class="sd">    def __init__(self, chat):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Wh-Question Analyzer</span>
 
 <span class="sd">        Parameters</span>
@@ -613,25 +645,25 @@
 <span class="sd">        chat: Chat</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">WhQuestionAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+<span class="sd">        super(WhQuestionAnalyzer, self).__init__(chat)</span>
 
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
+<span class="sd">        # TODO: Implement Chat -&gt; RDF</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">        self._rdf = {}</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def rdf(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rdf: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
+<span class="sd">        return self._rdf</span>
 
 
-<div class="viewcode-block" id="VerbQuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.VerbQuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">VerbQuestionAnalyzer</span><span class="p">(</span><span class="n">QuestionAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">class VerbQuestionAnalyzer(QuestionAnalyzer):</span>
+<span class="sd">    def __init__(self, chat):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Verb Question Analyzer</span>
 
 <span class="sd">        Parameters</span>
@@ -639,26 +671,28 @@
 <span class="sd">        chat: Chat</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">VerbQuestionAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+<span class="sd">        super(VerbQuestionAnalyzer, self).__init__(chat)</span>
 
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
+<span class="sd">        # TODO: Implement Chat -&gt; RDF</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">        self._rdf = {}</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @property</span>
+<span class="sd">    def rdf(self):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rdf: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
-
+<span class="sd">        return self._rdf</span>
+<span class="sd">&#39;&#39;&#39;</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Bram&quot;</span><span class="p">)</span>
     <span class="n">chat</span><span class="o">.</span><span class="n">add_utterance</span><span class="p">(</span><span class="s2">&quot;I like bananas&quot;</span><span class="p">)</span>
-    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+    <span class="n">cfg_parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">()</span>
+    <span class="n">parsed_tree</span> <span class="o">=</span> <span class="n">cfg_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">parsed_tree</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 </pre></div>

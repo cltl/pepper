@@ -149,6 +149,7 @@
   <h1>Source code for pepper.brain.utils.helper_functions</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 
 
 <div class="viewcode-block" id="read_query"><a class="viewcode-back" href="../../../../pepper.brain.utils.helper_functions.html#pepper.brain.utils.helper_functions.read_query">[docs]</a><span class="k">def</span> <span class="nf">read_query</span><span class="p">(</span><span class="n">query_filename</span><span class="p">):</span>
@@ -180,7 +181,7 @@
 
 
 <span class="c1"># TODO to be moved to NLP layer</span>
-<div class="viewcode-block" id="phrase_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.utils.helper_functions.html#pepper.brain.utils.helper_functions.phrase_conflicts">[docs]</a><span class="k">def</span> <span class="nf">phrase_conflicts</span><span class="p">(</span><span class="n">conflicts</span><span class="p">):</span>
+<div class="viewcode-block" id="phrase_all_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.utils.helper_functions.html#pepper.brain.utils.helper_functions.phrase_all_conflicts">[docs]</a><span class="k">def</span> <span class="nf">phrase_all_conflicts</span><span class="p">(</span><span class="n">conflicts</span><span class="p">):</span>
     <span class="n">say</span> <span class="o">=</span> <span class="s1">&#39;I have </span><span class="si">%s</span><span class="s1"> conflicts in my brain.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
 
     <span class="n">conflict</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
@@ -193,6 +194,17 @@
         <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;I&#39;</span> <span class="k">if</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Leolani&#39;</span> <span class="k">else</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span>
 
         <span class="n">say</span> <span class="o">=</span> <span class="n">say</span> <span class="o">+</span> <span class="s1">&#39; For example, I do not know if </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">say</span></div>
+
+
+<div class="viewcode-block" id="phrase_negation_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.utils.helper_functions.html#pepper.brain.utils.helper_functions.phrase_negation_conflicts">[docs]</a><span class="k">def</span> <span class="nf">phrase_negation_conflicts</span><span class="p">(</span><span class="n">conflict</span><span class="p">):</span>
+    <span class="n">say</span> <span class="o">=</span> <span class="s1">&#39;I am surprised. &#39;</span>
+
+    <span class="n">say</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> told me in </span><span class="si">%s</span><span class="s1"> that </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">, but in </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> told me that </span><span class="si">%s</span><span class="s1"> did not&#39;</span> \
+        <span class="o">%</span><span class="p">(</span><span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">][</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">],</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%B&quot;</span><span class="p">),</span>
+          <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;capsule&#39;</span><span class="p">][</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;capsule&#39;</span><span class="p">][</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;capsule&#39;</span><span class="p">][</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+          <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;negative&#39;</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%B&quot;</span><span class="p">),</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;negative&#39;</span><span class="p">][</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">],</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;capsule&#39;</span><span class="p">][</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">say</span></div>
 
