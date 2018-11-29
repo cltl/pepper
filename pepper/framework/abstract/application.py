@@ -47,8 +47,11 @@ class AbstractApplication(AbstractComponent):
         self.backend.camera.start()
         self.backend.microphone.start()
 
-        while True:
-            sleep(1)
+        try:
+            while True:
+                sleep(1)
+        except KeyboardInterrupt:
+            exit(0)
 
     def _reset_events(self):
         """Reset Event Callbacks to their (unimplemented) defaults"""

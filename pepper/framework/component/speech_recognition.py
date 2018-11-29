@@ -140,8 +140,7 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
 
                 if hypotheses:
 
-                    print([len(a) for a in self._speech_audio])
-
+                    # Combine Speech Audio Samples in one Array
                     speech_audio = np.concatenate(self._speech_audio)
 
                     # Call on_transcript Event Function
