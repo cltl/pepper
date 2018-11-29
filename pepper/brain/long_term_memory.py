@@ -25,6 +25,8 @@ class LongTermMemory(object):
         'name'
     ]
 
+    _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
+
     def __init__(self, address=config.BRAIN_URL_LOCAL):
         """
         Interact with Triple store
@@ -106,13 +108,20 @@ class LongTermMemory(object):
         negation_conflicts = self.get_negation_conflicts_with_statement(capsule)
         object_conflict = self.get_object_cardinality_conflicts_with_statement(capsule)
 
+        # Check for gaps, in case we want to be proactive
+        subject_gaps = self.get_gaps_from_entity(capsule['subject'])
+        object_gaps = self.get_gaps_from_entity(capsule['object'])
+
         # Create JSON output
         capsule["date"] = str(capsule["date"])
         output = {'response': code, 'statement': capsule,
                   'statement_novelty': novelty,
-                  'entity_novelty': {'subject': capsule['subject']['label'] in items_like_subject, 'object': capsule['object']['label'] in items_like_object},
-                  'negation_conflicts': negation_conflicts, 'cardinality_conflicts': object_conflict,
-                  'gaps': []}
+                  'entity_novelty': {'subject': capsule['subject']['label'] not in items_like_subject,
+                                     'object': capsule['object']['label'] not in items_like_object},
+                  'negation_conflicts': negation_conflicts,
+                  'cardinality_conflicts': object_conflict,
+                  'subject_gaps': subject_gaps,
+                  'object_gaps': object_gaps}
 
         return output
 
@@ -374,7 +383,11 @@ class LongTermMemory(object):
         # Case fold
         capsule = casefold_capsule(capsule)
 
-        query = read_query('object_cardinality_conflicts') % (capsule['predicate']['type'], capsule['subject']['label'])
+        if capsule['predicate']['type'] not in self._ONE_TO_ONE_PREDICATES:
+            return [{}]
+
+        query = read_query('object_cardinality_conflicts') % (capsule['predicate']['type'],
+                                                              capsule['subject']['label'], capsule['object']['label'])
 
         response = self._submit_query(query)
 
@@ -404,7 +417,33 @@ class LongTermMemory(object):
             else:
                 conflict['positive'] = item
 
-        return conflict
+        return {} if conflict['positive'] == {} or conflict['negative'] == {} else conflict
+
+    ########## gaps ##########
+    def get_gaps_from_entity(self, entity):
+        # Role as subject
+        query = read_query('subject_gaps') % (entity['label'], entity['label'])
+        response = self._submit_query(query)
+
+        if response:
+            subject_gaps = [{'predicate': elem['p']['value'].split('/')[-1],
+                            'range': elem['type2']['value'].split('/')[-1]} for elem in response
+                            if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
+        else:
+            subject_gaps = []
+
+        # Role as object
+        query = read_query('object_gaps') % (entity['label'], entity['label'])
+        response = self._submit_query(query)
+
+        if response:
+            object_gaps = [{'predicate': elem['p']['value'].split('/')[-1],
+                            'domain': elem['type2']['value'].split('/')[-1]} for elem in response
+                           if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
+        else:
+            object_gaps = []
+
+        return {'subject': subject_gaps, 'object': object_gaps}
 
     ########## semantic web ##########
     def exact_match_dbpedia(self, item):
