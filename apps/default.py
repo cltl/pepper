@@ -102,6 +102,9 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
                  choice([animations.BOW, animations.FRIENDLY, animations.HI]))  # Greet Person
 
+        # TODO: Implement non-hardcoded
+        self.say("Where are you from?")
+
     @property
     def application(self):
         """
@@ -230,7 +233,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         return False
 
     def respond_meeting(self, statement):
-        for meeting in ["my name is", "let's meet", "I am"]:
+        for meeting in ["let's meet"]:
             if meeting in statement:
                 MeetIntention(self.application)
                 return True
@@ -354,17 +357,18 @@ class MeetIntention(AbstractIntention, DefaultApp):
         self._face = []
 
         self.say("{}, {}".format(choice(GREETING), choice(INTRODUCE)))
+        self.say(choice(ASK_NAME))
 
-        for sentence in [
-                "I wish to meet you!",
-                "By continuing to meet me, you agree with locally storing your face features and name.",
-                "Your personal data is only used for the purpose of meeting you and not shared with third parties.",
-                "After meeting, you can always ask me to erase your personal data, no hard feelings!",
-                "Ok, enough legal stuff! {}".format(choice(ASK_NAME))]:
-
-            self.say(sentence)
-            self._last_utterance = time()
-            sleep(0.25)
+        # for sentence in [
+        #         "I wish to meet you!",
+        #         "By continuing to meet me, you agree with locally storing your face features and name.",
+        #         "Your personal data is only used for the purpose of meeting you and not shared with third parties.",
+        #         "After meeting, you can always ask me to erase your personal data, no hard feelings!",
+        #         "Ok, enough legal stuff! {}".format(choice(ASK_NAME))]:
+        #
+        #     self.say(sentence)
+        #     self._last_utterance = time()
+        #     sleep(0.25)
 
     def on_image(self, image):
         # If meeting times out, go back to idle!

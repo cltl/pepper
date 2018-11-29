@@ -48,9 +48,6 @@ class NameParser:
         return hypotheses[0]
 
     def parse_new(self, audio):
-
-        print(audio)
-
         threads = [self._pool.submit(self._parse_new, asr, audio) for asr in self._asrs]
         results = [result.result() for result in futures.as_completed(threads)]
 
@@ -69,8 +66,6 @@ class NameParser:
 
     def _parse_new(self, asr, audio):
         transcript = asr.transcribe(audio)
-
-        print(asr, transcript)
 
         for i, hypothesis in enumerate(transcript):
             for word, tag in self.TAGGER.tag(hypothesis.transcript):
