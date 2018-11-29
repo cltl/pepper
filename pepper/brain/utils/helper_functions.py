@@ -2,7 +2,8 @@ import os
 import random
 from datetime import datetime
 
-from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNWOLEDGE, CONFLICTING_KNOWLEDGE
+from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNWOLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
+    TRUST, NO_TRUST
 
 
 def read_query(query_filename):
@@ -130,18 +131,21 @@ def phrase_subject_gaps(gaps, capsule):
         say = ''
 
     elif entity_role == 'subject':
+        say = random.choice(CURIOSITY)
         gap = random.choice(gaps[entity_role])
 
         if '#' in gap['range']:
-            say = 'What is %s %s' % (capsule['subject']['label'].replace('_', ' '), gap['predicate'].replace('_', ' '))
+            say += ' What is %s %s' % (capsule['subject']['label'].replace('_', ' '), gap['predicate'].replace('_', ' '))
 
         else:
-            say = 'Has %s %s a %s?' %(capsule['subject']['label'].replace('_', ' '),
+            say += ' Has %s %s a %s?' %(capsule['subject']['label'].replace('_', ' '),
                                        gap['predicate'].replace('_', ' '), gap['range'].replace('_', ' '))
 
     elif entity_role == 'object':
+        say = random.choice(CURIOSITY)
         gap = random.choice(gaps[entity_role])
-        say = 'Is there a %s %s %s?' % (gap['domain'].replace('_', ' '), gap['predicate'].replace('_', ' '),
+
+        say += ' Is there a %s %s %s?' % (gap['domain'].replace('_', ' '), gap['predicate'].replace('_', ' '),
                                         capsule['subject']['label'].replace('_', ' '))
 
     return say
@@ -154,19 +158,61 @@ def phrase_object_gaps(gaps, capsule):
         say = ''
 
     elif entity_role == 'subject':
+        say = random.choice(CURIOSITY)
         gap = random.choice(gaps[entity_role])
 
         if '#' in gap['range']:
-            say = 'What is %s %s' % (capsule['object']['label'].replace('_', ' '), gap['predicate'].replace('_', ' '))
+            say += ' What is %s %s' % (capsule['object']['label'].replace('_', ' '), gap['predicate'].replace('_', ' '))
 
         else:
-            say = 'Has %s %s a %s?' % (capsule['object']['label'].replace('_', ' '),
+            say += ' Has %s %s a %s?' % (capsule['object']['label'].replace('_', ' '),
                                        gap['predicate'].replace('_', ' '), gap['range'].replace('_', ' '))
 
     elif entity_role == 'object':
+        say = random.choice(CURIOSITY)
         gap = random.choice(gaps[entity_role])
-        say = 'What other %s %s %s?' % (gap['domain'].replace('_', ' '), gap['predicate'].replace('_', ' '),
+
+        say += ' What other %s %s %s?' % (gap['domain'].replace('_', ' '), gap['predicate'].replace('_', ' '),
                                    capsule['object']['label'].replace('_', ' '))
+
+    return say
+
+
+def phrase_overlaps(overlaps, capsule):
+    entity_role = random.choice(overlaps.keys())
+
+    if not overlaps[entity_role] and entity_role == 'subject':
+        say = random.choice(HAPPY)
+        say += ' I did not know anybody who %s %s' % (capsule['predicate']['type'].replace('_', ' '),
+                                                      capsule['object']['label'].replace('_', ' '))
+
+    elif not overlaps[entity_role] and entity_role == 'object':
+        say = random.choice(HAPPY)
+        say += ' I did not know anybody who %s %s' %(capsule['predicate']['type'].replace('_', ' '),
+                                                    capsule['object']['label'].replace('_', ' '))
+
+    elif entity_role == 'subject':
+        say = random.choice(HAPPY)
+        say += ' Now I know that %s %s %s %s' % (capsule['subject']['label'].replace('_', ' '),
+                                                 capsule['predicate']['type'].replace('_', ' '),
+                                                 len(overlaps[entity_role]),
+                                                 capsule['object']['type'].replace('_', ' '))
+
+    elif entity_role == 'object':
+        say = random.choice(HAPPY)
+        say += ' Now I know %s %s that %s %s' %(len(overlaps[entity_role]),
+                                                capsule['subject']['type'].replace('_', ' '),
+                                                capsule['predicate']['type'].replace('_', ' '),
+                                                capsule['object']['label'].replace('_', ' '))
+
+    return say
+
+
+def phrase_trust(trust):
+    if trust == 1:
+        say = random.choice(TRUST)
+    else:
+        say = random.choice(NO_TRUST)
 
     return say
 
@@ -175,7 +221,7 @@ def phrase_update(update, proactive=False, persist=False):
     options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
 
     if proactive:
-        options.extend(['subject_gaps', 'object_gaps'])
+        options.extend(['subject_gaps', 'object_gaps', 'overlaps'])
 
     approach = random.choice(options)
 
@@ -196,6 +242,9 @@ def phrase_update(update, proactive=False, persist=False):
 
     elif approach == 'object_gaps':
         say = phrase_object_gaps(update['object_gaps'], update['statement'])
+
+    elif approach == 'overlaps':
+        say = phrase_overlaps(update['overlaps'], update['statement'])
 
     if persist and say == '':
         say = phrase_update(update, proactive, persist)

@@ -267,3 +267,9 @@ EXISTING_KNWOLEDGE = ["This sounds familiar.", "That rings a bell.", "I have hea
 
 CONFLICTING_KNOWLEDGE = ["I am surprised.", "Really?", "This seems hard to believe.", "Odd!", "Are you sure?",
                          "I don't know what to make of this.", "Strange."]
+
+CURIOSITY = ["I am curious", "Let me ask you something.", "I would like to know.", "If you don't mind me asking."]
+
+TRUST = ["I think I trust you.", "I trust you", "I believe you", "You have my trust"]
+
+NO_TRUST = ["I am not sure I trust you.", "I do not trust you", "I do not believe you"]
