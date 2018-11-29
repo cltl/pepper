@@ -110,7 +110,7 @@ def reply_to_question(brain_response, viewed_objects):
     brain_response['response'].sort(key=lambda x: x['authorlabel']['value'])
     print(brain_response['response'])
 
-    for response in brain_response['response']:
+    for response in brain_response['response'][:4]:
         person = ''
         if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
             if response['authorlabel']['value'].lower() == brain_response['question']['author'].lower():
@@ -165,7 +165,7 @@ def reply_to_question(brain_response, viewed_objects):
                         say += ' is from '
 
                 else:
-                    if person in ['first', 'second']:
+                    if person in ['first', 'second'] and brain_response['question']['predicate']['type'].endswith('s'):
                         say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
                     else:
                         say += ' '+brain_response['question']['predicate']['type']+' '
@@ -343,6 +343,7 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
                     i+=1
                 else:
                     rdf['predicate'] = words[i]+'s'if not words[i].endswith('s') else words[i]
+                    if rdf['predicate'] == 'cans': rdf['predicate'] = 'can'
                     if rdf['predicate'] == 'haves': rdf['predicate'] = 'owns'
                 break
             rdf['subject']+=(words[i]+' ')

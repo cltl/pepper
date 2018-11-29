@@ -23,16 +23,6 @@ class QnA:
         "How many people did you meet?": lambda: "I met {} people today!".format(len(os.listdir(config.PEOPLE_NEW_ROOT)) - 1),
         "Who did you meet?": lambda: "I met {}!".format(
             ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_NEW_ROOT) if name != "NEW.bin")),
-        "What can you do?": lambda: choice([
-            "I can answer factual questions by querying the web!",
-            "You can ask me personal questions and I will try to answer them!",
-            "You can tell me what you like, and I'll remember!",
-        ]),
-        "What more can you do?": lambda: choice([
-            "I can answer factual questions by querying the web!",
-            "You can ask me personal questions and I will try to answer them!",
-            "You can tell me what you like, and I'll remember!",
-        ]),
         "Tell me a joke!": lambda: choice(JOKE)
     }
 
