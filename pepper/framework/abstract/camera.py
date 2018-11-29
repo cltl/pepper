@@ -1,11 +1,10 @@
 from pepper.framework.util import Mailbox
+from pepper.framework.util import Scheduler
 from pepper.config import CameraResolution
 from pepper import logger
 
-from threading import Thread
-
 from collections import deque
-from time import time, sleep
+from time import time
 
 import numpy as np
 
@@ -37,9 +36,9 @@ class AbstractCamera(object):
         self._t0 = time()
 
         self._mailbox = Mailbox()
-        self._processor_thread = Thread(name="CameraThread", target=self._processor)
-        self._processor_thread.daemon = True
-        self._processor_thread.start()
+
+        self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
+        self._processor_scheduler.start()
 
         self._running = False
 
@@ -190,12 +189,11 @@ class AbstractCamera(object):
 
         Calls each callback for each image, threaded, for higher image throughput
         """
-        while True:
-            image = self._mailbox.get()
-            if self._running:
-                for callback in self.callbacks:
-                    callback(image)
-            self._update_dt()
+        image = self._mailbox.get()
+        if self._running:
+            for callback in self.callbacks:
+                callback(image)
+        self._update_dt()
 
     def _update_dt(self):
         t1 = time()

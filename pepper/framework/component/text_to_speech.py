@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractComponent
-from threading import Thread, Lock
-from time import sleep
+from pepper.framework.util import Scheduler
+from threading import Lock
 
 
 class TextToSpeechComponent(AbstractComponent):
@@ -10,16 +10,13 @@ class TextToSpeechComponent(AbstractComponent):
         self._microphone_lock = Lock()
 
         def worker():
-            while True:
-                with self._microphone_lock:
-                    # If talking is over & microphone is not yet running -> Start Microphone
-                    if not self.backend.text_to_speech.talking and not self.backend.microphone.running:
-                        self.backend.microphone.start()
-                        sleep(1E-3)
+            with self._microphone_lock:
+                # If talking is over & microphone is not yet running -> Start Microphone
+                if not self.backend.text_to_speech.talking and not self.backend.microphone.running:
+                    self.backend.microphone.start()
 
-        thread = Thread(name="TextToSpeechComponentThread", target=worker)
-        thread.daemon = True
-        thread.start()
+        schedule = Scheduler(worker, name="TextToSpeechComponentThread")
+        schedule.start()
 
     def say(self, text, animation=None):
         """

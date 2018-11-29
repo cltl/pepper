@@ -1,8 +1,8 @@
+from pepper.framework.util import Scheduler
 from pepper import logger
 
 import numpy as np
 
-from threading import Thread
 from Queue import Queue
 from time import time
 
@@ -31,9 +31,8 @@ class AbstractMicrophone(object):
         self._t0 = time()
 
         self._queue = Queue()
-        self._processor_thread = Thread(name="MicrophoneThread", target=self._processor)
-        self._processor_thread.daemon = True
-        self._processor_thread.start()
+        self._processor_scheduler = Scheduler(self._processor, name="MicrophoneThread")
+        self._processor_scheduler.start()
 
         self._log = logger.getChild(self.__class__.__name__)
 
@@ -136,12 +135,11 @@ class AbstractMicrophone(object):
 
         Calls each callback for each audio frame, threaded, for higher audio throughput
         """
-        while True:
-            audio = self._queue.get()
-            if self._running:
-                for callback in self.callbacks:
-                    callback(audio)
-            self._update_dt(len(audio))
+        audio = self._queue.get()
+        if self._running:
+            for callback in self.callbacks:
+                callback(audio)
+        self._update_dt(len(audio))
 
     def _update_dt(self, n_bytes):
         t1 = time()

@@ -1,8 +1,8 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.component import ObjectDetectionComponent, FaceDetectionComponent
+from pepper.framework.util import Scheduler, Mailbox
 from pepper.web.server import VideoFeedApplication
 from pepper.util.image import ImageAnnotator
-from pepper.framework.util import Mailbox
 
 from PIL import Image
 
@@ -37,26 +37,24 @@ class VideoDisplayComponent(AbstractComponent):
         annotator = ImageAnnotator()
 
         def worker():
-            while True:
-                image = image_mailbox.get()
+            image = image_mailbox.get()
 
-                persons = objects = []
+            persons = objects = []
 
-                try: image, objects = object_mailbox.get(False)
-                except Empty: pass
+            try: image, objects = object_mailbox.get(False)
+            except Empty: pass
 
-                try: persons = person_mailbox.get(False)
-                except Empty: pass
+            try: persons = person_mailbox.get(False)
+            except Empty: pass
 
-                image = annotator.annotate(Image.fromarray(image), objects, persons)
-                webapp.update(image)
+            image = annotator.annotate(Image.fromarray(image), objects, persons)
+            webapp.update(image)
 
         webapp_thread = Thread(target=webapp.start)
         webapp_thread.daemon = True
         webapp_thread.start()
 
-        thread = Thread(target=worker)
-        thread.daemon = True
-        thread.start()
+        schedule = Scheduler(worker, name="VideoDisplayComponentThread")
+        schedule.start()
 
 

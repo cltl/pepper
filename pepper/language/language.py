@@ -1,4 +1,3 @@
-from pepper.language import NER
 from pepper.language.ner import NER
 
 from random import getrandbits

@@ -5,7 +5,7 @@ import numpy as np
 
 
 class SystemMicrophone(AbstractMicrophone):
-    def __init__(self, rate, channels, callbacks = []):
+    def __init__(self, rate, channels, callbacks=[]):
         """
         System Microphone
 
