@@ -1,7 +1,6 @@
 from pepper.framework.abstract import AbstractComponent
+from pepper.framework.util import Scheduler
 from pepper.framework.component.speech_recognition import SpeechRecognitionComponent
-from threading import Thread
-from time import sleep
 
 
 class StatisticsComponent(AbstractComponent):
@@ -16,21 +15,16 @@ class StatisticsComponent(AbstractComponent):
         super(StatisticsComponent, self).__init__(backend)
 
         speech_recognition = self.require_dependency(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
+        vad = speech_recognition.vad
 
         def worker():
-            vad = speech_recognition.vad
+            activation_bars = int(vad.activation * 10)
 
-            while True:
-                activation_bars = int(vad.activation * 10)
+            print "\rMicrophone {:3.1f} kHz | Camera {:4.1f} Hz | Voice {:12s} {:4s}".format(
+                self.backend.microphone.true_rate / 1000.0, self.backend.camera.true_rate,
+                ("<{:10s}>" if vad._voice else "[{:10s}]").format("|" * activation_bars + "." * (
+                            10 - activation_bars)) if self.backend.microphone.running else "[          ]",
+                "{:4.0%}".format(vad.activation) if self.backend.microphone.running else "   %"),
 
-                print "\rMicrophone {:3.1f} kHz | Camera {:4.1f} Hz | Voice {:12s} {:4s}".format(
-                    self.backend.microphone.true_rate / 1000.0, self.backend.camera.true_rate,
-                    ("<{:10s}>" if vad._voice else "[{:10s}]").format("|" * activation_bars + "." * (
-                                10 - activation_bars)) if self.backend.microphone.running else "[          ]",
-                    "{:4.0%}".format(vad.activation) if self.backend.microphone.running else "   %"
-                ),
-                sleep(0.1)
-
-        thread = Thread(name="StatisticsThread", target=worker)
-        thread.daemon = True
-        thread.start()
+        schedule = Scheduler(worker, 0.1)
+        schedule.start()

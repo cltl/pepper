@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = ApplicationBackend.NAOQI
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -103,7 +103,7 @@ MICROPHONE_CHANNELS = 1
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
 
 CAMERA_RESOLUTION = CameraResolution.QVGA
-CAMERA_FRAME_RATE = 5
+CAMERA_FRAME_RATE = 3
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False

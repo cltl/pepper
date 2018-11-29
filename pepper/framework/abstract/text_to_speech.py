@@ -1,6 +1,5 @@
+from pepper.framework.util import Scheduler
 from pepper import logger
-
-from threading import Thread
 from Queue import Queue
 
 
@@ -20,9 +19,8 @@ class AbstractTextToSpeech(object):
         self._queue = Queue()
         self._talking_jobs = 0
 
-        self._thread = Thread(name="TextToSpeechThread", target=self._worker)
-        self._thread.daemon = True
-        self._thread.start()
+        self._scheduler = Scheduler(self._worker, name="TextToSpeechThread")
+        self._scheduler.start()
 
         self._log = logger.getChild(self.__class__.__name__)
 
@@ -78,6 +76,5 @@ class AbstractTextToSpeech(object):
         pass
 
     def _worker(self):
-        while True:
-            self.on_text_to_speech(*self._queue.get())
-            self._talking_jobs -= 1
+        self.on_text_to_speech(*self._queue.get())
+        self._talking_jobs -= 1

@@ -1,8 +1,8 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.sensor.obj import CocoClassifyClient, CocoObject
+from pepper.framework.util import Scheduler
 from pepper import config
 
-from threading import Thread
 from Queue import Queue
 
 
@@ -38,28 +38,26 @@ class ObjectDetectionComponent(AbstractComponent):
 
         def worker():
             """Object Detection Event Worker"""
-            while True:
-                image, objects = queue.get()
+            image, objects = queue.get()
 
-                if objects:
-                    # Call on_object Event Function
-                    self.on_object(image, objects)
+            if objects:
+                # Call on_object Event Function
+                self.on_object(image, objects)
 
-                    # Call on_object Callback Functions
-                    for callback in self.on_object_callbacks:
-                        callback(image, objects)
+                # Call on_object Callback Functions
+                for callback in self.on_object_callbacks:
+                    callback(image, objects)
 
-                # Call on_image Event Function
-                self.on_image(image)
+            # Call on_image Event Function
+            self.on_image(image)
 
-                # Call on_image Callback Functions
-                for callback in self.on_image_callbacks:
-                    callback(image)
+            # Call on_image Callback Functions
+            for callback in self.on_image_callbacks:
+                callback(image)
 
         # Initialize Object Queue & Worker
-        thread = Thread(target=worker)
-        thread.daemon = True
-        thread.start()
+        schedule = Scheduler(worker, name="ObjectDetectionComponentThread")
+        schedule.start()
 
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]

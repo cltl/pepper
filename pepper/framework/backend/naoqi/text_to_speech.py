@@ -32,9 +32,8 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         text: str
         animation: str
         """
-        self._log.info(text)
 
         if animation:
-            self._service.say("^startTag({1}){0}^waitTag({1})".format(text, animation))
+            self._service.say("^startTag({1}){0}^stopTag({1})".format(text, animation))
         else:
             self._service.say(text)

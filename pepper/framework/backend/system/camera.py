@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractCamera
+from pepper.framework.util import Scheduler
 from pepper.config import CameraResolution
 
 import cv2
@@ -8,7 +9,7 @@ from time import time, sleep
 
 
 class SystemCamera(AbstractCamera):
-    def __init__(self, resolution, rate, callbacks = [], index=0):
+    def __init__(self, resolution, rate, callbacks=[], index=0):
         """
         System Camera
 
@@ -33,32 +34,29 @@ class SystemCamera(AbstractCamera):
             raise RuntimeError("{} could not be opened".format(self.__class__.__name__))
 
         # Run Image acquisition in Thread
-        self._thread = Thread(name="SystemCameraThread", target=self._run)
-        self._thread.setDaemon(True)
-        self._thread.start()
+        self._scheduler = Scheduler(self._run, name="SystemCameraThread")
+        self._scheduler.start()
 
         self._log.debug("Booted")
 
     def _run(self):
-        while True:
+        t0 = time()
 
-            t0 = time()
+        # Get frame from camera
+        status, image = self._camera.read()
 
-            # Get frame from camera
-            status, image = self._camera.read()
+        if status:
+            if self._running:
 
-            if status:
-                if self._running:
+                # Resize Image and Convert to RGB
+                image = cv2.resize(image, (self.width, self.height))
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-                    # Resize Image and Convert to RGB
-                    image = cv2.resize(image, (self.width, self.height))
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                # Call On Image Event
+                self.on_image(image)
+        else:
+            self._camera.release()
+            raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))
 
-                    # Call On Image Event
-                    self.on_image(image)
-            else:
-                self._camera.release()
-                raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))
-
-            # Maintain frame rate
-            sleep(max(0, 1. / self.rate - (time() - t0)))
+        # Maintain frame rate
+        sleep(max(0, 1. / self.rate - (time() - t0)))

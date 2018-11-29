@@ -1,8 +1,8 @@
-from pepper.language import NER
 from pepper.language.ner import NER
+from pepper.language.pos import POS
 
 from random import getrandbits
-from nltk import pos_tag, CFG, RecursiveDescentParser
+from nltk import CFG, RecursiveDescentParser
 
 
 import logging
@@ -114,7 +114,8 @@ class Utterance(object):
 
         self._transcript = transcript
         self._tokens = self._clean(self._tokenize(transcript))
-        self._parsed_tree = Parser().parse(self)  # TODO: Implement
+        self._parsed_tree = None
+        # self._parsed_tree = Parser().parse(self)  # TODO: Implement
         self._speaker = speaker.lower()
         self._chat_id = chat_id
         self._chat_turn = chat_turn
@@ -218,17 +219,19 @@ class Utterance(object):
 
 class Parser(object):
 
+    POS_TAGGER = None  # Type: POS
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'cfg.txt')
 
     def __init__(self):
+        if not Parser.POS_TAGGER:
+            Parser.POS_TAGGER = POS()
+
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
             self._cfg = cfg_file.read()
 
     def parse(self, utterance):
-        print(utterance)
         tokenized_sentence = utterance.tokens
-        pos = pos_tag(tokenized_sentence)
-        print(pos)
+        pos = self.POS_TAGGER.tag(tokenized_sentence)
         for el in pos:
             if el[1].endswith('$'):
                 new_rule = el[1][:-1] + 'POS -> \'' + el[0] + '\'\n'
@@ -240,7 +243,7 @@ class Parser(object):
         cfg_parser = CFG.fromstring(self._cfg)
         RD = RecursiveDescentParser(cfg_parser)
         parsed = RD.parse(tokenized_sentence)
-        return parsed
+        return [tree for tree in parsed]
 
 
 class Analyzer(object):
@@ -287,15 +290,12 @@ class Analyzer(object):
             Appropriate Analyzer Subclass
         """
 
-        forest = [tree for tree in chat.last_utterance.parsed_tree]
+        forest = chat.last_utterance.parsed_tree
 
         if not forest:
             raise Exception("Ungrammatical Input")
 
         for tree in forest:
-
-            print(tree)
-
             sentence_type = tree[0].label()
 
             if sentence_type == 'S':
@@ -497,7 +497,6 @@ class QuestionAnalyzer(Analyzer):
         """
         if chat.last_utterance.tokens:
             first_word = chat.last_utterance.tokens[0]
-
             if first_word.lower() in Analyzer.GRAMMAR['question words']:
                 return WhQuestionAnalyzer(chat)
             else:
@@ -561,6 +560,21 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
         super(VerbQuestionAnalyzer, self).__init__(chat)
 
+        rdf = {'predicate': '', 'subject':'', 'object':''}
+
+        for tree in chat.last_utterance.parsed_tree[0]:
+            for branch in tree:
+                for node in branch:
+                    print(node.label(), node.leaves()[0])
+                    if node.label().startswith('V'):
+                        rdf['predicate']+=' '+node.leaves()[0]
+
+        print(rdf)
+
+
+
+
+
         # TODO: Implement Chat -> RDF
 
         self._rdf = {}
@@ -577,7 +591,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
 if __name__ == '__main__':
     chat = Chat("Bram")
-    chat.add_utterance("What do I hate")
+    chat.add_utterance("Do I like bananas")
     #print(chat,type(chat))
     analyzer = Analyzer.analyze(chat)
     print analyzer
