@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = ApplicationBackend.NAOQI
+APPLICATION_BACKEND = ApplicationBackend.SYSTEM
 
 # Application Language to use
 # Full list of Languages and their formats can be found at

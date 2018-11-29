@@ -1,9 +1,10 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.sensor.face import OpenFace, FaceClassifier
+from pepper.sensor.face import OpenFace, FaceClassifier, Face, Person
 from pepper.framework.util import Scheduler
 from pepper import config
 
 from Queue import Queue
+from typing import List, NoReturn
 
 
 class FaceDetectionComponent(AbstractComponent):
@@ -90,6 +91,7 @@ class FaceDetectionComponent(AbstractComponent):
         self.backend.camera.callbacks += [on_image]
 
     def on_face(self, faces):
+        # type: (List[Face]) -> NoReturn
         """
         On Face Event. Called every time a face is detected.
 
@@ -101,6 +103,7 @@ class FaceDetectionComponent(AbstractComponent):
         pass
 
     def on_person(self, persons):
+        # type: (List[Person]) -> NoReturn
         """
         On Person Event. Called every time a known face is detected.
 
@@ -111,6 +114,7 @@ class FaceDetectionComponent(AbstractComponent):
         pass
 
     def on_new_person(self, persons):
+        # type: (List[Person]) -> NoReturn
         """
         On New Person Event. Called every time an unknown face is detected.
 

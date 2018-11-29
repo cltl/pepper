@@ -2,6 +2,8 @@ from pepper.framework.abstract import AbstractComponent
 from pepper.framework.util import Scheduler
 from threading import Lock
 
+from typing import Optional, NoReturn
+
 
 class TextToSpeechComponent(AbstractComponent):
     def __init__(self, backend):
@@ -19,6 +21,7 @@ class TextToSpeechComponent(AbstractComponent):
         schedule.start()
 
     def say(self, text, animation=None):
+        # type: (str, Optional[str]) -> NoReturn
         """
         Say Text (with Animation) through Text-to-Speech
 

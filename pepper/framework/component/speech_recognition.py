@@ -1,9 +1,12 @@
 from pepper.framework import AbstractComponent, AbstractApplication
-from pepper.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR
+from pepper.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR, ASRHypothesis
 from pepper.framework.util import Scheduler
 from pepper import config
 
+import numpy as np
+
 from Queue import Queue
+from typing import *
 
 
 class SpeechRecognitionComponent(AbstractComponent):
@@ -116,10 +119,15 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
         self._vad = VAD(self.backend.microphone, stream_callbacks=[
             lambda audio, speech: frame_queue.put((audio, speech))])
 
+        # TODO: Implement nicely
+        self._speech_audio = []
+
         def frame_generator():
             speech = True
+            self._speech_audio = []
             while speech:
                 audio, speech = frame_queue.get()
+                if speech: self._speech_audio.append(audio)
                 yield audio
 
         def worker():
@@ -132,12 +140,16 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
 
                 if hypotheses:
 
+                    print([len(a) for a in self._speech_audio])
+
+                    speech_audio = np.concatenate(self._speech_audio)
+
                     # Call on_transcript Event Function
-                    self.on_transcript(hypotheses, audio)
+                    self.on_transcript(hypotheses, speech_audio)
 
                     # Call Callback Functions
                     for callback in self.on_transcript_callbacks:
-                        callback(hypotheses, audio)
+                        callback(hypotheses, speech_audio)
 
         schedule = Scheduler(worker, name="StreamingSpeechRecognitionComponentThread")
         schedule.start()
@@ -161,12 +173,13 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
         return self._vad
 
     def on_transcript(self, hypotheses, audio):
+        # type: (List[ASRHypothesis], np.ndarray) -> NoReturn
         """
         On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.
 
         Parameters
         ----------
-        hypotheses: list of ASRHypothesis
+        hypotheses: List[ASRHypothesis]
             Hypotheses about the corresponding utterance
         audio: numpy.ndarray
             Utterance audio
