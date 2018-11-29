@@ -1,0 +1,20 @@
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+
+select ?sname
+		(group_concat(distinct ?pair ; separator=";") as ?pairs)
+where {
+    GRAPH ?g {
+        ?s n2mu:%s ?o .
+        } .
+    ?s rdfs:label ?sname .
+    ?o rdfs:label ?oname .
+
+    ?g grasp:denotedBy ?m .
+    ?m grasp:wasAttributedTo ?author .
+    ?author rdfs:label ?authorlabel .
+
+    BIND(concat(?oname, ',', ?authorlabel) as ?pair)
+
+} group by ?sname having (count(distinct ?oname) > 1)

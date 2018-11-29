@@ -114,7 +114,8 @@ class Utterance(object):
 
         self._transcript = transcript
         self._tokens = self._clean(self._tokenize(transcript))
-        self._parsed_tree = Parser().parse(self)
+        self._parsed_tree = None
+        # self._parsed_tree = Parser().parse(self)  # TODO: Implement
         self._speaker = speaker.lower()
         self._chat_id = chat_id
         self._chat_turn = chat_turn

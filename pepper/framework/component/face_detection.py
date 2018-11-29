@@ -1,9 +1,9 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.sensor.face import OpenFace, FaceClassifier
+from pepper.framework.util import Scheduler
 from pepper import config
 
 from Queue import Queue
-from threading import Thread
 
 
 class FaceDetectionComponent(AbstractComponent):
@@ -57,36 +57,34 @@ class FaceDetectionComponent(AbstractComponent):
             person_queue.put(persons)
 
         def worker():
-            while True:
-                faces = face_queue.get()
-                if faces:
+            faces = face_queue.get()
+            if faces:
 
-                    # Call on_face Event Function
-                    self.on_face(faces)
+                # Call on_face Event Function
+                self.on_face(faces)
 
-                    # Call Callbacks
-                    for callback in self.on_face_callbacks:
-                        callback(faces)
+                # Call Callbacks
+                for callback in self.on_face_callbacks:
+                    callback(faces)
 
-                persons = person_queue.get()
-                if persons:
+            persons = person_queue.get()
+            if persons:
 
-                    if persons[0].name == FaceClassifier.NEW:
-                        self.on_new_person(persons)
-                        for callback in self.on_new_person_callbacks:
-                            callback(persons)
-                    else:
-                        # Call on_person Event Function
-                        self.on_person(persons)
+                if persons[0].name == FaceClassifier.NEW:
+                    self.on_new_person(persons)
+                    for callback in self.on_new_person_callbacks:
+                        callback(persons)
+                else:
+                    # Call on_person Event Function
+                    self.on_person(persons)
 
-                        # Call Callback Functions
-                        for callback in self.on_person_callbacks:
-                            callback(persons)
+                    # Call Callback Functions
+                    for callback in self.on_person_callbacks:
+                        callback(persons)
 
         # Initialize Queue & Worker
-        thread = Thread(target=worker)
-        thread.daemon = True
-        thread.start()
+        schedule = Scheduler(worker, name="FaceDetectionComponentThread")
+        schedule.start()
 
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]

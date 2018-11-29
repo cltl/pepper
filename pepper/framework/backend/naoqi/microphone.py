@@ -8,7 +8,7 @@ class NAOqiMicrophone(AbstractMicrophone):
     SERVICE = "ALAudioDevice"
     RATE = 16000
 
-    def __init__(self, session, index, callbacks = []):
+    def __init__(self, session, index, callbacks=[]):
         """
         NAOqi Microphone
 

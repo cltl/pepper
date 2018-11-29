@@ -1,8 +1,8 @@
 from pepper.framework import AbstractComponent, AbstractApplication
 from pepper.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR
+from pepper.framework.util import Scheduler
 from pepper import config
 
-from threading import Thread
 from Queue import Queue
 
 
@@ -99,8 +99,6 @@ class SynchronousSpeechRecognitionComponent(SpeechRecognitionComponent):
 
 
 class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
-    _application = None  # type: AbstractApplication
-
     def __init__(self, backend):
         """
         Construct Speech Recognition Component
@@ -125,26 +123,24 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
                 yield audio
 
         def worker():
-            while True:
-                audio, speech = frame_queue.get()
+            audio, speech = frame_queue.get()
 
-                if speech:
-                    utterance = frame_generator()
+            if speech:
+                utterance = frame_generator()
 
-                    hypotheses = self.asr.transcribe(utterance)
+                hypotheses = self.asr.transcribe(utterance)
 
-                    if hypotheses:
+                if hypotheses:
 
-                        # Call on_transcript Event Function
-                        self.on_transcript(hypotheses, audio)
+                    # Call on_transcript Event Function
+                    self.on_transcript(hypotheses, audio)
 
-                        # Call Callback Functions
-                        for callback in self.on_transcript_callbacks:
-                            callback(hypotheses, audio)
+                    # Call Callback Functions
+                    for callback in self.on_transcript_callbacks:
+                        callback(hypotheses, audio)
 
-        thread = Thread(name="SpeechThread", target=worker)
-        thread.daemon = True
-        thread.start()
+        schedule = Scheduler(worker, name="StreamingSpeechRecognitionComponentThread")
+        schedule.start()
 
     @property
     def asr(self):
