@@ -54,6 +54,7 @@ def fix_contractions(words):
 
     if words[1] == 'm': words[1] = 'am'
     if words[1] == 're': words[1] = 'are'
+    if words[1] == 's': words[1] = 'is'
 
     return words
 
@@ -88,8 +89,12 @@ def reply_to_question(brain_response, viewed_objects):
     previous_subject = ''
     previous_predicate = ''
 
-    if len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees': #FIX
+    print(brain_response['question'])
+    print(brain_response['response'])
+
+    if brain_response['question']['object']['type']!='hack' and (len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees'): #FIX
         if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
+            print(viewed_objects)
             say = 'I see '
             for obj in viewed_objects:
                 if len(viewed_objects)>1 and obj == viewed_objects[len(viewed_objects)-1]:
@@ -198,7 +203,11 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
         return 'error in the rdf'
 
     template['subject']['label'] = rdf['subject'].strip().lower() #capitalization
-    template['predicate']['type'] = rdf['predicate'].strip()
+    if rdf['predicate']=='seen':
+        template['predicate']['type'] = 'sees'
+        template['object']['type'] = 'hack'
+    else:
+        template['predicate']['type'] = rdf['predicate'].strip()
     if rdf['object'] in names:
         template['object']['label'] = rdf['object'].strip()
         template['object']['type'] = 'PERSON'

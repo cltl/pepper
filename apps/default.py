@@ -19,6 +19,7 @@ import numpy as np
 
 from random import choice
 from time import time, sleep
+from pepper.language.utils import *
 
 
 class DefaultApp(AbstractApplication,
@@ -145,9 +146,11 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self._seen_objects.update([obj.name for obj in objects])
 
     def on_transcript(self, hypotheses, audio):
-        # Process Utterance
-        utterance = hypotheses[0].transcript
+        # Choose Utterance from Names
+        utterance = self._name_parser.parse_known(hypotheses).transcript
         self.chat.add_utterance(utterance)
+
+        self.log.info("Utterance: {}".format(utterance))
 
         self._last_seen = time()
 
@@ -169,13 +172,11 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             return
         elif self.respond_qna(utterance):
             return
+        elif self.respond_know_object(utterance):
+            return
 
         # Parse only sentences within bounds
         elif 3 <= len(utterance.split()) <= 10:
-
-            # Parse Names
-            utterance = self._name_parser.parse_known(hypotheses).transcript
-
             self.say(choice(THINKING), animations.THINK)
 
             if self.respond_brain(utterance):
@@ -273,6 +274,34 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             self.say("{} {}. {}".format(choice(ADDRESSING), self.chat.speaker, answer),
                      choice([animations.BODY_LANGUAGE, animations.EXCITED]))
         return answer
+
+    def respond_know_object(self, question):
+
+        SUBJECT = "leolani"
+        PREDICATE = "seen"
+        TAGS = ["have you ever seen ", "did you ever see "]
+
+        for tag in TAGS:
+            if tag in question.lower():
+                obj = question.replace(tag, "").replace("a ", "").replace("an ", "").strip()
+
+                print("KNOW OBJECT: ", SUBJECT, PREDICATE, obj)
+
+                self.say("I wonder if I ever saw a {}".format(obj))
+
+                rdf = {'subject': SUBJECT, 'predicate':PREDICATE, 'object': obj}
+                template = write_template(self.chat.speaker, rdf, self.chat.id, self.chat.last_utterance.chat_turn, 'question')
+                response = self.brain.query_brain(template)
+                reply = reply_to_question(response,[])
+
+                if reply:
+                    self.say(reply)
+                else:
+                    self.say("BAD ERROR!")
+
+                return True
+
+        return False
 
     def respond_brain(self, question):
         objects = list(self._seen_objects)

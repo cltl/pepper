@@ -9,7 +9,7 @@ class NameParser:
 
     TAGGER = None  # type: NER
 
-    def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2.5, min_alternatives=4):
+    def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2, min_alternatives=4):
         if not NameParser.TAGGER:
             NameParser.TAGGER = NER()
 
@@ -43,6 +43,7 @@ class NameParser:
                     closest = distance
 
             if closest_name:
+                print("Closest Name:", closest_name)
                 return ASRHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence)
 
         return hypotheses[0]

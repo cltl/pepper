@@ -32,7 +32,7 @@ class ASRHypothesis(object):
 
 class AbstractASR(object):
 
-    MAX_ALTERNATIVES = 1
+    MAX_ALTERNATIVES = 10
 
     def __init__(self, language='en-GB'):
         """
