@@ -1,14 +1,16 @@
 from pepper.brain.long_term_memory import LongTermMemory
-from pepper.brain.utils.helper_functions import phrase_all_conflicts, phrase_negation_conflicts
+from pepper.brain.utils.helper_functions import phrase_all_conflicts, phrase_cardinality_conflicts, \
+    phrase_negation_conflicts, phrase_statement_novelty, phrase_type_novelty, phrase_update
 
 import json
+from datetime import date
 
 
 # Create brain connection
 brain = LongTermMemory()
 
 
-capsule = {  # lenka saw a dog
+capsule_sees = {  # lenka saw a dog
         "subject": {
             "label": "lenka",
             "type": ""
@@ -24,13 +26,40 @@ capsule = {  # lenka saw a dog
         "chat": None,
         "turn": None,
         "position": None,
-        "date": None
+        "date": date(2018, 11, 19)
     }
 
-conflicts = brain.get_negation_conflicts_with_statement(capsule)
+capsule_serbia = {  # lenka is from Serbia
+        "subject": {
+            "label": "bram",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "is_from"
+        },
+        "object": {
+            "label": "mongolia",
+            "type": "location"
+        },
+        "author": "selene",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 19)
+    }
 
-# print(json.dumps(conflicts, indent=4))
+x = brain.update(capsule_serbia)
+print(json.dumps(x, indent=4, sort_keys=True))
+print(phrase_cardinality_conflicts(x['cardinality_conflicts'], capsule_serbia))
+print(phrase_negation_conflicts(x['negation_conflicts'], capsule_serbia))
+print(phrase_statement_novelty(x['statement_novelty']))
+print(phrase_type_novelty(x['entity_novelty'], capsule_serbia))
 
-print(phrase_negation_conflicts(conflicts))
+
+print('\n\n')
+print(phrase_update(x))
+
+
+
 
 
