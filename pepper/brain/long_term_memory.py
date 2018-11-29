@@ -581,8 +581,6 @@ class LongTermMemory(object):
         :param date:
         :return:
         """
-        self._log.debug('Chat with {} on {}'.format(actor, date))
-
         query = read_query('last_chat_with') % (actor)
         response = self._submit_query(query)
 
@@ -598,8 +596,6 @@ class LongTermMemory(object):
         return chat_id
 
     def create_turn_id(self, chat_id):
-        self._log.debug('Turn in chat {}'.format(chat_id))
-
         query = read_query('last_turn_in_chat') % (chat_id)
         response = self._submit_query(query)
         return int(response['turnid']['value']) + 1 if response else 1
