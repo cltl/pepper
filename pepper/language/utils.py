@@ -54,6 +54,7 @@ def fix_contractions(words):
 
     if words[1] == 'm': words[1] = 'am'
     if words[1] == 're': words[1] = 'are'
+    if words[1] == 's': words[1] = 'is'
 
     return words
 
@@ -88,8 +89,12 @@ def reply_to_question(brain_response, viewed_objects):
     previous_subject = ''
     previous_predicate = ''
 
-    if len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees': #FIX
+    print(brain_response['question'])
+    print(brain_response['response'])
+
+    if not brain_response['question']['hack'] and (len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees'): #FIX
         if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
+            print(viewed_objects)
             say = 'I see '
             for obj in viewed_objects:
                 if len(viewed_objects)>1 and obj == viewed_objects[len(viewed_objects)-1]:
@@ -110,7 +115,7 @@ def reply_to_question(brain_response, viewed_objects):
     brain_response['response'].sort(key=lambda x: x['authorlabel']['value'])
     print(brain_response['response'])
 
-    for response in brain_response['response']:
+    for response in brain_response['response'][:4]:
         person = ''
         if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
             if response['authorlabel']['value'].lower() == brain_response['question']['author'].lower():
@@ -165,7 +170,7 @@ def reply_to_question(brain_response, viewed_objects):
                         say += ' is from '
 
                 else:
-                    if person in ['first', 'second']:
+                    if person in ['first', 'second'] and brain_response['question']['predicate']['type'].endswith('s'):
                         say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
                     else:
                         say += ' '+brain_response['question']['predicate']['type']+' '
@@ -198,7 +203,11 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
         return 'error in the rdf'
 
     template['subject']['label'] = rdf['subject'].strip().lower() #capitalization
-    template['predicate']['type'] = rdf['predicate'].strip()
+    if rdf['predicate']=='seen':
+        template['predicate']['type'] = 'sees'
+        template['object']['hack'] = True
+    else:
+        template['predicate']['type'] = rdf['predicate'].strip()
     if rdf['object'] in names:
         template['object']['label'] = rdf['object'].strip()
         template['object']['type'] = 'PERSON'
@@ -343,6 +352,7 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
                     i+=1
                 else:
                     rdf['predicate'] = words[i]+'s'if not words[i].endswith('s') else words[i]
+                    if rdf['predicate'] == 'cans': rdf['predicate'] = 'can'
                     if rdf['predicate'] == 'haves': rdf['predicate'] = 'owns'
                 break
             rdf['subject']+=(words[i]+' ')

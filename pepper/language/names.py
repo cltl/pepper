@@ -9,7 +9,7 @@ class NameParser:
 
     TAGGER = None  # type: NER
 
-    def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2.5, min_alternatives=4):
+    def __init__(self, names, languages=('en-GB', 'nl-NL', 'es-ES'), max_name_distance=2, min_alternatives=4):
         if not NameParser.TAGGER:
             NameParser.TAGGER = NER()
 
@@ -43,14 +43,12 @@ class NameParser:
                     closest = distance
 
             if closest_name:
+                print("Closest Name:", closest_name)
                 return ASRHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence)
 
         return hypotheses[0]
 
     def parse_new(self, audio):
-
-        print(audio)
-
         threads = [self._pool.submit(self._parse_new, asr, audio) for asr in self._asrs]
         results = [result.result() for result in futures.as_completed(threads)]
 
@@ -69,8 +67,6 @@ class NameParser:
 
     def _parse_new(self, asr, audio):
         transcript = asr.transcribe(audio)
-
-        print(asr, transcript)
 
         for i, hypothesis in enumerate(transcript):
             for word, tag in self.TAGGER.tag(hypothesis.transcript):

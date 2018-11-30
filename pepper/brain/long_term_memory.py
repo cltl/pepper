@@ -100,6 +100,9 @@ class LongTermMemory(object):
         items_like_subject = self.get_instance_of_type(capsule['subject']['type'])
         items_like_object = self.get_instance_of_type(capsule['object']['type'])
 
+        # Find any overlaps
+        overlaps = self.get_overlaps(capsule)
+
         # Finish process of uploading new knowledge to the triple store
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
@@ -112,6 +115,9 @@ class LongTermMemory(object):
         subject_gaps = self.get_gaps_from_entity(capsule['subject'])
         object_gaps = self.get_gaps_from_entity(capsule['object'])
 
+        # Report trust
+        trust = 0 if self.when_last_chat_with(capsule['author']) == '' else 1
+
         # Create JSON output
         capsule["date"] = str(capsule["date"])
         output = {'response': code, 'statement': capsule,
@@ -121,7 +127,9 @@ class LongTermMemory(object):
                   'negation_conflicts': negation_conflicts,
                   'cardinality_conflicts': object_conflict,
                   'subject_gaps': subject_gaps,
-                  'object_gaps': object_gaps}
+                  'object_gaps': object_gaps,
+                  'overlaps': overlaps,
+                  'trust': trust}
 
         return output
 
@@ -329,7 +337,8 @@ class LongTermMemory(object):
         """
         query = read_query('when_last_chat_with') % (actor_label)
         response = self._submit_query(query)
-        return response[0]['time']['value'].split('/')[-1]
+
+        return response[0]['time']['value'].split('/')[-1] if response != [] else ''
 
     def get_triples_with_predicate(self, predicate):
         """
@@ -444,6 +453,32 @@ class LongTermMemory(object):
             object_gaps = []
 
         return {'subject': subject_gaps, 'object': object_gaps}
+
+    ########## overlaps ##########
+    def get_overlaps(self, capsule):
+        # Role as subject
+        query = read_query('object_overlap') % (capsule['predicate']['type'], capsule['object']['label'],
+                                                capsule['subject']['label'])
+        response = self._submit_query(query)
+
+        if response:
+            object_overlap = [{'subject': elem['slabel']['value'], 'author': elem['authorlabel']['value'],
+                                  'date': elem['date']['value'].split('/')[-1]} for elem in response]
+        else:
+            object_overlap = []
+
+        # Role as object
+        query = read_query('subject_overlap') % (capsule['predicate']['type'], capsule['subject']['label'],
+                                                capsule['object']['label'])
+        response = self._submit_query(query)
+
+        if response:
+            subject_overlap = [{'object': elem['olabel']['value'], 'author': elem['authorlabel']['value'],
+                                  'date': elem['date']['value'].split('/')[-1]} for elem in response]
+        else:
+            subject_overlap = []
+
+        return {'subject': subject_overlap, 'object': object_overlap}
 
     ########## semantic web ##########
     def exact_match_dbpedia(self, item):

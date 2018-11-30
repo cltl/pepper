@@ -139,7 +139,6 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
                 hypotheses = self.asr.transcribe(utterance)
 
                 if hypotheses:
-
                     # Combine Speech Audio Samples in one Array
                     speech_audio = np.concatenate(self._speech_audio)
 

@@ -12,7 +12,7 @@ class VAD(object):
 
     FRAME_MS = 10  # Must be either 10/20/30 ms, according to webrtcvad specification
     BUFFER_SIZE = 100  # Buffer Size
-    WINDOW_SIZE = 3 * FRAME_MS  # Sliding Window Length (Multiples of Frame MS)
+    WINDOW_SIZE = 4 * FRAME_MS  # Sliding Window Length (Multiples of Frame MS)
 
     def __init__(self, microphone, callbacks=(), stream_callbacks=(), mode=3,
                  voice_threshold=config.VOICE_ACTIVITY_DETECTION_THRESHOLD,

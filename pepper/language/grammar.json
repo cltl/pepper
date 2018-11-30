@@ -173,7 +173,8 @@
       "love": {},
       "enjoy": {},
       "see": {},
-      "own": {}
+      "own": {},
+      "can":{}
     },
     "predicates": [
       "likes",
@@ -183,7 +184,8 @@
       "loves",
       "enjoys",
       "sees",
-      "owns"
+      "owns",
+      "can"
     ],
     "modal_verbs": [
       "can",

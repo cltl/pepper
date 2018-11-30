@@ -31,7 +31,7 @@ class AbstractMicrophone(object):
         self._t0 = time()
 
         self._queue = Queue()
-        self._processor_scheduler = Scheduler(self._processor, name="MicrophoneThread")
+        self._processor_scheduler = Scheduler(self._processor, 0, name="MicrophoneThread")
         self._processor_scheduler.start()
 
         self._log = logger.getChild(self.__class__.__name__)

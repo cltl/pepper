@@ -13,10 +13,13 @@ from pepper.knowledge.wikipedia import Wikipedia
 from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.query import QnA
 
+from pepper.brain.utils.helper_functions import *
+
 import numpy as np
 
 from random import choice
 from time import time, sleep
+from pepper.language.utils import *
 
 
 class DefaultApp(AbstractApplication,
@@ -102,6 +105,9 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
                  choice([animations.BOW, animations.FRIENDLY, animations.HI]))  # Greet Person
 
+        # TODO: Implement non-hardcoded
+        self.say("Where are you from?")
+
     @property
     def application(self):
         """
@@ -140,9 +146,11 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self._seen_objects.update([obj.name for obj in objects])
 
     def on_transcript(self, hypotheses, audio):
-        # Process Utterance
-        utterance = hypotheses[0].transcript
+        # Choose Utterance from Names
+        utterance = self._name_parser.parse_known(hypotheses).transcript
         self.chat.add_utterance(utterance)
+
+        self.log.info("Utterance: {}".format(utterance))
 
         self._last_seen = time()
 
@@ -164,13 +172,11 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             return
         elif self.respond_qna(utterance):
             return
+        elif self.respond_know_object(utterance):
+            return
 
         # Parse only sentences within bounds
         elif 3 <= len(utterance.split()) <= 10:
-
-            # Parse Names
-            utterance = self._name_parser.parse_known(hypotheses).transcript
-
             self.say(choice(THINKING), animations.THINK)
 
             if self.respond_brain(utterance):
@@ -230,7 +236,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         return False
 
     def respond_meeting(self, statement):
-        for meeting in ["my name is", "let's meet", "I am"]:
+        for meeting in ["let's meet"]:
             if meeting in statement:
                 MeetIntention(self.application)
                 return True
@@ -269,43 +275,69 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                      choice([animations.BODY_LANGUAGE, animations.EXCITED]))
         return answer
 
+    def respond_know_object(self, question):
+
+        SUBJECT = "leolani"
+        PREDICATE = "seen"
+        TAGS = ["have you ever seen ", "did you ever see "]
+
+        for tag in TAGS:
+            if tag in question.lower():
+                obj = question.replace(tag, "").replace("a ", "").replace("an ", "").strip()
+
+                print("KNOW OBJECT: ", SUBJECT, PREDICATE, obj)
+
+                self.say("I wonder if I ever saw a {}".format(obj))
+
+                rdf = {'subject': SUBJECT, 'predicate':PREDICATE, 'object': obj}
+                template = write_template(self.chat.speaker, rdf, self.chat.id, self.chat.last_utterance.chat_turn, 'question')
+                response = self.brain.query_brain(template)
+                reply = reply_to_question(response,[])
+
+                if reply:
+                    self.say(reply)
+                else:
+                    self.say("BAD ERROR!")
+
+                return True
+
+        return False
+
     def respond_brain(self, question):
-        try:
-            objects = list(self._seen_objects)
+        objects = list(self._seen_objects)
 
-            expression = classify_and_process_utterance(
-                question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
+        expression = classify_and_process_utterance(
+            question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
 
-            # Cancel if not a valid expression
-            if not expression or 'utterance_type' not in expression:
+        # Cancel if not a valid expression
+        if not expression or 'utterance_type' not in expression:
+            return False
+
+        # Process Questions
+        elif expression['utterance_type'] == 'question':
+            result = self.application.brain.query_brain(expression)
+            response = reply_to_question(result, objects)
+
+            if response:
+                self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
+                return True
+            else:
+                self.say("{}, but {}!".format(
+                    choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
+                    choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
+                    animations.THINK
+                ))
                 return False
 
-            # Process Questions
-            elif expression['utterance_type'] == 'question':
-                result = self.application.brain.query_brain(expression)
-                response = reply_to_question(result, objects)
+        # Process Statements
+        elif expression['utterance_type'] == 'statement':
+            result = self.application.brain.update(expression)
+            # response = reply_to_statement(result, self.chat.speaker, objects, self)
+            response = phrase_update(result, True, True)
+            self.say(response.replace('_', ' '), animations.EXCITED)
 
-                if response:
-                    self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
-                    return True
-                else:
-                    self.say("{}, but {}!".format(
-                        choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
-                        choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
-                        animations.THINK
-                    ))
-                    return False
+        return True
 
-            # Process Statements
-            elif expression['utterance_type'] == 'statement':
-                result = self.application.brain.update(expression)
-                response = reply_to_statement(result, self.chat.speaker, objects, self)
-                self.say(response.replace('_', ' '), animations.EXCITED)
-
-            return True
-
-        except Exception as e:
-            self.log.error("NLP ERROR: {}".format(e))
 
         return False
 
@@ -354,17 +386,18 @@ class MeetIntention(AbstractIntention, DefaultApp):
         self._face = []
 
         self.say("{}, {}".format(choice(GREETING), choice(INTRODUCE)))
+        self.say(choice(ASK_NAME))
 
-        for sentence in [
-                "I wish to meet you!",
-                "By continuing to meet me, you agree with locally storing your face features and name.",
-                "Your personal data is only used for the purpose of meeting you and not shared with third parties.",
-                "After meeting, you can always ask me to erase your personal data, no hard feelings!",
-                "Ok, enough legal stuff! {}".format(choice(ASK_NAME))]:
-
-            self.say(sentence)
-            self._last_utterance = time()
-            sleep(0.25)
+        # for sentence in [
+        #         "I wish to meet you!",
+        #         "By continuing to meet me, you agree with locally storing your face features and name.",
+        #         "Your personal data is only used for the purpose of meeting you and not shared with third parties.",
+        #         "After meeting, you can always ask me to erase your personal data, no hard feelings!",
+        #         "Ok, enough legal stuff! {}".format(choice(ASK_NAME))]:
+        #
+        #     self.say(sentence)
+        #     self._last_utterance = time()
+        #     sleep(0.25)
 
     def on_image(self, image):
         # If meeting times out, go back to idle!

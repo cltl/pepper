@@ -137,10 +137,14 @@ def analyze_verb(verb):
             morphology['person']='third'
 
         verb_lemma = wnl.lemmatize(verb, pos='v')
-        if verb_lemma in grammar['verbs']:
+        #print(verb_lemma)
+
+        if verb_lemma=='can':
+            morphology['predicate'] = verb_lemma
+        elif verb_lemma in grammar['verbs']:
            morphology['predicate'] = verb_lemma+'s'
         else:
-            LOG.error('unkown verb: '+verb+', lemma: '+verb_lemma)
+            LOG.error('unknown verb: '+verb+', lemma: '+verb_lemma)
 
     return morphology
 
@@ -215,6 +219,19 @@ def analyze_verb_question(words, speaker, viewed_objects):
     '''
     tagged = pos_tag(words)
     rdf = {'subject': '', 'predicate': '', 'object': ''}
+
+    words_new = []
+
+    if words[0].lower() == 'do' and words[1].lower()=='you' and words[2].lower()=='know' and len(words)>5:
+        words_new.append(words[3])
+        words_new.append(words[5])
+        words_new.append(words[4])
+        if len(words)>6:
+            for word in words[6:]:
+                words_new.append(word)
+
+    if len(words_new) and words_new[0].lower() in grammar['question words']:
+        return analyze_wh_question(words_new,speaker,grammar['question words'][words_new[0].lower()],viewed_objects)
 
     # extract subject
     np, index = extract_np(words, tagged, index=1)
