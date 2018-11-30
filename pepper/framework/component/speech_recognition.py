@@ -119,7 +119,7 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
         self._vad = VAD(self.backend.microphone, stream_callbacks=[
             lambda audio, speech: frame_queue.put((audio, speech))])
 
-        # TODO: Implement nicely
+        # TODO: Implement in a proper way
         self._speech_audio = []
 
         def frame_generator():
