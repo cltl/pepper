@@ -28,6 +28,8 @@ class QnA:
 
     QNA_STATIC = {
         # Personal Information
+        "What is the color of the sky": "Blue",
+        "What is the color of water": "Water",
         "I like you": "I like you too!",
         "Can you hear me?": "Yes, I can hear you!",
         "My name is": "I'm glad to meet you! My name is Leo Lani!",
@@ -66,8 +68,8 @@ class QnA:
         "What are you doing?": "I'm having a conversation with you, dear human!",
         "Are you famous?": "I have been on Dutch TV, so yes indeed, you're talking to a celebrity here!",
         "Can you introduce yourself?": "I surely can introduce myself! My name is Leo Lani, "
-                                       "which means 'Voice of an Angel' in Hawaiian"
-                                       "I am a social robot and I learn from conversations with humans! I like humans!",
+                                       " which means 'Voice of an Angel' in Hawaiian. "
+                                       "I am a social robot and I learn from conversations with humans!",
 
         # Technology
         "Do you have a brain?": "Haha, no! My brain is located on the laptop of my programmers "

@@ -297,48 +297,48 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                 if reply:
                     self.say(reply)
                 else:
-                    self.say("BAD ERROR!")
+                    self.say("No, I've never seen a {}".format(obj))
 
                 return True
 
         return False
 
     def respond_brain(self, question):
-        objects = list(self._seen_objects)
+        try:
+            objects = list(self._seen_objects)
 
-        expression = classify_and_process_utterance(
-            question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
+            expression = classify_and_process_utterance(
+                question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
 
-        # Cancel if not a valid expression
-        if not expression or 'utterance_type' not in expression:
-            return False
-
-        # Process Questions
-        elif expression['utterance_type'] == 'question':
-            result = self.application.brain.query_brain(expression)
-            response = reply_to_question(result, objects)
-
-            if response:
-                self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
-                return True
-            else:
-                self.say("{}, but {}!".format(
-                    choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
-                    choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
-                    animations.THINK
-                ))
+            # Cancel if not a valid expression
+            if not expression or 'utterance_type' not in expression:
                 return False
 
-        # Process Statements
-        elif expression['utterance_type'] == 'statement':
-            result = self.application.brain.update(expression)
-            # response = reply_to_statement(result, self.chat.speaker, objects, self)
-            response = phrase_update(result, True, True)
-            self.say(response.replace('_', ' '), animations.EXCITED)
+            # Process Questions
+            elif expression['utterance_type'] == 'question':
+                result = self.application.brain.query_brain(expression)
+                response = reply_to_question(result, objects)
 
-        return True
+                if response:
+                    self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
+                    return True
+                else:
+                    self.say("{}, but {}!".format(
+                        choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
+                        choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
+                        animations.THINK
+                    ))
+                    return False
 
+            # Process Statements
+            elif expression['utterance_type'] == 'statement':
+                result = self.application.brain.update(expression)
+                # response = reply_to_statement(result, self.chat.speaker, objects, self)
+                response = phrase_update(result, True, True)
+                self.say(response.replace('_', ' '), animations.EXCITED)
 
+            return True
+        except: pass
         return False
 
     def respond_wikipedia(self, question):
