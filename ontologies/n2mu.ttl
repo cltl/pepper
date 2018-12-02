@@ -86,6 +86,9 @@ n2mu:born_in rdf:type owl:ObjectProperty ;
 
 ###  http://cltl.nl/leolani/n2mu/dislikes
 n2mu:dislikes rdf:type owl:ObjectProperty ;
+              rdfs:domain n2mu:agent ;
+              rdfs:range n2mu:agent ,
+                         n2mu:interest ;
               owl:propertyDisjointWith n2mu:likes .
 
 
@@ -118,9 +121,17 @@ n2mu:in rdf:type owl:ObjectProperty ,
         rdfs:range n2mu:country .
 
 
+###  http://cltl.nl/leolani/n2mu/is_child_of
+n2mu:is_child_of rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf n2mu:is_family_of ;
+                 rdfs:domain n2mu:agent ;
+                 rdfs:range n2mu:agent .
+
+
 ###  http://cltl.nl/leolani/n2mu/is_colleague_of
-n2mu:is_colleague_of rdf:type owl:ObjectProperty ,
-                              owl:SymmetricProperty ;
+n2mu:is_colleague_of rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf n2mu:knows ;
+                     rdf:type owl:SymmetricProperty ;
                      rdfs:domain [ owl:intersectionOf ( n2mu:agent
                                                         [ rdf:type owl:Restriction ;
                                                           owl:onProperty n2mu:is_member_of ;
@@ -153,9 +164,22 @@ y Type Institution
 and x == y""" .
 
 
+###  http://cltl.nl/leolani/n2mu/is_family_of
+n2mu:is_family_of rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf n2mu:knows ;
+                  rdfs:domain n2mu:agent ;
+                  rdfs:range n2mu:agent .
+
+
+###  http://cltl.nl/leolani/n2mu/is_friends_with
+n2mu:is_friends_with rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf n2mu:knows .
+
+
 ###  http://cltl.nl/leolani/n2mu/is_from
 n2mu:is_from rdf:type owl:ObjectProperty ;
-             rdfs:domain n2mu:agent ;
+             rdfs:domain n2mu:agent ,
+                         n2mu:cuisine ;
              rdfs:range n2mu:location .
 
 
@@ -163,6 +187,13 @@ n2mu:is_from rdf:type owl:ObjectProperty ;
 n2mu:is_member_of rdf:type owl:ObjectProperty ;
                   rdfs:domain n2mu:agent ;
                   rdfs:range n2mu:institution .
+
+
+###  http://cltl.nl/leolani/n2mu/is_parent_of
+n2mu:is_parent_of rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf n2mu:is_family_of ;
+                  rdfs:domain n2mu:agent ;
+                  rdfs:range n2mu:agent .
 
 
 ###  http://cltl.nl/leolani/n2mu/knows
@@ -180,7 +211,8 @@ n2mu:liked_by rdf:type owl:ObjectProperty ;
 ###  http://cltl.nl/leolani/n2mu/likes
 n2mu:likes rdf:type owl:ObjectProperty ;
            rdfs:domain n2mu:agent ;
-           rdfs:range n2mu:interest .
+           rdfs:range n2mu:agent ,
+                      n2mu:interest .
 
 
 ###  http://cltl.nl/leolani/n2mu/located
@@ -200,6 +232,13 @@ n2mu:manufactured_in rdf:type owl:ObjectProperty ;
 n2mu:perceive rdf:type owl:ObjectProperty ;
               rdfs:domain n2mu:agent ;
               rdfs:range n2mu:percept .
+
+
+###  http://cltl.nl/leolani/n2mu/plays
+n2mu:plays rdf:type owl:ObjectProperty ;
+           rdfs:domain n2mu:agent ;
+           rdfs:range n2mu:song ,
+                      n2mu:sport .
 
 
 ###  http://cltl.nl/leolani/n2mu/sense
@@ -250,6 +289,12 @@ n2mu:studies_at rdf:type owl:ObjectProperty ;
                 rdfs:subPropertyOf n2mu:is_member_of ;
                 rdfs:domain n2mu:agent ;
                 rdfs:range n2mu:university .
+
+
+###  http://cltl.nl/leolani/n2mu/travel_to
+n2mu:travel_to rdf:type owl:ObjectProperty ;
+               rdfs:domain n2mu:agent ;
+               rdfs:range n2mu:location .
 
 
 ###  http://cltl.nl/leolani/n2mu/works_at
@@ -487,11 +532,6 @@ n2mu:temperature rdf:type owl:Class ;
 n2mu:touch rdf:type owl:Class ;
            owl:equivalentClass obo:MF_0000056 ;
            rdfs:subClassOf n2mu:percept .
-
-
-###  http://cltl.nl/leolani/n2mu/travel_destination
-n2mu:travel_destination rdf:type owl:Class ;
-                        rdfs:subClassOf n2mu:interest_occurrence .
 
 
 ###  http://cltl.nl/leolani/n2mu/university

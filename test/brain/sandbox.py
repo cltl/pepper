@@ -10,7 +10,7 @@ from datetime import date
 brain = LongTermMemory()
 
 
-capsule_sees = {  # lenka saw a dog
+capsule_serbia = {  # lenka saw a dog
         "subject": {
             "label": "lenka",
             "type": ""
@@ -22,31 +22,31 @@ capsule_sees = {  # lenka saw a dog
             "label": "dog",
             "type": ""
         },
-        "author": None,
-        "chat": None,
-        "turn": None,
-        "position": None,
-        "date": date(2018, 11, 19)
-    }
-
-capsule_serbia = {  # lenka is from Serbia
-        "subject": {
-            "label": "bram",
-            "type": "person"
-        },
-        "predicate": {
-            "type": "is_from"
-        },
-        "object": {
-            "label": "mongolia",
-            "type": "location"
-        },
         "author": "selene",
         "chat": 1,
         "turn": 1,
         "position": "0-25",
         "date": date(2018, 3, 19)
     }
+
+# capsule_serbia = {  # lenka is from Serbia
+#         "subject": {
+#             "label": "bram",
+#             "type": "person"
+#         },
+#         "predicate": {
+#             "type": "is_from"
+#         },
+#         "object": {
+#             "label": "mongolia",
+#             "type": "location"
+#         },
+#         "author": "selene",
+#         "chat": 1,
+#         "turn": 1,
+#         "position": "0-25",
+#         "date": date(2018, 3, 19)
+#     }
 
 x = brain.update(capsule_serbia)
 print(json.dumps(x, indent=4, sort_keys=True))
