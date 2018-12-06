@@ -173,21 +173,13 @@
         <span class="s2">&quot;How many people did you meet?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;I met </span><span class="si">{}</span><span class="s2"> people today!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
         <span class="s2">&quot;Who did you meet?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;I met </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.bin&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_NEW_ROOT</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;NEW.bin&quot;</span><span class="p">)),</span>
-        <span class="s2">&quot;What can you do?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span>
-            <span class="s2">&quot;I can answer factual questions by querying the web!&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;You can ask me personal questions and I will try to answer them!&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;You can tell me what you like, and I&#39;ll remember!&quot;</span><span class="p">,</span>
-        <span class="p">]),</span>
-        <span class="s2">&quot;What more can you do?&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span>
-            <span class="s2">&quot;I can answer factual questions by querying the web!&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;You can ask me personal questions and I will try to answer them!&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;You can tell me what you like, and I&#39;ll remember!&quot;</span><span class="p">,</span>
-        <span class="p">]),</span>
         <span class="s2">&quot;Tell me a joke!&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">(</span><span class="n">JOKE</span><span class="p">)</span>
     <span class="p">}</span>
 
     <span class="n">QNA_STATIC</span> <span class="o">=</span> <span class="p">{</span>
         <span class="c1"># Personal Information</span>
+        <span class="s2">&quot;What is the color of the sky&quot;</span><span class="p">:</span> <span class="s2">&quot;Blue&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;What is the color of water&quot;</span><span class="p">:</span> <span class="s2">&quot;Water&quot;</span><span class="p">,</span>
         <span class="s2">&quot;I like you&quot;</span><span class="p">:</span> <span class="s2">&quot;I like you too!&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Can you hear me?&quot;</span><span class="p">:</span> <span class="s2">&quot;Yes, I can hear you!&quot;</span><span class="p">,</span>
         <span class="s2">&quot;My name is&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m glad to meet you! My name is Leo Lani!&quot;</span><span class="p">,</span>
@@ -226,8 +218,8 @@
         <span class="s2">&quot;What are you doing?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m having a conversation with you, dear human!&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Are you famous?&quot;</span><span class="p">:</span> <span class="s2">&quot;I have been on Dutch TV, so yes indeed, you&#39;re talking to a celebrity here!&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Can you introduce yourself?&quot;</span><span class="p">:</span> <span class="s2">&quot;I surely can introduce myself! My name is Leo Lani, &quot;</span>
-                                       <span class="s2">&quot;which means &#39;Voice of an Angel&#39; in Hawaiian&quot;</span>
-                                       <span class="s2">&quot;I am a social robot and I learn from conversations with humans! I like humans!&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot; which means &#39;Voice of an Angel&#39; in Hawaiian. &quot;</span>
+                                       <span class="s2">&quot;I am a social robot and I learn from conversations with humans!&quot;</span><span class="p">,</span>
 
         <span class="c1"># Technology</span>
         <span class="s2">&quot;Do you have a brain?&quot;</span><span class="p">:</span> <span class="s2">&quot;Haha, no! My brain is located on the laptop of my programmers &quot;</span>

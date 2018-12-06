@@ -12,6 +12,7 @@ pepper.framework package
     pepper.framework.abstract
     pepper.framework.backend
     pepper.framework.component
+    pepper.framework.sensor
 
 
 .. toctree::

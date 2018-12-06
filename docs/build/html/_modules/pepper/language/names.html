@@ -148,17 +148,21 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.language.names</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.sensor.asr</span> <span class="k">import</span> <span class="n">SynchronousGoogleASR</span><span class="p">,</span> <span class="n">ASRHypothesis</span>
-<span class="kn">from</span> <span class="nn">pepper.language.ner</span> <span class="k">import</span> <span class="n">NER</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.sensor.asr</span> <span class="k">import</span> <span class="n">SynchronousGoogleASR</span><span class="p">,</span> <span class="n">ASRHypothesis</span>
+<span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="n">NER</span>
 <span class="kn">from</span> <span class="nn">nltk.metrics.distance</span> <span class="k">import</span> <span class="n">edit_distance</span>
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="k">import</span> <span class="n">futures</span>
 
 
 <div class="viewcode-block" id="NameParser"><a class="viewcode-back" href="../../../pepper.language.names.html#pepper.language.names.NameParser">[docs]</a><span class="k">class</span> <span class="nc">NameParser</span><span class="p">:</span>
     <span class="n">TAGS_OF_INTEREST</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PERSON&#39;</span><span class="p">,</span> <span class="s1">&#39;LOCATION&#39;</span><span class="p">,</span> <span class="s1">&#39;ORGANISATION&#39;</span><span class="p">]</span>
-    <span class="n">TAGGER</span> <span class="o">=</span> <span class="n">NER</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;en-GB&#39;</span><span class="p">,</span> <span class="s1">&#39;nl-NL&#39;</span><span class="p">,</span> <span class="s1">&#39;es-ES&#39;</span><span class="p">),</span> <span class="n">max_name_distance</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">min_alternatives</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">TAGGER</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: NER</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;en-GB&#39;</span><span class="p">,</span> <span class="s1">&#39;nl-NL&#39;</span><span class="p">,</span> <span class="s1">&#39;es-ES&#39;</span><span class="p">),</span> <span class="n">max_name_distance</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_alternatives</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">NameParser</span><span class="o">.</span><span class="n">TAGGER</span><span class="p">:</span>
+            <span class="n">NameParser</span><span class="o">.</span><span class="n">TAGGER</span> <span class="o">=</span> <span class="n">NER</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_languages</span> <span class="o">=</span> <span class="n">languages</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_asrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">SynchronousGoogleASR</span><span class="p">(</span><span class="n">language</span><span class="p">)</span> <span class="k">for</span> <span class="n">language</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">]</span>
@@ -189,6 +193,7 @@
                     <span class="n">closest</span> <span class="o">=</span> <span class="n">distance</span>
 
             <span class="k">if</span> <span class="n">closest_name</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Closest Name:&quot;</span><span class="p">,</span> <span class="n">closest_name</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">ASRHypothesis</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">[</span><span class="n">toi</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">closest_name</span><span class="p">),</span> <span class="n">hypotheses</span><span class="p">[</span><span class="n">toi</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">hypotheses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>

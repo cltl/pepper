@@ -13,6 +13,7 @@ pepper.language package
    pepper.language.language
    pepper.language.names
    pepper.language.ner
+   pepper.language.pos
    pepper.language.process_utterance
    pepper.language.utils
 

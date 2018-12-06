@@ -17,6 +17,7 @@ APPLICATION_BACKEND = ApplicationBackend.SYSTEM
 # Please keep in mind that the internal system is English (en) only
 #   Translation happens during Speech-to-Text & Text-to-Speech steps
 APPLICATION_LANGUAGE = 'en-GB'
+INTERNAL_LANGUAGE = 'en-GB'
 
 
 # Application Paths

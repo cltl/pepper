@@ -148,13 +148,18 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.component.statistics</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span>
+
+<span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.component.speech_recognition</span> <span class="k">import</span> <span class="n">SpeechRecognitionComponent</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
 
 
 <div class="viewcode-block" id="StatisticsComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.statistics.html#pepper.framework.component.statistics.StatisticsComponent">[docs]</a><span class="k">class</span> <span class="nc">StatisticsComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+
+    <span class="n">PERFORMANCE_ERROR_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Statistics Component</span>
@@ -166,24 +171,35 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="n">speech_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="n">SpeechRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: SpeechRecognitionComponent</span>
+        <span class="n">vad</span> <span class="o">=</span> <span class="n">speech_recognition</span><span class="o">.</span><span class="n">vad</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
-            <span class="n">vad</span> <span class="o">=</span> <span class="n">speech_recognition</span><span class="o">.</span><span class="n">vad</span>
 
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">activation_bars</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vad</span><span class="o">.</span><span class="n">activation</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="c1"># Create Activation Bar</span>
+            <span class="n">activation</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vad</span><span class="o">.</span><span class="n">activation</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="n">activation_print</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span> <span class="o">*</span> <span class="n">activation</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="n">activation</span><span class="p">)</span>
+            <span class="n">voice_print</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">{:10s}</span><span class="s2">&gt;&quot;</span> <span class="k">if</span> <span class="n">vad</span><span class="o">.</span><span class="n">_utterance</span> <span class="k">else</span> <span class="s2">&quot;[</span><span class="si">{:10s}</span><span class="s2">]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">activation_print</span><span class="p">)</span>
+            <span class="n">empty_voice_print</span> <span class="o">=</span> <span class="s2">&quot;[          ]&quot;</span>
 
-                <span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Microphone </span><span class="si">{:3.1f}</span><span class="s2"> kHz | Camera </span><span class="si">{:4.1f}</span><span class="s2"> Hz | Voice </span><span class="si">{:12s}</span><span class="s2"> </span><span class="si">{:4s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">true_rate</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">true_rate</span><span class="p">,</span>
-                    <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">{:10s}</span><span class="s2">&gt;&quot;</span> <span class="k">if</span> <span class="n">vad</span><span class="o">.</span><span class="n">_voice</span> <span class="k">else</span> <span class="s2">&quot;[</span><span class="si">{:10s}</span><span class="s2">]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;|&quot;</span> <span class="o">*</span> <span class="n">activation_bars</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">*</span> <span class="p">(</span>
-                                <span class="mi">10</span> <span class="o">-</span> <span class="n">activation_bars</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span> <span class="k">else</span> <span class="s2">&quot;[          ]&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;</span><span class="si">{:4.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vad</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span> <span class="k">else</span> <span class="s2">&quot;   %&quot;</span>
-                <span class="p">),</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">mic_running</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span>
 
-        <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;StatisticsThread&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">)</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+            <span class="n">mic_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">rate</span>
+            <span class="n">mic_rate_true</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">true_rate</span>
+
+            <span class="n">cam_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">rate</span>
+            <span class="n">cam_rate_true</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">true_rate</span>
+
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">cam_rate_true</span> <span class="o">&lt;</span> <span class="n">cam_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERFORMANCE_ERROR_THRESHOLD</span> <span class="ow">or</span>
+                     <span class="n">mic_rate_true</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">mic_rate</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERFORMANCE_ERROR_THRESHOLD</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Microphone </span><span class="si">{:3.1f}</span><span class="s2"> kHz | Camera </span><span class="si">{:4.1f}</span><span class="s2"> Hz | Voice </span><span class="si">{:12s}</span><span class="s2"> </span><span class="si">{:4.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">mic_rate_true</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">cam_rate_true</span><span class="p">,</span>
+                <span class="n">voice_print</span> <span class="k">if</span> <span class="n">mic_running</span> <span class="k">else</span> <span class="n">empty_voice_print</span><span class="p">,</span>
+                <span class="n">vad</span><span class="o">.</span><span class="n">activation</span> <span class="k">if</span> <span class="n">mic_running</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="p">(</span><span class="n">stderr</span> <span class="k">if</span> <span class="n">error</span> <span class="k">else</span> <span class="n">stdout</span><span class="p">))</span>
+
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">schedule</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 </pre></div>
 
            </div>

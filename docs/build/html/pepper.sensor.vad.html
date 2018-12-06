@@ -76,27 +76,13 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="pepper.sensor.html">pepper.sensor package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.sensor.util.html">pepper.sensor.util package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.sensor.asr.html">pepper.sensor.asr module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.sensor.face.html">pepper.sensor.face module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.sensor.obj.html">pepper.sensor.obj module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.sensor.vad module</a><ul class="simple">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
 </ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -142,10 +128,6 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
-          <li><a href="pepper.sensor.html">pepper.sensor package</a> &raquo;</li>
-        
       <li>pepper.sensor.vad module</li>
     
     
@@ -165,200 +147,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.sensor.vad">
-<span id="pepper-sensor-vad-module"></span><h1>pepper.sensor.vad module<a class="headerlink" href="#module-pepper.sensor.vad" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.sensor.vad.VAD">
-<em class="property">class </em><code class="descclassname">pepper.sensor.vad.</code><code class="descname">VAD</code><span class="sig-paren">(</span><em>microphone</em>, <em>callbacks=()</em>, <em>stream_callbacks=()</em>, <em>mode=3</em>, <em>voice_threshold=0.8</em>, <em>nonvoice_threshold=0.8</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/sensor/vad.html#VAD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.sensor.vad.VAD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.sensor.vad.VAD.activation" title="pepper.sensor.vad.VAD.activation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activation</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.sensor.vad.VAD.callbacks" title="pepper.sensor.vad.VAD.callbacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.sensor.vad.VAD.microphone" title="pepper.sensor.vad.VAD.microphone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">microphone</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.sensor.vad.VAD.rate" title="pepper.sensor.vad.VAD.rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><strong>stream_callbacks</strong></dt>
-<dd></dd>
-<dt><a class="reference internal" href="#pepper.sensor.vad.VAD.vad" title="pepper.sensor.vad.VAD.vad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.sensor.vad.VAD.on_utterance" title="pepper.sensor.vad.VAD.on_utterance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_utterance</span></code></a>(audio)</td>
-<td>On Utterance Callback, user specified callback(s) should have same signature</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.sensor.vad.VAD.start" title="pepper.sensor.vad.VAD.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
-<td>Start Detecting Utterances</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.sensor.vad.VAD.stop" title="pepper.sensor.vad.VAD.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</td>
-<td>Stop Detecting Utterances</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.BUFFER_SIZE">
-<code class="descname">BUFFER_SIZE</code><em class="property"> = 100</em><a class="headerlink" href="#pepper.sensor.vad.VAD.BUFFER_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.FRAME_MS">
-<code class="descname">FRAME_MS</code><em class="property"> = 10</em><a class="headerlink" href="#pepper.sensor.vad.VAD.FRAME_MS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.WINDOW_SIZE">
-<code class="descname">WINDOW_SIZE</code><em class="property"> = 30</em><a class="headerlink" href="#pepper.sensor.vad.VAD.WINDOW_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.activation">
-<code class="descname">activation</code><a class="headerlink" href="#pepper.sensor.vad.VAD.activation" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>activation: float</strong></dt>
-<dd><p class="first last">Voice Activation Level [0,1]</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.callbacks">
-<code class="descname">callbacks</code><a class="headerlink" href="#pepper.sensor.vad.VAD.callbacks" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>callback: list of callable</strong></dt>
-<dd><p class="first last">On Utterance Callback</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.microphone">
-<code class="descname">microphone</code><a class="headerlink" href="#pepper.sensor.vad.VAD.microphone" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>microphone: Microphone</strong></dt>
-<dd><p class="first last">Microphone to extract Utterances from</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.sensor.vad.VAD.on_utterance">
-<code class="descname">on_utterance</code><span class="sig-paren">(</span><em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/sensor/vad.html#VAD.on_utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.sensor.vad.VAD.on_utterance" title="Permalink to this definition">¶</a></dt>
-<dd><p>On Utterance Callback, user specified callback(s) should have same signature</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>audio: np.ndarray</strong></dt>
-<dd><p class="first last">Audio containing utterance</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.rate">
-<code class="descname">rate</code><a class="headerlink" href="#pepper.sensor.vad.VAD.rate" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>sample_rate: int</strong></dt>
-<dd><p class="first last">Microphone Sample Rate</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.sensor.vad.VAD.start">
-<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/sensor/vad.html#VAD.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.sensor.vad.VAD.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start Detecting Utterances</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.sensor.vad.VAD.stop">
-<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/sensor/vad.html#VAD.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.sensor.vad.VAD.stop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stop Detecting Utterances</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.stream_callbacks">
-<code class="descname">stream_callbacks</code><a class="headerlink" href="#pepper.sensor.vad.VAD.stream_callbacks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.sensor.vad.VAD.vad">
-<code class="descname">vad</code><a class="headerlink" href="#pepper.sensor.vad.VAD.vad" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>vad: Vad</strong></dt>
-<dd><p class="first last">Voice Activity Detection Class</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-sensor-vad-module">
+<h1>pepper.sensor.vad module<a class="headerlink" href="#pepper-sensor-vad-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 

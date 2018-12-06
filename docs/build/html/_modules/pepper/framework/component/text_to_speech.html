@@ -149,8 +149,10 @@
             
   <h1>Source code for pepper.framework.component.text_to_speech</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">NoReturn</span>
 
 
 <div class="viewcode-block" id="TextToSpeechComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent">[docs]</a><span class="k">class</span> <span class="nc">TextToSpeechComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
@@ -160,18 +162,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span><span class="p">:</span>
-                    <span class="c1"># If talking is over &amp; microphone is not yet running -&gt; Start Microphone</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">talking</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                        <span class="n">sleep</span><span class="p">(</span><span class="mf">1E-3</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span><span class="p">:</span>
+                <span class="c1"># If talking is over &amp; microphone is not yet running -&gt; Start Microphone</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">talking</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-        <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;TextToSpeechComponentThread&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">)</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TextToSpeechComponentThread&quot;</span><span class="p">)</span>
+        <span class="n">schedule</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TextToSpeechComponent.say"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (str, Optional[str]) -&gt; NoReturn</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Say Text (with Animation) through Text-to-Speech</span>
 
