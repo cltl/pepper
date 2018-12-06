@@ -1,11 +1,11 @@
-from pepper.framework import AbstractComponent, AbstractApplication
-from pepper.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR, ASRHypothesis
-from pepper.framework.util import Scheduler
+from pepper.framework import AbstractComponent
+from pepper.framework.sensor import VAD, SynchronousGoogleASR, StreamedGoogleASR, ASRHypothesis
 from pepper import config
+
+from threading import Thread
 
 import numpy as np
 
-from Queue import Queue
 from typing import *
 
 
@@ -54,20 +54,28 @@ class SynchronousSpeechRecognitionComponent(SpeechRecognitionComponent):
         super(SynchronousSpeechRecognitionComponent, self).__init__(backend)
 
         self.on_transcript_callbacks = []
-        self._asr = SynchronousGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
-        def on_utterance(audio):
-            hypotheses = self.asr.transcribe(audio)
-            if hypotheses:
+        self._vad = VAD(self.backend.microphone)
+        self._asr = SynchronousGoogleASR()
 
-                # Call on_transcript Event Function
-                self.on_transcript(hypotheses, audio)
+        def worker():
+            for voice in self._vad:
 
-                # Call Callback Functions
-                for callback in self.on_transcript_callbacks:
-                    callback(hypotheses, audio)
+                audio = voice.audio
 
-        self._vad = VAD(self.backend.microphone, [on_utterance])
+                hypotheses = self.asr.transcribe(audio)
+                if hypotheses:
+
+                    # Call on_transcript Event Function
+                    self.on_transcript(hypotheses, audio)
+
+                    # Call Callback Functions
+                    for callback in self.on_transcript_callbacks:
+                        callback(hypotheses, audio)
+
+        thread = Thread(target=worker, name="SynchronousSpeechRecognitionComponentWorker")
+        thread.daemon = True
+        thread.start()
 
     @property
     def asr(self):
@@ -101,7 +109,7 @@ class SynchronousSpeechRecognitionComponent(SpeechRecognitionComponent):
         pass
 
 
-class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
+class StreamedSpeechRecognitionComponent(SpeechRecognitionComponent):
     def __init__(self, backend):
         """
         Construct Speech Recognition Component
@@ -110,47 +118,30 @@ class StreamingSpeechRecognitionComponent(SpeechRecognitionComponent):
         ----------
         backend: Backend
         """
-        super(StreamingSpeechRecognitionComponent, self).__init__(backend)
+        super(StreamedSpeechRecognitionComponent, self).__init__(backend)
 
         self.on_transcript_callbacks = []
         self._asr = StreamedGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
-        frame_queue = Queue()
-        self._vad = VAD(self.backend.microphone, stream_callbacks=[
-            lambda audio, speech: frame_queue.put((audio, speech))])
-
-        # TODO: Implement in a proper way
-        self._speech_audio = []
-
-        def frame_generator():
-            speech = True
-            self._speech_audio = []
-            while speech:
-                audio, speech = frame_queue.get()
-                if speech: self._speech_audio.append(audio)
-                yield audio
+        self._vad = VAD(self.backend.microphone)
 
         def worker():
-            audio, speech = frame_queue.get()
-
-            if speech:
-                utterance = frame_generator()
-
-                hypotheses = self.asr.transcribe(utterance)
+            for voice in self._vad:
+                hypotheses = self.asr.transcribe(voice)
 
                 if hypotheses:
-                    # Combine Speech Audio Samples in one Array
-                    speech_audio = np.concatenate(self._speech_audio)
+                    audio = voice.audio
 
                     # Call on_transcript Event Function
-                    self.on_transcript(hypotheses, speech_audio)
+                    self.on_transcript(hypotheses, audio)
 
                     # Call Callback Functions
                     for callback in self.on_transcript_callbacks:
-                        callback(hypotheses, speech_audio)
+                        callback(hypotheses, audio)
 
-        schedule = Scheduler(worker, name="StreamingSpeechRecognitionComponentThread")
-        schedule.start()
+        thread = Thread(target=worker, name="StreamingSpeechRecognitionComponentWorker")
+        thread.daemon = True
+        thread.start()
 
     @property
     def asr(self):

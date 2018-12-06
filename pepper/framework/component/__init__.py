@@ -2,7 +2,7 @@ from .brain import BrainComponent
 from .face_detection import FaceDetectionComponent
 from .object_detection import ObjectDetectionComponent
 from .text_to_speech import TextToSpeechComponent
-from .speech_recognition import StreamingSpeechRecognitionComponent, SynchronousSpeechRecognitionComponent
+from .speech_recognition import StreamedSpeechRecognitionComponent, SynchronousSpeechRecognitionComponent
 from .statistics import StatisticsComponent
 from .video_display import VideoDisplayComponent
 from .video_writer import VideoWriterComponent

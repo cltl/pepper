@@ -2,8 +2,7 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.language import *
-from pepper.sensor.face import FaceClassifier
-from pepper.sensor.asr import ASRHypothesis
+from pepper.framework.sensor.face import FaceClassifier
 from pepper import config
 
 from pepper.knowledge.sentences import *
@@ -27,7 +26,7 @@ class DefaultApp(AbstractApplication,
                  BrainComponent,
                  ObjectDetectionComponent,
                  FaceDetectionComponent,
-                 StreamingSpeechRecognitionComponent,
+                 StreamedSpeechRecognitionComponent,
                  TextToSpeechComponent):
     pass
 
