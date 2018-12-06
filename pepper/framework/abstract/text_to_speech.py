@@ -57,7 +57,7 @@ class AbstractTextToSpeech(object):
         text: str
         animation: str
         """
-        self._log.info(text)
+        self._log.info(text.replace('\n', ' '))
         self._talking_jobs += 1
         self._queue.put((text, animation))
 
