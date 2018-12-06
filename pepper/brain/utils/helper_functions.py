@@ -60,13 +60,16 @@ def phrase_cardinality_conflicts(conflict, capsule):
     else:
         say = random.choice(CONFLICTING_KNOWLEDGE)
         conflict = random.choice(conflict)
+        x = 'you' if conflict['authorlabel']==capsule['author'] else conflict['authorlabel']
+
+        y = 'you' if capsule['subject']['label']==conflict['authorlabel'] else capsule['subject']['label']
 
         say += ' %s told me in %s that %s %s %s, but now you tell me that %s %s %s' \
-               % (conflict['authorlabel'],
+               % (x,
                   datetime.strptime(conflict['date'], "%Y-%m-%d").strftime("%B"),
-                  capsule['subject']['label'].replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
+                  y.replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
                   conflict['oname'].replace('_', ' '),
-                  capsule['subject']['label'].replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
+                  y.replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
                   capsule['object']['label'].replace('_', ' '))
 
     return say

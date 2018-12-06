@@ -92,7 +92,7 @@ def reply_to_question(brain_response, viewed_objects):
     print(brain_response['question'])
     print(brain_response['response'])
 
-    if not brain_response['question']['hack'] and (len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees'): #FIX
+    if 'hack' not in brain_response['question']['object'] and (len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees'): #FIX
         if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
             print(viewed_objects)
             say = 'I see '
@@ -161,7 +161,9 @@ def reply_to_question(brain_response, viewed_objects):
                 pass
             else:
                 previous_predicate = brain_response['question']['predicate']['type']
-                if brain_response['question']['predicate']['type'] == 'is_from':
+                if brain_response['question']['predicate']['type'] == 'sees':
+                    say+=' saw'
+                elif brain_response['question']['predicate']['type'] == 'is_from':
                     if person == 'first':
                         say += ' am from '
                     elif person == 'second':
