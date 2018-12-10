@@ -15,7 +15,7 @@ class Wikipedia:
     SUMMARY = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles="
     LINKS = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=links&pllimit=max&titles="
     THUMBNAIL = "http://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=1000&titles="
-    DISAMBIGUATION = "may refer to:"
+    DISAMBIGUATION = ["refer to:", "refers to:"]
 
     PARENTHESES = re.compile('\(.*?\)')
     DUPLICATE_SPACES = re.compile('[ )(]+')
@@ -36,9 +36,10 @@ class Wikipedia:
                 # Query Wikipedia About last object
                 for word, tag in pos[::-1]:
                     if Wikipedia._is_queryable(tag):
-                        query, answer, url = Wikipedia._query(word)
+                        result = Wikipedia._query(word)
 
-                        if answer:
+                        if result:
+                            query, answer, url = result
                             answer = re.sub(Wikipedia.DUPLICATE_SPACES, ' ', re.sub(Wikipedia.PARENTHESES, '', answer))
                             return answer, url
                         else:
@@ -53,21 +54,20 @@ class Wikipedia:
         json = requests.get(Wikipedia.FULL + query_websafe).json()
         extract = Wikipedia._find_key(json, 'extract')
 
+        # Query Thumbnail
+        json = requests.get(Wikipedia.THUMBNAIL + query_websafe).json()
+        url = Wikipedia._find_key(json, 'source')
+
         if extract:
-            if Wikipedia.DISAMBIGUATION in extract:
+            if any([disambiguation in extract for disambiguation in Wikipedia.DISAMBIGUATION]):
                 links = Wikipedia._find_key(requests.get(Wikipedia.LINKS + query_websafe).json(), 'links')
 
                 for link in links:
                     new_query = link['title']
                     extract = Wikipedia._query(new_query)
                     if extract:
-                        return "{} may refer to {}: {}".format(query, new_query, extract)
+                        return new_query, "{} may refer to {}: {}".format(query, new_query, extract), url
             else:
-
-                # Query Thumbnail
-                json = requests.get(Wikipedia.THUMBNAIL + query_websafe).json()
-                url = Wikipedia._find_key(json, 'source')
-
                 return query, extract, url
 
 
