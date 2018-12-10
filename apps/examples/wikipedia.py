@@ -21,10 +21,12 @@ class WikipediaApplication(AbstractApplication, StatisticsComponent, StreamedSpe
         question = hypotheses[0].transcript
 
         # Query Wikipedia for Answer to Question
-        answer = Wikipedia.query(question)
+        result = Wikipedia.query(question)
 
-        if answer:
+        if result:
 
+            answer, url = result
+            
             # Limit Answer to a single sentence
             answer = answer.split('.')[0]
 

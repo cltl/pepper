@@ -14,6 +14,7 @@ class Wikipedia:
     FULL = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext&titles="
     SUMMARY = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles="
     LINKS = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=links&pllimit=max&titles="
+    THUMBNAIL = "http://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=1000&titles="
     DISAMBIGUATION = "may refer to:"
 
     PARENTHESES = re.compile('\(.*?\)')
@@ -35,9 +36,11 @@ class Wikipedia:
                 # Query Wikipedia About last object
                 for word, tag in pos[::-1]:
                     if Wikipedia._is_queryable(tag):
-                        answer = Wikipedia._query(word)
+                        query, answer, url = Wikipedia._query(word)
+
                         if answer:
-                            return re.sub(Wikipedia.DUPLICATE_SPACES, ' ', re.sub(Wikipedia.PARENTHESES, '', answer))
+                            answer = re.sub(Wikipedia.DUPLICATE_SPACES, ' ', re.sub(Wikipedia.PARENTHESES, '', answer))
+                            return answer, url
                         else:
                             return None
         return None
@@ -45,13 +48,14 @@ class Wikipedia:
     @staticmethod
     def _query(query):
         query_websafe = urllib.quote(query)
+
+        # Query Summary
         json = requests.get(Wikipedia.FULL + query_websafe).json()
         extract = Wikipedia._find_key(json, 'extract')
 
         if extract:
             if Wikipedia.DISAMBIGUATION in extract:
                 links = Wikipedia._find_key(requests.get(Wikipedia.LINKS + query_websafe).json(), 'links')
-                # shuffle(links)
 
                 for link in links:
                     new_query = link['title']
@@ -59,7 +63,13 @@ class Wikipedia:
                     if extract:
                         return "{} may refer to {}: {}".format(query, new_query, extract)
             else:
-                return extract
+
+                # Query Thumbnail
+                json = requests.get(Wikipedia.THUMBNAIL + query_websafe).json()
+                url = Wikipedia._find_key(json, 'source')
+
+                return query, extract, url
+
 
     @staticmethod
     def _find_key(dictionary, key):
