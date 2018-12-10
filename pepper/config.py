@@ -16,8 +16,9 @@ APPLICATION_BACKEND = ApplicationBackend.SYSTEM
 #   https://cloud.google.com/speech-to-text/docs/languages
 # Please keep in mind that the internal system is English (en) only
 #   Translation happens during Speech-to-Text & Text-to-Speech steps
+#   Translation can induce quite a bit of lag in the System
 APPLICATION_LANGUAGE = 'en-GB'
-INTERNAL_LANGUAGE = 'en-GB'
+INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
 
 
 # Application Paths
