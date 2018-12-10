@@ -104,9 +104,6 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
                  choice([animations.BOW, animations.FRIENDLY, animations.HI]))  # Greet Person
 
-        # TODO: Implement non-hardcoded
-        self.say("Where are you from?")
-
     @property
     def application(self):
         """
@@ -176,8 +173,6 @@ class ConversationIntention(AbstractIntention, DefaultApp):
 
         # Parse only sentences within bounds
         elif 3 <= len(utterance.split()) <= 10:
-            self.say(choice(THINKING), animations.THINK)
-
             if self.respond_brain(utterance):
                 return
             elif self.respond_wikipedia(utterance):
