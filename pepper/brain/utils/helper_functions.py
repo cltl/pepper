@@ -182,6 +182,12 @@ def phrase_object_gaps(gaps, capsule):
 
 
 def phrase_overlaps(overlaps, capsule):
+    if capsule['object']['type'].replace('_', ' ') == '':
+        capsule['object']['type'] = 'thing'
+
+    if capsule['subject']['type'].replace('_', ' ') == '':
+        capsule['subject']['type'] = 'thing'
+
     entity_role = random.choice(overlaps.keys())
 
     if not overlaps[entity_role] and entity_role == 'subject':
