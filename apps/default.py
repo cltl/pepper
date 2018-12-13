@@ -394,7 +394,6 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             self.say(answer, animations.EXPLAIN, block=True)
 
             if tablet:
-                print("\rHide!")
                 tablet.hide()
 
         return result

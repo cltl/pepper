@@ -80,6 +80,15 @@ class Bounds(object):
         return self.y1 - self.y0
 
     @property
+    def center(self):
+        """
+        Returns
+        -------
+        center: tuple
+        """
+        return (self.x0 + self.width / 2, self.y0 + self.height / 2)
+
+    @property
     def area(self):
         """
         Returns
