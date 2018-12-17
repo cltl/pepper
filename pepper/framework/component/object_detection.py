@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.sensor.obj import CocoClassifyClient, CocoObject
+from pepper.framework.sensor.obj import ObjectDetectionClient, ObjectDetectionAddress, Object
 from pepper.framework.util import Scheduler
 from pepper import config
 
@@ -25,7 +25,7 @@ class ObjectDetectionComponent(AbstractComponent):
         self.on_object_callbacks = []
 
         # Initialize Object Classifier
-        coco = CocoClassifyClient()
+        coco = ObjectDetectionClient(ObjectDetectionAddress.COCO)
         queue = Queue()
 
         def on_image(image):
@@ -36,7 +36,7 @@ class ObjectDetectionComponent(AbstractComponent):
             ----------
             image: np.ndarray
             """
-            objects = [obj for obj in coco.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
+            objects = [obj for obj in coco.classify(image) if obj.score > config.OBJECT_RECOGNITION_THRESHOLD]
             queue.put((image, objects))
 
         def worker():
@@ -77,7 +77,7 @@ class ObjectDetectionComponent(AbstractComponent):
         """
 
     def on_object(self, image, objects):
-        # type: (np.ndarray, List[CocoObject]) -> NoReturn
+        # type: (np.ndarray, List[Object]) -> NoReturn
         """
         On Object Event. Called every time one or more objects are detected in a camera frame.
 

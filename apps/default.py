@@ -338,7 +338,6 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                 return True
         return False
 
-
     def respond_brain(self, question):
         try:
             objects = list(self._seen_objects)

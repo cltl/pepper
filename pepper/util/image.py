@@ -1,4 +1,4 @@
-from pepper.framework.sensor import CocoClassifyClient, OpenFace, FaceClassifier
+from pepper.framework.sensor import ObjectDetectionClient, ObjectDetectionAddress, OpenFace, FaceClassifier
 from pepper import config
 
 from PIL import Image, ImageDraw, ImageFont
@@ -65,7 +65,7 @@ class ImageAnnotator(object):
 
         image_paths = [path for path in os.listdir(directory) if os.path.isfile(os.path.join(directory, path))]
 
-        coco = CocoClassifyClient()
+        coco = ObjectDetectionClient(ObjectDetectionAddress.COCO)
         openface = OpenFace()
         face_classifier = FaceClassifier.from_directory(config.PEOPLE_FRIENDS_ROOT)
 
@@ -113,7 +113,7 @@ class ImageAnnotator(object):
 
             if obj.confidence > object_threshold:
 
-                color = colorsys.hsv_to_rgb(float(obj.id - 1) / CocoClassifyClient.CLASSES, 1, 1)
+                color = colorsys.hsv_to_rgb(float(obj.id - 1) / 90, 1, 1)
                 color = tuple((np.array(color) * 255).astype(np.uint8))
 
                 bounds = obj.bounds.scaled(image.width, image.height)

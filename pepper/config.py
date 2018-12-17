@@ -1,6 +1,6 @@
 """Pepper Configuration File"""
 
-from pepper import ApplicationBackend, CameraResolution, NaoqiMicrophoneIndex, LOGGING_FILE
+from pepper import ApplicationBackend, CameraResolution, NAOqiMicrophoneIndex, LOGGING_FILE
 import json
 import os
 
@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = ApplicationBackend.NAOQI
+APPLICATION_BACKEND = ApplicationBackend.SYSTEM
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -111,7 +111,7 @@ CAMERA_FRAME_RATE = 2
 NAOQI_USE_SYSTEM_CAMERA = False
 NAOQI_USE_SYSTEM_MICROPHONE = False
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
-NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
+NAOQI_MICROPHONE_INDEX = NAOqiMicrophoneIndex.FRONT
 
 
 # .json file with id tokens, with keys:

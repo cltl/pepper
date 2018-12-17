@@ -1,5 +1,5 @@
 from pepper.framework.abstract.microphone import AbstractMicrophone
-from pepper.config import NaoqiMicrophoneIndex
+from pepper.config import NAOqiMicrophoneIndex
 import numpy as np
 
 
@@ -16,13 +16,13 @@ class NAOqiMicrophone(AbstractMicrophone):
         ----------
         session: qi.Session
             Qi Application Session
-        index: NaoqiMicrophoneIndex or int
+        index: NAOqiMicrophoneIndex or int
             Which Microphone to Use
         callbacks: list of callable
             On Audio Callbacks
         """
         super(NAOqiMicrophone, self).__init__(
-            NAOqiMicrophone.RATE, 4 if index == NaoqiMicrophoneIndex.ALL else 1, callbacks)
+            NAOqiMicrophone.RATE, 4 if index == NAOqiMicrophoneIndex.ALL else 1, callbacks)
 
         # Register Service and Subscribe this class as callback
         self._service = session.service(NAOqiMicrophone.SERVICE)
