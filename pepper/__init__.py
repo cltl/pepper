@@ -13,7 +13,6 @@ Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU)
 #   Face Tracking, Speech Identification, Continuous Face/Speech Learning
 # TODO: Add Leolani in Utterances
 
-
 import logging
 import enum
 import os
@@ -43,6 +42,12 @@ logger.addHandler(console_logger)
 class ApplicationBackend(enum.Enum):
     SYSTEM = 0
     NAOQI = 1
+
+
+class ObjectDetectionTarget(enum.Enum):
+    AVA = ('localhost', 27001)
+    COCO = ('localhost', 27002)
+    OID = ('localhost', 27003)
 
 
 class CameraResolution(enum.Enum):

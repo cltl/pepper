@@ -7,7 +7,7 @@ class MyApplication(AbstractApplication, StatisticsComponent, FaceDetectionCompo
 
 
 class IdleIntention(AbstractIntention, MyApplication):
-    def on_face(self, faces):
+    def on_face_known(self, faces):
         TalkIntention(self.application)
 
 

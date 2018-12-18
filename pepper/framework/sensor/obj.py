@@ -1,3 +1,4 @@
+from pepper import ObjectDetectionTarget
 from socket import socket, error as socket_error
 import numpy as np
 import json
@@ -14,7 +15,7 @@ class Bounds(object):
         y1: float
         """
 
-        if x0 >= x1 or y0 >= y1:
+        if x0 > x1 or y0 > y1:
             raise ValueError("Rectangle Error: Point (x1,y1) must be bigger than point (x0, y0)")
 
         self._x0 = x0
@@ -180,48 +181,48 @@ class Bounds(object):
 
 
 class Object:
-    def __init__(self, name, score, box):
+    def __init__(self, name, confidence, bounds, image):
         self._name = name
-        self._score = score
-        self._box = box
-        self._bounds = Bounds(box[1], box[0], box[3], box[2])
+        self._confidence = confidence
+        self._bounds = bounds
+        self._image = image
 
     @property
     def name(self):
         return self._name
 
     @property
-    def score(self):
-        return self._score
-
-    @property
-    def box(self):
-        return self._box
+    def confidence(self):
+        return self._confidence
 
     @property
     def bounds(self):
         return self._bounds
 
+    @property
+    def image(self):
+        return self._image
+
     @classmethod
-    def from_dict(cls, dictionary):
-        return cls(dictionary['name'], dictionary['score'], dictionary['box'])
+    def from_dict(cls, dictionary, image):
+        box = dictionary['box']
+        bounds = Bounds(box[1], box[0], box[3], box[2])
+        return cls(dictionary['name'], dictionary['score'], bounds, image)
 
-    def to_dict(self):
-        return {'name': self.name, 'score': self.score, 'box': self.box}
-
-    def __str__(self):
-        return "[{:4.0%}] {:10s} {}".format(self.score, self.name, self.box)
-
-
-class ObjectDetectionAddress(object):
-    AVA = ('localhost', 27001)
-    COCO = ('localhost', 27002)
-    OID = ('localhost', 27003)
+    def __repr__(self):
+        return "Object[{:4.0%}] '{}'".format(self.confidence, self.name)
 
 
 class ObjectDetectionClient(object):
-    def __init__(self, address):
-        self._address = address
+    def __init__(self, target):
+        # type: (ObjectDetectionTarget) -> ObjectDetectionClient
+        self._target = target
+        self._address = target.value
+
+    @property
+    def target(self):
+        # type: () -> ObjectDetectionTarget
+        return self._target
 
     def classify(self, image):
         try:
@@ -232,7 +233,7 @@ class ObjectDetectionClient(object):
             sock.sendall(image)
 
             response_length = np.frombuffer(sock.recv(4), np.uint32)[0]
-            response = [Object.from_dict(info) for info in json.loads(self._receive_all(sock, response_length).decode())]
+            response = [Object.from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
 
             return response
         except socket_error:

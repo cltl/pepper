@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from pepper.framework import *
 from pepper.language import *
 from pepper.framework.sensor.face import FaceClassifier
-from pepper import config
+from pepper import config, ApplicationBackend
 
 from pepper.knowledge.sentences import *
 from pepper.knowledge import animations
@@ -42,15 +42,10 @@ class IdleIntention(AbstractIntention, DefaultApp):
         super(IdleIntention, self).__init__(application)
         self._last_event = time()
 
-    def on_face(self, faces):
-        if time() - self._last_event > self.GREET_TIMEOUT:
-            self.say("Hello!", animations.HELLO)
-            self._last_event = time()
+    def on_face_known(self, faces):
+        ConversationIntention(self.application, Chat(faces[0].name))
 
-    def on_person(self, persons):
-        ConversationIntention(self.application, Chat(persons[0].name))
-
-    def on_new_person(self, persons):
+    def on_face_new(self, faces):
         if time() - self._last_event > self.GREET_TIMEOUT:
             self.say(choice(GREETING), animations.HELLO)
             self._last_event = time()
@@ -124,14 +119,14 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         super(ConversationIntention, self).say(text, animation, block)
         self._last_seen = time()
 
-    def on_face(self, faces):
+    def on_face_known(self, faces):
         if self.chat.speaker not in self._face_detection.face_classifier.people:
             self._last_seen = time()
 
-    def on_person(self, persons):
+    def on_face(self, faces):
         if self.chat.speaker not in self._face_detection.face_classifier.people:
-            ConversationIntention(self.application, Chat(persons[0].name))
-        if self.chat.speaker in [person.name for person in persons]:
+            ConversationIntention(self.application, Chat(faces[0].name))
+        if self.chat.speaker in [person.name for person in faces]:
             self._last_seen = time()
 
     def on_image(self, image):
@@ -302,7 +297,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         return False
 
     def respond_show_page(self, command):
-        if config.APPLICATION_BACKEND == config.ApplicationBackend.NAOQI:
+        if config.APPLICATION_BACKEND == ApplicationBackend.NAOQI:
             from pepper.framework.backend.naoqi import NaoqiTablet
 
             tablet = NaoqiTablet(self.backend.session)
@@ -385,7 +380,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             self.say("{}, {}, {}.".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker), animations.CLOUD)
 
             tablet = None
-            if config.APPLICATION_BACKEND == config.ApplicationBackend.NAOQI:
+            if config.APPLICATION_BACKEND == ApplicationBackend.NAOQI:
                 from pepper.framework.backend.naoqi import NaoqiTablet
                 tablet = NaoqiTablet(self.backend.session)
                 tablet.show(url)
@@ -461,7 +456,7 @@ class MeetIntention(AbstractIntention, DefaultApp):
             else:
                 self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)), animations.UNKNOWN)
 
-    def on_face(self, faces):
+    def on_face_known(self, faces):
         self._face.append(faces[0].representation)
         self._last_seen = time()
 
