@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
+from urllib import quote
 
 
 class NAOqiTextToSpeech(AbstractTextToSpeech):
@@ -32,7 +33,6 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         text: str
         animation: str
         """
-
         if animation:
             self._service.say("^startTag({1}){0}^stopTag({1})".format(text, animation))
         else:

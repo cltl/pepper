@@ -139,10 +139,10 @@ UNDERSTAND = [
 ]
 
 ADDRESSING = [
-    "Well",
-    "Look",
-    "See",
-    "I'll tell you"
+    "Well,",
+    "Look,",
+    "See,",
+    "I'll tell you,"
 ]
 
 ASK_FOR_QUESTIONS = [

@@ -60,13 +60,16 @@ def phrase_cardinality_conflicts(conflict, capsule):
     else:
         say = random.choice(CONFLICTING_KNOWLEDGE)
         conflict = random.choice(conflict)
+        x = 'you' if conflict['authorlabel']==capsule['author'] else conflict['authorlabel']
+
+        y = 'you' if capsule['subject']['label']==conflict['authorlabel'] else capsule['subject']['label']
 
         say += ' %s told me in %s that %s %s %s, but now you tell me that %s %s %s' \
-               % (conflict['authorlabel'],
+               % (x,
                   datetime.strptime(conflict['date'], "%Y-%m-%d").strftime("%B"),
-                  capsule['subject']['label'].replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
+                  y.replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
                   conflict['oname'].replace('_', ' '),
-                  capsule['subject']['label'].replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
+                  y.replace('_', ' '), capsule['predicate']['type'].replace('_', ' '),
                   capsule['object']['label'].replace('_', ' '))
 
     return say
@@ -179,6 +182,12 @@ def phrase_object_gaps(gaps, capsule):
 
 
 def phrase_overlaps(overlaps, capsule):
+    if capsule['object']['type'].replace('_', ' ') == '':
+        capsule['object']['type'] = 'thing'
+
+    if capsule['subject']['type'].replace('_', ' ') == '':
+        capsule['subject']['type'] = 'thing'
+
     entity_role = random.choice(overlaps.keys())
 
     if not overlaps[entity_role] and entity_role == 'subject':

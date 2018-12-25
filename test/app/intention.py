@@ -2,7 +2,7 @@ from pepper.framework import *
 from pepper import config
 
 
-class MyApplication(AbstractApplication, StatisticsComponent, FaceDetectionComponent, StreamingSpeechRecognitionComponent, TextToSpeechComponent):
+class MyApplication(AbstractApplication, StatisticsComponent, FaceDetectionComponent, StreamedSpeechRecognitionComponent, TextToSpeechComponent):
     pass
 
 

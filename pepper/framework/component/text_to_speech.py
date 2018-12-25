@@ -20,7 +20,7 @@ class TextToSpeechComponent(AbstractComponent):
         schedule = Scheduler(worker, name="TextToSpeechComponentThread")
         schedule.start()
 
-    def say(self, text, animation=None):
+    def say(self, text, animation=None, block=False):
         # type: (str, Optional[str]) -> NoReturn
         """
         Say Text (with Animation) through Text-to-Speech
@@ -40,4 +40,4 @@ class TextToSpeechComponent(AbstractComponent):
                 self.backend.microphone.stop()
 
             # Say Text through Text-to-Speech
-            self.backend.text_to_speech.say(text, animation)
+            self.backend.text_to_speech.say(text, animation, block)

@@ -151,6 +151,7 @@
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
 
 <span class="kn">from</span> <span class="nn">pepper.framework.abstract.text_to_speech</span> <span class="k">import</span> <span class="n">AbstractTextToSpeech</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.sensor</span> <span class="k">import</span> <span class="n">GoogleTranslator</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">texttospeech</span><span class="p">,</span> <span class="n">translate_v2</span>
@@ -161,7 +162,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<div class="viewcode-block" id="SystemTextToSpeech"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech">[docs]</a><span class="k">class</span> <span class="nc">SystemTextToSpeech</span><span class="p">(</span><span class="n">AbstractTextToSpeech</span><span class="p">):</span>
+<div class="viewcode-block" id="SystemTextToSpeech"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech">[docs]</a><span class="k">class</span> <span class="nc">SystemTextToSpeech</span><span class="p">(</span><span class="n">AbstractTextToSpeech</span><span class="p">,</span> <span class="n">GoogleTranslator</span><span class="p">):</span>
 
     <span class="n">TMP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s1">&#39;tmp&#39;</span><span class="p">,</span> <span class="s1">&#39;speech&#39;</span><span class="p">)</span>
     <span class="n">GENDER</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># &quot;Female&quot; or 1 &quot;Male&quot;</span>
@@ -174,16 +175,11 @@
 <span class="sd">        language: str</span>
 <span class="sd">            Language Code, See: https://cloud.google.com/speech/docs/languages</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SystemTextToSpeech</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+        <span class="n">AbstractTextToSpeech</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+        <span class="n">GoogleTranslator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">INTERNAL_LANGUAGE</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TMP</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TMP</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_target_language</span> <span class="o">=</span> <span class="n">language</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_language</span> <span class="o">!=</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span> <span class="o">=</span> <span class="n">translate_v2</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">target_language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_target_language</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">TextToSpeechClient</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">VoiceSelectionParams</span><span class="p">(</span><span class="n">language_code</span><span class="o">=</span><span class="n">language</span><span class="p">,</span> <span class="n">ssml_gender</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">GENDER</span><span class="p">)</span>
@@ -191,7 +187,7 @@
         <span class="c1"># Select the type of audio file you want returned</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_audio_config</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">AudioConfig</span><span class="p">(</span><span class="n">audio_encoding</span><span class="o">=</span><span class="n">texttospeech</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">MP3</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted (</span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
 
 <div class="viewcode-block" id="SystemTextToSpeech.on_text_to_speech"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.on_text_to_speech">[docs]</a>    <span class="k">def</span> <span class="nf">on_text_to_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -205,12 +201,6 @@
         <span class="n">synthesis_input</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SynthesisInput</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="n">synthesis_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">audio_content</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="SystemTextToSpeech.translate"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate_client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">)[</span><span class="s1">&#39;translatedText&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">text</span></div>
 
     <span class="k">def</span> <span class="nf">_play_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mp3</span><span class="p">):</span>
         <span class="n">file_hash</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TMP</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.mp3&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">))))</span>

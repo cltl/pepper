@@ -1,4 +1,4 @@
-from pepper.sensor import CocoClassifyClient, OpenFace, FaceClassifier
+from pepper.framework.sensor import CocoClassifyClient, OpenFace, FaceClassifier
 from pepper import config
 
 from PIL import Image, ImageDraw, ImageFont

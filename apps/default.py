@@ -2,8 +2,7 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.language import *
-from pepper.sensor.face import FaceClassifier
-from pepper.sensor.asr import ASRHypothesis
+from pepper.framework.sensor.face import FaceClassifier
 from pepper import config
 
 from pepper.knowledge.sentences import *
@@ -13,13 +12,15 @@ from pepper.knowledge.wikipedia import Wikipedia
 from pepper.knowledge.wolfram import Wolfram
 from pepper.knowledge.query import QnA
 
+from pepper.language.utils import *
+
 from pepper.brain.utils.helper_functions import *
 
 import numpy as np
 
 from random import choice
 from time import time, sleep
-from pepper.language.utils import *
+from urllib import quote
 
 
 class DefaultApp(AbstractApplication,
@@ -27,7 +28,7 @@ class DefaultApp(AbstractApplication,
                  BrainComponent,
                  ObjectDetectionComponent,
                  FaceDetectionComponent,
-                 StreamingSpeechRecognitionComponent,
+                 StreamedSpeechRecognitionComponent,
                  TextToSpeechComponent):
     pass
 
@@ -105,9 +106,6 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
                  choice([animations.BOW, animations.FRIENDLY, animations.HI]))  # Greet Person
 
-        # TODO: Implement non-hardcoded
-        self.say("Where are you from?")
-
     @property
     def application(self):
         """
@@ -121,9 +119,9 @@ class ConversationIntention(AbstractIntention, DefaultApp):
     def chat(self):
         return self._chat
 
-    def say(self, text, animation=None):
+    def say(self, text, animation=None, block=False):
         self._last_seen = time()
-        super(ConversationIntention, self).say(text, animation)
+        super(ConversationIntention, self).say(text, animation, block)
         self._last_seen = time()
 
     def on_face(self, faces):
@@ -174,11 +172,11 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             return
         elif self.respond_know_object(utterance):
             return
+        elif self.respond_show_page(utterance):
+            return
 
         # Parse only sentences within bounds
         elif 3 <= len(utterance.split()) <= 10:
-            self.say(choice(THINKING), animations.THINK)
-
             if self.respond_brain(utterance):
                 return
             elif self.respond_wikipedia(utterance):
@@ -297,57 +295,108 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                 if reply:
                     self.say(reply)
                 else:
-                    self.say("BAD ERROR!")
+                    self.say("No, I've never seen a {}".format(obj))
 
                 return True
 
         return False
 
-    def respond_brain(self, question):
-        objects = list(self._seen_objects)
+    def respond_show_page(self, command):
+        if config.APPLICATION_BACKEND == config.ApplicationBackend.NAOQI:
+            from pepper.framework.backend.naoqi import NaoqiTablet
 
-        expression = classify_and_process_utterance(
-            question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
+            tablet = NaoqiTablet(self.backend.session)
 
-        # Cancel if not a valid expression
-        if not expression or 'utterance_type' not in expression:
-            return False
+            command = command.lower()
 
-        # Process Questions
-        elif expression['utterance_type'] == 'question':
-            result = self.application.brain.query_brain(expression)
-            response = reply_to_question(result, objects)
+            if "show" in command:
+                if any([src in command for src in ["github", "source", "code", "project"]]):
+                    self.say("Here is our Git Hub page!", animations.TABLET)
+                    tablet.show("https://github.com/cltl/pepper")
+                    return True
+                if any([src in command for src in ["page", "docs", "documentation"]]):
+                    self.say("Here is the documentation of our project!", animations.TABLET)
+                    tablet.show("https://cltl.github.io/pepper")
+                    return True
+                if "google" in command:
+                    self.say("I'll let you Google!")
+                    tablet.show("https://google.com")
+                    return True
+                if "open images" in command:
+                    self.say("I'll show you the Open Images Dataset", animations.TABLET)
+                    tablet.show("https://storage.googleapis.com/openimages/web/visualizer/index.html")
+                    return True
+                if "show me images of " in command:
+                    target = command.replace("show me images of ", "")
+                    self.say("I'll show you images of {}".format(target), animations.TABLET)
+                    tablet.show("https://www.google.com/search?tbm=isch&q={}".format(quote(target)))
+                    return True
 
-            if response:
-                self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
+            elif "hide" in command:
+                self.say("Ok, I'll do that!", animations.TABLET)
+                tablet.hide()
                 return True
-            else:
-                self.say("{}, but {}!".format(
-                    choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
-                    choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
-                    animations.THINK
-                ))
+        return False
+
+
+    def respond_brain(self, question):
+        try:
+            objects = list(self._seen_objects)
+
+            expression = classify_and_process_utterance(
+                question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
+
+            # Cancel if not a valid expression
+            if not expression or 'utterance_type' not in expression:
                 return False
 
-        # Process Statements
-        elif expression['utterance_type'] == 'statement':
-            result = self.application.brain.update(expression)
-            # response = reply_to_statement(result, self.chat.speaker, objects, self)
-            response = phrase_update(result, True, True)
-            self.say(response.replace('_', ' '), animations.EXCITED)
+            # Process Questions
+            elif expression['utterance_type'] == 'question':
+                result = self.application.brain.query_brain(expression)
+                response = reply_to_question(result, objects)
 
-        return True
+                if response:
+                    self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
+                    return True
+                else:
+                    self.say("{}, but {}!".format(
+                        choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
+                        choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
+                        animations.THINK
+                    ))
+                    return False
 
+            # Process Statements
+            elif expression['utterance_type'] == 'statement':
+                result = self.application.brain.update(expression)
+                # response = reply_to_statement(result, self.chat.speaker, objects, self)
+                response = phrase_update(result, True, True)
+                self.say(response.replace('_', ' '), animations.EXCITED)
 
+            return True
+        except: pass
         return False
 
     def respond_wikipedia(self, question):
-        answer = Wikipedia().query(question)
-        if answer:
+        result = Wikipedia().query(question)
+        if result:
+            answer, url = result
             answer = answer.split('. ')[0]
+
             self.say("{}, {}, {}.".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker), animations.CLOUD)
-            self.say(answer, animations.EXPLAIN)
-        return answer
+
+            tablet = None
+            if config.APPLICATION_BACKEND == config.ApplicationBackend.NAOQI:
+                from pepper.framework.backend.naoqi import NaoqiTablet
+                tablet = NaoqiTablet(self.backend.session)
+                tablet.show(url)
+
+            self.say(answer, animations.EXPLAIN, block=True)
+
+            if tablet:
+                tablet.hide()
+
+        return result
 
     def respond_wolfram(self, question):
         answer = Wolfram().query(question)

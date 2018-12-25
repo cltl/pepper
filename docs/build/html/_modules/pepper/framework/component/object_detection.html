@@ -149,11 +149,14 @@
             
   <h1>Source code for pepper.framework.component.object_detection</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
-<span class="kn">from</span> <span class="nn">pepper.sensor.obj</span> <span class="k">import</span> <span class="n">CocoClassifyClient</span><span class="p">,</span> <span class="n">CocoObject</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.sensor.obj</span> <span class="k">import</span> <span class="n">CocoClassifyClient</span><span class="p">,</span> <span class="n">CocoObject</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
 
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">NoReturn</span>
 
 
 <div class="viewcode-block" id="ObjectDetectionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
@@ -188,33 +191,32 @@
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
             <span class="sd">&quot;&quot;&quot;Object Detection Event Worker&quot;&quot;&quot;</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">image</span><span class="p">,</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">image</span><span class="p">,</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-                <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
-                    <span class="c1"># Call on_object Event Function</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">on_object</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
+                <span class="c1"># Call on_object Event Function</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_object</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
 
-                    <span class="c1"># Call on_object Callback Functions</span>
-                    <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_object_callbacks</span><span class="p">:</span>
-                        <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
+                <span class="c1"># Call on_object Callback Functions</span>
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_object_callbacks</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
 
-                <span class="c1"># Call on_image Event Function</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="c1"># Call on_image Event Function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
-                <span class="c1"># Call on_image Callback Functions</span>
-                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_callbacks</span><span class="p">:</span>
-                    <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="c1"># Call on_image Callback Functions</span>
+            <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_callbacks</span><span class="p">:</span>
+                <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
         <span class="c1"># Initialize Object Queue &amp; Worker</span>
-        <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">)</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ObjectDetectionComponentThread&quot;</span><span class="p">)</span>
+        <span class="n">schedule</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
         <span class="c1"># Add on_image to Camera Callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">on_image</span><span class="p">]</span>
 
 <div class="viewcode-block" id="ObjectDetectionComponent.on_image"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (np.ndarray) -&gt; NoReturn</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Image Event. Called every time an image was taken by Backend</span>
 
@@ -225,6 +227,7 @@
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="ObjectDetectionComponent.on_object"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object">[docs]</a>    <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+        <span class="c1"># type: (np.ndarray, List[CocoObject]) -&gt; NoReturn</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Object Event. Called every time one or more objects are detected in a camera frame.</span>
 

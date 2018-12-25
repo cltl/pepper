@@ -94,15 +94,32 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.video_writer.html">pepper.framework.component.video_writer module</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.sensor.html">pepper.sensor package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.object_detection.html">pepper.framework.component.object_detection module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.component.speech_recognition module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.video_display.html">pepper.framework.component.video_display module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.video_writer.html">pepper.framework.component.video_writer module</a></li>
 </ul>
 </li>
 </ul>
@@ -277,15 +294,15 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent">
-<em class="property">class </em><code class="descclassname">pepper.framework.component.speech_recognition.</code><code class="descname">StreamingSpeechRecognitionComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/speech_recognition.html#StreamingSpeechRecognitionComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent">
+<em class="property">class </em><code class="descclassname">pepper.framework.component.speech_recognition.</code><code class="descname">StreamedSpeechRecognitionComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/speech_recognition.html#StreamedSpeechRecognitionComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.framework.component.speech_recognition.SpeechRecognitionComponent" title="pepper.framework.component.speech_recognition.SpeechRecognitionComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.component.speech_recognition.SpeechRecognitionComponent</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.asr" title="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.asr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></a></dt>
+<dt><a class="reference internal" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.asr" title="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.asr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></a></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
@@ -294,7 +311,7 @@
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
 <dd><p class="first last">Component Logger</p>
 </dd>
-<dt><a class="reference internal" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.vad" title="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.vad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></a></dt>
+<dt><a class="reference internal" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.vad" title="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.vad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></a></dt>
 <dd><p class="first last">Returns</p>
 </dd>
 </dl>
@@ -309,7 +326,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.on_transcript" title="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.on_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_transcript</span></code></a>(hypotheses,&nbsp;audio)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.on_transcript" title="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.on_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_transcript</span></code></a>(hypotheses,&nbsp;audio)</td>
 <td>On Transcript Event.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
@@ -318,8 +335,8 @@
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.asr">
-<code class="descname">asr</code><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.asr" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.asr">
+<code class="descname">asr</code><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.asr" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -335,15 +352,15 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.on_transcript">
-<code class="descname">on_transcript</code><span class="sig-paren">(</span><em>hypotheses</em>, <em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/speech_recognition.html#StreamingSpeechRecognitionComponent.on_transcript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.on_transcript" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.on_transcript">
+<code class="descname">on_transcript</code><span class="sig-paren">(</span><em>hypotheses</em>, <em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/speech_recognition.html#StreamedSpeechRecognitionComponent.on_transcript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.on_transcript" title="Permalink to this definition">¶</a></dt>
 <dd><p>On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>hypotheses: list of ASRHypothesis</strong></dt>
+<dt><strong>hypotheses: List[ASRHypothesis]</strong></dt>
 <dd><p class="first last">Hypotheses about the corresponding utterance</p>
 </dd>
 <dt><strong>audio: numpy.ndarray</strong></dt>
@@ -357,8 +374,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.vad">
-<code class="descname">vad</code><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamingSpeechRecognitionComponent.vad" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.vad">
+<code class="descname">vad</code><a class="headerlink" href="#pepper.framework.component.speech_recognition.StreamedSpeechRecognitionComponent.vad" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

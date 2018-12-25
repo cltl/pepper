@@ -1,4 +1,4 @@
-from pepper.sensor.obj import Bounds
+from pepper.framework.sensor.obj import Bounds
 from pepper import logger
 
 from sklearn.neighbors import KNeighborsClassifier

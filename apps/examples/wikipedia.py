@@ -3,7 +3,7 @@ from pepper.knowledge import Wikipedia
 from pepper import config
 
 
-class WikipediaApplication(AbstractApplication, StatisticsComponent, StreamingSpeechRecognitionComponent, TextToSpeechComponent):
+class WikipediaApplication(AbstractApplication, StatisticsComponent, StreamedSpeechRecognitionComponent, TextToSpeechComponent):
     def on_transcript(self, hypotheses, audio):
         """
         On Transcript Event.
@@ -21,10 +21,12 @@ class WikipediaApplication(AbstractApplication, StatisticsComponent, StreamingSp
         question = hypotheses[0].transcript
 
         # Query Wikipedia for Answer to Question
-        answer = Wikipedia.query(question)
+        result = Wikipedia.query(question)
 
-        if answer:
+        if result:
 
+            answer, url = result
+            
             # Limit Answer to a single sentence
             answer = answer.split('.')[0]
 

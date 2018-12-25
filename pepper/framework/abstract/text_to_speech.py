@@ -1,6 +1,7 @@
 from pepper.framework.util import Scheduler
 from pepper import logger
 from Queue import Queue
+from time import sleep
 
 
 class AbstractTextToSpeech(object):
@@ -48,7 +49,7 @@ class AbstractTextToSpeech(object):
         """
         return self._talking_jobs >= 1
 
-    def say(self, text, animation=None):
+    def say(self, text, animation=None, block=False):
         """
         Say something through Text to Speech (Interface)
 
@@ -57,9 +58,13 @@ class AbstractTextToSpeech(object):
         text: str
         animation: str
         """
-        self._log.info(text)
+        self._log.info(text.replace('\n', ' '))
         self._talking_jobs += 1
         self._queue.put((text, animation))
+
+        while block and self.talking:
+            sleep(1E-3)
+
 
     def on_text_to_speech(self, text, animation=None):
         """

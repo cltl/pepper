@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.sensor.face import OpenFace, FaceClassifier, Face, Person
+from pepper.framework.sensor.face import OpenFace, FaceClassifier, Face, Person
 from pepper.framework.util import Scheduler
 from pepper import config
 

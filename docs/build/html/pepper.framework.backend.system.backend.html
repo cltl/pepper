@@ -91,17 +91,33 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.sensor.html">pepper.sensor package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.file.html">pepper.framework.backend.file package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.backend.system.backend module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.system.camera.html">pepper.framework.backend.system.camera module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.system.microphone.html">pepper.framework.backend.system.microphone module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.system.text_to_speech.html">pepper.framework.backend.system.text_to_speech module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -178,7 +194,7 @@
 <span id="pepper-framework-backend-system-backend-module"></span><h1>pepper.framework.backend.system.backend module<a class="headerlink" href="#module-pepper.framework.backend.system.backend" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pepper.framework.backend.system.backend.SystemBackend">
-<em class="property">class </em><code class="descclassname">pepper.framework.backend.system.backend.</code><code class="descname">SystemBackend</code><span class="sig-paren">(</span><em>camera_resolution=&lt;CameraResolution.QVGA: (240</em>, <em>320)&gt;</em>, <em>camera_rate=5</em>, <em>microphone_channels=1</em>, <em>microphone_rate=16000</em>, <em>language='en-GB'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/backend.html#SystemBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.backend.SystemBackend" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pepper.framework.backend.system.backend.</code><code class="descname">SystemBackend</code><span class="sig-paren">(</span><em>camera_resolution=&lt;CameraResolution.QVGA: (240</em>, <em>320)&gt;</em>, <em>camera_rate=2</em>, <em>microphone_channels=1</em>, <em>microphone_rate=16000</em>, <em>language='en-GB'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/backend.html#SystemBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.backend.SystemBackend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.backend.AbstractBackend</span></code></a></p>
 <p>Initialize System Backend</p>
 <table class="docutils field-list" frame="void" rules="none">

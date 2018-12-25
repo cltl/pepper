@@ -175,6 +175,8 @@
         <span class="s1">&#39;name&#39;</span>
     <span class="p">]</span>
 
+    <span class="n">_NOT_TO_ASK_PREDICATES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;faceID&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interact with Triple store</span>
@@ -223,6 +225,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">BRAIN_LOG_ROOT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">-%H-%M&#39;</span><span class="p">))</span>
 
+        <span class="c1"># Launch first query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count_statements</span><span class="p">()</span>
+
     <span class="c1">#################################### Main functions to interact with the brain ####################################</span>
 
 <div class="viewcode-block" id="LongTermMemory.update"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
@@ -236,13 +241,45 @@
         <span class="n">capsule</span> <span class="o">=</span> <span class="n">casefold_capsule</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
 
         <span class="c1"># Create graphs and triples</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+        <span class="n">instance_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+
+        <span class="c1"># Check if this knowledge already exists on the brain</span>
+        <span class="n">novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_statement_existence</span><span class="p">(</span><span class="n">instance_url</span><span class="p">)</span>
+
+        <span class="c1"># Check how many items of the same type as subject and object we have</span>
+        <span class="n">items_like_subject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_of_type</span><span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+        <span class="n">items_like_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_of_type</span><span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+
+        <span class="c1"># Find any overlaps</span>
+        <span class="n">overlaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_overlaps</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+
+        <span class="c1"># Finish process of uploading new knowledge to the triple store</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_to_brain</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
+        <span class="c1"># Check for conflicts after adding the knowledge</span>
+        <span class="n">negation_conflicts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_negation_conflicts_with_statement</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+        <span class="n">object_conflict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_cardinality_conflicts_with_statement</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+
+        <span class="c1"># Check for gaps, in case we want to be proactive</span>
+        <span class="n">subject_gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gaps_from_entity</span><span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
+        <span class="n">object_gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gaps_from_entity</span><span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span>
+
+        <span class="c1"># Report trust</span>
+        <span class="n">trust</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">when_last_chat_with</span><span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="mi">1</span>
+
         <span class="c1"># Create JSON output</span>
         <span class="n">capsule</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s1">&#39;statement&#39;</span><span class="p">:</span> <span class="n">capsule</span><span class="p">}</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s1">&#39;statement&#39;</span><span class="p">:</span> <span class="n">capsule</span><span class="p">,</span>
+                  <span class="s1">&#39;statement_novelty&#39;</span><span class="p">:</span> <span class="n">novelty</span><span class="p">,</span>
+                  <span class="s1">&#39;entity_novelty&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">items_like_subject</span><span class="p">,</span>
+                                     <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">items_like_object</span><span class="p">},</span>
+                  <span class="s1">&#39;negation_conflicts&#39;</span><span class="p">:</span> <span class="n">negation_conflicts</span><span class="p">,</span>
+                  <span class="s1">&#39;cardinality_conflicts&#39;</span><span class="p">:</span> <span class="n">object_conflict</span><span class="p">,</span>
+                  <span class="s1">&#39;subject_gaps&#39;</span><span class="p">:</span> <span class="n">subject_gaps</span><span class="p">,</span>
+                  <span class="s1">&#39;object_gaps&#39;</span><span class="p">:</span> <span class="n">object_gaps</span><span class="p">,</span>
+                  <span class="s1">&#39;overlaps&#39;</span><span class="p">:</span> <span class="n">overlaps</span><span class="p">,</span>
+                  <span class="s1">&#39;trust&#39;</span><span class="p">:</span> <span class="n">trust</span><span class="p">}</span>
 
         <span class="k">return</span> <span class="n">output</span></div>
 
@@ -257,7 +294,7 @@
         <span class="n">capsule</span> <span class="o">=</span> <span class="n">casefold_capsule</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
 
         <span class="c1"># Create graphs and triples</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">capsule</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Experience&#39;</span><span class="p">)</span>
+        <span class="n">instance_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">capsule</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Experience&#39;</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_to_brain</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -450,7 +487,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;when_last_chat_with&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">actor_label</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="o">!=</span> <span class="p">[]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span></div>
 
 <div class="viewcode-block" id="LongTermMemory.get_triples_with_predicate"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_triples_with_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">get_triples_with_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -462,6 +500,15 @@
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;sname&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;oname&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span></div>
 
+<div class="viewcode-block" id="LongTermMemory.check_statement_existence"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.check_statement_existence">[docs]</a>    <span class="k">def</span> <span class="nf">check_statement_existence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_url</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;instance_existence&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">instance_url</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;authorlabel&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
     <span class="c1">########## conflicts ##########</span>
 <div class="viewcode-block" id="LongTermMemory.get_all_conflicts"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -470,47 +517,54 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">predicate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ONE_TO_ONE_PREDICATES</span><span class="p">:</span>
-            <span class="n">conflicts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="n">predicate</span><span class="p">))</span>
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="n">predicate</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">conflicts</span></div>
+
+<div class="viewcode-block" id="LongTermMemory.get_conflicts_with_one_to_one_predicate"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_conflicts_with_one_to_one_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">one_to_one_predicate</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;one_to_one_conflicts&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">one_to_one_predicate</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">conflict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;sname&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="n">one_to_one_predicate</span><span class="p">,</span> <span class="s1">&#39;objects&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;pairs&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
+                <span class="p">[</span><span class="n">val</span><span class="p">,</span> <span class="n">auth</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">option</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">}</span>
+                <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;objects&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conflict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">conflicts</span></div>
+
+<div class="viewcode-block" id="LongTermMemory.get_object_cardinality_conflicts_with_statement"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_object_cardinality_conflicts_with_statement">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_cardinality_conflicts_with_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
+        <span class="c1"># Case fold</span>
+        <span class="n">capsule</span> <span class="o">=</span> <span class="n">casefold_capsule</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ONE_TO_ONE_PREDICATES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[{}]</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;object_cardinality_conflicts&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span>
+                                                              <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;authorlabel&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;oname&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;oname&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="LongTermMemory.get_negation_conflicts_with_statement"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts_with_statement">[docs]</a>    <span class="k">def</span> <span class="nf">get_negation_conflicts_with_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
         <span class="c1"># Case fold</span>
         <span class="n">capsule</span> <span class="o">=</span> <span class="n">casefold_capsule</span><span class="p">(</span><span class="n">capsule</span><span class="p">)</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            PREFIX n2mu: &lt;http://cltl.nl/leolani/n2mu/&gt;</span>
-<span class="s2">            PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
-<span class="s2">            PREFIX grasp: &lt;http://groundedannotationframework.org/grasp#&gt;</span>
-<span class="s2">            PREFIX prov: &lt;http://www.w3.org/ns/prov#&gt;</span>
-<span class="s2">            PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span>
-<span class="s2">            PREFIX sem: &lt;http://semanticweb.cs.vu.nl/2009/11/sem/&gt;</span>
-
-<span class="s2">            select ?pred ?authorlabel ?date</span>
-<span class="s2">            where { </span>
-<span class="s2">                GRAPH ?g {</span>
-<span class="s2">                    ?s ?pred ?o .</span>
-<span class="s2">                } .</span>
-
-<span class="s2">                ?s rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .</span>
-<span class="s2">                ?o rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .</span>
-<span class="s2">                VALUES (?pred) { (n2mu:</span><span class="si">%s</span><span class="s2">-not) (n2mu:</span><span class="si">%s</span><span class="s2">) } .</span>
-
-<span class="s2">                ?g grasp:denotedBy ?m . </span>
-
-<span class="s2">                ?m prov:wasDerivedFrom ?chat .</span>
-<span class="s2">                ?chat rdf:type grasp:Chat .</span>
-<span class="s2">                ?chat sem:hasTime ?date .</span>
-
-<span class="s2">                ?m grasp:wasAttributedTo ?author . </span>
-<span class="s2">                ?author rdfs:label ?authorlabel .</span>
-<span class="s2">            }</span>
-<span class="s2">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;negation_conflicts&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
                <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-        <span class="n">conflict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;capsule&#39;</span><span class="p">:</span> <span class="n">capsule</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;negative&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">conflict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;positive&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;negative&#39;</span><span class="p">:</span> <span class="p">{}}</span>
 
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
             <span class="n">item</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
@@ -522,7 +576,59 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
 
-        <span class="k">return</span> <span class="n">conflict</span></div>
+        <span class="k">return</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">{}</span> <span class="ow">or</span> <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">{}</span> <span class="k">else</span> <span class="n">conflict</span></div>
+
+    <span class="c1">########## gaps ##########</span>
+<div class="viewcode-block" id="LongTermMemory.get_gaps_from_entity"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_gaps_from_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_gaps_from_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="c1"># Role as subject</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;subject_gaps&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">entity</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">subject_gaps</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;type2&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span>
+                            <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NOT_TO_ASK_PREDICATES</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subject_gaps</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Role as object</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;object_gaps&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">entity</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">object_gaps</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="s1">&#39;domain&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;type2&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span>
+                           <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NOT_TO_ASK_PREDICATES</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">object_gaps</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">subject_gaps</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="n">object_gaps</span><span class="p">}</span></div>
+
+    <span class="c1">########## overlaps ##########</span>
+<div class="viewcode-block" id="LongTermMemory.get_overlaps"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_overlaps">[docs]</a>    <span class="k">def</span> <span class="nf">get_overlaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capsule</span><span class="p">):</span>
+        <span class="c1"># Role as subject</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;object_overlap&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                                <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">object_overlap</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;slabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                                  <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">object_overlap</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Role as object</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;subject_overlap&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                                                <span class="n">capsule</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">subject_overlap</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;olabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                                  <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subject_overlap</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">subject_overlap</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="n">object_overlap</span><span class="p">}</span></div>
 
     <span class="c1">########## semantic web ##########</span>
 <div class="viewcode-block" id="LongTermMemory.exact_match_dbpedia"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.exact_match_dbpedia">[docs]</a>    <span class="k">def</span> <span class="nf">exact_match_dbpedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
@@ -660,8 +766,6 @@
 <span class="sd">        :param date:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Chat with </span><span class="si">{}</span><span class="s1"> on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">actor</span><span class="p">,</span> <span class="n">date</span><span class="p">))</span>
-
         <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;last_chat_with&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">actor</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
@@ -677,8 +781,6 @@
         <span class="k">return</span> <span class="n">chat_id</span></div>
 
 <div class="viewcode-block" id="LongTermMemory.create_turn_id"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.create_turn_id">[docs]</a>    <span class="k">def</span> <span class="nf">create_turn_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat_id</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Turn in chat </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chat_id</span><span class="p">))</span>
-
         <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;last_turn_in_chat&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">chat_id</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;turnid&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="mi">1</span></div>
@@ -965,6 +1067,8 @@
 
         <span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">attribution</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;isAttributionFor&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="p">))</span>
 
+        <span class="k">return</span> <span class="n">instance</span>
+
     <span class="c1">######################################### Helpers for question processing #########################################</span>
 
     <span class="k">def</span> <span class="nf">_create_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_question</span><span class="p">):</span>
@@ -1047,47 +1151,8 @@
         <span class="n">sparql</span><span class="o">.</span><span class="n">addParameter</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="s1">&#39;application/sparql-results+json&#39;</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">sparql</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;bindings&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;bindings&quot;</span><span class="p">]</span></div>
 
-    <span class="c1">######################################### Helpers for conflict processing #########################################</span>
-    <span class="k">def</span> <span class="nf">_get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">one_to_one_predicate</span><span class="p">):</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            PREFIX n2mu: &lt;http://cltl.nl/leolani/n2mu/&gt;</span>
-<span class="s2">            PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
-<span class="s2">            PREFIX grasp: &lt;http://groundedannotationframework.org/grasp#&gt;</span>
-
-<span class="s2">            select ?sname </span>
-<span class="s2">                    (group_concat(?oname ; separator=&quot;;&quot;) as ?onames) </span>
-<span class="s2">                    (group_concat(?authorlabel ; separator=&quot;;&quot;) as ?authorlabels) </span>
-<span class="s2">            where { </span>
-<span class="s2">                GRAPH ?g {</span>
-<span class="s2">                    ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o .</span>
-<span class="s2">                    } .</span>
-<span class="s2">                ?s rdfs:label ?sname .</span>
-<span class="s2">                ?o rdfs:label ?oname .</span>
-
-<span class="s2">                ?g grasp:denotedBy ?m . </span>
-<span class="s2">                ?m grasp:wasAttributedTo ?author . </span>
-<span class="s2">                ?author rdfs:label ?authorlabel .</span>
-
-<span class="s2">            } group by ?sname having (count(distinct ?oname) &gt; 1)</span>
-<span class="s2">        &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">one_to_one_predicate</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-            <span class="n">conflict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;sname&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="n">one_to_one_predicate</span><span class="p">,</span> <span class="s1">&#39;objects&#39;</span><span class="p">:</span> <span class="p">[]}</span>
-
-            <span class="n">values</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;onames&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
-            <span class="n">authors</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;authorlabels&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">auth</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">authors</span><span class="p">):</span>
-                <span class="n">option</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">}</span>
-                <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;objects&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
-
-            <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conflict</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">conflicts</span></div>
 </pre></div>
 
            </div>

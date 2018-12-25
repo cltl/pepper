@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.sensor.obj import CocoClassifyClient, CocoObject
+from pepper.framework.sensor.obj import CocoClassifyClient, CocoObject
 from pepper.framework.util import Scheduler
 from pepper import config
 
