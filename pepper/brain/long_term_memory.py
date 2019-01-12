@@ -88,7 +88,7 @@ class LongTermMemory(object):
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Case fold
-        capsule = casefold_capsule(capsule)
+        capsule = casefold_capsule(capsule, format='triple')
 
         # Create graphs and triples
         instance_url = self._model_graphs_(capsule)
@@ -141,7 +141,7 @@ class LongTermMemory(object):
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Case fold
-        capsule = casefold_capsule(capsule)
+        capsule = casefold_capsule(capsule, format='triple')
 
         # Create graphs and triples
         instance_url = self._model_graphs_(capsule, type='Experience')
@@ -162,7 +162,7 @@ class LongTermMemory(object):
         :return: json response containing the results of the query, and the original question
         """
         # Case fold
-        capsule = casefold_capsule(capsule)
+        capsule = casefold_capsule(capsule, format='triple')
 
         # Generate query
         query = self._create_query(capsule)
@@ -184,13 +184,13 @@ class LongTermMemory(object):
         :return:
         """
 
-        if casefold(item) in self.get_classes():
+        if casefold(item, format='triple') in self.get_classes():
             # If this is in the ontology already as a class, create sensor triples directly
             text = 'I know about %s. I will remember this object' % item
             return item, text
 
         temp = self.get_labels_and_classes()
-        if casefold(item) in temp.keys():
+        if casefold(item, format='triple') in temp.keys():
             # If this is in the ontology already as a label, create sensor triples directly
             text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
             return item, text
@@ -201,7 +201,7 @@ class LongTermMemory(object):
             # Had to learn it, but I can create triples now
             text = ' I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
                    'I will remember this object' % (item, class_type)
-            return casefold(class_type), text
+            return casefold(class_type, format='triple'), text
 
         if not exact_only:
             # Second go at dbpedia, relaxed approach
@@ -210,7 +210,7 @@ class LongTermMemory(object):
                 # Had to really search for it to learn it, but I can create triples now
                 text = ' I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
                        'is a %s. I will remember this object' % (item, class_type)
-                return casefold(class_type), text
+                return casefold(class_type, format='triple'), text
 
         # Failure, nothing found
         text = ' I am sorry, I could not learn anything on %s so I will not remember it' % item
@@ -390,7 +390,7 @@ class LongTermMemory(object):
 
     def get_object_cardinality_conflicts_with_statement(self, capsule):
         # Case fold
-        capsule = casefold_capsule(capsule)
+        capsule = casefold_capsule(capsule, format='triple')
 
         if capsule['predicate']['type'] not in self._ONE_TO_ONE_PREDICATES:
             return [{}]
@@ -407,7 +407,7 @@ class LongTermMemory(object):
 
     def get_negation_conflicts_with_statement(self, capsule):
         # Case fold
-        capsule = casefold_capsule(capsule)
+        capsule = casefold_capsule(capsule, format='triple')
 
         query = read_query('negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
                capsule['predicate']['type'], capsule['predicate']['type'])
@@ -927,7 +927,7 @@ class LongTermMemory(object):
         # Query subject
         if parsed_question['subject']['label'] == "":
             # Case fold
-            # object_label = casefold_label(parsed_question['object']['label'])
+            # object_label = casefold_label(parsed_question['object']['label'], format='triple')
 
             query = """
                 SELECT ?slabel ?authorlabel

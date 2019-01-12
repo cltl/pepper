@@ -9,37 +9,20 @@ from datetime import date
 # Create brain connection
 brain = LongTermMemory()
 
+conlficts = brain.get_all_conflicts()
+print(phrase_all_conflicts(conlficts))
 
-capsule_serbia = {  # lenka saw a dog
-        "subject": {
-            "label": "lenka",
-            "type": ""
-        },
-        "predicate": {
-            "type": "sees"
-        },
-        "object": {
-            "label": "dog",
-            "type": ""
-        },
-        "author": "selene",
-        "chat": 1,
-        "turn": 1,
-        "position": "0-25",
-        "date": date(2018, 3, 19)
-    }
-
-# capsule_serbia = {  # lenka is from Serbia
+# capsule_serbia = {  # lenka saw a dog
 #         "subject": {
-#             "label": "bram",
-#             "type": "person"
+#             "label": "lenka",
+#             "type": ""
 #         },
 #         "predicate": {
-#             "type": "is_from"
+#             "type": "sees"
 #         },
 #         "object": {
-#             "label": "mongolia",
-#             "type": "location"
+#             "label": "dog",
+#             "type": ""
 #         },
 #         "author": "selene",
 #         "chat": 1,
@@ -47,6 +30,25 @@ capsule_serbia = {  # lenka saw a dog
 #         "position": "0-25",
 #         "date": date(2018, 3, 19)
 #     }
+
+capsule_serbia = {  # lenka is from Serbia
+        "subject": {
+            "label": "bram",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "is_from"
+        },
+        "object": {
+            "label": "mongolia",
+            "type": "location"
+        },
+        "author": "selene",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 19)
+    }
 
 x = brain.update(capsule_serbia)
 print(json.dumps(x, indent=4, sort_keys=True))

@@ -84,6 +84,12 @@ n2mu:born_in rdf:type owl:ObjectProperty ;
              owl:propertyDisjointWith n2mu:manufactured_in .
 
 
+###  http://cltl.nl/leolani/n2mu/cooked_by
+n2mu:cooked_by rdf:type owl:ObjectProperty ;
+               rdfs:domain n2mu:dish ;
+               rdfs:range n2mu:agent .
+
+
 ###  http://cltl.nl/leolani/n2mu/dislikes
 n2mu:dislikes rdf:type owl:ObjectProperty ;
               rdfs:domain n2mu:agent ;
@@ -215,6 +221,12 @@ n2mu:likes rdf:type owl:ObjectProperty ;
                       n2mu:interest .
 
 
+###  http://cltl.nl/leolani/n2mu/lived_in
+n2mu:lived_in rdf:type owl:ObjectProperty ;
+              rdfs:domain n2mu:agent ;
+              rdfs:range n2mu:location .
+
+
 ###  http://cltl.nl/leolani/n2mu/located
 n2mu:located rdf:type owl:ObjectProperty ;
              rdfs:domain n2mu:institution ;
@@ -228,6 +240,12 @@ n2mu:manufactured_in rdf:type owl:ObjectProperty ;
                      rdfs:range n2mu:location .
 
 
+###  http://cltl.nl/leolani/n2mu/owns
+n2mu:owns rdf:type owl:ObjectProperty ;
+          rdfs:domain n2mu:agent ;
+          rdfs:range n2mu:object .
+
+
 ###  http://cltl.nl/leolani/n2mu/perceive
 n2mu:perceive rdf:type owl:ObjectProperty ;
               rdfs:domain n2mu:agent ;
@@ -239,6 +257,12 @@ n2mu:plays rdf:type owl:ObjectProperty ;
            rdfs:domain n2mu:agent ;
            rdfs:range n2mu:song ,
                       n2mu:sport .
+
+
+###  http://cltl.nl/leolani/n2mu/read_by
+n2mu:read_by rdf:type owl:ObjectProperty ;
+             rdfs:domain n2mu:book ;
+             rdfs:range n2mu:agent .
 
 
 ###  http://cltl.nl/leolani/n2mu/sense
@@ -291,10 +315,10 @@ n2mu:studies_at rdf:type owl:ObjectProperty ;
                 rdfs:range n2mu:university .
 
 
-###  http://cltl.nl/leolani/n2mu/travel_to
-n2mu:travel_to rdf:type owl:ObjectProperty ;
-               rdfs:domain n2mu:agent ;
-               rdfs:range n2mu:location .
+###  http://cltl.nl/leolani/n2mu/travelled_to
+n2mu:travelled_to rdf:type owl:ObjectProperty ;
+                  rdfs:domain n2mu:agent ;
+                  rdfs:range n2mu:location .
 
 
 ###  http://cltl.nl/leolani/n2mu/works_at
@@ -318,6 +342,12 @@ n2mu:written_by rdf:type owl:ObjectProperty ;
 n2mu:age rdf:type owl:DatatypeProperty ;
          rdfs:domain n2mu:person ;
          rdfs:range xsd:int .
+
+
+###  http://cltl.nl/leolani/n2mu/birthday
+n2mu:birthday rdf:type owl:DatatypeProperty ;
+              rdfs:domain n2mu:agent ;
+              rdfs:range xsd:dateTime .
 
 
 ###  http://cltl.nl/leolani/n2mu/faceID
@@ -450,6 +480,10 @@ n2mu:movie rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/music_genre
 n2mu:music_genre rdf:type owl:Class ;
                  rdfs:subClassOf n2mu:interest_field .
+
+
+###  http://cltl.nl/leolani/n2mu/object
+n2mu:object rdf:type owl:Class .
 
 
 ###  http://cltl.nl/leolani/n2mu/pain
