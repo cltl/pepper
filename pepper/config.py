@@ -99,8 +99,7 @@ NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 FACE_RECOGNITION_THRESHOLD = 0.5
 OBJECT_RECOGNITION_THRESHOLD = 0.5
 OBJECT_RECOGNITION_TARGETS = [
-    pepper.ObjectDetectionTarget.COCO,
-    pepper.ObjectDetectionTarget.AVA
+    pepper.ObjectDetectionTarget.COCO
 ]
 
 MICROPHONE_SAMPLE_RATE = 16000
