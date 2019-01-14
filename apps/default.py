@@ -25,6 +25,7 @@ from urllib import quote
 
 class DefaultApp(AbstractApplication,
                  StatisticsComponent,
+                 DisplayComponent,
                  BrainComponent,
                  ObjectDetectionComponent,
                  FaceDetectionComponent,
@@ -192,7 +193,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                 self.say(choice([
                     "Ok, I'll be quiet for a bit.",
                     "Right, I'll be there when you need me!",
-                    "Bye, I'm going to browse for knowledge on the web!"]),
+                    "Bye, I'm going to browse for knowledge on the display!"]),
                     animations.TIMID)
                 IgnoreIntention(self.application)
                 return True
@@ -319,7 +320,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                     return True
                 if "open images" in command:
                     self.say("I'll show you the Open Images Dataset", animations.TABLET)
-                    tablet.show("https://storage.googleapis.com/openimages/web/visualizer/index.html")
+                    tablet.show("https://storage.googleapis.com/openimages/display/visualizer/index.html")
                     return True
                 if "show me images of " in command:
                     target = command.replace("show me images of ", "")
@@ -355,7 +356,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                 else:
                     self.say("{}, but {}!".format(
                         choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
-                        choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
+                        choice(["I'll look it up online", "let me search the display", "I will check my internet sources"]),
                         animations.THINK
                     ))
                     return False

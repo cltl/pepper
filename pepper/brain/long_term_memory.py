@@ -195,11 +195,11 @@ class LongTermMemory(object):
             text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
             return item, text
 
-        # Query the web for information
+        # Query the display for information
         class_type, description = self.exact_match_dbpedia(item)
         if class_type is not None:
             # Had to learn it, but I can create triples now
-            text = ' I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
+            text = ' I did not know what %s is, but I searched on the display and I found that it is a %s. ' \
                    'I will remember this object' % (item, class_type)
             return casefold(class_type, format='triple'), text
 
@@ -208,7 +208,7 @@ class LongTermMemory(object):
             class_type, description = self.keyword_match_dbpedia(item)
             if class_type is not None:
                 # Had to really search for it to learn it, but I can create triples now
-                text = ' I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
+                text = ' I did not know what %s is, but I searched for fuzzy matches on the display and I found that it ' \
                        'is a %s. I will remember this object' % (item, class_type)
                 return casefold(class_type, format='triple'), text
 
@@ -480,7 +480,7 @@ class LongTermMemory(object):
 
         return {'subject': subject_overlap, 'object': object_overlap}
 
-    ########## semantic web ##########
+    ########## semantic display ##########
     def exact_match_dbpedia(self, item):
         """
         Query dbpedia for information on this item to get it's semantic type and description.

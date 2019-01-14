@@ -185,6 +185,9 @@ class Bounds(object):
         """
         return Bounds(self.x0 * x_scale, self.y0 * y_scale, self.x1 * x_scale, self.y1 * y_scale)
 
+    def to_list(self):
+        return [self.x0, self.y0, self.x1, self.y1]
+
     def __repr__(self):
         return "Bounds[({:3f}, {:3f}), ({:3f}, {:3f})]".format(self.x0, self.y0, self.x1, self.y1)
 

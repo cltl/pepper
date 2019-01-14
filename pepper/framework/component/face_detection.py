@@ -59,9 +59,18 @@ class FaceDetectionComponent(AbstractComponent):
                 if face.confidence > config.FACE_RECOGNITION_THRESHOLD:
                     (on_face_new if face.name == FaceClassifier.NEW else on_face_known).append(face)
 
-            if on_face: self.on_face(on_face)
-            if on_face_known: self.on_face_known(on_face_known)
-            if on_face_new: self.on_face_new(on_face_new)
+            if on_face:
+                self.on_face(on_face)
+                for callback in self.on_face_callbacks:
+                    callback(on_face)
+            if on_face_known:
+                self.on_face_known(on_face_known)
+                for callback in self.on_person_callbacks:
+                    callback(on_face_known)
+            if on_face_new:
+                self.on_face_new(on_face_new)
+                for callback in self.on_new_person_callbacks:
+                    callback(on_face_new)
 
         # Initialize Queue & Worker
         schedule = Scheduler(worker, name="FaceDetectionComponentThread")

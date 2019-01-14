@@ -183,7 +183,7 @@
 <!--
 
   The "prepare" target is used to create the "build" destination directory,
-  and copy the static contents of your web application to it.  If you need
+  and copy the static contents of your display application to it.  If you need
   to copy static files from external dependencies, you can customize the
   contents of this task.
 

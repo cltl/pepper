@@ -75,8 +75,8 @@ class ObjectDetectionComponent(AbstractComponent):
         ----------
         image: np.ndarray
             Camera Frame
-        objects: list of CocoObject
-            List of CocoObject instances
+        objects: list of Object
+            List of Object instances
         """
         pass
 
