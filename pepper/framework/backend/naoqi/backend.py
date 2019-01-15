@@ -36,7 +36,9 @@ class NAOqiBackend(AbstractBackend):
     def __init__(self, url=config.NAOQI_URL,
                  camera_resolution=config.CAMERA_RESOLUTION, camera_rate=config.CAMERA_FRAME_RATE,
                  microphone_index=config.NAOQI_MICROPHONE_INDEX, language=config.APPLICATION_LANGUAGE,
-                 use_system_camera=False, use_system_microphone=False, use_system_text_to_speech=False):
+                 use_system_camera=config.NAOQI_USE_SYSTEM_CAMERA,
+                 use_system_microphone=config.NAOQI_USE_SYSTEM_MICROPHONE,
+                 use_system_text_to_speech=config.NAOQI_USE_SYSTEM_TEXT_TO_SPEECH):
 
         self._url = url
         self._session = self.create_session(self._url)

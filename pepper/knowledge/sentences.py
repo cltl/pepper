@@ -152,7 +152,9 @@ ASK_FOR_QUESTIONS = [
 
 USED_WWW = [
     "I looked it up on the internet",
-    "I searched the display",
+    "I searched the web",
+    "I made use of my internet sources",
+    "I did a quick search"
 ]
 
 HAPPY = [
@@ -192,11 +194,12 @@ THANK = [
     "Thank you!",
     "Thanks!",
     "I appreciate it",
-    "That's great"
+    "That's great",
+    "Cheers"
 ]
 
 GOODBYE = [
-    "Bye!",
+    "Bye",
     "Bye Bye",
     "See you"
     "See you later",

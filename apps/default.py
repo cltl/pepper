@@ -39,12 +39,19 @@ class IdleIntention(AbstractIntention, DefaultApp):
     GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120
 
+    PERSON_TIMEOUT = 60
+    PERSONS_CHATTED_WITH = {}
+
+
     def __init__(self, application):
         super(IdleIntention, self).__init__(application)
         self._last_event = time()
 
     def on_face_known(self, faces):
-        ConversationIntention(self.application, Chat(faces[0].name))
+        for face in faces:
+            if time() - IdleIntention.PERSONS_CHATTED_WITH.get(face.name, 0) > IdleIntention.PERSON_TIMEOUT:
+                ConversationIntention(self.application, Chat(face.name))
+                break
 
     def on_face_new(self, faces):
         if time() - self._last_event > self.GREET_TIMEOUT:
@@ -158,6 +165,8 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             return
         elif self.respond_goodbye(utterance):
             return
+        elif self.respond_thanks(utterance):
+            return
         elif self.respond_affirmation_negation(utterance):
             return
         elif self.respond_please_repeat_me(utterance):
@@ -180,12 +189,15 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             elif self.respond_wolfram(utterance):
                 return
             else:
-                self.say("{}: {}, but {}!".format(
-                    choice(["I think you said", "I heard", "I picked up", "I'm guessing you told me"]), utterance,
-                    choice(["I don't know what it means", "I don't understand it", "I couldn't parse it",
-                            "I have no idea about it", "I have no clue", "this goes above my robot-skills",
-                            "I find this quite difficult to understand", "It doesn't ring any bells"])),
-                    choice([animations.NOT_KNOW, animations.UNFAMILIAR, animations.UNCOMFORTABLE, animations.SHAMEFACED]))
+                if random.uniform(0, 1) > 0.333333:
+                    self.say("{}: {}, but {}!".format(
+                        choice(["I think you said", "I heard", "I picked up", "I'm guessing you told me"]), utterance,
+                        choice(["I don't know what it means", "I don't understand it", "I couldn't parse it",
+                                "I have no idea about it", "I have no clue", "this goes above my robot-skills",
+                                "I find this quite difficult to understand", "It doesn't ring any bells"])),
+                        choice([animations.NOT_KNOW, animations.UNFAMILIAR, animations.UNCOMFORTABLE, animations.SHAMEFACED]))
+                else:
+                    self.say(choice(ELOQUENCE))
 
     def respond_silence(self, statement):
         for silent in ["silent", "silence", "be quiet", "relax"]:
@@ -240,6 +252,15 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         for bye in GOODBYE:
             if statement.lower() == bye.lower():
                 self.end_conversation()
+                return True
+        return False
+
+    def respond_thanks(self, statement):
+        for thank in THANK:
+            thank = re.sub('[?!.;,]', '', thank.lower())
+
+            if statement == thank:
+                self.say("You are welcome, {}!".format(self.chat.speaker))
                 return True
         return False
 
@@ -354,11 +375,11 @@ class ConversationIntention(AbstractIntention, DefaultApp):
                     self.say(response.replace('_', ' '), choice([animations.BODY_LANGUAGE, animations.EXCITED]))
                     return True
                 else:
-                    self.say("{}, but {}!".format(
-                        choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
-                        choice(["I'll look it up online", "let me search the display", "I will check my internet sources"]),
-                        animations.THINK
-                    ))
+                    # self.say("{}, but {}!".format(
+                    #     choice(["I don't know", "I haven't heard it before", "I have know idea about it"]),
+                    #     choice(["I'll look it up online", "let me search the web", "I will check my internet sources"]),
+                    #     animations.THINK
+                    # ))
                     return False
 
             # Process Statements
@@ -376,7 +397,8 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         result = Wikipedia().query(question)
         if result:
             answer, url = result
-            answer = answer.split('. ')[0]
+
+            answer = re.split('[.\n]', answer)[0]
 
             self.say("{}, {}, {}.".format(choice(ADDRESSING), choice(USED_WWW), self.chat.speaker), animations.CLOUD)
 
@@ -404,6 +426,9 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self.say("{}, {}!".format(
             choice(["See you later", "ByeBye", "Till another time", "It was good having talked to you", "Goodbye"]),
             self.chat.speaker), animations.BOW)
+
+        IdleIntention.PERSONS_CHATTED_WITH[self.chat.speaker] = time()
+
         IdleIntention(self.application)
 
 
@@ -456,7 +481,7 @@ class MeetIntention(AbstractIntention, DefaultApp):
             else:
                 self.say("{} {}".format(choice(DIDNT_HEAR_NAME), choice(REPEAT_NAME)), animations.UNKNOWN)
 
-    def on_face_known(self, faces):
+    def on_face(self, faces):
         self._face.append(faces[0].representation)
         self._last_seen = time()
 

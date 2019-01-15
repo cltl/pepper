@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -108,11 +108,11 @@ MICROPHONE_CHANNELS = 1
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
 
 CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
-CAMERA_FRAME_RATE = 10
+CAMERA_FRAME_RATE = 5
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
-NAOQI_USE_SYSTEM_MICROPHONE = False
+NAOQI_USE_SYSTEM_MICROPHONE = True
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
 NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
 
