@@ -1,7 +1,5 @@
+from pepper import ObjectDetectionTarget
 from socket import socket, error as socket_error
-from io import BytesIO
-from PIL import Image
-
 import numpy as np
 import json
 
@@ -17,7 +15,7 @@ class Bounds(object):
         y1: float
         """
 
-        if x0 >= x1 or y0 >= y1:
+        if x0 > x1 or y0 > y1:
             raise ValueError("Rectangle Error: Point (x1,y1) must be bigger than point (x0, y0)")
 
         self._x0 = x0
@@ -187,193 +185,75 @@ class Bounds(object):
         """
         return Bounds(self.x0 * x_scale, self.y0 * y_scale, self.x1 * x_scale, self.y1 * y_scale)
 
+    def to_list(self):
+        return [self.x0, self.y0, self.x1, self.y1]
+
     def __repr__(self):
         return "Bounds[({:3f}, {:3f}), ({:3f}, {:3f})]".format(self.x0, self.y0, self.x1, self.y1)
 
 
-class CocoObject(object):
-    def __init__(self, id, name, bounds, confidence):
-        """
-        CoCo Object Information
-
-        Parameters
-        ----------
-        id: int
-            Unique id for object of name 'name'
-        name: str
-            Name of object
-        bounds: Bounds
-            Bounding Box of object in frame [0..1]
-        confidence: float
-            Confidence of Object Classification [0..1]
-        """
-        self._id = id
+class Object:
+    def __init__(self, name, confidence, bounds, image):
         self._name = name
-        self._bounds = bounds
         self._confidence = confidence
-
-    @property
-    def id(self):
-        """
-        Returns
-        -------
-        id: int
-            Unique id for object of name 'name'
-        """
-        return self._id
+        self._bounds = bounds
+        self._image = image
 
     @property
     def name(self):
-        """
-        Returns
-        -------
-        name: str
-            Name of object
-        """
         return self._name
 
     @property
+    def confidence(self):
+        return self._confidence
+
+    @property
     def bounds(self):
-        """
-        Returns
-        -------
-        bounds: Bounds
-            Bounding Box of object in frame [0..1]
-        """
         return self._bounds
 
     @property
-    def confidence(self):
-        """
-        Returns
-        -------
-        confidence: float
-            Confidence of Object Classification [0..1]
-        """
-        return self._confidence
+    def image(self):
+        return self._image
+
+    @classmethod
+    def from_dict(cls, dictionary, image):
+        box = dictionary['box']
+        bounds = Bounds(box[1], box[0], box[3], box[2])
+        return cls(dictionary['name'], dictionary['score'], bounds, image)
+
+    def __repr__(self):
+        return "Object[{:4.0%}] '{}'".format(self.confidence, self.name)
 
 
-class InceptionClassifyClient:
-    def __init__(self, address=('localhost', 9999)):
-        """
-        Classify Images using Inception Model
+class ObjectDetectionClient(object):
+    def __init__(self, target):
+        # type: (ObjectDetectionTarget) -> ObjectDetectionClient
+        self._target = target
+        self._address = target.value
 
-        Parameters
-        ----------
-        address: (str, int)
-            Address of Inception Model Host
-        """
-        self.address = address
+    @property
+    def target(self):
+        # type: () -> ObjectDetectionTarget
+        return self._target
 
     def classify(self, image):
-        """
-        Parameters
-        ----------
-        image: np.ndarray
-
-        Returns
-        -------
-        classification: list of (float, list)
-            List of confidence-object pairs, where object is a list of object synonyms
-        """
-
-        jpeg = self._convert_to_jpeg(image)
-        jpeg_size = np.array([len(jpeg)], np.uint32)
-
         try:
-            s = socket()
-            s.connect(self.address)
-            s.sendall(jpeg_size)
-            s.sendall(jpeg)
-            response = json.loads(s.recv(4096).decode())
+            sock = socket()
+            sock.connect(self._address)
+
+            sock.sendall(np.array(image.shape, np.uint32))
+            sock.sendall(image)
+
+            response_length = np.frombuffer(sock.recv(4), np.uint32)[0]
+            response = [Object.from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
+
             return response
-        except socket_error as e:
-            raise RuntimeError(
-                "Can't connect to Inception Service at {}. Are you sure the service is running?".format(self.address))
+        except socket_error:
+            raise RuntimeError("Couldn't connect to Object Detection Service, "
+                               "are you sure you're running this pepper_tensorflow service?")
 
-
-    def _convert_to_jpeg(self, image):
-        """
-        Parameters
-        ----------
-        image: np.ndarray
-
-        Returns
-        -------
-        encoded_image: bytes
-        """
-
-        with BytesIO() as jpeg_buffer:
-            Image.fromarray(image).save_person(jpeg_buffer, format='JPEG')
-            return jpeg_buffer.getvalue()
-
-
-class CocoClassifyClient:
-
-    CLASSES = 90
-    PORT = 35621
-
-    def __init__(self, address=('localhost', PORT)):
-        """
-        CoCo Service Interface
-
-        Parameters
-        ----------
-        address
-        """
-        self.address = address
-
-    def classify(self, image):
-        """
-        Parameters
-        ----------
-        image: np.ndarray
-            RGB image to classify
-
-        Returns
-        -------
-        objects: list of CocoObject
-            Object classifications made from image
-        """
-
-        try:
-
-            # Connect to CoCo Service
-            s = socket()
-            s.connect(self.address)
-
-            # Send Image to CoCo Service
-            s.sendall(np.array(image.shape, np.uint32))
-            s.sendall(image)
-
-            # Receive Image Classification from Service
-            response_length = np.frombuffer(s.recv(4), np.uint32)[0]
-            classes, scores, boxes = json.loads(self._recv_all(s, response_length).decode())
-
-            # Wrap information into CocoObject instances
-            objects = []
-            for cls, confidence, box in zip(classes, scores, boxes):
-                objects.append(CocoObject(cls["id"], cls["name"], Bounds(box[1], box[0], box[3], box[2]), confidence))
-            return objects
-
-        except socket_error as e:
-            raise RuntimeError(
-                "Can't connect to Coco Service at {}. Are you sure the service is running?".format(self.address))
-
-    def _recv_all(self, sock, n):
-        """
-        Receive exactly n bytes from socket connection
-
-        Parameters
-        ----------
-        sock: socket
-        n: int
-
-        Returns
-        -------
-        bytes: bytearray
-        """
-
+    @staticmethod
+    def _receive_all(sock, n):
         buffer = bytearray()
         while len(buffer) < n:
             buffer.extend(sock.recv(4096))

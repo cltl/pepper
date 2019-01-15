@@ -1,15 +1,18 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.sensor.obj import CocoClassifyClient, CocoObject
-from pepper.framework.util import Scheduler
+from pepper.framework.sensor.obj import ObjectDetectionClient, ObjectDetectionTarget, Object
+from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
 
 import numpy as np
 
 from Queue import Queue
-from typing import List, NoReturn
+from typing import List, Dict
 
 
 class ObjectDetectionComponent(AbstractComponent):
+
+    TARGETS = config.OBJECT_RECOGNITION_TARGETS
+
     def __init__(self, backend):
         """
         Construct Object Detection Component
@@ -17,16 +20,15 @@ class ObjectDetectionComponent(AbstractComponent):
         Parameters
         ----------
         backend: AbstractBackend
+        target: ObjectDetectionTarget
         """
         super(ObjectDetectionComponent, self).__init__(backend)
 
         # Callbacks
-        self.on_image_callbacks = []
         self.on_object_callbacks = []
 
-        # Initialize Object Classifier
-        coco = CocoClassifyClient()
-        queue = Queue()
+        clients = [ObjectDetectionClient(target) for target in ObjectDetectionComponent.TARGETS]
+        mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
         def on_image(image):
             """
@@ -36,12 +38,15 @@ class ObjectDetectionComponent(AbstractComponent):
             ----------
             image: np.ndarray
             """
-            objects = [obj for obj in coco.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
-            queue.put((image, objects))
+            for client in clients:
+                mailboxes[client].put(image)
 
-        def worker():
+        def worker(client):
+            # type: (ObjectDetectionClient) -> None
             """Object Detection Event Worker"""
-            image, objects = queue.get()
+            image = mailboxes[client].get()
+
+            objects = [obj for obj in client.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
 
             if objects:
                 # Call on_object Event Function
@@ -51,33 +56,18 @@ class ObjectDetectionComponent(AbstractComponent):
                 for callback in self.on_object_callbacks:
                     callback(image, objects)
 
-            # Call on_image Event Function
-            self.on_image(image)
-
-            # Call on_image Callback Functions
-            for callback in self.on_image_callbacks:
-                callback(image)
-
         # Initialize Object Queue & Worker
-        schedule = Scheduler(worker, name="ObjectDetectionComponentThread")
-        schedule.start()
+
+        schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(client.target.name)) for client in clients]
+
+        for s in schedule:
+            s.start()
 
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]
 
-    def on_image(self, image):
-        # type: (np.ndarray) -> NoReturn
-        """
-        On Image Event. Called every time an image was taken by Backend
-
-        Parameters
-        ----------
-        image: np.ndarray
-            Camera Frame
-        """
-
     def on_object(self, image, objects):
-        # type: (np.ndarray, List[CocoObject]) -> NoReturn
+        # type: (np.ndarray, List[Object]) -> None
         """
         On Object Event. Called every time one or more objects are detected in a camera frame.
 
@@ -85,7 +75,8 @@ class ObjectDetectionComponent(AbstractComponent):
         ----------
         image: np.ndarray
             Camera Frame
-        objects: list of CocoObject
-            List of CocoObject instances
+        objects: list of Object
+            List of Object instances
         """
         pass
+

@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.sensor.face import OpenFace, FaceClassifier, Face, Person
+from pepper.framework.sensor.face import OpenFace, FaceClassifier, Face
 from pepper.framework.util import Scheduler
 from pepper import config
 
@@ -37,8 +37,7 @@ class FaceDetectionComponent(AbstractComponent):
         # Initialize Face Classifier
         self.face_classifier = FaceClassifier(people)
 
-        face_queue = Queue()
-        person_queue = Queue()
+        queue = Queue()
 
         def on_image(image):
             """
@@ -48,40 +47,30 @@ class FaceDetectionComponent(AbstractComponent):
             ----------
             image: np.ndarray
             """
-
-            # Find Persons
-            faces = open_face.represent(image)
-            persons = [self.face_classifier.classify(face) for face in faces]
-            persons = [person for person in persons if person.confidence > config.FACE_RECOGNITION_THRESHOLD]
-
-            face_queue.put(faces)
-            person_queue.put(persons)
+            queue.put([self.face_classifier.classify(r, b, image) for r, b in open_face.represent(image)])
 
         def worker():
-            faces = face_queue.get()
-            if faces:
+            on_face = queue.get()
 
-                # Call on_face Event Function
-                self.on_face(faces)
+            on_face_known = []
+            on_face_new = []
 
-                # Call Callbacks
+            for face in on_face:
+                if face.confidence > config.FACE_RECOGNITION_THRESHOLD:
+                    (on_face_new if face.name == FaceClassifier.NEW else on_face_known).append(face)
+
+            if on_face:
+                self.on_face(on_face)
                 for callback in self.on_face_callbacks:
-                    callback(faces)
-
-            persons = person_queue.get()
-            if persons:
-
-                if persons[0].name == FaceClassifier.NEW:
-                    self.on_new_person(persons)
-                    for callback in self.on_new_person_callbacks:
-                        callback(persons)
-                else:
-                    # Call on_person Event Function
-                    self.on_person(persons)
-
-                    # Call Callback Functions
-                    for callback in self.on_person_callbacks:
-                        callback(persons)
+                    callback(on_face)
+            if on_face_known:
+                self.on_face_known(on_face_known)
+                for callback in self.on_person_callbacks:
+                    callback(on_face_known)
+            if on_face_new:
+                self.on_face_new(on_face_new)
+                for callback in self.on_new_person_callbacks:
+                    callback(on_face_new)
 
         # Initialize Queue & Worker
         schedule = Scheduler(worker, name="FaceDetectionComponentThread")
@@ -91,37 +80,13 @@ class FaceDetectionComponent(AbstractComponent):
         self.backend.camera.callbacks += [on_image]
 
     def on_face(self, faces):
-        # type: (List[Face]) -> NoReturn
-        """
-        On Face Event. Called every time a face is detected.
-
-        Parameters
-        ----------
-        faces: list of pepper.sensor.face.Face
-            Face Object
-        """
+        # type: (List[Face]) -> None
         pass
 
-    def on_person(self, persons):
-        # type: (List[Person]) -> NoReturn
-        """
-        On Person Event. Called every time a known face is detected.
-
-        Parameters
-        ----------
-        persons: list of pepper.sensor.face.Person
-        """
+    def on_face_known(self, faces):
+        # type: (List[Face]) -> None
         pass
 
-    def on_new_person(self, persons):
-        # type: (List[Person]) -> NoReturn
-        """
-        On New Person Event. Called every time an unknown face is detected.
-
-        Parameters
-        ----------
-        persons: list of pepper.sensor.face.Person
-        """
+    def on_face_new(self, faces):
+        # type: (List[Face]) -> None
         pass
-
-

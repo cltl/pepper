@@ -3,6 +3,16 @@ This is the main repository for Pepper/Nao Applications created as part of the
 Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
 """
 
+# TODO: Cluster (Sensory) Information in object, accessible in Applications
+#   Conversation, Utterance, Objects (COCO, OID, AVA), People, Location, Date, Time
+#   How long does this Information stay relevant? (Use Last Knowledge / Timeout?)
+#   Verify the here and now, by looking at the places where she's last seen things
+# TODO: Formalize 'Responder' Functions (Utterance, SensoryInformation) -> Response or None
+#   Performance, Multi-Threading, Priority
+# TODO: Conversation Focus:
+#   Face Tracking, Speech Identification, Continuous Face/Speech Learning
+# TODO: Add Leolani in Utterances
+
 import logging
 import enum
 import os
@@ -34,6 +44,12 @@ class ApplicationBackend(enum.Enum):
     NAOQI = 1
 
 
+class ObjectDetectionTarget(enum.Enum):
+    AVA = ('localhost', 27001)
+    COCO = ('localhost', 27002)
+    OID = ('localhost', 27003)
+
+
 class CameraResolution(enum.Enum):
     NATIVE = -1, -1
     QQQQVGA = 30, 40
@@ -44,13 +60,13 @@ class CameraResolution(enum.Enum):
     VGA4 = 960, 1280
 
 
-class NaoqiCameraIndex(enum.IntEnum):
+class NAOqiCameraIndex(enum.IntEnum):
     TOP = 0
     BOTTOM = 1
     DEPTH = 2
 
 
-class NaoqiMicrophoneIndex(enum.IntEnum):
+class NAOqiMicrophoneIndex(enum.IntEnum):
     ALL = 0
     LEFT = 1
     RIGHT = 2

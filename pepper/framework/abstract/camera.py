@@ -1,6 +1,6 @@
 from pepper.framework.util import Mailbox
 from pepper.framework.util import Scheduler
-from pepper.config import CameraResolution
+from pepper import CameraResolution
 from pepper import logger
 
 from collections import deque

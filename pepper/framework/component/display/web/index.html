@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Pepper</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            padding: 0;
+            margin: auto;
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<script>
+
+WIDTH = 4;
+HEIGHT= 3;
+
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+  if (w < 2 * r) r = w / 2;
+  if (h < 2 * r) r = h / 2;
+  this.beginPath();
+  this.moveTo(x+r, y);
+  this.arcTo(x+w, y,   x+w, y+h, r);
+  this.arcTo(x+w, y+h, x,   y+h, r);
+  this.arcTo(x,   y+h, x,   y,   r);
+  this.arcTo(x,   y,   x+w, y,   r);
+  this.closePath();
+  return this;
+}
+
+function scale_canvas(w, h) {
+    canvas = $('canvas');
+
+    if (window.innerWidth/w < window.innerHeight/h) {
+        canvas.width(window.innerWidth);
+        canvas.height(window.innerWidth/w*h);
+    }
+    else {
+        canvas.height(window.innerHeight);
+        canvas.width(window.innerHeight/h*w);
+    }
+}
+
+$(window).resize(function() {
+    scale_canvas(WIDTH, HEIGHT);
+});
+
+$(function() {
+    var FONT_SIZE = 30;
+
+    scale_canvas(WIDTH, HEIGHT);
+    var canvas = $('canvas');
+    var ctx = canvas[0].getContext('2d');
+
+    ctx.font = '25px Helvetica';
+    // ctx.imageSmoothingEnabled = false;
+
+    var canvas_width = document.getElementById("canvas").width;
+    var canvas_height = document.getElementById("canvas").height;
+
+    var host = "ws://localhost:9090/ws";
+    var socket = new WebSocket(host);
+
+    var img = new Image;
+
+    socket.onopen = function() { console.log("Connection Opened!"); }
+    socket.onmessage = function(msg){
+        data = JSON.parse(msg.data);
+        items = data['items'];
+
+        img.onload = function(){
+        ctx.clearRect(0, 0, canvas_width, canvas_height);
+        ctx.drawImage(img, 0, 0, img.width, img.height,
+                           0, 0, canvas_width, canvas_height);
+
+        for (i=0; i<items.length; i++) {
+            bounds = items[i]['bounds'];
+
+            ctx.beginPath();
+            ctx.lineWidth = "3";
+            ctx.strokeStyle = "black";
+            ctx.roundRect(bounds[0] * canvas_width,
+                     bounds[1] * canvas_height,
+                     (bounds[2]-bounds[0]) * canvas_width,
+                     (bounds[3]-bounds[1]) * canvas_height, 5);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.lineWidth = "3";
+            ctx.fillStyle = "black";
+            ctx.roundRect(bounds[0] * canvas_width,
+                     bounds[3] * canvas_height - FONT_SIZE,
+                     (bounds[2]-bounds[0]) * canvas_width,
+                     FONT_SIZE, 5);
+            ctx.fill();
+
+            ctx.fillStyle = 'white';
+            ctx.fillText(items[i]['name'],
+                         bounds[0] * canvas_width + 10,
+                         bounds[3] * canvas_height - FONT_SIZE/4);
+        }
+    };
+
+    img.src = 'data:image/png;base64,' + data['img'];
+
+    }
+    socket.onclose = function() { console.log("Connection Closed!"); }
+});
+
+
+</script>
+</body>
+</html>

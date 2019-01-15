@@ -14,24 +14,24 @@ class GreetingApplication(AbstractApplication, FaceDetectionComponent, TextToSpe
 
         self.nametime = {}  # Dictionary of <name, time> pairs, to keep track of who is greeted when
 
-    def on_person(self, persons):
+    def on_face_known(self, faces):
         """
         On Person Event.
         Called every time a known face is detected.
         """
 
-        for person in persons:
+        for person in faces:
             if self.is_greeting_appropriate(person.name):
                 self.say("Hello, {}!".format(person.name))
 
-    def on_new_person(self, persons):
+    def on_face_new(self, faces):
         """
         On New Person Event.
         Called every time an unknown face is detected.
         """
 
         if self.is_greeting_appropriate("new"):
-            self.say("I see {} new people!".format(len(persons)))
+            self.say("I see {} new people!".format(len(faces)))
 
     def is_greeting_appropriate(self, name):
         """Returns True if greeting is appropriate and updates Greeting Time"""

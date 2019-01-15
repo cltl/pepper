@@ -12,19 +12,46 @@ import os
 
 
 class Face(object):
-    def __init__(self, representation, bounds):
+    def __init__(self, name, confidence, representation, bounds, image):
         """
-        OpenFace Face Information
-
         Parameters
         ----------
+        name: str
+            Name of Person
+        confidence: float
+            Name Confidence
         representation: np.ndarray
             Face Feature Vector
         bounds: Bounds
             Face Bounding Box
+        image: np.ndarray
+            Image Face was Found in
         """
+        self._image = image
         self._representation = representation
         self._bounds = bounds
+        self._name = name
+        self._confidence = confidence
+
+    @property
+    def name(self):
+        """
+        Returns
+        -------
+        name: str
+            Name of Person
+        """
+        return self._name
+
+    @property
+    def confidence(self):
+        """
+        Returns
+        -------
+        confidence: float
+            Name Confidence
+        """
+        return self._confidence
 
     @property
     def representation(self):
@@ -50,46 +77,17 @@ class Face(object):
         """
         return self._bounds
 
-
-class Person(Face):
-    def __init__(self, face, name, confidence):
-        """
-        Parameters
-        ----------
-        face: Face
-            OpenFace Face
-        name: str
-            Name of Person
-        confidence: float
-            Name Confidence
-        """
-        super(Person, self).__init__(face.representation, face.bounds)
-
-        self._name = name
-        self._confidence = confidence
-
     @property
-    def name(self):
+    def image(self):
         """
         Returns
         -------
-        name: str
-            Name of Person
+        image: np.ndarray
         """
-        return self._name
-
-    @property
-    def confidence(self):
-        """
-        Returns
-        -------
-        confidence: float
-            Name Confidence
-        """
-        return self._confidence
+        return self._image
 
     def __repr__(self):
-        return "{}[{:3.0%}]: '{}'".format(self.__class__.__name__, self.confidence, self.name)
+        return "{}[{:4.0%}]: '{}'".format(self.__class__.__name__, self.confidence, self.name)
 
 
 class OpenFace(object):
@@ -140,8 +138,8 @@ class OpenFace(object):
 
         Returns
         -------
-        result: list of Face
-            List of Face objects
+        result: list of (np.ndarray, Bounds)
+            List of (representation, bounds)
         """
 
         try:
@@ -167,7 +165,7 @@ class OpenFace(object):
                 # Face Representation
                 representation = np.frombuffer(client.recv(self.FEATURE_DIM * 4), np.float32)
 
-                faces.append(Face(representation, bounds))
+                faces.append((representation, bounds))
 
             return faces
 
@@ -295,24 +293,26 @@ class FaceClassifier:
         """
         return self._people
 
-    def classify(self, face):
+    def classify(self, representation, bounds, image):
         """
         Classify Face as Person
 
         Parameters
         ----------
-        face: Face
+        representation: np.ndarray
+        bounds: Bounds
+        image: np.ndarray
 
         Returns
         -------
-        person: Person
+        person: Face
         """
 
         if not self.people:
-            return Person(face, "human", 0.0)
+            return Face(self.NEW, 0.0, representation, bounds, image)
 
         # Get distances to nearest Neighbours
-        distances, indices = self._classifier.kneighbors(face.representation.reshape(-1, OpenFace.FEATURE_DIM))
+        distances, indices = self._classifier.kneighbors(representation.reshape(-1, OpenFace.FEATURE_DIM))
         distances, indices = distances[0], indices[0]
 
         # Get numerical label associated with closest face
@@ -323,7 +323,7 @@ class FaceClassifier:
         name = self._names[label]
         confidence = float(np.mean(labels == label))
 
-        return Person(face, name, confidence)
+        return Face(name, confidence, representation, bounds, image)
 
     def accuracy(self):
         """

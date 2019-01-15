@@ -152,7 +152,7 @@ ASK_FOR_QUESTIONS = [
 
 USED_WWW = [
     "I looked it up on the internet",
-    "I searched the web",
+    "I searched the display",
 ]
 
 HAPPY = [

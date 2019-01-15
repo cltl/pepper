@@ -1,5 +1,5 @@
 from pepper.framework.abstract.camera import AbstractCamera
-from pepper import NaoqiCameraIndex, CameraResolution
+from pepper import NAOqiCameraIndex, CameraResolution
 
 import numpy as np
 
@@ -40,7 +40,7 @@ class NAOqiCamera(AbstractCamera):
         CameraResolution.VGA4: 3,
     }
 
-    def __init__(self, session, resolution, rate, callbacks=[], index=NaoqiCameraIndex.TOP):
+    def __init__(self, session, resolution, rate, callbacks=[], index=NAOqiCameraIndex.TOP):
         super(NAOqiCamera, self).__init__(resolution, rate, callbacks)
 
         # Get random camera id, to prevent name collision
@@ -77,7 +77,7 @@ class NAOqiCamera(AbstractCamera):
                     X, Y, layers, color_space, seconds, milliseconds, data, camera, \
                     angle_left, angle_top, angle_right, angle_bottom = result
 
-                    if self._index == NaoqiCameraIndex.DEPTH:
+                    if self._index == NAOqiCameraIndex.DEPTH:
                         # Depth Images come as uint16
                         self.on_image(np.frombuffer(data, np.uint16).reshape(Y, X))
                     else:

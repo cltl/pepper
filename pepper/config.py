@@ -1,6 +1,6 @@
 """Pepper Configuration File"""
 
-from pepper import ApplicationBackend, CameraResolution, NaoqiMicrophoneIndex, LOGGING_FILE
+import pepper
 import json
 import os
 
@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = ApplicationBackend.NAOQI
+APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -78,7 +78,7 @@ KEY_GOOGLE_CLOUD = os.path.join(os.path.dirname(__file__), "../google_cloud_key.
 KEY_WOLFRAM = os.path.join(os.path.dirname(__file__), '../tokens.json')
 
 # General Logging
-LOG = LOGGING_FILE
+LOG = pepper.LOGGING_FILE
 
 # Brain Logging
 BRAIN_LOG_ROOT = os.path.join(PACKAGE_ROOT, "../backups/brain/brain_log_{}")
@@ -96,22 +96,25 @@ NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
 # Application Sensor Parameters
-OBJECT_RECOGNITION_THRESHOLD = 0.5
 FACE_RECOGNITION_THRESHOLD = 0.5
+OBJECT_RECOGNITION_THRESHOLD = 0.5
+OBJECT_RECOGNITION_TARGETS = [
+    pepper.ObjectDetectionTarget.COCO
+]
 
 MICROPHONE_SAMPLE_RATE = 16000
 MICROPHONE_CHANNELS = 1
 
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
 
-CAMERA_RESOLUTION = CameraResolution.QVGA
-CAMERA_FRAME_RATE = 2
+CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
+CAMERA_FRAME_RATE = 10
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
 NAOQI_USE_SYSTEM_MICROPHONE = False
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
-NAOQI_MICROPHONE_INDEX = NaoqiMicrophoneIndex.FRONT
+NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
 
 
 # .json file with id tokens, with keys:
@@ -132,10 +135,10 @@ def get_backend():
     backend: AbstractBackend
     """
     backend = None
-    if APPLICATION_BACKEND == ApplicationBackend.SYSTEM:
+    if APPLICATION_BACKEND == pepper.ApplicationBackend.SYSTEM:
         from pepper.framework.backend.system import SystemBackend
         backend = SystemBackend()
-    elif APPLICATION_BACKEND == ApplicationBackend.NAOQI:
+    elif APPLICATION_BACKEND == pepper.ApplicationBackend.NAOQI:
         from pepper.framework.backend.naoqi import NAOqiBackend
         backend = NAOqiBackend()
     return backend
