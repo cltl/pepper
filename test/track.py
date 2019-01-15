@@ -19,9 +19,9 @@ class TrackApplication(AbstractApplication, FaceDetectionComponent, ObjectDetect
         self._motion = ALProxy("ALMotion", config.NAOQI_IP, config.NAOQI_PORT)
 
         # Get Control over Robot Movement
-        ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT).setEnabled(False)
+        ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT).setEnabled(True)
         self._motion.setStiffnesses("Head", 1.0)
-        self.reset()
+        exit()
 
     def on_face(self, faces):
         phi, theta = self._video.getAngularPositionFromImagePosition(0, faces[0].bounds.center)
