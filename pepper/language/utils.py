@@ -383,6 +383,7 @@ def pack_rdf_from_np_info(np_info, speaker, rdf):
     return rdf
 
 def fix_pronouns(dict, speaker):
+    dict = dict['pronoun']
     if 'person' in dict:
         if dict['person'] == 'first':
             return speaker

@@ -10,6 +10,9 @@ import enum
 import json
 import re
 import os
+import utils
+
+from pepper.brain import LongTermMemory
 
 
 class UtteranceType(enum.Enum):
@@ -114,8 +117,7 @@ class Utterance(object):
 
         self._transcript = transcript
         self._tokens = self._clean(self._tokenize(transcript))
-        self._parsed_tree = None
-        # self._parsed_tree = Parser().parse(self)  # TODO: Implement
+        self._parsed_tree = Parser().parse(self)
         self._speaker = speaker.lower()
         self._chat_id = chat_id
         self._chat_turn = chat_turn
@@ -232,6 +234,9 @@ class Parser(object):
     def parse(self, utterance):
         tokenized_sentence = utterance.tokens
         pos = self.POS_TAGGER.tag(tokenized_sentence)
+
+        print(pos)
+
         for el in pos:
             if el[1].endswith('$'):
                 new_rule = el[1][:-1] + 'POS -> \'' + el[0] + '\'\n'
@@ -435,9 +440,40 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
         super(GeneralStatementAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Chat -> RDF
+        rdf = {'predicate': '', 'subject': '', 'object': ''}
+        position = 0
+        dict = {}
 
-        self._rdf = {}
+        for tree in chat.last_utterance.parsed_tree[0]:
+            for branch in tree:
+                for node in branch:
+                    position += 1
+                    #print(node.label(), node.leaves()[0])
+                    if node.label().startswith('V') and \
+                            (node.leaves()[0].lower() in self.GRAMMAR['verbs'] or node.leaves()[0].lower()[:-1] in
+                                self.GRAMMAR['verbs']):
+                        rdf['predicate'] += node.leaves()[0] + ' '
+
+                    elif node.leaves()[0].lower() in self.GRAMMAR['pronouns'] and position < len(
+                            chat.last_utterance.tokens):
+                        rdf['subject'] += node.leaves()[0] + ' '
+                        dict['pronoun'] = self.GRAMMAR['pronouns'][node.leaves()[0].lower()]
+                        rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
+
+                    elif node.label().startswith('N') and position == len(chat.last_utterance.tokens):
+                        rdf['object'] += node.leaves()[0] + ' '
+
+
+        for el in rdf:
+            rdf[el] = rdf[el].strip()
+
+        if rdf['object'].lower() in self.GRAMMAR['pronouns']:
+            dict['pronoun'] = self.GRAMMAR['pronouns'][node.leaves()[0].lower()]
+            rdf['object'] = utils.fix_pronouns(dict, self.chat.speaker)
+
+        print(rdf)
+        self._rdf = rdf
+
 
     @property
     def rdf(self):
@@ -534,9 +570,41 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         super(WhQuestionAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Chat -> RDF
+        rdf = {'predicate': '', 'subject': '', 'object': ''}
+        position = 0
+        dict = {}
 
-        self._rdf = {}
+        for tree in chat.last_utterance.parsed_tree[0]:
+            for branch in tree:
+                for node in branch:
+                    for leaf in node.leaves():
+
+                        position += 1
+                        #print(node.label(), leaf)
+
+                        if node.label().startswith('V') and \
+                                (leaf.lower() in self.GRAMMAR['verbs'] or leaf.lower()[:-1]in self.GRAMMAR['verbs']):
+                            rdf['predicate'] += leaf + ' '
+
+                        elif leaf.lower() in self.GRAMMAR['pronouns'] and position < len(chat.last_utterance.tokens):
+                            rdf['subject'] += leaf + ' '
+                            dict['pronoun'] = self.GRAMMAR['pronouns'][leaf.lower()]
+
+                        elif node.label().startswith('N') and position == len(chat.last_utterance.tokens):
+                            rdf['object'] += leaf + ' '
+
+                        elif leaf.lower()=='from':
+                            rdf['predicate']='is_from'
+
+        for el in rdf:
+            rdf[el] = rdf[el].strip()
+
+        if 'pronoun' in dict:
+            rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
+
+        print(rdf)
+
+        self._rdf = rdf
 
     @property
     def rdf(self):
@@ -561,23 +629,37 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         super(VerbQuestionAnalyzer, self).__init__(chat)
 
         rdf = {'predicate': '', 'subject':'', 'object':''}
+        position = 0
+        dict = {}
 
         for tree in chat.last_utterance.parsed_tree[0]:
             for branch in tree:
                 for node in branch:
-                    print(node.label(), node.leaves()[0])
-                    if node.label().startswith('V'):
-                        rdf['predicate']+=' '+node.leaves()[0]
+                    position += 1
+                    #print(node.label(), node.leaves()[0])
+                    if node.label().startswith('V') and node.leaves()[0].lower() in self.GRAMMAR['verbs']:
+                        rdf['predicate']+=node.leaves()[0]+' '
+
+                    elif node.leaves()[0].lower() in self.GRAMMAR['pronouns'] and position<len(chat.last_utterance.tokens):
+                        rdf['subject']+=node.leaves()[0]+' '
+                        dict['pronoun'] = self.GRAMMAR['pronouns'][node.leaves()[0].lower()]
+
+                    elif node.label().startswith('N') and position==len(chat.last_utterance.tokens):
+                        rdf['object'] += node.leaves()[0] + ' '
+
+        for el in rdf:
+            rdf[el] = rdf[el].strip()
+
+        if rdf['object'].lower() in self.GRAMMAR['pronouns']:
+            dict['pronoun'] = self.GRAMMAR['pronouns'][rdf['object'].lower()]
+            rdf['object'] = utils.fix_pronouns(dict, self.chat.speaker)
+
+        if rdf['subject'].lower() in self.GRAMMAR['pronouns']:
+            dict['pronoun'] = self.GRAMMAR['pronouns'][rdf['subject'].lower()]
+            rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
 
         print(rdf)
-
-
-
-
-
-        # TODO: Implement Chat -> RDF
-
-        self._rdf = {}
+        self._rdf = rdf
 
     @property
     def rdf(self):
@@ -589,11 +671,42 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         return self._rdf
 
 
-if __name__ == '__main__':
-    chat = Chat("Bram")
-    chat.add_utterance("Do I like bananas")
-    #print(chat,type(chat))
+def get_response(chat,utterance, brain):
+    chat.add_utterance(utterance)
     analyzer = Analyzer.analyze(chat)
-    print analyzer
 
-    #print(analyzer.__class__.__name__)
+
+    if analyzer.rdf['predicate'] in analyzer.GRAMMAR['verbs']:
+        analyzer.rdf['predicate']+='s'
+
+    if analyzer.utterance_type == UtteranceType.STATEMENT:
+        if not utils.check_rdf_completeness(analyzer.rdf):
+            print('incomplete statement RDF')
+            return
+
+
+    template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.chat_turn,
+                                    analyzer.utterance_type)
+    print(template)
+    if template['utterance_type'] == UtteranceType.QUESTION:
+        response = brain.query_brain(template)
+    elif template['utterance_type'] == UtteranceType.STATEMENT:
+        response = brain.update(template)
+    else:
+        response = 'unknown type'
+
+    print(response['response'])
+    return response
+
+def test():
+    utterances = ["where are you from", "I like pizza", "who likes pizza?", "do you know me", "what do you like?",
+                  "I am from China"]
+    chat = Chat("Bram")
+    brain = LongTermMemory()
+    for utterance in utterances:
+        get_response(chat, utterance, brain)
+
+
+test()
+
+    #print analyzer
