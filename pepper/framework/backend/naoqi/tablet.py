@@ -11,10 +11,14 @@ class NaoqiTablet(object):
 
     def show(self, url):
         if url:
-            if re.findall(self.IMAGE_FORMATS, url.lower()):
-                self._service.showImage(url)
-            else:
-                self._service.showWebview(url)
+
+            try:
+                if re.findall(self.IMAGE_FORMATS, url.lower()):
+                    self._service.showImage(url)
+                else:
+                    self._service.showWebview(url)
+            except:
+                pass
 
     def hide(self):
         self._service.hide()

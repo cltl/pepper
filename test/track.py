@@ -1,57 +1,72 @@
 from pepper.framework.backend.naoqi import NAOqiBackend
-from pepper.framework import AbstractApplication, FaceDetectionComponent, ObjectDetectionComponent
+from pepper.framework import *
 from pepper import config
 
 from naoqi import ALProxy
+from collections import deque
 
-from math import sin, cos, pi
-from time import sleep
+import numpy as np
+
+import random
+from time import time
 
 
-class TrackApplication(AbstractApplication, FaceDetectionComponent, ObjectDetectionComponent):
+class TrackApplication(AbstractApplication, TextToSpeechComponent, DisplayComponent, FaceDetectionComponent, ObjectDetectionComponent, StreamedSpeechRecognitionComponent, CameraComponent, MicrophoneComponent):
 
     TARGET = "Bram"
 
     def __init__(self, backend):
         super(TrackApplication, self).__init__(backend)
+        self._last_person = time()
 
         self._video = ALProxy("ALVideoDevice", config.NAOQI_IP, config.NAOQI_PORT)
         self._motion = ALProxy("ALMotion", config.NAOQI_IP, config.NAOQI_PORT)
+        self._motion.setStiffnesses("Head", 1.0)
 
         # Get Control over Robot Movement
-        ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT).setEnabled(True)
-        self._motion.setStiffnesses("Head", 1.0)
-        exit()
+        self._awareness = ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT)
+        self._awareness.setEngagementMode("FullyEngaged")
+        self._awareness.setStimulusDetectionEnabled("People", False)
+        self._awareness.setStimulusDetectionEnabled("Movement", False)
+        self._awareness.setEnabled(True)
 
-    def on_face(self, faces):
-        phi, theta = self._video.getAngularPositionFromImagePosition(0, faces[0].bounds.center)
-        self.look(phi, theta)
+
+    def on_image(self, image):
+        if time() - self._last_person > 3:
+            self.random_look()
+
+            self._last_person = time()
+            self._awareness.setEnabled(True)
 
     def on_object(self, image, objects):
-        closest_human = None
-        closest_human_area = 0.0
+        people = [obj for obj in objects if obj.name == "person"]
 
-        for obj in objects:
-            if obj.name == "person" and obj.bounds.area > closest_human_area:
-                closest_human = obj
-                closest_human_area = obj.bounds.area
+        if people:
 
-        if closest_human:
-            x = closest_human.bounds.x0 + closest_human.bounds.width / 2
-            y = closest_human.bounds.y0 + closest_human.bounds.height / 4
-            phi, theta = self._video.getAngularPositionFromImagePosition(0, (x, y))
-            self.look(phi, theta)
+            self._last_person = time()
+            self._awareness.setEnabled(False)
+
+            x = np.average([p.bounds.x0 + p.bounds.width / 2 for p in people], weights=[p.bounds.area for p in people])
+            y = np.average([p.bounds.y0 + p.bounds.height / 4 for p in people], weights=[p.bounds.area for p in people])
+            self.look(x, y)
 
     def reset(self):
-        self._motion.setAngles("HeadYaw", 0, 0.2)
-        self._motion.setAngles("HeadPitch", 0, 0.2)
+        self._motion.setAngles("HeadYaw", 0, 0.1)
+        self._motion.setAngles("HeadPitch", 0, 0.1)
 
-    def look(self, phi, theta, speed=0.75):
-        speed_phi = min(0.99, speed * abs(phi) ** 2)
-        speed_theta = min(0.99, speed * abs(theta) ** 2)
+    def random_look(self, speed=0.05):
+        self._motion.setAngles("HeadYaw", random.uniform(-2.0857, 2.0857), speed)
+        self._motion.setAngles("HeadPitch", random.uniform(-0.7068, 0.6371), speed)
 
-        self._motion.changeAngles("HeadYaw", phi, speed_phi)
-        self._motion.changeAngles("HeadPitch", theta, speed_theta)
+    def look(self, x, y, speed=1, speed_min=0.02, speed_max=0.3):
+        phi, theta = self._video.getAngularPositionFromImagePosition(0, (x, y))
+
+        speed_phi = max(1E-6, min(speed_max, speed * phi ** 2))
+        speed_theta = max(1E-6, min(speed_max, speed * theta ** 2))
+
+        if max(speed_phi, speed_theta) > speed_min:
+            self._motion.changeAngles("HeadYaw", phi, speed_phi)
+            self._motion.changeAngles("HeadPitch", theta, speed_theta)
 
 
 if __name__ == '__main__':

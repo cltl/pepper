@@ -3,7 +3,9 @@ from pepper.framework.backend.system import SystemCamera, SystemMicrophone, Syst
 from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech
 from pepper import config
 
+from naoqi import ALProxy
 import qi
+
 
 
 class NAOqiBackend(AbstractBackend):
@@ -51,6 +53,13 @@ class NAOqiBackend(AbstractBackend):
 
         if use_system_text_to_speech: text_to_speech = SystemTextToSpeech(language)
         else: text_to_speech = NAOqiTextToSpeech(self.session, language)
+
+        # Set Default Awareness Behavour
+        self._awareness = ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT)
+        self._awareness.setEngagementMode("SemiEngaged")
+        self._awareness.setStimulusDetectionEnabled("People", True)
+        self._awareness.setStimulusDetectionEnabled("Movement", True)
+        self._awareness.setEnabled(True)
 
         super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech)
 
