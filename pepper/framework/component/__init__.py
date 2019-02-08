@@ -1,10 +1,13 @@
-from .brain import BrainComponent
 from .camera import CameraComponent
 from .microphone import MicrophoneComponent
 from .face_detection import FaceDetectionComponent
 from .object_detection import ObjectDetectionComponent, ObjectDetectionTarget
+from .speech_recognition import SpeechRecognitionComponent
 from .text_to_speech import TextToSpeechComponent
-from .speech_recognition import StreamedSpeechRecognitionComponent, SynchronousSpeechRecognitionComponent
+
+from .brain import BrainComponent
+from .chat import ChatComponent
+
 from .statistics import StatisticsComponent
 from .display.display import DisplayComponent
 

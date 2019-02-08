@@ -59,8 +59,8 @@ class DisplayComponent(AbstractComponent):
                          "bounds": item.bounds.to_list()
                          } for item in items]
 
-        face_recognition = self.require_dependency(DisplayComponent, FaceDetectionComponent)  # type: FaceDetectionComponent
-        object_recognition = self.require_dependency(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
+        face_recognition = self.require(DisplayComponent, FaceDetectionComponent)  # type: FaceDetectionComponent
+        object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
 
         self.backend.camera.callbacks += [on_image]
         face_recognition.on_person_callbacks += [lambda faces: add_items(faces)]

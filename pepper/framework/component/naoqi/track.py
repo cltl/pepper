@@ -17,7 +17,7 @@ class TrackComponent(AbstractComponent):
             from naoqi import ALProxy
 
             # Tracking needs Object Detection, to Track "Person" Objects
-            self._object_detection = self.require_dependency(TrackComponent, ObjectDetectionComponent)
+            self._object_detection = self.require(TrackComponent, ObjectDetectionComponent)
 
             self._video = ALProxy("ALVideoDevice", config.NAOQI_IP, config.NAOQI_PORT)
             self._motion = ALProxy("ALMotion", config.NAOQI_IP, config.NAOQI_PORT)

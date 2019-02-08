@@ -21,7 +21,7 @@ class TextToSpeechComponent(AbstractComponent):
         schedule.start()
 
     def say(self, text, animation=None, block=False):
-        # type: (str, Optional[str]) -> NoReturn
+        # type: (str, Optional[str], bool) -> NoReturn
         """
         Say Text (with Animation) through Text-to-Speech
 

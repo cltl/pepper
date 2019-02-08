@@ -3,7 +3,7 @@ from sys import stdout, stderr
 
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.util import Scheduler
-from pepper.framework.component.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.component import SpeechRecognitionComponent
 
 
 class StatisticsComponent(AbstractComponent):
@@ -20,7 +20,7 @@ class StatisticsComponent(AbstractComponent):
         """
         super(StatisticsComponent, self).__init__(backend)
 
-        speech_recognition = self.require_dependency(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
+        speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         vad = speech_recognition.vad
 
         def worker():

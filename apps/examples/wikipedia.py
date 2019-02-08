@@ -3,7 +3,7 @@ from pepper.knowledge import Wikipedia
 from pepper import config
 
 
-class WikipediaApplication(AbstractApplication, StatisticsComponent, StreamedSpeechRecognitionComponent, TextToSpeechComponent):
+class WikipediaApplication(AbstractApplication, StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent):
     def on_transcript(self, hypotheses, audio):
         """
         On Transcript Event.

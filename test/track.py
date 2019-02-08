@@ -11,7 +11,7 @@ import random
 from time import time
 
 
-class TrackApplication(AbstractApplication, TextToSpeechComponent, DisplayComponent, FaceDetectionComponent, ObjectDetectionComponent, StreamedSpeechRecognitionComponent, CameraComponent, MicrophoneComponent):
+class TrackApplication(AbstractApplication, TextToSpeechComponent, DisplayComponent, FaceDetectionComponent, ObjectDetectionComponent, SpeechRecognitionComponent, CameraComponent, MicrophoneComponent):
 
     TARGET = "Bram"
 

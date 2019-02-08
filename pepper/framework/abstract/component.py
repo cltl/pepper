@@ -45,7 +45,7 @@ class AbstractComponent(object):
         """
         return self._backend
 
-    def require_dependency(self, cls, dependency):
+    def require(self, cls, dependency):
         """
         Enforce Component Dependency
 

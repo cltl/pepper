@@ -25,11 +25,12 @@ from urllib import quote
 
 class DefaultApp(AbstractApplication,
                  StatisticsComponent,
+                 TrackComponent,
                  DisplayComponent,
                  BrainComponent,
                  ObjectDetectionComponent,
                  FaceDetectionComponent,
-                 StreamedSpeechRecognitionComponent,
+                 SpeechRecognitionComponent,
                  TextToSpeechComponent):
     pass
 
@@ -41,7 +42,6 @@ class IdleIntention(AbstractIntention, DefaultApp):
 
     PERSON_TIMEOUT = 60
     PERSONS_CHATTED_WITH = {}
-
 
     def __init__(self, application):
         super(IdleIntention, self).__init__(application)
@@ -360,7 +360,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             objects = list(self._seen_objects)
 
             expression = classify_and_process_utterance(
-                question, self.chat.speaker, self.chat.id, self.chat.last_utterance.chat_turn, objects)
+                question, self.chat.speaker, self.chat.id, self.chat.turn, objects)
 
             # Cancel if not a valid expression
             if not expression or 'utterance_type' not in expression:

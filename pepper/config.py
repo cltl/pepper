@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
+APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -64,6 +64,9 @@ PEOPLE_FRIENDS_ROOT = os.path.join(PEOPLE_ROOT, 'friends')
 
 # Root of people Robot has "just met"
 PEOPLE_NEW_ROOT = os.path.join(PEOPLE_ROOT, 'new')
+
+# Names of Friends
+PEOPLE_FRIENDS_NAMES = [os.path.splitext(path)[0] for path in os.listdir(PEOPLE_FRIENDS_ROOT)]
 
 # Path to GOOGLE_APPLICATION_CREDENTIALS file (.json)
 # See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries

@@ -7,7 +7,7 @@ class DisplayApp(AbstractApplication,
                  DisplayComponent,
                  ObjectDetectionComponent,
                  FaceDetectionComponent,
-                 StreamedSpeechRecognitionComponent):
+                 SpeechRecognitionComponent):
 
     pass
 

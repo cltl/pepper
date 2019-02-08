@@ -49,15 +49,15 @@ class ObjectDetectionComponent(AbstractComponent):
             objects = [obj for obj in client.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
 
             if objects:
-                # Call on_object Event Function
-                self.on_object(image, objects)
 
                 # Call on_object Callback Functions
                 for callback in self.on_object_callbacks:
                     callback(image, objects)
 
-        # Initialize Object Queue & Worker
+                # Call on_object Event Function
+                self.on_object(image, objects)
 
+        # Initialize Object Queue & Worker
         schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(client.target.name)) for client in clients]
 
         for s in schedule:
