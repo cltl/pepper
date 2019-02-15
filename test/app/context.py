@@ -2,7 +2,7 @@ from pepper.framework import *
 from pepper import config
 
 from random import choice
-
+from pepper import language
 
 class ContextApp(AbstractApplication,           # Base Application for given Backend
                  StatisticsComponent,           # Microphone/Camera/Speech Statistics
@@ -28,6 +28,21 @@ class ContextApp(AbstractApplication,           # Base Application for given Bac
         # Called every time a human adds an utterance to the chat
         # Just reply with a random statement for now
         self.say(choice(["Interesting", "Right", "I see", "Ok"]))
+        processed_utterance = language.analyze(self.chat, self.brain)
+
+        if processed_utterance.type == language.UtteranceType.QUESTION:
+            brain_response = self.brain.query_brain(processed_utterance)
+            print(language.utils.reply_to_question(brain_response, []))
+
+        elif processed_utterance.type == language.UtteranceType.STATEMENT:
+            brain_response = self.brain.update(processed_utterance)
+            #print(self.brain.brain_help.phrase_update(response))
+
+        else:
+            brain_response = 'unknown type'
+
+        print(brain_response)
+        return 0
 
         print(self.context.objects, self.context.people)
 

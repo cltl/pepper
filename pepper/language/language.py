@@ -394,7 +394,8 @@ class Analyzer(object):
         forest = chat.last_utterance.parsed_tree
 
         if not forest:
-            raise Exception("Ungrammatical Input")
+            print("unparsed input")
+            #raise Exception("Ungrammatical Input") #TODO
 
         for tree in forest:
             sentence_type = tree[0].label()
@@ -405,9 +406,6 @@ class Analyzer(object):
                 return QuestionAnalyzer.analyze(chat)
             else:
                 print("Error: ", sentence_type)
-
-
-
 
         '''
         if chat.last_utterance.tokens:
@@ -779,8 +777,10 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         return self._rdf
 
 
-def get_response(chat,utterance, brain):
-    chat.add_utterance(utterance)
+
+
+def analyze(chat, brain):
+
     analyzer = Analyzer.analyze(chat)
 
 
@@ -796,20 +796,9 @@ def get_response(chat,utterance, brain):
     template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.chat_turn,
                                     analyzer.utterance_type)
     print(template)
-    if template['utterance_type'] == UtteranceType.QUESTION:
-        response = brain.query_brain(template)
-        print(utils.reply_to_question(response,[]))
 
+    return chat.last_utterance
 
-    elif template['utterance_type'] == UtteranceType.STATEMENT:
-        response = brain.update(template)
-        print(brain_help.phrase_update(response))
-
-    else:
-        response = 'unknown type'
-
-    #print(response['response'])
-    return response
 
 
 
