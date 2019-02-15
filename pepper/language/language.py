@@ -205,6 +205,16 @@ class Utterance(object):
         return self._turn
 
     @property
+    def language(self):
+        """
+        Returns
+        -------
+        language: str
+            Original language of the Transcript
+        """
+        raise NotImplementedError()
+
+    @property
     def type(self):
         # type: () -> UtteranceType
         raise NotImplementedError()
