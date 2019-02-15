@@ -4,6 +4,7 @@ from pepper import config
 from random import choice
 from pepper import language
 
+
 class ContextApp(AbstractApplication,           # Base Application for given Backend
                  StatisticsComponent,           # Microphone/Camera/Speech Statistics
                  BrainComponent,                # Access to Brain
@@ -43,8 +44,6 @@ class ContextApp(AbstractApplication,           # Base Application for given Bac
 
         print(brain_response)
         return 0
-
-        print(self.context.objects, self.context.people)
 
     def say(self, text, animation=None, block=False):
         # Call Text To Speech for given Text
