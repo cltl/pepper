@@ -81,7 +81,7 @@ class ContextComponent(AbstractComponent):
             Speaker to start chat with
         """
         self._chat = Chat(speaker, self._context)
-        self._context.last_chat = self._chat
+        self._context.add_chat(self._chat)
 
     def end_chat(self):
         # type: () -> None
