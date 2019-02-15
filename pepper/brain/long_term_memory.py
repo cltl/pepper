@@ -1,4 +1,4 @@
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold, casefold_capsule, read_query
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query
 from pepper import config, logger
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
@@ -42,27 +42,7 @@ class LongTermMemory(object):
         self.ontology_paths = {}
         self.format = 'trig'
         self.dataset = Dataset()
-        self.query_prefixes = """
-                    prefix gaf: <http://groundedannotationframework.org/gaf#> 
-                    prefix grasp: <http://groundedannotationframework.org/grasp#> 
-                    prefix leolaniInputs: <http://cltl.nl/leolani/inputs/>
-                    prefix leolaniFriends: <http://cltl.nl/leolani/friends/> 
-                    prefix leolaniTalk: <http://cltl.nl/leolani/talk/> 
-                    prefix leolaniTime: <http://cltl.nl/leolani/time/> 
-                    prefix leolaniWorld: <http://cltl.nl/leolani/world/> 
-                    prefix n2mu: <http://cltl.nl/leolani/n2mu/> 
-                    prefix ns1: <urn:x-rdflib:> 
-                    prefix owl: <http://www.w3.org/2002/07/owl#> 
-                    prefix prov: <http://www.w3.org/ns/prov#> 
-                    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-                    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-                    prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> 
-                    prefix skos: <http://www.w3.org/2004/02/skos/core#> 
-                    prefix time: <http://www.w3.org/TR/owl-time/#> 
-                    prefix xml: <http://www.w3.org/XML/1998/namespace> 
-                    prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> 
-                    prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-                    """
+        self.query_prefixes = read_query('prefixes')
 
         self._define_namespaces()
         self._get_ontology_path()
