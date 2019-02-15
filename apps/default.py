@@ -364,6 +364,8 @@ class ConversationIntention(AbstractIntention, DefaultApp):
             expression = classify_and_process_utterance(
                 question, self.chat.speaker, self.chat.id, self.chat.turn, objects)
 
+            # TODO new_response = language.get_template(self.chat,self.chat.last_utterance, self.application.brain)
+
             # Cancel if not a valid expression
             if not expression or 'utterance_type' not in expression:
                 return False

@@ -23,3 +23,8 @@
   "date":"",
   "position":""
 }
+
+// offset slices for RDF
+// type -> default Thing (RDF), NER for entities with unkown types
+// type of response - yes/no question, favorite, ...
+// META IN : utterance with TYPE (+ datetime; certainty; sentiment; emotion + ME)

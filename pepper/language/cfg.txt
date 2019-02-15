@@ -5,6 +5,6 @@ S -> NP VP | NP AP
 AP -> V JJ
 VP -> V NP | V PP | V NP V
 V -> VBD | VBP | VBZ | VB | MD
-PP -> IN NP | NP JJ
+PP -> IN NP | NP JJ | NP IN
 NP -> N NP| DT NP | JJ NP | PRPPOS N | N CC N | PRP | N
-N -> NN | NNS
+N -> NN | NNS | NNP
