@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 import nltk
 
-from numba import jit
 import requests
 import urllib
 
