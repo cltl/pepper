@@ -1,15 +1,29 @@
 from pepper.language import Chat
+from pepper.framework import AbstractIntention
+from pepper.knowledge.location import Location
 from .face import Face
 from .obj import Object
 
 from datetime import datetime
+from time import time
 
-from typing import List
+from typing import List, Iterable, Dict, Tuple, Optional
 
 
 class Context(object):
+
+    OBSERVATION_TIMEOUT = 120
+
+    _people = None  # type: Dict[str, Tuple[Face, float]]
+    _objects = None  # type: Dict[str, Tuple[Object, float]]
+
     def __init__(self):
         self._chats = []
+        self._people = {}
+        self._objects = {}
+        self._intention = None
+
+        self._location = Location()
 
     @property
     def chats(self):
@@ -32,23 +46,34 @@ class Context(object):
         return datetime.now()
 
     @property
-    def place(self):        # Where
-        raise NotImplementedError()
+    def location(self):     # Where
+        return self._location
 
     @property
-    def persons(self):      # Who
+    def people(self):      # Who
         # type: () -> List[Face]
-        raise NotImplementedError()
+        return [person for person, t in self._people.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
 
     @property
     def objects(self):      # What
         # type: () -> List[Object]
-        raise NotImplementedError()
+        return [obj for obj, t in self._objects.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
 
     @property
     def intention(self):    # Why
-        raise NotImplementedError()
+        # type: () -> Optional[AbstractIntention]
+        return self._intention
 
+    @intention.setter
+    def intention(self, intention):
+        self._intention = intention
 
-if __name__ == '__main__':
-    print(Context().place)
+    def add_objects(self, objects):
+        # type: (Iterable[Object]) -> None
+        for obj in objects:
+            self._objects[obj.name] = (obj, time())
+
+    def add_people(self, people):
+        # type: (Iterable[Face]) -> None
+        for person in people:
+            self._people[person.name] = (person, time())

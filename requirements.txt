@@ -9,7 +9,7 @@ google-cloud-TextToSpeech
 google-cloud-translate
 playsound
 requests
-geocoder
+pycountry
 
 pillow
 opencv-python

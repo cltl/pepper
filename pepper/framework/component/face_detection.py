@@ -24,8 +24,8 @@ class FaceDetectionComponent(AbstractComponent):
         super(FaceDetectionComponent, self).__init__(backend)
 
         self.on_face_callbacks = []
-        self.on_person_callbacks = []
-        self.on_new_person_callbacks = []
+        self.on_face_known_callbacks = []
+        self.on_face_new_callbacks = []
 
         # Initialize OpenFace
         open_face = OpenFace()
@@ -64,11 +64,11 @@ class FaceDetectionComponent(AbstractComponent):
                     callback(on_face)
                 self.on_face(on_face)
             if on_face_known:
-                for callback in self.on_person_callbacks:
+                for callback in self.on_face_known_callbacks:
                     callback(on_face_known)
                 self.on_face_known(on_face_known)
             if on_face_new:
-                for callback in self.on_new_person_callbacks:
+                for callback in self.on_face_new_callbacks:
                     callback(on_face_new)
                 self.on_face_new(on_face_new)
 

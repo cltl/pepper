@@ -8,6 +8,8 @@ class ContextApp(AbstractApplication,           # Base Application for given Bac
                  StatisticsComponent,           # Microphone/Camera/Speech Statistics
                  BrainComponent,                # Access to Brain
                  ContextComponent,              # Access to Context
+                 ObjectDetectionComponent,      # Access to Object Detection Component
+                 FaceDetectionComponent,        # Access to Face Detection Component
                  SpeechRecognitionComponent,    # Access to Speech Recognition
                  TextToSpeechComponent):        # Access to Text to Speech
 
@@ -20,10 +22,14 @@ class ContextApp(AbstractApplication,           # Base Application for given Bac
         # Start a Chat with somebody (Just chat with a generic human for now)
         self.start_chat("Human")
 
+        print(self.context.location)
+
     def on_chat_turn(self, utterance):
         # Called every time a human adds an utterance to the chat
         # Just reply with a random statement for now
         self.say(choice(["Interesting", "Right", "I see", "Ok"]))
+
+        print(self.context.objects, self.context.people)
 
     def say(self, text, animation=None, block=False):
         # Call Text To Speech for given Text

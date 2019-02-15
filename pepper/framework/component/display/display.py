@@ -63,5 +63,5 @@ class DisplayComponent(AbstractComponent):
         object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
 
         self.backend.camera.callbacks += [on_image]
-        face_recognition.on_person_callbacks += [lambda faces: add_items(faces)]
+        face_recognition.on_face_known_callbacks += [lambda faces: add_items(faces)]
         object_recognition.on_object_callbacks += [lambda image, objects: add_items(objects)]
