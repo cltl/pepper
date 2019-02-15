@@ -11,6 +11,8 @@ import os
 # More Backends will be added in the future!
 APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
+NAME = "Leolani"
+
 # Application Language to use
 # Full list of Languages and their formats can be found at
 #   https://cloud.google.com/speech-to-text/docs/languages

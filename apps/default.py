@@ -37,6 +37,8 @@ class DefaultApp(AbstractApplication,
 
 class IdleIntention(AbstractIntention, DefaultApp):
 
+    # TODO: Resolve Concurrency Errors (Events being called before Intention Initialization)
+
     GREET_TIMEOUT = 30
     BORED_TIMEOUT = 120
 

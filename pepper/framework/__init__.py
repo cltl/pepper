@@ -9,3 +9,5 @@ Framework for Creating Robot Applications
 
 from .abstract import *
 from .component import *
+from .sensor import *
+

@@ -1,50 +1,19 @@
-from enum import Enum
+from pepper.language import Utterance
+
 from datetime import datetime
 
 from typing import List, Optional
 
 
-class UtteranceType(Enum):
-    STATEMENT = 0
-    QUESTION = 1
-    EXPERIENCE = 2
-
-
-class Certainty(Enum):
-    CERTAIN = 0
-    PROBABLE = 1
-    POSSIBLE = 2
-    UNDERSPECIFIED = 3
-
-
-class Sentiment(Enum):
-    NEGATIVE = 0
-    POSITIVE = 1
-
-
-class Emotion(Enum):
-    ANGER = 0
-    DISGUST = 1
-    FEAR = 2
-    HAPPINESS = 3
-    SADNESS = 4
-    SURPRISE = 5
-
-
 class RDFBase(object):
-    @property
-    def type(self):
-        # type: () -> str
-        raise NotImplementedError()
-
     @property
     def confidence(self):
         # type: () -> float
         raise NotImplementedError()
 
     @property
-    def position(self):
-        # type: () -> str
+    def offset(self):
+        # type: () -> slice
         raise NotImplementedError()
 
 
@@ -58,6 +27,11 @@ class Entity(RDFBase):
     def label(self):
         # type: () -> str
         raise NotImplementedError()
+
+    @property
+    def type(self):
+        # type: () -> str
+        raise NotImplementedError()
     
     
 class Predicate(RDFBase):
@@ -66,13 +40,13 @@ class Predicate(RDFBase):
         # type: () -> int
         raise NotImplementedError()
 
-
-class Statement(object):
     @property
-    def object(self):
-        # type: () -> Entity
+    def label(self):
+        # type: () -> str
         raise NotImplementedError()
 
+
+class Triple(object):
     @property
     def subject(self):
         # type: () -> Entity
@@ -81,6 +55,11 @@ class Statement(object):
     @property
     def predicate(self):
         # type: () -> Predicate
+        raise NotImplementedError()
+
+    @property
+    def object(self):
+        # type: () -> Entity
         raise NotImplementedError()
 
 
@@ -195,55 +174,7 @@ class Overlaps(object):
         raise NotImplementedError()
 
 
-# TODO: Merge with language.Utterance
-class MetaIn(object):
-    @property
-    def raw(self):
-        # type: () -> str
-        raise NotImplementedError()
-
-    @property
-    def type(self):
-        # type: () -> UtteranceType
-        raise NotImplementedError()
-
-    @property
-    def author(self):
-        # type: () -> str
-        raise NotImplementedError()
-
-    @property
-    def chat(self):
-        # type: () -> int
-        raise NotImplementedError()
-
-    @property
-    def turn(self):
-        # type: () -> int
-        raise NotImplementedError()
-
-    @property
-    def date(self):
-        # type: () -> datetime
-        raise NotImplementedError()
-
-    @property
-    def certainty(self):
-        # type: () -> Certainty
-        raise NotImplementedError()
-
-    @property
-    def sentiment(self):
-        # type: () -> Sentiment
-        raise NotImplementedError()
-
-    @property
-    def emotion(self):
-        # type: () -> Emotion
-        raise NotImplementedError()
-
-
-class MetaOut(object):
+class Thoughts(object):
     def cardinality_conflicts(self):
         # type: () -> List[CardinalityConflict]
         raise NotImplementedError()
@@ -279,16 +210,16 @@ class MetaOut(object):
 
 class BrainResponse(object):
     @property
-    def statement(self):
-        # type: () -> Statement
+    def triple(self):
+        # type: () -> Triple
         raise NotImplementedError()
 
     @property
-    def meta_in(self):
-        # type: () -> MetaIn
+    def utterance(self):
+        # type: () -> Utterance
         raise NotImplementedError()
 
     @property
-    def meta_out(self):
-        # type: () -> MetaOut
+    def thoughts(self):
+        # type: () -> Thoughts
         raise NotImplementedError()

@@ -1,10 +1,13 @@
 from pepper.language.ner import NER
 from pepper.language.pos import POS
+from pepper import logger
+from pepper import config
 
 from random import getrandbits
 from nltk import CFG, RecursiveDescentParser
 
-import logging
+from datetime import datetime
+
 import enum
 import json
 import re
@@ -14,10 +17,32 @@ import os
 class UtteranceType(enum.Enum):
     STATEMENT = 0
     QUESTION = 1
+    EXPERIENCE = 2
+
+
+class Certainty(enum.Enum):
+    CERTAIN = 0
+    PROBABLE = 1
+    POSSIBLE = 2
+    UNDERSPECIFIED = 3
+
+
+class Sentiment(enum.Enum):
+    NEGATIVE = 0
+    POSITIVE = 1
+
+
+class Emotion(enum.Enum):
+    ANGER = 0
+    DISGUST = 1
+    FEAR = 2
+    HAPPINESS = 3
+    SADNESS = 4
+    SURPRISE = 5
 
 
 class Chat(object):
-    def __init__(self, speaker):
+    def __init__(self, speaker, context):
         """
         Create Chat
 
@@ -28,8 +53,21 @@ class Chat(object):
         """
 
         self._id = getrandbits(128)
+        self._context = context
         self._speaker = speaker
         self._utterances = []
+
+        self._log = logger.getChild("{} ({})".format(self.__class__.__name__, self.speaker))
+
+    @property
+    def context(self):
+        """
+        Returns
+        -------
+        context: Context
+            Context
+        """
+        return self._context
 
     @property
     def speaker(self):
@@ -52,16 +90,6 @@ class Chat(object):
         return self._id
 
     @property
-    def turn(self):
-        """
-        Returns
-        -------
-        turn: int
-            Chat Turn
-        """
-        return len(self._utterances)
-
-    @property
     def utterances(self):
         """
         Returns
@@ -81,7 +109,7 @@ class Chat(object):
         """
         return self._utterances[-1]
 
-    def add_utterance(self, text):
+    def add_utterance(self, text, me):
         """
         Add Utterance to Conversation
 
@@ -94,25 +122,48 @@ class Chat(object):
         -------
         utterance: Utterance
         """
-        utterance = Utterance(text, self)
+        utterance = Utterance(self, text, me, len(self._utterances))
+        self._log.info(utterance)
         self._utterances.append(utterance)
         return utterance
 
+    def __repr__(self):
+        return "\n".join([str(utterance) for utterance in self._utterances])
+
 
 class Utterance(object):
-    def __init__(self, transcript, chat):
+    def __init__(self, chat, transcript, me, turn):
         """
         Construct Utterance Object
 
         Parameters
         ----------
+        chat: Chat
+            Reference to Chat Utterance is part of
         transcript: str
             Uttered text (Natural Language)
-        chat: Chat
+        me: bool
+            True if Robot spoke, False if Person Spoke
+        turn: int
+            Utterance Turn
         """
 
-        self._transcript = transcript
         self._chat = chat
+        self._transcript = transcript
+        self._me = me
+        self._turn = turn
+
+        self._datetime = datetime.now()
+
+    @property
+    def chat(self):
+        """
+        Returns
+        -------
+        chat: Chat
+            Utterance Chat
+        """
+        return self._chat
 
     @property
     def transcript(self):
@@ -125,14 +176,46 @@ class Utterance(object):
         return self._transcript
 
     @property
-    def chat(self):
+    def me(self):
+        # type: () -> bool
         """
         Returns
         -------
-        chat: Chat
-            Utterance Chat
+        me: bool
+            True if Robot spoke, False if Person Spoke
         """
-        return self._chat
+        return self._me
+
+    @property
+    def turn(self):
+        # type: () -> int
+        """
+        Returns
+        -------
+        turn: int
+            Utterance Turn
+        """
+        return self._turn
+
+    @property
+    def type(self):
+        # type: () -> UtteranceType
+        raise NotImplementedError()
+
+    @property
+    def certainty(self):
+        # type: () -> Certainty
+        raise NotImplementedError()
+
+    @property
+    def sentiment(self):
+        # type: () -> Sentiment
+        raise NotImplementedError()
+
+    @property
+    def emotion(self):
+        # type: () -> Emotion
+        raise NotImplementedError()
 
     @property
     def tokens(self):
@@ -192,7 +275,9 @@ class Utterance(object):
         return tokens
 
     def __repr__(self):
-        return "{} -> {}".format(self.chat.speaker, self.transcript)
+        author = config.NAME if self.me else self.chat.speaker
+        return "Utterance {:03d}: {:10s} -> {}".format(self.turn, author, self.transcript)
+
 
 class Parser(object):
 
@@ -247,7 +332,7 @@ class Analyzer(object):
             Analyzer.NER = NER('english.muc.7class.distsim.crf.ser')
 
         self._chat = chat
-        self._log = logging.getLogger(self.__class__.__name__)
+        self._log = logger.getChild(self.__class__.__name__)
 
     @staticmethod
     def analyze(chat):
