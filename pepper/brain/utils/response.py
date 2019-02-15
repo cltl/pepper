@@ -1,11 +1,14 @@
-from pepper.language import Utterance
-
 from datetime import datetime
 
 from typing import List, Optional
 
 
 class RDFBase(object):
+    @property
+    def label(self):
+        # type: () -> str
+        raise NotImplementedError()
+
     @property
     def confidence(self):
         # type: () -> float
@@ -22,11 +25,6 @@ class Entity(RDFBase):
     def id(self):
         # type: () -> str
         raise NotImplementedError()
-    
-    @property
-    def label(self):
-        # type: () -> str
-        raise NotImplementedError()
 
     @property
     def type(self):
@@ -38,11 +36,6 @@ class Predicate(RDFBase):
     @property
     def cardinality(self):
         # type: () -> int
-        raise NotImplementedError()
-
-    @property
-    def label(self):
-        # type: () -> str
         raise NotImplementedError()
 
 
@@ -205,21 +198,4 @@ class Thoughts(object):
 
     def trust(self):
         # type: () -> float
-        raise NotImplementedError()
-
-
-class BrainResponse(object):
-    @property
-    def triple(self):
-        # type: () -> Triple
-        raise NotImplementedError()
-
-    @property
-    def utterance(self):
-        # type: () -> Utterance
-        raise NotImplementedError()
-
-    @property
-    def thoughts(self):
-        # type: () -> Thoughts
         raise NotImplementedError()
