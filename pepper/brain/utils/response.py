@@ -2,6 +2,7 @@ from datetime import datetime
 
 from typing import List, Optional
 
+from pepper.brain.utils.helper_functions import casefold
 
 class RDFBase(object):
     @property
@@ -54,6 +55,26 @@ class Triple(object):
     def object(self):
         # type: () -> Entity
         raise NotImplementedError()
+
+    def casefold_capsule(self, capsule, format='triple'):
+        """
+        Function for formatting a capsule into triple format or natural language format
+        Parameters
+        ----------
+        capsule:
+        format
+
+        Returns
+        -------
+
+        """
+        for k, v in capsule.items():
+            if isinstance(v, dict):
+                capsule[k] = self.casefold_capsule(v, format=format)
+            else:
+                capsule[k] = casefold(v, format=format)
+
+        return capsule
 
 
 class CardinalityConflict(object):
