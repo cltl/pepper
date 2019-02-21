@@ -5,7 +5,7 @@ from pepper.language.pos import POS
 from pepper import logger
 from pepper import config
 
-from pepper.brain import LongTermMemory
+from pepper.brain import LongTermMemory, Triple
 import pepper.brain.utils.helper_functions as brain_help
 
 from nltk import CFG, RecursiveDescentParser
@@ -173,6 +173,11 @@ class Utterance(object):
         return self._chat
 
     @property
+    def type(self):
+        # type: () -> UtteranceType
+        raise NotImplementedError()
+
+    @property
     def transcript(self):
         """
         Returns
@@ -205,6 +210,15 @@ class Utterance(object):
         return self._turn
 
     @property
+    def triple(self):
+        # type: () -> Triple
+        raise NotImplementedError()
+
+    @property
+    def datetime(self):
+        return self._datetime
+
+    @property
     def language(self):
         """
         Returns
@@ -212,11 +226,6 @@ class Utterance(object):
         language: str
             Original language of the Transcript
         """
-        raise NotImplementedError()
-
-    @property
-    def type(self):
-        # type: () -> UtteranceType
         raise NotImplementedError()
 
     @property

@@ -1,5 +1,5 @@
 from pepper.brain.long_term_memory import LongTermMemory
-from pepper.brain.utils.helper_functions import phrase_all_conflicts, phrase_cardinality_conflicts, \
+from pepper.language.generation.phrasing import phrase_all_conflicts, phrase_cardinality_conflicts, \
     phrase_negation_conflicts, phrase_statement_novelty, phrase_type_novelty, phrase_update
 
 import json

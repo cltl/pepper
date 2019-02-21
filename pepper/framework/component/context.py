@@ -1,7 +1,8 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.component import SpeechRecognitionComponent, ObjectDetectionComponent, FaceDetectionComponent
 from pepper.framework.sensor import Context
-from pepper.language import Chat, Utterance, NameParser
+from pepper.language import Chat, Utterance
+from pepper.language.names import NameParser
 from pepper import config
 
 from typing import Optional

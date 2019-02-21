@@ -4,6 +4,7 @@ from typing import List, Optional
 
 from pepper.brain.utils.helper_functions import casefold
 
+
 class RDFBase(object):
     @property
     def label(self):
@@ -11,13 +12,13 @@ class RDFBase(object):
         raise NotImplementedError()
 
     @property
-    def confidence(self):
-        # type: () -> float
+    def offset(self):
+        # type: () -> slice
         raise NotImplementedError()
 
     @property
-    def offset(self):
-        # type: () -> slice
+    def confidence(self):
+        # type: () -> float
         raise NotImplementedError()
 
 
@@ -56,25 +57,26 @@ class Triple(object):
         # type: () -> Entity
         raise NotImplementedError()
 
-    def casefold_capsule(self, capsule, format='triple'):
-        """
-        Function for formatting a capsule into triple format or natural language format
-        Parameters
-        ----------
-        capsule:
-        format
 
-        Returns
-        -------
+def casefold_capsule(capsule, format='triple'):
+    """
+    Function for formatting a capsule into triple format or natural language format
+    Parameters
+    ----------
+    capsule:
+    format
 
-        """
-        for k, v in capsule.items():
-            if isinstance(v, dict):
-                capsule[k] = self.casefold_capsule(v, format=format)
-            else:
-                capsule[k] = casefold(v, format=format)
+    Returns
+    -------
 
-        return capsule
+    """
+    for k, v in capsule.items():
+        if isinstance(v, dict):
+            capsule[k] = casefold_capsule(v, format=format)
+        else:
+            capsule[k] = casefold(v, format=format)
+
+    return capsule
 
 
 class CardinalityConflict(object):
@@ -135,7 +137,7 @@ class EntityNovelty(object):
         raise NotImplementedError()
 
 
-class BrainGap(object):
+class Gap(object):
     @property
     def predicate(self):
         # type: () -> Predicate
@@ -147,15 +149,15 @@ class BrainGap(object):
         raise NotImplementedError()
 
 
-class BrainGaps(object):
+class Gaps(object):
     @property
     def object(self):
-        # type: () -> List[BrainGap]
+        # type: () -> List[Gap]
         raise NotImplementedError()
 
     @property
     def subject(self):
-        # type: () -> List[BrainGap]
+        # type: () -> List[Gap]
         raise NotImplementedError()
 
 
@@ -206,11 +208,11 @@ class Thoughts(object):
         raise NotImplementedError()
 
     def object_gaps(self):
-        # type: () -> BrainGaps
+        # type: () -> Gaps
         raise NotImplementedError()
 
     def subject_gaps(self):
-        # type: () -> BrainGaps
+        # type: () -> Gaps
         raise NotImplementedError()
 
     def overlaps(self):

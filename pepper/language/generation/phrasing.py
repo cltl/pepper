@@ -1,7 +1,8 @@
 import random
 from datetime import datetime
 
-from pepper.brain.utils.helper_functions import casefold, casefold_capsule
+from pepper.brain.utils.helper_functions import casefold
+from pepper.brain.utils.response import casefold_capsule
 from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNWOLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
     TRUST, NO_TRUST
 
