@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.language import *
+from pepper.language.names import NameParser
 from pepper.framework.sensor.face import FaceClassifier
 from pepper import config, ApplicationBackend
 
@@ -15,6 +16,7 @@ from pepper.knowledge.query import QnA
 from pepper.language.utils import *
 
 from pepper.brain.utils.helper_functions import *
+from pepper.language.generation.phrasing import *
 
 import numpy as np
 
@@ -52,7 +54,7 @@ class IdleIntention(AbstractIntention, DefaultApp):
     def on_face_known(self, faces):
         for face in faces:
             if time() - IdleIntention.PERSONS_CHATTED_WITH.get(face.name, 0) > IdleIntention.PERSON_TIMEOUT:
-                ConversationIntention(self.application, Chat(face.name))
+                ConversationIntention(self.application, Chat(face.name, Context()))
                 break
 
     def on_face_new(self, faces):
@@ -151,7 +153,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
     def on_transcript(self, hypotheses, audio):
         # Choose Utterance from Names
         utterance = self._name_parser.parse_known(hypotheses).transcript
-        self.chat.add_utterance(utterance)
+        self.chat.add_utterance(utterance, False)
 
         self.log.info("Utterance: {}".format(utterance))
 
