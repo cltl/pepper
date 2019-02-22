@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns="http://groundedannotationframework.org/gaf#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xml:base="http://groundedannotationframework.org/gaf">
+  <owl:Ontology rdf:about="">
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >owl:Ontology added by TopBraid</owl:versionInfo>
+    <owl:imports rdf:resource="https://semanticweb.cs.vu.nl/2009/11/sem"/>
+    <owl:imports rdf:resource="http://www.w3.org/ns/prov"/>
+  </owl:Ontology>
+  <owl:Class rdf:ID="Mention">
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:ID="Instance"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="denotes"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </owl:equivalentClass>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Mentions are references to members of the gaf:Instance class as they occur in (web) media such as texts, video, audio, images, etc. Mentions denote gaf:Instances.
+
+A Mention uniquely identifies the (part of a) web source that denotes the mention. We refer to the standard use of fragment identifiers for different media types. </rdfs:comment>
+    <rdfs:label>Mention</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Instance">
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Mention"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="denotedBy"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </owl:equivalentClass>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Instances are statements about real world entities, including actions, processes and abstract notions. They are the primary subject of individuals of type gaf:Mention that can denote them.</rdfs:comment>
+    <rdfs:label>Instance</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="#denotes">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Indicates that a gaf:Mention denotes some gaf:Instance (literal occurrence in a text that refers to the notion represented by the the instance)</rdfs:comment>
+    <rdfs:range rdf:resource="#Instance"/>
+    <rdfs:domain rdf:resource="#Mention"/>
+    <rdfs:label>denotes</rdfs:label>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#denotedBy"/>
+    </owl:inverseOf>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="containsDenotation"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="denotedIn">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Indicates that a gaf:Instance is denoted by a part of some gaf:Mention, but this part cannot be precisely identified. See gaf:denotedBy</rdfs:comment>
+    <rdfs:domain rdf:resource="#Instance"/>
+    <rdfs:label>denoted in</rdfs:label>
+    <rdfs:range rdf:resource="#Mention"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#containsDenotation"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#denotedBy">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Indicates that a gaf:Instance is denoted by some gaf:Mention (literal occurrence in a text that refers to the notion represented by the the instance)</rdfs:comment>
+    <owl:inverseOf rdf:resource="#denotes"/>
+    <rdfs:label>denoted by</rdfs:label>
+    <rdfs:domain rdf:resource="#Instance"/>
+    <rdfs:subPropertyOf rdf:resource="#denotedIn"/>
+    <rdfs:range rdf:resource="#Mention"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#containsDenotation">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Indicates that part of a gaf:Mention denotes some gaf:Instance but that the precise part cannot be identified (literal occurrence in a text that refers to the notion represented by the the instance)</rdfs:comment>
+    <rdfs:range rdf:resource="#Instance"/>
+    <rdfs:label>contains denotation</rdfs:label>
+    <owl:inverseOf rdf:resource="#denotedIn"/>
+    <rdfs:domain rdf:resource="#Mention"/>
+  </owl:ObjectProperty>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->

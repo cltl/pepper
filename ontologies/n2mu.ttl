@@ -249,7 +249,7 @@ n2mu:owns rdf:type owl:ObjectProperty ;
 ###  http://cltl.nl/leolani/n2mu/perceive
 n2mu:perceive rdf:type owl:ObjectProperty ;
               rdfs:domain n2mu:agent ;
-              rdfs:range n2mu:percept .
+              rdfs:range n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/plays
@@ -371,6 +371,16 @@ n2mu:agent rdf:type owl:Class ;
            owl:equivalentClass foaf:Agent .
 
 
+###  http://cltl.nl/leolani/n2mu/animal
+n2mu:animal rdf:type owl:Class ;
+            rdfs:subClassOf n2mu:object .
+
+
+###  http://cltl.nl/leolani/n2mu/band
+n2mu:band rdf:type owl:Class ;
+          rdfs:subClassOf n2mu:object .
+
+
 ###  http://cltl.nl/leolani/n2mu/book
 n2mu:book rdf:type owl:Class ;
           rdfs:subClassOf n2mu:interest_occurrence .
@@ -396,6 +406,11 @@ n2mu:cuisine rdf:type owl:Class ;
              rdfs:subClassOf n2mu:interest_field .
 
 
+###  http://cltl.nl/leolani/n2mu/device
+n2mu:device rdf:type owl:Class ;
+            rdfs:subClassOf n2mu:object .
+
+
 ###  http://cltl.nl/leolani/n2mu/dish
 n2mu:dish rdf:type owl:Class ;
           rdfs:subClassOf n2mu:interest_occurrence .
@@ -404,13 +419,13 @@ n2mu:dish rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/electricity
 n2mu:electricity rdf:type owl:Class ;
                  owl:equivalentClass obo:GO_0050952 ;
-                 rdfs:subClassOf n2mu:percept .
+                 rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/equilibrium
 n2mu:equilibrium rdf:type owl:Class ;
                  owl:equivalentClass obo:GO_0050957 ;
-                 rdfs:subClassOf n2mu:percept .
+                 rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/film_genre
@@ -421,7 +436,7 @@ n2mu:film_genre rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/gravity
 n2mu:gravity rdf:type owl:Class ;
              owl:equivalentClass obo:GO_0070998 ;
-             rdfs:subClassOf n2mu:percept .
+             rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/institution
@@ -454,7 +469,7 @@ n2mu:interest_occurrence rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/light
 n2mu:light rdf:type owl:Class ;
            owl:equivalentClass obo:GO_0050953 ;
-           rdfs:subClassOf n2mu:percept .
+           rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/literature_genre
@@ -472,6 +487,11 @@ n2mu:location rdf:type owl:Class ;
                                   ] .
 
 
+###  http://cltl.nl/leolani/n2mu/mammal
+n2mu:mammal rdf:type owl:Class ;
+            rdfs:subClassOf n2mu:object .
+
+
 ###  http://cltl.nl/leolani/n2mu/movie
 n2mu:movie rdf:type owl:Class ;
            rdfs:subClassOf n2mu:interest_occurrence .
@@ -482,6 +502,11 @@ n2mu:music_genre rdf:type owl:Class ;
                  rdfs:subClassOf n2mu:interest_field .
 
 
+###  http://cltl.nl/leolani/n2mu/musical_work
+n2mu:musical_work rdf:type owl:Class ;
+                  rdfs:subClassOf n2mu:object .
+
+
 ###  http://cltl.nl/leolani/n2mu/object
 n2mu:object rdf:type owl:Class .
 
@@ -489,12 +514,7 @@ n2mu:object rdf:type owl:Class .
 ###  http://cltl.nl/leolani/n2mu/pain
 n2mu:pain rdf:type owl:Class ;
           owl:equivalentClass obo:GO_0019233 ;
-          rdfs:subClassOf n2mu:percept .
-
-
-###  http://cltl.nl/leolani/n2mu/percept
-n2mu:percept rdf:type owl:Class ;
-             owl:equivalentClass obo:MF_0000019 .
+          rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/person
@@ -502,6 +522,11 @@ n2mu:person rdf:type owl:Class ;
             owl:equivalentClass foaf:Person ;
             rdfs:subClassOf n2mu:agent ;
             owl:disjointWith n2mu:robot .
+
+
+###  http://cltl.nl/leolani/n2mu/plant
+n2mu:plant rdf:type owl:Class ;
+           rdfs:subClassOf n2mu:object .
 
 
 ###  http://cltl.nl/leolani/n2mu/popular_interest
@@ -523,10 +548,15 @@ n2mu:robot rdf:type owl:Class ;
            rdfs:subClassOf n2mu:agent .
 
 
+###  http://cltl.nl/leolani/n2mu/sensor
+n2mu:sensor rdf:type owl:Class ;
+            owl:equivalentClass obo:MF_0000019 .
+
+
 ###  http://cltl.nl/leolani/n2mu/smell
 n2mu:smell rdf:type owl:Class ;
            owl:equivalentClass obo:MF_0000055 ;
-           rdfs:subClassOf n2mu:percept .
+           rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/song
@@ -537,7 +567,7 @@ n2mu:song rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/sound
 n2mu:sound rdf:type owl:Class ;
            owl:equivalentClass obo:MF_0000038 ;
-           rdfs:subClassOf n2mu:percept .
+           rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/sport
@@ -553,19 +583,19 @@ n2mu:sports_team rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/taste
 n2mu:taste rdf:type owl:Class ;
            owl:equivalentClass obo:MF_0000054 ;
-           rdfs:subClassOf n2mu:percept .
+           rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/temperature
 n2mu:temperature rdf:type owl:Class ;
                  owl:equivalentClass obo:GO_0050951 ;
-                 rdfs:subClassOf n2mu:percept .
+                 rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/touch
 n2mu:touch rdf:type owl:Class ;
            owl:equivalentClass obo:MF_0000056 ;
-           rdfs:subClassOf n2mu:percept .
+           rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/university
@@ -576,7 +606,7 @@ n2mu:university rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/visual
 n2mu:visual rdf:type owl:Class ;
             owl:equivalentClass obo:MF_0000024 ;
-            rdfs:subClassOf n2mu:percept .
+            rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://purl.obolibrary.org/obo/GO_0007600

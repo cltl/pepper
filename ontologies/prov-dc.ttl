@@ -1,0 +1,484 @@
+@prefix : <http://www.w3.org/ns/prov-o-inverses##> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.w3.org/ns/prov-o-inverses#> .
+
+<http://www.w3.org/ns/prov-o-inverses#> rdf:type owl:Ontology ;
+                                         owl:versionIRI <http://www.w3.org/ns/prov-o-inverses-20130430> ;
+                                         owl:imports <http://www.w3.org/ns/prov-o#> ;
+                                         prov:wasRevisionOf <http://www.w3.org/ns/prov-o-inverses-20130312> ;
+                                         prov:specializationOf <http://www.w3.org/ns/prov-o-inverses> ;
+                                         rdfs:seeAlso <http://www.w3.org/TR/prov-o/#inverse-names> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.w3.org/ns/prov#actedOnBehalfOf
+prov:actedOnBehalfOf owl:inverseOf prov:hadDelegate ;
+                     rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#activity
+prov:activity owl:inverseOf prov:activityOfInfluence ;
+              rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#activityOfInfluence
+prov:activityOfInfluence rdf:type owl:ObjectProperty ;
+                         rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                         rdfs:label "activityOfInfluence" .
+
+
+###  http://www.w3.org/ns/prov#agent
+prov:agent owl:inverseOf prov:agentOfInfluence ;
+           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#agentOfInfluence
+prov:agentOfInfluence rdf:type owl:ObjectProperty ;
+                      rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                      rdfs:label "agentOfInfluence" .
+
+
+###  http://www.w3.org/ns/prov#alternateOf
+prov:alternateOf owl:inverseOf prov:alternateOf ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                  <http://www.w3.org/ns/prov-o-inverses#> ;
+                 rdfs:label "alternateOf" .
+
+
+###  http://www.w3.org/ns/prov#atLocation
+prov:atLocation owl:inverseOf prov:locationOf ;
+                rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#contributed
+prov:contributed rdf:type owl:ObjectProperty ;
+                 owl:inverseOf prov:wasAttributedTo ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                 rdfs:label "contributed" .
+
+
+###  http://www.w3.org/ns/prov#ended
+prov:ended rdf:type owl:ObjectProperty ;
+           owl:inverseOf prov:wasEndedBy ;
+           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+           rdfs:label "ended" .
+
+
+###  http://www.w3.org/ns/prov#generalizationOf
+prov:generalizationOf rdf:type owl:ObjectProperty ;
+                      owl:inverseOf prov:specializationOf ;
+                      rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                      rdfs:label "generalizationOf" .
+
+
+###  http://www.w3.org/ns/prov#generated
+prov:generated owl:inverseOf prov:wasGeneratedBy ;
+               rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                <http://www.w3.org/ns/prov-o-inverses#> ;
+               rdfs:label "generated" .
+
+
+###  http://www.w3.org/ns/prov#generatedAsDerivation
+prov:generatedAsDerivation rdf:type owl:ObjectProperty ;
+                           owl:inverseOf prov:hadGeneration ;
+                           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                           rdfs:label "generatedAsDerivation" .
+
+
+###  http://www.w3.org/ns/prov#hadActivity
+prov:hadActivity owl:inverseOf prov:wasActivityOfInfluence ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#hadDelegate
+prov:hadDelegate rdf:type owl:ObjectProperty ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                 rdfs:label "hadDelegate" .
+
+
+###  http://www.w3.org/ns/prov#hadDerivation
+prov:hadDerivation rdf:type owl:ObjectProperty ;
+                   owl:inverseOf prov:wasDerivedFrom ;
+                   rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                   rdfs:label "hadDerivation" .
+
+
+###  http://www.w3.org/ns/prov#hadGeneration
+prov:hadGeneration rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#hadInfluence
+prov:hadInfluence rdf:type owl:ObjectProperty ;
+                  owl:inverseOf prov:influencer ;
+                  rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                  rdfs:label "hadInfluence" .
+
+
+###  http://www.w3.org/ns/prov#hadMember
+prov:hadMember owl:inverseOf prov:wasMemberOf ;
+               rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#hadPlan
+prov:hadPlan owl:inverseOf prov:wasPlanOf ;
+             rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#hadPrimarySource
+prov:hadPrimarySource owl:inverseOf prov:wasPrimarySourceOf ;
+                      rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#hadRevision
+prov:hadRevision rdf:type owl:ObjectProperty ;
+                 owl:inverseOf prov:wasRevisionOf ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                 rdfs:label "hadRevision" .
+
+
+###  http://www.w3.org/ns/prov#hadRole
+prov:hadRole owl:inverseOf prov:wasRoleIn ;
+             rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#hadUsage
+prov:hadUsage owl:inverseOf prov:wasUsedInDerivation ;
+              rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#influenced
+prov:influenced owl:inverseOf prov:wasInfluencedBy ;
+                rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                 <http://www.w3.org/ns/prov-o-inverses#> ;
+                rdfs:label "influenced" .
+
+
+###  http://www.w3.org/ns/prov#influencer
+prov:influencer rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#informed
+prov:informed rdf:type owl:ObjectProperty ;
+              owl:inverseOf prov:wasInformedBy ;
+              rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+              rdfs:label "informed" .
+
+
+###  http://www.w3.org/ns/prov#invalidated
+prov:invalidated owl:inverseOf prov:wasInvalidatedBy ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                  <http://www.w3.org/ns/prov-o-inverses#> ;
+                 rdfs:label "invalidated" .
+
+
+###  http://www.w3.org/ns/prov#locationOf
+prov:locationOf rdf:type owl:ObjectProperty ;
+                rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                rdfs:label "locationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedAssociation
+prov:qualifiedAssociation owl:inverseOf prov:qualifiedAssociationOf ;
+                          rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedAssociationOf
+prov:qualifiedAssociationOf rdf:type owl:ObjectProperty ;
+                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                            rdfs:label "qualifiedAssociationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedAttribution
+prov:qualifiedAttribution owl:inverseOf prov:qualifiedAttributionOf ;
+                          rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedAttributionOf
+prov:qualifiedAttributionOf rdf:type owl:ObjectProperty ;
+                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                            rdfs:label "qualifiedAttributionOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedCommunication
+prov:qualifiedCommunication owl:inverseOf prov:qualifiedCommunicationOf ;
+                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedCommunicationOf
+prov:qualifiedCommunicationOf rdf:type owl:ObjectProperty ;
+                              rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                              rdfs:label "qualifiedCommunicationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedDelegation
+prov:qualifiedDelegation owl:inverseOf prov:qualifiedDelegationOf ;
+                         rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedDelegationOf
+prov:qualifiedDelegationOf rdf:type owl:ObjectProperty ;
+                           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                           rdfs:label "qualifiedDelegationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedEnd
+prov:qualifiedEnd owl:inverseOf prov:qualifiedEndOf ;
+                  rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedEndOf
+prov:qualifiedEndOf rdf:type owl:ObjectProperty ;
+                    rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                    rdfs:label "qualifiedEndOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedGeneration
+prov:qualifiedGeneration owl:inverseOf prov:qualifiedGenerationOf ;
+                         rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedGenerationOf
+prov:qualifiedGenerationOf rdf:type owl:ObjectProperty ;
+                           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                           rdfs:label "qualifiedGenerationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedInfluence
+prov:qualifiedInfluence owl:inverseOf prov:qualifiedInfluenceOf ;
+                        rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedInfluenceOf
+prov:qualifiedInfluenceOf rdf:type owl:ObjectProperty ;
+                          rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                          rdfs:label "qualifiedInfluenceOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedInvalidation
+prov:qualifiedInvalidation owl:inverseOf prov:qualifiedInvalidationOf ;
+                           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedInvalidationOf
+prov:qualifiedInvalidationOf rdf:type owl:ObjectProperty ;
+                             rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                             rdfs:label "qualifiedInvalidationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedPrimarySource
+prov:qualifiedPrimarySource owl:inverseOf prov:qualifiedSourceOf ;
+                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedQuotation
+prov:qualifiedQuotation owl:inverseOf prov:qualifiedQuotationOf ;
+                        rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedQuotationOf
+prov:qualifiedQuotationOf rdf:type owl:ObjectProperty ;
+                          rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                          rdfs:label "qualifiedQuotationOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedRevision
+prov:qualifiedRevision owl:inverseOf prov:revisedEntity ;
+                       rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedSourceOf
+prov:qualifiedSourceOf rdf:type owl:ObjectProperty ;
+                       rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                       rdfs:label "qualifiedSourceOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedStart
+prov:qualifiedStart owl:inverseOf prov:qualifiedStartOf ;
+                    rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedStartOf
+prov:qualifiedStartOf rdf:type owl:ObjectProperty ;
+                      rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                      rdfs:label "qualifiedStartOf" .
+
+
+###  http://www.w3.org/ns/prov#qualifiedUsage
+prov:qualifiedUsage owl:inverseOf prov:qualifiedUsingActivity ;
+                    rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#qualifiedUsingActivity
+prov:qualifiedUsingActivity rdf:type owl:ObjectProperty ;
+                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                            rdfs:label "qualifiedUsingActivity" .
+
+
+###  http://www.w3.org/ns/prov#quotedAs
+prov:quotedAs rdf:type owl:ObjectProperty ;
+              owl:inverseOf prov:wasQuotedFrom ;
+              rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+              rdfs:label "quotedAs" .
+
+
+###  http://www.w3.org/ns/prov#revisedEntity
+prov:revisedEntity rdf:type owl:ObjectProperty ;
+                   rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                   rdfs:label "revisedEntity" .
+
+
+###  http://www.w3.org/ns/prov#specializationOf
+
+###  http://www.w3.org/ns/prov#started
+prov:started rdf:type owl:ObjectProperty ;
+             owl:inverseOf prov:wasStartedBy ;
+             rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+             rdfs:label "started" .
+
+
+###  http://www.w3.org/ns/prov#used
+prov:used owl:inverseOf prov:wasUsedBy ;
+          rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasActivityOfInfluence
+prov:wasActivityOfInfluence rdf:type owl:ObjectProperty ;
+                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                            rdfs:label "wasActivityOfInfluence" .
+
+
+###  http://www.w3.org/ns/prov#wasAssociateFor
+prov:wasAssociateFor rdf:type owl:ObjectProperty ;
+                     owl:inverseOf prov:wasAssociatedWith ;
+                     rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                     rdfs:label "wasAssociateFor" .
+
+
+###  http://www.w3.org/ns/prov#wasAssociatedWith
+prov:wasAssociatedWith rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasAttributedTo
+prov:wasAttributedTo rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasDerivedFrom
+prov:wasDerivedFrom rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasEndedBy
+prov:wasEndedBy rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasGeneratedBy
+prov:wasGeneratedBy rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                     <http://www.w3.org/ns/prov-o-inverses#> ;
+                    rdfs:label "wasGeneratedBy" .
+
+
+###  http://www.w3.org/ns/prov#wasInfluencedBy
+prov:wasInfluencedBy rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                      <http://www.w3.org/ns/prov-o-inverses#> ;
+                     rdfs:label "wasInfluencedBy" .
+
+
+###  http://www.w3.org/ns/prov#wasInformedBy
+prov:wasInformedBy rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasInvalidatedBy
+prov:wasInvalidatedBy rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ,
+                                       <http://www.w3.org/ns/prov-o-inverses#> ;
+                      rdfs:label "wasInvalidatedBy" .
+
+
+###  http://www.w3.org/ns/prov#wasMemberOf
+prov:wasMemberOf rdf:type owl:ObjectProperty ;
+                 rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                 rdfs:label "wasMemberOf" .
+
+
+###  http://www.w3.org/ns/prov#wasPlanOf
+prov:wasPlanOf rdf:type owl:ObjectProperty ;
+               rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+               rdfs:label "wasPlanOf" .
+
+
+###  http://www.w3.org/ns/prov#wasPrimarySourceOf
+prov:wasPrimarySourceOf rdf:type owl:ObjectProperty ;
+                        rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                        rdfs:label "wasPrimarySourceOf" .
+
+
+###  http://www.w3.org/ns/prov#wasQuotedFrom
+prov:wasQuotedFrom rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasRevisionOf
+
+###  http://www.w3.org/ns/prov#wasRoleIn
+prov:wasRoleIn rdf:type owl:ObjectProperty ;
+               rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+               rdfs:label "wasRoleIn" .
+
+
+###  http://www.w3.org/ns/prov#wasStartedBy
+prov:wasStartedBy rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  http://www.w3.org/ns/prov#wasUsedBy
+prov:wasUsedBy rdf:type owl:ObjectProperty ;
+               rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+               rdfs:label "wasUsedBy" .
+
+
+###  http://www.w3.org/ns/prov#wasUsedInDerivation
+prov:wasUsedInDerivation rdf:type owl:ObjectProperty ;
+                         rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                         rdfs:label "wasUsedInDerivation" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.w3.org/TR/prov-o/#inverse-names-table
+<http://www.w3.org/TR/prov-o/#inverse-names-table> rdf:type owl:NamedIndividual .
+
+
+###  http://www.w3.org/ns/prov-o-20130430
+<http://www.w3.org/ns/prov-o-20130430> rdf:type owl:NamedIndividual .
+
+
+###  http://www.w3.org/ns/prov-o-inverses#
+<http://www.w3.org/ns/prov-o-inverses#> rdf:type owl:NamedIndividual ;
+                                        prov:alternateOf <http://www.w3.org/TR/prov-o/#inverse-names-table> ;
+                                        prov:wasDerivedFrom <http://www.w3.org/ns/prov-o-20130430> .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+prov:entityOfInfluence rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> ;
+                       rdfs:label "entityOfInfluence" .
+
+
+prov:qualifiedDerivationOf rdfs:label "qualifiedDerivationOf" ;
+                           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o-inverses#> .
+
+
+prov:specializationOf rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+prov:wasRevisionOf rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+
+
+###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
