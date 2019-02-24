@@ -48,22 +48,6 @@
 #    Object Properties
 #################################################################
 
-###  http://cltl.nl/leolani/integration/hasDetections
-:hasDetections rdf:type owl:ObjectProperty ;
-               rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ;
-               rdfs:domain <http://groundedannotationframework.org/grasp#Context> ;
-               rdfs:range [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Object>
-                                                 <http://groundedannotationframework.org/grasp#Detection>
-                                               ) ;
-                            rdf:type owl:Class
-                          ] ,
-                          [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Person>
-                                                 <http://groundedannotationframework.org/grasp#Detection>
-                                               ) ;
-                            rdf:type owl:Class
-                          ] .
-
-
 ###  http://cltl.nl/leolani/n2mu/acknowledge
 <http://cltl.nl/leolani/n2mu/acknowledge> rdf:type owl:ObjectProperty ;
                                           rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/perceive> ;
@@ -332,14 +316,32 @@
 
 ###  http://groundedannotationframework.org/grasp#hasContext
 <http://groundedannotationframework.org/grasp#hasContext> rdf:type owl:ObjectProperty ;
+                                                          rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
                                                           rdfs:domain <http://groundedannotationframework.org/gaf#Instance> ,
                                                                       <http://groundedannotationframework.org/grasp#Chat> ,
                                                                       <http://groundedannotationframework.org/grasp#Detection> ,
                                                                       <http://groundedannotationframework.org/grasp#Experience> ,
                                                                       <http://groundedannotationframework.org/grasp#Statement> ,
                                                                       <http://groundedannotationframework.org/grasp#Utterance> ,
-                                                                      <http://groundedannotationframework.org/grasp#Visual> ;
+                                                                      <http://groundedannotationframework.org/grasp#Visual> ,
+                                                                      <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
                                                           rdfs:range <http://groundedannotationframework.org/grasp#Context> .
+
+
+###  http://groundedannotationframework.org/grasp#hasDetection
+<http://groundedannotationframework.org/grasp#hasDetection> rdf:type owl:ObjectProperty ;
+                                                            rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ;
+                                                            rdfs:domain <http://groundedannotationframework.org/grasp#Context> ;
+                                                            rdfs:range [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Object>
+                                                                                              <http://groundedannotationframework.org/grasp#Detection>
+                                                                                            ) ;
+                                                                         rdf:type owl:Class
+                                                                       ] ,
+                                                                       [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Person>
+                                                                                              <http://groundedannotationframework.org/grasp#Detection>
+                                                                                            ) ;
+                                                                         rdf:type owl:Class
+                                                                       ] .
 
 
 ###  http://groundedannotationframework.org/grasp#isAttributionFor
@@ -368,10 +370,22 @@
                                                                           ] .
 
 
+###  http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty
+<http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> rdf:type owl:ObjectProperty ;
+                                                        rdfs:comment "Event properties connect Events to other SEM Core entities." ;
+                                                        rdfs:label "event property" .
+
+
 ###  http://semanticweb.cs.vu.nl/2009/11/sem/hasActor
 <http://semanticweb.cs.vu.nl/2009/11/sem/hasActor> rdf:type owl:ObjectProperty ;
-                                                   rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ;
-                                                   rdfs:domain <http://groundedannotationframework.org/grasp#Context> ;
+                                                   rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ,
+                                                                      <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
+                                                   rdfs:domain <http://groundedannotationframework.org/grasp#Chat> ,
+                                                               <http://groundedannotationframework.org/grasp#Context> ,
+                                                               <http://groundedannotationframework.org/grasp#Detection> ,
+                                                               <http://groundedannotationframework.org/grasp#Utterance> ,
+                                                               <http://groundedannotationframework.org/grasp#Visual> ,
+                                                               <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
                                                    rdfs:range [ owl:intersectionOf ( <http://groundedannotationframework.org/gaf#Instance>
                                                                                      <http://semanticweb.cs.vu.nl/2009/11/sem/Actor>
                                                                                    ) ;
@@ -393,6 +407,7 @@
 
 ###  http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent
 <http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent> rdf:type owl:ObjectProperty ;
+                                                      rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
                                                       rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
                                                       rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
@@ -410,14 +425,17 @@ rdf:value rdf:type owl:ObjectProperty .
 
 ###  http://www.w3.org/ns/prov#hadDerivation
 <http://www.w3.org/ns/prov#hadDerivation> rdf:type owl:ObjectProperty ;
-                                          owl:inverseOf <http://www.w3.org/ns/prov#wasDerivedFrom> ;
-                                          rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
-                                          rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
+                                          owl:inverseOf <http://www.w3.org/ns/prov#wasDerivedFrom> .
 
 
 ###  http://www.w3.org/ns/prov#wasDerivedFrom
 <http://www.w3.org/ns/prov#wasDerivedFrom> rdf:type owl:ObjectProperty ;
                                            rdfs:subPropertyOf owl:topObjectProperty ;
+                                           rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
+                                           rdfs:range <http://groundedannotationframework.org/grasp#Chat> ,
+                                                      <http://groundedannotationframework.org/grasp#Detection> ,
+                                                      <http://groundedannotationframework.org/grasp#Utterance> ,
+                                                      <http://groundedannotationframework.org/grasp#Visual> ;
                                            rdfs:comment "The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable."@en ;
                                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ;
                                            rdfs:label "wasDerivedFrom" ;
@@ -912,26 +930,6 @@ A Mention uniquely identifies the (part of a) web source that denotes the mentio
 #################################################################
 #    Individuals
 #################################################################
-
-###  http://cltl.nl/leolani/world/football
-<http://cltl.nl/leolani/world/football> rdf:type owl:NamedIndividual ,
-                                                 <http://cltl.nl/leolani/n2mu/Sport> .
-
-
-###  http://cltl.nl/leolani/world/harry_potter
-<http://cltl.nl/leolani/world/harry_potter> rdf:type owl:NamedIndividual ,
-                                                     <http://cltl.nl/leolani/n2mu/Book> .
-
-
-###  http://cltl.nl/leolani/world/mulan
-<http://cltl.nl/leolani/world/mulan> rdf:type owl:NamedIndividual ,
-                                              <http://cltl.nl/leolani/n2mu/Movie> .
-
-
-###  http://cltl.nl/leolani/world/tacos
-<http://cltl.nl/leolani/world/tacos> rdf:type owl:NamedIndividual ,
-                                              <http://cltl.nl/leolani/n2mu/Dish> .
-
 
 ###  http://groundedannotationframework.org/grasp/emotion#anger
 <http://groundedannotationframework.org/grasp/emotion#anger> rdf:type owl:NamedIndividual ,
