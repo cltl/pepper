@@ -33,6 +33,14 @@ leolaniTalk:Perspectives {
         rdf:value grasp:CERTAIN .
 }
 
+leolaniWorld:leolani-knows-tom {
+    leolaniWorld:leolani n2mu:knows leolaniFriends:tom .
+}
+
+leolaniWorld:karla-livedin-paris {
+    leolaniWorld:karla n2mu:livedIn leolaniWorld:paris .
+}
+
 leolaniWorld:Claims {
     leolaniWorld:karla-livedin-paris a grasp:Instance,
             grasp:Statement,
@@ -46,7 +54,13 @@ leolaniWorld:Claims {
 leolaniWorld:Instances {
     leolaniWorld:karla a n2mu:Person,
             grasp:Instance ;
-        rdfs:label "karla" ;
+        rdfs:label "Karla" ;
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 ;
+        grasp:hasContext leolaniContext:context1 .
+
+    leolaniWorld:paris a n2mu:Location,
+            grasp:Instance ;
+        rdfs:label "Paris" ;
         grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 ;
         grasp:hasContext leolaniContext:context1 .
 
@@ -56,25 +70,20 @@ leolaniWorld:Instances {
     leolaniWorld:leolani a n2mu:Robot,
             grasp:Instance ;
         rdfs:label "leolani" .
-
-    leolaniWorld:paris a n2mu:Location,
-            grasp:Instance ;
-        rdfs:label "paris" ;
-        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 ;
-        grasp:hasContext leolaniContext:context1 .
-}
-
-leolaniWorld:leolani-knows-tom {
-    leolaniWorld:leolani n2mu:knows leolaniFriends:tom .
-}
-
-leolaniWorld:karla-livedin-paris {
-    leolaniWorld:karla n2mu:livedIn leolaniWorld:paris .
 }
 
 leolaniTalk:Interactions {
+    leolaniWorld:chair1 a n2mu:Chair,
+            n2mu:Object,
+            grasp:Instance,
+             grasp:Detection ;
+        rdfs:label "Chair 1" ;
+        grasp:hasContext leolaniContext:context1 .
+
     leolaniFriends:tom a n2mu:Person,
             grasp:Instance,
+             grasp:Detection,
+            grasp:Source,
             sem:Actor ;
         rdfs:label "Tom" .
 
@@ -84,7 +93,7 @@ leolaniTalk:Interactions {
             sem:Event ;
         n2mu:id 4 ;
         sem:hasActor leolaniFriends:tom ;
-        sem:hasSubevent leolaniTalk:chat4_utterance1 ;
+        sem:hasSubEvent leolaniTalk:chat4_utterance1 ;
         grasp:hasContext leolaniContext:context1 .
 
     leolaniTalk:chat4_utterance1 a grasp:Utterance,
@@ -100,14 +109,15 @@ leolaniTalk:Interactions {
         time:unitType time:unitDay ;
         time:year "2019"^^xml1:gYear .
 
-    leolaniContext:pieksOffice a n2mu:Location,
+    leolaniContext:armandosOffice a n2mu:Location,
             grasp:Instance,
             sem:Place ;
-        rdfs:label "Piek's office" .
+        rdfs:label "Armando's office" .
 
     leolaniContext:context1 a grasp:Context ;
         sem:hasTime leolaniContext:2019-01-24 ;
-        sem:hasPlace leolaniContext:pieksOffice .
+        sem:hasPlace leolaniContext:armandosOffice ;
+        grasp:hasDetection leolaniWorld:chair1 .
 }
 
 
