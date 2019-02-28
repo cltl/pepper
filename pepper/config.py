@@ -74,6 +74,12 @@ PEOPLE_FRIENDS_NAMES = [os.path.splitext(path)[0] for path in os.listdir(PEOPLE_
 # See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries
 KEY_GOOGLE_CLOUD = os.path.join(os.path.dirname(__file__), "../google_cloud_key.json")
 
+if not os.path.exists(KEY_GOOGLE_CLOUD):
+    print("WARNING: {} does not exist, \n"
+          "         Google Cloud Services will not work.\n"
+          "         See https://github.com/cltl/pepper/wiki/Installation#2-google-cloud-services"
+          "for more information\n".format(KEY_GOOGLE_CLOUD))
+
 # Path to other tokens (currently just WolframAlpha)
 # See for more details: https://products.wolframalpha.com/spoken-results-api/documentation/
 # Please make sure you create this .json file with the following formatting:
@@ -81,6 +87,12 @@ KEY_GOOGLE_CLOUD = os.path.join(os.path.dirname(__file__), "../google_cloud_key.
 #  "wolfram": "<Your Wolfram Alpha Key>"
 # }
 KEY_WOLFRAM = os.path.join(os.path.dirname(__file__), '../tokens.json')
+
+if not os.path.exists(KEY_WOLFRAM):
+    print("WARNING: {} does not exist, \n"
+          "         Wolfram Alpha will not work.\n"
+          "         See https://github.com/cltl/pepper/wiki/Installation#7-wolfram-alpha"
+          "for more information\n".format(KEY_WOLFRAM))
 
 # General Logging
 LOG = pepper.LOGGING_FILE
