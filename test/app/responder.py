@@ -14,7 +14,10 @@ class ResponderApp(AbstractApplication,
     def __init__(self, backend):
         super(ResponderApp, self).__init__(backend)
 
-        self.response_picker = ResponsePicker(self, [GreetingResponder(), GoodbyeResponder()])
+        self.response_picker = ResponsePicker(self, [
+            GreetingResponder(),
+            GoodbyeResponder(),
+        ])
 
         self.start_chat("Human")
         self.say("What's up, {}!".format(self.chat.speaker))
