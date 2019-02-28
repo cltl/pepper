@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:emotion="http://groundedannotationframework.org/grasp/emotion#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns="http://groundedannotationframework.org/grasp#"
+    xmlns:sentiment="http://groundedannotationframework.org/grasp/sentiment#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:fact="http://groundedannotationframework.org/grasp/factuality#"
+    xmlns:gaf="http://groundedannotationframework.org/gaf#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xml:base="http://groundedannotationframework.org/grasp">
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://groundedannotationframework.org/gaf"/>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >owl:Ontology added by TopBraid</owl:versionInfo>
+  </owl:Ontology>
+  <owl:Class rdf:ID="FactualityValue">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SentimentValue"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="EmotionValue"/>
+    </owl:disjointWith>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Factuality value</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="AttributionValue"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Source">
+    <rdfs:label>Source</rdfs:label>
+    <rdfs:comment></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:ID="PolarityValue">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="CertaintyValue"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="TemporalValue"/>
+    </owl:disjointWith>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The polarity of a gaf:Mention (e.g. if something is or isn't the case)</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <PolarityValue rdf:about="http://groundedannotationframework.org/grasp/factuality#negative">
+            <rdfs:label>negative</rdfs:label>
+            <rdf:type>
+              <owl:Class rdf:about="#SentimentValue"/>
+            </rdf:type>
+          </PolarityValue>
+          <SentimentValue rdf:about="http://groundedannotationframework.org/grasp/factuality#positive">
+            <rdfs:label>positive</rdfs:label>
+            <rdf:type rdf:resource="#PolarityValue"/>
+          </SentimentValue>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:label>Polarity Value</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#FactualityValue"/>
+  </owl:Class>
+  <owl:Class rdf:about="#TemporalValue">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CertaintyValue"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#PolarityValue"/>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <TemporalValue rdf:about="http://groundedannotationframework.org/grasp/factuality#non-future">
+            <rdfs:label>non-future</rdfs:label>
+          </TemporalValue>
+          <TemporalValue rdf:about="http://groundedannotationframework.org/grasp/factuality#future">
+            <rdfs:label>future</rdfs:label>
+          </TemporalValue>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The temporal property of a gaf:Mention</rdfs:comment>
+    <rdfs:label>Temporal Value</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#FactualityValue"/>
+  </owl:Class>
+  <owl:Class rdf:about="#EmotionValue">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SentimentValue"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#FactualityValue"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The emotion expressed in a gaf:Mention</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <EmotionValue rdf:about="http://groundedannotationframework.org/grasp/emotion#anger">
+            <rdfs:label>anger</rdfs:label>
+          </EmotionValue>
+          <EmotionValue rdf:about="http://groundedannotationframework.org/grasp/emotion#disgust">
+            <rdfs:label>disgust</rdfs:label>
+          </EmotionValue>
+          <EmotionValue rdf:about="http://groundedannotationframework.org/grasp/emotion#fear">
+            <rdfs:label>fear</rdfs:label>
+          </EmotionValue>
+          <EmotionValue rdf:about="http://groundedannotationframework.org/grasp/emotion#happiness">
+            <rdfs:label>happiness</rdfs:label>
+          </EmotionValue>
+          <EmotionValue rdf:about="http://groundedannotationframework.org/grasp/emotion#sadness">
+            <rdfs:label>sadness</rdfs:label>
+          </EmotionValue>
+          <EmotionValue rdf:about="http://groundedannotationframework.org/grasp/emotion#surprise">
+            <rdfs:label>surprise</rdfs:label>
+          </EmotionValue>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:label>Emotion Value</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#AttributionValue"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#AttributionValue">
+    <owl:disjointWith rdf:resource="http://groundedannotationframework.org/gaf#Instance"/>
+    <owl:disjointWith rdf:resource="http://groundedannotationframework.org/gaf#Mention"/>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Attribution"/>
+    </owl:disjointWith>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The value of a grasp:Attribution</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Attribution value</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:about="#CertaintyValue">
+    <owl:disjointWith rdf:resource="#TemporalValue"/>
+    <owl:disjointWith rdf:resource="#PolarityValue"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The level of certainty of a gaf:Mention</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <CertaintyValue rdf:about="http://groundedannotationframework.org/grasp/factuality#underspecified">
+            <rdfs:label>underspecified</rdfs:label>
+          </CertaintyValue>
+          <CertaintyValue rdf:about="http://groundedannotationframework.org/grasp/factuality#probable">
+            <rdfs:label>probable</rdfs:label>
+          </CertaintyValue>
+          <CertaintyValue rdf:about="http://groundedannotationframework.org/grasp/factuality#possible">
+            <rdfs:label>possible</rdfs:label>
+          </CertaintyValue>
+          <CertaintyValue rdf:about="http://groundedannotationframework.org/grasp/factuality#certain">
+            <rdfs:label>certain</rdfs:label>
+          </CertaintyValue>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:label>Certainty Value</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#FactualityValue"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Attribution">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Restriction>
+            <owl:someValuesFrom rdf:resource="#AttributionValue"/>
+            <owl:onProperty rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"/>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:someValuesFrom rdf:resource="http://groundedannotationframework.org/gaf#Mention"/>
+            <owl:onProperty rdf:parseType="Resource">
+              <owl:inverseOf>
+                <owl:ObjectProperty rdf:ID="hasAttribution"/>
+              </owl:inverseOf>
+            </owl:onProperty>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A grasp:Attribution reflects the attribution of some interpretation, some perspective to a gaf:Mention. An attribution expresses such things as certainty, emotion, polarity, sentiment, temporality.</rdfs:comment>
+    <rdfs:label>Attribution</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SentimentValue">
+    <owl:disjointWith rdf:resource="#EmotionValue"/>
+    <owl:disjointWith rdf:resource="#FactualityValue"/>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <SentimentValue rdf:about="http://groundedannotationframework.org/grasp/sentiment#negative">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >negative</rdfs:label>
+          </SentimentValue>
+          <SentimentValue rdf:about="http://groundedannotationframework.org/grasp/sentiment#positive">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >positive</rdfs:label>
+          </SentimentValue>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The sentiment expressed by a gaf:Mention</rdfs:comment>
+    <rdfs:label>Sentiment Value</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#AttributionValue"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="wasAttributedTo">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >States that a gaf:Mention was attributed to a gaf:Instance. This is a sub property of the prov:wasAttributedTo relation that can be used to relate any prov:Entity to any prov:Agent.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#wasAttributedTo"/>
+    <rdfs:label>was attributed to</rdfs:label>
+    <rdfs:domain rdf:resource="http://groundedannotationframework.org/gaf#Mention"/>
+    <rdfs:range>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://groundedannotationframework.org/gaf#Instance"/>
+          <rdf:Description rdf:about="http://semanticweb.cs.vu.nl/2009/11/sem/Actor"/>
+        </owl:intersectionOf>
+      </owl:Class>
+    </rdfs:range>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasAttribution">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Every gaf:Mention can be attributed some gaf:Attribution that represents some perspective on how the mention should be interpreted with respect to e.g. certainty, emotion, sentiment, and temporality.</rdfs:comment>
+    <rdfs:label>has attribution</rdfs:label>
+    <rdfs:domain rdf:resource="http://groundedannotationframework.org/gaf#Mention"/>
+    <rdfs:range rdf:resource="#Attribution"/>
+  </owl:ObjectProperty>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->
