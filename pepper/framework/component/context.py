@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.component import SpeechRecognitionComponent, ObjectDetectionComponent, FaceDetectionComponent
+from pepper.framework.component import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent
 from pepper.framework.sensor import Context
 from pepper.language import Chat, Utterance
 from pepper.language.names import NameParser
@@ -14,7 +14,7 @@ class ContextComponent(AbstractComponent):
 
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
-        face_comp = self.require(ContextComponent, FaceDetectionComponent)  # type: FaceDetectionComponent
+        face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
 
         name_parser = NameParser(config.PEOPLE_FRIENDS_NAMES)
 

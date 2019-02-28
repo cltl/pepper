@@ -31,7 +31,7 @@ class DefaultApp(AbstractApplication,
                  DisplayComponent,
                  BrainComponent,
                  ObjectDetectionComponent,
-                 FaceDetectionComponent,
+                 FaceRecognitionComponent,
                  SpeechRecognitionComponent,
                  TextToSpeechComponent):
     pass
@@ -89,7 +89,7 @@ class IgnoreIntention(AbstractIntention, DefaultApp):
 
 class ConversationIntention(AbstractIntention, DefaultApp):
 
-    _face_detection = None  # type: FaceDetectionComponent
+    _face_detection = None  # type: FaceRecognitionComponent
     CONVERSATION_TIMEOUT = 15
 
     def __init__(self, application, chat):
@@ -107,7 +107,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self._last_seen = time()
         self._seen_objects = set()
 
-        self._face_detection = self.require_dependency(FaceDetectionComponent)
+        self._face_detection = self.require_dependency(FaceRecognitionComponent)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
@@ -446,12 +446,12 @@ class MeetIntention(AbstractIntention, DefaultApp):
     MIN_SAMPLES = 30
     NAME_CONFIDENCE = 0.8
 
-    _face_detection = None  # type: FaceDetectionComponent
+    _face_detection = None  # type: FaceRecognitionComponent
 
     def __init__(self, application):
         super(MeetIntention, self).__init__(application)
 
-        self._face_detection = self.require_dependency(FaceDetectionComponent)
+        self._face_detection = self.require_dependency(FaceRecognitionComponent)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self._last_seen = time()

@@ -5,13 +5,13 @@ from random import choice
 from pepper import language
 
 
-class ContextApp(AbstractApplication,           # Base Application for given Backend
-                 StatisticsComponent,           # Microphone/Camera/Speech Statistics
-                 BrainComponent,                # Access to Brain
-                 ContextComponent,              # Access to Context
-                 ObjectDetectionComponent,      # Access to Object Detection Component
-                 FaceDetectionComponent,        # Access to Face Detection Component
-                 SpeechRecognitionComponent,    # Access to Speech Recognition
+class ContextApp(AbstractApplication,  # Base Application for given Backend
+                 StatisticsComponent,  # Microphone/Camera/Speech Statistics
+                 BrainComponent,  # Access to Brain
+                 ContextComponent,  # Access to Context
+                 ObjectDetectionComponent,  # Access to Object Detection Component
+                 FaceRecognitionComponent,  # Access to Face Detection Component
+                 SpeechRecognitionComponent,  # Access to Speech Recognition
                  TextToSpeechComponent):        # Access to Text to Speech
 
     def __init__(self, backend):

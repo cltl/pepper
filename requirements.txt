@@ -2,22 +2,23 @@ numpy
 scipy
 sklearn
 
-pyaudio
-webrtcvad
-google-cloud-speech
-google-cloud-TextToSpeech
-google-cloud-translate
-playsound
-requests
-pycountry
-
-pillow
-opencv-python
-av
-
 nltk
 fuzzywuzzy[speedup]
 
 rdflib
 iribaker
 SPARQLWrapper
+
+pyaudio
+playsound
+webrtcvad
+google-cloud-speech
+google-cloud-TextToSpeech
+google-cloud-translate
+
+requests
+pycountry
+
+pillow
+opencv-python
+av

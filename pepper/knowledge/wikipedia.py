@@ -7,6 +7,8 @@ import urllib
 
 import re
 
+from typing import Optional, Tuple, Union
+
 
 class Wikipedia:
 
@@ -21,23 +23,39 @@ class Wikipedia:
 
     @staticmethod
     def query(query):
-        tokens = nltk.word_tokenize(query)
+        # type: (Union[str, unicode]) -> Optional[Tuple[unicode, Optional[unicode]]]
+        """
+        Query Wikipedia
 
-        pos = nltk.pos_tag(tokens)
-        pos = Wikipedia._combine_nouns(pos)
+        Parameters
+        ----------
+        query: str or unicode
+            Simple Natural Language Query (about something Wikipedia would know)
 
-        # If this is a proper question about a Noun
+        Returns
+        -------
+        result: Optional[Tuple[unicode, str]]
+            Wikipedia Answer and thumbnail image URL
+        """
+
+        # Tokenize, Tag Part of Speeches and Combine adjacent nouns into one token
+        pos = Wikipedia._combine_nouns(nltk.pos_tag(nltk.word_tokenize(query)))
+
+        # If this is a proper question about a Noun (quite hacky here)
         if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0].lower() in ["what", "who"]:
 
             # And there is only one Noun in Question (a.k.a., question is simple enough)
             if sum([Wikipedia._is_queryable(tag) for word, tag in pos]) == 1:
 
-                # Query Wikipedia About last object
                 for word, tag in pos[::-1]:
+
+                    # Try to Query Wikipedia about last object in sentence
                     if Wikipedia._is_queryable(tag):
                         result = Wikipedia._query(word)
 
                         if result:
+
+                            # If Successful, Obtain Result and Image URL and return
                             query, answer, url = result
                             answer = re.sub(Wikipedia.DUPLICATE_SPACES, ' ', re.sub(Wikipedia.PARENTHESES, '', answer))
                             return answer, url
@@ -68,7 +86,6 @@ class Wikipedia:
                         return new_query, "{} may refer to {}: {}".format(query, new_query, extract), url
             else:
                 return query, extract, url
-
 
     @staticmethod
     def _find_key(dictionary, key):

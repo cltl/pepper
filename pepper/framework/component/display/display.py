@@ -1,5 +1,5 @@
 from pepper.framework import AbstractComponent
-from pepper.framework.component import FaceDetectionComponent, ObjectDetectionComponent
+from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent
 from .server import DisplayServer
 
 from threading import Thread, Lock
@@ -59,7 +59,7 @@ class DisplayComponent(AbstractComponent):
                          "bounds": item.bounds.to_list()
                          } for item in items]
 
-        face_recognition = self.require(DisplayComponent, FaceDetectionComponent)  # type: FaceDetectionComponent
+        face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
 
         self.backend.camera.callbacks += [on_image]

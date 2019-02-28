@@ -7,7 +7,7 @@ from Queue import Queue
 from typing import List, NoReturn
 
 
-class FaceDetectionComponent(AbstractComponent):
+class FaceRecognitionComponent(AbstractComponent):
     """
     Perform Face Detection using :class:`~pepper.sensor.face.OpenFace` and :class:`~pepper.sensor.face.FaceClassifier`
     on every :class:`~pepper.framework.abstract.camera.AbstractCamera` on_image event.
@@ -21,7 +21,7 @@ class FaceDetectionComponent(AbstractComponent):
         ----------
         backend: AbstractBackend
         """
-        super(FaceDetectionComponent, self).__init__(backend)
+        super(FaceRecognitionComponent, self).__init__(backend)
 
         self.on_face_callbacks = []
         self.on_face_known_callbacks = []

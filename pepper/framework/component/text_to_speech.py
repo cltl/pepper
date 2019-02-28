@@ -2,7 +2,7 @@ from pepper.framework.abstract import AbstractComponent
 from pepper.framework.util import Scheduler
 from threading import Lock
 
-from typing import Optional, NoReturn
+from typing import Optional, Union, NoReturn
 
 
 class TextToSpeechComponent(AbstractComponent):
@@ -21,7 +21,7 @@ class TextToSpeechComponent(AbstractComponent):
         schedule.start()
 
     def say(self, text, animation=None, block=False):
-        # type: (str, Optional[str], bool) -> NoReturn
+        # type: (Union[str, unicode], Optional[str], bool) -> NoReturn
         """
         Say Text (with Animation) through Text-to-Speech
 
