@@ -23,8 +23,6 @@ class ContextApp(AbstractApplication,  # Base Application for given Backend
         # Start a Chat with somebody (Just chat with a generic human for now)
         self.start_chat("Human")
 
-        print(self.context.location)
-
     def on_chat_turn(self, utterance):
         # Called every time a human adds an utterance to the chat
         # Just reply with a random statement for now
@@ -44,14 +42,6 @@ class ContextApp(AbstractApplication,  # Base Application for given Backend
 
         print(brain_response)
         return 0
-
-    def say(self, text, animation=None, block=False):
-        # Call Text To Speech for given Text
-        super(ContextApp, self).say(text, animation, block)
-
-        # Add whatever Pepper says to Chat as an Utterance
-        if self.has_chat:
-            self.chat.add_utterance(text, me=True)
 
 
 if __name__ == '__main__':

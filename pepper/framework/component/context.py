@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.component import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent
+from pepper.framework.component import *
 from pepper.framework.sensor import Context
 from pepper.language import Chat, Utterance
 from pepper.language.names import NameParser
@@ -15,6 +15,8 @@ class ContextComponent(AbstractComponent):
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
         face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
+
+        self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
 
         name_parser = NameParser(config.PEOPLE_FRIENDS_NAMES)
 
@@ -70,6 +72,14 @@ class ContextComponent(AbstractComponent):
             True if a chat is active
         """
         return self._chat is not None
+
+    def say(self, text, animation=None, block=False):
+        # Call super (TextToSpeechComponent)
+        super(ContextComponent, self).say(text, animation, block)
+
+        # Add Utterance to Chat
+        if self.has_chat:
+            self.chat.add_utterance(text, me=True)
 
     def start_chat(self, speaker):
         # type: (str) -> None
