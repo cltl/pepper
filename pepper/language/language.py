@@ -162,12 +162,8 @@ class Utterance(object):
 
         self._tokens = self._clean(self._tokenize(transcript))
 
-        try:
-            self._parsed_tree = Parser().parse(self)
-        except Exception as e:
-            self._log.error("Couldn't create Grammar Tree: {}".format(str(e).replace("\n", " -> ")))
-        finally:
-            self._parsed_tree = None
+        self._parsed_tree = Parser().parse(self)
+
 
     @property
     def chat(self):
