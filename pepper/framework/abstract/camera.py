@@ -130,6 +130,18 @@ class AbstractCamera(object):
         return self._shape
 
     @property
+    def angles(self):
+        """
+        Max Image Angles
+
+        Returns
+        -------
+        angles: tuple
+            phi, theta corresponding with (1, 1) of normalized image coordinates
+        """
+        return (1, 1)
+
+    @property
     def callbacks(self):
         """
         Get/Set :func:`~AbstractCamera.on_image` Callbacks
@@ -163,7 +175,26 @@ class AbstractCamera(object):
         """
         return self._running
 
-    def on_image(self, image):
+    def image_angles(self, orientation, coordinates):
+        """
+        Return Image Angles (Yaw + Pitch) from Head Orientation and Image Coordinates
+
+        Parameters
+        ----------
+        orientation: float, float
+            Head Orientation
+        coordinates: float, float
+            Image Coordinates
+
+        Returns
+        -------
+        angles: float, float
+            Image Angles (phi, theta)
+        """
+        raise NotImplementedError()
+
+
+    def on_image(self, image, orientation):
         """
         On Image Event, Called for every Image captured by Camera
 
@@ -173,7 +204,7 @@ class AbstractCamera(object):
         ----------
         image: np.ndarray
         """
-        self._mailbox.put(image)
+        self._mailbox.put((image, orientation))
 
     def start(self):
         """Start Streaming Images from Camera"""
@@ -189,10 +220,10 @@ class AbstractCamera(object):
 
         Calls each callback for each image, threaded, for higher image throughput
         """
-        image = self._mailbox.get()
+        image, orientation = self._mailbox.get()
         if self._running:
             for callback in self.callbacks:
-                callback(image)
+                callback(image, orientation)
         self._update_dt()
 
     def _update_dt(self):

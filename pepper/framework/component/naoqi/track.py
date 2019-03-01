@@ -46,7 +46,7 @@ class TrackComponent(AbstractComponent):
                 self._motion.setAngles("HeadYaw", random.uniform(-2.0857, 2.0857), speed)
                 self._motion.setAngles("HeadPitch", random.uniform(-0.7068, 0.6371), speed)
 
-            def on_image(image):
+            def on_image(image, orientation):
                 if time() - self._last_person > 3:
                     random_look()
 
@@ -54,6 +54,14 @@ class TrackComponent(AbstractComponent):
                     self._awareness.setEnabled(True)
 
             def on_object(image, objects):
+                # for obj in objects:
+                #     if obj.name == 'bottle':
+                #         # TODO: Get Object Angular Position, Move Into Dedicated Location
+                #         phi, theta = self._video.getAngularPositionFromImagePosition(0, obj.bounds.center)
+                #         phi += self._motion.getAngles("HeadYaw", False)[0]
+                #         theta += self._motion.getAngles("HeadPitch", False)[0]
+                #         print(phi, theta)
+
                 people = [obj for obj in objects if obj.name == "person"]
 
                 if people:

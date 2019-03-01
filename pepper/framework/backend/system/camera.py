@@ -53,7 +53,7 @@ class SystemCamera(AbstractCamera):
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                 # Call On Image Event
-                self.on_image(image)
+                self.on_image(image, (0, 0))
         else:
             self._camera.release()
             raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))

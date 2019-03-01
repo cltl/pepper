@@ -141,7 +141,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         if self.chat.speaker in [person.name for person in faces]:
             self._last_seen = time()
 
-    def on_image(self, image):
+    def on_image(self, image, orientation):
         # If conversation times out, go back to idle!
         if time() - self._last_seen > self.CONVERSATION_TIMEOUT:
             self.end_conversation()
@@ -474,7 +474,7 @@ class MeetIntention(AbstractIntention, DefaultApp):
         #     self._last_utterance = time()
         #     sleep(0.25)
 
-    def on_image(self, image):
+    def on_image(self, image, orientation):
         # If meeting times out, go back to idle!
         if time() - self._last_seen > self.MEET_TIMEOUT:
             self.end_conversation()

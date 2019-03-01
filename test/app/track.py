@@ -2,7 +2,7 @@ from pepper.framework import *
 from pepper import config
 
 
-class TrackApp(AbstractApplication, TrackComponent, DisplayComponent, ObjectDetectionComponent, FaceRecognitionComponent):
+class TrackApp(AbstractApplication, StatisticsComponent, TrackComponent, DisplayComponent, ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent):
     def __init__(self, backend):
         super(TrackApp, self).__init__(backend)
 

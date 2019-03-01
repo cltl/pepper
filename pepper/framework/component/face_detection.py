@@ -39,13 +39,14 @@ class FaceRecognitionComponent(AbstractComponent):
 
         queue = Queue()
 
-        def on_image(image):
+        def on_image(image, orientation):
             """
             Raw On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
             image: np.ndarray
+            orientation: tuple
             """
             queue.put([self.face_classifier.classify(r, b, image) for r, b in open_face.represent(image)])
 

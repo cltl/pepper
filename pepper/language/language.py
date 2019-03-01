@@ -162,7 +162,10 @@ class Utterance(object):
 
         self._tokens = self._clean(self._tokenize(transcript))
 
-        self._parsed_tree = Parser().parse(self)
+        try:
+            self._parsed_tree = Parser().parse(self)
+        except:
+            self._parsed_tree = None
 
 
     @property
@@ -448,7 +451,7 @@ class Analyzer(object):
         -------
         log: logging.Logger
         """
-        return self._log
+        return self.LOG
 
     @property
     def chat(self):
