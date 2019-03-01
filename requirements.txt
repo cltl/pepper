@@ -9,7 +9,6 @@ rdflib
 iribaker
 SPARQLWrapper
 
-pyaudio
 playsound
 webrtcvad
 google-cloud-speech
@@ -21,4 +20,8 @@ pycountry
 
 pillow
 opencv-python
+
+tornado
+typing
+pyaudio
 av
