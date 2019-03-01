@@ -344,6 +344,8 @@ class Parser(object):
         cfg_parser = CFG.fromstring(self._cfg)
         RD = RecursiveDescentParser(cfg_parser)
         parsed = RD.parse(tokenized_sentence)
+
+
         return [tree for tree in parsed]
 
 
@@ -722,6 +724,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         return self._rdf
 
 
+#verb question rules:
 class VerbQuestionAnalyzer(QuestionAnalyzer):
     def __init__(self, chat):
         """
@@ -793,7 +796,7 @@ def analyze(chat, brain):
             return
 
 
-    template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.chat_turn,
+    template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.turn,
                                     analyzer.utterance_type)
     print(template)
 
@@ -804,14 +807,16 @@ def analyze(chat, brain):
 
 #"where are you from", "you know me", "do you know me","I am from China"
 def test():
-    utterances = ["I am from Belgrade"]
+    utterances = ["I like coffee"]
     chat = Chat("Lenka", None)
     brain = LongTermMemory()
     for utterance in utterances:
-        brain_response = get_response(chat, utterance, brain)
+        chat.add_utterance(utterance,False)
+        brain_response = analyze(chat, brain)
+        print(brain_response)
         print('\n\n')
     return
 
-#if __name__ == "__main__":
-#    test()
+if __name__ == "__main__":
+    test()
 
