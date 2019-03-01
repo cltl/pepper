@@ -162,12 +162,8 @@ class Utterance(object):
 
         self._tokens = self._clean(self._tokenize(transcript))
 
-        try:
-            self._parsed_tree = Parser().parse(self)
-        except Exception as e:
-            self._log.error("Couldn't create Grammar Tree: {}".format(str(e).replace("\n", " -> ")))
-        finally:
-            self._parsed_tree = None
+        self._parsed_tree = Parser().parse(self)
+
 
     @property
     def chat(self):
@@ -359,7 +355,9 @@ class Parser(object):
 
         cfg_parser = CFG.fromstring(self._cfg)
         RD = RecursiveDescentParser(cfg_parser)
+
         parsed = RD.parse(tokenized_sentence)
+
         return [tree for tree in parsed]
 
 
@@ -372,6 +370,8 @@ class Analyzer(object):
 
     # Load Stanford Named Entity Recognition Server
     NER = None  # type: NER
+
+    LOG = logger.getChild(__name__)
 
     def __init__(self, chat):
         """
@@ -387,7 +387,6 @@ class Analyzer(object):
             Analyzer.NER = NER('english.muc.7class.distsim.crf.ser')
 
         self._chat = chat
-        self._log = logger.getChild(self.__class__.__name__)
 
     @staticmethod
     def analyze(chat):
@@ -410,8 +409,8 @@ class Analyzer(object):
         forest = chat.last_utterance.parsed_tree
 
         if not forest:
-            print("unparsed input")
-            #raise Exception("Ungrammatical Input") #TODO
+            Analyzer.LOG.info("Couldn't parse input")
+            return None
 
         for tree in forest:
             sentence_type = tree[0].label()
@@ -738,6 +737,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         return self._rdf
 
 
+#verb question rules:
 class VerbQuestionAnalyzer(QuestionAnalyzer):
     def __init__(self, chat):
         """
@@ -797,8 +797,12 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
 def analyze(chat, brain):
 
+
     analyzer = Analyzer.analyze(chat)
 
+    if not analyzer:
+
+        return "I cannot parse your input"
 
     if analyzer.rdf['predicate'] in analyzer.GRAMMAR['verbs']:
         analyzer.rdf['predicate']+='s'
@@ -809,7 +813,7 @@ def analyze(chat, brain):
             return
 
 
-    template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.chat_turn,
+    template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.turn,
                                     analyzer.utterance_type)
     print(template)
 
@@ -820,14 +824,16 @@ def analyze(chat, brain):
 
 #"where are you from", "you know me", "do you know me","I am from China"
 def test():
-    utterances = ["I am from Belgrade"]
+    utterances = ["I dont like coffee","I know you"]
     chat = Chat("Lenka", None)
     brain = LongTermMemory()
     for utterance in utterances:
-        brain_response = get_response(chat, utterance, brain)
+        chat.add_utterance(utterance,False)
+        brain_response = analyze(chat, brain)
+        print(brain_response)
         print('\n\n')
     return
 
-#if __name__ == "__main__":
-#    test()
+if __name__ == "__main__":
+    test()
 
