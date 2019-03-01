@@ -1,0 +1,584 @@
+@prefix : <http://groundedannotationframework.org/gaf#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://groundedannotationframework.org/gaf> .
+
+<http://groundedannotationframework.org/gaf> rdf:type owl:Ontology ;
+                                              owl:imports <http://www.w3.org/ns/prov> ;
+                                              owl:versionInfo "owl:Ontology added by TopBraid"^^xsd:string .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.w3.org/2004/02/skos/core#broadMatch
+<http://www.w3.org/2004/02/skos/core#broadMatch> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#closeMatch
+<http://www.w3.org/2004/02/skos/core#closeMatch> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#exactMatch
+<http://www.w3.org/2004/02/skos/core#exactMatch> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#narrowMatch
+<http://www.w3.org/2004/02/skos/core#narrowMatch> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#relatedMatch
+<http://www.w3.org/2004/02/skos/core#relatedMatch> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://groundedannotationframework.org/gaf#containsDenotation
+:containsDenotation rdf:type owl:ObjectProperty ;
+                    owl:inverseOf :denotedIn ;
+                    rdfs:domain :Mention ;
+                    rdfs:range :Instance ;
+                    rdfs:comment "Indicates that part of a gaf:Mention denotes some gaf:Instance but that the precise part cannot be identified (literal occurrence in a text that refers to the notion represented by the the instance)"^^xsd:string ;
+                    rdfs:label "contains denotation" .
+
+
+###  http://groundedannotationframework.org/gaf#denotedBy
+:denotedBy rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :denotedIn ;
+           owl:inverseOf :denotes ;
+           rdfs:domain :Instance ;
+           rdfs:range :Mention ;
+           rdfs:comment "Indicates that a gaf:Instance is denoted by some gaf:Mention (literal occurrence in a text that refers to the notion represented by the the instance)"^^xsd:string ;
+           rdfs:label "denoted by" .
+
+
+###  http://groundedannotationframework.org/gaf#denotedIn
+:denotedIn rdf:type owl:ObjectProperty ;
+           rdfs:domain :Instance ;
+           rdfs:range :Mention ;
+           rdfs:comment "Indicates that a gaf:Instance is denoted by a part of some gaf:Mention, but this part cannot be precisely identified. See gaf:denotedBy"^^xsd:string ;
+           rdfs:label "denoted in" .
+
+
+###  http://groundedannotationframework.org/gaf#denotes
+:denotes rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf :containsDenotation ;
+         rdfs:domain :Mention ;
+         rdfs:range :Instance ;
+         rdfs:comment "Indicates that a gaf:Mention denotes some gaf:Instance (literal occurrence in a text that refers to the notion represented by the the instance)"^^xsd:string ;
+         rdfs:label "denotes" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/accordingTo
+<http://semanticweb.cs.vu.nl/2009/11/sem/accordingTo> rdf:type owl:ObjectProperty ;
+                                                      rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/View> ;
+                                                      rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Authority> ;
+                                                      rdfs:comment "According to is used to state which Authority sais that a property constrained by the View Constraint is true." ;
+                                                      rdfs:label "according to" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/actorType
+<http://semanticweb.cs.vu.nl/2009/11/sem/actorType> rdf:type owl:ObjectProperty ;
+                                                    rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/type> ;
+                                                    rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Actor> ;
+                                                    rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/ActorType> ;
+                                                    rdfs:comment "Has actor type is used to assign a type to an actor." ;
+                                                    rdfs:label "has actor type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty
+<http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> rdf:type owl:ObjectProperty ;
+                                                        rdfs:comment "Event properties connect Events to other SEM Core entities." ;
+                                                        rdfs:label "event property" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/eventType
+<http://semanticweb.cs.vu.nl/2009/11/sem/eventType> rdf:type owl:ObjectProperty ;
+                                                    rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/type> ;
+                                                    rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
+                                                    rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/EventType> ;
+                                                    rdfs:comment "Has event type is used to assign a type to an event." ;
+                                                    rdfs:label "has event type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasActor
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasActor> rdf:type owl:ObjectProperty ;
+                                                   rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
+                                                   rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Actor> ;
+                                                   rdfs:comment "Has actor is used to state which Actors or Objects participate in an Event." ;
+                                                   rdfs:label "has Actor" ;
+                                                   <http://www.w3.org/2004/02/skos/core#exactMatch> <http://linkedevents.org/ontology/involved> ;
+                                                   <http://www.w3.org/2004/02/skos/core#narrowMatch> <http://www.kulttuurisampo.fi/ebkr/agent> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace> rdf:type owl:ObjectProperty ;
+                                                   rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
+                                                   rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Place> ;
+                                                   rdfs:comment "Has place is used to state in which Place(s) an Event happened. Coordinates can be attached to the Place with the W3C Geospatial Vocabulary (http://www.w3.org/2005/Incubator/geo/XGR-geo-20071023/)." ;
+                                                   rdfs:label "has Place" ;
+                                                   <http://www.w3.org/2004/02/skos/core#exactMatch> <http://www.kulttuurisampo.fi/ebkr/place> ;
+                                                   <http://www.w3.org/2004/02/skos/core#narrowMatch> <http://linkedevents.org/ontology/inSpace> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent> rdf:type owl:ObjectProperty ;
+                                                      rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
+                                                      owl:inverseOf <http://semanticweb.cs.vu.nl/2009/11/sem/subEventOf> ;
+                                                      rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
+                                                      rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
+                                                      rdfs:comment "Has subevent connects an Event to other Events that belong to it. This is a very generic property that does not mean the subevents fully define the superconcept or that there is any causal relationship." ;
+                                                      rdfs:label "has subevent" ;
+                                                      <http://www.w3.org/2004/02/skos/core#exactMatch> <http://purl.org/NET/c4dm/event.owl#sub_event> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasSubType
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasSubType> rdf:type owl:ObjectProperty ;
+                                                     owl:inverseOf <http://semanticweb.cs.vu.nl/2009/11/sem/subTypeOf> ;
+                                                     rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                     rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                     rdfs:comment "Has sub type is used to state that a type falls under another type. This is a generic aggregation relation that is used to generalize over various hierarchical relations that can exist between types." ;
+                                                     rdfs:label "has subtype" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasTime
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasTime> rdf:type owl:ObjectProperty ;
+                                                  rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
+                                                  rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Time> ;
+                                                  rdfs:comment "Has time is used to indicate at which time an Event took place or when a property under the Temporary Constraint is valid. Has time points to a symbolic representation of time, which allows semantic relations between time resources. (see http://www.w3.org/TR/owl-time/)" ;
+                                                  rdfs:label "has Time" ;
+                                                  <http://www.w3.org/2004/02/skos/core#broadMatch> <http://linkedevents.org/ontology/atTime> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/placeType
+<http://semanticweb.cs.vu.nl/2009/11/sem/placeType> rdf:type owl:ObjectProperty ;
+                                                    rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/type> ;
+                                                    rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Place> ;
+                                                    rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/PlaceType> ;
+                                                    rdfs:comment "Has place type is used to assign a type to a place." ;
+                                                    rdfs:label "has place type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/roleType
+<http://semanticweb.cs.vu.nl/2009/11/sem/roleType> rdf:type owl:ObjectProperty ;
+                                                   rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/type> ;
+                                                   rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Role> ;
+                                                   rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/RoleType> ;
+                                                   rdfs:comment "Has role type is used to assign a role type to a Role property constraint. This role is a subspecification of the eventProperty which it constrains. For example, if an Event hasActor an Actor and this property is given a Role Constraint, then roleType can be used to assign a role to the participation of the Actor in the Event indicated by hasActor." ;
+                                                   rdfs:label "has role type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/subEventOf
+<http://semanticweb.cs.vu.nl/2009/11/sem/subEventOf> rdf:type owl:ObjectProperty ;
+                                                     rdfs:comment "Inverse property of hasSubEvent" ;
+                                                     rdfs:label "subevent of" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/subTypeOf
+<http://semanticweb.cs.vu.nl/2009/11/sem/subTypeOf> rdf:type owl:ObjectProperty ;
+                                                    rdfs:subPropertyOf rdfs:subClassOf ;
+                                                    rdfs:comment "The inverse property of hasSubType." ;
+                                                    rdfs:label "subtype of" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/timeType
+<http://semanticweb.cs.vu.nl/2009/11/sem/timeType> rdf:type owl:ObjectProperty ;
+                                                   rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/type> ;
+                                                   rdfs:domain <http://semanticweb.cs.vu.nl/2009/11/sem/Time> ;
+                                                   rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/TimeType> ;
+                                                   rdfs:comment "Has time type is used to assign a type to a time individual." ;
+                                                   rdfs:label "has time type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/type
+<http://semanticweb.cs.vu.nl/2009/11/sem/type> rdf:type owl:ObjectProperty ;
+                                               rdfs:subPropertyOf rdf:type ;
+                                               rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                               rdfs:comment "Type is the super property of the properties that are used to indicate the type of a Core instance, eventType, actorType, placeType, timeType; and of roleType. Types can be both classes and individuals, cf. OWL 2 punning." ;
+                                               rdfs:label "type property" ;
+                                               <http://www.w3.org/2004/02/skos/core#closeMatch> <http://purl.org/dc/elements/1.1/type> ;
+                                               <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://www.kulttuurisampo.fi/ebkr/quality> .
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#type
+rdf:type rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/2000/01/rdf-schema#subClassOf
+rdfs:subClassOf rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasBeginTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasBeginTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                            rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/hasTimeStamp> ;
+                                                            rdfs:comment "Has begin timestamp is used to indicate the beginning of a time interval. Omitting the hasBeginTimeStamp while stating a hasEndTimeStamp is interpreted as an open ended interval." ;
+                                                            rdfs:label "has begin timestamp" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasEarliestBeginTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasEarliestBeginTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                                    rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/hasBeginTimeStamp> ;
+                                                                    rdfs:comment "Has earliest begin timestamp is used to indicate the earliest possible starting time of an uncertain time interval." ;
+                                                                    rdfs:label "has earliest begin timestamp" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasEarliestEndTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasEarliestEndTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                                  rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/hasEndTimeStamp> ;
+                                                                  rdfs:comment "Has earliest end timestamp is used to indicate the earliest possible ending time of an uncertain time interval." ;
+                                                                  rdfs:label "has earliest end timestamp" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasEndTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasEndTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                          rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/hasTimeStamp> ;
+                                                          rdfs:comment "Has end timestamp is used to indicate the end of a time interval. Omitting the hasEndTimeStamp while stating a hasBeginTimeStamp is interpreted as an open ended interval." ;
+                                                          rdfs:label "has end timestamp" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasLatestBeginTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasLatestBeginTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                                  rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/hasBeginTimeStamp> ;
+                                                                  rdfs:comment "Has latest begin timestamp is used to indicate the latest possible starting time of an uncertain time interval." ;
+                                                                  rdfs:label "has latest begin timestamp" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasLatestEndTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasLatestEndTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                                rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/hasEndTimeStamp> ;
+                                                                rdfs:comment "Has latest end timestamp is used to indicate the latest possible ending time of an uncertain time interval." ;
+                                                                rdfs:label "has latest end timestamp" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasTimeStamp
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasTimeStamp> rdf:type owl:DatatypeProperty ;
+                                                       rdfs:comment "Has timestamp is used to put time indicators on any individual. It is the most common way to state when an Event took place. There are subproperties of hasTimeStamp to represent time intervals and uncertain time intervals. If the exact moment is not known, but it is necessary to specify a certain time, use hasTime instead. All of these properties are also used to indicate the time at which a property under the Temporary Constraint is valid." ;
+                                                       rdfs:label "has timestamp" ;
+                                                       <http://www.w3.org/2004/02/skos/core#closeMatch> <http://www.kulttuurisampo.fi/ebkr/time> .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://groundedannotationframework.org/gaf#Instance
+:Instance rdf:type owl:Class ;
+          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                owl:onProperty :denotedBy ;
+                                owl:someValuesFrom :Mention
+                              ] ;
+          rdfs:subClassOf owl:Thing ;
+          rdfs:comment "Instances are statements about real world entities, including actions, processes and abstract notions. They are the primary subject of individuals of type gaf:Mention that can denote them."^^xsd:string ;
+          rdfs:label "Instance" .
+
+
+###  http://groundedannotationframework.org/gaf#Mention
+:Mention rdf:type owl:Class ;
+         owl:equivalentClass [ rdf:type owl:Restriction ;
+                               owl:onProperty :denotes ;
+                               owl:someValuesFrom :Instance
+                             ] ;
+         rdfs:subClassOf owl:Thing ;
+         rdfs:comment """Mentions are references to members of the gaf:Instance class as they occur in (web) media such as texts, video, audio, images, etc. Mentions denote gaf:Instances.
+
+A Mention uniquely identifies the (part of a) web source that denotes the mention. We refer to the standard use of fragment identifiers for different media types. """^^xsd:string ;
+         rdfs:label "Mention" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Actor
+<http://semanticweb.cs.vu.nl/2009/11/sem/Actor> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Authority> ,
+                                                                <http://semanticweb.cs.vu.nl/2009/11/sem/Core> ;
+                                                rdfs:comment """Actors are entities that take part in an Event, either actively or passively. Actors do not necessarily have to be sentient. They can also be objects. Actors are a thing, animate or inanimate, physical or non-physical.
+""" ;
+                                                rdfs:label "Actor" ;
+                                                <http://www.w3.org/2004/02/skos/core#broadMatch> <http://sw.opencyc.org/2009/04/07/concept/en/SomethingExisting> ,
+                                                                                                 <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant> ;
+                                                <http://www.w3.org/2004/02/skos/core#closeMatch> <http://purl.org/dc/terms/Agent> ,
+                                                                                                 <http://purl.org/dc/terms/AgentClass> ,
+                                                                                                 <http://sw.opencyc.org/2009/04/07/concept/en/Agent-Generic> ,
+                                                                                                 <http://www.ontologyportal.org/translations/SUMO.owl.txt#Agent> ,
+                                                                                                 <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E39.Actor> ,
+                                                                                                 <http://xmlns.com/foaf/0.1/Agent> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/ActorType
+<http://semanticweb.cs.vu.nl/2009/11/sem/ActorType> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                    rdfs:comment "EventType contains all resources that are used to classify Actors, e.g. person" ;
+                                                    rdfs:label "Actor type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Authority
+<http://semanticweb.cs.vu.nl/2009/11/sem/Authority> rdf:type owl:Class ;
+                                                    rdfs:comment "Authorities are entities that state SEM properties. Their nature is not specified. They can symbolize people, organizations, sources of information, etc." ;
+                                                    rdfs:label "Authority" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Constraint
+<http://semanticweb.cs.vu.nl/2009/11/sem/Constraint> rdf:type owl:Class ;
+                                                     rdfs:comment "The SEM Constraint class contains instances of properties that have a constrained (i.e. not universal) validity. This includes time dependent validity (Temporary), validity in the guise of a specific role (Role), or validity according to a given Authority (View)." ;
+                                                     rdfs:label "Constraint" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Core
+<http://semanticweb.cs.vu.nl/2009/11/sem/Core> rdf:type owl:Class ;
+                                               rdfs:comment "The SEM Core class contains all entities that make up the context of an event: Events, Actors, Places, Times. This class is meant to be extended for each application domain." ;
+                                               rdfs:label "Core" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Event
+<http://semanticweb.cs.vu.nl/2009/11/sem/Event> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Core> ;
+                                                rdfs:comment "Events are things that happen. This comprises everything from historical events to web site sessions and mythical journeys. Event is the central class of SEM." ;
+                                                rdfs:label "Event" ;
+                                                <http://www.w3.org/2004/02/skos/core#broadMatch> <http://linkedevents.org/ontology/Event> ,
+                                                                                                 <http://purl.org/NET/c4dm/event.owl#Event> ;
+                                                <http://www.w3.org/2004/02/skos/core#closeMatch> <http://purl.org/dc/dcmitype/Event> ,
+                                                                                                 <http://sw.opencyc.org/2009/04/07/concept/en/Situation> ,
+                                                                                                 <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#perdurant> ,
+                                                                                                 <http://www.ontologyportal.org/translations/SUMO.owl.txt#Process> ,
+                                                                                                 <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E5.Event> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/EventType
+<http://semanticweb.cs.vu.nl/2009/11/sem/EventType> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                    rdfs:comment "EventType contains all resources that are used to classify Events, e.g. meeting." ;
+                                                    rdfs:label "Event type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Object
+<http://semanticweb.cs.vu.nl/2009/11/sem/Object> rdf:type owl:Class ;
+                                                 rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Actor> ;
+                                                 rdfs:comment "Objects are passive, inanimate Actors." ;
+                                                 rdfs:label "Object" ;
+                                                 <http://www.w3.org/2004/02/skos/core#broadMatch> <http://sw.opencyc.org/2009/04/07/concept/en/SomethingExisting> ,
+                                                                                                  <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant> ;
+                                                 <http://www.w3.org/2004/02/skos/core#closeMatch> <http://www.ontologyportal.org/translations/SUMO.owl.txt#Object> ,
+                                                                                                  <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E19.Physical_Object> ,
+                                                                                                  <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E21.Person> ;
+                                                 <http://www.w3.org/2004/02/skos/core#narrowMatch> <http://purl.org/NET/c4dm/event.owl#Factor> ,
+                                                                                                   <http://purl.org/NET/c4dm/event.owl#Product> ,
+                                                                                                   <http://purl.org/dc/dcmitype/PhysicalObject> ,
+                                                                                                   <http://purl.org/dc/terms/PhysicalResource> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Place
+<http://semanticweb.cs.vu.nl/2009/11/sem/Place> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Core> ;
+                                                rdfs:comment "Places are locations where an Event happens. They do not need to be physical places and hence do not necessarily need coordinates. Neither do they need to have any significance apart from them being the location of an Event." ;
+                                                rdfs:label "Place" ;
+                                                <http://www.w3.org/2004/02/skos/core#closeMatch> <http://purl.org/dc/terms/Location> ,
+                                                                                                 <http://sw.opencyc.org/2009/04/07/concept/en/EnduringThing-Localized> ,
+                                                                                                 <http://www.ontologyportal.org/translations/SUMO.owl.txt#GeographicArea> ,
+                                                                                                 <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E53.Place> ;
+                                                <http://www.w3.org/2004/02/skos/core#narrowMatch> <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#PhysicalRegion> ,
+                                                                                                  <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/PlaceType
+<http://semanticweb.cs.vu.nl/2009/11/sem/PlaceType> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                    rdfs:comment "EventType contains all resources that are used to classify Places, e.g. river." ;
+                                                    rdfs:label "Place type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Role
+<http://semanticweb.cs.vu.nl/2009/11/sem/Role> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Constraint> ;
+                                               rdfs:comment "Roles are properties with a subspecified function or position indicated by a RoleType in the scope of an Event. For example, the sem:hasActor property can be subspecified with the RoleType attacker, to denote that the type of participation of the Actor in the scope of the Event is \"attacker\". The sem:hasPlace property can be subspecified with the RoleType origin, to denote that within the scope of the Event it is the origin." ;
+                                               rdfs:label "Role" ;
+                                               <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://sw.opencyc.org/2009/04/07/concept/en/Role> ,
+                                                                                                  <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#region> ,
+                                                                                                  <http://www.ontologyportal.org/translations/SUMO.owl.txt#IntentionalProcess> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/RoleType
+<http://semanticweb.cs.vu.nl/2009/11/sem/RoleType> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                   rdfs:comment "EventType contains all resources that are used to classify Roles, e.g. receiver." ;
+                                                   rdfs:label "Role type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Temporary
+<http://semanticweb.cs.vu.nl/2009/11/sem/Temporary> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Constraint> ;
+                                                    rdfs:comment "Temporaries are properties that only hold during a certain Time, which is either indicated with the sem:hasTime property to an instance of sem:Time, or with the sem:hasTimeStamp property to some timestamp(s)." ;
+                                                    rdfs:label "Temporary" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Time
+<http://semanticweb.cs.vu.nl/2009/11/sem/Time> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Core> ;
+                                               rdfs:comment "Time contains symbolic representations of when an Event took place. Time instances do not necessarily need to have a timestamp associated with them. The Time class exists to represent semantics of time, e.g. that one thing happens before another, even though the exact timestamps are unknown." ;
+                                               rdfs:label "Time" ;
+                                               <http://www.w3.org/2004/02/skos/core#broadMatch> <http://www.w3.org/2006/timeTemporalEntity> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/TimeType
+<http://semanticweb.cs.vu.nl/2009/11/sem/TimeType> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Type> ;
+                                                   rdfs:comment "EventType contains all resources that are used to classify Time, e.g. century." ;
+                                                   rdfs:label "Time type" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/Type
+<http://semanticweb.cs.vu.nl/2009/11/sem/Type> rdf:type owl:Class ;
+                                               rdfs:comment "The SEM Type class contains all types of Core instances. These can be either individuals of classes themselves. This class is meant to be extended for each application domain." ;
+                                               rdfs:label "Type" ;
+                                               <http://www.w3.org/2004/02/skos/core#closeMatch> <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#AbstractRegion> ,
+                                                                                                <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E55.Type> .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/View
+<http://semanticweb.cs.vu.nl/2009/11/sem/View> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Constraint> ;
+                                               rdfs:comment "Views are properties that only hold according to a certain Authority." ;
+                                               rdfs:label "View" .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+<http://linkedevents.org/ontology/Event> rdfs:isDefinedBy <http://linkedevents.org/ontology/> .
+
+
+<http://linkedevents.org/ontology/atTime> rdfs:isDefinedBy <http://linkedevents.org/ontology/> .
+
+
+<http://linkedevents.org/ontology/inSpace> rdfs:isDefinedBy <http://linkedevents.org/ontology/> .
+
+
+<http://linkedevents.org/ontology/involved> rdfs:isDefinedBy <http://linkedevents.org/ontology/> .
+
+
+<http://purl.org/NET/c4dm/event.owl#Event> rdfs:isDefinedBy <http://purl.org/NET/c4dm/event.owl#> .
+
+
+<http://purl.org/NET/c4dm/event.owl#Factor> rdfs:isDefinedBy <http://purl.org/NET/c4dm/event.owl#> .
+
+
+<http://purl.org/NET/c4dm/event.owl#Product> rdfs:isDefinedBy <http://purl.org/NET/c4dm/event.owl#> .
+
+
+<http://purl.org/NET/c4dm/event.owl#sub_event> rdfs:isDefinedBy <http://purl.org/NET/c4dm/event.owl#> .
+
+
+<http://purl.org/dc/dcmitype/Event> rdfs:isDefinedBy <http://purl.org/dc/dcmitype/> .
+
+
+<http://purl.org/dc/dcmitype/PhysicalObject> rdfs:isDefinedBy <http://purl.org/dc/dcmitype/> .
+
+
+<http://purl.org/dc/elements/1.1/type> rdfs:isDefinedBy <http://purl.org/dc/elements/1.1/> .
+
+
+<http://purl.org/dc/terms/Agent> rdfs:isDefinedBy <http://purl.org/dc/terms/> .
+
+
+<http://purl.org/dc/terms/AgentClass> rdfs:isDefinedBy <http://purl.org/dc/terms/> .
+
+
+<http://purl.org/dc/terms/Location> rdfs:isDefinedBy <http://purl.org/dc/terms/> .
+
+
+<http://purl.org/dc/terms/PhysicalResource> rdfs:isDefinedBy <http://purl.org/dc/terms/> .
+
+
+<http://sw.opencyc.org/2009/04/07/concept/en/Agent-Generic> rdfs:isDefinedBy <http://sw.opencyc.org/2009/04/07/concept/en/> .
+
+
+<http://sw.opencyc.org/2009/04/07/concept/en/EnduringThing-Localized> rdfs:isDefinedBy <http://sw.opencyc.org/2009/04/07/concept/en/> .
+
+
+<http://sw.opencyc.org/2009/04/07/concept/en/Role> rdfs:isDefinedBy <http://sw.opencyc.org/2009/04/07/concept/en/> .
+
+
+<http://sw.opencyc.org/2009/04/07/concept/en/Situation> rdfs:isDefinedBy <http://sw.opencyc.org/2009/04/07/concept/en/> .
+
+
+<http://sw.opencyc.org/2009/04/07/concept/en/SomethingExisting> rdfs:isDefinedBy <http://sw.opencyc.org/2009/04/07/concept/en/> .
+
+
+<http://www.kulttuurisampo.fi/ebkr/agent> rdfs:isDefinedBy <http://www.kulttuurisampo.fi/ebkr/> .
+
+
+<http://www.kulttuurisampo.fi/ebkr/place> rdfs:isDefinedBy <http://www.kulttuurisampo.fi/ebkr/> .
+
+
+<http://www.kulttuurisampo.fi/ebkr/quality> rdfs:isDefinedBy <http://www.kulttuurisampo.fi/ebkr/> .
+
+
+<http://www.kulttuurisampo.fi/ebkr/time> rdfs:isDefinedBy <http://www.kulttuurisampo.fi/ebkr/> .
+
+
+<http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#AbstractRegion> rdfs:isDefinedBy <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+
+
+<http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#PhysicalRegion> rdfs:isDefinedBy <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+
+
+<http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant> rdfs:isDefinedBy <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+
+
+<http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#perdurant> rdfs:isDefinedBy <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+
+
+<http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#region> rdfs:isDefinedBy <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+
+
+<http://www.ontologyportal.org/translations/SUMO.owl.txt#Agent> rdfs:isDefinedBy <http://www.ontologyportal.org/translations/SUMO.owl.txt#> .
+
+
+<http://www.ontologyportal.org/translations/SUMO.owl.txt#GeographicArea> rdfs:isDefinedBy <http://www.ontologyportal.org/translations/SUMO.owl.txt#> .
+
+
+<http://www.ontologyportal.org/translations/SUMO.owl.txt#IntentionalProcess> rdfs:isDefinedBy <http://www.ontologyportal.org/translations/SUMO.owl.txt#> .
+
+
+<http://www.ontologyportal.org/translations/SUMO.owl.txt#Object> rdfs:isDefinedBy <http://www.ontologyportal.org/translations/SUMO.owl.txt#> .
+
+
+<http://www.ontologyportal.org/translations/SUMO.owl.txt#Process> rdfs:isDefinedBy <http://www.ontologyportal.org/translations/SUMO.owl.txt#> .
+
+
+<http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> rdfs:isDefinedBy <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+
+<http://www.w3.org/2006/timeTemporalEntity> rdfs:isDefinedBy <http://www.w3.org/2006/time> .
+
+
+<http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E19.Physical_Object> rdfs:isDefinedBy <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#> .
+
+
+<http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E21.Person> rdfs:isDefinedBy <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#> .
+
+
+<http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E39.Actor> rdfs:isDefinedBy <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#> .
+
+
+<http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E5.Event> rdfs:isDefinedBy <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#> .
+
+
+<http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E53.Place> rdfs:isDefinedBy <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#> .
+
+
+<http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E55.Type> rdfs:isDefinedBy <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#> .
+
+
+<http://xmlns.com/foaf/0.1/Agent> rdfs:isDefinedBy <http://xmlns.com/foaf/0.1/> .
+
+
+###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi

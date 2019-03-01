@@ -1,9 +1,15 @@
-from pepper.framework import *
-from pepper.knowledge import Wikipedia
-from pepper import config
+"""Example Application that answers questions posed in natural language using Wikipedia"""
+
+from pepper.framework import *              # Contains Application Building Blocks
+from pepper.knowledge import Wikipedia      # Class to Query Wikipedia using Natural Language
+from pepper import config                   # Global Configuration File
 
 
-class WikipediaApplication(AbstractApplication, StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent):
+class WikipediaApplication(AbstractApplication,         # Every Application Inherits from AbstractApplication
+                           StatisticsComponent,         # Displays Performance Statistics in Terminal
+                           SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
+                           TextToSpeechComponent):      # Enables Text to Speech and the self.say method
+
     def on_transcript(self, hypotheses, audio):
         """
         On Transcript Event.
@@ -17,14 +23,15 @@ class WikipediaApplication(AbstractApplication, StatisticsComponent, SpeechRecog
             Utterance audio
         """
 
-        # Choose first ASRHypothesis as Question
+        # Choose first ASRHypothesis and interpret as question
         question = hypotheses[0].transcript
 
-        # Query Wikipedia for Answer to Question
+        # Query Wikipedia with question to (potentially) obtain an answer
         result = Wikipedia.query(question)
 
         if result:
 
+            # Obtain answer and Thumbnail Image URL from Wikipedia
             answer, url = result
             
             # Limit Answer to a single sentence

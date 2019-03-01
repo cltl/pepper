@@ -1,0 +1,337 @@
+@prefix : <http://groundedannotationframework.org/grasp#> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix fact: <http://groundedannotationframework.org/grasp/factuality#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix emotion: <http://groundedannotationframework.org/grasp/emotion#> .
+@prefix sentiment: <http://groundedannotationframework.org/grasp/sentiment#> .
+@base <http://groundedannotationframework.org/grasp> .
+
+<http://groundedannotationframework.org/grasp> rdf:type owl:Ontology ;
+                                                owl:imports <http://groundedannotationframework.org/gaf> ;
+                                                owl:versionInfo "owl:Ontology added by TopBraid"^^xsd:string .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://groundedannotationframework.org/grasp#hasAttribution
+:hasAttribution rdf:type owl:ObjectProperty ;
+                owl:inverseOf :isAttributionFor ;
+                rdfs:domain gaf:Mention ;
+                rdfs:range :Attribution ;
+                rdfs:comment "Every gaf:Mention can be attributed some gaf:Attribution that represents some perspective on how the mention should be interpreted with respect to e.g. certainty, emotion, sentiment, and temporality."^^xsd:string ;
+                rdfs:label "has attribution" .
+
+
+###  http://groundedannotationframework.org/grasp#hasContext
+:hasContext rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
+            rdfs:range :Context .
+
+
+###  http://groundedannotationframework.org/grasp#isAttributionFor
+:isAttributionFor rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf owl:topObjectProperty ;
+                  rdfs:domain :Attribution ;
+                  rdfs:range gaf:Mention .
+
+
+###  http://groundedannotationframework.org/grasp#wasAttributedTo
+:wasAttributedTo rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf prov:wasAttributedTo ;
+                 rdfs:domain gaf:Mention ;
+                 rdfs:range [ owl:intersectionOf ( gaf:Instance
+                                                   <http://semanticweb.cs.vu.nl/2009/11/sem/Actor>
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] ;
+                 rdfs:comment "States that a gaf:Mention was attributed to a gaf:Instance. This is a sub property of the prov:wasAttributedTo relation that can be used to relate any prov:Entity to any prov:Agent."^^xsd:string ;
+                 rdfs:label "was attributed to" .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasActor
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasActor> rdfs:domain :Context .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace> rdfs:domain :Context .
+
+
+###  http://semanticweb.cs.vu.nl/2009/11/sem/hasTime
+<http://semanticweb.cs.vu.nl/2009/11/sem/hasTime> rdfs:domain :Context .
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#value
+rdf:value rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/prov#wasAttributedTo
+prov:wasAttributedTo rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://groundedannotationframework.org/gaf#Instance
+gaf:Instance owl:disjointWith :AttributionValue .
+
+
+###  http://groundedannotationframework.org/gaf#Mention
+gaf:Mention owl:disjointWith :AttributionValue .
+
+
+###  http://groundedannotationframework.org/grasp#Attribution
+:Attribution rdf:type owl:Class ;
+             owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                          owl:onProperty rdf:value ;
+                                                          owl:someValuesFrom :AttributionValue
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty [ owl:inverseOf :hasAttribution
+                                                                         ] ;
+                                                          owl:someValuesFrom gaf:Mention
+                                                        ]
+                                                      ) ;
+                                   rdf:type owl:Class
+                                 ] ;
+             rdfs:subClassOf owl:Thing ;
+             owl:disjointWith :AttributionValue ;
+             rdfs:comment "A grasp:Attribution reflects the attribution of some interpretation, some perspective to a gaf:Mention. An attribution expresses such things as certainty, emotion, polarity, sentiment, temporality."^^xsd:string ;
+             rdfs:label "Attribution" .
+
+
+###  http://groundedannotationframework.org/grasp#AttributionValue
+:AttributionValue rdf:type owl:Class ;
+                  rdfs:subClassOf owl:Thing ;
+                  rdfs:comment "The value of a grasp:Attribution"^^xsd:string ;
+                  rdfs:label "Attribution value"^^xsd:string .
+
+
+###  http://groundedannotationframework.org/grasp#CertaintyValue
+:CertaintyValue rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:oneOf ( fact:certain
+                                                  fact:possible
+                                                  fact:probable
+                                                  fact:underspecified
+                                                )
+                                    ] ;
+                rdfs:subClassOf :FactualityValue ;
+                owl:disjointWith :PolarityValue ,
+                                 :TemporalValue ;
+                rdfs:comment "The level of certainty of a gaf:Mention"^^xsd:string ;
+                rdfs:label "Certainty Value" .
+
+
+###  http://groundedannotationframework.org/grasp#Chat
+:Chat rdf:type owl:Class ;
+      rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
+
+
+###  http://groundedannotationframework.org/grasp#Context
+:Context rdf:type owl:Class .
+
+
+###  http://groundedannotationframework.org/grasp#Detection
+:Detection rdf:type owl:Class ;
+           rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
+
+
+###  http://groundedannotationframework.org/grasp#EmotionValue
+:EmotionValue rdf:type owl:Class ;
+              owl:equivalentClass [ rdf:type owl:Class ;
+                                    owl:oneOf ( emotion:anger
+                                                emotion:disgust
+                                                emotion:fear
+                                                emotion:happiness
+                                                emotion:sadness
+                                                emotion:surprise
+                                              )
+                                  ] ;
+              rdfs:subClassOf :AttributionValue ;
+              owl:disjointWith :FactualityValue ,
+                               :SentimentValue ;
+              rdfs:comment "The emotion expressed in a gaf:Mention"^^xsd:string ;
+              rdfs:label "Emotion Value" .
+
+
+###  http://groundedannotationframework.org/grasp#Experience
+:Experience rdf:type owl:Class ;
+            rdfs:subClassOf gaf:Instance .
+
+
+###  http://groundedannotationframework.org/grasp#FactualityValue
+:FactualityValue rdf:type owl:Class ;
+                 rdfs:subClassOf :AttributionValue ;
+                 owl:disjointWith :SentimentValue ;
+                 rdfs:label "Factuality value"^^xsd:string .
+
+
+###  http://groundedannotationframework.org/grasp#PolarityValue
+:PolarityValue rdf:type owl:Class ;
+               owl:equivalentClass [ rdf:type owl:Class ;
+                                     owl:oneOf ( fact:negative
+                                                 fact:positive
+                                               )
+                                   ] ;
+               rdfs:subClassOf :FactualityValue ;
+               owl:disjointWith :TemporalValue ;
+               rdfs:comment "The polarity of a gaf:Mention (e.g. if something is or isn't the case)"^^xsd:string ;
+               rdfs:label "Polarity Value" .
+
+
+###  http://groundedannotationframework.org/grasp#SentimentValue
+:SentimentValue rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:oneOf ( sentiment:negative
+                                                  sentiment:positive
+                                                )
+                                    ] ;
+                rdfs:subClassOf :AttributionValue ;
+                rdfs:comment "The sentiment expressed by a gaf:Mention"^^xsd:string ;
+                rdfs:label "Sentiment Value" .
+
+
+###  http://groundedannotationframework.org/grasp#Source
+:Source rdf:type owl:Class ;
+        rdfs:subClassOf owl:Thing ;
+        rdfs:comment "" ;
+        rdfs:label "Source" .
+
+
+###  http://groundedannotationframework.org/grasp#Statement
+:Statement rdf:type owl:Class ;
+           rdfs:subClassOf gaf:Instance .
+
+
+###  http://groundedannotationframework.org/grasp#TemporalValue
+:TemporalValue rdf:type owl:Class ;
+               owl:equivalentClass [ rdf:type owl:Class ;
+                                     owl:oneOf ( fact:future
+                                                 fact:non-future
+                                               )
+                                   ] ;
+               rdfs:subClassOf :FactualityValue ;
+               rdfs:comment "The temporal property of a gaf:Mention"^^xsd:string ;
+               rdfs:label "Temporal Value" .
+
+
+###  http://groundedannotationframework.org/grasp#Utterance
+:Utterance rdf:type owl:Class ;
+           rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
+
+
+###  http://groundedannotationframework.org/grasp#Visual
+:Visual rdf:type owl:Class ;
+        rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://groundedannotationframework.org/grasp/emotion#anger
+emotion:anger rdf:type owl:NamedIndividual ,
+                       :EmotionValue ;
+              rdfs:label "anger" .
+
+
+###  http://groundedannotationframework.org/grasp/emotion#disgust
+emotion:disgust rdf:type owl:NamedIndividual ,
+                         :EmotionValue ;
+                rdfs:label "disgust" .
+
+
+###  http://groundedannotationframework.org/grasp/emotion#fear
+emotion:fear rdf:type owl:NamedIndividual ,
+                      :EmotionValue ;
+             rdfs:label "fear" .
+
+
+###  http://groundedannotationframework.org/grasp/emotion#happiness
+emotion:happiness rdf:type owl:NamedIndividual ,
+                           :EmotionValue ;
+                  rdfs:label "happiness" .
+
+
+###  http://groundedannotationframework.org/grasp/emotion#sadness
+emotion:sadness rdf:type owl:NamedIndividual ,
+                         :EmotionValue ;
+                rdfs:label "sadness" .
+
+
+###  http://groundedannotationframework.org/grasp/emotion#surprise
+emotion:surprise rdf:type owl:NamedIndividual ,
+                          :EmotionValue ;
+                 rdfs:label "surprise" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#certain
+fact:certain rdf:type owl:NamedIndividual ,
+                      :CertaintyValue ;
+             rdfs:label "certain" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#future
+fact:future rdf:type owl:NamedIndividual ,
+                     :TemporalValue ;
+            rdfs:label "future" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#negative
+fact:negative rdf:type owl:NamedIndividual ,
+                       :PolarityValue ,
+                       :SentimentValue ;
+              rdfs:label "negative" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#non-future
+fact:non-future rdf:type owl:NamedIndividual ,
+                         :TemporalValue ;
+                rdfs:label "non-future" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#positive
+fact:positive rdf:type owl:NamedIndividual ,
+                       :PolarityValue ,
+                       :SentimentValue ;
+              rdfs:label "positive" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#possible
+fact:possible rdf:type owl:NamedIndividual ,
+                       :CertaintyValue ;
+              rdfs:label "possible" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#probable
+fact:probable rdf:type owl:NamedIndividual ,
+                       :CertaintyValue ;
+              rdfs:label "probable" .
+
+
+###  http://groundedannotationframework.org/grasp/factuality#underspecified
+fact:underspecified rdf:type owl:NamedIndividual ,
+                             :CertaintyValue ;
+                    rdfs:label "underspecified" .
+
+
+###  http://groundedannotationframework.org/grasp/sentiment#negative
+sentiment:negative rdf:type owl:NamedIndividual ,
+                            :SentimentValue ;
+                   rdfs:label "negative"^^xsd:string .
+
+
+###  http://groundedannotationframework.org/grasp/sentiment#positive
+sentiment:positive rdf:type owl:NamedIndividual ,
+                            :SentimentValue ;
+                   rdfs:label "positive"^^xsd:string .
+
+
+###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi

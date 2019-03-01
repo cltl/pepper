@@ -1,4 +1,5 @@
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query
+from pepper.brain.utils.response import casefold_capsule
 from pepper import config, logger
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL

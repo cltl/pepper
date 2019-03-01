@@ -3,6 +3,8 @@ from pepper import logger
 from Queue import Queue
 from time import sleep
 
+from typing import Optional, Union
+
 
 class AbstractTextToSpeech(object):
     """
@@ -50,13 +52,18 @@ class AbstractTextToSpeech(object):
         return self._talking_jobs >= 1
 
     def say(self, text, animation=None, block=False):
+        # type: (Union[str, unicode], Optional[str], bool) -> None
         """
-        Say something through Text to Speech (Interface)
+        Say Text (with optional Animation) through Text-to-Speech
 
         Parameters
         ----------
         text: str
-        animation: str
+            Text to say through Text-to-Speech
+        animation: str or None
+            (Naoqi) Animation to play
+        block: bool
+            Whether this function should block or immediately return after calling
         """
         # self._log.info(text.replace('\n', ' '))
         self._talking_jobs += 1
@@ -64,7 +71,6 @@ class AbstractTextToSpeech(object):
 
         while block and self.talking:
             sleep(1E-3)
-
 
     def on_text_to_speech(self, text, animation=None):
         """

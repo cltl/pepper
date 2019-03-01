@@ -1,7 +1,8 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.component import SpeechRecognitionComponent, ObjectDetectionComponent, FaceDetectionComponent
+from pepper.framework.component import *
 from pepper.framework.sensor import Context
-from pepper.language import Chat, Utterance #, NameParser
+from pepper.language import Chat, Utterance
+from pepper.language.names import NameParser
 from pepper import config
 
 from typing import Optional
@@ -13,7 +14,9 @@ class ContextComponent(AbstractComponent):
 
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
-        face_comp = self.require(ContextComponent, FaceDetectionComponent)  # type: FaceDetectionComponent
+        face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
+
+        self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
 
         name_parser = NameParser(config.PEOPLE_FRIENDS_NAMES)
 
@@ -70,6 +73,14 @@ class ContextComponent(AbstractComponent):
         """
         return self._chat is not None
 
+    def say(self, text, animation=None, block=False):
+        # Call super (TextToSpeechComponent)
+        super(ContextComponent, self).say(text, animation, block)
+
+        # Add Utterance to Chat
+        if self.has_chat:
+            self.chat.add_utterance(text, me=True)
+
     def start_chat(self, speaker):
         # type: (str) -> None
         """
@@ -81,7 +92,7 @@ class ContextComponent(AbstractComponent):
             Speaker to start chat with
         """
         self._chat = Chat(speaker, self._context)
-        self._context.last_chat = self._chat
+        self._context.add_chat(self._chat)
 
     def end_chat(self):
         # type: () -> None

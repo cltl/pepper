@@ -4,13 +4,14 @@ from pepper import config
 from random import choice
 from pepper import language
 
-class ContextApp(AbstractApplication,           # Base Application for given Backend
-                 StatisticsComponent,           # Microphone/Camera/Speech Statistics
-                 BrainComponent,                # Access to Brain
-                 ContextComponent,              # Access to Context
-                 ObjectDetectionComponent,      # Access to Object Detection Component
-                 FaceDetectionComponent,        # Access to Face Detection Component
-                 SpeechRecognitionComponent,    # Access to Speech Recognition
+
+class ContextApp(AbstractApplication,  # Base Application for given Backend
+                 StatisticsComponent,  # Microphone/Camera/Speech Statistics
+                 BrainComponent,  # Access to Brain
+                 ContextComponent,  # Access to Context
+                 ObjectDetectionComponent,  # Access to Object Detection Component
+                 FaceRecognitionComponent,  # Access to Face Detection Component
+                 SpeechRecognitionComponent,  # Access to Speech Recognition
                  TextToSpeechComponent):        # Access to Text to Speech
 
     def __init__(self, backend):
@@ -21,8 +22,6 @@ class ContextApp(AbstractApplication,           # Base Application for given Bac
 
         # Start a Chat with somebody (Just chat with a generic human for now)
         self.start_chat("Human")
-
-        print(self.context.location)
 
     def on_chat_turn(self, utterance):
         # Called every time a human adds an utterance to the chat
@@ -43,16 +42,6 @@ class ContextApp(AbstractApplication,           # Base Application for given Bac
 
         print(brain_response)
         return 0
-
-        print(self.context.objects, self.context.people)
-
-    def say(self, text, animation=None, block=False):
-        # Call Text To Speech for given Text
-        super(ContextApp, self).say(text, animation, block)
-
-        # Add whatever Pepper says to Chat as an Utterance
-        if self.has_chat:
-            self.chat.add_utterance(text, me=True)
 
 
 if __name__ == '__main__':

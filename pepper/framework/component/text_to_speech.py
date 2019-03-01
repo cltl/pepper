@@ -2,7 +2,7 @@ from pepper.framework.abstract import AbstractComponent
 from pepper.framework.util import Scheduler
 from threading import Lock
 
-from typing import Optional, NoReturn
+from typing import Optional, Union
 
 
 class TextToSpeechComponent(AbstractComponent):
@@ -21,9 +21,9 @@ class TextToSpeechComponent(AbstractComponent):
         schedule.start()
 
     def say(self, text, animation=None, block=False):
-        # type: (str, Optional[str], bool) -> NoReturn
+        # type: (Union[str, unicode], Optional[str], bool) -> None
         """
-        Say Text (with Animation) through Text-to-Speech
+        Say Text (with optional Animation) through Text-to-Speech
 
         Parameters
         ----------
@@ -31,6 +31,8 @@ class TextToSpeechComponent(AbstractComponent):
             Text to say through Text-to-Speech
         animation: str or None
             (Naoqi) Animation to play
+        block: bool
+            Whether this function should block or immediately return after calling
         """
 
         # Acquire Microphone Lock

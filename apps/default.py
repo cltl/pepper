@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.language import *
+from pepper.language.names import NameParser
 from pepper.framework.sensor.face import FaceClassifier
 from pepper import config, ApplicationBackend
 
@@ -15,6 +16,7 @@ from pepper.knowledge.query import QnA
 from pepper.language.utils import *
 
 from pepper.brain.utils.helper_functions import *
+from pepper.language.generation.phrasing import *
 
 import numpy as np
 
@@ -29,7 +31,7 @@ class DefaultApp(AbstractApplication,
                  DisplayComponent,
                  BrainComponent,
                  ObjectDetectionComponent,
-                 FaceDetectionComponent,
+                 FaceRecognitionComponent,
                  SpeechRecognitionComponent,
                  TextToSpeechComponent):
     pass
@@ -52,7 +54,7 @@ class IdleIntention(AbstractIntention, DefaultApp):
     def on_face_known(self, faces):
         for face in faces:
             if time() - IdleIntention.PERSONS_CHATTED_WITH.get(face.name, 0) > IdleIntention.PERSON_TIMEOUT:
-                ConversationIntention(self.application, Chat(face.name))
+                ConversationIntention(self.application, Chat(face.name, Context()))
                 break
 
     def on_face_new(self, faces):
@@ -87,7 +89,7 @@ class IgnoreIntention(AbstractIntention, DefaultApp):
 
 class ConversationIntention(AbstractIntention, DefaultApp):
 
-    _face_detection = None  # type: FaceDetectionComponent
+    _face_detection = None  # type: FaceRecognitionComponent
     CONVERSATION_TIMEOUT = 15
 
     def __init__(self, application, chat):
@@ -105,7 +107,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         self._last_seen = time()
         self._seen_objects = set()
 
-        self._face_detection = self.require_dependency(FaceDetectionComponent)
+        self._face_detection = self.require_dependency(FaceRecognitionComponent)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self.say("{}, {}.".format(choice(GREETING), self.chat.speaker),
@@ -151,7 +153,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
     def on_transcript(self, hypotheses, audio):
         # Choose Utterance from Names
         utterance = self._name_parser.parse_known(hypotheses).transcript
-        self.chat.add_utterance(utterance)
+        self.chat.add_utterance(utterance, False)
 
         self.log.info("Utterance: {}".format(utterance))
 
@@ -444,12 +446,12 @@ class MeetIntention(AbstractIntention, DefaultApp):
     MIN_SAMPLES = 30
     NAME_CONFIDENCE = 0.8
 
-    _face_detection = None  # type: FaceDetectionComponent
+    _face_detection = None  # type: FaceRecognitionComponent
 
     def __init__(self, application):
         super(MeetIntention, self).__init__(application)
 
-        self._face_detection = self.require_dependency(FaceDetectionComponent)
+        self._face_detection = self.require_dependency(FaceRecognitionComponent)
         self._name_parser = NameParser(list(self._face_detection.face_classifier.people.keys()))
 
         self._last_seen = time()
