@@ -196,6 +196,7 @@ def reply_to_question(brain_response, viewed_objects):
 
 def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'template.json')))
+    print(template)
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
     if type(rdf) == str:
