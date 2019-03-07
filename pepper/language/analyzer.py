@@ -451,7 +451,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         return self._rdf
 
 
-def analyze(chat, brain):
+def analyze(chat):
     analyzer = Analyzer.analyze(chat)
 
     if not analyzer:
@@ -467,6 +467,6 @@ def analyze(chat, brain):
 
     template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.turn,
                                     analyzer.utterance_type)
-    print(template)
+    #print(template)
 
-    return chat.last_utterance
+    return template
