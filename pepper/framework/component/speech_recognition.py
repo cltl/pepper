@@ -1,5 +1,5 @@
 from pepper.framework import AbstractComponent
-from pepper.framework.sensor import VAD, StreamedGoogleASR, ASRHypothesis
+from pepper.framework.sensor import VAD, StreamedGoogleASR, UtteranceHypothesis
 from pepper import config
 
 from threading import Thread
@@ -62,13 +62,13 @@ class SpeechRecognitionComponent(AbstractComponent):
         return self._vad
 
     def on_transcript(self, hypotheses, audio):
-        # type: (List[ASRHypothesis], np.ndarray) -> NoReturn
+        # type: (List[UtteranceHypothesis], np.ndarray) -> NoReturn
         """
         On Transcript Event. Called every time an utterance was understood by Automatic Speech Recognition.
 
         Parameters
         ----------
-        hypotheses: List[ASRHypothesis]
+        hypotheses: List[UtteranceHypothesis]
             Hypotheses about the corresponding utterance
         audio: numpy.ndarray
             Utterance audio

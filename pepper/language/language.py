@@ -109,20 +109,19 @@ class Chat(object):
         """
         return self._utterances[-1]
 
-    def add_utterance(self, text, me):
+    def add_utterance(self, hypotheses, me):
         """
         Add Utterance to Conversation
 
         Parameters
         ----------
-        text: str
-            Utterance Text to add to conversation
+        hypotheses: list of UtteranceHypothesis
 
         Returns
         -------
         utterance: Utterance
         """
-        utterance = Utterance(self, text, me, len(self._utterances))
+        utterance = Utterance(self, hypotheses, me, len(self._utterances))
         self._log.info(utterance)
         self._utterances.append(utterance)
         return utterance
@@ -132,7 +131,7 @@ class Chat(object):
 
 
 class Utterance(object):
-    def __init__(self, chat, transcript, me, turn):
+    def __init__(self, chat, hypotheses, me, turn):
         """
         Construct Utterance Object
 
@@ -140,8 +139,8 @@ class Utterance(object):
         ----------
         chat: Chat
             Reference to Chat Utterance is part of
-        transcript: str
-            Uttered text (Natural Language)
+        hypotheses: list of UtteranceHypothesis
+            Hypotheses on uttered text (transcript, confidence)
         me: bool
             True if Robot spoke, False if Person Spoke
         turn: int
@@ -149,15 +148,19 @@ class Utterance(object):
         """
 
         self._chat = chat
-        self._transcript = transcript
+
+        # TODO: Smartly pick best hypothesis for the job
+        self._transcript = hypotheses[0].transcript
+
         self._me = me
         self._turn = turn
         self._datetime = datetime.now()
         self._log = logger.getChild(self.__class__.__name__)
 
-        self._tokens = self._clean(self._tokenize(transcript))
+        self._tokens = self._clean(self._tokenize(self._transcript))
 
         self._parser = Parser(self)
+
 
     @property
     def chat(self):
@@ -273,7 +276,7 @@ class Utterance(object):
                 - remove contractions
         """
 
-        tokens_raw = transcript.split()
+        tokens_raw = transcript.replace("'", " ").split()
         tokens = []
         for word in tokens_raw:
             clean_word = re.sub('[?!]', '', word)
@@ -315,6 +318,8 @@ class Parser(object):
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
             self._cfg = cfg_file.read()
 
+        self._log = logger.getChild(self.__class__.__name__)
+
         self._forest, self._constituents = self._parse(utterance)
 
     @property
@@ -328,7 +333,7 @@ class Parser(object):
     def _parse(self, utterance):
         tokenized_sentence = utterance.tokens
         pos = self.POS_TAGGER.tag(tokenized_sentence)
-        print(pos)
+        self._log.debug(pos)
 
         '''
         doc = nlp(utterance.transcript)
@@ -349,12 +354,11 @@ class Parser(object):
                 pos[ind] = (w, 'VBP')
             ind+=1
 
-
-        for el in pos:
-            if el[1].endswith('$'):
-                new_rule = el[1][:-1] + 'POS -> \'' + el[0] + '\'\n'
+        for word, tag in pos:
+            if tag.endswith('$'):
+                new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
             else:
-                new_rule = el[1] + ' -> \'' + el[0] + '\'\n'
+                new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
 

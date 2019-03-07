@@ -8,7 +8,7 @@ import numpy as np
 from typing import List, Iterable
 
 
-class ASRHypothesis(object):
+class UtteranceHypothesis(object):
     def __init__(self, transcript, confidence):
         """
         Automatic Speech Recognition Hypothesis
@@ -116,7 +116,7 @@ class AbstractASR(object):
 
         Returns
         -------
-        transcript: list of ASRHypothesis
+        transcript: list of UtteranceHypothesis
         """
         raise NotImplementedError()
 
@@ -141,13 +141,13 @@ class StreamedGoogleASR(BaseGoogleASR):
         self._streaming_config = speech.types.StreamingRecognitionConfig(config=self._config, single_utterance=True)
 
     def transcribe(self, audio):
-        # type: (Iterable[np.ndarray]) -> List[ASRHypothesis]
+        # type: (Iterable[np.ndarray]) -> List[UtteranceHypothesis]
         hypotheses = []
         for response in self._client.streaming_recognize(self._streaming_config, self._request(audio)):
             for result in response.results:
                 if result.is_final:
                     for alternative in result.alternatives:
-                        hypotheses.append(ASRHypothesis(self.translate(alternative.transcript), alternative.confidence))
+                        hypotheses.append(UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
         return hypotheses
 
     @staticmethod
@@ -170,12 +170,12 @@ class SynchronousGoogleASR(BaseGoogleASR):
 
         Returns
         -------
-        hypotheses: List[ASRHypothesis]
+        hypotheses: List[UtteranceHypothesis]
         """
         hypotheses = []
         for result in self._client.recognize(self._config, self._request(audio)).results:
             for alternative in result.alternatives:
-                hypotheses.append(ASRHypothesis(self.translate(alternative.transcript), alternative.confidence))
+                hypotheses.append(UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
         return hypotheses
 
     @staticmethod

@@ -41,8 +41,10 @@ class GreetingResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        if utterance.transcript.lower() in self._GREETINGS_STRIPPED:
-            return 1, lambda: app.say("{}, {}!".format(choice(self.GREETINGS), utterance.chat.speaker), animations.HI)
+        for greeting in self._GREETINGS_STRIPPED:
+            if utterance.transcript.lower().startswith(greeting):
+                return 1, lambda: app.say(text="{}, {}!".format(choice(self.GREETINGS), utterance.chat.speaker),
+                                          animation=animations.HI)
 
 
 class GoodbyeResponder(Responder):
@@ -70,8 +72,124 @@ class GoodbyeResponder(Responder):
 
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
-        if utterance.transcript.lower() in self._GOODBYES_STRIPPED:
-            def goodbye():
-                app.say("{}, {}!".format(choice(self.GOODBYES), utterance.chat.speaker), animations.BOW)
 
-            return 1, goodbye
+        for goodbye in self._GOODBYES_STRIPPED:
+            if utterance.transcript.lower().startswith(goodbye):
+                return 1, lambda: app.say(text="{}, {}!".format(choice(self.GOODBYES), utterance.chat.speaker),
+                                          animation=animations.BOW)
+
+
+class ThanksResponder(Responder):
+
+    THANKS = [
+        "thank you",
+        "thanks",
+        "appreciate",
+        "cheers",
+    ]
+
+    THANKS_REPLY = [
+        "You're welcome",
+        "No problem",
+        "Glad to be at service",
+        "Anytime",
+    ]
+
+    @property
+    def type(self):
+        return ResponderType.Conversational
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        for thanks in self.THANKS:
+            if thanks in utterance.transcript.lower():
+                return 1, lambda: app.say(text="{}, {}!".format(choice(self.THANKS_REPLY), utterance.chat.speaker),
+                                          animation=animations.ENTHUSIASTIC)
+
+
+class AffirmationResponder(Responder):
+
+    AFFIRMATION = [
+        "yes",
+        "yeah",
+        "correct",
+        "right",
+        "great",
+        "true",
+        "good",
+        "well",
+        "correctamundo",
+        "splendid",
+        "indeed",
+        "superduper",
+        "wow",
+        "amazing"
+    ]
+
+    HAPPY = [
+        "Nice!",
+        "Cool!",
+        "Great!",
+        "Wow!",
+        "Superduper!",
+        "Amazing!",
+        "I like it!",
+        "That makes my day!",
+        "Incredible",
+        "Mesmerizing"
+    ]
+
+    @property
+    def type(self):
+        return ResponderType.Conversational
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        for token in utterance.tokens:
+            if token in self.AFFIRMATION:
+                return 1, lambda: app.say(choice(self.HAPPY), animations.HAPPY)
+
+
+class NegationResponder(Responder):
+
+    NEGATION = [
+        "no",
+        "nope",
+        "incorrect",
+        "wrong",
+        "false",
+        "bad",
+        "stupid"
+    ]
+
+    SORRY = [
+        "Sorry!",
+        "I am sorry!",
+        "Forgive me!",
+        "My apologies!",
+        "My humble apologies!",
+        "How unfortunate!",
+        "My mistake",
+    ]
+
+    @property
+    def type(self):
+        return ResponderType.Conversational
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        for token in utterance.tokens:
+            if token in self.NEGATION:
+                return 1, lambda: app.say(choice(self.SORRY), animations.HAPPY)

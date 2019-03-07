@@ -3,7 +3,7 @@ from datetime import datetime
 
 from pepper.brain.utils.helper_functions import casefold
 from pepper.brain.utils.response import casefold_capsule
-from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNWOLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
+from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
     TRUST, NO_TRUST
 
 
@@ -84,7 +84,7 @@ def phrase_statement_novelty(novelty):
 
     # I already knew this
     else:
-        say = random.choice(EXISTING_KNWOLEDGE)
+        say = random.choice(EXISTING_KNOWLEDGE)
         provenance = random.choice(novelty)
 
         say += ' %s told me about it in %s' %(provenance['authorlabel'].replace('_', ' '),
@@ -103,7 +103,7 @@ def phrase_type_novelty(novelty, capsule):
         say += ' I have never heard about %s before!' % capsule[entity_role]['label']
 
     else:
-        say = random.choice(EXISTING_KNWOLEDGE)
+        say = random.choice(EXISTING_KNOWLEDGE)
         say += ' I know about %s.' % capsule[entity_role]['label']
 
     return say

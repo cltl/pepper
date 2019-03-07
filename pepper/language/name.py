@@ -1,4 +1,4 @@
-from pepper.framework.sensor.asr import SynchronousGoogleASR, ASRHypothesis
+from pepper.framework.sensor.asr import SynchronousGoogleASR, UtteranceHypothesis
 from .ner import NER
 from nltk.metrics.distance import edit_distance
 from concurrent import futures
@@ -44,7 +44,7 @@ class NameParser:
 
             if closest_name:
                 print("Closest Name:", closest_name)
-                return ASRHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence)
+                return UtteranceHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence)
 
         return hypotheses[0]
 

@@ -4,7 +4,7 @@ from pepper import config
 
 
 class ResponderApp(AbstractApplication,
-                   StatisticsComponent,
+                   # StatisticsComponent,
                    ContextComponent,
                    SpeechRecognitionComponent,
                    ObjectDetectionComponent,
@@ -17,10 +17,20 @@ class ResponderApp(AbstractApplication,
         self.response_picker = ResponsePicker(self, [
             GreetingResponder(),
             GoodbyeResponder(),
+            ThanksResponder(),
+            AffirmationResponder(),
+            NegationResponder(),
+            QnAResponder(),
+            VisionResponder()
         ])
 
-        self.start_chat("Human")
-        self.say("What's up, {}!".format(self.chat.speaker))
+    def on_person_enter(self, person):
+        self.say("Hello, {}".format(person.name))
+        self.context.start_chat(person.name)
+
+    def on_person_exit(self):
+        self.say("You are gone!")
+        self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
         self.response_picker.respond(utterance)
