@@ -276,7 +276,7 @@ class Utterance(object):
                 - remove contractions
         """
 
-        tokens_raw = transcript.split()
+        tokens_raw = transcript.replace("'", " ").split()
         tokens = []
         for word in tokens_raw:
             clean_word = re.sub('[?!]', '', word)
@@ -352,12 +352,11 @@ class Parser(object):
                 pos[ind] = (w, 'VBP')
             ind+=1
 
-
-        for el in pos:
-            if el[1].endswith('$'):
-                new_rule = el[1][:-1] + 'POS -> \'' + el[0] + '\'\n'
+        for word, tag in pos:
+            if tag.endswith('$'):
+                new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
             else:
-                new_rule = el[1] + ' -> \'' + el[0] + '\'\n'
+                new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
 
