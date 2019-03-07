@@ -126,5 +126,5 @@ class QnA:
                 ratio = r
 
         if ratio > 90:
-            return answer
+            return float(ratio)/100, answer
 

@@ -19,6 +19,8 @@ class Context(object):
 
     def __init__(self):
         self._chats = []
+        self._chatting = False
+
         self._people = {}
         self._objects = {}
         self._intention = None
@@ -37,15 +39,13 @@ class Context(object):
         return self._chats
 
     @property
-    def last_chat(self):
-        # type: () -> Chat
-        """
-        Returns
-        -------
-        chat: Chat
-            Most recent Chat
-        """
-        return self._chats[-1]
+    def chatting(self):
+        return self._chatting
+
+    @property
+    def chat(self):
+        # type: () -> Optional[Chat]
+        return self.chats[-1] if self.chatting else None
 
     @property
     def datetime(self):     # When
@@ -134,12 +134,9 @@ class Context(object):
         for person in people:
             self._people[person.name] = (person, time())
 
-    def add_chat(self, chat):
-        # type: (Chat) -> None
-        """
-        Parameters
-        ----------
-        chat: Chat
-            New Chat
-        """
-        self._chats.append(chat)
+    def start_chat(self, speaker):
+        self._chats.append(Chat(speaker, self))
+        self._chatting = True
+
+    def stop_chat(self):
+        self._chatting = False
