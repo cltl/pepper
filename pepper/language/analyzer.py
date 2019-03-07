@@ -52,7 +52,7 @@ class Analyzer(object):
             Appropriate Analyzer Subclass
         """
 
-        forest = chat.last_utterance.parsed_tree.forest
+        forest = chat.last_utterance.parser.forest
 
         if not forest:
             Analyzer.LOG.info("Couldn't parse input")
@@ -182,23 +182,11 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         chat: Chat
             Chat to be analyzed
         """
-
+        dict = {}
         super(GeneralStatementAnalyzer, self).__init__(chat)
 
         rdf = {'predicate': '', 'subject': '', 'object': ''}
-        position = 0
-        dict = {}
-
-        cons = self.chat.last_utterance.parsed_tree.constituents
-
-        for el in cons:
-            print(el, cons[el])
-            if type(cons[el]['raw']) == list:
-                string = ''
-                for e in cons[el]['raw']:
-                    string += e + ' '
-                cons[el]['raw'] = string
-            cons[el]['raw'] = cons[el]['raw'].strip()
+        cons = self.chat.last_utterance.parser.constituents
 
         rdf['subject'] = cons[0]['raw']
 
@@ -344,9 +332,25 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         super(WhQuestionAnalyzer, self).__init__(chat)
 
         rdf = {'predicate': '', 'subject': '', 'object': ''}
-        position = 0
-        dict = {}
+        cons = self.chat.last_utterance.parser.constituents
 
+
+
+        for el in cons:
+            print(el, cons[el])
+
+        if cons[3]['label'].startswith('V'):
+            rdf['predicate'] = cons[3]['raw']+'s'
+
+        if cons[2]['label'] == 'NP':
+            rdf['subject'] = cons[2]['raw']
+
+
+        print(rdf)
+
+
+
+        '''
         for tree in chat.last_utterance.parsed_tree[0]:
             for branch in tree:
                 for node in branch:
@@ -374,8 +378,9 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         if 'pronoun' in dict:
             rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
+        
+        '''
 
-        print(rdf)
 
         self._rdf = rdf
 
