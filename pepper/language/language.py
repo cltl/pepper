@@ -251,7 +251,7 @@ class Utterance(object):
         return self._tokens
 
     @property
-    def parsed_tree(self):
+    def parser(self):
         """
         Returns
         -------
@@ -388,5 +388,14 @@ class Parser(object):
 
                             s_r[index]['raw'] = raw
                         index+=1
+
+        for el in s_r:
+            #print(el, s_r[el])
+            if type(s_r[el]['raw']) == list:
+                string = ''
+                for e in s_r[el]['raw']:
+                    string += e + ' '
+                s_r[el]['raw'] = string
+            s_r[el]['raw'] = s_r[el]['raw'].strip()
 
         return forest, s_r
