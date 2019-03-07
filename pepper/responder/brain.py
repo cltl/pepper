@@ -25,22 +25,26 @@ class BrainResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
 
-        template = analyze(utterance.chat)
+        try:
 
-        if isinstance(template, dict):
+            template = analyze(utterance.chat)
 
-            if template["utterance_type"] == UtteranceType.QUESTION:
-                brain_response = app.brain.query_brain(template)
-                reply = utils.reply_to_question(brain_response, [])
-            else:
-                brain_response = app.brain.update(template)
+            if isinstance(template, dict):
 
-                reply = phrasing.phrase_update(brain_response)
+                if template["utterance_type"] == UtteranceType.QUESTION:
+                    brain_response = app.brain.query_brain(template)
+                    reply = utils.reply_to_question(brain_response, [])
+                else:
+                    brain_response = app.brain.update(template)
 
-                # reply = utils.reply_to_statement(brain_response, utterance.chat.speaker, [], brain)
+                    reply = phrasing.phrase_update(brain_response)
 
-            if isinstance(reply, str) or isinstance(reply, unicode):
+                    # reply = utils.reply_to_statement(brain_response, utterance.chat.speaker, [], brain)
 
-                # Return Score and Response
-                # Make sure to not execute the response here, but just to return the response function
-                return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
+                if isinstance(reply, str) or isinstance(reply, unicode):
+
+                    # Return Score and Response
+                    # Make sure to not execute the response here, but just to return the response function
+                    return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
+        except Exception as e:
+            print("NLP/Brain Error: {}: {}".format(type(e), e))

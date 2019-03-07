@@ -8,7 +8,7 @@ class KnownNameParser:
 
     TAGGER = None  # type: NER
 
-    def __init__(self, names, max_name_distance=2, min_alternatives=4):
+    def __init__(self, names, max_name_distance=3, min_alternatives=4):
         if not self.TAGGER:
             self.TAGGER = NER()
 
@@ -39,7 +39,6 @@ class KnownNameParser:
                     closest = distance
 
             if closest_name:
-                print("Closest Name:", closest_name)
                 return UtteranceHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name),
                                            hypotheses[toi].confidence)
 

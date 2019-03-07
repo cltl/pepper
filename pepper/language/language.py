@@ -132,6 +132,9 @@ class Chat(object):
 
 
 class Utterance(object):
+
+    KNOWN_NAME_PARSER = KnownNameParser(config.PEOPLE_FRIENDS_NAMES)
+
     def __init__(self, chat, hypotheses, me, turn):
         """
         Construct Utterance Object
@@ -151,8 +154,7 @@ class Utterance(object):
         self._chat = chat
 
         # TODO: Better way to pick Transcript from Hypotheses
-        self._transcript = hypotheses[0].transcript
-        # self._transcript = KnownNameParser(config.PEOPLE_FRIENDS_NAMES).parse(hypotheses).transcript
+        self._transcript = self.KNOWN_NAME_PARSER.parse(hypotheses).transcript
 
         self._me = me
         self._turn = turn
