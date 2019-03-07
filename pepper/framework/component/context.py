@@ -94,7 +94,7 @@ class ContextComponent(AbstractComponent):
                 with context_lock:
                     self.on_person_exit()
 
-            # Wipe Face and People info after use
+            # Wipe face and people info after use
             self._face_info = []
             self._people_info = []
 

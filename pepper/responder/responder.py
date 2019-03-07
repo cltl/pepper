@@ -6,6 +6,8 @@ from enum import IntEnum
 
 from concurrent.futures import ThreadPoolExecutor
 
+from time import time
+
 from typing import List, Union, Tuple, Optional, ClassVar, Callable
 
 
@@ -89,6 +91,8 @@ class ResponsePicker(object):
     def respond(self, utterance):
         # type: (Utterance) -> Responder
 
+        t0 = time()
+
         best_score = 0
         best_responder = None
         best_response = None
@@ -113,7 +117,7 @@ class ResponsePicker(object):
         if best_responder and best_response:
 
             # Log Results
-            self._log.info("{}".format(best_responder.__class__.__name__))
+            self._log.info("Picked {} in {:3.2f}s".format(best_responder.__class__.__name__, time() - t0))
 
             # Execute Response
             best_response()
