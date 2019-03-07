@@ -156,26 +156,26 @@ def reply_to_question(brain_response, viewed_objects):
                 say += brain_response['question']['subject']['label'].lower()
             previous_subject = brain_response['question']['subject']['label'].lower()
 
-        if brain_response['question']['predicate']['type'] in grammar['predicates']:
-            if brain_response['question']['predicate']['type'] == previous_predicate: #and response['slabel'].lower()==previous_subject.lower():
-                pass
-            else:
-                previous_predicate = brain_response['question']['predicate']['type']
-                if brain_response['question']['predicate']['type'] == 'sees':
-                    say+=' saw'
-                elif brain_response['question']['predicate']['type'] == 'is_from':
-                    if person == 'first':
-                        say += ' am from '
-                    elif person == 'second':
-                        say += ' are from'
-                    else:
-                        say += ' is from '
-
+        #if brain_response['question']['predicate']['type'] in grammar['predicates']:
+        if brain_response['question']['predicate']['type'] == previous_predicate: #and response['slabel'].lower()==previous_subject.lower():
+            pass
+        else:
+            previous_predicate = brain_response['question']['predicate']['type']
+            if brain_response['question']['predicate']['type'] == 'sees':
+                say+=' saw'
+            elif brain_response['question']['predicate']['type'] == 'is_from':
+                if person == 'first':
+                    say += ' am from '
+                elif person == 'second':
+                    say += ' are from'
                 else:
-                    if person in ['first', 'second'] and brain_response['question']['predicate']['type'].endswith('s'):
-                        say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
-                    else:
-                        say += ' '+brain_response['question']['predicate']['type']+' '
+                    say += ' is from '
+
+            else:
+                if person in ['first', 'second'] and brain_response['question']['predicate']['type'].endswith('s'):
+                    say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
+                else:
+                    say += ' '+brain_response['question']['predicate']['type']+' '
 
         if 'olabel' in response:
             say += response['olabel']['value']
@@ -206,6 +206,7 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
         return 'error in the rdf'
 
     template['subject']['label'] = rdf['subject'].strip().lower() #capitalization
+    template['subject']['type'] = "type.person"
     if rdf['predicate']=='seen':
         template['predicate']['type'] = 'sees'
         template['object']['hack'] = True
@@ -240,7 +241,7 @@ def fix_predicate_morphology(predicate):
 
     return new_predicate
 
-def reply_to_statement(template, speaker, viewed_objects, self):
+def reply_to_statement(template, speaker, viewed_objects, brain):
     subject = template['statement']['subject']['label']
     predicate = template['statement']['predicate']['type']
     object = template['statement']['object']['label']
@@ -272,7 +273,7 @@ def reply_to_statement(template, speaker, viewed_objects, self):
         else:
             response += ', but I don\'t see it!'
 
-        class_recognized, text = self.application.brain.process_visual(object)
+        class_recognized, text = brain.process_visual(object)
 
         if class_recognized is not None:
             capsule = {
@@ -294,7 +295,7 @@ def reply_to_statement(template, speaker, viewed_objects, self):
                 "date": date.today()
             }
 
-            self.application.brain.experience(capsule)
+            brain.experience(capsule)
 
         response += text
 
