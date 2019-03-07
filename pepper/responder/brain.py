@@ -3,6 +3,8 @@ from pepper.language import Utterance
 from .responder import Responder, ResponderType
 from pepper.knowledge import animations
 
+from pepper.language import analyze
+
 from typing import Optional, Union, Tuple, Callable
 
 
