@@ -57,7 +57,7 @@ class Chat(object):
         self._speaker = speaker
         self._utterances = []
 
-        self._log = logger.getChild("{} ({})".format(self.__class__.__name__, self.speaker))
+        self._log = logger.getChild("{} ({} & {})".format(self.__class__.__name__, config.NAME, self.speaker))
 
     @property
     def context(self):
@@ -302,7 +302,7 @@ class Utterance(object):
 
     def __repr__(self):
         author = config.NAME if self.me else self.chat.speaker
-        return "Utterance {:03d}: {:10s} -> {}".format(self.turn, author, self.transcript)
+        return "{:10s} -> {}".format(author, self.transcript)
 
 
 class Parser(object):

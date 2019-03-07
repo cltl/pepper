@@ -5,19 +5,20 @@ from pepper.language import Utterance
 
 from threading import Lock
 
-from time import time
-
 import numpy as np
-
-from typing import Optional
 
 
 class ContextComponent(AbstractComponent):
     # TODO: Add Min Area for Entry and Exit
     # TODO: Prevent fast switching of people failing
 
-    MIN_PERSON_AREA_IN = 0.5
-    MIN_PERSON_DIFFERENCE_IN = 1.5
+    # Minimum Distance of Person to Enter/Exit Conversation
+    PERSON_AREA_ENTER = 0.5
+    PERSON_AREA_EXIT = 0.25
+
+    # Minimum Distance Difference of Person to Enter/Exit Conversation
+    PERSON_DIFF_ENTER = 1.5
+    PERSON_DIFF_EXIT = 1.25
 
     CONVERSATION_TIMEOUT = 5
 
@@ -56,9 +57,13 @@ class ContextComponent(AbstractComponent):
                     self.on_chat_turn(self.context.chat.last_utterance)
 
         def get_closest_person(people):
+
+            person_area_threshold = (self.PERSON_AREA_EXIT if self.context.chatting else self.PERSON_AREA_ENTER)
+            person_diff_threshold = (self.PERSON_DIFF_EXIT if self.context.chatting else self.PERSON_DIFF_ENTER)
+
             if people:
                 if len(people) == 1:
-                    if people[0].bounds.area >= self.MIN_PERSON_AREA_IN:
+                    if people[0].bounds.area >= person_area_threshold:
                         return people[0]
                 else:
 
@@ -69,8 +74,8 @@ class ContextComponent(AbstractComponent):
                     closest = people[people_sorted[0]]
                     next_closest = people[people_sorted[1]]
 
-                    if closest.bounds.area >= self.MIN_PERSON_AREA_IN:
-                        if closest.bounds.area >= self.MIN_PERSON_DIFFERENCE_IN * next_closest.bounds.area:
+                    if closest.bounds.area >= person_area_threshold:
+                        if closest.bounds.area >= person_diff_threshold * next_closest.bounds.area:
                             return closest
 
         def get_face(person, faces):
@@ -94,7 +99,7 @@ class ContextComponent(AbstractComponent):
                 with context_lock:
                     self.on_person_exit()
 
-            # Wipe Face and People info after use
+            # Wipe face and people info after use
             self._face_info = []
             self._people_info = []
 
