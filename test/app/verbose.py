@@ -3,8 +3,8 @@ from pepper import config
 
 
 class VerboseApp(AbstractApplication, StatisticsComponent, SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent):
-    def on_image(self, image):
-        self.log.info("on_image: {}".format(image.shape))
+    def on_image(self, image, orientation):
+        self.log.info("on_image: {} {}".format(image.shape, orientation))
 
     def on_object(self, image, objects):
         self.log.info("on_object: {} {}".format(image.shape, objects))

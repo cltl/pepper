@@ -55,6 +55,11 @@ class NAOqiCamera(AbstractCamera):
         self._client = self._service.subscribeCamera(
             self._id, int(index), NAOqiCamera.RESOLUTION_CODE[resolution], NAOqiCamera.COLOR_SPACE, rate)
 
+        # Access Head Motion for Image Coordinates
+        self._motion = session.service("ALMotion")
+
+        self._angles = self._service.getAngularPositionFromImagePosition(int(index), [1, 1])
+
         # Run image acquisition in Thread
         self._thread = Thread(target=self._run)
         self._thread.setDaemon(True)
@@ -62,11 +67,18 @@ class NAOqiCamera(AbstractCamera):
 
         self._log.debug("Booted")
 
+    @property
+    def angles(self):
+        return self._angles
+
     def _run(self):
         while True:
             if self._running:
 
                 t0 = time()
+
+                # Get Yaw and Pitch from Head Sensors
+                orientation = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
 
                 # Get Image from Robot
                 result = self._service.getImageRemote(self._client)
@@ -98,7 +110,7 @@ class NAOqiCamera(AbstractCamera):
                         RGB[..., 2] += np.float32(1.772) * Cr
 
                         # Call On Image Event
-                        self.on_image(RGB.clip(0, 255).astype(np.uint8).reshape(Y, X, 3))
+                        self.on_image(RGB.clip(0, 255).astype(np.uint8).reshape(Y, X, 3), orientation)
                 else:
                     self._service.unsubscribe(self._id)
                     raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))

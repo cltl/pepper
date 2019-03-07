@@ -7,8 +7,8 @@ class CameraComponent(AbstractComponent):
         super(CameraComponent, self).__init__(backend)
         self.backend.camera.callbacks += [self.on_image]
 
-    def on_image(self, image):
-        # type: (np.ndarray) -> None
+    def on_image(self, image, orientation):
+        # type: (np.ndarray, tuple) -> None
         """
         On Image Event. Called every time an image was taken by Backend
 
@@ -16,5 +16,7 @@ class CameraComponent(AbstractComponent):
         ----------
         image: np.ndarray
             Camera Frame
+        orientation: tuple
+            Head Yaw and Pitch
         """
         pass

@@ -39,7 +39,7 @@ class DisplayComponent(AbstractComponent):
                 png.seek(0)
                 return base64.b64encode(png.read())
 
-        def on_image(image):
+        def on_image(image, orientation):
             with lock:
                 if self._display_info:
                     server.update(json.dumps(self._display_info))

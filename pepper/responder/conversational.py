@@ -1,4 +1,4 @@
-from pepper.framework import TextToSpeechComponent
+from pepper.framework import *
 from pepper.language import Utterance
 from .responder import Responder, ResponderType
 from pepper.knowledge import animations
@@ -71,4 +71,7 @@ class GoodbyeResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
         if utterance.transcript.lower() in self._GOODBYES_STRIPPED:
-            return 1, lambda: app.say("{}, {}!".format(choice(self.GOODBYES), utterance.chat.speaker), animations.BOW)
+            def goodbye():
+                app.say("{}, {}!".format(choice(self.GOODBYES), utterance.chat.speaker), animations.BOW)
+
+            return 1, goodbye

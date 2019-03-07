@@ -30,13 +30,14 @@ class ObjectDetectionComponent(AbstractComponent):
         clients = [ObjectDetectionClient(target) for target in ObjectDetectionComponent.TARGETS]
         mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
-        def on_image(image):
+        def on_image(image, orientation):
             """
             Raw On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
             image: np.ndarray
+            orientation: tuple
             """
             for client in clients:
                 mailboxes[client].put(image)

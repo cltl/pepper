@@ -1,6 +1,6 @@
 from pepper.language import Chat
 from pepper.framework import AbstractIntention
-from pepper.knowledge.location import Location
+from pepper.framework.sensor.location import Location
 from .face import Face
 from .obj import Object
 
