@@ -86,8 +86,6 @@ class ContextComponent(AbstractComponent):
 
                 closest_face = get_face(closest_person, self._face_info)
 
-                print(closest_person.bounds.area, closest_face)
-
                 if closest_face and not self.context.chatting:
                     with context_lock:
                         self.on_person_enter(closest_face)

@@ -318,6 +318,8 @@ class Parser(object):
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
             self._cfg = cfg_file.read()
 
+        self._log = logger.getChild(self.__class__.__name__)
+
         self._forest, self._constituents = self._parse(utterance)
 
     @property
@@ -331,7 +333,7 @@ class Parser(object):
     def _parse(self, utterance):
         tokenized_sentence = utterance.tokens
         pos = self.POS_TAGGER.tag(tokenized_sentence)
-        print(pos)
+        self._log.debug(pos)
 
         '''
         doc = nlp(utterance.transcript)
