@@ -11,7 +11,7 @@ import random
 import json
 import re
 import os
-import analyzers
+import analyzers_old
 
 
 LOG = logger.getChild(__name__)
@@ -20,8 +20,8 @@ LOG = logger.getChild(__name__)
 wnl = WordNetLemmatizer()
 
 ROOT = os.path.join(os.path.dirname(__file__))
-json_dict = json.load(open(os.path.join(ROOT, 'grammar.json')))
-grammar = json_dict["grammar"]
+json_dict = json.load(open(os.path.join(ROOT, 'data', 'lexicon.json')))
+grammar = json_dict
 
 names = ['selene', 'bram', 'leolani', 'piek','selene', 'lenka']
 statements = [['my favorite food is cake','lenka'],['I know Bram', 'Piek'],
@@ -195,7 +195,7 @@ def reply_to_question(brain_response, viewed_objects):
     return say[:-5]
 
 def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
-    template = json.load(open(os.path.join(ROOT, 'template.json')))
+    template = json.load(open(os.path.join(ROOT, 'data', 'template.json')))
     print(template)
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
@@ -318,7 +318,7 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
         if pos_list[1][0] in grammar['to be']:
 
             if pos_list[2][0] in grammar['possessive']:
-                morph = analyzers.analyze_np(words[2:], speaker)
+                morph = analyzers_old.analyze_np(words[2:], speaker)
                 #print(morph)
                 if morph['predicate'].endswith('-is'):
                     rdf['predicate'] = 'owns'
@@ -370,9 +370,12 @@ def check_rdf_completeness(rdf):
         if not rdf[el] or not len(rdf[el]):
             LOG.warning("Cannot find {} in statement".format(el))
             return False
+    '''    
     if rdf['predicate'] not in grammar['predicates'] and not rdf['predicate'].endswith('-not'):
         LOG.error('Nonexisting predicate: {}'.format(rdf['predicate']))
         return False
+    '''
+
     return True
 
 def pack_rdf_from_np_info(np_info, speaker, rdf):

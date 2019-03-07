@@ -1,5 +1,5 @@
 from pepper.framework.sensor.asr import SynchronousGoogleASR, UtteranceHypothesis
-from .language import NER
+from .ner import NER
 from nltk.metrics.distance import edit_distance
 from concurrent import futures
 
