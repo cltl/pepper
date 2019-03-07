@@ -1,5 +1,5 @@
-from .process_utterance import analyze_utterance, classify_and_process_utterance, reply_to_question, reply_to_statement
-from .language import *
+from .language import Utterance, Chat
+from .analyzer import analyze
 
 
 # Download NLTK Dependencies

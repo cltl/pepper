@@ -2,7 +2,7 @@ from pepper.framework.abstract import AbstractComponent
 from pepper.framework.component import *
 from pepper.framework.sensor import Context
 from pepper.language import Chat, Utterance
-from pepper.language.names import NameParser
+from pepper.language.name import NameParser
 from pepper import config
 
 from typing import Optional

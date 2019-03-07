@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.language import *
-from pepper.language.names import NameParser
+from pepper.language.name import NameParser
 from pepper.framework.sensor.face import FaceClassifier
 from pepper import config, ApplicationBackend
 
