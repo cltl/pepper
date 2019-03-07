@@ -333,8 +333,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
-
-
+        dict = {}
 
         for el in cons:
             print(el, cons[el])
@@ -345,6 +344,13 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         if cons[2]['label'] == 'NP':
             rdf['subject'] = cons[2]['raw']
 
+        if rdf['object'].lower() in self.GRAMMAR['pronouns']['subject']:
+            dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['object'].lower()]
+            rdf['object'] = utils.fix_pronouns(dict, self.chat.speaker)
+
+        if rdf['subject'].lower() in self.GRAMMAR['pronouns']['subject']:
+            dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['subject'].lower()]
+            rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
 
         print(rdf)
 
@@ -411,7 +417,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         position = 0
         dict = {}
 
-        for tree in chat.last_utterance.parsed_tree[0]:
+        for tree in chat.last_utterance.parser.forest[0]:
             for branch in tree:
                 for node in branch:
                     position += 1

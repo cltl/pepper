@@ -48,7 +48,7 @@ class ContextComponent(AbstractComponent):
             """
 
             with context_lock:
-                if self.context.chatting:
+                if self.context.chatting and hypotheses:
 
                     # Add ASR Transcript to Chat as Utterance
                     self.context.chat.add_utterance(hypotheses, False)

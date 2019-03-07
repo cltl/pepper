@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from pepper.language.pos import POS
+from pepper.language.name import KnownNameParser
 from pepper.brain import Triple
 
 from pepper import logger, config
@@ -149,8 +150,9 @@ class Utterance(object):
 
         self._chat = chat
 
-        # TODO: Smartly pick best hypothesis for the job
+        # TODO: Better way to pick Transcript from Hypotheses
         self._transcript = hypotheses[0].transcript
+        # self._transcript = KnownNameParser(config.PEOPLE_FRIENDS_NAMES).parse(hypotheses).transcript
 
         self._me = me
         self._turn = turn
@@ -160,7 +162,6 @@ class Utterance(object):
         self._tokens = self._clean(self._tokenize(self._transcript))
 
         self._parser = Parser(self)
-
 
     @property
     def chat(self):

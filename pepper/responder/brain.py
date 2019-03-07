@@ -1,9 +1,12 @@
 from pepper.framework import *
-from pepper.language import Utterance
-from .responder import Responder, ResponderType
-from pepper.knowledge import animations
 
-from pepper.language import analyze
+from pepper.language import Utterance, utils
+from pepper.language.generation import phrasing
+
+from .responder import Responder, ResponderType
+from pepper.language import analyze, UtteranceType
+
+import re
 
 from typing import Optional, Union, Tuple, Callable
 
@@ -22,21 +25,22 @@ class BrainResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
 
-        # TODO: See whether we can form a response from 'utterance'
+        template = analyze(utterance.chat)
 
-        able_to_respond = False
+        if isinstance(template, dict):
 
-        if able_to_respond:
+            if template["utterance_type"] == UtteranceType.QUESTION:
+                brain_response = app.brain.query_brain(template)
+                reply = utils.reply_to_question(brain_response, [])
+            else:
+                brain_response = app.brain.update(template)
 
-            # TODO: Implement Actual Response
-            def response():
+                reply = phrasing.phrase_update(brain_response)
 
-                # Access Brain
-                print(app.brain)
+                # reply = utils.reply_to_statement(brain_response, utterance.chat.speaker, [], brain)
 
-                # Access Text to Speech
-                app.say(text="I have something sensible to say!", animation=animations.COGITATE)
+            if isinstance(reply, str) or isinstance(reply, unicode):
 
-            # Return Score and Response
-            # Make sure to not execute the response here, but just to return the response function
-            return 1.0, response
+                # Return Score and Response
+                # Make sure to not execute the response here, but just to return the response function
+                return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))

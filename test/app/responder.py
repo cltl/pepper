@@ -4,8 +4,9 @@ from pepper import config
 
 
 class ResponderApp(AbstractApplication,
-                   # StatisticsComponent,
+                   StatisticsComponent,
                    ContextComponent,
+                   BrainComponent,
                    SpeechRecognitionComponent,
                    ObjectDetectionComponent,
                    FaceRecognitionComponent,
@@ -21,7 +22,8 @@ class ResponderApp(AbstractApplication,
             AffirmationResponder(),
             NegationResponder(),
             QnAResponder(),
-            VisionResponder()
+            VisionResponder(),
+            BrainResponder(),
         ])
 
     def on_person_enter(self, person):

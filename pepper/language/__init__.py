@@ -1,4 +1,4 @@
-from .language import Utterance, Chat
+from .language import Chat, Utterance, UtteranceType
 from .analyzer import analyze
 
 

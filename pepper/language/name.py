@@ -4,6 +4,48 @@ from nltk.metrics.distance import edit_distance
 from concurrent import futures
 
 
+class KnownNameParser:
+
+    TAGGER = None  # type: NER
+
+    def __init__(self, names, max_name_distance=2, min_alternatives=4):
+        if not self.TAGGER:
+            self.TAGGER = NER()
+
+        self._names = names
+        self._max_name_distance = max_name_distance
+        self._min_alternatives = min_alternatives
+
+    def parse(self, hypotheses):
+        toi = None  # Transcript of Interest
+        words = []
+
+        for i, (hypothesis) in enumerate(hypotheses):
+            for word, tag in self.TAGGER.tag(hypothesis.transcript):
+                if tag in NameParser.TAGS_OF_INTEREST:
+                    words.append((word, hypothesis.confidence))
+
+                    if toi is None: toi = i
+
+        if len(words) >= self._min_alternatives:
+            closest_name = None
+            closest = self._max_name_distance
+
+            for name in self._names:
+                distance = sum(edit_distance(name, word) * confidence for word, confidence in words) / float(
+                    len(words))
+                if distance < closest:
+                    closest_name = name
+                    closest = distance
+
+            if closest_name:
+                print("Closest Name:", closest_name)
+                return UtteranceHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name),
+                                           hypotheses[toi].confidence)
+
+        return hypotheses[0]
+
+
 class NameParser:
     TAGS_OF_INTEREST = ['PERSON', 'LOCATION', 'ORGANISATION']
 
