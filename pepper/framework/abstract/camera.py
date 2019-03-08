@@ -1,5 +1,4 @@
-from pepper.framework.util import Mailbox
-from pepper.framework.util import Scheduler
+from pepper.util import Mailbox, Scheduler
 from pepper import CameraResolution
 from pepper import logger
 
@@ -192,7 +191,6 @@ class AbstractCamera(object):
             Image Angles (phi, theta)
         """
         raise NotImplementedError()
-
 
     def on_image(self, image, orientation):
         """

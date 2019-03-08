@@ -55,7 +55,7 @@ class Analyzer(object):
         forest = chat.last_utterance.parser.forest
 
         if not forest:
-            Analyzer.LOG.info("Couldn't parse input")
+            Analyzer.LOG.debug("Couldn't parse input")
             return None
 
         for tree in forest:
@@ -201,8 +201,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
             rdf['predicate'] = cons[1]['raw']
             rdf['object'] = cons[2]['raw']
 
-        print(rdf)
-
         '''
                     #position += 1
                     #print(node.label(), node.leaves()[0])
@@ -231,8 +229,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         if rdf['subject'].lower() in self.GRAMMAR['pronouns']['subject']:
             dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['subject'].lower()]
             rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
-
-        print(rdf)
 
         self._rdf = rdf
 
@@ -335,8 +331,8 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         cons = self.chat.last_utterance.parser.constituents
         dict = {}
 
-        for el in cons:
-            print(el, cons[el])
+        # for el in cons:
+        #     print(el, cons[el])
 
         if cons[3]['label'].startswith('V'):
             rdf['predicate'] = cons[3]['raw']+'s'
@@ -351,10 +347,6 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         if rdf['subject'].lower() in self.GRAMMAR['pronouns']['subject']:
             dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['subject'].lower()]
             rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
-
-        print(rdf)
-
-
 
         '''
         for tree in chat.last_utterance.parsed_tree[0]:
@@ -386,7 +378,6 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
         
         '''
-
 
         self._rdf = rdf
 
@@ -444,7 +435,6 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
             dict['pronoun'] = self.GRAMMAR['pronouns'][rdf['subject'].lower()]
             rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
 
-        print(rdf)
         self._rdf = rdf
 
     @property
@@ -463,16 +453,17 @@ def analyze(chat):
     if not analyzer:
         return "I cannot parse your input"
 
+    Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
+
     if analyzer.rdf['predicate'] in analyzer.GRAMMAR['verbs']:
         analyzer.rdf['predicate'] += 's'
 
     if analyzer.utterance_type == UtteranceType.STATEMENT:
         if not utils.check_rdf_completeness(analyzer.rdf):
-            print('incomplete statement RDF')
+            Analyzer.LOG.debug('incomplete statement RDF')
             return
 
     template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.turn,
                                     analyzer.utterance_type)
-    #print(template)
 
     return template

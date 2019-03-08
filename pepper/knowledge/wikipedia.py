@@ -107,13 +107,3 @@ class Wikipedia:
     @staticmethod
     def _is_queryable(tag):
         return tag.startswith('NN') or tag.startswith("JJ")
-
-
-if __name__ == '__main__':
-    from time import time
-
-    N = 10
-
-    t0 = time()
-    for i in range(N): Wikipedia.query("Who is Alan Turing?")
-    print((time() - t0) / float(N))

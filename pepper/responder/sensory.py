@@ -3,6 +3,7 @@ from .responder import Responder, ResponderType
 from pepper.framework import *
 from pepper.language import Utterance
 from pepper.knowledge import animations, QnA
+from pepper import config
 
 from typing import Optional, Union, Tuple, Callable
 
@@ -90,3 +91,101 @@ class VisionResponder(Responder):
             return items[0]
         else:
             return "{} and {}.".format(", ".join(items[:-1]), items[-1])
+
+
+class PreviousUtteranceResponder(Responder):
+
+    CUE = [
+        "what did you say",
+        "i didn't hear you",
+        "i can't hear you",
+        "come again",
+    ]
+
+    REPEAT = "I said:"
+
+    @property
+    def type(self):
+        return ResponderType.Sensory
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        for cue in self.CUE:
+            if cue in utterance.transcript.lower():
+                for u in utterance.chat.utterances[:-1][::-1]:
+                    if u.me and not u.transcript.startswith(self.REPEAT):
+                        return 1.0, lambda: app.say(text="{} {}".format(self.REPEAT, u.transcript),
+                                                    animation=animations.EXPLAIN)
+                return 1.0, lambda: app.say("I didn't say anything yet...")
+
+
+class LocationResponder(Responder):
+
+    CUE_FULL = [
+        "where are we",
+        "where are you",
+        "where we are",
+        "where you are",
+        "what is here",
+    ]
+
+    @property
+    def type(self):
+        return ResponderType.Sensory
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        for cue in self.CUE_FULL:
+            if cue in utterance.transcript.lower():
+                return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
+
+    @staticmethod
+    def _location_to_text(location):
+        return "We're in {}, {}, {}.".format(location.city, location.region, location.country)
+
+
+class IdentityResponder(Responder):
+
+    CUE_ME = [
+        "who are you ",
+        "what is your name",
+    ]
+
+    ANSWER_ME = [
+        "My name is",
+        "I'm",
+    ]
+
+    CUE_YOU = [
+        "who am i",
+        "what is my name"
+    ]
+
+    ANSWER_YOU = [
+        "Your name is",
+        "You are"
+    ]
+
+    @property
+    def type(self):
+        return ResponderType.Sensory
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+            if utterance.transcript.lower() in self.CUE_ME:
+                return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_ME), config.NAME))
+
+            if utterance.transcript.lower() in self.CUE_YOU:
+                return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_YOU), utterance.chat.speaker))

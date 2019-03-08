@@ -1,11 +1,10 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.sensor.obj import ObjectDetectionClient, ObjectDetectionTarget, Object
-from pepper.framework.util import Scheduler, Mailbox
+from pepper.util import Scheduler, Mailbox
 from pepper import config
 
 import numpy as np
 
-from Queue import Queue
 from typing import List, Dict
 
 

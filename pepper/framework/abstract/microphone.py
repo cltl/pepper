@@ -1,4 +1,4 @@
-from pepper.framework.util import Scheduler
+from pepper.util import Scheduler
 from pepper import logger
 
 import numpy as np

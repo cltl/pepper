@@ -117,6 +117,7 @@ class AffirmationResponder(Responder):
         "yes",
         "yeah",
         "correct",
+        "alright",
         "right",
         "great",
         "true",

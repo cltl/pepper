@@ -7,6 +7,9 @@ from pepper import logger, config
 
 from nltk import CFG, RecursiveDescentParser
 
+from Queue import Queue
+from threading import Thread
+
 from random import getrandbits
 from datetime import datetime
 import enum
@@ -61,7 +64,8 @@ class Chat(object):
         self._speaker = speaker
         self._utterances = []
 
-        self._log = logger.getChild("{} ({} & {})".format(self.__class__.__name__, config.NAME, self.speaker))
+        self._log = self._update_logger()
+        self._log.info("<< Start of Chat with {} >>".format(speaker))
 
     @property
     def context(self):
@@ -131,9 +135,15 @@ class Chat(object):
         utterance: Utterance
         """
         utterance = Utterance(self, hypotheses, me, len(self._utterances))
-        self._log.info(utterance)
         self._utterances.append(utterance)
+
+        self._log = self._update_logger()
+        self._log.info(utterance)
+
         return utterance
+
+    def _update_logger(self):
+        return logger.getChild("Chat {:19s} {:03d}".format("({})".format(self.speaker), len(self._utterances)))
 
     def __repr__(self):
         return "\n".join([str(utterance) for utterance in self._utterances])
@@ -327,7 +337,7 @@ class Utterance(object):
 
     def __repr__(self):
         author = config.NAME if self.me else self.chat.speaker
-        return "{:10s} -> {}".format(author, self.transcript)
+        return '{:>10s}: "{}"'.format(author, self.transcript)
 
 
 class Parser(object):
@@ -387,44 +397,47 @@ class Parser(object):
             if new_rule not in self._cfg:
                 self._cfg += new_rule
 
-        cfg_parser = CFG.fromstring(self._cfg)
-        RD = RecursiveDescentParser(cfg_parser)
+        try:
+            cfg_parser = CFG.fromstring(self._cfg)
+            RD = RecursiveDescentParser(cfg_parser)
+            parsed = RD.parse(tokenized_sentence)
 
-        parsed = RD.parse(tokenized_sentence)
+            s_r = {} #syntactic_realizations
+            index = 0
 
-        s_r = {} #syntactic_realizations
-        index = 0
+            forest = [tree for tree in parsed]
 
-        forest = [tree for tree in parsed]
+            if len(forest):
+                for tree in forest[0]: #alternative trees? f
+                    for branch in tree:
+                        for node in branch:
+                            if type(node)== unicode or type(node)==str:
+                                s_r[index] = {'label': branch.label()}
+                                s_r[index]['raw'] = node
 
-        if len(forest):
-            for tree in forest[0]: #alternative trees? f
-                for branch in tree:
-                    for node in branch:
-                        if type(node)== unicode or type(node)==str:
-                            s_r[index] = {'label': branch.label()}
-                            s_r[index]['raw'] = node
-
-                        else:
-                            #print('node label ',node.label())
-                            s_r[index] = {'label': node.label()}
-                            raw = ''
-                            if len(node.leaves())>1:
-                                for n in node.leaves():
-                                    raw+=n+' '
                             else:
-                                raw = node.leaves()
+                                #print('node label ',node.label())
+                                s_r[index] = {'label': node.label()}
+                                raw = ''
+                                if len(node.leaves())>1:
+                                    for n in node.leaves():
+                                        raw+=n+' '
+                                else:
+                                    raw = node.leaves()
 
-                            s_r[index]['raw'] = raw
-                        index+=1
+                                s_r[index]['raw'] = raw
+                            index+=1
 
-        for el in s_r:
-            #print(el, s_r[el])
-            if type(s_r[el]['raw']) == list:
-                string = ''
-                for e in s_r[el]['raw']:
-                    string += e + ' '
-                s_r[el]['raw'] = string
-            s_r[el]['raw'] = s_r[el]['raw'].strip()
+            for el in s_r:
+                #print(el, s_r[el])
+                if type(s_r[el]['raw']) == list:
+                    string = ''
+                    for e in s_r[el]['raw']:
+                        string += e + ' '
+                    s_r[el]['raw'] = string
+                s_r[el]['raw'] = s_r[el]['raw'].strip()
 
-        return forest, s_r
+            return forest, s_r
+
+        except:
+            return [], {}

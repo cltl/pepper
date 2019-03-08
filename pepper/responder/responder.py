@@ -93,6 +93,8 @@ class ResponsePicker(object):
 
         t0 = time()
 
+        all_responders = []
+
         best_score = 0
         best_responder = None
         best_response = None
@@ -106,6 +108,8 @@ class ResponsePicker(object):
         for responder, result in zip(self.responders, results):
 
             if result:
+                all_responders.append(responder)
+
                 score, response = result
                 score *= responder.type
 
@@ -117,7 +121,8 @@ class ResponsePicker(object):
         if best_responder and best_response:
 
             # Log Results
-            self._log.info("Picked {} in {:3.2f}s".format(best_responder.__class__.__name__, time() - t0))
+            self._log.debug("Picked {} from {} in {:3.2f}s".format(
+                best_responder.__class__.__name__, [r.__class__.__name__ for r in all_responders], time() - t0))
 
             # Execute Response
             best_response()

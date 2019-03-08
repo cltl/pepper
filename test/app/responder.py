@@ -23,13 +23,16 @@ class ResponderApp(AbstractApplication,
             NegationResponder(),
             QnAResponder(),
             VisionResponder(),
+            PreviousUtteranceResponder(),
+            IdentityResponder(),
+            LocationResponder(),
             WikipediaResponder(),
             BrainResponder(),
         ])
 
     def on_person_enter(self, person):
-        self.say("Hello, {}".format(person.name))
         self.context.start_chat(person.name)
+        self.say("Hello, {}".format(person.name))
 
     def on_person_exit(self):
         self.say("You are gone!")

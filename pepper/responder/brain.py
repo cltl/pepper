@@ -26,7 +26,7 @@ class BrainResponder(Responder):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
 
         try:
-            
+
             template = analyze(utterance.chat)
 
             if isinstance(template, dict):
@@ -36,10 +36,7 @@ class BrainResponder(Responder):
                     reply = utils.reply_to_question(brain_response, [])
                 else:
                     brain_response = app.brain.update(template)
-
                     reply = phrasing.phrase_update(brain_response)
-
-                    # reply = utils.reply_to_statement(brain_response, utterance.chat.speaker, [], brain)
 
                 if isinstance(reply, str) or isinstance(reply, unicode):
 
@@ -47,4 +44,5 @@ class BrainResponder(Responder):
                     # Make sure to not execute the response here, but just to return the response function
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
         except Exception as e:
-            print("NLP/Brain Error: {}: {}".format(type(e), e))
+            pass
+            # print("NLP/Brain Error: {}: {}".format(type(e), e))

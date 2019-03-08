@@ -1,15 +1,14 @@
-from pepper.framework.abstract import AbstractComponent
-from pepper.framework.component import *
-from pepper.framework.sensor import Context, UtteranceHypothesis
-from pepper.language import Utterance
+from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
+from ..sensor import Context, UtteranceHypothesis
+from ..abstract import AbstractComponent
 
-from threading import Lock
+from pepper.language import Utterance
+from threading import Thread, Lock
 
 import numpy as np
 
 
 class ContextComponent(AbstractComponent):
-    # TODO: Add Min Area for Entry and Exit
     # TODO: Prevent fast switching of people failing
 
     # Minimum Distance of Person to Enter/Exit Conversation
@@ -84,7 +83,6 @@ class ContextComponent(AbstractComponent):
                     return face
 
         def on_image(image, orientation):
-
             closest_person = get_closest_person(self._people_info)
 
             if closest_person:
@@ -92,12 +90,10 @@ class ContextComponent(AbstractComponent):
                 closest_face = get_face(closest_person, self._face_info)
 
                 if closest_face and not self.context.chatting:
-                    with context_lock:
-                        self.on_person_enter(closest_face)
+                    Thread(target=self.on_person_enter, args=(closest_face,)).start()
 
             elif self.context.chatting:
-                with context_lock:
-                    self.on_person_exit()
+                self.on_person_exit()
 
             # Wipe face and people info after use
             self._face_info = []

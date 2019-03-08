@@ -2,8 +2,10 @@ from __future__ import print_function
 from sys import stdout, stderr
 
 from pepper.framework.abstract import AbstractComponent
-from pepper.framework.util import Scheduler
+from pepper.util import Scheduler
 from pepper.framework.component import SpeechRecognitionComponent
+
+import threading
 
 
 class StatisticsComponent(AbstractComponent):
@@ -42,7 +44,8 @@ class StatisticsComponent(AbstractComponent):
             error = (cam_rate_true < cam_rate * self.PERFORMANCE_ERROR_THRESHOLD or
                      mic_rate_true < float(mic_rate) * self.PERFORMANCE_ERROR_THRESHOLD)
 
-            print("\rMicrophone {:3.1f} kHz | Camera {:4.1f} Hz | Voice {:12s} {:4.0%}".format(
+            print("\rThreads {:2d} | Microphone {:3.1f} kHz | Camera {:4.1f} Hz | Voice  >>> {:12s} {:4.0%}".format(
+                threading.active_count(),
                 mic_rate_true / 1000.0, cam_rate_true,
                 voice_print if mic_running else empty_voice_print,
                 vad.activation if mic_running else 0),

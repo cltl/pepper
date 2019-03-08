@@ -89,8 +89,8 @@ def reply_to_question(brain_response, viewed_objects):
     previous_subject = ''
     previous_predicate = ''
 
-    print(brain_response['question'])
-    print(brain_response['response'])
+    # print(brain_response['question'])
+    # print(brain_response['response'])
 
     if 'hack' not in brain_response['question']['object'] and (len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees'): #FIX
         if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
@@ -113,7 +113,7 @@ def reply_to_question(brain_response, viewed_objects):
         return say+'\n'
 
     brain_response['response'].sort(key=lambda x: x['authorlabel']['value'])
-    print(brain_response['response'])
+    # print(brain_response['response'])
 
     for response in brain_response['response'][:4]:
         person = ''
@@ -189,14 +189,15 @@ def reply_to_question(brain_response, viewed_objects):
             else:
                 say += brain_response['question']['object']['label']
 
-
         say+=' and '
 
     return say[:-5]
 
 def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template = json.load(open(os.path.join(ROOT, 'data', 'template.json')))
-    print(template)
+
+    # print(template)
+
     template['author'] = speaker.title()
     template['utterance_type'] = utterance_type
     if type(rdf) == str:
