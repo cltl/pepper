@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent
-from pepper.util import Scheduler
+from pepper.framework.util import Scheduler
 from threading import Lock
 
 from typing import Optional, Union

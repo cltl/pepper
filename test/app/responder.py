@@ -2,9 +2,14 @@ from pepper.framework import *
 from pepper.responder import *
 from pepper import config
 
+from pepper.knowledge import sentences
+
+from random import choice
+
 
 class ResponderApp(AbstractApplication,
                    StatisticsComponent,
+                   TrackComponent,
                    ContextComponent,
                    BrainComponent,
                    SpeechRecognitionComponent,
@@ -35,7 +40,7 @@ class ResponderApp(AbstractApplication,
         self.say("Hello, {}".format(person.name))
 
     def on_person_exit(self):
-        self.say("You are gone!")
+        self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
         self.context.stop_chat()
 
     def on_chat_turn(self, utterance):

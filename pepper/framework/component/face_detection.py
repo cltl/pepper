@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.sensor.face import OpenFace, FaceClassifier, Face
-from pepper.util import Scheduler
+from pepper.framework.util import Scheduler
 from pepper import config
 
 from Queue import Queue

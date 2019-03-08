@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractCamera
-from pepper.util import Scheduler
+from pepper.framework.util import Scheduler
 from pepper import CameraResolution
 
 import cv2

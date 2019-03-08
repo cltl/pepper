@@ -1,4 +1,4 @@
-from pepper.util import Mailbox, Scheduler
+from pepper.framework.util import Mailbox, Scheduler
 from pepper import CameraResolution
 from pepper import logger
 

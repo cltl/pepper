@@ -143,9 +143,8 @@ class LocationResponder(Responder):
 
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
-        for cue in self.CUE_FULL:
-            if cue in utterance.transcript.lower():
-                return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
+        if utterance.transcript.lower() in self.CUE_FULL:
+            return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
 
     @staticmethod
     def _location_to_text(location):
@@ -155,7 +154,7 @@ class LocationResponder(Responder):
 class IdentityResponder(Responder):
 
     CUE_ME = [
-        "who are you ",
+        "who are you",
         "what is your name",
     ]
 
@@ -165,7 +164,7 @@ class IdentityResponder(Responder):
     ]
 
     CUE_YOU = [
-        "who am i",
+        "who am i ",
         "what is my name"
     ]
 

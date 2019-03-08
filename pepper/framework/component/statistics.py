@@ -2,7 +2,7 @@ from __future__ import print_function
 from sys import stdout, stderr
 
 from pepper.framework.abstract import AbstractComponent
-from pepper.util import Scheduler
+from pepper.framework.util import Scheduler
 from pepper.framework.component import SpeechRecognitionComponent
 
 import threading

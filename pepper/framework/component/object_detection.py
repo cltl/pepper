@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.sensor.obj import ObjectDetectionClient, ObjectDetectionTarget, Object
-from pepper.util import Scheduler, Mailbox
+from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
 
 import numpy as np

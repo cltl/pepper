@@ -142,12 +142,23 @@ class StreamedGoogleASR(BaseGoogleASR):
 
     def transcribe(self, audio):
         # type: (Iterable[np.ndarray]) -> List[UtteranceHypothesis]
+
+        for i in range(3):
+            try:
+                return self._transcribe(audio)
+            except:
+                self._log.error("ASR Transcription Error (try {})".format(i+1))
+
+        return []
+
+    def _transcribe(self, audio):
         hypotheses = []
         for response in self._client.streaming_recognize(self._streaming_config, self._request(audio)):
             for result in response.results:
                 if result.is_final:
                     for alternative in result.alternatives:
-                        hypotheses.append(UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
+                        hypotheses.append(
+                            UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
         return hypotheses
 
     @staticmethod
