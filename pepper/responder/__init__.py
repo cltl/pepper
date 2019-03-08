@@ -3,4 +3,5 @@ from .conversational import GreetingResponder, GoodbyeResponder, ThanksResponder
     NegationResponder
 from .personal import QnAResponder
 from .sensory import VisionResponder
+from .internet import WikipediaResponder
 from .brain import BrainResponder

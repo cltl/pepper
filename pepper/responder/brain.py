@@ -26,7 +26,7 @@ class BrainResponder(Responder):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
 
         try:
-
+            
             template = analyze(utterance.chat)
 
             if isinstance(template, dict):

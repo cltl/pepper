@@ -23,6 +23,7 @@ class ResponderApp(AbstractApplication,
             NegationResponder(),
             QnAResponder(),
             VisionResponder(),
+            WikipediaResponder(),
             BrainResponder(),
         ])
 
