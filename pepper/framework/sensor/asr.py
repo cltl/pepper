@@ -33,6 +33,10 @@ class UtteranceHypothesis(object):
         """
         return self._transcript
 
+    @transcript.setter
+    def transcript(self, value):
+        self._transcript = value
+
     @property
     def confidence(self):
         # type: () -> float
@@ -44,6 +48,10 @@ class UtteranceHypothesis(object):
         confidence: float
         """
         return self._confidence
+
+    @confidence.setter
+    def confidence(self, value):
+        self._confidence = value
 
     def __repr__(self):
         return "<'{}' [{:3.2%}]>".format(self.transcript, self.confidence)

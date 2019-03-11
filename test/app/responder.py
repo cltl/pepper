@@ -21,6 +21,7 @@ class ResponderApp(AbstractApplication,
         super(ResponderApp, self).__init__(backend)
 
         self.response_picker = ResponsePicker(self, [
+            UnknownResponder(),
             GreetingResponder(),
             GoodbyeResponder(),
             ThanksResponder(),

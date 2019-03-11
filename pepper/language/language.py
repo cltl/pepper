@@ -5,10 +5,9 @@ from pepper.brain import Triple
 
 from pepper import logger, config
 
-from nltk import CFG, RecursiveDescentParser
+from nltk import CFG, RecursiveDescentParser, edit_distance
 
-from Queue import Queue
-from threading import Thread
+from collections import Counter
 
 from random import getrandbits
 from datetime import datetime
@@ -295,7 +294,49 @@ class Utterance(object):
         return self._parser
 
     def _choose_hypothesis(self, hypotheses):
-        return hypotheses[0]
+        return sorted(self._patch_names(hypotheses), key=lambda hypothesis: hypothesis.confidence, reverse=True)[0]
+
+    @staticmethod
+    def _patch_names(hypotheses):
+
+        names = []
+
+        # Patch Transcripts with Names
+        for hypothesis in hypotheses:
+
+            transcript = []
+
+            for word in hypothesis.transcript.split():
+                name = Utterance._get_closest_name(word)
+
+                if name:
+                    names.append(name)
+                    transcript.append(name)
+                else:
+                    transcript.append(word)
+
+            hypothesis.transcript = " ".join(transcript)
+
+        if names:
+            # Count Name Frequency and Adjust Hypothesis Confidence
+            names = Counter(names)
+            max_freq = max(names.values())
+
+            for hypothesis in hypotheses:
+                for name in names.keys():
+                    if name in hypothesis.transcript:
+                        hypothesis.confidence *= float(names[name]) / float(max_freq)
+
+        return hypotheses
+
+    @staticmethod
+    def _get_closest_name(word, names=config.PEOPLE_FRIENDS_NAMES, max_name_distance=2):
+        # type: (str, List[str], int) -> str
+        if word[0].isupper():
+            name, distance = sorted([(name, edit_distance(name, word)) for name in names], key=lambda key: key[1])[0]
+
+            if distance <= max_name_distance:
+                return name
 
     def _tokenize(self, transcript):
         """

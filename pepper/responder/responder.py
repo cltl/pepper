@@ -16,6 +16,7 @@ class ResponderRequirementUnmetError(Exception):
 
 
 class ResponderType(IntEnum):
+    Intention = 7
     Sensory = 6
     Brain = 5
     Personal = 4
