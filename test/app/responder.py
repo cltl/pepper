@@ -23,8 +23,9 @@ RESPONDERS = [
 ]
 
 
-class ResponderApp(AbstractApplication, StatisticsComponent, TrackComponent, ContextComponent, BrainComponent,
-                   SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
+class ResponderApp(AbstractApplication, StatisticsComponent, TrackComponent,
+                   ContextComponent, BrainComponent, SpeechRecognitionComponent,
+                   ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
     pass
 
 

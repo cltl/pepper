@@ -120,6 +120,7 @@ class AffirmationResponder(Responder):
         "alright",
         "right",
         "great",
+        "nice",
         "sweet",
         "true",
         "good",
