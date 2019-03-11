@@ -7,6 +7,7 @@ from pepper import config
 from pepper.knowledge import sentences
 
 from random import choice
+from time import time
 
 import numpy as np
 import os
@@ -28,14 +29,22 @@ class ResponderApp(AbstractApplication, StatisticsComponent, TrackComponent, Con
 
 
 class DefaultIntention(AbstractIntention, ResponderApp):
+
+    IGNORE_TIMEOUT = 120
+
     def __init__(self, application):
         super(DefaultIntention, self).__init__(application)
+
+        self._ignored_people = {}
 
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
     def on_person_enter(self, person):
-        self.context.start_chat(person.name)
-        self.say("Hello, {}".format(person.name))
+        self._ignored_people = {name: t for name, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+
+        if person.name not in self._ignored_people:
+            self.context.start_chat(person.name)
+            self.say("Hello, {}".format(person.name))
 
     def on_person_exit(self):
         self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
@@ -46,6 +55,9 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
         if isinstance(responder, MeetIntentionResponder):
             MeetIntention(self.application)
+        elif isinstance(responder, GoodbyeResponder):
+            self._ignored_people[utterance.chat.speaker] = time()
+            self.context.stop_chat()
 
 
 class MeetIntention(AbstractIntention, ResponderApp):
