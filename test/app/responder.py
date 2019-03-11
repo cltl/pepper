@@ -13,12 +13,12 @@ import os
 
 
 RESPONDERS = [
-    UnknownResponder(),
-    GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
-    QnAResponder(),
-    VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(),
-    WikipediaResponder(),
     BrainResponder(),
+    VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(),
+    QnAResponder(),
+    GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
+    WikipediaResponder(), WolframResponder(),
+    UnknownResponder(),
 ]
 
 
@@ -151,8 +151,10 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
     def _save(self):
         name, features = self._current_name, np.concatenate(self.face_vectors).reshape(-1, OpenFace.FEATURE_DIM)
-        self.face_classifier.add(name, features)
-        features.tofile(os.path.join(config.PEOPLE_NEW_ROOT, "{}.bin".format(name)))
+
+        if name != "NEW":  # Prevent Overwrite of NEW.bin
+            self.face_classifier.add(name, features)
+            features.tofile(os.path.join(config.PEOPLE_NEW_ROOT, "{}.bin".format(name)))
 
 
 if __name__ == '__main__':

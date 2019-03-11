@@ -17,17 +17,12 @@ class VisionResponder(Responder):
         "what can you see",
     ]
 
-    SEE_SPECIFIC_OBJECT = [
-        "do you see a",
-        "can you see a"
-    ]
-
     SEE_PERSON = [
         "who do you see",
         "who can you see",
     ]
 
-    SEE_SPECIFIC_PERSON = [
+    SEE_SPECIFIC = [
         "do you see",
         "can you see"
     ]
@@ -60,23 +55,34 @@ class VisionResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        if utterance.transcript.lower() in self.SEE_OBJECT:
-            objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.objects]
+        objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.objects]
+        people = [p.name for p in utterance.chat.context.people]
 
+        if utterance.transcript.lower() in self.SEE_OBJECT:
             if objects:
                 return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(objects)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_OBJECT))
 
         elif utterance.transcript.lower() in self.SEE_PERSON:
-            people = [p.name for p in utterance.chat.context.people]
-
             if people:
                 return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(people)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
+        else:
 
-        # TODO: Specific Object/Person Question answering (POS tag in Utterance)
+            items = objects + people
+
+            response = []
+
+            for cue in self.SEE_SPECIFIC:
+                if cue in utterance.transcript.lower():
+                    for item in items:
+                        if item.lower() in utterance.transcript.lower():
+                            response.append(item)
+
+            if response:
+                return 1.0, lambda: app.say("Yes, I can see " + self._items_to_sentence(response))
 
     @staticmethod
     def _insert_a_an(word):
@@ -100,6 +106,7 @@ class PreviousUtteranceResponder(Responder):
         "i didn't hear you",
         "i can't hear you",
         "come again",
+        "excuse me",
     ]
 
     REPEAT = "I said:"

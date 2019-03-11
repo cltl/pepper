@@ -20,8 +20,8 @@ class ResponderType(IntEnum):
     Sensory = 6
     Brain = 5
     Personal = 4
-    Internet = 3
-    Conversational = 2
+    Conversational = 3
+    Internet = 2
     Unknown = 1
 
 

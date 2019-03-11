@@ -4,6 +4,6 @@ from .conversational import GreetingResponder, GoodbyeResponder, ThanksResponder
     NegationResponder
 from .personal import QnAResponder
 from .sensory import VisionResponder, PreviousUtteranceResponder, LocationResponder, IdentityResponder
-from .internet import WikipediaResponder
+from .internet import WikipediaResponder, WolframResponder
 from .brain import BrainResponder
 from .intention import MeetIntentionResponder
