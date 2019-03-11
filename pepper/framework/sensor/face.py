@@ -293,6 +293,19 @@ class FaceClassifier:
         """
         return self._people
 
+    def add(self, name, vector):
+        people = self._people
+        people[name] = vector
+
+        self._names = sorted(self.people.keys())
+        self._indices = range(len(self._names))
+
+        if self.people:
+            self._labels = np.concatenate([[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
+            self._features = np.concatenate([self.people[name] for name in self._names])
+            self._classifier = KNeighborsClassifier(self._n_neighbors)
+            self._classifier.fit(self._features, self._labels)
+
     def classify(self, representation, bounds, image):
         """
         Classify Face as Person

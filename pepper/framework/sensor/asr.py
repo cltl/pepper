@@ -167,7 +167,7 @@ class StreamedGoogleASR(BaseGoogleASR):
                     for alternative in result.alternatives:
                         hypotheses.append(
                             UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
-        return hypotheses
+        return sorted(hypotheses, key=lambda hypothesis: hypothesis.confidence, reverse=True)
 
     @staticmethod
     def _request(audio):
@@ -195,7 +195,7 @@ class SynchronousGoogleASR(BaseGoogleASR):
         for result in self._client.recognize(self._config, self._request(audio)).results:
             for alternative in result.alternatives:
                 hypotheses.append(UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
-        return hypotheses
+        return sorted(hypotheses, key=lambda hypothesis: hypothesis.confidence, reverse=True)
 
     @staticmethod
     def _request(audio):

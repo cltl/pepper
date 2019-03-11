@@ -6,3 +6,4 @@ from .personal import QnAResponder
 from .sensory import VisionResponder, PreviousUtteranceResponder, LocationResponder, IdentityResponder
 from .internet import WikipediaResponder
 from .brain import BrainResponder
+from .intention import MeetIntentionResponder

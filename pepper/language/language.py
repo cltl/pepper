@@ -167,14 +167,14 @@ class Utterance(object):
             Utterance Turn
         """
 
+        self._log = logger.getChild(self.__class__.__name__)
+
+        self._datetime = datetime.now()
         self._chat = chat
+        self._turn = turn
+        self._me = me
 
         self._hypothesis = self._choose_hypothesis(hypotheses)
-
-        self._me = me
-        self._turn = turn
-        self._datetime = datetime.now()
-        self._log = logger.getChild(self.__class__.__name__)
 
         self._tokens = self._clean(self._tokenize(self.transcript))
 
@@ -296,36 +296,36 @@ class Utterance(object):
     def _choose_hypothesis(self, hypotheses):
         return sorted(self._patch_names(hypotheses), key=lambda hypothesis: hypothesis.confidence, reverse=True)[0]
 
-    @staticmethod
-    def _patch_names(hypotheses):
+    def _patch_names(self, hypotheses):
+        if not self.me:
 
-        names = []
+            names = []
 
-        # Patch Transcripts with Names
-        for hypothesis in hypotheses:
-
-            transcript = []
-
-            for word in hypothesis.transcript.split():
-                name = Utterance._get_closest_name(word)
-
-                if name:
-                    names.append(name)
-                    transcript.append(name)
-                else:
-                    transcript.append(word)
-
-            hypothesis.transcript = " ".join(transcript)
-
-        if names:
-            # Count Name Frequency and Adjust Hypothesis Confidence
-            names = Counter(names)
-            max_freq = max(names.values())
-
+            # Patch Transcripts with Names
             for hypothesis in hypotheses:
-                for name in names.keys():
-                    if name in hypothesis.transcript:
-                        hypothesis.confidence *= float(names[name]) / float(max_freq)
+
+                transcript = []
+
+                for word in hypothesis.transcript.split():
+                    name = Utterance._get_closest_name(word)
+
+                    if name:
+                        names.append(name)
+                        transcript.append(name)
+                    else:
+                        transcript.append(word)
+
+                hypothesis.transcript = " ".join(transcript)
+
+            if names:
+                # Count Name Frequency and Adjust Hypothesis Confidence
+                names = Counter(names)
+                max_freq = max(names.values())
+
+                for hypothesis in hypotheses:
+                    for name in names.keys():
+                        if name in hypothesis.transcript:
+                            hypothesis.confidence *= float(names[name]) / float(max_freq)
 
         return hypotheses
 

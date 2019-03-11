@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from pepper.framework import *
 from pepper.responder import *
 from pepper import config
@@ -6,35 +8,30 @@ from pepper.knowledge import sentences
 
 from random import choice
 
+import numpy as np
+import os
 
-class ResponderApp(AbstractApplication,
-                   StatisticsComponent,
-                   TrackComponent,
-                   ContextComponent,
-                   BrainComponent,
-                   SpeechRecognitionComponent,
-                   ObjectDetectionComponent,
-                   FaceRecognitionComponent,
-                   TextToSpeechComponent):
 
-    def __init__(self, backend):
-        super(ResponderApp, self).__init__(backend)
+RESPONDERS = [
+    UnknownResponder(),
+    GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
+    QnAResponder(),
+    VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(),
+    WikipediaResponder(),
+    BrainResponder(),
+]
 
-        self.response_picker = ResponsePicker(self, [
-            UnknownResponder(),
-            GreetingResponder(),
-            GoodbyeResponder(),
-            ThanksResponder(),
-            AffirmationResponder(),
-            NegationResponder(),
-            QnAResponder(),
-            VisionResponder(),
-            PreviousUtteranceResponder(),
-            IdentityResponder(),
-            LocationResponder(),
-            WikipediaResponder(),
-            BrainResponder(),
-        ])
+
+class ResponderApp(AbstractApplication, StatisticsComponent, TrackComponent, ContextComponent, BrainComponent,
+                   SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
+    pass
+
+
+class DefaultIntention(AbstractIntention, ResponderApp):
+    def __init__(self, application):
+        super(DefaultIntention, self).__init__(application)
+
+        self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
     def on_person_enter(self, person):
         self.context.start_chat(person.name)
@@ -45,8 +42,126 @@ class ResponderApp(AbstractApplication,
         self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
-        self.response_picker.respond(utterance)
+        responder = self.response_picker.respond(utterance)
+
+        if isinstance(responder, MeetIntentionResponder):
+            MeetIntention(self.application)
+
+
+class MeetIntention(AbstractIntention, ResponderApp):
+    CUES = ["my name is", "i am", "no my name is", "no i am"]
+
+    def __init__(self, application):
+        super(MeetIntention, self).__init__(application)
+
+        self.response_picker = ResponsePicker(self, RESPONDERS)
+
+        self._asrs = [SynchronousGoogleASR(language) for language in ['nl-NL', 'es-ES']]
+
+        self._last_statement_was_name = False
+        self._current_name = None
+        self._possible_names = {}
+        self._denied_names = set()
+
+        self.say("{} {}".format(choice(sentences.INTRODUCE), choice(sentences.ASK_NAME)))
+
+    def on_person_exit(self):
+        self.context.stop_chat()
+        DefaultIntention(self.application)
+
+    def on_transcript(self, hypotheses, audio):
+        self._last_statement_was_name = False
+
+        if self._is_name_statement(hypotheses):
+
+            # Parse Audio using Multiple Languages!
+            for asr in self._asrs:
+                hypotheses.extend(asr.transcribe(audio))
+
+            for hypothesis in hypotheses:
+
+                self._last_statement_was_name = True
+
+                name = hypothesis.transcript.split()[-1]
+
+                # If not already denied
+                if name not in self._denied_names and name[0].isupper():
+
+                    # Update possible names with this name
+                    if name not in self._possible_names:
+                        self._possible_names[name] = 0.0
+                    self._possible_names[name] += hypothesis.confidence
+
+            self._current_name = self._get_current_name()
+
+            # If hypotheses about just mentioned name exist -> Ask Verification
+            if self._last_statement_was_name and self._current_name:
+                self.say(choice(sentences.VERIFY_NAME).format(self._current_name))
+
+    def on_chat_turn(self, utterance):
+
+        # If not already responded to Name Utterance
+        if not self._last_statement_was_name:
+
+            # Respond Normally to Whatever Utterance
+            responder = self.response_picker.respond(utterance)
+
+            if self._current_name:  # If currently verifying a name
+
+                # If negated, remove name from name hypotheses (and suggest alternative)
+                if isinstance(responder, NegationResponder):
+                    self._denied_names.add(self._current_name)
+                    self._possible_names.pop(self._current_name)
+                    self._current_name = self._get_current_name()
+
+                    # Try to Verify next best hypothesis
+                    self.say(choice(sentences.VERIFY_NAME).format(self._current_name))
+
+                # If confirmed, store name and start chat with person
+                elif isinstance(responder, AffirmationResponder):
+                    self.say(choice(sentences.JUST_MET).format(self._current_name))
+
+                    # Save New Person to Memory
+                    self._save()
+
+                    # Start new chat and switch intention
+                    self.context.start_chat(self._current_name)
+                    DefaultIntention(self.application)
+
+                # Exit on User Goodbye
+                elif isinstance(responder, GoodbyeResponder):
+                    DefaultIntention(self.application)
+
+                else:  # If some other question was asked, remind human of intention
+                    self.say(choice(sentences.VERIFY_NAME).format(self._current_name))
+
+            else:  # If no name hypothesis yet exists
+                self.say("But, {}".format(choice(sentences.ASK_NAME)))
+
+    def _get_current_name(self):
+        if self._possible_names:
+            return [n for n, c in sorted(self._possible_names.items(), key=lambda i: i[1], reverse=True)][0]
+
+    def _is_name_statement(self, hypotheses):
+        for hypothesis in hypotheses:
+            for cue in self.CUES:
+                if cue in hypothesis.transcript.lower():
+                    return True
+        return False
+
+    def _save(self):
+        name, features = self._current_name, np.concatenate(self.face_vectors).reshape(-1, OpenFace.FEATURE_DIM)
+        self.face_classifier.add(name, features)
+        features.tofile(os.path.join(config.PEOPLE_NEW_ROOT, "{}.bin".format(name)))
 
 
 if __name__ == '__main__':
-    ResponderApp(config.get_backend()).run()
+
+    # Boot Application
+    application = ResponderApp(config.get_backend())
+
+    # Boot Default Intention
+    intention = DefaultIntention(application)
+
+    # Run Application
+    application.run()

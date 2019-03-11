@@ -13,6 +13,7 @@ class UnknownResponder(Responder):
     ELOQUENCE = [
         "I see",
         "Interesting",
+        "Very Interesting, Indeed!",
         "Good to know",
         "I do not know, but I have a joke {insert joke}",
         "As the prophecy foretold",

@@ -76,14 +76,6 @@ class QnA:
                                 "and part of it is even in the cloud. So modern!",
         "Which programming language?": "I'm mostly programmed in Python, but also some C++ and possibly other languages!",
         "Do you need internet?": "I do need internet, for understanding speech and looking up facts about the world!",
-        "What technologies do you use?": "I use: "
-                                         "Google Speech API for speech recognition, "
-                                         "OpenFace and K Nearest Neighbours for face recognition, "
-                                         "COCO and Inception for object recognition, "
-                                         "NLTK for Natural Language Understanding, "
-                                         "Wolfram Alpha for getting factual information from the internet, "
-                                         "A triple store through GraphDB for representing my personal brain and "
-                                         "Nice arm and head animations for believability! Amazing, right?",
         "Speech Recognition": "First I listen for an utterance, "
                               "I send that to Google, which gives me back a bunch of hypotheses about what you just said. "
                               "From those hypotheses I try to make sense what you mean. And all of this, hopefully, within a second!",
