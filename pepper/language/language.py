@@ -276,7 +276,13 @@ class Utterance(object):
                 - remove contractions
         """
 
-        tokens_raw = transcript.replace("'", " ").split()
+        tokens_raw = transcript.replace("'", " ").split() # TODO possessive
+        dict = {'m': 'am', 're': 'are', 'll': 'will', 's': 'is'}
+        for key in dict:
+            if key in tokens_raw:
+                index = tokens_raw.index(key)
+                tokens_raw.remove(key)
+                tokens_raw.insert(index, dict[key])
         tokens = []
         for word in tokens_raw:
             clean_word = re.sub('[?!]', '', word)
@@ -385,8 +391,13 @@ class Parser(object):
                             s_r[index] = {'label': node.label()}
                             raw = ''
                             if len(node.leaves())>1:
+                                s_r[index]['structure']= branch
                                 for n in node.leaves():
                                     raw+=n+' '
+
+                                # deeper structure
+
+                                    node.label
                             else:
                                 raw = node.leaves()
 

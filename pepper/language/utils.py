@@ -206,7 +206,7 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
         return 'error in the rdf'
 
     template['subject']['label'] = rdf['subject'].strip().lower() #capitalization
-    template['subject']['type'] = "type.person"
+    template['subject']['type'] = "person"
     if rdf['predicate']=='seen':
         template['predicate']['type'] = 'sees'
         template['object']['hack'] = True
