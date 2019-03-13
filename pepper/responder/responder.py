@@ -111,8 +111,6 @@ class ResponsePicker(object):
 
                 result = responder.respond(utterance, self.app)
 
-                print(responder, result)
-
                 if result:
                     score, func = result
 
