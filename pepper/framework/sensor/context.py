@@ -135,8 +135,8 @@ class Context(object):
             self._people[person.name] = (person, time())
 
     def start_chat(self, speaker):
-        self._chats.append(Chat(speaker, self))
         self._chatting = True
+        self._chats.append(Chat(speaker, self))
 
     def stop_chat(self):
         self._chatting = False

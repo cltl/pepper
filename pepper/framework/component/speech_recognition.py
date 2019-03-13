@@ -32,12 +32,12 @@ class SpeechRecognitionComponent(AbstractComponent):
                 if hypotheses:
                     audio = voice.audio
 
+                    # Call on_transcript Event Function
+                    self.on_transcript(hypotheses, audio)
+
                     # Call Callback Functions
                     for callback in self.on_transcript_callbacks:
                         callback(hypotheses, audio)
-
-                    # Call on_transcript Event Function
-                    self.on_transcript(hypotheses, audio)
 
         thread = Thread(target=worker, name="StreamingSpeechRecognitionComponentWorker")
         thread.daemon = True

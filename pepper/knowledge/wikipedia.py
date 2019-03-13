@@ -42,7 +42,7 @@ class Wikipedia:
         pos = Wikipedia._combine_nouns(nltk.pos_tag(nltk.word_tokenize(query)))
 
         # If this is a proper question about a Noun (quite hacky here)
-        if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or pos[0][0].lower() in ["what", "who"]:
+        if pos and pos[0][1].startswith("VB") or pos[0][1] in ["MD"] or Wikipedia._is_queryable(pos[0][1]) or pos[0][0].lower() in ["what", "who"]:
 
             # And there is only one Noun in Question (a.k.a., question is simple enough)
             if sum([Wikipedia._is_queryable(tag) for word, tag in pos]) == 1:
@@ -107,13 +107,3 @@ class Wikipedia:
     @staticmethod
     def _is_queryable(tag):
         return tag.startswith('NN') or tag.startswith("JJ")
-
-
-if __name__ == '__main__':
-    from time import time
-
-    N = 10
-
-    t0 = time()
-    for i in range(N): Wikipedia.query("Who is Alan Turing?")
-    print((time() - t0) / float(N))

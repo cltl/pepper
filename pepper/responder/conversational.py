@@ -91,7 +91,7 @@ class ThanksResponder(Responder):
     THANKS_REPLY = [
         "You're welcome",
         "No problem",
-        "Glad to be at service",
+        "Glad to be of service",
         "Anytime",
     ]
 
@@ -117,10 +117,14 @@ class AffirmationResponder(Responder):
         "yes",
         "yeah",
         "correct",
+        "alright",
         "right",
         "great",
+        "nice",
+        "sweet",
         "true",
         "good",
+        "ok",
         "well",
         "correctamundo",
         "splendid",

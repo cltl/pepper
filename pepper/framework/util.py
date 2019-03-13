@@ -6,7 +6,7 @@ from time import sleep
 class Scheduler(Thread):
     """Runs Task Continuously with certain interval"""
 
-    def __init__(self, target, interval=5E-3, name=None, args=(), kwargs={}):
+    def __init__(self, target, interval=1E-2, name=None, args=(), kwargs={}):
         Thread.__init__(self, name=name)
         self._target = target
         self._interval = interval

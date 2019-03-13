@@ -5,7 +5,6 @@ from pepper import config
 
 import numpy as np
 
-from Queue import Queue
 from typing import List, Dict
 
 

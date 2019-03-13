@@ -5,7 +5,7 @@ import requests
 
 class Wolfram:
     API_SPOKEN = ur"https://api.wolframalpha.com/v1/spoken?appid={}&i={}"
-    API_QUERY = ur"http://www.wolframalpha.com/queryrecognizer/query.jsp?&appid={}&i={}"
+    API_QUERY = ur"http://www.wolframalpha.com/queryrecognizer/query.jsp?&appid={}&mode=Voice&i={}"
 
     ERRORS = [
         "Wolfram Alpha did not understand your input",

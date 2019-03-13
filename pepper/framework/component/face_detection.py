@@ -4,7 +4,7 @@ from pepper.framework.util import Scheduler
 from pepper import config
 
 from Queue import Queue
-from typing import List, NoReturn
+from typing import List
 
 
 class FaceRecognitionComponent(AbstractComponent):

@@ -201,7 +201,7 @@ THANK = [
 GOODBYE = [
     "Bye",
     "Bye Bye",
-    "See you"
+    "See you",
     "See you later",
     "Goodbye",
     "Have a nice day",

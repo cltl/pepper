@@ -5,13 +5,17 @@ from pepper.brain import Triple
 
 from pepper import logger, config
 
-from nltk import CFG, RecursiveDescentParser
+from nltk import CFG, RecursiveDescentParser, edit_distance
+
+from collections import Counter
 
 from random import getrandbits
 from datetime import datetime
 import enum
 import re
 import os
+
+from typing import List
 
 
 class UtteranceType(enum.Enum):
@@ -50,6 +54,8 @@ class Chat(object):
         ----------
         speaker: str
             Name of speaker (a.k.a. the person Pepper has a chat with)
+        context: Context
+            Context Chat is part of
         """
 
         self._id = getrandbits(128)
@@ -57,7 +63,8 @@ class Chat(object):
         self._speaker = speaker
         self._utterances = []
 
-        self._log = logger.getChild("{} ({} & {})".format(self.__class__.__name__, config.NAME, self.speaker))
+        self._log = self._update_logger()
+        self._log.info("<< Start of Chat with {} >>".format(speaker))
 
     @property
     def context(self):
@@ -71,6 +78,7 @@ class Chat(object):
 
     @property
     def speaker(self):
+        # type: () -> str
         """
         Returns
         -------
@@ -81,6 +89,7 @@ class Chat(object):
 
     @property
     def id(self):
+        # type: () -> int
         """
         Returns
         -------
@@ -91,6 +100,7 @@ class Chat(object):
 
     @property
     def utterances(self):
+        # type: () -> List[Utterance]
         """
         Returns
         -------
@@ -101,6 +111,7 @@ class Chat(object):
 
     @property
     def last_utterance(self):
+        # type: () -> Utterance
         """
         Returns
         -------
@@ -110,6 +121,7 @@ class Chat(object):
         return self._utterances[-1]
 
     def add_utterance(self, hypotheses, me):
+        # type: (List[UtteranceHypothesis], bool) -> Utterance
         """
         Add Utterance to Conversation
 
@@ -122,16 +134,24 @@ class Chat(object):
         utterance: Utterance
         """
         utterance = Utterance(self, hypotheses, me, len(self._utterances))
-        self._log.info(utterance)
         self._utterances.append(utterance)
+
+        self._log = self._update_logger()
+        self._log.info(utterance)
+
         return utterance
+
+    def _update_logger(self):
+        return logger.getChild("Chat {:19s} {:03d}".format("({})".format(self.speaker), len(self._utterances)))
 
     def __repr__(self):
         return "\n".join([str(utterance) for utterance in self._utterances])
 
 
 class Utterance(object):
+
     def __init__(self, chat, hypotheses, me, turn):
+        # type: (Chat, List[UtteranceHypothesis], bool, int) -> Utterance
         """
         Construct Utterance Object
 
@@ -139,7 +159,7 @@ class Utterance(object):
         ----------
         chat: Chat
             Reference to Chat Utterance is part of
-        hypotheses: list of UtteranceHypothesis
+        hypotheses: List[UtteranceHypothesis]
             Hypotheses on uttered text (transcript, confidence)
         me: bool
             True if Robot spoke, False if Person Spoke
@@ -147,23 +167,22 @@ class Utterance(object):
             Utterance Turn
         """
 
-        self._chat = chat
-
-        # TODO: Smartly pick best hypothesis for the job
-        self._transcript = hypotheses[0].transcript
-
-        self._me = me
-        self._turn = turn
-        self._datetime = datetime.now()
         self._log = logger.getChild(self.__class__.__name__)
 
-        self._tokens = self._clean(self._tokenize(self._transcript))
+        self._datetime = datetime.now()
+        self._chat = chat
+        self._turn = turn
+        self._me = me
+
+        self._hypothesis = self._choose_hypothesis(hypotheses)
+
+        self._tokens = self._clean(self._tokenize(self.transcript))
 
         self._parser = Parser(self)
 
-
     @property
     def chat(self):
+        # type: () -> Chat
         """
         Returns
         -------
@@ -179,13 +198,25 @@ class Utterance(object):
 
     @property
     def transcript(self):
+        # type: () -> str
         """
         Returns
         -------
         transcript: str
             Utterance Transcript
         """
-        return self._transcript
+        return self._hypothesis.transcript
+
+    @property
+    def confidence(self):
+        # type: () -> float
+        """
+        Returns
+        -------
+        confidence: float
+            Utterance Confidence
+        """
+        return self._hypothesis.confidence
 
     @property
     def me(self):
@@ -262,6 +293,51 @@ class Utterance(object):
         """
         return self._parser
 
+    def _choose_hypothesis(self, hypotheses):
+        return sorted(self._patch_names(hypotheses), key=lambda hypothesis: hypothesis.confidence, reverse=True)[0]
+
+    def _patch_names(self, hypotheses):
+        if not self.me:
+
+            names = []
+
+            # Patch Transcripts with Names
+            for hypothesis in hypotheses:
+
+                transcript = []
+
+                for word in hypothesis.transcript.split():
+                    name = Utterance._get_closest_name(word)
+
+                    if name:
+                        names.append(name)
+                        transcript.append(name)
+                    else:
+                        transcript.append(word)
+
+                hypothesis.transcript = " ".join(transcript)
+
+            if names:
+                # Count Name Frequency and Adjust Hypothesis Confidence
+                names = Counter(names)
+                max_freq = max(names.values())
+
+                for hypothesis in hypotheses:
+                    for name in names.keys():
+                        if name in hypothesis.transcript:
+                            hypothesis.confidence *= float(names[name]) / float(max_freq)
+
+        return hypotheses
+
+    @staticmethod
+    def _get_closest_name(word, names=config.PEOPLE_FRIENDS_NAMES, max_name_distance=2):
+        # type: (str, List[str], int) -> str
+        if word[0].isupper():
+            name, distance = sorted([(name, edit_distance(name, word)) for name in names], key=lambda key: key[1])[0]
+
+            if distance <= max_name_distance:
+                return name
+
     def _tokenize(self, transcript):
         """
         Parameters
@@ -308,7 +384,7 @@ class Utterance(object):
 
     def __repr__(self):
         author = config.NAME if self.me else self.chat.speaker
-        return "{:10s} -> {}".format(author, self.transcript)
+        return '{:>10s}: "{}"'.format(author, self.transcript)
 
 
 class Parser(object):
@@ -368,23 +444,23 @@ class Parser(object):
             if new_rule not in self._cfg:
                 self._cfg += new_rule
 
-        cfg_parser = CFG.fromstring(self._cfg)
-        RD = RecursiveDescentParser(cfg_parser)
+        try:
+            cfg_parser = CFG.fromstring(self._cfg)
+            RD = RecursiveDescentParser(cfg_parser)
+            parsed = RD.parse(tokenized_sentence)
 
-        parsed = RD.parse(tokenized_sentence)
+            s_r = {} #syntactic_realizations
+            index = 0
 
-        s_r = {} #syntactic_realizations
-        index = 0
+            forest = [tree for tree in parsed]
 
-        forest = [tree for tree in parsed]
-
-        if len(forest):
-            for tree in forest[0]: #alternative trees? f
-                for branch in tree:
-                    for node in branch:
-                        if type(node)== unicode or type(node)==str:
-                            s_r[index] = {'label': branch.label()}
-                            s_r[index]['raw'] = node
+            if len(forest):
+                for tree in forest[0]: #alternative trees? f
+                    for branch in tree:
+                        for node in branch:
+                            if type(node)== unicode or type(node)==str:
+                                s_r[index] = {'label': branch.label()}
+                                s_r[index]['raw'] = node
 
                         else:
                             #print('node label ',node.label())
@@ -396,21 +472,22 @@ class Parser(object):
                                     raw+=n+' '
 
                                 # deeper structure
-
-                                    node.label
                             else:
                                 raw = node.leaves()
 
-                            s_r[index]['raw'] = raw
-                        index+=1
+                                s_r[index]['raw'] = raw
+                            index+=1
 
-        for el in s_r:
-            #print(el, s_r[el])
-            if type(s_r[el]['raw']) == list:
-                string = ''
-                for e in s_r[el]['raw']:
-                    string += e + ' '
-                s_r[el]['raw'] = string
-            s_r[el]['raw'] = s_r[el]['raw'].strip()
+            for el in s_r:
+                #print(el, s_r[el])
+                if type(s_r[el]['raw']) == list:
+                    string = ''
+                    for e in s_r[el]['raw']:
+                        string += e + ' '
+                    s_r[el]['raw'] = string
+                s_r[el]['raw'] = s_r[el]['raw'].strip()
 
-        return forest, s_r
+            return forest, s_r
+
+        except:
+            return [], {}

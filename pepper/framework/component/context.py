@@ -1,15 +1,18 @@
-from pepper.framework.abstract import AbstractComponent
-from pepper.framework.component import *
-from pepper.framework.sensor import Context, UtteranceHypothesis
+from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
+from ..sensor import Context, UtteranceHypothesis
+from ..abstract import AbstractComponent
+
 from pepper.language import Utterance
 
-from threading import Lock
+from collections import deque
+from threading import Thread, Lock
+
+from typing import Deque
 
 import numpy as np
 
 
 class ContextComponent(AbstractComponent):
-    # TODO: Add Min Area for Entry and Exit
     # TODO: Prevent fast switching of people failing
 
     # Minimum Distance of Person to Enter/Exit Conversation
@@ -34,6 +37,8 @@ class ContextComponent(AbstractComponent):
 
         self._context = Context()
 
+        self._face_vectors = deque(maxlen=50)
+
         self._people_info = []
         self._face_info = []
 
@@ -48,7 +53,7 @@ class ContextComponent(AbstractComponent):
             """
 
             with context_lock:
-                if self.context.chatting:
+                if self.context.chatting and hypotheses:
 
                     # Add ASR Transcript to Chat as Utterance
                     self.context.chat.add_utterance(hypotheses, False)
@@ -84,20 +89,22 @@ class ContextComponent(AbstractComponent):
                     return face
 
         def on_image(image, orientation):
-
             closest_person = get_closest_person(self._people_info)
 
             if closest_person:
 
                 closest_face = get_face(closest_person, self._face_info)
 
-                if closest_face and not self.context.chatting:
-                    with context_lock:
-                        self.on_person_enter(closest_face)
+                if closest_face:
+                    if self.context.chatting:
+                        self._face_vectors.append(closest_face.representation)
+                    else:
+                        self._face_vectors.clear()
+                        Thread(target=self.on_person_enter, args=(closest_face,)).start()
 
             elif self.context.chatting:
-                with context_lock:
-                    self.on_person_exit()
+                self._face_vectors.clear()
+                self.on_person_exit()
 
             # Wipe face and people info after use
             self._face_info = []
@@ -112,12 +119,12 @@ class ContextComponent(AbstractComponent):
             self.context.add_people(people)
 
         # Link Transcript, Object and Face Events to Context
-        speech_comp.on_transcript_callbacks.insert(0, on_transcript)
-        object_comp.on_object_callbacks.insert(0, on_object)
-        face_comp.on_face_callbacks.insert(0, on_face)
+        speech_comp.on_transcript_callbacks.append(on_transcript)
+        object_comp.on_object_callbacks.append(on_object)
+        face_comp.on_face_callbacks.append(on_face)
 
         # Add On Image Callback
-        self.backend.camera.callbacks += [on_image]
+        self.backend.camera.callbacks.append(on_image)
 
     @property
     def context(self):
@@ -129,6 +136,11 @@ class ContextComponent(AbstractComponent):
             Current Context
         """
         return self._context
+
+    @property
+    def face_vectors(self):
+        # type: () -> Deque[np.ndarray]
+        return self._face_vectors
 
     def say(self, text, animation=None, block=False):
         # Call super (TextToSpeechComponent)

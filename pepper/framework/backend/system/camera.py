@@ -4,7 +4,6 @@ from pepper import CameraResolution
 
 import cv2
 
-from threading import Thread
 from time import time, sleep
 
 

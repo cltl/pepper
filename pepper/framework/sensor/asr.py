@@ -33,6 +33,10 @@ class UtteranceHypothesis(object):
         """
         return self._transcript
 
+    @transcript.setter
+    def transcript(self, value):
+        self._transcript = value
+
     @property
     def confidence(self):
         # type: () -> float
@@ -44,6 +48,10 @@ class UtteranceHypothesis(object):
         confidence: float
         """
         return self._confidence
+
+    @confidence.setter
+    def confidence(self, value):
+        self._confidence = value
 
     def __repr__(self):
         return "<'{}' [{:3.2%}]>".format(self.transcript, self.confidence)
@@ -142,13 +150,24 @@ class StreamedGoogleASR(BaseGoogleASR):
 
     def transcribe(self, audio):
         # type: (Iterable[np.ndarray]) -> List[UtteranceHypothesis]
+
+        for i in range(3):
+            try:
+                return self._transcribe(audio)
+            except:
+                self._log.error("ASR Transcription Error (try {})".format(i+1))
+
+        return []
+
+    def _transcribe(self, audio):
         hypotheses = []
         for response in self._client.streaming_recognize(self._streaming_config, self._request(audio)):
             for result in response.results:
                 if result.is_final:
                     for alternative in result.alternatives:
-                        hypotheses.append(UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
-        return hypotheses
+                        hypotheses.append(
+                            UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
+        return sorted(hypotheses, key=lambda hypothesis: hypothesis.confidence, reverse=True)
 
     @staticmethod
     def _request(audio):
@@ -176,7 +195,7 @@ class SynchronousGoogleASR(BaseGoogleASR):
         for result in self._client.recognize(self._config, self._request(audio)).results:
             for alternative in result.alternatives:
                 hypotheses.append(UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
-        return hypotheses
+        return sorted(hypotheses, key=lambda hypothesis: hypothesis.confidence, reverse=True)
 
     @staticmethod
     def _request(audio):
