@@ -182,7 +182,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         chat: Chat
             Chat to be analyzed
         """
-        dict = {}
+
         super(GeneralStatementAnalyzer, self).__init__(chat)
 
         rdf = {'predicate': '', 'subject': '', 'object': ''}
@@ -198,7 +198,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
             rdf['predicate'] = cons[1]['raw'] + '-' + pp
             rdf['object'] = remainder.strip()
         else:
-            rdf['predicate'] = cons[1]['raw']
+            rdf['predicate'] = cons[1]['raw']+'s'
             rdf['object'] = cons[2]['raw']
 
         '''
@@ -222,13 +222,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                         rdf['object'] += node.leaves()[0] + ' '
                     '''
 
-        if rdf['object'].lower() in self.GRAMMAR['pronouns']['subject']:
-            dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['object'].lower()]
-            rdf['object'] = utils.fix_pronouns(dict, self.chat.speaker)
-
-        if rdf['subject'].lower() in self.GRAMMAR['pronouns']['subject']:
-            dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['subject'].lower()]
-            rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
+        rdf = dereference_pronouns(rdf, self.GRAMMAR, self.chat.speaker)
+        print(rdf)
 
         self._rdf = rdf
 
@@ -329,24 +324,30 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
-        dict = {}
 
-        # for el in cons:
-        #     print(el, cons[el])
 
-        if cons[3]['label'].startswith('V'):
-            rdf['predicate'] = cons[3]['raw']+'s'
 
-        if cons[2]['label'] == 'NP':
-            rdf['subject'] = cons[2]['raw']
+        for el in cons:
+            print(el, cons[el])
 
-        if rdf['object'].lower() in self.GRAMMAR['pronouns']['subject']:
-            dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['object'].lower()]
-            rdf['object'] = utils.fix_pronouns(dict, self.chat.speaker)
+            if cons[el]['label'].startswith('V'):
+                rdf['predicate'] = cons[el]['raw']
 
-        if rdf['subject'].lower() in self.GRAMMAR['pronouns']['subject']:
-            dict['pronoun'] = self.GRAMMAR['pronouns']['subject'][rdf['subject'].lower()]
-            rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
+            if cons[el]['label'] == 'PP':
+                if 'structure' in cons[el]:
+                    tree = cons[el]['structure']
+                    for branch in tree:
+                        for node in branch:
+                            #print(node.label())
+                            if node.label().startswith('N'):
+                                rdf['subject'] = node.leaves()[0]
+                            if node.label()=='IN':
+                                rdf['predicate']+='_'+node.leaves()[0]
+
+            elif cons[el]['label'] == 'NP':
+                rdf['subject'] = cons[2]['raw']
+
+        rdf = dereference_pronouns(rdf, self.GRAMMAR, self.chat.speaker)
 
         '''
         for tree in chat.last_utterance.parsed_tree[0]:
@@ -379,6 +380,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         
         '''
 
+
         self._rdf = rdf
 
     @property
@@ -405,10 +407,9 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         super(VerbQuestionAnalyzer, self).__init__(chat)
 
         rdf = {'predicate': '', 'subject': '', 'object': ''}
-        position = 0
-        dict = {}
 
-        for tree in chat.last_utterance.parser.forest[0]:
+        '''
+        for tree in chat.last_utterance.parsed_tree[0]:
             for branch in tree:
                 for node in branch:
                     position += 1
@@ -423,10 +424,33 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
                     elif node.label().startswith('N') and position == len(chat.last_utterance.tokens):
                         rdf['object'] += node.leaves()[0] + ' '
+        '''
 
-        for el in rdf:
-            rdf[el] = rdf[el].strip()
+        cons = self.chat.last_utterance.parser.constituents
 
+        for el in cons:
+            print(el, cons[el])
+
+            if cons[el]['label'].startswith('V'):
+                rdf['predicate'] = cons[el]['raw']
+
+            if 'structure' in cons[el]:
+                tree = cons[el]['structure']
+                print(tree)
+
+            if cons[el]['label'] in ['NP', 'PRP']:
+                if rdf['subject']:
+                    rdf['object'] = cons[el]['raw']
+                else:
+                    rdf['subject'] = cons[el]['raw']
+
+
+        if '-' not in rdf['predicate']:
+            rdf['predicate']+='s'
+
+        rdf = dereference_pronouns(rdf, self.GRAMMAR, self.chat.speaker)
+
+        '''
         if rdf['object'].lower() in self.GRAMMAR['pronouns']:
             dict['pronoun'] = self.GRAMMAR['pronouns'][rdf['object'].lower()]
             rdf['object'] = utils.fix_pronouns(dict, self.chat.speaker)
@@ -434,6 +458,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         if rdf['subject'].lower() in self.GRAMMAR['pronouns']:
             dict['pronoun'] = self.GRAMMAR['pronouns'][rdf['subject'].lower()]
             rdf['subject'] = utils.fix_pronouns(dict, self.chat.speaker)
+        '''
 
         self._rdf = rdf
 
@@ -445,6 +470,17 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         rdf: dict or None
         """
         return self._rdf
+
+
+def dereference_pronouns(rdf, grammar, speaker):
+    for el in rdf:
+        rdf[el] = rdf[el].strip()
+        if rdf[el] in grammar['pronouns']['subject']:
+            #print('dereferencing ',rdf[el])
+            dict = {}
+            dict['pronoun'] = grammar['pronouns']['subject'][rdf[el].lower()]
+            rdf[el] = utils.fix_pronouns(dict, speaker)
+    return rdf
 
 
 def analyze(chat):
