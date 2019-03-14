@@ -27,7 +27,11 @@ class BrainResponder(Responder):
 
         try:
 
+            print(utterance.transcript)
+
             template = analyze(utterance.chat)
+
+            print(template)
 
             if isinstance(template, dict):
 
@@ -37,6 +41,8 @@ class BrainResponder(Responder):
                 else:
                     brain_response = app.brain.update(template)
                     reply = phrasing.phrase_update(brain_response)
+
+                print(reply)
 
                 if isinstance(reply, str) or isinstance(reply, unicode):
 

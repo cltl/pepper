@@ -431,11 +431,13 @@ class Parser(object):
         '''
 
         ind = 0
+        print(tokenized_sentence)
         for w in tokenized_sentence:
             if w=='like':
                 pos[ind] = (w, 'VBP')
             ind+=1
 
+        print(pos)
         for word, tag in pos:
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
@@ -462,21 +464,21 @@ class Parser(object):
                                 s_r[index] = {'label': branch.label()}
                                 s_r[index]['raw'] = node
 
-                        else:
-                            #print('node label ',node.label())
-                            s_r[index] = {'label': node.label()}
-                            raw = ''
-                            if len(node.leaves())>1:
-                                s_r[index]['structure']= branch
-                                for n in node.leaves():
-                                    raw+=n+' '
-
-                                # deeper structure
                             else:
-                                raw = node.leaves()
+                                #print('node label ',node.label())
+                                s_r[index] = {'label': node.label()}
+                                raw = ''
+                                if len(node.leaves())>1:
+                                    s_r[index]['structure']= branch
+                                    for n in node.leaves():
+                                        raw+=n+' '
 
-                                s_r[index]['raw'] = raw
-                            index+=1
+                                    # deeper structure
+                                else:
+                                    raw = node.leaves()
+
+                                    s_r[index]['raw'] = raw
+                                index+=1
 
             for el in s_r:
                 #print(el, s_r[el])

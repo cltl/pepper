@@ -331,7 +331,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             print(el, cons[el])
 
             if cons[el]['label'].startswith('V'):
-                rdf['predicate'] = cons[el]['raw']
+                rdf['predicate'] = cons[el]['raw']+'s'
 
             if cons[el]['label'] == 'PP':
                 if 'structure' in cons[el]:
@@ -345,7 +345,8 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                                 rdf['predicate']+='_'+node.leaves()[0]
 
             elif cons[el]['label'] == 'NP':
-                rdf['subject'] = cons[2]['raw']
+                rdf['subject'] = cons[el]['raw']
+
 
         rdf = dereference_pronouns(rdf, self.GRAMMAR, self.chat.speaker)
 

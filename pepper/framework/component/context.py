@@ -6,6 +6,7 @@ from pepper.language import Utterance
 
 from collections import deque
 from threading import Thread, Lock
+from time import time
 
 from typing import Deque
 
@@ -23,7 +24,7 @@ class ContextComponent(AbstractComponent):
     PERSON_DIFF_ENTER = 1.5
     PERSON_DIFF_EXIT = 1.25
 
-    CONVERSATION_TIMEOUT = 5
+    CONVERSATION_TIMEOUT = 20
 
     def __init__(self, backend):
         super(ContextComponent, self).__init__(backend)
@@ -32,6 +33,8 @@ class ContextComponent(AbstractComponent):
         object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
         face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
+
+        self._conversation_time = 0
 
         context_lock = Lock()
 
@@ -96,15 +99,19 @@ class ContextComponent(AbstractComponent):
                 closest_face = get_face(closest_person, self._face_info)
 
                 if closest_face:
+
+                    self._conversation_time = time()
+
                     if self.context.chatting:
                         self._face_vectors.append(closest_face.representation)
                     else:
                         self._face_vectors.clear()
                         Thread(target=self.on_person_enter, args=(closest_face,)).start()
 
-            elif self.context.chatting:
-                self._face_vectors.clear()
-                self.on_person_exit()
+            elif self.context.chatting and time() - self._conversation_time > self.CONVERSATION_TIMEOUT:
+                with context_lock:
+                    self._face_vectors.clear()
+                    self.on_person_exit()
 
             # Wipe face and people info after use
             self._face_info = []

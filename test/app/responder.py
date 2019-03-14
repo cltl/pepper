@@ -23,7 +23,7 @@ RESPONDERS = [
 ]
 
 
-class ResponderApp(AbstractApplication, StatisticsComponent, TrackComponent,
+class ResponderApp(AbstractApplication, StatisticsComponent,
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
     pass
@@ -40,25 +40,27 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
-    def on_person_enter(self, person):
-        self._ignored_people = {name: t for name, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+        self.context.start_chat("Human")
 
-        if person.name not in self._ignored_people:
-            self.context.start_chat(person.name)
-            self.say("Hello, {}".format(person.name))
+    # def on_person_enter(self, person):
+    #     self._ignored_people = {name: t for name, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+    #
+    #     if person.name not in self._ignored_people:
+    #         self.context.start_chat(person.name)
+    #         self.say("Hello, {}".format(person.name))
 
-    def on_person_exit(self):
-        self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
-        self.context.stop_chat()
+    # def on_person_exit(self):
+    #     self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
+    #     self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
         responder = self.response_picker.respond(utterance)
 
         if isinstance(responder, MeetIntentionResponder):
             MeetIntention(self.application)
-        elif isinstance(responder, GoodbyeResponder):
-            self._ignored_people[utterance.chat.speaker] = time()
-            self.context.stop_chat()
+        # elif isinstance(responder, GoodbyeResponder):
+        #     self._ignored_people[utterance.chat.speaker] = time()
+        #     self.context.stop_chat()
 
 
 class MeetIntention(AbstractIntention, ResponderApp):

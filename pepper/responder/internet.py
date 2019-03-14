@@ -50,11 +50,8 @@ class WolframResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        def response():
+        if self._wolfram.is_query(utterance.transcript):
             result = self._wolfram.query(utterance.transcript)
 
-            if result: app.say(result, animations.EXPLAIN)
-            else: app.say("I'm sorry. My internet sources are failing me.")
-
-        if self._wolfram.is_query(utterance.transcript):
-            return 1.0, response
+            if result:
+                return 1.0, lambda: app.say(result, animations.EXPLAIN)
