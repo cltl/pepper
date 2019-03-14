@@ -18,7 +18,8 @@ RESPONDERS = [
     VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(),
     QnAResponder(),
     GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
-    WikipediaResponder(), WolframResponder(),
+    WikipediaResponder(),
+    WolframResponder(),
     UnknownResponder(),
 ]
 
@@ -48,12 +49,15 @@ class DefaultIntention(AbstractIntention, ResponderApp):
     #     if person.name not in self._ignored_people:
     #         self.context.start_chat(person.name)
     #         self.say("Hello, {}".format(person.name))
-
+    #
     # def on_person_exit(self):
     #     self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
     #     self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
+
+        self.context.chat.speaker = self.context.last_person
+
         responder = self.response_picker.respond(utterance)
 
         if isinstance(responder, MeetIntentionResponder):
@@ -77,6 +81,8 @@ class MeetIntention(AbstractIntention, ResponderApp):
         self._current_name = None
         self._possible_names = {}
         self._denied_names = set()
+
+        self.context.start_chat("Stranger")
 
         self.say("{} {}".format(choice(sentences.INTRODUCE), choice(sentences.ASK_NAME)))
 

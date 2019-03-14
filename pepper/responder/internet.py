@@ -41,7 +41,7 @@ class WolframResponder(Responder):
 
     @property
     def type(self):
-        return ResponderType.Internet
+        return ResponderType.PAID
 
     @property
     def requirements(self):

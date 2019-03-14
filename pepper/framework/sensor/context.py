@@ -12,7 +12,7 @@ from typing import List, Iterable, Dict, Tuple, Optional
 
 class Context(object):
 
-    OBSERVATION_TIMEOUT = 120
+    OBSERVATION_TIMEOUT = 60
 
     _people = None  # type: Dict[str, Tuple[Face, float]]
     _objects = None  # type: Dict[str, Tuple[Object, float]]
@@ -24,6 +24,8 @@ class Context(object):
         self._people = {}
         self._objects = {}
         self._intention = None
+
+        self._last_person = "Human"
 
         self._location = Location()
 
@@ -81,6 +83,10 @@ class Context(object):
         return [person for person, t in self._people.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
 
     @property
+    def last_person(self):
+        return self._last_person
+
+    @property
     def objects(self):      # What
         # type: () -> List[Object]
         """
@@ -131,8 +137,18 @@ class Context(object):
         people: list of Face
             List of People
         """
-        for person in people:
-            self._people[person.name] = (person, time())
+
+        if people:
+            for person in people:
+                self._people[person.name] = (person, time())
+
+            known_people = [person.name for person in people if person.name != "NEW"]
+
+            if known_people:
+                if self._last_person == "Human":
+                    self._last_person = known_people[0]
+                elif self._last_person not in [person.name for person in self.people]:
+                        self._last_person = "Human"
 
     def start_chat(self, speaker):
         self._chatting = True

@@ -48,9 +48,15 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
         text: str
         animation: str
         """
-        synthesis_input = texttospeech.types.SynthesisInput(text=self.translate(text))
-        response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
-        self._play_sound(response.audio_content)
+
+        for i in range(3):
+            try:
+                synthesis_input = texttospeech.types.SynthesisInput(text=self.translate(text))
+                response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
+                self._play_sound(response.audio_content)
+                return
+            except:
+                self._log.error("Couldn't Synthesize Speech ({})".format(i+1))
 
     def _play_sound(self, mp3):
         file_hash = os.path.join(self.TMP, "{}.mp3".format(str(getrandbits(128))))

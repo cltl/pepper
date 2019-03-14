@@ -87,6 +87,10 @@ class Chat(object):
         """
         return self._speaker
 
+    @speaker.setter
+    def speaker(self, value):
+        self._speaker = value
+
     @property
     def id(self):
         # type: () -> int

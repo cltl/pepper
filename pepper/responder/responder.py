@@ -14,12 +14,13 @@ class ResponderRequirementUnmetError(Exception):
 
 
 class ResponderType(Enum):
-    Intention = 7
-    Sensory = 6
-    Brain = 5
-    Personal = 4
-    Conversational = 3
-    Internet = 2
+    Intention = 8
+    Sensory = 7
+    Brain = 6
+    Personal = 5
+    Conversational = 4
+    Internet = 3
+    PAID = 1
     Unknown = 1
 
 
