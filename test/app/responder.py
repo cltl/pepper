@@ -180,11 +180,14 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
 if __name__ == '__main__':
 
-    # Boot Application
-    application = ResponderApp(config.get_backend())
+    while True:
 
-    # Boot Default Intention
-    intention = DefaultIntention(application)
+        # Boot Application
+        application = ResponderApp(config.get_backend())
 
-    # Run Application
-    application.run()
+        # Boot Default Intention
+        intention = DefaultIntention(application)
+
+        # Run Application
+        application.run()
+

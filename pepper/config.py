@@ -108,9 +108,9 @@ BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
-NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
+# NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
 # NAOQI_IP, NAOQI_PORT = "10.10.60.150", 9559  # Future Lab
-# NAOQI_IP, NAOQI_PORT = "169.254.245.70", 9559  # Local?
+NAOQI_IP, NAOQI_PORT = "192.168.137.172", 9559  # Local?
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
@@ -126,8 +126,8 @@ MICROPHONE_CHANNELS = 1
 
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
 
-CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
-CAMERA_FRAME_RATE = 3
+CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
+CAMERA_FRAME_RATE = 2
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
