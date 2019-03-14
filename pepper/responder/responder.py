@@ -2,9 +2,7 @@ from pepper.framework import *
 from pepper.language import Utterance
 from pepper import logger
 
-from enum import IntEnum
-
-from concurrent.futures import ThreadPoolExecutor
+from enum import Enum
 
 from time import time
 
@@ -15,7 +13,7 @@ class ResponderRequirementUnmetError(Exception):
     pass
 
 
-class ResponderType(IntEnum):
+class ResponderType(Enum):
     Intention = 7
     Sensory = 6
     Brain = 5
@@ -23,6 +21,9 @@ class ResponderType(IntEnum):
     Conversational = 3
     Internet = 2
     Unknown = 1
+
+
+RESPONDER_TYPES = sorted(ResponderType, key=lambda item: item.value, reverse=True)
 
 
 class Responder(object):
@@ -67,13 +68,15 @@ class Responder(object):
 
 
 class ResponsePicker(object):
-    def __init__(self, app, responders, threads=0):
-        # type: (AbstractApplication, List[Responder], int) -> None
+
+    def __init__(self, app, responders):
+        # type: (AbstractApplication, List[Responder]) -> None
 
         self._app = app
+
         self._responders = responders
 
-        self._threads = ThreadPoolExecutor(threads) if threads else None
+        self._groups = [[r for r in responders if r.type == t] for t in RESPONDER_TYPES]
 
         self._log = logger.getChild(self.__class__.__name__)
 
@@ -85,50 +88,43 @@ class ResponsePicker(object):
         return self._responders
 
     @property
+    def groups(self):
+        return self._groups
+
+    @property
     def app(self):
         # type: () -> AbstractApplication
         return self._app
 
     def respond(self, utterance):
-        # type: (Utterance) -> Responder
+        # type: (Utterance) -> Optional[Responder]
 
-        t0 = time()
+        for group in self.groups:
 
-        all_responders = []
+            t0 = time()
 
-        best_score = 0
-        best_responder = None
-        best_response = None
+            best_score = 0
+            best_responder = None  # type: Responder
+            best_func = None  # type: Callable[[], None]
 
-        if self._threads:
-            futures = [self._threads.submit(responder.respond, utterance, self.app) for responder in self.responders]
-            results = [future.result() for future in futures]
-        else:
-            results = [responder.respond(utterance, self.app) for responder in self.responders]
+            for responder in group:
 
-        for responder, result in zip(self.responders, results):
+                result = responder.respond(utterance, self.app)
 
-            if result:
-                all_responders.append(responder)
+                if result:
+                    score, func = result
 
-                score, response = result
-                score *= responder.type
+                    if score > best_score:
+                        best_responder = responder
+                        best_score = score
+                        best_func = func
 
-                if score > best_score:
-                    best_score = score
-                    best_responder = responder
-                    best_response = response
+                    if best_responder and best_func:
 
-        if best_responder and best_response:
+                        self._log.info("{} ({:3.2f}s)".format(best_responder.__class__.__name__, time() - t0))
 
-            # Log Results
-            self._log.debug("Picked {} from {} in {:3.2f}s".format(
-                best_responder.__class__.__name__, [r.__class__.__name__ for r in all_responders], time() - t0))
-
-            # Execute Response
-            best_response()
-
-            return best_responder
+                        best_func()
+                        return best_responder
 
     def _check_requirements(self):
         unmet_requirements = set()
