@@ -196,6 +196,16 @@ class Utterance(object):
         return self._chat
 
     @property
+    def context(self):
+        """
+        Returns
+        -------
+        context: Context
+            Utterance Context
+        """
+        return self.chat.context
+
+    @property
     def type(self):
         # type: () -> UtteranceType
         raise NotImplementedError()

@@ -18,13 +18,13 @@ class ContextComponent(AbstractComponent):
 
     # Minimum Distance of Person to Enter/Exit Conversation
     PERSON_AREA_ENTER = 0.5
-    PERSON_AREA_EXIT = 0.25
+    PERSON_AREA_EXIT = 0.2
 
     # Minimum Distance Difference of Person to Enter/Exit Conversation
     PERSON_DIFF_ENTER = 1.5
-    PERSON_DIFF_EXIT = 1.25
+    PERSON_DIFF_EXIT = 1.1
 
-    CONVERSATION_TIMEOUT = 20
+    CONVERSATION_TIMEOUT = 5
 
     def __init__(self, backend):
         super(ContextComponent, self).__init__(backend)
@@ -92,10 +92,11 @@ class ContextComponent(AbstractComponent):
                     return face
 
         def on_image(image, orientation):
+
+            # Determine Conversation Partner
             closest_person = get_closest_person(self._people_info)
 
             if closest_person:
-
                 closest_face = get_face(closest_person, self._face_info)
 
                 if closest_face:

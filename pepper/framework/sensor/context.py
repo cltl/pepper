@@ -25,8 +25,6 @@ class Context(object):
         self._objects = {}
         self._intention = None
 
-        self._last_person = "Human"
-
         self._location = Location()
 
     @property
@@ -78,13 +76,20 @@ class Context(object):
         Returns
         -------
         people: list of Face
-            List of People Seen
+            List of People Seen within Observation Timeout
         """
         return [person for person, t in self._people.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
 
     @property
-    def last_person(self):
-        return self._last_person
+    def all_people(self):
+        # type: () -> List[Face]
+        """
+        Returns
+        -------
+        people: list of Face
+            List of All People Seen within Observation Timeout
+        """
+        return [person for person, t in self._people.values()]
 
     @property
     def objects(self):      # What
@@ -93,9 +98,20 @@ class Context(object):
         Returns
         -------
         objects: list of Object
-            List of Objects Seen
+            List of Objects Seen within
         """
         return [obj for obj, t in self._objects.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
+
+    @property
+    def all_objects(self):
+        # type: () -> List[Object]
+        """
+        Returns
+        -------
+        objects: list of Object
+            List of All Objects Seen
+        """
+        return [obj for obj, t in self._objects.values()]
 
     @property
     def intention(self):    # Why
@@ -137,18 +153,8 @@ class Context(object):
         people: list of Face
             List of People
         """
-
-        if people:
-            for person in people:
-                self._people[person.name] = (person, time())
-
-            known_people = [person.name for person in people if person.name != "NEW"]
-
-            if known_people:
-                if self._last_person == "Human":
-                    self._last_person = known_people[0]
-                elif self._last_person not in [person.name for person in self.people]:
-                        self._last_person = "Human"
+        for person in people:
+            self._people[person.name] = (person, time())
 
     def start_chat(self, speaker):
         self._chatting = True

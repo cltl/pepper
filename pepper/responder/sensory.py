@@ -17,9 +17,19 @@ class VisionResponder(Responder):
         "what can you see",
     ]
 
+    SEE_OBJECT_ALL = [
+        "what did you see",
+        "what have you seen"
+    ]
+
     SEE_PERSON = [
         "who do you see",
         "who can you see",
+    ]
+
+    SEE_PERSON_ALL = [
+        "who did you see",
+        "who have you seen"
     ]
 
     SEE_SPECIFIC = [
@@ -31,6 +41,13 @@ class VisionResponder(Responder):
         "I see",
         "I can see",
         "I think I see",
+        "I observe",
+    ]
+
+    I_SAW = [
+        "I saw",
+        "I have seen",
+        "I think I observed"
     ]
 
     NO_OBJECT = [
@@ -58,17 +75,38 @@ class VisionResponder(Responder):
         objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.objects]
         people = [p.name for p in utterance.chat.context.people]
 
+        all_objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.all_objects]
+        all_people = [p.name for p in utterance.chat.context.all_people]
+
+        # Enumerate Currently Visible Objects
         if utterance.transcript.lower() in self.SEE_OBJECT:
             if objects:
                 return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(objects)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_OBJECT))
 
+        # Enumerate All Observed Objects
+        elif utterance.transcript.lower() in self.SEE_OBJECT_ALL:
+            if all_objects:
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._items_to_sentence(all_objects)))
+            else:
+                return 0.5, lambda: app.say(choice(self.NO_OBJECT))
+
+        # Enumerate Currently Visible People
         elif utterance.transcript.lower() in self.SEE_PERSON:
             if people:
                 return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(people)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
+
+        # Enumerate All Observed People
+        elif utterance.transcript.lower() in self.SEE_PERSON_ALL:
+            if all_people:
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._items_to_sentence(all_people)))
+            else:
+                return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
+
+        # Respond to Individual Object/Person Queries
         else:
 
             items = objects + people
@@ -156,6 +194,35 @@ class LocationResponder(Responder):
     @staticmethod
     def _location_to_text(location):
         return "We're in {}, {}, {}.".format(location.city, location.region, location.country)
+
+
+class TimeResponder(Responder):
+
+    DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+
+    DATE = [
+        "What day is it",
+    ]
+
+    @property
+    def type(self):
+        return ResponderType.Sensory
+
+    @property
+    def requirements(self):
+        return [TextToSpeechComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+
+        if utterance.transcript.lower() in self.DATE:
+            dt = utterance.context.datetime
+
+            return 1, lambda: app.say("Today is {}, {} {}, {}!".format(
+                self.DAYS[dt.weekday()], self.MONTHS[dt.month-1], dt.day, dt.year
+            ))
 
 
 class IdentityResponder(Responder):

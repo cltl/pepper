@@ -15,7 +15,7 @@ import os
 
 RESPONDERS = [
     BrainResponder(),
-    VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(),
+    VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(), TimeResponder(),
     QnAResponder(),
     GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
     WikipediaResponder(),
@@ -32,7 +32,7 @@ class ResponderApp(AbstractApplication, StatisticsComponent,
 
 class DefaultIntention(AbstractIntention, ResponderApp):
 
-    IGNORE_TIMEOUT = 120
+    IGNORE_TIMEOUT = 60
 
     def __init__(self, application):
         super(DefaultIntention, self).__init__(application)
@@ -41,30 +41,28 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
-        self.context.start_chat("Human")
+        # self.context.start_chat("Human")
 
-    # def on_person_enter(self, person):
-    #     self._ignored_people = {name: t for name, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
-    #
-    #     if person.name not in self._ignored_people:
-    #         self.context.start_chat(person.name)
-    #         self.say("Hello, {}".format(person.name))
-    #
-    # def on_person_exit(self):
-    #     self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
-    #     self.context.stop_chat()
+    def on_person_enter(self, person):
+        self._ignored_people = {name: t for name, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+
+        if person.name not in self._ignored_people:
+            self.context.start_chat(person.name)
+            self.say("Hello, {}".format(person.name))
+
+    def on_person_exit(self):
+        self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
+        self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
-
-        self.context.chat.speaker = self.context.last_person
-
         responder = self.response_picker.respond(utterance)
 
         if isinstance(responder, MeetIntentionResponder):
             MeetIntention(self.application)
-        # elif isinstance(responder, GoodbyeResponder):
-        #     self._ignored_people[utterance.chat.speaker] = time()
-        #     self.context.stop_chat()
+
+        elif isinstance(responder, GoodbyeResponder):
+            self._ignored_people[utterance.chat.speaker] = time()
+            self.context.stop_chat()
 
 
 class MeetIntention(AbstractIntention, ResponderApp):
@@ -190,4 +188,3 @@ if __name__ == '__main__':
 
         # Run Application
         application.run()
-

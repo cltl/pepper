@@ -108,9 +108,9 @@ BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
-# NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
+NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
 # NAOQI_IP, NAOQI_PORT = "10.10.60.150", 9559  # Future Lab
-NAOQI_IP, NAOQI_PORT = "192.168.137.172", 9559  # Local?
+# NAOQI_IP, NAOQI_PORT = "192.168.137.172", 9559  # Local?
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 

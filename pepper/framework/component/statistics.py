@@ -6,11 +6,16 @@ from pepper.framework.util import Scheduler
 from pepper.framework.component import SpeechRecognitionComponent
 
 import threading
+from time import time
 
 
 class StatisticsComponent(AbstractComponent):
 
     PERFORMANCE_ERROR_THRESHOLD = 0.8
+
+    LIVE_SPEECH = ""
+    LIVE_SPEECH_TIMEOUT = 5
+    LIVE_SPEECH_TIME = 0
 
     def __init__(self, backend):
         """
@@ -24,6 +29,7 @@ class StatisticsComponent(AbstractComponent):
 
         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         vad = speech_recognition.vad
+        asr = speech_recognition.asr
 
         def worker():
 
@@ -44,11 +50,18 @@ class StatisticsComponent(AbstractComponent):
             error = (cam_rate_true < cam_rate * self.PERFORMANCE_ERROR_THRESHOLD or
                      mic_rate_true < float(mic_rate) * self.PERFORMANCE_ERROR_THRESHOLD)
 
-            print("\rThreads {:2d} | Microphone {:3.1f} kHz | Camera {:4.1f} Hz | Voice  >>> {:12s} {:4.0%}".format(
+            if asr.live:
+                self.LIVE_SPEECH = asr.live
+                self.LIVE_SPEECH_TIME = time()
+            elif time() - self.LIVE_SPEECH_TIME > self.LIVE_SPEECH_TIMEOUT:
+                self.LIVE_SPEECH = ""
+
+            print("\rThreads {:2d} | Cam {:4.1f} Hz | Mic {:4.1f} kHz | TTS {:12s} >>> {}".format(
                 threading.active_count(),
-                mic_rate_true / 1000.0, cam_rate_true,
+                cam_rate_true,
+                mic_rate_true / 1000.0,
                 voice_print if mic_running else empty_voice_print,
-                vad.activation if mic_running else 0),
+                self.LIVE_SPEECH),
                 end="", file=(stderr if error else stdout))
 
         schedule = Scheduler(worker, 0.1)

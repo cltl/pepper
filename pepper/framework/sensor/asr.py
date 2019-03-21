@@ -146,7 +146,15 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
 class StreamedGoogleASR(BaseGoogleASR):
     def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
         super(StreamedGoogleASR, self).__init__(language, sample_rate, hints)
-        self._streaming_config = speech.types.StreamingRecognitionConfig(config=self._config, single_utterance=True)
+
+        self._live = ""
+
+        self._streaming_config = speech.types.StreamingRecognitionConfig(
+            config=self._config, single_utterance=True, interim_results=True)
+
+    @property
+    def live(self):
+        return self._live
 
     def transcribe(self, audio):
         # type: (Iterable[np.ndarray]) -> List[UtteranceHypothesis]
@@ -161,12 +169,20 @@ class StreamedGoogleASR(BaseGoogleASR):
 
     def _transcribe(self, audio):
         hypotheses = []
+
         for response in self._client.streaming_recognize(self._streaming_config, self._request(audio)):
-            for result in response.results:
+
+            live = ""
+
+            for i, result in enumerate(response.results):
                 if result.is_final:
                     for alternative in result.alternatives:
                         hypotheses.append(
                             UtteranceHypothesis(self.translate(alternative.transcript), alternative.confidence))
+                elif result.alternatives:
+                    live += result.alternatives[0].transcript
+
+            self._live = live
         return sorted(hypotheses, key=lambda hypothesis: hypothesis.confidence, reverse=True)
 
     @staticmethod
