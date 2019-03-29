@@ -15,6 +15,7 @@ More complex Applications can be build on several instances of
 from .camera import AbstractCamera
 from .microphone import AbstractMicrophone
 from .text_to_speech import AbstractTextToSpeech
+from .led import AbstractLed, LeftEarLed, RightEarLed, LeftFaceLed, RightFaceLed
 
 from .backend import AbstractBackend
 from .component import AbstractComponent

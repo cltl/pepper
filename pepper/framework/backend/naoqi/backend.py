@@ -1,6 +1,6 @@
 from pepper.framework.abstract import AbstractBackend
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
-from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech
+from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, NaoqiLed
 from pepper import config
 
 from naoqi import ALProxy
@@ -61,7 +61,7 @@ class NAOqiBackend(AbstractBackend):
         self._awareness.setStimulusDetectionEnabled("Movement", True)
         self._awareness.setEnabled(True)
 
-        super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech)
+        super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech, NaoqiLed(self.session))
 
     @property
     def url(self):
