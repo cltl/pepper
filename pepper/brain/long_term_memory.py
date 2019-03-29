@@ -1,5 +1,5 @@
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query
-from pepper.brain.utils.response import casefold_capsule
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule
+from pepper.brain.utils.response import Entity, CardinalityConflict
 from pepper import config, logger
 
 from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
@@ -376,15 +376,32 @@ class LongTermMemory(object):
         if capsule['predicate']['type'] not in self._ONE_TO_ONE_PREDICATES:
             return [{}]
 
-        query = read_query('object_cardinality_conflicts') % (capsule['predicate']['type'],
+        query = read_query('conflicts/object_cardinality') % (capsule['predicate']['type'],
                                                               capsule['subject']['label'], capsule['object']['label'])
 
         response = self._submit_query(query)
 
         if response[0] != {}:
-            response = [{'date': elem['date']['value'].split('/')[-1], 'authorlabel': elem['authorlabel']['value'], 'oname': elem['oname']['value']} for elem in response]
+            conflicts = [self._fill_cardinality_conflict_(elem) for elem in response]
 
-        return response
+        return conflicts
+
+    def _fill_cardinality_conflict_(self, raw_conflict):
+        processed_entity = self._fill_entity_(raw_conflict['objectlabel']['value'])
+        processed_conflict = CardinalityConflict(raw_conflict, processed_entity)
+
+        return processed_conflict
+
+    def _fill_entity_(self, label, namespace='LW'):
+        query = read_query('entity/type') % label
+        response = self._submit_query(query)
+
+        if response:
+            types = [item['type']['value'].split('/')[-1] for item in response]
+        else:
+            types = []
+
+        return Entity(label, self.namespaces[namespace]+label, types)
 
     def get_negation_conflicts_with_statement(self, capsule):
         # Case fold

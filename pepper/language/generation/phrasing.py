@@ -1,8 +1,7 @@
 import random
 from datetime import datetime
 
-from pepper.brain.utils.helper_functions import casefold
-from pepper.brain.utils.response import casefold_capsule
+from pepper.brain.utils.helper_functions import casefold, casefold_capsule
 from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
     TRUST, NO_TRUST
 
@@ -32,25 +31,25 @@ def phrase_all_conflicts(conflicts, speaker=None):
     return say
 
 
-def phrase_cardinality_conflicts(conflict, capsule):
+def phrase_cardinality_conflicts(conflicts, capsule):
     capsule = casefold_capsule(capsule, format='natural')
 
-    # There is no conflict, so nothing to say
-    if conflict[0] == {}:
-        say = ''
+    # There is no conflict, so just be happy to learn
+    if not conflicts:
+        say = random.choice(NEW_KNOWLEDGE)
 
     # There is a conflict, so we phrase it
     else:
         say = random.choice(CONFLICTING_KNOWLEDGE)
-        conflict = random.choice(conflict)
-        x = 'you' if conflict['authorlabel'] == capsule['author'] else conflict['authorlabel']
-        y = 'you' if capsule['subject']['label'] == conflict['authorlabel'] else capsule['subject']['label']
+        conflict = random.choice(conflicts)
+        x = 'you' if conflict.author == capsule['author'] else conflict.author
+        y = 'you' if capsule['subject']['label'] == conflict.author else capsule['subject']['label']
 
         say += ' %s told me in %s that %s %s %s, but now you tell me that %s %s %s' \
                % (x,
-                  datetime.strptime(conflict['date'], "%Y-%m-%d").strftime("%B"),
-                  y.replace('_', ' '), capsule['predicate']['type'], conflict['oname'].replace('_', ' '),
-                  y.replace('_', ' '), capsule['predicate']['type'], capsule['object']['label'])
+                  conflict.date.strftime("%B"),
+                  casefold(y, format='natural'), capsule['predicate']['type'], casefold(conflict.object.label, format='natural'),
+                  casefold(y, format='natural'), capsule['predicate']['type'], capsule['object']['label'])
 
     return say
 

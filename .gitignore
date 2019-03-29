@@ -2,6 +2,8 @@
 *.pyc
 
 people/friends/
+people/new/
+people/VU/
 tmp/
 
 google_cloud_key.json

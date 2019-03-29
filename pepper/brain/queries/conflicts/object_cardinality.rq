@@ -4,13 +4,13 @@ PREFIX grasp:<http://groundedannotationframework.org/grasp#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-select ?oname ?authorlabel ?date
+select ?objectlabel ?authorlabel ?date
 where {
     GRAPH ?g {
         ?s n2mu:%s ?o .
     } .
     ?s rdfs:label '%s' .
-    ?o rdfs:label ?oname .
+    ?o rdfs:label ?objectlabel .
 
     ?g grasp:denotedBy ?m .
 
@@ -23,4 +23,4 @@ where {
 
     MINUS { ?o rdfs:label '%s' . }
 
-} group by ?oname ?authorlabel ?date
+} group by ?objectlabel ?authorlabel ?date

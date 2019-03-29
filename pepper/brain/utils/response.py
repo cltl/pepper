@@ -1,37 +1,64 @@
+from pepper.brain.utils.helper_functions import date_from_uri
+
 from datetime import datetime
-
 from typing import List, Optional
-
-from pepper.brain.utils.helper_functions import casefold
 
 
 class RDFBase(object):
+    def __init__(self, label, offset=None, confidence=0.0):
+        # type: (str, Optional[slice], float) -> Entity
+        """
+        Construct Entity Object
+        Parameters
+        ----------
+        response_item: dict
+            Direct output from query representing a conflict on a one to one predicate
+        """
+
+        self._label = label
+        self._offset = offset
+        self._confidence = confidence
+
     @property
     def label(self):
         # type: () -> str
-        raise NotImplementedError()
+        return self._label
 
     @property
     def offset(self):
-        # type: () -> slice
-        raise NotImplementedError()
+        # type: () -> Optional[slice]
+        return self._offset
 
     @property
     def confidence(self):
         # type: () -> float
-        raise NotImplementedError()
+        return self._confidence
 
 
 class Entity(RDFBase):
+    def __init__(self, label, id, types, offset=None, confidence=0.0):
+        # type: (str, str, List[str], Optional[slice], float) -> Entity
+        """
+        Construct Entity Object
+        Parameters
+        ----------
+        response_item: dict
+            Direct output from query representing a conflict on a one to one predicate
+        """
+        super(Entity, self).__init__(label, offset, confidence)
+
+        self._id = id
+        self._types = types
+
     @property
     def id(self):
         # type: () -> str
-        raise NotImplementedError()
+        return self._id
 
     @property
-    def type(self):
-        # type: () -> str
-        raise NotImplementedError()
+    def types(self):
+        # type: () -> List[str]
+        return self._types
     
     
 class Predicate(RDFBase):
@@ -58,42 +85,34 @@ class Triple(object):
         raise NotImplementedError()
 
 
-def casefold_capsule(capsule, format='triple'):
-    """
-    Function for formatting a capsule into triple format or natural language format
-    Parameters
-    ----------
-    capsule:
-    format
-
-    Returns
-    -------
-
-    """
-    for k, v in capsule.items():
-        if isinstance(v, dict):
-            capsule[k] = casefold_capsule(v, format=format)
-        else:
-            capsule[k] = casefold(v, format=format)
-
-    return capsule
-
-
 class CardinalityConflict(object):
+    def __init__(self, response_item, entity):
+        # type: (dict, Entity) -> CardinalityConflict
+        """
+        Construct CardinalityConflict Object
+        Parameters
+        ----------
+        response_item: dict
+            Direct output from query representing a conflict on a one to one predicate
+        """
+        self._author = response_item['authorlabel']['value']
+        self._date = date_from_uri(response_item['date']['value'])
+        self._object = entity
+
     @property
     def author(self):
         # type: () -> str
-        raise NotImplementedError()
+        return self._author
 
     @property
     def date(self):
         # type: () -> datetime
-        raise NotImplementedError()
+        return self._date
 
     @property
     def object(self):
         # type: () -> Entity
-        raise NotImplementedError()
+        return self._object
 
 
 class NegationConflict(object):
