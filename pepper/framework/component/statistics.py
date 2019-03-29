@@ -14,7 +14,7 @@ class StatisticsComponent(AbstractComponent):
     PERFORMANCE_ERROR_THRESHOLD = 0.8
 
     LIVE_SPEECH = ""
-    LIVE_SPEECH_TIMEOUT = 5
+    LIVE_SPEECH_TIMEOUT = 3
     LIVE_SPEECH_TIME = 0
 
     def __init__(self, backend):
