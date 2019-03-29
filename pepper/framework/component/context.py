@@ -1,6 +1,6 @@
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
 from ..sensor import Context, UtteranceHypothesis
-from ..abstract import AbstractComponent
+from ..abstract import AbstractComponent, Led
 
 from pepper.language import Utterance
 from pepper import config
@@ -24,6 +24,15 @@ class ContextComponent(AbstractComponent):
     PERSON_DIFF_EXIT = 1.4
 
     CONVERSATION_TIMEOUT = 5
+
+    PEOPLE_LEDS = [Led.LeftFaceLed1, Led.RightFaceLed1,
+                   Led.LeftFaceLed2, Led.RightFaceLed2,
+                   Led.LeftFaceLed3, Led.RightFaceLed3,
+                   Led.LeftFaceLed4, Led.RightFaceLed4,
+                   Led.LeftFaceLed5, Led.RightFaceLed5,
+                   Led.LeftFaceLed6, Led.RightFaceLed6,
+                   Led.LeftFaceLed7, Led.RightFaceLed7,
+                   Led.LeftFaceLed8, Led.RightFaceLed8]
 
     def __init__(self, backend):
         super(ContextComponent, self).__init__(backend)
@@ -109,6 +118,11 @@ class ContextComponent(AbstractComponent):
 
             # Get People within Conversation Bounds
             closest_people = get_closest_people(self._people_info)
+
+            # if closest_people:
+            #     self.backend.led.set(self.PEOPLE_LEDS[:len(closest_people)*2], (0, 1, 0), 0)
+            # else:
+            #     self.backend.led.set([Led.RightFaceLeds, Led.LeftFaceLeds], (0, 0, 0), 0)
 
             if not self.context.chatting:
 

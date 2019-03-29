@@ -41,8 +41,6 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
-        self.backend.led.set(LeftFaceLed.LeftFaceLed1, (1, 0, 1), 1)
-
     def on_chat_enter(self, name):
         self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
 
