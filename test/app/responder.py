@@ -46,7 +46,7 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
         if name not in self._ignored_people:
             self.context.start_chat(name)
-            self.say("Hello, {}".format(name))
+            self.say("{}, {}".format(choice(sentences.GREETING), name))
 
     def on_chat_exit(self):
         self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
