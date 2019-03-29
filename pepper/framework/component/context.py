@@ -33,7 +33,7 @@ class ContextComponent(AbstractComponent):
         face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
 
-        self._conversation_time = 0
+        self._conversation_time = time()
 
         context_lock = Lock()
 
@@ -160,8 +160,18 @@ class ContextComponent(AbstractComponent):
                         closest_person = closest_people[0]
                         closest_face = get_face(closest_person, self._face_info)
 
-                        if closest_face and closest_face.name == self.context.chat.speaker:
-                            self._conversation_time = time()
+                        if closest_face:
+
+                            print(self.context.chat.speaker, closest_face.name)
+
+                            # If Still Chatting with Same Person -> Update Conversation Time
+                            if closest_face.name == self.context.chat.speaker:
+                                self._conversation_time = time()
+
+                            # If Chatting to Unknown Person and Known Person Appears -> Switch Chat
+                            elif self.context.chat.speaker == config.HUMAN_UNKNOWN and closest_face.name != config.HUMAN_UNKNOWN:
+                                self._conversation_time = time()
+                                Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
 
                     # Else, when conversation times out
                     elif time() - self._conversation_time >= self.CONVERSATION_TIMEOUT:
@@ -175,12 +185,10 @@ class ContextComponent(AbstractComponent):
                                 self._conversation_time = time()
                                 Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
 
-
                         # If Group enters conversation at this point -> Start Conversation with them
                         if len(closest_people) >= 2:
                             self._conversation_time = time()
                             Thread(target=self.on_chat_enter, args=(config.HUMAN_CROWD,)).start()
-
                         else:
                             self.on_chat_exit()
 
