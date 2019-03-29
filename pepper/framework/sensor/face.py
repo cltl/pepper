@@ -12,6 +12,9 @@ import os
 
 
 class Face(object):
+
+    UNKNOWN = "Stranger"
+
     def __init__(self, name, confidence, representation, bounds, image):
         """
         Parameters
@@ -30,7 +33,7 @@ class Face(object):
         self._image = image
         self._representation = representation
         self._bounds = bounds
-        self._name = name
+        self._name = self.UNKNOWN if name == FaceClassifier.NEW else name
         self._confidence = confidence
 
     @property

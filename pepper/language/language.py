@@ -373,9 +373,30 @@ class Utterance(object):
                 index = tokens_raw.index(key)
                 tokens_raw.remove(key)
                 tokens_raw.insert(index, dict[key])
+
+        if 't' in tokens_raw:
+            index = tokens_raw.index('t')
+            tokens_raw.remove('t')
+            tokens_raw.insert(index, 'not')
+
+            if 'won' in tokens_raw:
+                index = tokens_raw.index('won')
+                tokens_raw.remove('won')
+                tokens_raw.insert(index, 'will')
+
+            if 'don' in tokens_raw:
+                index = tokens_raw.index('don')
+                tokens_raw.remove('don')
+                tokens_raw.insert(index, 'do')
+
+            if 'doesn' in tokens_raw:
+                index = tokens_raw.index('doesn')
+                tokens_raw.remove('doesn')
+                tokens_raw.insert(index, 'does')
+
         tokens = []
         for word in tokens_raw:
-            clean_word = re.sub('[?!]', '', word)
+            clean_word = re.sub('[?!]', '', word) # remove ?
             tokens.append(clean_word)
         return tokens
 
@@ -391,9 +412,6 @@ class Utterance(object):
         cleaned_tokens: list of str
             Tokenized & Cleaned transcript
         """
-
-        # TODO: Remove Contractions
-
         return tokens
 
     def __repr__(self):
@@ -445,20 +463,23 @@ class Parser(object):
         '''
 
         ind = 0
-        print(tokenized_sentence)
         for w in tokenized_sentence:
             if w=='like':
                 pos[ind] = (w, 'VBP')
             ind+=1
 
-        print(pos)
+
+        ind = 0
         for word, tag in pos:
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
+                pos[ind] = (pos[ind][0], 'PRPPOS')
+
             else:
                 new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
+            ind+=1
 
         try:
             cfg_parser = CFG.fromstring(self._cfg)
@@ -479,7 +500,7 @@ class Parser(object):
                                 s_r[index]['raw'] = node
 
                             else:
-                                #print('node label ',node.label())
+                                #print('node ',node.label(), node.leaves())
                                 s_r[index] = {'label': node.label()}
                                 raw = ''
                                 if len(node.leaves())>1:
@@ -491,8 +512,12 @@ class Parser(object):
                                 else:
                                     raw = node.leaves()
 
-                                    s_r[index]['raw'] = raw
-                                index+=1
+                                s_r[index]['raw'] = raw
+                            index+=1
+
+            else:
+                print('no forest')
+                #print(pos)
 
             for el in s_r:
                 #print(el, s_r[el])

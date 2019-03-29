@@ -13,6 +13,9 @@ import re
 import os
 import analyzers_old
 
+import urllib2, urllib
+import traceback, sys
+
 
 LOG = logger.getChild(__name__)
 
@@ -228,6 +231,14 @@ def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
     template['date'] = date.today()
     template['chat'] = chat_id
     template['turn'] = chat_turn
+
+    # new things in template: certainty , sentiment, types of NE, mention indexes
+
+    #template['subject']['type'] = rdf['subject']['type']
+    #template['object']['type'] = rdf['object']['type']
+    #template['position'] ?
+
+
     return template
 
 def fix_predicate_morphology(predicate):
@@ -408,34 +419,138 @@ def fix_pronouns(dict, speaker):
         elif dict['person'] == 'second':
             return 'leolani'
 
-def dereference_pronouns_for_statement(words, rdf, speaker):
 
-    first_word = rdf['subject'].split()[0]
-    morphology = {}
-    if first_word in grammar['pronouns']:
-        morphology = grammar['pronouns'][first_word]
+def dereference_pronouns(self, rdf, grammar, speaker):
+    for el in rdf:
+        rdf[el] = rdf[el].strip()
+        if rdf[el].lower() in grammar['pronouns']['subject']:
+            print('dereferencing ',rdf[el])
+            dict = {}
+            dict['pronoun'] = grammar['pronouns']['subject'][rdf[el].lower()]
 
-    if rdf['subject'].split()[0] in grammar['possessive']:
-        morphology = grammar['possessive'][rdf['subject'].split()[0].lower()]
-        if rdf['subject'].split()[1] in ['name', 'age', 'gender']:  # LIST OF PROPERTIES
-            rdf['predicate'] = rdf['subject'].split()[1] + '-is'
-            if len(words[3:]) > 1:
-                for word in words[3:]:
-                    rdf['object'] += ' ' + word
+            if dict['pronoun']['person'] == 'third':
+                print(self.chat.utterances[-2].parser.constituents)
             else:
-                rdf['object'] = words[3]
-
-
-        elif rdf['subject'].split()[1] in ['favorite', 'best']:  # LIST OF POSSIBLE ADJECTIVES / PROPERTIES
-            if rdf['subject'].split()[2] in grammar['categories']:  # LIST OF POSSIBLE CATEGORIES
-                rdf['predicate'] = rdf['subject'].split()[1] + '-' + rdf['subject'].split()[2] + '-is'
-
-    rdf['subject'] = fix_pronouns(morphology, speaker)
-
-    if rdf['object'].split() and rdf['object'].split()[0] in grammar['pronouns']:
-        morphology = grammar['pronouns'][rdf['object'].split()[0]]
-        rdf['object'] = fix_pronouns(morphology, speaker)
-
-        # TODO third person: pronoun coreferencing
-
+                rdf[el] = fix_pronouns(dict, speaker)
     return rdf
+
+
+def get_node_label(tree, word):
+    for el in tree:
+        for node in el:
+            if word == node.leaves()[0]:
+                return node.label()
+
+
+def find(word, lexicon):
+    """ Look up and return features of a given word in the lexicon. """
+
+    # Define pronoun categories.
+    pronouns = lexicon["pronouns"]
+    subject_pros = pronouns["subject"]
+    object_pros = pronouns["object"]
+    possessive_pros = pronouns["possessive"]
+    dep_possessives = possessive_pros["dependent"]
+    indep_possessives = possessive_pros["independent"]
+    reflexive_pros = pronouns["reflexive"]
+    indefinite_pros = pronouns["indefinite"]
+    indefinite_person = indefinite_pros["person"]
+    indefinite_place = indefinite_pros["place"]
+    indefinite_thing = indefinite_pros["thing"]
+
+    # Define verbal categories.
+    verbs = lexicon["verbs"]
+    to_be = verbs["to be"]
+    aux_verbs = verbs["auxiliaries"]
+    to_do = aux_verbs["to do"]
+    modals = aux_verbs["modals"]
+    lexicals = verbs["lexical verbs"]
+
+    # Define determiner categories.
+    determiners = lexicon["determiners"]
+    articles = determiners["articles"]
+    demonstratives = determiners["demonstratives"]
+    possessive_dets = determiners["possessives"]
+    quantifiers = determiners["quantifiers"]
+    wh_dets = determiners["wh-determiners"]
+    numerals = determiners["numerals"]
+    cardinals = numerals["cardinals"]
+    ordinals = numerals["ordinals"]
+    s_genitive = determiners["s-genitive"]
+
+    # Define conjunction categories.
+    conjunctions = lexicon["conjunctions"]
+    coordinators = conjunctions["coordinating"]
+    subordinators = conjunctions["subordinating"]
+
+    # Define a question word category.
+    question_words = lexicon["question words"]
+
+    # Define a kinship category.
+    kinship = lexicon["kinship"]
+
+    categories = [subject_pros,
+                  object_pros,
+                  dep_possessives,
+                  indep_possessives,
+                  reflexive_pros,
+                  indefinite_person,
+                  indefinite_place,
+                  indefinite_thing,
+                  to_be,
+                  to_do,
+                  modals,
+                  lexicals,
+                  articles,
+                  demonstratives,
+                  possessive_dets,
+                  quantifiers,
+                  wh_dets,
+                  cardinals,
+                  ordinals,
+                  s_genitive,
+                  coordinators,
+                  subordinators,
+                  question_words,
+                  kinship]
+
+    #print("looking up: ", word)
+
+    for category in categories:
+        for item in category:
+            if word == item:
+                return category[item]
+    return None
+
+
+def dbp_query(q, epr, f='application/json'):
+    try:
+        params = {'query': q}
+        params = urllib.urlencode(params)
+        opener = urllib2.build_opener(urllib2.HTTPHandler)
+        request = urllib2.Request(epr + '?' + params)
+        request.add_header('Accept', f)
+        request.get_method = lambda: 'GET'
+        url = opener.open(request)
+        return url.read()
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
+        raise e
+
+
+def get_uri(string):
+    query = "\
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
+    SELECT ?x \
+    WHERE { ?x rdfs:label ?string . \
+        FILTER ( ?string = \"" + string + "\" ) }\
+    LIMIT 200"
+    results = dbp_query(query, "http://dbpedia.org/sparql")
+    results = json.loads(results)
+    uris = []
+    for x in results['results']['bindings']:
+        uris.append(x['x']['value'])
+    if uris:
+        return uris[0]
+    else:
+        return None
