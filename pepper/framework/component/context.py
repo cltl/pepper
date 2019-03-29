@@ -3,6 +3,7 @@ from ..sensor import Context, UtteranceHypothesis
 from ..abstract import AbstractComponent
 
 from pepper.language import Utterance
+from pepper import config
 
 from collections import deque
 from threading import Thread, Lock
@@ -14,15 +15,13 @@ import numpy as np
 
 
 class ContextComponent(AbstractComponent):
-    # TODO: Prevent fast switching of people failing
-
     # Minimum Distance of Person to Enter/Exit Conversation
-    PERSON_AREA_ENTER = 0.5
+    PERSON_AREA_ENTER = 0.25
     PERSON_AREA_EXIT = 0.2
 
     # Minimum Distance Difference of Person to Enter/Exit Conversation
     PERSON_DIFF_ENTER = 1.5
-    PERSON_DIFF_EXIT = 1.1
+    PERSON_DIFF_EXIT = 1.4
 
     CONVERSATION_TIMEOUT = 5
 
@@ -59,32 +58,47 @@ class ContextComponent(AbstractComponent):
                 if self.context.chatting and hypotheses:
 
                     # Add ASR Transcript to Chat as Utterance
-                    self.context.chat.add_utterance(hypotheses, False)
+                    utterance = self.context.chat.add_utterance(hypotheses, False)
 
                     # Call On Chat Turn Event
-                    self.on_chat_turn(self.context.chat.last_utterance)
+                    self.on_chat_turn(utterance)
 
-        def get_closest_person(people):
+        def get_closest_people(people):
 
             person_area_threshold = (self.PERSON_AREA_EXIT if self.context.chatting else self.PERSON_AREA_ENTER)
             person_diff_threshold = (self.PERSON_DIFF_EXIT if self.context.chatting else self.PERSON_DIFF_ENTER)
 
-            if people:
-                if len(people) == 1:
-                    if people[0].bounds.area >= person_area_threshold:
-                        return people[0]
+            people_in_range = [person for person in people if person.bounds.area >= person_area_threshold]
+
+            print("\r{}".format([person.bounds.area for person in people_in_range]))
+
+            # If only one person is in range
+            if len(people_in_range) == 1:
+
+                # Return that person
+                return [people_in_range[0]]
+
+            # If multiple people are in range
+            elif len(people_in_range) >= 2:
+
+                # Sort them by proximity
+                people_sorted = np.argsort([person.bounds.area for person in people_in_range])[::-1]
+
+                # Identify the two closest individuals
+                closest = people_in_range[people_sorted[0]]
+                next_closest = people_in_range[people_sorted[1]]
+
+                # If the closest individual is significantly closer than the next one
+                if closest.bounds.area >= person_diff_threshold * next_closest.bounds.area:
+
+                    # Return Closest Individual
+                    return [closest]
+
+                # If people are the same distance apart
                 else:
 
-                    # Sort them by proximity
-                    people_sorted = np.argsort([person.bounds.area for person in people])[::-1]
-
-                    # Identify the two closest individuals
-                    closest = people[people_sorted[0]]
-                    next_closest = people[people_sorted[1]]
-
-                    if closest.bounds.area >= person_area_threshold:
-                        if closest.bounds.area >= person_diff_threshold * next_closest.bounds.area:
-                            return closest
+                    # Return all People
+                    return people_in_range
 
         def get_face(person, faces):
             for face in faces:
@@ -93,30 +107,78 @@ class ContextComponent(AbstractComponent):
 
         def on_image(image, orientation):
 
-            # Determine Conversation Partner
-            closest_person = get_closest_person(self._people_info)
+            # TODO: Face Vectors
 
-            if closest_person:
-                closest_face = get_face(closest_person, self._face_info)
+            # Get People within Conversation Bounds
+            closest_people = get_closest_people(self._people_info)
 
-                if closest_face:
+            if closest_people:
 
-                    self._conversation_time = time()
+                if not self.context.chatting:
 
-                    if self.context.chatting:
-                        self._face_vectors.append(closest_face.representation)
-                    else:
-                        self._face_vectors.clear()
-                        Thread(target=self.on_person_enter, args=(closest_face,)).start()
+                    # If one person is closest and his/her face is identifiable -> Start Personal Conversation
+                    if len(closest_people) == 1:
+                        closest_person = closest_people[0]
+                        closest_face = get_face(closest_person, self._face_info)
 
-            elif self.context.chatting and time() - self._conversation_time > self.CONVERSATION_TIMEOUT:
-                with context_lock:
-                    self._face_vectors.clear()
-                    self.on_person_exit()
+                        if closest_face:
+                            self._conversation_time = time()
+                            Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
 
-            # Wipe face and people info after use
-            self._face_info = []
-            self._people_info = []
+                    # If multiple people are in range, with nobody seemingly closest -> Start Group Conversation
+                    elif len(closest_people) >= 2:
+                        self._conversation_time = time()
+                        Thread(target=self.on_chat_enter, args=(config.HUMAN_CROWD,)).start()
+
+                elif self.context.chatting:
+
+                    # When talking to a human crowd
+                    if self.context.chat.speaker == config.HUMAN_CROWD:
+
+                        # If still in conversation with Group, update conversation time
+                        if len(closest_people) >= 2:
+                            self._conversation_time = time()
+
+                        # Else, when conversation times out
+                        elif time() - self._conversation_time >= self.CONVERSATION_TIMEOUT:
+
+                            # If a single Person enters conversation at this point -> Start conversation with them
+                            if len(closest_people) == 1:
+                                closest_person = closest_people[0]
+                                closest_face = get_face(closest_person, self._face_info)
+
+                                if closest_face:
+                                    self._conversation_time = time()
+                                    Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
+
+                            # Otherwise, Exit Chat
+                            else:
+                                self.on_chat_exit()
+
+                    else:  # When talking to a Specific Person
+
+                        # If still in conversation with Person, update conversation time
+                        if len(closest_people) == 1:
+                            closest_person = closest_people[0]
+                            closest_face = get_face(closest_person, self._face_info)
+
+                            if closest_face:
+                                self._conversation_time = time()
+
+                        # Else, when conversation times out
+                        elif time() - self._conversation_time >= self.CONVERSATION_TIMEOUT:
+
+                            # If Group enters conversation at this point -> Start Conversation with them
+                            if len(closest_people) >= 2:
+                                self._conversation_time = time()
+                                Thread(target=self.on_chat_enter, args=(config.HUMAN_CROWD,)).start()
+
+                            else:
+                                self.on_chat_exit()
+
+                # Wipe face and people info after use
+                self._face_info = []
+                self._people_info = []
 
         def on_object(image, objects):
             self._people_info = [obj for obj in objects if obj.name == "person"]
@@ -170,8 +232,8 @@ class ContextComponent(AbstractComponent):
         """
         pass
 
-    def on_person_enter(self, person):
+    def on_chat_enter(self, person):
         pass
 
-    def on_person_exit(self):
+    def on_chat_exit(self):
         pass

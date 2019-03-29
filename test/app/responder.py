@@ -41,16 +41,14 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
-        # self.context.start_chat("Human")
+    def on_chat_enter(self, name):
+        self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
 
-    def on_person_enter(self, person):
-        self._ignored_people = {name: t for name, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+        if name not in self._ignored_people:
+            self.context.start_chat(name)
+            self.say("Hello, {}".format(name))
 
-        if person.name not in self._ignored_people:
-            self.context.start_chat(person.name)
-            self.say("Hello, {}".format(person.name))
-
-    def on_person_exit(self):
+    def on_chat_exit(self):
         self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
         self.context.stop_chat()
 
@@ -84,7 +82,7 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
         self.say("{} {}".format(choice(sentences.INTRODUCE), choice(sentences.ASK_NAME)))
 
-    def on_person_exit(self):
+    def on_chat_exit(self):
         self.context.stop_chat()
         DefaultIntention(self.application)
 

@@ -18,8 +18,6 @@ class BrainResponder(Responder):
 
     @property
     def requirements(self):
-
-        # TODO: List all Components you need
         return [TextToSpeechComponent, BrainComponent]
 
     def respond(self, utterance, app):
