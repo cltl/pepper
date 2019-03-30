@@ -1,23 +1,33 @@
-from pepper.brain.utils.helper_functions import date_from_uri
-
 from datetime import datetime
 from typing import List, Optional
 
 
 class RDFBase(object):
-    def __init__(self, label, offset=None, confidence=0.0):
-        # type: (str, Optional[slice], float) -> Entity
+    def __init__(self, id, label, offset=None, confidence=0.0):
+        # type: (str, str, Optional[slice], float) -> Entity
         """
-        Construct Entity Object
+        Construct RDFBase Object
         Parameters
         ----------
-        response_item: dict
-            Direct output from query representing a conflict on a one to one predicate
+        id: str
+            URI of RDFBase
+        label: str
+            Label of RDFBase
+        offset: Optional[slice]
+            Indeces of substring where this RDFBase was mentioned
+        confidence: float
+            Confidence value that this RDFBase was mentioned
         """
 
+        self._id = id
         self._label = label
         self._offset = offset
         self._confidence = confidence
+
+    @property
+    def id(self):
+        # type: () -> str
+        return self._id
 
     @property
     def label(self):
@@ -36,24 +46,26 @@ class RDFBase(object):
 
 
 class Entity(RDFBase):
-    def __init__(self, label, id, types, offset=None, confidence=0.0):
+    def __init__(self, id, label, types, offset=None, confidence=0.0):
         # type: (str, str, List[str], Optional[slice], float) -> Entity
         """
         Construct Entity Object
         Parameters
         ----------
-        response_item: dict
-            Direct output from query representing a conflict on a one to one predicate
+        id: str
+            URI of entity
+        label: str
+            Label of entity
+        types: List[str]
+            List of types for this entity
+        offset: Optional[slice]
+            Indeces of substring where this entity was mentioned
+        confidence: float
+            Confidence value that this entity was mentioned
         """
-        super(Entity, self).__init__(label, offset, confidence)
+        super(Entity, self).__init__(id, label, offset, confidence)
 
-        self._id = id
         self._types = types
-
-    @property
-    def id(self):
-        # type: () -> str
-        return self._id
 
     @property
     def types(self):
@@ -62,10 +74,31 @@ class Entity(RDFBase):
     
     
 class Predicate(RDFBase):
+    def __init__(self, id, label, offset=None, confidence=0.0, cardinality=1):
+        # type: (str, str, Optional[slice], float, int) -> Entity
+        """
+        Construct Predicate Object
+        Parameters
+        ----------
+        id: str
+            URI of predicate
+        label: str
+            Label of predicate
+        offset: Optional[slice]
+            Indeces of substring where this predicate was mentioned
+        confidence: float
+            Confidence value that this predicate was mentioned
+        cardinality: int
+            Represents relation of predicate (Range cardinality)
+        """
+        super(Predicate, self).__init__(id, label, offset, confidence)
+
+        self._cardinality = cardinality
+
     @property
     def cardinality(self):
         # type: () -> int
-        raise NotImplementedError()
+        return self._cardinality
 
 
 class Triple(object):
@@ -85,19 +118,21 @@ class Triple(object):
         raise NotImplementedError()
 
 
-class CardinalityConflict(object):
-    def __init__(self, response_item, entity):
-        # type: (dict, Entity) -> CardinalityConflict
+class Provenance(object):
+    def __init__(self, author, date):
+        # type: (str, datetime) -> Provenance
         """
-        Construct CardinalityConflict Object
+        Construct Provenance Object
         Parameters
         ----------
-        response_item: dict
-            Direct output from query representing a conflict on a one to one predicate
+        author: str
+            Person who said the mention
+        date: datetime
+            Date when the mention was said
         """
-        self._author = response_item['authorlabel']['value']
-        self._date = date_from_uri(response_item['date']['value'])
-        self._object = entity
+
+        self._author = author
+        self._date = date
 
     @property
     def author(self):
@@ -109,27 +144,87 @@ class CardinalityConflict(object):
         # type: () -> datetime
         return self._date
 
+
+class CardinalityConflict(object):
+    def __init__(self, provenance, entity):
+        # type: (Provenance, Entity) -> CardinalityConflict
+        """
+        Construct CardinalityConflict Object
+        Parameters
+        ----------
+        provenance: Provenance
+            Information about who said the conflicting information and when
+        entity: Entity
+            Information about what the conflicting information is about
+        """
+        self._provenance = provenance
+        self._object = entity
+
+    @property
+    def provenance(self):
+        # type: () -> Provenance
+        return self._provenance
+
     @property
     def object(self):
         # type: () -> Entity
         return self._object
 
-
-class NegationConflict(object):
     @property
     def author(self):
         # type: () -> str
-        raise NotImplementedError()
+        return self._provenance.author
 
     @property
     def date(self):
         # type: () -> datetime
-        raise NotImplementedError()
+        return self._provenance.date
+
+    @property
+    def object_name(self):
+        # type: () -> str
+        return self._object.label
+
+
+class NegationConflict(object):
+    def __init__(self, provenance, predicate):
+        # type: (Provenance, Predicate) -> NegationConflict
+        """
+        Construct CardinalityConflict Object
+        Parameters
+        ----------
+        provenance: Provenance
+            Information about who said the conflicting information and when
+        predicate: Predicate
+            Information about what the conflicting information is about
+        """
+        self._provenance = provenance
+        self._predicate = predicate
+
+    @property
+    def provenance(self):
+        # type: () -> Provenance
+        return self._provenance
 
     @property
     def predicate(self):
         # type: () -> Predicate
-        raise NotImplementedError()
+        return self._predicate
+
+    @property
+    def author(self):
+        # type: () -> str
+        return self._provenance.author
+
+    @property
+    def date(self):
+        # type: () -> datetime
+        return self._provenance.date
+
+    @property
+    def predicate_name(self):
+        # type: () -> str
+        return self._predicate.label
 
 
 class StatementNovelty(object):

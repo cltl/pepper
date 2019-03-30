@@ -1,5 +1,5 @@
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule
-from pepper.brain.utils.response import Entity, CardinalityConflict
+from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule, date_from_uri
+from pepper.brain.utils.response import Predicate, Entity, Provenance, CardinalityConflict, NegationConflict
 from pepper.brain.basic_brain import BasicBrain
 from pepper import config
 
@@ -181,6 +181,33 @@ class LongTermMemory(BasicBrain):
         return None, text
 
     ########## conflicts ##########
+    def _fill_entity_(self, label, namespace='LW'):
+        types = self.get_type_of_instance(label)
+
+        return Entity(self.namespaces[namespace]+label, label, types)
+
+    def _fill_predicate_(self, label, namespace='N2MU'):
+
+        return Predicate(self.namespaces[namespace]+label, label)
+
+    def _fill_provenance_(self, response_item):
+        author = response_item['authorlabel']['value']
+        date = date_from_uri(response_item['date']['value'])
+
+        return Provenance(author, date)
+
+    def _fill_cardinality_conflict_(self, raw_conflict):
+        processed_provenance = self._fill_provenance_(raw_conflict)
+        processed_entity = self._fill_entity_(raw_conflict['objectlabel']['value'])
+
+        return CardinalityConflict(processed_provenance, processed_entity)
+
+    def _fill_negation_conflict_(self, raw_conflict):
+        processed_provenance = self._fill_provenance_(raw_conflict)
+        processed_predicate = self._fill_predicate_(raw_conflict['pred']['value'].split('/')[-1])
+
+        return NegationConflict(processed_provenance, processed_predicate)
+
     def get_all_conflicts(self):
         """
         Aggregate all conflicts in brain
@@ -220,51 +247,25 @@ class LongTermMemory(BasicBrain):
                                                               capsule['subject']['label'], capsule['object']['label'])
 
         response = self._submit_query(query)
-
         if response[0] != {}:
             conflicts = [self._fill_cardinality_conflict_(elem) for elem in response]
 
         return conflicts
 
-    def _fill_cardinality_conflict_(self, raw_conflict):
-        processed_entity = self._fill_entity_(raw_conflict['objectlabel']['value'])
-        processed_conflict = CardinalityConflict(raw_conflict, processed_entity)
-
-        return processed_conflict
-
-    def _fill_entity_(self, label, namespace='LW'):
-        query = read_query('entity/type') % label
-        response = self._submit_query(query)
-
-        if response:
-            types = [item['type']['value'].split('/')[-1] for item in response]
-        else:
-            types = []
-
-        return Entity(label, self.namespaces[namespace]+label, types)
-
     def get_negation_conflicts_with_statement(self, capsule):
         # Case fold
         capsule = casefold_capsule(capsule, format='triple')
+        predicate = capsule['predicate']['type']
+        predicate = predicate[:-4] if predicate.endswith('-not') else predicate
 
-        query = read_query('negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
-               capsule['predicate']['type'], capsule['predicate']['type'])
+        query = read_query('conflicts/negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
+                                                              predicate, predicate)
 
         response = self._submit_query(query)
+        if response[0] != {}:
+            conflicts = [self._fill_negation_conflict_(elem) for elem in response]
 
-        conflict = {'positive': {}, 'negative': {}}
-
-        for item in response:
-            item['authorlabel'] = item['authorlabel']['value']
-            item['date'] = item['date']['value'].split('/')[-1]
-            item['pred'] = item['pred']['value'].split('/')[-1]
-
-            if item['pred'].split('-')[-1] == 'not':
-                conflict['negative'] = item
-            else:
-                conflict['positive'] = item
-
-        return {} if conflict['positive'] == {} or conflict['negative'] == {} else conflict
+        return conflicts
 
     ########## gaps ##########
     def get_gaps_from_entity(self, entity):

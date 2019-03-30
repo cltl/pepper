@@ -215,16 +215,6 @@ class BasicBrain(object):
         response = self._submit_query(query)
         return [elem['name']['value'] for elem in response]
 
-    def get_instance_of_type(self, instance_type):
-        """
-        Get isntances of a certain class type
-        :param instance_type: name of class in ontology
-        :return:
-        """
-        query = read_query('content exploration/instance_of_type') % (instance_type)
-        response = self._submit_query(query)
-        return [elem['name']['value'] for elem in response]
-
     def when_last_chat_with(self, actor_label):
         """
         Get time value for the last time I chatted with this person
@@ -235,6 +225,26 @@ class BasicBrain(object):
         response = self._submit_query(query)
 
         return response[0]['time']['value'].split('/')[-1] if response != [] else ''
+
+    def get_instance_of_type(self, instance_type):
+        """
+        Get instances of a certain class type
+        :param instance_type: name of class in ontology
+        :return:
+        """
+        query = read_query('content exploration/instance_of_type') % instance_type
+        response = self._submit_query(query)
+        return [elem['name']['value'] for elem in response] if response else []
+
+    def get_type_of_instance(self, label):
+        """
+        Get types of a certain instance identified by its label
+        :param label: label of instance
+        :return:
+        """
+        query = read_query('content exploration/type_of_instance') % label
+        response = self._submit_query(query)
+        return [elem['type']['value'] for elem in response] if response else []
 
     def get_triples_with_predicate(self, predicate):
         """

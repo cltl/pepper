@@ -23,4 +23,4 @@ where {
 
     ?m grasp:wasAttributedTo ?author .
     ?author rdfs:label ?authorlabel .
-}
+} GROUP BY ?pred ?authorlabel ?date
