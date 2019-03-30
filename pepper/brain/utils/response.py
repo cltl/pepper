@@ -227,28 +227,57 @@ class NegationConflict(object):
         return self._predicate.label
 
 
+# TODO revise overlap with provenance
 class StatementNovelty(object):
+    def __init__(self, provenance):
+        # type: (Provenance) -> StatementNovelty
+        """
+        Construct StatementNovelty Object
+        Parameters
+        ----------
+        provenance: Provenance
+            Information about who said the acquired information and when
+        """
+        self._provenance = provenance
+
+    @property
+    def provenance(self):
+        # type: () -> Provenance
+        return self._provenance
+
     @property
     def author(self):
         # type: () -> str
-        raise NotImplementedError()
+        return self._provenance.author
 
     @property
     def date(self):
         # type: () -> datetime
-        raise NotImplementedError()
+        return self._provenance.date
 
 
 class EntityNovelty(object):
-    @property
-    def object(self):
-        # type: () -> bool
-        raise NotImplementedError()
+    def __init__(self, existance_subject, existance_object):
+        # type: (bool, bool) -> EntityNovelty
+        """
+        Construct EntityNovelty Object
+        Parameters
+        ----------
+        provenance: Provenance
+            Information about who said the acquired information and when
+        """
+        self._subject = not existance_subject
+        self._object = not existance_object
 
     @property
     def subject(self):
         # type: () -> bool
-        raise NotImplementedError()
+        return self._subject
+
+    @property
+    def object(self):
+        # type: () -> bool
+        return self._object
 
 
 class Gap(object):
@@ -309,8 +338,8 @@ class Thoughts(object):
         # type: () -> List[CardinalityConflict]
         raise NotImplementedError()
 
-    def negation_conflict(self):
-        # type: () -> Optional[NegationConflict]
+    def negation_conflicts(self):
+        # type: () -> Optional[List[NegationConflict]]
         raise NotImplementedError()
 
     def statement_novelties(self):

@@ -131,7 +131,7 @@ class BasicBrain(object):
 
         return str(response.status_code)
 
-    def _submit_query(self, query):
+    def _submit_query(self, query, ask=False):
         # Set up connection
         sparql = SPARQLWrapper(self.address)
 
@@ -141,7 +141,10 @@ class BasicBrain(object):
         sparql.addParameter('Accept', 'application/sparql-results+json')
         response = sparql.query().convert()
 
-        return response["results"]["bindings"]
+        if ask:
+            return response['boolean']
+        else:
+            return response["results"]["bindings"]
 
     ########## brain structure exploration ##########
     def get_predicates(self):
@@ -255,12 +258,3 @@ class BasicBrain(object):
         query = read_query('content exploration/triples_with_predicate') % predicate
         response = self._submit_query(query)
         return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
-
-    def check_statement_existence(self, instance_url):
-        query = read_query('content exploration/instance_existence') % (instance_url)
-        response = self._submit_query(query)
-
-        if response[0] != {}:
-            response = [{'date': elem['date']['value'].split('/')[-1], 'authorlabel': elem['authorlabel']['value']} for elem in response]
-
-        return response

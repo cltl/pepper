@@ -1,5 +1,6 @@
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule, date_from_uri
-from pepper.brain.utils.response import Predicate, Entity, Provenance, CardinalityConflict, NegationConflict
+from pepper.brain.utils.response import Predicate, Entity, Provenance, CardinalityConflict, NegationConflict, \
+    StatementNovelty, EntityNovelty
 from pepper.brain.basic_brain import BasicBrain
 from pepper import config
 
@@ -55,14 +56,13 @@ class LongTermMemory(BasicBrain):
         capsule = casefold_capsule(capsule, format='triple')
 
         # Create graphs and triples
-        instance_url = self._model_graphs_(capsule)
+        subject_url, object_url, instance_url = self._model_graphs_(capsule)
 
         # Check if this knowledge already exists on the brain
-        novelty = self.check_statement_existence(instance_url)
+        statement_novelty = self.get_statement_novelty(instance_url)
 
         # Check how many items of the same type as subject and object we have
-        items_like_subject = self.get_instance_of_type(capsule['subject']['type'])
-        items_like_object = self.get_instance_of_type(capsule['object']['type'])
+        entity_novelty = self._fill_entity_novelty_(subject_url, object_url)
 
         # Find any overlaps
         overlaps = self.get_overlaps(capsule)
@@ -85,9 +85,8 @@ class LongTermMemory(BasicBrain):
         # Create JSON output
         capsule["date"] = str(capsule["date"])
         output = {'response': code, 'statement': capsule,
-                  'statement_novelty': novelty,
-                  'entity_novelty': {'subject': capsule['subject']['label'] not in items_like_subject,
-                                     'object': capsule['object']['label'] not in items_like_object},
+                  'statement_novelty': statement_novelty,
+                  'entity_novelty': entity_novelty,
                   'negation_conflicts': negation_conflicts,
                   'cardinality_conflicts': object_conflict,
                   'subject_gaps': subject_gaps,
@@ -108,7 +107,7 @@ class LongTermMemory(BasicBrain):
         capsule = casefold_capsule(capsule, format='triple')
 
         # Create graphs and triples
-        instance_url = self._model_graphs_(capsule, type='Experience')
+        subject_url, object_url, instance_url = self._model_graphs_(capsule, type='Experience')
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
@@ -182,27 +181,86 @@ class LongTermMemory(BasicBrain):
 
     ########## conflicts ##########
     def _fill_entity_(self, label, namespace='LW'):
+        """
+        Create an RDF entity given its label and its namespace
+        Parameters
+        ----------
+        label: str
+            Label of entity
+        namespace:
+            Namespace where entity belongs to
+
+        Returns
+        -------
+            Entity object with given label
+        """
         types = self.get_type_of_instance(label)
 
         return Entity(self.namespaces[namespace]+label, label, types)
 
     def _fill_predicate_(self, label, namespace='N2MU'):
+        """
+        Create an RDF predicate given its label and its namespace
+        Parameters
+        ----------
+        label: str
+            Label of predicate
+        namespace:
+            Namespace where predicate belongs to
+
+        Returns
+        -------
+            Predicate object with given label
+        """
 
         return Predicate(self.namespaces[namespace]+label, label)
 
     def _fill_provenance_(self, response_item):
+        """
+        Structure provenance to pair authors and dates when mentions are created
+        Parameters
+        ----------
+        response_item: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            Provenance object containing author and date
+        """
         author = response_item['authorlabel']['value']
         date = date_from_uri(response_item['date']['value'])
 
         return Provenance(author, date)
 
     def _fill_cardinality_conflict_(self, raw_conflict):
+        """
+        Structure cardinality conflict to pair provenance and object that creates the conflict
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            CardinalityConflict object containing provenance and entity
+        """
         processed_provenance = self._fill_provenance_(raw_conflict)
         processed_entity = self._fill_entity_(raw_conflict['objectlabel']['value'])
 
         return CardinalityConflict(processed_provenance, processed_entity)
 
     def _fill_negation_conflict_(self, raw_conflict):
+        """
+        Structure negation conflict to pair provenance and predicate that creates the conflict
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            NegationConflict object containing provenance and predicate
+        """
         processed_provenance = self._fill_provenance_(raw_conflict)
         processed_predicate = self._fill_predicate_(raw_conflict['pred']['value'].split('/')[-1])
 
@@ -237,14 +295,27 @@ class LongTermMemory(BasicBrain):
         return conflicts
 
     def get_object_cardinality_conflicts_with_statement(self, capsule):
+        """
+        Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
+        multiple object values
+        Parameters
+        ----------
+        capsule
+
+        Returns
+        -------
+        conflicts: List[CardinalityConflicts]
+            List of Conflicts containing the object which creates the conflict, and their provenance
+        """
         # Case fold
         capsule = casefold_capsule(capsule, format='triple')
 
         if capsule['predicate']['type'] not in self._ONE_TO_ONE_PREDICATES:
             return [{}]
 
-        query = read_query('conflicts/object_cardinality') % (capsule['predicate']['type'],
-                                                              capsule['subject']['label'], capsule['object']['label'])
+        query = read_query('thoughts/object_cardinality_conflicts') % (capsule['predicate']['type'],
+                                                                        capsule['subject']['label'],
+                                                                        capsule['object']['label'])
 
         response = self._submit_query(query)
         if response[0] != {}:
@@ -253,12 +324,23 @@ class LongTermMemory(BasicBrain):
         return conflicts
 
     def get_negation_conflicts_with_statement(self, capsule):
+        """
+        Query and build negation conflicts, meaning conflicts because predicates are directly negated
+        Parameters
+        ----------
+        capsule
+
+        Returns
+        -------
+        conflicts: List[NegationConflict]
+            List of Conflicts containing the predicate which creates the conflict, and their provenance
+        """
         # Case fold
         capsule = casefold_capsule(capsule, format='triple')
         predicate = capsule['predicate']['type']
         predicate = predicate[:-4] if predicate.endswith('-not') else predicate
 
-        query = read_query('conflicts/negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
+        query = read_query('thoughts/negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
                                                               predicate, predicate)
 
         response = self._submit_query(query)
@@ -266,6 +348,82 @@ class LongTermMemory(BasicBrain):
             conflicts = [self._fill_negation_conflict_(elem) for elem in response]
 
         return conflicts
+
+    ########## overlaps ##########
+    def _fill_statement_novelty_(self, raw_conflict):
+        """
+        Structure statement novelty to get provenance if this statement has been heard before
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            StatementNovelty object containing provenance
+        """
+        processed_provenance = self._fill_provenance_(raw_conflict)
+
+        return StatementNovelty(processed_provenance)
+
+    def _fill_entity_novelty_(self, subject_url, object_url):
+        """
+        Structure entity novelty to signal if these entities have been heard before
+        Parameters
+        ----------
+        subject_url: str
+            URI of instance
+        object_url: str
+            URI of instance
+
+        Returns
+        -------
+            Entity object containing boolean values signaling if they are new
+        """
+        subject_novelty = self.check_instance_novelty(subject_url)
+        object_novelty = self.check_instance_novelty(object_url)
+
+        return EntityNovelty(subject_novelty, object_novelty)
+
+    def get_statement_novelty(self, statement_uri):
+        """
+        Query and build provenance if an instance (statement) has been learned before
+        Parameters
+        ----------
+        statement_uri: str
+            URI of instance
+
+        Returns
+        -------
+        conflicts: List[StatementNovelty]
+            List of provenance for the instance
+        """
+        query = read_query('thoughts/statement_novelty') % statement_uri
+        response = self._submit_query(query)
+
+        if response[0] != {}:
+            response = [self._fill_statement_novelty_(elem) for elem in response]
+
+        return response
+
+    def check_instance_novelty(self, instance_url):
+        """
+        Query if an instance (entity) has been heard about before
+        Parameters
+        ----------
+        instance_url: str
+            URI of instance
+
+        Returns
+        -------
+        conflicts: List[StatementNovelty]
+            List of provenance for the instance
+        """
+        query = read_query('thoughts/entity_novelty') % instance_url
+        response = self._submit_query(query, ask=True)
+
+        return response
+
 
     ########## gaps ##########
     def get_gaps_from_entity(self, entity):
@@ -638,7 +796,7 @@ class LongTermMemory(BasicBrain):
 
         perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
 
-        return instance
+        return subject, object, instance
 
     ######################################### Helpers for question processing #########################################
 
