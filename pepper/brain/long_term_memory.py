@@ -1,17 +1,16 @@
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule
 from pepper.brain.utils.response import Entity, CardinalityConflict
-from pepper import config, logger
+from pepper.brain.basic_brain import BasicBrain
+from pepper import config
 
-from rdflib import Dataset, URIRef, Literal, Namespace, RDF, RDFS, OWL
+from rdflib import URIRef, Literal, RDF, RDFS, OWL
 from iribaker import to_iri
-from SPARQLWrapper import SPARQLWrapper, JSON
 from fuzzywuzzy import process
 
-from datetime import datetime
 import requests
 
 
-class LongTermMemory(object):
+class LongTermMemory(BasicBrain):
 
     _ONE_TO_ONE_PREDICATES = [
         'age',
@@ -38,23 +37,7 @@ class LongTermMemory(object):
             IP address and port of the Triple store
         """
 
-        self.address = address
-        self.namespaces = {}
-        self.ontology_paths = {}
-        self.format = 'trig'
-        self.dataset = Dataset()
-        self.query_prefixes = read_query('prefixes')
-
-        self._define_namespaces()
-        self._get_ontology_path()
-        self._bind_namespaces()
-
-        self.my_uri = None
-
-        self._log = logger.getChild(self.__class__.__name__)
-        self._log.debug("Booted")
-
-        self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
+        super(LongTermMemory, self).__init__(address)
 
         # Launch first query
         self.count_statements()
@@ -196,149 +179,6 @@ class LongTermMemory(object):
         # Failure, nothing found
         text = ' I am sorry, I could not learn anything on %s so I will not remember it' % item
         return None, text
-
-    ########## management system for keeping track of chats and turns ##########
-    def get_last_chat_id(self):
-        """
-        Get the id for the last interaction recorded
-        :return: id
-        """
-        query = read_query('last_chat_id')
-        response = self._submit_query(query)
-
-        return int(response[0]['chatid']['value']) if response else 0
-
-    def get_last_turn_id(self, chat_id):
-        """
-        Get the id for the last turn in the given chat
-        :param chat_id: id for chat of interest
-        :return:  id
-        """
-        query = read_query('last_turn_id') % (chat_id)
-        response = self._submit_query(query)
-
-        last_turn = 0
-        for turn in response:
-            turn_uri = turn['s']['value']
-            turn_id = turn_uri.split('/')[-1][10:]
-            turn_id = int(turn_id)
-
-            if turn_id > last_turn:
-                last_turn = turn_id
-
-        return last_turn
-
-    ########## brain structure exploration ##########
-    def get_predicates(self):
-        """
-        Get predicates in social ontology
-        :return:
-        """
-        query = read_query('predicates')
-        response = self._submit_query(query)
-
-        return [elem['p']['value'].split('/')[-1] for elem in response]
-
-    def get_classes(self):
-        """
-        Get classes in social ontology
-        :return:
-        """
-        query = read_query('classes')
-        response = self._submit_query(query)
-
-        return [elem['o']['value'].split('/')[-1] for elem in response]
-
-    def get_labels_and_classes(self):
-        """
-        Get classes in social ontology
-        :return:
-        """
-        query = read_query('labels_and_classes')
-        response = self._submit_query(query)
-
-        temp = dict()
-        for r in response:
-            temp[r['l']['value']] = r['o']['value'].split('/')[-1]
-
-        return temp
-
-    ########## learned facts exploration ##########
-    def count_statements(self):
-        """
-        Count statements or 'facts' in the brain
-        :return:
-        """
-        query = read_query('count_statements')
-        response = self._submit_query(query)
-        return response[0]['count']['value']
-
-    def count_friends(self):
-        """
-        Count number of people I have talked to
-        :return:
-        """
-        query = read_query('count_friends')
-        response = self._submit_query(query)
-        return response[0]['count']['value']
-
-    def get_my_friends(self):
-        """
-        Get names of people I have talked to
-        :return:
-        """
-        query = read_query('my_friends')
-        response = self._submit_query(query)
-        return [elem['name']['value'].split('/')[-1] for elem in response]
-
-    def get_best_friends(self):
-        """
-        Get names of the 5 people I have talked to the most
-        :return:
-        """
-        query = read_query('best_friends')
-        response = self._submit_query(query)
-        return [elem['name']['value'] for elem in response]
-
-    def get_instance_of_type(self, instance_type):
-        """
-        Get isntances of a certain class type
-        :param instance_type: name of class in ontology
-        :return:
-        """
-        query = read_query('instance_of_type') % (instance_type)
-        response = self._submit_query(query)
-        return [elem['name']['value'] for elem in response]
-
-    def when_last_chat_with(self, actor_label):
-        """
-        Get time value for the last time I chatted with this person
-        :param actor_label: name of person
-        :return:
-        """
-        query = read_query('when_last_chat_with') % (actor_label)
-        response = self._submit_query(query)
-
-        return response[0]['time']['value'].split('/')[-1] if response != [] else ''
-
-    def get_triples_with_predicate(self, predicate):
-        """
-        Get triples that contain this predicate
-        :param predicate:
-        :return:
-        """
-        query = read_query('triples_with_predicate') % predicate
-        response = self._submit_query(query)
-        return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
-
-    def check_statement_existence(self, instance_url):
-        query = read_query('instance_existence') % (instance_url)
-        response = self._submit_query(query)
-
-        if response[0] != {}:
-            response = [{'date': elem['date']['value'].split('/')[-1], 'authorlabel': elem['authorlabel']['value']} for elem in response]
-
-        return response
 
     ########## conflicts ##########
     def get_all_conflicts(self):
@@ -529,109 +369,7 @@ class LongTermMemory(object):
 
         return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
 
-    ######################################## Helpers for setting up connection ########################################
-
-    def _define_namespaces(self):
-        """
-        Define namespaces for different layers (ontology/vocab and resource). Assign them to self
-        :return:
-        """
-        # Namespaces for the instance layer
-        instance_vocab = 'http://cltl.nl/leolani/n2mu/'
-        self.namespaces['N2MU'] = Namespace(instance_vocab)
-        instance_resource = 'http://cltl.nl/leolani/world/'
-        self.namespaces['LW'] = Namespace(instance_resource)
-
-        # Namespaces for the mention layer
-        mention_vocab = 'http://groundedannotationframework.org/gaf#'
-        self.namespaces['GAF'] = Namespace(mention_vocab)
-        mention_resource = 'http://cltl.nl/leolani/talk/'
-        self.namespaces['LTa'] = Namespace(mention_resource)
-
-        # Namespaces for the attribution layer
-        attribution_vocab = 'http://groundedannotationframework.org/grasp#'
-        self.namespaces['GRASP'] = Namespace(attribution_vocab)
-        attribution_resource_friends = 'http://cltl.nl/leolani/friends/'
-        self.namespaces['LF'] = Namespace(attribution_resource_friends)
-        attribution_resource_inputs = 'http://cltl.nl/leolani/inputs/'
-        self.namespaces['LI'] = Namespace(attribution_resource_inputs)
-
-        # Namespaces for the temporal layer-ish
-        time_vocab = 'http://www.w3.org/TR/owl-time/#'
-        self.namespaces['TIME'] = Namespace(time_vocab)
-        time_resource = 'http://cltl.nl/leolani/time/'
-        self.namespaces['LTi'] = Namespace(time_resource)
-
-        # The namespaces of external ontologies
-        skos = 'http://www.w3.org/2004/02/skos/core#'
-        self.namespaces['SKOS'] = Namespace(skos)
-
-        prov = 'http://www.w3.org/ns/prov#'
-        self.namespaces['PROV'] = Namespace(prov)
-
-        sem = 'http://semanticweb.cs.vu.nl/2009/11/sem/'
-        self.namespaces['SEM'] = Namespace(sem)
-
-        xml = 'https://www.w3.org/TR/xmlschema-2/#'
-        self.namespaces['XML'] = Namespace(xml)
-
-    def _get_ontology_path(self):
-        """
-        Define ontology paths to key vocabularies
-        :return:
-        """
-        self.ontology_paths['n2mu'] = './../../knowledge_representation/ontologies/leolani.ttl'
-        self.ontology_paths['gaf'] = './../../knowledge_representation/ontologies/gaf.rdf'
-        self.ontology_paths['grasp'] = './../../knowledge_representation/ontologies/grasp.rdf'
-        self.ontology_paths['sem'] = './../../knowledge_representation/ontologies/sem.rdf'
-
-    def _bind_namespaces(self):
-        """
-        Bnd namespaces
-        :return:
-        """
-        self.dataset.bind('n2mu', self.namespaces['N2MU'])
-        self.dataset.bind('leolaniWorld', self.namespaces['LW'])
-        self.dataset.bind('gaf', self.namespaces['GAF'])
-        self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
-        self.dataset.bind('grasp', self.namespaces['GRASP'])
-        self.dataset.bind('leolaniFriends', self.namespaces['LF'])
-        self.dataset.bind('leolaniInputs', self.namespaces['LI'])
-        self.dataset.bind('time', self.namespaces['TIME'])
-        self.dataset.bind('leolaniTime', self.namespaces['LTi'])
-        self.dataset.bind('skos', self.namespaces['SKOS'])
-        self.dataset.bind('prov', self.namespaces['PROV'])
-        self.dataset.bind('sem', self.namespaces['SEM'])
-        self.dataset.bind('xml', self.namespaces['XML'])
-        self.dataset.bind('owl', OWL)
-
     ######################################## Helpers for statement processing ########################################
-
-    def create_chat_id(self, actor, date):
-        """
-        Determine chat id depending on my last conversation with this person
-        :param actor:
-        :param date:
-        :return:
-        """
-        query = read_query('last_chat_with') % (actor)
-        response = self._submit_query(query)
-
-        if response and int(response[0]['day']['value']) == int(date.day) \
-                and int(response[0]['month']['value']) == int(date.month) \
-                and int(response[0]['year']['value']) == int(date.year):
-            # Chatted with this person today so same chat id
-            chat_id = int(response[0]['chatid']['value'])
-        else:
-            # Either have never chatted with this person, or I have but not today. Add one to latest chat
-            chat_id = self.get_last_chat_id() + 1
-
-        return chat_id
-
-    def create_turn_id(self, chat_id):
-        query = read_query('last_turn_in_chat') % (chat_id)
-        response = self._submit_query(query)
-        return int(response['turnid']['value']) + 1 if response else 1
 
     def _generate_leolani(self, instance_graph):
         # Create Leolani
@@ -789,13 +527,13 @@ class LongTermMemory(object):
         _, _ = self._create_claim_graph(leolani, 'leolani', actor, actor_label, predicate, type)
 
         # Event and subevent
-        event_id = self.create_chat_id(actor_label, date)
+        event_id = capsule['chat']
         if type == 'Statement':
             event_label = 'chat%s' % event_id
         elif type == 'Experience':
             event_label = 'visual%s' % event_id
 
-        subevent_id = self.create_turn_id(event_id)
+        subevent_id = capsule['turn']
         if type == 'Statement':
             subevent_label = event_label + '_turn%s' % subevent_id
         elif type == 'Experience':
@@ -874,22 +612,6 @@ class LongTermMemory(object):
         with open(file_path + '.' + self.format, 'w') as f:
             self.dataset.serialize(f, format=self.format)
         return self.dataset.serialize(format=self.format)
-
-    def _upload_to_brain(self, data):
-        """
-        Post data to the brain
-        :param data: serialized data as string
-        :return: response status
-        """
-        self._log.debug("Posting triples")
-
-        # From serialized string
-        post_url = self.address + "/statements"
-        response = requests.post(post_url,
-                                 data=data,
-                                 headers={'Content-Type': 'application/x-' + self.format})
-
-        return str(response.status_code)
 
     def _model_graphs_(self, capsule, type='Statement'):
         # Leolani world (includes instance and claim graphs)
@@ -988,16 +710,3 @@ class LongTermMemory(object):
         query = self.query_prefixes + query
 
         return query
-
-    def _submit_query(self, query):
-        # Set up connection
-        sparql = SPARQLWrapper(self.address)
-
-        # Response parameters
-        sparql.setQuery(query)
-        sparql.setReturnFormat(JSON)
-        sparql.addParameter('Accept', 'application/sparql-results+json')
-        response = sparql.query().convert()
-
-        return response["results"]["bindings"]
-
