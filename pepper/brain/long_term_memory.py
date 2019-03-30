@@ -1,6 +1,6 @@
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule, date_from_uri
 from pepper.brain.utils.response import Predicate, Entity, Provenance, CardinalityConflict, NegationConflict, \
-    StatementNovelty, EntityNovelty
+    StatementNovelty, EntityNovelty, Gap, Gaps
 from pepper.brain.basic_brain import BasicBrain
 from pepper import config
 
@@ -72,12 +72,12 @@ class LongTermMemory(BasicBrain):
         code = self._upload_to_brain(data)
 
         # Check for conflicts after adding the knowledge
-        negation_conflicts = self.get_negation_conflicts_with_statement(capsule)
-        object_conflict = self.get_object_cardinality_conflicts_with_statement(capsule)
+        negation_conflicts = self.get_negation_conflicts(capsule)
+        object_conflict = self.get_object_cardinality_conflicts(capsule)
 
         # Check for gaps, in case we want to be proactive
-        subject_gaps = self.get_gaps_from_entity(capsule['subject'])
-        object_gaps = self.get_gaps_from_entity(capsule['object'])
+        subject_gaps = self.get_entity_gaps(capsule['subject'])
+        object_gaps = self.get_entity_gaps(capsule['object'])
 
         # Report trust
         trust = 0 if self.when_last_chat_with(capsule['author']) == '' else 1
@@ -180,7 +180,7 @@ class LongTermMemory(BasicBrain):
         return None, text
 
     ########## conflicts ##########
-    def _fill_entity_(self, label, namespace='LW'):
+    def _fill_entity_(self, label, namespace='LW', types=None):
         """
         Create an RDF entity given its label and its namespace
         Parameters
@@ -194,7 +194,7 @@ class LongTermMemory(BasicBrain):
         -------
             Entity object with given label
         """
-        types = self.get_type_of_instance(label)
+        types = self.get_type_of_instance(label) if types is None else types
 
         return Entity(self.namespaces[namespace]+label, label, types)
 
@@ -294,7 +294,7 @@ class LongTermMemory(BasicBrain):
 
         return conflicts
 
-    def get_object_cardinality_conflicts_with_statement(self, capsule):
+    def get_object_cardinality_conflicts(self, capsule):
         """
         Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
         multiple object values
@@ -323,7 +323,7 @@ class LongTermMemory(BasicBrain):
 
         return conflicts
 
-    def get_negation_conflicts_with_statement(self, capsule):
+    def get_negation_conflicts(self, capsule):
         """
         Query and build negation conflicts, meaning conflicts because predicates are directly negated
         Parameters
@@ -424,17 +424,36 @@ class LongTermMemory(BasicBrain):
 
         return response
 
-
     ########## gaps ##########
-    def get_gaps_from_entity(self, entity):
+    def _fill_entity_gap_(self, raw_conflict):
+        """
+        Structure entity gap to get the predicate and range of what has been learned but not heard
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            Gap object containing a predicate and its range
+        """
+
+        processed_predicate = self._fill_predicate_(raw_conflict['p']['value'].split('/')[-1])
+        processed_range = self._fill_entity_('', namespace='N2MU', 
+                                             types=[raw_conflict['type2']['value'].split('/')[-1]])
+
+        return Gap(processed_predicate, processed_range)
+
+    def get_entity_gaps(self, entity):
         # Role as subject
         query = read_query('subject_gaps') % (entity['label'], entity['label'])
         response = self._submit_query(query)
 
         if response:
-            subject_gaps = [{'predicate': elem['p']['value'].split('/')[-1],
-                            'range': elem['type2']['value'].split('/')[-1]} for elem in response
+            subject_gaps = [self._fill_entity_gap_(elem) 
+                            for elem in response 
                             if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
+                    
         else:
             subject_gaps = []
 
@@ -443,13 +462,14 @@ class LongTermMemory(BasicBrain):
         response = self._submit_query(query)
 
         if response:
-            object_gaps = [{'predicate': elem['p']['value'].split('/')[-1],
-                            'domain': elem['type2']['value'].split('/')[-1]} for elem in response
+            object_gaps = [self._fill_entity_gap_(elem)
+                           for elem in response
                            if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
+
         else:
             object_gaps = []
 
-        return {'subject': subject_gaps, 'object': object_gaps}
+        return Gaps(subject_gaps, object_gaps)
 
     ########## overlaps ##########
     def get_overlaps(self, capsule):

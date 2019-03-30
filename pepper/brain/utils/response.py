@@ -75,7 +75,7 @@ class Entity(RDFBase):
     
 class Predicate(RDFBase):
     def __init__(self, id, label, offset=None, confidence=0.0, cardinality=1):
-        # type: (str, str, Optional[slice], float, int) -> Entity
+        # type: (str, str, Optional[slice], float, int) -> Predicate
         """
         Construct Predicate Object
         Parameters
@@ -263,8 +263,10 @@ class EntityNovelty(object):
         Construct EntityNovelty Object
         Parameters
         ----------
-        provenance: Provenance
-            Information about who said the acquired information and when
+        existance_subject: bool
+            Truth value for determining if this subject is something new
+        existance_object: bool
+            Truth value for determining if this object is something new
         """
         self._subject = not existance_subject
         self._object = not existance_object
@@ -281,27 +283,65 @@ class EntityNovelty(object):
 
 
 class Gap(object):
+    def __init__(self, predicate, entity):
+        # type: (Predicate, Entity) -> Gap
+        """
+        Construct Gap Object
+        Parameters
+        ----------
+        predicate: Predicate
+            Information about what can be known for the entity
+        entity: Entity
+            Information about the type of things that can be known
+        """
+        self._predicate = predicate
+        self._entity = entity
+
     @property
     def predicate(self):
         # type: () -> Predicate
-        raise NotImplementedError()
+        return self._predicate
 
     @property
     def entity(self):
         # type: () -> Entity
-        raise NotImplementedError()
+        return self._entity
+
+    @property
+    def predicate_name(self):
+        # type: () -> str
+        return self._predicate.label
+
+    @property
+    def entity_range(self):
+        # type: () -> List[str]
+        return self._entity.types
 
 
 class Gaps(object):
+    def __init__(self, subject_gaps, object_gaps):
+        # type: (List[Gap], List[Gap]) -> Gaps
+        """
+        Construct Gap Object
+        Parameters
+        ----------
+        subject_gaps: List[Gap]
+            List of gaps with potential things to learn about the original subject
+        object_gaps: List[Gap]
+            List of gaps with potential things to learn about the original object
+        """
+        self._subject = subject_gaps
+        self._object = object_gaps
+
     @property
     def object(self):
         # type: () -> List[Gap]
-        raise NotImplementedError()
+        return self._subject
 
     @property
     def subject(self):
         # type: () -> List[Gap]
-        raise NotImplementedError()
+        return self._object
 
 
 class Overlap(object):
