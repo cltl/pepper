@@ -345,63 +345,138 @@ class Gaps(object):
 
 
 class Overlap(object):
-    @property
-    def author(self):
-        # type: () -> str
-        raise NotImplementedError()
+    def __init__(self, provenance, entity):
+        # type: (Provenance, Entity) -> Overlap
+        """
+        Construct Overlap Object
+        Parameters
+        ----------
+        provenance
+        entity
+        """
+        self._provenance = provenance
+        self._entity = entity
 
     @property
-    def date(self):
-        # type: () -> datetime
-        raise NotImplementedError()
+    def provenance(self):
+        # type: () -> Provenance
+        return self._provenance
 
     @property
     def entity(self):
         # type: () -> Entity
-        raise NotImplementedError()
+        return self._entity
+
+    @property
+    def author(self):
+        # type: () -> str
+        return self._provenance.author
+
+    @property
+    def date(self):
+        # type: () -> datetime
+        return self._provenance.date
+
+    @property
+    def entity_name(self):
+        # type: () -> str
+        return self._entity.label
+
+    @property
+    def entity_types(self):
+        # type: () -> str
+        return self._entity.types
 
 
 class Overlaps(object):
-    @property
-    def object(self):
-        # type: () -> List[Overlap]
-        raise NotImplementedError()
+    def __init__(self, subject_overlaps, object_overlaps):
+        # type: (List[Overlap], List[Overlap]) -> Overlaps
+        """
+        Construct Overlap Object
+        Parameters
+        ----------
+        subject_overlaps: List[Overlap]
+            List of overlaps shared with original subject
+        object_overlaps: List[Overlap]
+            List of overlaps shared with original object
+        """
+        self._subject = subject_overlaps
+        self._object = object_overlaps
 
     @property
     def subject(self):
         # type: () -> List[Overlap]
-        raise NotImplementedError()
+        return self._subject
+
+    @property
+    def object(self):
+        # type: () -> List[Overlap]
+        return self._object
 
 
 class Thoughts(object):
-    def cardinality_conflicts(self):
+    def __init__(self, statement_novelty, entity_novelty, negation_conflicts, object_conflict,
+                 subject_gaps, object_gaps, overlaps, trust) :
+        # type: (List[StatementNovelty], EntityNovelty, List[NegationConflict], List[CardinalityConflict], Gaps, Gaps, Overlaps, float) -> Thoughts
+        """
+        Construct Thoughts object
+        Parameters
+        ----------
+        statement_novelty: List[StatementNovelty]
+            Information if the statement is novel
+        entity_novelty: EntityNovelty
+            Information if the entities involved are novel
+        negation_conflicts: Optional[List[NegationConflict]]
+            Information regarding conflicts of opposing statements heard
+        object_conflict: List[CardinalityConflict]
+            Information regarding conflicts by violating one to one predicates
+        subject_gaps: Gaps
+            Information about what can be learned of the subject
+        object_gaps: Gaps
+            Information about what can be learned of the object
+        overlaps: Overlaps
+            Information regarding overlaps of this statement with things heard so far
+        trust: float
+            Level of trust on this actor
+        """
+
+        self._statement_novelty = statement_novelty
+        self._entity_novelty = entity_novelty
+        self._negation_conflicts = negation_conflicts
+        self._object_conflict = object_conflict
+        self._subject_gaps = subject_gaps
+        self._object_gaps = object_gaps
+        self._overlaps = overlaps
+        self._trust = trust
+
+    def object_conflict(self):
         # type: () -> List[CardinalityConflict]
-        raise NotImplementedError()
+        return self._object_conflict
 
     def negation_conflicts(self):
-        # type: () -> Optional[List[NegationConflict]]
-        raise NotImplementedError()
+        # type: () -> List[NegationConflict]
+        return self._negation_conflicts
 
     def statement_novelties(self):
         # type: () -> List[StatementNovelty]
-        raise NotImplementedError()
+        return self._statement_novelty
 
     def entity_novelty(self):
         # type: () -> EntityNovelty
-        raise NotImplementedError()
+        return self._entity_novelty
 
     def object_gaps(self):
         # type: () -> Gaps
-        raise NotImplementedError()
+        return self._object_gaps
 
     def subject_gaps(self):
         # type: () -> Gaps
-        raise NotImplementedError()
+        return self._subject_gaps
 
     def overlaps(self):
         # type: () -> Overlaps
-        raise NotImplementedError()
+        return self._overlaps
 
     def trust(self):
         # type: () -> float
-        raise NotImplementedError()
+        return self._trust

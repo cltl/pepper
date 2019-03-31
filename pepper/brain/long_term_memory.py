@@ -1,6 +1,6 @@
 from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule, date_from_uri
 from pepper.brain.utils.response import Predicate, Entity, Provenance, CardinalityConflict, NegationConflict, \
-    StatementNovelty, EntityNovelty, Gap, Gaps
+    StatementNovelty, EntityNovelty, Gap, Gaps, Overlap, Overlaps, Thoughts
 from pepper.brain.basic_brain import BasicBrain
 from pepper import config
 
@@ -84,15 +84,9 @@ class LongTermMemory(BasicBrain):
 
         # Create JSON output
         capsule["date"] = str(capsule["date"])
-        output = {'response': code, 'statement': capsule,
-                  'statement_novelty': statement_novelty,
-                  'entity_novelty': entity_novelty,
-                  'negation_conflicts': negation_conflicts,
-                  'cardinality_conflicts': object_conflict,
-                  'subject_gaps': subject_gaps,
-                  'object_gaps': object_gaps,
-                  'overlaps': overlaps,
-                  'trust': trust}
+        thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, object_conflict,
+                            subject_gaps, object_gaps, overlaps, trust)
+        output = {'response': code, 'statement': capsule, 'thoughts': thoughts}
 
         return output
 
@@ -395,7 +389,7 @@ class LongTermMemory(BasicBrain):
 
         Returns
         -------
-        conflicts: List[StatementNovelty]
+        response: List[StatementNovelty]
             List of provenance for the instance
         """
         query = read_query('thoughts/statement_novelty') % statement_uri
@@ -445,8 +439,19 @@ class LongTermMemory(BasicBrain):
         return Gap(processed_predicate, processed_range)
 
     def get_entity_gaps(self, entity):
+        """
+        Query and build gaps with regards to the range and domain of the given entity and its predicates
+        Parameters
+        ----------
+        entity: dict
+            Information regarding the entity
+
+        Returns
+        -------
+            Gaps object containing gaps related to range and domain information that could be learned
+        """
         # Role as subject
-        query = read_query('subject_gaps') % (entity['label'], entity['label'])
+        query = read_query('thoughts/subject_gaps') % (entity['label'], entity['label'])
         response = self._submit_query(query)
 
         if response:
@@ -458,7 +463,7 @@ class LongTermMemory(BasicBrain):
             subject_gaps = []
 
         # Role as object
-        query = read_query('object_gaps') % (entity['label'], entity['label'])
+        query = read_query('thoughts/object_gaps') % (entity['label'], entity['label'])
         response = self._submit_query(query)
 
         if response:
@@ -472,30 +477,46 @@ class LongTermMemory(BasicBrain):
         return Gaps(subject_gaps, object_gaps)
 
     ########## overlaps ##########
+    def _fill_overlap_(self, raw_conflict):
+        """
+        Structure overlap to get the provenance and entity on which they overlap
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            Overlap object containing an entity and the provenance of the mention causing the overlap
+        """
+
+        processed_provenance = self._fill_provenance_(raw_conflict)
+        processed_entity = self._fill_entity_(raw_conflict['label']['value'])
+
+        return Overlap(processed_provenance, processed_entity)
+
     def get_overlaps(self, capsule):
         # Role as subject
-        query = read_query('object_overlap') % (capsule['predicate']['type'], capsule['object']['label'],
+        query = read_query('thoughts/object_overlap') % (capsule['predicate']['type'], capsule['object']['label'],
                                                 capsule['subject']['label'])
         response = self._submit_query(query)
 
         if response:
-            object_overlap = [{'subject': elem['slabel']['value'], 'author': elem['authorlabel']['value'],
-                                  'date': elem['date']['value'].split('/')[-1]} for elem in response]
+            object_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
             object_overlap = []
 
         # Role as object
-        query = read_query('subject_overlap') % (capsule['predicate']['type'], capsule['subject']['label'],
+        query = read_query('thoughts/subject_overlap') % (capsule['predicate']['type'], capsule['subject']['label'],
                                                 capsule['object']['label'])
         response = self._submit_query(query)
 
         if response:
-            subject_overlap = [{'object': elem['olabel']['value'], 'author': elem['authorlabel']['value'],
-                                  'date': elem['date']['value'].split('/')[-1]} for elem in response]
+            subject_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
             subject_overlap = []
 
-        return {'subject': subject_overlap, 'object': object_overlap}
+        return Overlaps(subject_overlap, object_overlap)
 
     ########## semantic display ##########
     def exact_match_dbpedia(self, item):

@@ -5,13 +5,13 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
-select ?olabel ?date ?authorlabel
+select ?label ?date ?authorlabel
 where {
     GRAPH ?g {
         ?s n2mu:%s ?o .
     } .
-    ?s rdfs:label '%s' .
-    ?o rdfs:label ?olabel .
+    ?s rdfs:label ?label .
+    ?o rdfs:label '%s' .
 
     ?g grasp:denotedBy ?m .
 
@@ -22,6 +22,6 @@ where {
     ?m grasp:wasAttributedTo ?author .
     ?author rdfs:label ?authorlabel .
 
-    # MINUS { ?o rdfs:label '%s' . }
+    MINUS { ?s rdfs:label '%s' . }
 
 }
