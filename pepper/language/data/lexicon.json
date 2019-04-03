@@ -332,102 +332,104 @@
           "ability",
           "permission"
             ],
-          "certainty": "medium"
+          "certainty": "0.5"
           },
         "may": {
           "root": [
           "permission",
           "possibility"
             ],
-          "certainty": "weak"
+          "certainty": "0.5"
           },
         "might": {
           "root": [
             "permission",
             "possibility"
               ],
-          "certainty": "weaker"
+          "certainty": "0.5"
           },
         "must": {
           "root": "obligation",
-          "certainty": "stronger"
+          "certainty": "1"
           },
         "shall": {
           "root": [
             "obligation",
             "prediction"
-            ]
+            ],
+          "certainty": "1"
           },
         "should": {
           "root": "obligation",
-          "certainty": "strong"
+          "certainty": "0.75"
           },
         "will": {
           "past": "would",
           "root": [
             "volition",
             "prediction"
-              ]
+              ],
+          "certainty": "1"
             }
           }
         },
     "lexical verbs": {
       "like": {
-        "sentiment": "positive",
+        "sentiment": "0.75",
         "simple past": "liked",
         "past participle": "liked",
         "antonym": "dislike"
         },
       "dislike": {
-        "sentiment": "negative",
+        "sentiment": "-0.75",
         "simple past": "disliked",
         "past participle": "disliked",
         "antonym": "like"
         },
       "love": {
-        "sentiment": "positive",
+        "sentiment": "1",
         "simple past": "loved",
         "past participle": "loved",
         "antonym": "hate"
         },
       "hate": {
-        "sentiment": "negative",
+        "sentiment": "-1",
         "simple past": "hated",
         "past participle": "hated",
         "antonym": "love"
         },
       "enjoy": {
-        "sentiment": "positive",
+        "sentiment": "1",
         "simple past": "enjoyed",
         "past participle": "enjoyed"
         },
       "appreciate": {
-        "sentiment": "positive",
+        "sentiment": "0.75",
         "simple past": "appreciated",
         "past participle": "appreciated"
         },
       "know": {
-        "certainty": "high",
+        "certainty": "1",
         "simple past": "knew",
         "past participle": "known"
         },
       "think": {
-        "certainty": "medium",
+        "certainty": "0.75",
         "simple past": "thought",
         "past participle": "tought"
         },
       "believe": {
-        "certainty":"medium",
+        "certainty":"0.75",
         "simple past": "believed",
         "past participle": "believed"
         },
       "guess": {
-        "certainty": "low",
+        "certainty": "0.5",
         "simple past": "guessed",
         "past participle": "guessed"
         },
       "suppose": {
-        "certainty": "low",
+        "certainty": "0.5",
         "simple past": "supposed",
         "past participle": "supposed"
         }

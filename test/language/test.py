@@ -10,7 +10,8 @@ from pepper.language import utils
 
 
 def test():
-    utterances = ["Alex might like pizza"]
+    utterances = ["My home is in Belgrade"]
+    # "I think she likes coffee", "She will come tomorrow", "I don't enjoy skiing", "I hate skiing"
     # "I love cake", "What do I love?", "What does Lenka love?", "Do I love cake?",
     # "You can swim", "can you swim?"
     #"I may have seen a dog", "I can't see a bird", "That's not a leaf"]

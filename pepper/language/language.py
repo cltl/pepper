@@ -394,11 +394,14 @@ class Utterance(object):
                 tokens_raw.remove('doesn')
                 tokens_raw.insert(index, 'does')
 
+        '''
         tokens = []
         for word in tokens_raw:
-            clean_word = re.sub('[?!]', '', word) # remove ?
+            clean_word = re.sub('[!?]', '', word)
             tokens.append(clean_word)
-        return tokens
+        '''
+
+        return tokens_raw
 
     def _clean(self, tokens):
         """
@@ -465,12 +468,17 @@ class Parser(object):
         ind = 0
         for w in tokenized_sentence:
             if w=='like':
-                pos[ind] = (w, 'VBP')
+                pos[ind] = (w, 'VB')
             ind+=1
 
+        if pos[0][0]=='Does':
+            pos[0] = ('Does', 'VBD')
 
         ind = 0
         for word, tag in pos:
+            if '?' in word:
+                word=word[:-1]
+                print(word)
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
                 pos[ind] = (pos[ind][0], 'PRPPOS')
@@ -479,11 +487,18 @@ class Parser(object):
                 new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
+
             ind+=1
 
         try:
             cfg_parser = CFG.fromstring(self._cfg)
             RD = RecursiveDescentParser(cfg_parser)
+
+            last_token = tokenized_sentence[len(tokenized_sentence)-1]
+
+            if '?' in last_token:
+                tokenized_sentence[len(tokenized_sentence)-1] = last_token[:-1]
+
             parsed = RD.parse(tokenized_sentence)
 
             s_r = {} #syntactic_realizations
@@ -493,6 +508,7 @@ class Parser(object):
 
             if len(forest):
                 for tree in forest[0]: #alternative trees? f
+                    print('tree')
                     for branch in tree:
                         for node in branch:
                             if type(node)== unicode or type(node)==str:
@@ -500,14 +516,12 @@ class Parser(object):
                                 s_r[index]['raw'] = node
 
                             else:
-                                #print('node ',node.label(), node.leaves())
                                 s_r[index] = {'label': node.label()}
                                 raw = ''
                                 if len(node.leaves())>1:
                                     s_r[index]['structure']= branch
                                     for n in node.leaves():
                                         raw+=n+' '
-
                                     # deeper structure
                                 else:
                                     raw = node.leaves()
@@ -517,7 +531,7 @@ class Parser(object):
 
             else:
                 print('no forest')
-                #print(pos)
+                print(pos)
 
             for el in s_r:
                 #print(el, s_r[el])

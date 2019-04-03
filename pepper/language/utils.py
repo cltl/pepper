@@ -429,20 +429,35 @@ def dereference_pronouns(self, rdf, grammar, speaker):
             dict['pronoun'] = grammar['pronouns']['subject'][rdf[el].lower()]
 
             if dict['pronoun']['person'] == 'third':
-                print(self.chat.utterances[-2].parser.constituents)
+                if len(self.chat.utterances)>2:
+                    print(self.chat.utterances[-2].parser.constituents)
+                else:
+                    print('Which '+rdf[el]+ ' do you mean?')
             else:
                 rdf[el] = fix_pronouns(dict, speaker)
     return rdf
 
+from nltk.stem import WordNetLemmatizer
+
+def lemmatize(word):
+    lemmatizer = WordNetLemmatizer()
+    lem = ''
+    if len(word.split())>1:
+        for el in word.split():
+            lem+=lemmatizer.lemmatize(el)+' '
+        return lem.strip()
+    return lemmatizer.lemmatize(word)
 
 def get_node_label(tree, word):
+    label = ''
     for el in tree:
         for node in el:
             if word == node.leaves()[0]:
-                return node.label()
+                label = node.label()
+    return label
 
 
-def find(word, lexicon):
+def find(word, lexicon, typ=None):
     """ Look up and return features of a given word in the lexicon. """
 
     # Define pronoun categories.
@@ -489,30 +504,39 @@ def find(word, lexicon):
     # Define a kinship category.
     kinship = lexicon["kinship"]
 
-    categories = [subject_pros,
-                  object_pros,
-                  dep_possessives,
-                  indep_possessives,
-                  reflexive_pros,
-                  indefinite_person,
-                  indefinite_place,
-                  indefinite_thing,
-                  to_be,
-                  to_do,
-                  modals,
-                  lexicals,
-                  articles,
-                  demonstratives,
-                  possessive_dets,
-                  quantifiers,
-                  wh_dets,
-                  cardinals,
-                  ordinals,
-                  s_genitive,
-                  coordinators,
-                  subordinators,
-                  question_words,
-                  kinship]
+    if typ == 'verb':
+        categories = [to_be,
+                      to_do,
+                      modals,
+                      lexicals]
+    else:
+        categories = [subject_pros,
+                      object_pros,
+                      dep_possessives,
+                      indep_possessives,
+                      reflexive_pros,
+                      indefinite_person,
+                      indefinite_place,
+                      indefinite_thing,
+                      to_be,
+                      to_do,
+                      modals,
+                      lexicals,
+                      articles,
+                      demonstratives,
+                      possessive_dets,
+                      quantifiers,
+                      wh_dets,
+                      cardinals,
+                      ordinals,
+                      s_genitive,
+                      coordinators,
+                      subordinators,
+                      question_words,
+                      kinship]
+
+
+
 
     #print("looking up: ", word)
 
