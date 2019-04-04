@@ -1,13 +1,18 @@
 from pepper.language import Chat
 from pepper.framework import AbstractIntention
 from pepper.framework.sensor.location import Location
-from .face import Face
-from .obj import Object
+from pepper.framework.sensor.face import Face
+from pepper.framework.sensor.obj import Object
 
+import numpy as np
+
+from sklearn.cluster import DBSCAN
+
+from collections import deque
 from datetime import datetime
 from time import time
 
-from typing import List, Iterable, Dict, Tuple, Optional
+from typing import List, Iterable, Dict, Tuple, Optional, Deque
 
 
 class Context(object):
@@ -15,7 +20,7 @@ class Context(object):
     OBSERVATION_TIMEOUT = 60
 
     _people = None  # type: Dict[str, Tuple[Face, float]]
-    _objects = None  # type: Dict[str, Tuple[Object, float]]
+    _objects = None  # type: Dict[str, Observations]
 
     def __init__(self):
         self._chats = []
@@ -100,7 +105,14 @@ class Context(object):
         objects: list of Object
             List of Objects Seen within
         """
-        return [obj for obj, t in self._objects.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
+
+        objects = []
+
+        for observations in self._objects.values():
+            for obj in observations.get():
+                objects.append(obj)
+
+        return objects
 
     @property
     def all_objects(self):
@@ -111,7 +123,7 @@ class Context(object):
         objects: list of Object
             List of All Objects Seen
         """
-        return [obj for obj, t in self._objects.values()]
+        return self.objects
 
     @property
     def intention(self):    # Why
@@ -143,7 +155,10 @@ class Context(object):
             List of Objects
         """
         for obj in objects:
-            self._objects[obj.name] = (obj, time())
+            if obj.name not in self._objects:
+                self._objects[obj.name] = Observations()
+
+            self._objects[obj.name].add(obj)
 
     def add_people(self, people):
         # type: (Iterable[Face]) -> None
@@ -162,3 +177,44 @@ class Context(object):
 
     def stop_chat(self):
         self._chatting = False
+
+    @staticmethod
+    def _cluster_objects(objects):
+        pass
+
+
+class Observations(object):
+    def __init__(self, max_samples=100, max_distance=0.1, min_samples=10, timeout=5.0):
+        self._deque = deque(maxlen=max_samples)
+        self._min_samples = min_samples
+        self._max_distance = max_distance
+        self._timeout = timeout
+
+    def add(self, obj):
+        # type: (Object) -> None
+        self._deque.appendleft((obj, time()))
+
+        # TODO: add object gone observation!
+
+    def get(self):
+        # type: () -> List[Object]
+        objects = [obj for obj, t in self._deque if time() - t < self._timeout]  # type: List[Object]
+
+        if not objects:
+            return []
+
+        positions = np.array([obj.position for obj in objects])
+
+        cluster = DBSCAN(eps=self._max_distance, min_samples=self._min_samples)
+        cluster.fit(positions)
+
+        result = []
+
+        for label in np.unique(cluster.labels_):
+            if label >= 0:  # If Label is not Noise
+                result.append(objects[np.argwhere(cluster.labels_ == label)[0][0]])
+
+        return result
+
+
+

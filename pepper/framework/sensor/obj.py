@@ -255,6 +255,10 @@ class Object(object):
         """
         return self._image
 
+    @property
+    def position(self):
+        return self.image.position_2d(self.bounds.center)
+
     def __repr__(self):
         return "{}[{:4.0%}] '{}'".format(self.__class__.__name__, self.confidence, self.name)
 

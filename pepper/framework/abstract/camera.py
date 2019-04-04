@@ -75,7 +75,7 @@ class AbstractImage(object):
         phi_1, theta_1 = self.aov
         x, y = coordinates
 
-        return phi_0 + x * phi_1, theta_0 + y * theta_1
+        return phi_0 + (x*2-1) * phi_1, theta_0 + (y*2-1) * theta_1
 
     def __repr__(self):
         return "{}{}".format(self.__class__.__name__, self.image.shape)

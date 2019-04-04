@@ -1,5 +1,6 @@
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
-from ..sensor import Context, UtteranceHypothesis, Face
+from ..context import Context
+from ..sensor import UtteranceHypothesis, Face
 from ..abstract import AbstractComponent, AbstractImage
 
 from pepper.language import Utterance
