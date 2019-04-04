@@ -162,8 +162,6 @@ class ContextComponent(AbstractComponent):
 
                         if closest_face:
 
-                            print(self.context.chat.speaker, closest_face.name)
-
                             # If Still Chatting with Same Person -> Update Conversation Time
                             if closest_face.name == self.context.chat.speaker:
                                 self._conversation_time = time()
