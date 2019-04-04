@@ -3,10 +3,7 @@ from typing import List, Tuple
 
 
 class Led(Enum):
-    pass
-
-
-class LeftEarLed(Led):
+    LeftEarLeds = 0
     LeftEarLed1 = 1
     LeftEarLed2 = 2
     LeftEarLed3 = 3
@@ -17,41 +14,35 @@ class LeftEarLed(Led):
     LeftEarLed8 = 8
     LeftEarLed9 = 9
     LeftEarLed10 = 10
-    
-    
-class RightEarLed(Led):
-    RightEarLed1 = 1
-    RightEarLed2 = 2
-    RightEarLed3 = 3
-    RightEarLed4 = 4
-    RightEarLed5 = 5
-    RightEarLed6 = 6
-    RightEarLed7 = 7
-    RightEarLed8 = 8
-    RightEarLed9 = 9
-    RightEarLed10 = 10
-    
-
-class LeftFaceLed(Led):
-    LeftFaceLed1 = 1
-    LeftFaceLed2 = 2
-    LeftFaceLed3 = 3
-    LeftFaceLed4 = 4
-    LeftFaceLed5 = 5
-    LeftFaceLed6 = 6
-    LeftFaceLed7 = 7
-    LeftFaceLed8 = 8
-    
-    
-class RightFaceLed(Led):
-    RightFaceLed1 = 1
-    RightFaceLed2 = 2
-    RightFaceLed3 = 3
-    RightFaceLed4 = 4
-    RightFaceLed5 = 5
-    RightFaceLed6 = 6
-    RightFaceLed7 = 7
-    RightFaceLed8 = 8
+    RightEarLeds = 11
+    RightEarLed1 = 12
+    RightEarLed2 = 13
+    RightEarLed3 = 14
+    RightEarLed4 = 15
+    RightEarLed5 = 16
+    RightEarLed6 = 17
+    RightEarLed7 = 18
+    RightEarLed8 = 19
+    RightEarLed9 = 20
+    RightEarLed10 = 21
+    LeftFaceLeds = 22
+    LeftFaceLed1 = 23
+    LeftFaceLed2 = 24
+    LeftFaceLed3 = 25
+    LeftFaceLed4 = 26
+    LeftFaceLed5 = 27
+    LeftFaceLed6 = 28
+    LeftFaceLed7 = 29
+    LeftFaceLed8 = 30
+    RightFaceLeds = 31
+    RightFaceLed1 = 32
+    RightFaceLed2 = 33
+    RightFaceLed3 = 34
+    RightFaceLed4 = 35
+    RightFaceLed5 = 36
+    RightFaceLed6 = 37
+    RightFaceLed7 = 38
+    RightFaceLed8 = 39
 
 
 class AbstractLed(object):

@@ -40,7 +40,7 @@ class BrainResponder(Responder):
                     brain_response = app.brain.update(template)
                     reply = phrasing.phrase_update(brain_response)
 
-                print(reply)
+                print("Reply:", reply)
 
                 if isinstance(reply, str) or isinstance(reply, unicode):
 
