@@ -357,7 +357,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                 else:
                     rdf['object'] = cons[el]['raw']
 
-        analyze_predicate(rdf['predicate'])
+        analyze_predicate(rdf['predicate'], self.GRAMMAR)
 
         interpret_elements(cons, self.GRAMMAR)
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
