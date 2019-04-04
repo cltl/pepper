@@ -77,6 +77,9 @@ class AbstractImage(object):
 
         return phi_0 + x * phi_1, theta_0 + y * theta_1
 
+    def __repr__(self):
+        return "{}{}".format(self.__class__.__name__, self.image.shape)
+
 
 class AbstractCamera(object):
     """
