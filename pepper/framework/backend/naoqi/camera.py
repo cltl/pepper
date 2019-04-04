@@ -1,4 +1,4 @@
-from pepper.framework.abstract.camera import AbstractCamera
+from pepper.framework.abstract.camera import AbstractCamera, AbstractImage
 from pepper import NAOqiCameraIndex, CameraResolution
 
 import numpy as np
@@ -6,6 +6,22 @@ import numpy as np
 from random import getrandbits
 from threading import Thread
 from time import time, sleep
+
+
+class NAOqiImage(AbstractImage):
+    def __init__(self, image, origin, aov):
+        super(NAOqiImage, self).__init__(image)
+
+        self._origin = origin
+        self._aov = aov
+
+    @property
+    def origin(self):
+        return self._origin
+
+    @property
+    def aov(self):
+        return self._aov
 
 
 class NAOqiCamera(AbstractCamera):
@@ -26,9 +42,8 @@ class NAOqiCamera(AbstractCamera):
         Which NAOqi Camera to use
     """
 
-
     SERVICE = "ALVideoDevice"
-    COLOR_SPACE = 9 # YUV442
+    COLOR_SPACE = 9  # YUV442
 
     RESOLUTION_CODE = {
         CameraResolution.NATIVE: 2,
@@ -58,7 +73,7 @@ class NAOqiCamera(AbstractCamera):
         # Access Head Motion for Image Coordinates
         self._motion = session.service("ALMotion")
 
-        self._angles = self._service.getAngularPositionFromImagePosition(int(index), [1, 1])
+        self._aov = self._service.getAngularPositionFromImagePosition(int(index), [1, 1])
 
         # Run image acquisition in Thread
         self._thread = Thread(target=self._run)
@@ -67,10 +82,6 @@ class NAOqiCamera(AbstractCamera):
 
         self._log.debug("Booted")
 
-    @property
-    def angles(self):
-        return self._angles
-
     def _run(self):
         while True:
             if self._running:
@@ -78,7 +89,7 @@ class NAOqiCamera(AbstractCamera):
                 t0 = time()
 
                 # Get Yaw and Pitch from Head Sensors
-                orientation = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
+                origin = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
 
                 # Get Image from Robot
                 result = self._service.getImageRemote(self._client)
@@ -110,7 +121,7 @@ class NAOqiCamera(AbstractCamera):
                         RGB[..., 2] += np.float32(1.772) * Cr
 
                         # Call On Image Event
-                        self.on_image(RGB.clip(0, 255).astype(np.uint8).reshape(Y, X, 3), orientation)
+                        self.on_image(NAOqiImage(RGB.clip(0, 255).astype(np.uint8).reshape(Y, X, 3), origin, self._aov))
                 else:
                     self._service.unsubscribe(self._id)
                     raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))

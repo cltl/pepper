@@ -1,6 +1,6 @@
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
 from ..sensor import Context, UtteranceHypothesis
-from ..abstract import AbstractComponent
+from ..abstract import AbstractComponent, AbstractImage
 
 from pepper.language import Utterance
 from pepper import config
@@ -105,9 +105,8 @@ class ContextComponent(AbstractComponent):
                 if face.bounds.is_subset_of(person.bounds):
                     return face
 
-        def on_image(image, orientation):
-
-            # TODO: Face Vectors
+        def on_image(image):
+            # type: (AbstractImage) -> None
 
             # Get People within Conversation Bounds
             closest_people = get_closest_people(self._people_info)

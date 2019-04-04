@@ -1,10 +1,20 @@
-from pepper.framework.abstract import AbstractCamera
+from pepper.framework.abstract import AbstractCamera, AbstractImage
 from pepper.framework.util import Scheduler
 from pepper import CameraResolution
 
 import cv2
 
 from time import time, sleep
+
+
+class SystemImage(AbstractImage):
+    @property
+    def origin(self):
+        return 0, 0
+
+    @property
+    def aov(self):
+        return 0.55, 0.41
 
 
 class SystemCamera(AbstractCamera):
@@ -52,7 +62,7 @@ class SystemCamera(AbstractCamera):
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                 # Call On Image Event
-                self.on_image(image, (0, 0))
+                self.on_image(SystemImage(image))
         else:
             self._camera.release()
             raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))

@@ -1,4 +1,4 @@
-from pepper.framework.abstract import AbstractComponent
+from pepper.framework.abstract import AbstractComponent, AbstractImage
 from pepper.framework.sensor.obj import ObjectDetectionClient, ObjectDetectionTarget, Object
 from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
@@ -19,7 +19,6 @@ class ObjectDetectionComponent(AbstractComponent):
         Parameters
         ----------
         backend: AbstractBackend
-        target: ObjectDetectionTarget
         """
         super(ObjectDetectionComponent, self).__init__(backend)
 
@@ -29,14 +28,14 @@ class ObjectDetectionComponent(AbstractComponent):
         clients = [ObjectDetectionClient(target) for target in ObjectDetectionComponent.TARGETS]
         mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
-        def on_image(image, orientation):
+        def on_image(image):
+            # type: (AbstractImage) -> None
             """
             Raw On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
-            image: np.ndarray
-            orientation: tuple
+            image: AbstractImage
             """
             for client in clients:
                 mailboxes[client].put(image)
@@ -52,10 +51,10 @@ class ObjectDetectionComponent(AbstractComponent):
 
                 # Call on_object Callback Functions
                 for callback in self.on_object_callbacks:
-                    callback(image, objects)
+                    callback(objects)
 
                 # Call on_object Event Function
-                self.on_object(image, objects)
+                self.on_object(objects)
 
         # Initialize Object Queue & Worker
         schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(client.target.name)) for client in clients]
@@ -66,15 +65,13 @@ class ObjectDetectionComponent(AbstractComponent):
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]
 
-    def on_object(self, image, objects):
-        # type: (np.ndarray, List[Object]) -> None
+    def on_object(self, objects):
+        # type: (List[Object]) -> None
         """
         On Object Event. Called every time one or more objects are detected in a camera frame.
 
         Parameters
         ----------
-        image: np.ndarray
-            Camera Frame
         objects: list of Object
             List of Object instances
         """

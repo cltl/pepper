@@ -12,7 +12,7 @@ More complex Applications can be build on several instances of
 :class:`~pepper.framework.abstract.intention.AbstractIntention`, each of which deals with one task within an app.
 """
 
-from .camera import AbstractCamera
+from .camera import AbstractCamera, AbstractImage
 from .microphone import AbstractMicrophone
 from .text_to_speech import AbstractTextToSpeech
 from .led import AbstractLed, LeftEarLed, RightEarLed, LeftFaceLed, RightFaceLed

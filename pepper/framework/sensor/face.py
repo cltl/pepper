@@ -1,5 +1,6 @@
-from pepper.framework.sensor.obj import Bounds
-from pepper import logger
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.sensor.obj import Bounds, Object
+from pepper import logger, config
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
@@ -11,10 +12,7 @@ import socket
 import os
 
 
-class Face(object):
-
-    UNKNOWN = "Stranger"
-
+class Face(Object):
     def __init__(self, name, confidence, representation, bounds, image):
         """
         Parameters
@@ -27,34 +25,13 @@ class Face(object):
             Face Feature Vector
         bounds: Bounds
             Face Bounding Box
-        image: np.ndarray
+        image: AbstractImage
             Image Face was Found in
         """
-        self._image = image
+        super(Face, self).__init__(config.HUMAN_UNKNOWN if name == FaceClassifier.NEW else name,
+                                   confidence, bounds, image)
+
         self._representation = representation
-        self._bounds = bounds
-        self._name = self.UNKNOWN if name == FaceClassifier.NEW else name
-        self._confidence = confidence
-
-    @property
-    def name(self):
-        """
-        Returns
-        -------
-        name: str
-            Name of Person
-        """
-        return self._name
-
-    @property
-    def confidence(self):
-        """
-        Returns
-        -------
-        confidence: float
-            Name Confidence
-        """
-        return self._confidence
 
     @property
     def representation(self):
@@ -67,30 +44,6 @@ class Face(object):
             Face Feature Vector
         """
         return self._representation
-
-    @property
-    def bounds(self):
-        """
-        Face Bounds (Relative to Image)
-
-        Returns
-        -------
-        bounds: Bounds
-            Face Bounding Box
-        """
-        return self._bounds
-
-    @property
-    def image(self):
-        """
-        Returns
-        -------
-        image: np.ndarray
-        """
-        return self._image
-
-    def __repr__(self):
-        return "{}[{:4.0%}]: '{}'".format(self.__class__.__name__, self.confidence, self.name)
 
 
 class OpenFace(object):

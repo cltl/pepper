@@ -1,4 +1,4 @@
-from pepper.framework.abstract import AbstractComponent
+from pepper.framework.abstract import AbstractComponent, AbstractImage
 from pepper.framework.sensor.face import OpenFace, FaceClassifier, Face
 from pepper.framework.util import Scheduler
 from pepper import config
@@ -39,19 +39,21 @@ class FaceRecognitionComponent(AbstractComponent):
 
         queue = Queue()
 
-        def on_image(image, orientation):
+        def on_image(image):
+            # type: (AbstractImage) -> None
             """
             Raw On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
-            image: np.ndarray
-            orientation: tuple
+            image: AbstractImage
             """
-            queue.put([self.face_classifier.classify(r, b, image) for r, b in open_face.represent(image)])
+            queue.put(image)
 
         def worker():
-            on_face = queue.get()
+            image = queue.get()
+
+            on_face = [self.face_classifier.classify(r, b, image) for r, b in open_face.represent(image.image)]
 
             on_face_known = []
             on_face_new = []

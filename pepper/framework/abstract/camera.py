@@ -2,10 +2,80 @@ from pepper.framework.util import Mailbox, Scheduler
 from pepper import CameraResolution
 from pepper import logger
 
+import numpy as np
+
 from collections import deque
 from time import time
 
-import numpy as np
+from typing import Tuple
+
+
+class AbstractImage(object):
+    def __init__(self, image):
+        # type: (np.ndarray) -> AbstractImage
+        """
+        Create (Abstract) Image Object
+
+        Parameters
+        ----------
+        image: np.ndarray
+        """
+        self._image = image
+
+    @property
+    def image(self):
+        # type: () -> np.ndarray
+        """
+        Image Pixels as Numpy Array
+
+        Returns
+        -------
+        image: np.ndarray
+        """
+        return self._image
+
+    @property
+    def origin(self):
+        # type: () -> Tuple[float, float]
+        """
+        Image Origin in Radians (phi, theta) a.k.a. (x,y)
+
+        Returns
+        -------
+        origin: Tuple[float, float]
+        """
+        raise NotImplementedError()
+
+    @property
+    def aov(self):
+        # type: () -> Tuple[float, float]
+        """
+        Image Angle of View in Radians (phi, theta) a.k.a. (x,y)
+
+        Returns
+        -------
+        origin: Tuple[float, float]
+        """
+        raise NotImplementedError()
+
+    def position_2d(self, coordinates):
+        # type: (Tuple[float, float]) -> Tuple[float, float]
+        """
+        Return 2D position in Spherical Coordinates
+
+        Parameters
+        ----------
+        coordinates: Tuple[float, float]
+
+        Returns
+        -------
+        position_2d: Tuple[float, float]
+        """
+        phi_0, theta_0 = self.origin
+        phi_1, theta_1 = self.aov
+        x, y = coordinates
+
+        return phi_0 + x * phi_1, theta_0 + y * theta_1
 
 
 class AbstractCamera(object):
@@ -129,18 +199,6 @@ class AbstractCamera(object):
         return self._shape
 
     @property
-    def angles(self):
-        """
-        Max Image Angles
-
-        Returns
-        -------
-        angles: tuple
-            phi, theta corresponding with (1, 1) of normalized image coordinates
-        """
-        return (1, 1)
-
-    @property
     def callbacks(self):
         """
         Get/Set :func:`~AbstractCamera.on_image` Callbacks
@@ -174,25 +232,7 @@ class AbstractCamera(object):
         """
         return self._running
 
-    def image_angles(self, orientation, coordinates):
-        """
-        Return Image Angles (Yaw + Pitch) from Head Orientation and Image Coordinates
-
-        Parameters
-        ----------
-        orientation: float, float
-            Head Orientation
-        coordinates: float, float
-            Image Coordinates
-
-        Returns
-        -------
-        angles: float, float
-            Image Angles (phi, theta)
-        """
-        raise NotImplementedError()
-
-    def on_image(self, image, orientation):
+    def on_image(self, image):
         """
         On Image Event, Called for every Image captured by Camera
 
@@ -200,9 +240,9 @@ class AbstractCamera(object):
 
         Parameters
         ----------
-        image: np.ndarray
+        image: AbstractImage
         """
-        self._mailbox.put((image, orientation))
+        self._mailbox.put(image)
 
     def start(self):
         """Start Streaming Images from Camera"""
@@ -218,10 +258,10 @@ class AbstractCamera(object):
 
         Calls each callback for each image, threaded, for higher image throughput
         """
-        image, orientation = self._mailbox.get()
+        image = self._mailbox.get()
         if self._running:
             for callback in self.callbacks:
-                callback(image, orientation)
+                callback(image)
         self._update_dt()
 
     def _update_dt(self):

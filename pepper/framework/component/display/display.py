@@ -1,4 +1,4 @@
-from pepper.framework import AbstractComponent
+from pepper.framework import AbstractComponent, AbstractImage
 from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent
 from .server import DisplayServer
 
@@ -39,14 +39,15 @@ class DisplayComponent(AbstractComponent):
                 png.seek(0)
                 return base64.b64encode(png.read())
 
-        def on_image(image, orientation):
+        def on_image(image):
+            # type: (AbstractImage) -> None
             with lock:
                 if self._display_info:
                     server.update(json.dumps(self._display_info))
 
                 self._display_info = {
-                    "hash": hash(str(image)),
-                    "img": encode_image(Image.fromarray(image)),
+                    "hash": hash(str(image.image)),
+                    "img": encode_image(Image.fromarray(image.image)),
                     "items": []
                 }
 
@@ -63,5 +64,5 @@ class DisplayComponent(AbstractComponent):
         object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
 
         self.backend.camera.callbacks += [on_image]
-        face_recognition.on_face_known_callbacks += [lambda faces: add_items(faces)]
-        object_recognition.on_object_callbacks += [lambda image, objects: add_items(objects)]
+        face_recognition.on_face_known_callbacks += [add_items]
+        object_recognition.on_object_callbacks += [add_items]

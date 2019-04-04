@@ -1,7 +1,12 @@
+from pepper.framework.abstract import AbstractImage
 from pepper import ObjectDetectionTarget
-from socket import socket, error as socket_error
+
 import numpy as np
+
+from socket import socket, error as socket_error
 import json
+
+from typing import List
 
 
 class Bounds(object):
@@ -192,8 +197,18 @@ class Bounds(object):
         return "Bounds[({:3f}, {:3f}), ({:3f}, {:3f})]".format(self.x0, self.y0, self.x1, self.y1)
 
 
-class Object:
+class Object(object):
     def __init__(self, name, confidence, bounds, image):
+        """
+        Create Object Object
+
+        Parameters
+        ----------
+        name: str
+        confidence: float
+        bounds: Bounds
+        image: AbstractImage
+        """
         self._name = name
         self._confidence = confidence
         self._bounds = bounds
@@ -201,28 +216,47 @@ class Object:
 
     @property
     def name(self):
+        """
+        Returns
+        -------
+        name: str
+            Name of Person
+        """
         return self._name
 
     @property
     def confidence(self):
+        """
+        Returns
+        -------
+        confidence: float
+            Name Confidence
+        """
         return self._confidence
 
     @property
     def bounds(self):
+        """
+        Face Bounds (Relative to Image)
+
+        Returns
+        -------
+        bounds: Bounds
+            Object Bounding Box
+        """
         return self._bounds
 
     @property
     def image(self):
+        """
+        Returns
+        -------
+        image: AbstractImage
+        """
         return self._image
 
-    @classmethod
-    def from_dict(cls, dictionary, image):
-        box = dictionary['box']
-        bounds = Bounds(box[1], box[0], box[3], box[2])
-        return cls(dictionary['name'], dictionary['score'], bounds, image)
-
     def __repr__(self):
-        return "Object[{:4.0%}] '{}'".format(self.confidence, self.name)
+        return "{}[{:4.0%}] '{}'".format(self.__class__.__name__, self.confidence, self.name)
 
 
 class ObjectDetectionClient(object):
@@ -237,20 +271,26 @@ class ObjectDetectionClient(object):
         return self._target
 
     def classify(self, image):
+        # type: (AbstractImage) -> List[Object]
         try:
             sock = socket()
             sock.connect(self._address)
 
-            sock.sendall(np.array(image.shape, np.uint32))
-            sock.sendall(image)
+            sock.sendall(np.array(image.image.shape, np.uint32))
+            sock.sendall(image.image)
 
             response_length = np.frombuffer(sock.recv(4), np.uint32)[0]
-            response = [Object.from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
+            response = [self._obj_from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
 
             return response
         except socket_error:
             raise RuntimeError("Couldn't connect to Object Detection Service, "
                                "are you sure you're running this pepper_tensorflow service?")
+
+    @staticmethod
+    def _obj_from_dict(info, image):
+        box = info['box']
+        return Object(info['name'], info['score'], Bounds(box[1], box[0], box[3], box[2]), image)
 
     @staticmethod
     def _receive_all(sock, n):

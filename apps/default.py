@@ -146,7 +146,7 @@ class ConversationIntention(AbstractIntention, DefaultApp):
         if time() - self._last_seen > self.CONVERSATION_TIMEOUT:
             self.end_conversation()
 
-    def on_object(self, image, objects):
+    def on_object(self, objects):
         # Update seen_objects with the objects seen in this frame
         self._seen_objects.update([obj.name for obj in objects])
 
