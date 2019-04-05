@@ -12,10 +12,9 @@ from collections import Counter
 from random import getrandbits
 from datetime import datetime
 import enum
-import re
 import os
 
-from typing import List
+from typing import List, Optional
 
 
 class UtteranceType(enum.Enum):
@@ -182,7 +181,7 @@ class Utterance(object):
 
         self._tokens = self._clean(self._tokenize(self.transcript))
 
-        self._parser = Parser(self)
+        self._parser = None if self.me else Parser(self)
 
     @property
     def chat(self):
@@ -300,6 +299,7 @@ class Utterance(object):
 
     @property
     def parser(self):
+        # type: () -> Optional[Parser]
         """
         Returns
         -------

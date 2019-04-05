@@ -1,4 +1,5 @@
 from pepper.framework import *
+from pepper import logger
 
 from pepper.language import Utterance, utils
 from pepper.language.generation import phrasing
@@ -12,6 +13,9 @@ from typing import Optional, Union, Tuple, Callable
 
 
 class BrainResponder(Responder):
+    def __init__(self):
+        self._log = logger.getChild(self.__class__.__name__)
+
     @property
     def type(self):
         return ResponderType.Brain
@@ -25,11 +29,9 @@ class BrainResponder(Responder):
 
         try:
 
-            print(utterance.transcript)
-
             template = analyze(utterance.chat)
 
-            print(template)
+            self._log.debug("TEMPLATE: {}".format(template))
 
             if isinstance(template, dict):
 
@@ -40,13 +42,13 @@ class BrainResponder(Responder):
                     brain_response = app.brain.update(template)
                     reply = phrasing.phrase_update(brain_response)
 
-                print("Reply:", reply)
+                self._log.debug("REPLY: {}".format(reply))
 
                 if isinstance(reply, str) or isinstance(reply, unicode):
 
                     # Return Score and Response
                     # Make sure to not execute the response here, but just to return the response function
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
+
         except Exception as e:
-            pass
-            # print("NLP/Brain Error: {}: {}".format(type(e), e))
+            self._log.error(e)

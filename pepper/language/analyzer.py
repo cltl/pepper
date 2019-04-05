@@ -189,8 +189,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         rdf = {'subject': '', 'predicate': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
 
-        print(cons)
-
         rdf['subject'] = cons[0]['raw']
 
         if len(cons)>2 and cons[2]['label'] == 'PP':
@@ -227,6 +225,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 rdf['predicate'] = utils.lemmatize(cons[1]['raw'])
             if len(cons) > 2 and rdf['object']=='':
                 rdf['object'] = cons[2]['raw']
+
 
         interpret_elements(cons, self.GRAMMAR)
         perspective = analyze_predicate(rdf['predicate'], self.GRAMMAR)

@@ -119,11 +119,6 @@ class ContextComponent(AbstractComponent):
             # Get People within Conversation Bounds
             closest_people = get_closest_people(self._people_info)
 
-            # if closest_people:
-            #     self.backend.led.set(self.PEOPLE_LEDS[:len(closest_people)*2], (0, 1, 0), 0)
-            # else:
-            #     self.backend.led.set([Led.RightFaceLeds, Led.LeftFaceLeds], (0, 0, 0), 0)
-
             if not self.context.chatting:
 
                 # If one person is closest and his/her face is identifiable -> Start Personal Conversation
