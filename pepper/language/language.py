@@ -508,7 +508,6 @@ class Parser(object):
 
             if len(forest):
                 for tree in forest[0]: #alternative trees? f
-                    print('tree')
                     for branch in tree:
                         for node in branch:
                             if type(node)== unicode or type(node)==str:

@@ -562,6 +562,9 @@ def find(word, lexicon, typ=None):
                       to_do,
                       modals,
                       lexicals]
+
+    if typ == 'pos':
+        categories = [dep_possessives]
     else:
         categories = [subject_pros,
                       object_pros,
