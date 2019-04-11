@@ -404,6 +404,12 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['object']=''
             rdf['predicate']='be-from'
 
+        if '-' in rdf['predicate'] and rdf['predicate'].split('-')[1]=='from':
+            rdf['predicate']='be-from'
+
+        if cons[0]['raw'].lower()=='who':
+            rdf['object'] = rdf['subject']
+            rdf['subject']=''
         #interpret_elements(cons)
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         print('final rdf', rdf)
