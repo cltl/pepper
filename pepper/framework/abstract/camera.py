@@ -1,4 +1,4 @@
-from pepper.framework.util import Mailbox, Scheduler
+from pepper.framework.util import Mailbox, Scheduler, Bounds
 from pepper import CameraResolution
 from pepper import logger
 
@@ -57,6 +57,13 @@ class AbstractImage(object):
         origin: Tuple[float, float]
         """
         raise NotImplementedError()
+
+    @property
+    def bounds(self):
+        # type: () -> Bounds
+        x0, y0 = self.position_2d((-1, -1))
+        x1, y1 = self.position_2d((1, 1))
+        return Bounds(x0, y0, x1, y1)
 
     def position_2d(self, coordinates):
         # type: (Tuple[float, float]) -> Tuple[float, float]

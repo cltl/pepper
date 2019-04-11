@@ -1,5 +1,6 @@
 from pepper.framework.abstract import AbstractImage
-from pepper.framework.sensor.obj import Bounds, Object
+from pepper.framework.sensor.obj import Object
+from pepper.framework.util import Bounds
 from pepper import logger, config
 
 from sklearn.neighbors import KNeighborsClassifier

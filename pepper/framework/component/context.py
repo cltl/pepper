@@ -22,9 +22,9 @@ class ContextComponent(AbstractComponent):
 
     # Minimum Distance Difference of Person to Enter/Exit Conversation
     PERSON_DIFF_ENTER = 1.5
-    PERSON_DIFF_EXIT = 1.4
+    PERSON_DIFF_EXIT = 1.25
 
-    CONVERSATION_TIMEOUT = 5
+    CONVERSATION_TIMEOUT = 15
 
     def __init__(self, backend):
         super(ContextComponent, self).__init__(backend)
@@ -70,7 +70,7 @@ class ContextComponent(AbstractComponent):
             person_area_threshold = (self.PERSON_AREA_EXIT if self.context.chatting else self.PERSON_AREA_ENTER)
             person_diff_threshold = (self.PERSON_DIFF_EXIT if self.context.chatting else self.PERSON_DIFF_ENTER)
 
-            people_in_range = [person for person in people if person.bounds.area >= person_area_threshold]
+            people_in_range = [person for person in people if person.image_bounds.area >= person_area_threshold]
 
             # If only one person is in range
             if len(people_in_range) == 1:
@@ -82,14 +82,14 @@ class ContextComponent(AbstractComponent):
             elif len(people_in_range) >= 2:
 
                 # Sort them by proximity
-                people_sorted = np.argsort([person.bounds.area for person in people_in_range])[::-1]
+                people_sorted = np.argsort([person.image_bounds.area for person in people_in_range])[::-1]
 
                 # Identify the two closest individuals
                 closest = people_in_range[people_sorted[0]]
                 next_closest = people_in_range[people_sorted[1]]
 
                 # If the closest individual is significantly closer than the next one
-                if closest.bounds.area >= person_diff_threshold * next_closest.bounds.area:
+                if closest.image_bounds.area >= person_diff_threshold * next_closest.image_bounds.area:
 
                     # Return Closest Individual
                     return [closest]
@@ -104,7 +104,7 @@ class ContextComponent(AbstractComponent):
 
         def get_face_of_person(person, faces):
             for face in faces:
-                if face.bounds.is_subset_of(person.bounds):
+                if face.image_bounds.is_subset_of(person.image_bounds):
                     return face
 
         def on_image(image):

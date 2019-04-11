@@ -1,5 +1,5 @@
 from pepper.language import Chat
-from pepper.framework import AbstractIntention
+from pepper.framework import AbstractIntention, AbstractImage
 from pepper.framework.sensor.location import Location
 from pepper.framework.sensor.face import Face
 from pepper.framework.sensor.obj import Object
@@ -13,6 +13,8 @@ from datetime import datetime
 from time import time
 
 from typing import List, Iterable, Dict, Tuple, Optional, Deque
+
+from threading import Lock
 
 
 class Context(object):
@@ -154,11 +156,22 @@ class Context(object):
         objects: list of Object
             List of Objects
         """
-        for obj in objects:
-            if obj.name not in self._objects:
-                self._objects[obj.name] = Observations()
 
-            self._objects[obj.name].add(obj)
+        image = None
+
+        if objects:
+            # Create New Observation Classes if Necessary
+            for obj in objects:
+
+                image = obj.image
+
+                if obj.name not in self._objects:
+                    self._objects[obj.name] = Observations()
+
+            # Add Observations for each Object Type
+            if image:
+                for name, observations in self._objects.items():
+                    observations.add(image, [obj for obj in objects if obj.name == name])
 
     def add_people(self, people):
         # type: (Iterable[Face]) -> None
@@ -184,37 +197,81 @@ class Context(object):
 
 
 class Observations(object):
-    def __init__(self, max_samples=100, max_distance=0.1, min_samples=10, timeout=5.0):
-        self._deque = deque(maxlen=max_samples)
+
+    LOCK = Lock()
+
+    def __init__(self, epsilon=0.1, min_samples=5, max_samples=10, timeout=5):
+
+        self._epsilon = epsilon
         self._min_samples = min_samples
-        self._max_distance = max_distance
+        self._max_samples = max_samples
         self._timeout = timeout
 
-    def add(self, obj):
-        # type: (Object) -> None
-        self._deque.appendleft((obj, time()))
+        self._observations = deque()
+        self._unique_objects = []
 
-        # TODO: add object gone observation!
+    @property
+    def observations(self):
+        # type: () -> Deque[Tuple[Object, float]]
+        return self._observations
+
+    @property
+    def objects(self):
+        # type: () -> List[Object]
+        return self._unique_objects
 
     def get(self):
         # type: () -> List[Object]
-        objects = [obj for obj, t in self._deque if time() - t < self._timeout]  # type: List[Object]
+        return self._unique_objects
 
-        if not objects:
-            return []
+    def add(self, image, objects):
+        # type: (AbstractImage, List[Object]) -> None
 
-        positions = np.array([obj.position for obj in objects])
+        with self.LOCK:
 
-        cluster = DBSCAN(eps=self._max_distance, min_samples=self._min_samples)
-        cluster.fit(positions)
+            # 1. Add Objects to Observations
+            for obj in objects:
+                self._observations.appendleft((obj, time()))
 
-        result = []
+            if self._observations:
 
-        for label in np.unique(cluster.labels_):
-            if label >= 0:  # If Label is not Noise
-                result.append(objects[np.argwhere(cluster.labels_ == label)[0][0]])
+                # 2. Cluster Observations
+                cluster = DBSCAN(self._epsilon, self._min_samples)
+                cluster.fit(np.array([obj.position for obj, t in self.observations]))
 
-        return result
+                groups = [(label, np.argwhere(cluster.labels_ == label).ravel()) for label in np.unique(cluster.labels_)]
 
+                # 3. Prune Observations
+                observations = []
+                unique_objects = []
 
+                for group, indices in groups:
 
+                    # Add most recent observation of each Unique Objects to List
+                    if group != -1:
+                        unique_objects.append(self._observations[indices[0]])
+
+                    for i, index in enumerate(indices):
+
+                        if i >= self._max_samples:
+                            break
+
+                        sample, sample_time = self.observations[index]
+
+                        if group != -1:
+                            # If Sample should be visible now -> Add only if currently visible
+                            if time() - sample_time > self._timeout and image.bounds.contains(sample.position):
+                                for obj in objects:
+                                    if obj.bounds.contains(sample.position):
+                                        observations.append((sample, sample_time))
+                                        break
+                            else:  # if Sample is not visible atm -> Add Sample for now
+                                observations.append((sample, sample_time))
+                        else:
+                            observations.append((sample, sample_time))
+
+                self._observations = deque(observations)
+                self._unique_objects = unique_objects
+
+            else:
+                self._unique_objects = []

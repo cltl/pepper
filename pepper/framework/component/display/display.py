@@ -57,7 +57,7 @@ class DisplayComponent(AbstractComponent):
                     self._display_info["items"] += [
                         {"name": item.name,
                          "confidence": item.confidence,
-                         "bounds": item.bounds.to_list()
+                         "bounds": item.image_bounds.to_list()
                          } for item in items]
 
         face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent

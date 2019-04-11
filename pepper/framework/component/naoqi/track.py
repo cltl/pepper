@@ -68,10 +68,10 @@ class TrackComponent(AbstractComponent):
                     self._last_person = time()
                     self._awareness.setEnabled(False)
 
-                    x = np.average([p.bounds.x0 + p.bounds.width / 2 for p in people],
-                                   weights=[p.bounds.area for p in people])
-                    y = np.average([p.bounds.y0 + p.bounds.height / 4 for p in people],
-                                   weights=[p.bounds.area for p in people])
+                    x = np.average([p.image_bounds.x0 + p.image_bounds.width / 2 for p in people],
+                                   weights=[p.image_bounds.area for p in people])
+                    y = np.average([p.image_bounds.y0 + p.image_bounds.height / 4 for p in people],
+                                   weights=[p.image_bounds.area for p in people])
 
                     look(x, y)
 
