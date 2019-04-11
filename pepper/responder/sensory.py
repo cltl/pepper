@@ -202,9 +202,7 @@ class TimeResponder(Responder):
     MONTHS = ["January", "February", "March", "April", "May", "June", "July",
               "August", "September", "October", "November", "December"]
 
-    DATE = [
-        "What day is it",
-    ]
+    DATE = ["what day is it", "which day is it", "what is the date", "today"]
 
     @property
     def type(self):
@@ -217,12 +215,13 @@ class TimeResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        if utterance.transcript.lower() in self.DATE:
-            dt = utterance.context.datetime
+        for date in self.DATE:
+            if date in utterance.transcript.lower():
+                dt = utterance.context.datetime
 
-            return 1, lambda: app.say("Today is {}, {} {}, {}!".format(
-                self.DAYS[dt.weekday()], self.MONTHS[dt.month-1], dt.day, dt.year
-            ))
+                return 1, lambda: app.say("Today is {}, {} {}, {}!".format(
+                    self.DAYS[dt.weekday()], self.MONTHS[dt.month-1], dt.day, dt.year
+                ))
 
 
 class IdentityResponder(Responder):
@@ -238,7 +237,7 @@ class IdentityResponder(Responder):
     ]
 
     CUE_YOU = [
-        "who am i ",
+        "who am i",
         "what is my name"
     ]
 
