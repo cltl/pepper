@@ -8,7 +8,7 @@ from pepper.language import utils
 
 
 def test():
-    utterances = ["you like puppies","Do you like puppies?"]#, "I am Bill", "Who am I?"]#,"I am from England", "Where are you from?", "I hate rainy weather", "What do I hate?","What do you like?"]
+    utterances = ["Where are you from?"]#, "I am Bill", "Who am I?"]#,, "I hate rainy weather", "What do I hate?","What do you like?"]
     chat = Chat("Lenka", None)
     brain = LongTermMemory()
     for utterance in utterances:

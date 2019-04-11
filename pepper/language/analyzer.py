@@ -197,7 +197,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
             remainder = ''
             for rest in cons[2]['raw'].split()[1:]:
                 remainder += rest + ' '
-            rdf['predicate'] = utils.lemmatize(cons[1]['raw']) + '-' + pp
+            rdf['predicate'] = utils.lemmatize(cons[1]['raw'],'v') + '-' + pp
+            #print('trying to lemmatize ', cons[1]['raw'], utils.lemmatize(cons[1]['raw'],'v'))
             rdf['object'] = remainder.strip()
 
         else:
@@ -223,7 +224,9 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 rdf['predicate'] = utils.lemmatize(cons[1]['raw'])
 
             else:
+
                 rdf['predicate'] = utils.lemmatize(cons[1]['raw'])
+
             if len(cons) > 2 and rdf['object']=='':
                 rdf['object'] = cons[2]['raw']
 
@@ -355,6 +358,8 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
 
+        print('cons ', cons)
+
         for el in cons:
             #print(el, cons[el])
             if cons[el]['label'].startswith('V'):
@@ -372,7 +377,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                             if node.label().startswith('N'):
                                 rdf['subject'] = node.leaves()[0]
                             if node.label()=='IN':
-                                rdf['predicate']+='_'+node.leaves()[0]
+                                rdf['predicate']+='-'+node.leaves()[0]
 
             elif cons[el]['label'] == 'NP':
                 if el!=len(cons)-1:
@@ -380,7 +385,9 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                 else:
                     rdf['object'] = cons[el]['raw']
 
-        analyze_predicate(rdf['predicate'], self.GRAMMAR)
+        #analyze_predicate(rdf['predicate'], self.GRAMMAR)
+
+
 
         if utils.find(rdf['object'],self.GRAMMAR,'verb'):
             rdf['object']=''
@@ -389,8 +396,11 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['object']=''
 
         if rdf['subject']=='' and self.chat.last_utterance.tokens[0].lower()!='who':
-            rdf['subject']=rdf['object']
+            rdf['subject']=rdf['object'].split()[0]
+            rdf['predicate'] = 'be-'+rdf['object'].split()[1]
             rdf['object']=''
+
+        print('RDF ',rdf)
 
         #interpret_elements(cons)
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)

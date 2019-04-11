@@ -189,7 +189,7 @@ def reply_to_question(brain_response, viewed_objects):
             previous_predicate = brain_response['question']['predicate']['type']
             if brain_response['question']['predicate']['type'] == 'sees':
                 say+=' saw'
-            elif brain_response['question']['predicate']['type'] == 'is_from':
+            elif brain_response['question']['predicate']['type'] == 'be-from':
                 if person == 'first':
                     say += ' am from '
                 elif person == 'second':
@@ -492,13 +492,15 @@ def dereference_pronouns(self, rdf, grammar, speaker):
 
 from nltk.stem import WordNetLemmatizer
 
-def lemmatize(word):
+def lemmatize(word, tag =''):
     lemmatizer = WordNetLemmatizer()
     lem = ''
     if len(word.split())>1:
         for el in word.split():
             lem+=lemmatizer.lemmatize(el)+' '
         return lem.strip()
+    if tag!='':
+        return lemmatizer.lemmatize(word,tag)
     return lemmatizer.lemmatize(word)
 
 def get_node_label(tree, word):
