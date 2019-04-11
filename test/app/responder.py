@@ -24,7 +24,7 @@ RESPONDERS = [
 ]
 
 
-class ResponderApp(AbstractApplication, StatisticsComponent,
+class ResponderApp(AbstractApplication, StatisticsComponent, DisplayComponent,
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
     pass
@@ -40,8 +40,6 @@ class DefaultIntention(AbstractIntention, ResponderApp):
         self._ignored_people = {}
 
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
-
-        self.context.start_chat(config.HUMAN_UNKNOWN)
 
     def on_chat_enter(self, name):
         self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}

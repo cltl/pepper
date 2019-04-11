@@ -45,10 +45,10 @@ class BrainResponder(Responder):
                 self._log.debug("REPLY: {}".format(reply))
 
                 if isinstance(reply, str) or isinstance(reply, unicode):
-
                     # Return Score and Response
                     # Make sure to not execute the response here, but just to return the response function
-                    return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
+                    if reply != "":
+                        return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
 
         except Exception as e:
             self._log.error(e)
