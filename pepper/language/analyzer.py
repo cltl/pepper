@@ -201,8 +201,16 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
         else:
             if cons[1]['label'] == 'MOD':
-                rdf['object'] = rdf['predicate'].split()[1]
-                rdf['predicate'] = rdf['predicate'].split()[0]
+                if ' ' in rdf['predicate']:
+                    rdf['object'] = rdf['predicate'].split()[1]
+                    rdf['predicate'] = rdf['predicate'].split()[0]
+                else:
+                    for el in cons[1]['structure']:
+                        for eli in el:
+                            if rdf['predicate']:
+                                rdf['object'] = eli.leaves()[0]
+                            else:
+                                rdf['predicate'] = eli.leaves()[0]
 
             elif cons[2]['label'] == 'CP': #recursive parse?
                 rdf['predicate'] += ' ' + cons[2]['raw'].split()[1]
@@ -338,7 +346,10 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         for el in cons:
             #print(el, cons[el])
             if cons[el]['label'].startswith('V'):
-                rdf['predicate'] = cons[el]['raw']
+                if rdf['predicate'] and rdf['predicate']!='do':
+                    rdf['object'] = cons[el]['raw']
+                else:
+                    rdf['predicate'] = cons[el]['raw']
 
             if cons[el]['label'] == 'PP':
                 if 'structure' in cons[el]:
@@ -359,8 +370,19 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         analyze_predicate(rdf['predicate'], self.GRAMMAR)
 
+        if utils.find(rdf['object'],self.GRAMMAR,'verb'):
+            rdf['object']=''
+        elif rdf['predicate']=='do':
+            rdf['predicate']=rdf['object']
+            rdf['object']=''
+
+        if rdf['subject']=='' and self.chat.last_utterance.tokens[0].lower()!='who':
+            rdf['subject']=rdf['object']
+            rdf['object']=''
+
         interpret_elements(cons, self.GRAMMAR)
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
+        print('final rdf', rdf)
         self._rdf = rdf
 
     @property
@@ -437,8 +459,11 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         for el in cons:
             print(el, cons[el])
 
-            if cons[el]['label'].startswith('V'):
-                rdf['predicate'] = cons[el]['raw']
+            if cons[el]['label'].startswith('V') or cons[el]['label']=='MD':
+                if rdf['predicate']:
+                    rdf['object'] = cons[el]['raw']
+                else:
+                    rdf['predicate'] = cons[el]['raw']
 
             if 'structure' in cons[el]:
                 tree = cons[el]['structure']
