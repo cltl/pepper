@@ -21,9 +21,9 @@ class ContextComponent(AbstractComponent):
 
     # Minimum Distance Difference of Person to Enter/Exit Conversation
     PERSON_DIFF_ENTER = 1.5
-    PERSON_DIFF_EXIT = 1.4
+    PERSON_DIFF_EXIT = 1.25
 
-    CONVERSATION_TIMEOUT = 5
+    CONVERSATION_TIMEOUT = 15
 
     PEOPLE_LEDS = [Led.LeftFaceLed1, Led.RightFaceLed1,
                    Led.LeftFaceLed2, Led.RightFaceLed2,
