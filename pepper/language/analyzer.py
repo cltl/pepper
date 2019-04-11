@@ -387,8 +387,6 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         #analyze_predicate(rdf['predicate'], self.GRAMMAR)
 
-
-
         if utils.find(rdf['object'],self.GRAMMAR,'verb'):
             rdf['object']=''
         elif rdf['predicate']=='do':
@@ -401,6 +399,10 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['object']=''
 
         print('RDF ',rdf)
+
+        if rdf['object']=='from':
+            rdf['object']=''
+            rdf['predicate']='be-from'
 
         #interpret_elements(cons)
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)

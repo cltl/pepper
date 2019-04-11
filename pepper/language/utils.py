@@ -193,7 +193,7 @@ def reply_to_question(brain_response, viewed_objects):
                 if person == 'first':
                     say += ' am from '
                 elif person == 'second':
-                    say += ' are from'
+                    say += ' are from '
                 else:
                     say += ' is from '
 
