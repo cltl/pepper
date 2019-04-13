@@ -1,11 +1,13 @@
-from pepper.brain.utils.helper_functions import hash_statement_id, casefold, read_query, casefold_capsule, date_from_uri
-from pepper.brain.utils.response import Predicate, Entity, Provenance, CardinalityConflict, NegationConflict, \
-    StatementNovelty, EntityNovelty, Gap, Gaps, Overlap, Overlaps, Thoughts
+from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
+    Gap, Gaps, Overlap, Overlaps, Thoughts
+from pepper.brain.utils.helper_functions import hash_statement_id, read_query
+from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.basic_brain import BasicBrain
+# from pepper.language.language import UtteranceType
+
 from pepper import config
 
-from rdflib import URIRef, Literal, RDF, RDFS, OWL
-from iribaker import to_iri
+from rdflib import RDF, RDFS, OWL
 from fuzzywuzzy import process
 
 import requests
@@ -40,97 +42,100 @@ class LongTermMemory(BasicBrain):
 
         super(LongTermMemory, self).__init__(address)
 
+        self.myself = None  # NOT USED, ONLY WHEN UPLOADING/EXPERIENCING
+        self.query_prefixes = read_query('prefixes')  # NOT USED, ONLY WHEN QUERYING
+
         # Launch first query
         self.count_statements()
 
     #################################### Main functions to interact with the brain ####################################
 
-    def update(self, capsule):
+    def update(self, utterance):
+        # type (Utterance) -> Thoughts
         """
-        Main function to interact with if a statement is coming into the brain. Takes in a structured capsule containing
-        a parsed statement, transforms them to triples, and posts them to the triple store
-        :param capsule: Structured data of a parsed statement
-        :return: json response containing the status for posting the triples, and the original statement
-        """
-        # Case fold
-        capsule = casefold_capsule(capsule, format='triple')
+        Main function to interact with if a statement is coming into the brain. Takes in an Utterance containing a
+        parsed statement as a Triple, transforms them to linked data, and posts them to the triple store
+        Parameters
+        ----------
+        utterance: Utterance
+            Contains all necessary information regarding a statement just made.
 
+        Returns
+        -------
+        thoughts: Thoughts
+            Contains information about conflicts, novelty, gaps and overlaps that the statement produces given the data
+            in the triple store
+
+        """
+
+        # TODO for now we assume the triple in the utterance has been casefolded, but we have to still implement this!!
         # Create graphs and triples
-        subject_url, object_url, instance_url = self._model_graphs_(capsule)
+        instance = self._model_graphs_(utterance)
 
         # Check if this knowledge already exists on the brain
-        statement_novelty = self.get_statement_novelty(instance_url)
+        statement_novelty = self.get_statement_novelty(instance.id)
 
         # Check how many items of the same type as subject and object we have
-        entity_novelty = self._fill_entity_novelty_(subject_url, object_url)
+        entity_novelty = self._fill_entity_novelty_(utterance.triple.subject.id, utterance.triple.object.id)
 
         # Find any overlaps
-        overlaps = self.get_overlaps(capsule)
+        overlaps = self.get_overlaps(utterance)
 
         # Finish process of uploading new knowledge to the triple store
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
         # Check for conflicts after adding the knowledge
-        negation_conflicts = self.get_negation_conflicts(capsule)
-        object_conflict = self.get_object_cardinality_conflicts(capsule)
+        negation_conflicts = self.get_negation_conflicts(utterance)
+        object_conflict = self.get_object_cardinality_conflicts(utterance)
 
         # Check for gaps, in case we want to be proactive
-        subject_gaps = self.get_entity_gaps(capsule['subject'])
-        object_gaps = self.get_entity_gaps(capsule['object'])
+        subject_gaps = self.get_entity_gaps(utterance.triple.subject)
+        object_gaps = self.get_entity_gaps(utterance.triple.object)
 
         # Report trust
-        trust = 0 if self.when_last_chat_with(capsule['author']) == '' else 1
+        trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
 
         # Create JSON output
-        capsule["date"] = str(capsule["date"])
         thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, object_conflict,
                             subject_gaps, object_gaps, overlaps, trust)
-        output = {'response': code, 'statement': capsule, 'thoughts': thoughts}
+        output = {'response': code, 'statement': utterance, 'thoughts': thoughts}
 
         return output
 
-    def experience(self, capsule):
+    def experience(self, utterance):
         """
-        Main function to interact with if an experience is coming into the brain. Takes in a structured capsule
+        Main function to interact with if an experience is coming into the brain. Takes in a structured utterance
         containing parsed experience, transforms them to triples, and posts them to the triple store
-        :param capsule: Structured data of a parsed experience
+        :param utterance: Structured data of a parsed experience
         :return: json response containing the status for posting the triples, and the original statement
         """
-        # Case fold
-        capsule = casefold_capsule(capsule, format='triple')
-
         # Create graphs and triples
-        subject_url, object_url, instance_url = self._model_graphs_(capsule, type='Experience')
+        instance = self._model_graphs_(utterance)
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
         # Create JSON output
-        capsule["date"] = str(capsule["date"])
-        output = {'response': code, 'statement': capsule}
+        output = {'response': code, 'statement': utterance}
 
         return output
 
-    def query_brain(self, capsule):
+    def query_brain(self, utterance):
         """
         Main function to interact with if a question is coming into the brain. Takes in a structured parsed question,
         transforms it into a query, and queries the triple store for a response
-        :param capsule: Structured data of a parsed question
+        :param utterance: Structured data of a parsed question
         :return: json response containing the results of the query, and the original question
         """
-        # Case fold
-        capsule = casefold_capsule(capsule, format='triple')
 
         # Generate query
-        query = self._create_query(capsule)
+        query = self._create_query(utterance)
 
         # Perform query
         response = self._submit_query(query)
 
         # Create JSON output
-        if 'date' in capsule.keys():
-            capsule["date"] = str(capsule["date"])
-        output = {'response': response, 'question': capsule}
+        output = {'response': response, 'question': utterance}
 
         return output
 
@@ -174,58 +179,6 @@ class LongTermMemory(BasicBrain):
         return None, text
 
     ########## conflicts ##########
-    def _fill_entity_(self, label, namespace='LW', types=None):
-        """
-        Create an RDF entity given its label and its namespace
-        Parameters
-        ----------
-        label: str
-            Label of entity
-        namespace:
-            Namespace where entity belongs to
-
-        Returns
-        -------
-            Entity object with given label
-        """
-        types = self.get_type_of_instance(label) if types is None else types
-
-        return Entity(self.namespaces[namespace]+label, label, types)
-
-    def _fill_predicate_(self, label, namespace='N2MU'):
-        """
-        Create an RDF predicate given its label and its namespace
-        Parameters
-        ----------
-        label: str
-            Label of predicate
-        namespace:
-            Namespace where predicate belongs to
-
-        Returns
-        -------
-            Predicate object with given label
-        """
-
-        return Predicate(self.namespaces[namespace]+label, label)
-
-    def _fill_provenance_(self, response_item):
-        """
-        Structure provenance to pair authors and dates when mentions are created
-        Parameters
-        ----------
-        response_item: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            Provenance object containing author and date
-        """
-        author = response_item['authorlabel']['value']
-        date = date_from_uri(response_item['date']['value'])
-
-        return Provenance(author, date)
-
     def _fill_cardinality_conflict_(self, raw_conflict):
         """
         Structure cardinality conflict to pair provenance and object that creates the conflict
@@ -238,8 +191,10 @@ class LongTermMemory(BasicBrain):
         -------
             CardinalityConflict object containing provenance and entity
         """
-        processed_provenance = self._fill_provenance_(raw_conflict)
-        processed_entity = self._fill_entity_(raw_conflict['objectlabel']['value'])
+        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
+                                                      raw_conflict['date']['value'])
+        processed_type = self.get_type_of_instance(raw_conflict['objectlabel']['value'])
+        processed_entity = self._rdf_builder.fill_entity(raw_conflict['objectlabel']['value'], processed_type)
 
         return CardinalityConflict(processed_provenance, processed_entity)
 
@@ -255,8 +210,10 @@ class LongTermMemory(BasicBrain):
         -------
             NegationConflict object containing provenance and predicate
         """
-        processed_provenance = self._fill_provenance_(raw_conflict)
-        processed_predicate = self._fill_predicate_(raw_conflict['pred']['value'].split('/')[-1])
+        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LTi')
+        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
+                                                      preprocessed_date)
+        processed_predicate = self._rdf_builder.fill_predicate(raw_conflict['pred']['value'].split('/')[-1])
 
         return NegationConflict(processed_provenance, processed_predicate)
 
@@ -288,41 +245,40 @@ class LongTermMemory(BasicBrain):
 
         return conflicts
 
-    def get_object_cardinality_conflicts(self, capsule):
+    def get_object_cardinality_conflicts(self, utterance):
         """
         Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
         multiple object values
         Parameters
         ----------
-        capsule
+        utterance
 
         Returns
         -------
         conflicts: List[CardinalityConflicts]
             List of Conflicts containing the object which creates the conflict, and their provenance
         """
-        # Case fold
-        capsule = casefold_capsule(capsule, format='triple')
+        if utterance.triple.predicate_name not in self._ONE_TO_ONE_PREDICATES:
+            return []
 
-        if capsule['predicate']['type'] not in self._ONE_TO_ONE_PREDICATES:
-            return [{}]
-
-        query = read_query('thoughts/object_cardinality_conflicts') % (capsule['predicate']['type'],
-                                                                        capsule['subject']['label'],
-                                                                        capsule['object']['label'])
+        query = read_query('thoughts/object_cardinality_conflicts') % (utterance.triple.predicate_name,
+                                                                       utterance.triple.subject_name,
+                                                                       utterance.triple.object_name)
 
         response = self._submit_query(query)
         if response[0] != {}:
             conflicts = [self._fill_cardinality_conflict_(elem) for elem in response]
+        else:
+            conflicts = []
 
         return conflicts
 
-    def get_negation_conflicts(self, capsule):
+    def get_negation_conflicts(self, utterance):
         """
         Query and build negation conflicts, meaning conflicts because predicates are directly negated
         Parameters
         ----------
-        capsule
+        utterance
 
         Returns
         -------
@@ -330,20 +286,21 @@ class LongTermMemory(BasicBrain):
             List of Conflicts containing the predicate which creates the conflict, and their provenance
         """
         # Case fold
-        capsule = casefold_capsule(capsule, format='triple')
-        predicate = capsule['predicate']['type']
-        predicate = predicate[:-4] if predicate.endswith('-not') else predicate
+        predicate = utterance.triple.predicate_name[:-4] if utterance.triple.predicate_name.endswith('-not') \
+            else utterance.triple.predicate_name
 
-        query = read_query('thoughts/negation_conflicts') % (capsule['subject']['label'], capsule['object']['label'],
+        query = read_query('thoughts/negation_conflicts') % (utterance.triple.subject_name, utterance.triple.object_name,
                                                               predicate, predicate)
 
         response = self._submit_query(query)
         if response[0] != {}:
             conflicts = [self._fill_negation_conflict_(elem) for elem in response]
+        else:
+            conflicts = []
 
         return conflicts
 
-    ########## overlaps ##########
+    ########## novelty ##########
     def _fill_statement_novelty_(self, raw_conflict):
         """
         Structure statement novelty to get provenance if this statement has been heard before
@@ -356,7 +313,9 @@ class LongTermMemory(BasicBrain):
         -------
             StatementNovelty object containing provenance
         """
-        processed_provenance = self._fill_provenance_(raw_conflict)
+        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LTi')
+        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
+                                                                 preprocessed_date)
 
         return StatementNovelty(processed_provenance)
 
@@ -397,6 +356,8 @@ class LongTermMemory(BasicBrain):
 
         if response[0] != {}:
             response = [self._fill_statement_novelty_(elem) for elem in response]
+        else:
+            response = []
 
         return response
 
@@ -432,9 +393,9 @@ class LongTermMemory(BasicBrain):
             Gap object containing a predicate and its range
         """
 
-        processed_predicate = self._fill_predicate_(raw_conflict['p']['value'].split('/')[-1])
-        processed_range = self._fill_entity_('', namespace='N2MU', 
-                                             types=[raw_conflict['type2']['value'].split('/')[-1]])
+        processed_predicate = self._rdf_builder.fill_predicate(raw_conflict['p']['value'].split('/')[-1])
+        processed_range = self._rdf_builder.fill_entity('', namespace='N2MU',
+                                                        types=[raw_conflict['type2']['value'].split('/')[-1]])
 
         return Gap(processed_predicate, processed_range)
 
@@ -451,11 +412,11 @@ class LongTermMemory(BasicBrain):
             Gaps object containing gaps related to range and domain information that could be learned
         """
         # Role as subject
-        query = read_query('thoughts/subject_gaps') % (entity['label'], entity['label'])
+        query = read_query('thoughts/subject_gaps') % (entity.label, entity.label)
         response = self._submit_query(query)
 
         if response:
-            subject_gaps = [self._fill_entity_gap_(elem) 
+            subject_gaps = [self._fill_entity_gap_(elem)
                             for elem in response 
                             if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
                     
@@ -463,7 +424,7 @@ class LongTermMemory(BasicBrain):
             subject_gaps = []
 
         # Role as object
-        query = read_query('thoughts/object_gaps') % (entity['label'], entity['label'])
+        query = read_query('thoughts/object_gaps') %  (entity.label, entity.label)
         response = self._submit_query(query)
 
         if response:
@@ -489,29 +450,42 @@ class LongTermMemory(BasicBrain):
         -------
             Overlap object containing an entity and the provenance of the mention causing the overlap
         """
+        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LTi')
+        preprocessed_types = self._rdf_builder.clean_aggregated_types(raw_conflict['types']['value'])
 
-        processed_provenance = self._fill_provenance_(raw_conflict)
-        processed_entity = self._fill_entity_(raw_conflict['label']['value'])
+        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
+                                                                 preprocessed_date)
+        processed_entity = self._rdf_builder.fill_entity(raw_conflict['label']['value'], preprocessed_types, 'LW')
 
         return Overlap(processed_provenance, processed_entity)
 
-    def get_overlaps(self, capsule):
+    def get_overlaps(self, utterance):
+        """
+        Query and build overlaps with regards to the subject and object of the heard statement
+        Parameters
+        ----------
+        utterance
+
+        Returns
+        -------
+            Overlaps containing shared information with the heard statement
+        """
         # Role as subject
-        query = read_query('thoughts/object_overlap') % (capsule['predicate']['type'], capsule['object']['label'],
-                                                capsule['subject']['label'])
+        query = read_query('thoughts/object_overlap') % (utterance.triple.predicate_name, utterance.triple.object_name,
+                                                utterance.triple.subject_name)
         response = self._submit_query(query)
 
-        if response:
+        if response[0]['types']['value'] != '':
             object_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
             object_overlap = []
 
         # Role as object
-        query = read_query('thoughts/subject_overlap') % (capsule['predicate']['type'], capsule['subject']['label'],
-                                                capsule['object']['label'])
+        query = read_query('thoughts/subject_overlap') % (utterance.triple.predicate_name, utterance.triple.subject_name,
+                                                utterance.triple.object_name)
         response = self._submit_query(query)
 
-        if response:
+        if response[0]['types']['value'] != '':
             subject_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
             subject_overlap = []
@@ -571,234 +545,199 @@ class LongTermMemory(BasicBrain):
 
     ######################################## Helpers for statement processing ########################################
 
-    def _generate_leolani(self, instance_graph):
-        # Create Leolani
-        leolani_id = 'leolani'
-        leolani_label = 'leolani'
+    def _link_leolani(self, instance_graph):
+        if self.myself is None:
+            # Create Leolani
+            self.myself = self._rdf_builder.fill_entity('leolani', ['robot'], 'LW')
 
-        leolani = URIRef(to_iri(self.namespaces['LW'] + leolani_id))
-        leolani_label = Literal(leolani_label)
-        leolani_type1 = URIRef(to_iri(self.namespaces['N2MU'] + 'robot'))
-        leolani_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+        self._link_entity(self.myself, instance_graph)
 
-        instance_graph.add((leolani, RDFS.label, leolani_label))
-        instance_graph.add((leolani, RDF.type, leolani_type1))
-        instance_graph.add((leolani, RDF.type, leolani_type2))
+    def _link_entity(self, entity, graph, namespace_mapping=None):
+        # Set basics like label
+        graph.add((entity.id, RDFS.label, entity.label))
 
-        self.my_uri = leolani
+        # Set types
+        if entity.types == ['']:  # We only get the label
+            entity_type = self._rdf_builder.create_resource_uri(OWL, 'Thing')
+            graph.add((entity.id, RDF.type, entity_type))
 
-        return leolani
-
-    def _generate_subject(self, capsule, instance_graph):
-        if capsule['subject']['type'] == '':  # We only get the label
-            subject_vocab = OWL
-            subject_type = 'Thing'
         else:
-            subject_vocab = self.namespaces['N2MU']
-            subject_type = capsule['subject']['type']
+            namespace_mapping = NAMESPACE_MAPPING \
+                if namespace_mapping is None else namespace_mapping.update(NAMESPACE_MAPPING)
 
-        subject_id = capsule['subject']['label']
+            for item in entity.types:
+                entity_type = self._rdf_builder.create_resource_uri(namespace_mapping.get(item, 'N2MU'), item)
+                graph.add((entity.id, RDF.type, entity_type))
 
-        subject = URIRef(to_iri(self.namespaces['LW'] + subject_id))
-        subject_label = Literal(subject_id)
-        subject_type1 = URIRef(to_iri(subject_vocab + subject_type))
-        subject_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
+    def _create_context(self, utterance, interaction_graph):
+        # Time
+        time_label = '%s' % utterance.datetime.strftime('%Y-%m-%d')
+        time = self._rdf_builder.fill_entity(time_label, ['DateTimeDescription'], 'LTi')
+        self._link_entity(time, interaction_graph)
 
-        instance_graph.add((subject, RDFS.label, subject_label))
-        instance_graph.add((subject, RDF.type, subject_type1))
-        instance_graph.add((subject, RDF.type, subject_type2))
+        # Set specifics of datetime
+        day = self._rdf_builder.fill_literal(utterance.datetime.day, datatype=self.namespaces['XML']['gDay'])
+        month = self._rdf_builder.fill_literal(utterance.datetime.month, datatype=self.namespaces['XML']['gMonthDay'])
+        year = self._rdf_builder.fill_literal(utterance.datetime.year, datatype=self.namespaces['XML']['gYear'])
+        time_unit = self._rdf_builder.create_resource_uri('TIME', 'unitDay')
 
-        return subject, subject_label
+        interaction_graph.add((time.id, self.namespaces['TIME']['day'], day))
+        interaction_graph.add((time.id, self.namespaces['TIME']['month'], month))
+        interaction_graph.add((time.id, self.namespaces['TIME']['year'], year))
+        interaction_graph.add((time.id, self.namespaces['TIME']['unitType'], time_unit))
 
-    def _create_leolani_world(self, capsule, type='Statement'):
+        return time
+
+    def _create_actor(self, utterance, interaction_graph):
+        # Actor
+        actor = self._rdf_builder.fill_entity(utterance.chat_speaker,
+                                              ['Instance', 'Actor', '%s' % ('person' if utterance.type == 'Statement'
+                                                                            else 'sensor')],
+                                              'LF')
+        self._link_entity(actor, interaction_graph)
+
+        # Add leolani knows/senses actor
+        predicate = self._rdf_builder.fill_predicate('knows') if utterance.type == 'Statement' \
+            else self._rdf_builder.fill_predicate('senses')
+        interaction_graph.add((self.myself.id, predicate.id, actor.id))
+        _ = self._create_claim_graph(self.myself, predicate, actor, 'Experience')  # TODO link this to a context
+
+        return actor
+
+    def _create_events(self, utterance, interaction_graph, time, actor):
+        # Chat or visual
+        event_id = self._rdf_builder.fill_literal(utterance.chat.id, datatype=self.namespaces['XML']['string'])
+        event_type = 'Chat' if utterance.type == 'Statement' else 'Visual'
+        event_label = '%s%s' % (event_type, utterance.chat.id)
+
+        # Utterance or object
+        subevent_id = self._rdf_builder.fill_literal(utterance.turn, datatype=self.namespaces['XML']['string'])
+        subevent_type = '%s' % ('Utterance' if utterance.type == 'Statement' else 'Object')
+        subevent_label = '%s_%s%s' % (event_label, subevent_type, utterance.turn)
+
+        # Add context to subevent
+        subevent = self._rdf_builder.fill_entity(subevent_label, ['Event', subevent_type], 'LTa')
+        self._link_entity(subevent, interaction_graph)
+
+        interaction_graph.add((subevent.id, self.namespaces['N2MU']['id'], subevent_id))
+        interaction_graph.add((subevent.id, self.namespaces['SEM']['hasActor'], actor.id))
+        interaction_graph.add((subevent.id, self.namespaces['SEM']['hasTime'], time.id))
+
+        # Add context to event and link to subevent
+        event = self._rdf_builder.fill_entity(event_label, ['Event', event_type], 'LTa')
+        self._link_entity(event, interaction_graph)
+
+        interaction_graph.add((event.id, self.namespaces['N2MU']['id'], event_id))
+        interaction_graph.add((event.id, self.namespaces['SEM']['hasActor'], actor.id))
+        interaction_graph.add((event.id, self.namespaces['SEM']['hasTime'], time.id))
+        interaction_graph.add((event.id, self.namespaces['SEM']['hasSubevent'], subevent.id))
+
+        return event, subevent
+
+    def _create_instance_graph(self, utterance):
+        # type (Utterance) -> Graph, Graph, str, str, str
+        """
+        Create linked data related to what leolani learned/knows about the world
+        Parameters
+        ----------
+        utterance: Utterance
+
+        Returns
+        -------
+
+
+        """
         # Instance graph
-        instance_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Instances'))
+        instance_graph_uri = self._rdf_builder.create_resource_uri('LW', 'Instances')
         instance_graph = self.dataset.graph(instance_graph_uri)
 
         # Subject
-        if type == 'Statement':
-            subject, subject_label = self._generate_subject(capsule, instance_graph)
-        elif type == 'Experience':
-            subject = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
-            subject_label = 'leolani'
+        if utterance.type == 'Statement':  # UtteranceType.STATEMENT:
+            utterance.triple.subject.add_types(['Instance'])
+            self._link_entity(utterance.triple.subject, instance_graph)
+        elif utterance.type == 'Experience':  # UtteranceType.EXPERIENCE:
+            self._link_leolani(instance_graph)
 
         # Object
-        if capsule['object']['type'] == '':  # We only get the label
-            object_vocab = OWL
-            object_type = 'Thing'
-        else:
-            object_vocab = self.namespaces['N2MU']
-            object_type = capsule['object']['type']
+        utterance.triple.object.add_types(['Instance'])
+        self._link_entity(utterance.triple.object, instance_graph)
 
-        object_id = capsule['object']['label']
-
-        object = URIRef(to_iri(self.namespaces['LW'] + object_id))
-        object_label = Literal(object_id)
-        object_type1 = URIRef(to_iri(object_vocab + object_type))
-        object_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-
-        instance_graph.add((object, RDFS.label, object_label))
-        instance_graph.add((object, RDF.type, object_type1))
-        instance_graph.add((object, RDF.type, object_type2))
-
-        if type == 'Statement':
-            claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
-                                                          capsule['predicate']['type'], type='Statement')
-        elif type == 'Experience':
-            claim_graph, statement = self._create_claim_graph(subject, subject_label, object, object_label,
-                                                               'sees', type='Experience')
-
-        return instance_graph, claim_graph, subject, object, statement
-
-    def _create_claim_graph(self, subject, subject_label, object, object_label, predicate, type='Statement'):
         # Claim graph
-        claim_graph_uri = URIRef(to_iri(self.namespaces['LW'] + 'Claims'))
+        predicate = utterance.triple.predicate if utterance.type == 'Statement' \
+            else self._rdf_builder.fill_predicate('sees')
+
+        statement = self._create_claim_graph(utterance.triple.subject, predicate, utterance.triple.object,
+                                                          utterance.type)
+
+        return instance_graph, statement
+
+    def _create_claim_graph(self, subject, predicate, object, claim_type):
+        # Claim graph
+        claim_graph_uri = self._rdf_builder.create_resource_uri('LW', 'Claims')
         claim_graph = self.dataset.graph(claim_graph_uri)
 
         # Statement
-        statement_id = hash_statement_id([subject_label, predicate, object_label])
+        statement_label = hash_statement_id([subject.label, predicate.label, object.label])
 
-        statement = URIRef(to_iri(self.namespaces['LW'] + statement_id))
-        statement_type1 = URIRef(to_iri(self.namespaces['GRASP'] + type))
-        statement_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-        statement_type3 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
+        statement = self._rdf_builder.fill_entity(statement_label, ['Event', 'Instance', claim_type], 'LW')
+        self._link_entity(statement, claim_graph)
 
         # Create graph and add triple
-        graph = self.dataset.graph(statement)
-        graph.add((subject, self.namespaces['N2MU'][predicate], object))
+        graph = self.dataset.graph(statement.id)
+        graph.add((subject.id, predicate.id, object.id))
 
-        claim_graph.add((statement, RDF.type, statement_type1))
-        claim_graph.add((statement, RDF.type, statement_type2))
-        claim_graph.add((statement, RDF.type, statement_type3))
+        return statement
 
-        return claim_graph, statement
-
-    def _create_leolani_talk(self, capsule, leolani, type='Statement'):
+    def _create_interaction_graph(self, utterance):
         # Interaction graph
-        if type == 'Statement':
+        if utterance.type == 'Statement':  # UtteranceType.STATEMENT:
             graph_to_write = 'Interactions'
-        elif type == 'Experience':
+        elif utterance.type == 'Experience':  # UtteranceType.EXPERIENCE:
             graph_to_write = 'Sensors'
 
-        interaction_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + graph_to_write))
+        interaction_graph_uri = self._rdf_builder.create_resource_uri('LTa', graph_to_write)
         interaction_graph = self.dataset.graph(interaction_graph_uri)
 
         # Time
-        date = capsule["date"]
-        time = URIRef(to_iri(self.namespaces['LTi'] + str(capsule["date"].isoformat())))
-        time_type = URIRef(to_iri(self.namespaces['TIME'] + 'DateTimeDescription'))
-        day = Literal(date.day, datatype=self.namespaces['XML']['gDay'])
-        month = Literal(date.month, datatype=self.namespaces['XML']['gMonthDay'])
-        year = Literal(date.year, datatype=self.namespaces['XML']['gYear'])
-        time_unitType = URIRef(to_iri(self.namespaces['TIME'] + 'unitDay'))
-
-        interaction_graph.add((time, RDF.type, time_type))
-        interaction_graph.add((time, self.namespaces['TIME']['day'], day))
-        interaction_graph.add((time, self.namespaces['TIME']['month'], month))
-        interaction_graph.add((time, self.namespaces['TIME']['year'], year))
-        interaction_graph.add((time, self.namespaces['TIME']['unitType'], time_unitType))
+        time = self._create_context(utterance, interaction_graph)
 
         # Actor
-        actor_id = capsule['author']
-        actor_label = capsule['author']
-
-        actor = URIRef(to_iri(to_iri(self.namespaces['LF'] + actor_id)))
-        actor_label = Literal(actor_label)
-        actor_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Actor'))
-        actor_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Instance'))
-
-        if type == 'Statement':
-            actor_type3 = URIRef(to_iri(self.namespaces['N2MU'] + 'person'))
-        elif type == 'Experience':
-            actor_type3 = URIRef(to_iri(self.namespaces['N2MU'] + 'sensor'))
-
-        interaction_graph.add((actor, RDFS.label, actor_label))
-        interaction_graph.add((actor, RDF.type, actor_type1))
-        interaction_graph.add((actor, RDF.type, actor_type2))
-        interaction_graph.add((actor, RDF.type, actor_type3))
-
-        # Add leolani knows/senses actor
-        if type == 'Statement':
-            predicate = 'knows'
-        elif type == 'Experience':
-            predicate = 'senses'
-
-        interaction_graph.add((leolani, self.namespaces['N2MU'][predicate], actor))
-        _, _ = self._create_claim_graph(leolani, 'leolani', actor, actor_label, predicate, type)
+        actor = self._create_actor(utterance, interaction_graph)
 
         # Event and subevent
-        event_id = capsule['chat']
-        if type == 'Statement':
-            event_label = 'chat%s' % event_id
-        elif type == 'Experience':
-            event_label = 'visual%s' % event_id
+        event, subevent = self._create_events(utterance, interaction_graph, time, actor)
 
-        subevent_id = capsule['turn']
-        if type == 'Statement':
-            subevent_label = event_label + '_turn%s' % subevent_id
-        elif type == 'Experience':
-            subevent_label = event_label + '_object%s' % subevent_id
-
-        turn = URIRef(to_iri(self.namespaces['LTa'] + subevent_label))
-        turn_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        if type == 'Statement':
-            turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Turn'))
-        elif type == 'Experience':
-            turn_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Object'))
-
-        interaction_graph.add((turn, RDF.type, turn_type1))
-        interaction_graph.add((turn, RDF.type, turn_type2))
-        interaction_graph.add((turn, self.namespaces['N2MU']['id'], Literal(subevent_id)))
-        interaction_graph.add((turn, self.namespaces['SEM']['hasActor'], actor))
-        interaction_graph.add((turn, self.namespaces['SEM']['hasTime'], time))
-
-        chat = URIRef(to_iri(self.namespaces['LTa'] + event_label))
-        chat_type1 = URIRef(to_iri(self.namespaces['SEM'] + 'Event'))
-        if type == 'Statement':
-            chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Chat'))
-        elif type == 'Experience':
-            chat_type2 = URIRef(to_iri(self.namespaces['GRASP'] + 'Visual'))
-
-        interaction_graph.add((chat, RDF.type, chat_type1))
-        interaction_graph.add((chat, RDF.type, chat_type2))
-        interaction_graph.add((chat, self.namespaces['N2MU']['id'], Literal(event_id)))
-        interaction_graph.add((chat, self.namespaces['SEM']['hasActor'], actor))
-        interaction_graph.add((chat, self.namespaces['SEM']['hasTime'], time))
-        interaction_graph.add((chat, self.namespaces['SEM']['hasSubevent'], turn))
-
-        perspective_graph, mention, attribution = self._create_perspective_graph(capsule, subevent_label)
+        perspective_graph, mention, attribution = self._create_perspective_graph(utterance, subevent)
 
         # Link interactions and perspectives
-        perspective_graph.add((mention, self.namespaces['GRASP']['wasAttributedTo'], actor))
-        perspective_graph.add((mention, self.namespaces['GRASP']['hasAttribution'], attribution))
-        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], chat))
-        perspective_graph.add((mention, self.namespaces['PROV']['wasDerivedFrom'], turn))
+        perspective_graph.add((mention.id, self.namespaces['GRASP']['wasAttributedTo'], actor.id))
+        perspective_graph.add((mention.id, self.namespaces['GRASP']['hasAttribution'], attribution.id))
+        perspective_graph.add((mention.id, self.namespaces['PROV']['wasDerivedFrom'], event.id))
+        perspective_graph.add((mention.id, self.namespaces['PROV']['wasDerivedFrom'], subevent.id))
 
-        return interaction_graph, perspective_graph, actor, time, mention, attribution
+        return perspective_graph, actor, time, mention, attribution
 
-    def _create_perspective_graph(self, capsule, turn_label, type='Statement'):
+    def _create_perspective_graph(self, utterance, subevent):
         # Perspective graph
-        perspective_graph_uri = URIRef(to_iri(self.namespaces['LTa'] + 'Perspectives'))
+        perspective_graph_uri = self._rdf_builder.create_resource_uri('LTa', 'Perspectives')
         perspective_graph = self.dataset.graph(perspective_graph_uri)
 
         # Mention
-        if type == 'Statement':
-            mention_id = turn_label + '_char%s' % capsule['position']
-        elif type == 'Experience':
-            mention_id = turn_label + '_pixel%s' % capsule['position']
-        mention = URIRef(to_iri(self.namespaces['LTa'] + mention_id))
-        mention_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Mention'))
+        mention_unit = 'Char' if utterance.type == 'Statement' else 'Pixel'
+        mention_position = '0-%s' % len(utterance.transcript)
+        mention_label = '%s%s%s' % (subevent.label, mention_unit, mention_position)
 
-        perspective_graph.add((mention, RDF.type, mention_type))
+        mention = self._rdf_builder.fill_entity(mention_label, ['Mention'], 'LTa')
+        self._link_entity(mention, perspective_graph)
 
         # Attribution
-        attribution_id = mention_id + '_CERTAIN'
-        attribution = URIRef(to_iri(self.namespaces['LTa'] + attribution_id))
-        attribution_type = URIRef(to_iri(self.namespaces['GRASP'] + 'Attribution'))
-        attribution_value = URIRef(to_iri(self.namespaces['GRASP'] + 'CERTAIN'))
+        attribution_label = mention_label + '_CERTAIN'
+        attribution_value = self._rdf_builder.create_resource_uri('GRASP', 'CERTAIN')
 
-        perspective_graph.add((attribution, RDF.type, attribution_type))
-        perspective_graph.add((attribution, RDF.value, attribution_value))
+        attribution = self._rdf_builder.fill_entity(attribution_label, ['Attribution'], 'LTa')
+        self._link_entity(mention, perspective_graph)
+
+        perspective_graph.add((attribution.id, RDF.value, attribution_value))
 
         return perspective_graph, mention, attribution
 
@@ -809,46 +748,43 @@ class LongTermMemory(BasicBrain):
         :return: serialized data as string
         """
         # Save to file but return the python representation
-        with open(file_path + '.' + self.format, 'w') as f:
-            self.dataset.serialize(f, format=self.format)
-        return self.dataset.serialize(format=self.format)
+        with open(file_path + '.' + self._connection.format, 'w') as f:
+            self.dataset.serialize(f, format=self._connection.format)
+        return self.dataset.serialize(format=self._connection.format)
 
-    def _model_graphs_(self, capsule, type='Statement'):
+    def _model_graphs_(self, utterance):
         # Leolani world (includes instance and claim graphs)
-        instance_graph, claim_graph, subject, object, instance = self._create_leolani_world(capsule, type)
+        instance_graph, instance = self._create_instance_graph(utterance)
 
         # Identity
-        leolani = self._generate_leolani(instance_graph) if self.my_uri is None else self.my_uri
+        self._link_leolani(instance_graph)
 
         # Leolani talk (includes interaction and perspective graphs)
-        interaction_graph, perspective_graph, actor, time, mention, attribution = self._create_leolani_talk(capsule, leolani, type)
+        perspective_graph, actor, time, mention, attribution = self._create_interaction_graph(utterance)
 
         # Interconnections
-        instance_graph.add((subject, self.namespaces['GRASP']['denotedIn'], mention))
-        instance_graph.add((object, self.namespaces['GRASP']['denotedIn'], mention))
+        instance_graph.add((utterance.triple.subject.id, self.namespaces['GRASP']['denotedIn'], mention.id))
+        instance_graph.add((utterance.triple.object.id, self.namespaces['GRASP']['denotedIn'], mention.id))
 
-        instance_graph.add((instance, self.namespaces['GRASP']['denotedBy'], mention))
-        instance_graph.add((instance, self.namespaces['SEM']['hasActor'], actor))
-        instance_graph.add((instance, self.namespaces['SEM']['hasTime'], time))
+        instance_graph.add((instance.id, self.namespaces['GRASP']['denotedBy'], mention.id))
+        instance_graph.add((instance.id, self.namespaces['SEM']['hasActor'], actor.id))
+        instance_graph.add((instance.id, self.namespaces['SEM']['hasTime'], time.id))
 
-        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], subject))
-        perspective_graph.add((mention, self.namespaces['GRASP']['containsDenotation'], object))
-        perspective_graph.add((mention, self.namespaces['GRASP']['denotes'], instance))
+        perspective_graph.add((mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.subject.id))
+        perspective_graph.add((mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.object.id))
+        perspective_graph.add((mention.id, self.namespaces['GRASP']['denotes'], instance.id))
 
-        perspective_graph.add((attribution, self.namespaces['GRASP']['isAttributionFor'], mention))
+        perspective_graph.add((attribution.id, self.namespaces['GRASP']['isAttributionFor'], mention.id))
 
-        return subject, object, instance
+        return instance
 
     ######################################### Helpers for question processing #########################################
 
-    def _create_query(self, parsed_question):
-        _ = hash_statement_id([parsed_question['subject']['label'], parsed_question['predicate']['type'], parsed_question['object']['label']])
+    def _create_query(self, utterance):
+        _ = hash_statement_id([utterance.triple.subject_name, utterance.triple.predicate_name, utterance.triple.object_name])
 
         # Query subject
-        if parsed_question['subject']['label'] == "":
-            # Case fold
-            # object_label = casefold_label(parsed_question['object']['label'], format='triple')
-
+        if utterance.triple.subject_name == "":
             query = """
                 SELECT ?slabel ?authorlabel
                         WHERE { 
@@ -862,12 +798,12 @@ class LongTermMemory(BasicBrain):
                             ?m grasp:wasAttributedTo ?author . 
                             ?author rdfs:label ?authorlabel .
                         }
-                """ % (parsed_question['predicate']['type'],
-                       parsed_question['object']['label'],
-                       parsed_question['predicate']['type'])
+                """ % (utterance.triple.predicate_name,
+                       utterance.triple.object_name,
+                       utterance.triple.predicate_name)
 
         # Query object
-        elif parsed_question['object']['label'] == "":
+        elif utterance.triple.object_name == "":
             query = """
                 SELECT ?olabel ?authorlabel
                         WHERE { 
@@ -881,9 +817,9 @@ class LongTermMemory(BasicBrain):
                             ?m grasp:wasAttributedTo ?author . 
                             ?author rdfs:label ?authorlabel .
                         }
-                """ % (parsed_question['predicate']['type'],
-                       parsed_question['subject']['label'],
-                       parsed_question['predicate']['type'])
+                """ % (utterance.triple.predicate_name,
+                       utterance.triple.subject_name,
+                       utterance.triple.predicate_name)
 
         # Query existence
         else:
@@ -902,10 +838,10 @@ class LongTermMemory(BasicBrain):
                             ?m grasp:hasAttribution ?att .
                             ?att rdf:value ?v .
                         }
-                """ % (parsed_question['predicate']['type'],
-                       parsed_question['subject']['label'],
-                       parsed_question['object']['label'],
-                       parsed_question['predicate']['type'])
+                """ % (utterance.triple.predicate_name,
+                       utterance.triple.subject_name,
+                       utterance.triple.object_name,
+                       utterance.triple.predicate_name)
 
         query = self.query_prefixes + query
 

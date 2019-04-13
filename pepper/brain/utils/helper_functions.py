@@ -1,6 +1,8 @@
 import os
 from datetime import date
 
+from pepper.brain.utils.constants import CAPITALIZED_TYPES
+
 
 def read_query(query_filename):
     with open(os.path.join(os.path.dirname(__file__), "../queries/{}.rq".format(query_filename))) as fr:
@@ -8,7 +10,11 @@ def read_query(query_filename):
     return query
 
 
-def casefold(text, format='triple'):
+def is_proper_noun(types):
+    return any(i in types for i in CAPITALIZED_TYPES)
+
+
+def casefold_text(text, format='triple'):
     if format == 'triple':
         return text.lower().replace(" ", "_") if isinstance(text, basestring) else text
     elif format == 'natural':
@@ -33,18 +39,9 @@ def casefold_capsule(capsule, format='triple'):
         if isinstance(v, dict):
             capsule[k] = casefold_capsule(v, format=format)
         else:
-            capsule[k] = casefold(v, format=format)
+            capsule[k] = casefold_text(v, format=format)
 
     return capsule
-
-
-def transform_capsule(capsule):
-    """
-    Build proper Utterance object from capsule. Step required for proper refactoring
-    :param capsule:
-    :return:
-    """
-    pass
 
 
 def date_from_uri(uri):
@@ -53,4 +50,5 @@ def date_from_uri(uri):
 
 
 def hash_statement_id(triple):
+    # TODO check if we need to change the hashing to join by - or _
     return '-'.join(triple)

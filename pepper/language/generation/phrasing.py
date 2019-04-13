@@ -1,7 +1,5 @@
 import random
-from datetime import datetime
 
-from pepper.brain.utils.helper_functions import casefold, casefold_capsule
 from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
     TRUST, NO_TRUST
 
@@ -31,40 +29,33 @@ def phrase_all_conflicts(conflicts, speaker=None):
     return say
 
 
-def phrase_cardinality_conflicts(conflicts, capsule):
-    capsule = casefold_capsule(capsule, format='natural')
+def _phrase_cardinality_conflicts(conflicts, utterance):
 
     # There is no conflict, so just be happy to learn
-    if not conflicts[0]:
+    if not conflicts:
         say = random.choice(NEW_KNOWLEDGE)
 
     # There is a conflict, so we phrase it
     else:
         say = random.choice(CONFLICTING_KNOWLEDGE)
         conflict = random.choice(conflicts)
-        x = 'you' if conflict.author == capsule['author'] else conflict.author
-        y = 'you' if capsule['subject']['label'] == conflict.author else capsule['subject']['label']
+        x = 'you' if conflict.author == utterance.chat_speaker else conflict.author
+        y = 'you' if utterance.triple.subject_name == conflict.author else utterance.triple.subject_name
 
         say += ' %s told me in %s that %s %s %s, but now you tell me that %s %s %s' \
-               % (x,
-                  conflict.date.strftime("%B"),
-                  casefold(y, format='natural'), capsule['predicate']['type'],
-                  casefold(conflict.object_name, format='natural'),
-                  casefold(y, format='natural'), capsule['predicate']['type'], capsule['object']['label'])
+               % (x, conflict.date.strftime("%B"), y, utterance.triple.predicate_name, conflict.object_name,
+                  y, utterance.triple.predicate_name, utterance.triple.object_name)
 
     return say
 
 
-def phrase_negation_conflicts(conflicts, capsule):
-    capsule = casefold_capsule(capsule, format='natural')
-
+def _phrase_negation_conflicts(conflicts, utterance):
     # There is no conflict entries, so just be happy to learn
     if not conflicts[0]:
         say = random.choice(NEW_KNOWLEDGE)
 
     # There is conflict entries
     else:
-
         affirmative_conflict = [item for item in conflicts if not item.predicate_name.endswith('-not')]
         negative_conflict = [item for item in conflicts if item.predicate_name.endswith('-not')]
 
@@ -76,10 +67,10 @@ def phrase_negation_conflicts(conflicts, capsule):
             negative_conflict = random.choice(negative_conflict)
 
             say += ' %s told me in %s that %s %s %s, but in %s %s told me that %s did not %s %s' \
-                   % (casefold(affirmative_conflict.author, format='natural'), affirmative_conflict.date.strftime("%B"),
-                      capsule['subject']['label'], affirmative_conflict.predicate_name, capsule['object']['label'],
-                      negative_conflict.date.strftime("%B"), casefold(negative_conflict.author, format='natural'),
-                      capsule['subject']['label'], affirmative_conflict.predicate_name, capsule['object']['label'])
+                   % (affirmative_conflict.author, affirmative_conflict.date.strftime("%B"),
+                      utterance.triple.subject_name, affirmative_conflict.predicate_name, utterance.triple.object_name,
+                      negative_conflict.date.strftime("%B"), negative_conflict.author,
+                      utterance.triple.subject_name, affirmative_conflict.predicate_name, utterance.triple.object_name)
 
         # There is no conflict, so just be happy to learn
         else:
@@ -88,9 +79,9 @@ def phrase_negation_conflicts(conflicts, capsule):
     return say
 
 
-def phrase_statement_novelty(novelties):
+def _phrase_statement_novelty(novelties):
     # I do not know this before, so be happy to learn
-    if not novelties[0]:
+    if not novelties:
         say = random.choice(NEW_KNOWLEDGE)
 
     # I already knew this
@@ -98,31 +89,28 @@ def phrase_statement_novelty(novelties):
         say = random.choice(EXISTING_KNOWLEDGE)
         novelty = random.choice(novelties)
 
-        say += ' %s told me about it in %s' % (casefold(novelty.author, format='natural'), novelty.date.strftime("%B"))
+        say += ' %s told me about it in %s' % (novelty.author, novelty.date.strftime("%B"))
 
     return say
 
 
-def phrase_type_novelty(novelties, capsule):
-    capsule = casefold_capsule(capsule, format='natural')
-
+def _phrase_type_novelty(novelties, utterance):
     entity_role = random.choice(['subject', 'object'])
+    entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
     novelty = novelties.subject if entity_role == 'subject' else novelties.object
 
     if novelty:
         say = random.choice(NEW_KNOWLEDGE)
-        say += ' I have never heard about %s before!' % capsule[entity_role]['label']
+        say += ' I have never heard about %s before!' % entity_label
 
     else:
         say = random.choice(EXISTING_KNOWLEDGE)
-        say += ' I know about %s.' % capsule[entity_role]['label']
+        say += ' I know about %s.' % entity_label
 
     return say
 
 
-def phrase_subject_gaps(all_gaps, capsule):
-    capsule = casefold_capsule(capsule, format='natural')
-
+def _phrase_subject_gaps(all_gaps, utterance):
     entity_role = random.choice(['subject', 'object'])
     gaps = all_gaps.subject if entity_role == 'subject' else all_gaps.object
 
@@ -130,37 +118,33 @@ def phrase_subject_gaps(all_gaps, capsule):
         say = random.choice(CURIOSITY)
 
         if not gaps:
-            say += ' What types can %s %s' % (capsule['subject']['label'],
-                                              casefold(capsule['predicate']['type'], format='natural'))
+            say += ' What types can %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name)
 
         else:
             gap = random.choice(gaps)
-            range = casefold(' or '.join(gap.entity_range), format='natural')
-            say += ' Has a %s ever been %s %s?' % (range, casefold(gap.predicate_name, format='natural'),
-                                                       capsule['subject']['label'])
+            say += ' Has a %s ever been %s %s?' % (gap.entity_range_name, gap.predicate_name,
+                                                   utterance.triple.subject_name)
 
     elif entity_role == 'object':
         say = random.choice(CURIOSITY)
 
         if not gaps:
-            say += ' What types can %s a %s like %s' % (casefold(capsule['predicate']['type'], format='natural'),
-                                                        capsule['object']['type'], capsule['object']['label'])
+            say += ' What types can %s a %s like %s' % (utterance.triple.predicate_name, utterance.triple.object_name,
+                                                        utterance.triple.object_name)
 
         else:
             gap = random.choice(gaps)
-            range = casefold(' or '.join(gap.entity_range), format='natural')
-            if '#' in range:
-                say += ' What is %s %s?' % (capsule['subject']['label'], casefold(gap.predicate_name, format='natural'))
+            if '#' in gap.entity_range_name:
+                say += ' What is %s %s?' % (utterance.triple.subject_name, gap.predicate_name)
             else:
-                say += ' Has %s ever %s a %s?' % (capsule['subject']['label'],
-                                                  casefold(gap.predicate_name, format='natural'), range)
+                say += ' Has %s ever %s a %s?' % (utterance.triple.subject_name, gap.predicate_name,
+                                                  gap.entity_range_name)
 
     return say
 
 
-def phrase_object_gaps(all_gaps, capsule):
-    capsule = casefold_capsule(capsule, format='natural')
-
+def _phrase_object_gaps(all_gaps, utterance):
+    # random choice between object or subject
     entity_role = random.choice(['subject', 'object'])
     gaps = all_gaps.subject if entity_role == 'subject' else all_gaps.object
 
@@ -168,80 +152,69 @@ def phrase_object_gaps(all_gaps, capsule):
         say = random.choice(CURIOSITY)
 
         if not gaps:
-            say += ' What types can %s %s' % (capsule['subject']['label'],
-                                              casefold(capsule['predicate']['type'], format='natural'))
+            say += ' What types can %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name)
 
         else:
             gap = random.choice(gaps)
-            range = casefold(' or '.join(gap.entity_range), format='natural')
-            say += ' Has any %s %s %s?' % (range, casefold(gap.predicate_name, format='natural'),
-                                               capsule['object']['label'])
+            say += ' Has any %s %s %s?' % (gap.entity_range_name, gap.predicate_name, utterance.triple.object_name)
 
     elif entity_role == 'object':
         say = random.choice(CURIOSITY)
 
         if not gaps:
-            say += ' What types of %s like %s can be %s' % (capsule['object']['type'], capsule['object']['label'],
-                                                            casefold(capsule['predicate']['type'], format='natural'))
+            types = utterance.triple.object.types_names if utterance.triple.object.types_names != '' else 'things'
+            say += ' What types of %s like %s can be %s' % (types, utterance.triple.object_name,
+                                                            utterance.triple.predicate_name)
 
         else:
             gap = random.choice(gaps)
-            range = casefold(' or '.join(gap.entity_range), format='natural')
-            if '#' in range:
-                say += ' What is %s %s?' % (capsule['object']['label'], casefold(gap.predicate_name, format='natural'))
+            if '#' in gap.entity_range_name:
+                say += ' What is %s %s?' % (utterance.triple.object_name, gap.predicate_name)
             else:
-                say += ' What other %s was %s %s?' % (range, capsule['object']['label'],
-                                                      casefold(gap.predicate_name, format='natural'))
+                say += ' What other %s was %s %s?' % (gap.entity_range_name, utterance.triple.object_name, gap.predicate_name)
 
     return say
 
 
-def phrase_overlaps(all_overlaps, capsule):
-    capsule = casefold_capsule(capsule, format='natural')
-
-    if capsule['object']['type'] == '':
-        capsule['object']['type'] = 'thing'
-
-    if capsule['subject']['type'] == '':
-        capsule['subject']['type'] = 'thing'
-
+def _phrase_overlaps(all_overlaps, utterance):
     entity_role = random.choice(['subject', 'object'])
     overlaps = all_overlaps.subject if entity_role == 'subject' else all_overlaps.object
 
     if not overlaps and entity_role == 'subject':
         say = random.choice(HAPPY)
-        say += ' I did not know anything that %s %s' % (capsule['subject']['label'], capsule['predicate']['type'])
+        say += ' I did not know anything that %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name)
 
     elif not overlaps and entity_role == 'object':
         say = random.choice(HAPPY)
-        say += ' I did not know anybody who %s %s' % (capsule['predicate']['type'], capsule['object']['label'])
+        say += ' I did not know anybody who %s %s' % (utterance.triple.predicate_name, utterance.triple.object_name)
 
     elif len(overlaps) < 2 and entity_role == 'subject':
         say = random.choice(HAPPY)
 
-        say += ' Did you know that %s also %s %s' % (capsule['subject']['label'], capsule['predicate']['type'],
-                                                     random.choice(overlaps).entity_name,)
+        say += ' Did you know that %s also %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name,
+                                                     random.choice(overlaps).entity_name)
 
     elif len(overlaps) < 2 and entity_role == 'object':
         say = random.choice(HAPPY)
 
         say += ' Did you know that %s also %s %s' % (random.choice(overlaps).entity_name,
-                                                     capsule['predicate']['type'], capsule['object']['label'])
+                                                     utterance.triple.predicate_name, utterance.triple.object_name)
 
     elif entity_role == 'subject':
         say = random.choice(HAPPY)
-        say += ' Now I know %s items that %s %s, like %s and %s' % (len(overlaps), capsule['subject']['label'],
-                                                                    capsule['predicate']['type'],
-                                                                    random.choice(overlaps).entity_name,
-                                                                    random.choice(overlaps).entity_name)
+        sample = random.sample(overlaps, 2)
+        say += ' Now I know %s items that %s %s, like %s and %s' % (len(overlaps), utterance.triple.subject_name,
+                                                                    utterance.triple.predicate_name,
+                                                                    sample[0].entity_name, sample[1].entity_name)
 
     elif entity_role == 'object':
         say = random.choice(HAPPY)
-        say += ' Now I know %s %s that %s %s, like %s and %s' % (len(overlaps), capsule['subject']['type'],
-                                                                 capsule['predicate']['type'],
-                                                                 capsule['object']['label'],
-                                                                 random.choice(overlaps).entity_name,
-                                                                 random.choice(overlaps).entity_name)
+        sample = random.sample(overlaps, 2)
+        types = utterance.triple.object.types_names if utterance.triple.object.types_names != '' else 'things'
+        say += ' Now I know %s %s that %s %s, like %s and %s' % (len(overlaps), types,
+                                                                 utterance.triple.object_name,
+                                                                 utterance.triple.predicate_name,
+                                                                 sample[0].entity_name, sample[1].entity_name)
 
     return say
 
@@ -256,34 +229,39 @@ def phrase_trust(trust):
 
 
 def phrase_update(update, proactive=True, persist=False):
+
     options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
 
     if proactive:
         options.extend(['subject_gaps', 'object_gaps', 'overlaps'])
 
-    approach = random.choice(options)
+    # Casefold and select approach randomly
+    utterance = update['statement']
+    utterance.casefold(format='natural')
     thoughts = update['thoughts']
+    thoughts.casefold(format='natural')
+    approach = random.choice(options)
 
     if approach == 'cardinality_conflicts':
-        say = phrase_cardinality_conflicts(thoughts.object_conflict(), update['statement'])
+        say = _phrase_cardinality_conflicts(thoughts.object_conflict(), utterance)
 
     elif approach == 'negation_conflicts':
-        say = phrase_negation_conflicts(thoughts.negation_conflicts(), update['statement'])
+        say = _phrase_negation_conflicts(thoughts.negation_conflicts(), utterance)
 
     elif approach == 'statement_novelty':
-        say = phrase_statement_novelty(thoughts.statement_novelties())
+        say = _phrase_statement_novelty(thoughts.statement_novelties())
 
     elif approach == 'entity_novelty':
-        say = phrase_type_novelty(thoughts.entity_novelty(), update['statement'])
+        say = _phrase_type_novelty(thoughts.entity_novelty(), utterance)
 
     elif approach == 'subject_gaps':
-        say = phrase_subject_gaps(thoughts.subject_gaps(), update['statement'])
+        say = _phrase_subject_gaps(thoughts.subject_gaps(), utterance)
 
     elif approach == 'object_gaps':
-        say = phrase_object_gaps(thoughts.object_gaps(), update['statement'])
+        say = _phrase_object_gaps(thoughts.object_gaps(), utterance)
 
     elif approach == 'overlaps':
-        say = phrase_overlaps(thoughts.overlaps(), update['statement'])
+        say = _phrase_overlaps(thoughts.overlaps(), utterance)
 
     if persist and say == '':
         say = phrase_update(update, proactive, persist)

@@ -1,5 +1,9 @@
-from datetime import datetime
+import random
+from datetime import date, datetime
 from typing import List, Optional
+
+from pepper.brain.utils.constants import NOT_TO_MENTION_TYPES
+from pepper.brain.utils.helper_functions import hash_statement_id, is_proper_noun
 
 
 class RDFBase(object):
@@ -44,6 +48,29 @@ class RDFBase(object):
         # type: () -> float
         return self._confidence
 
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        if format == 'triple':
+            # Label
+            self._label = self.label.lower().replace(" ", "_")
+
+        elif format == 'natural':
+            # Label
+            self._label = self.label.lower().replace("_", " ")
+
+    def __repr__(self):
+        return '{}'.format(self.label)
+
 
 class Entity(RDFBase):
     def __init__(self, id, label, types, offset=None, confidence=0.0):
@@ -65,14 +92,48 @@ class Entity(RDFBase):
         """
         super(Entity, self).__init__(id, label, offset, confidence)
 
-        self._types = types
+        self._types = [t for t in types if t != '']
 
     @property
     def types(self):
         # type: () -> List[str]
         return self._types
-    
-    
+
+    @property
+    def types_names(self):
+        # type: () -> str
+        return ' or '.join([t for t in self._types if t.lower() not in NOT_TO_MENTION_TYPES])
+
+    def add_types(self, types):
+        # type: (List[str]) -> ()
+        self._types.extend(types)
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        if format == 'triple':
+            # Label
+            self._label = self.label.lower().replace(" ", "_")
+            # Types
+            self._types = [t.lower().replace(" ", "_") for t in self.types]
+
+        elif format == 'natural':
+            # Label
+            self._label = self.label.lower().replace("_", " ")
+            self._label = self._label.capitalize() if is_proper_noun(self.types) else self._label
+            # Types
+            self._types = [t.lower().replace("_", " ") for t in self.types]
+
+
 class Predicate(RDFBase):
     def __init__(self, id, label, offset=None, confidence=0.0, cardinality=1):
         # type: (str, str, Optional[slice], float, int) -> Predicate
@@ -102,37 +163,89 @@ class Predicate(RDFBase):
 
 
 class Triple(object):
+    def __init__(self, subject, predicate, object):
+        # type: (Entity, Predicate, Entity) -> Triple
+        """
+        Construct Triple Object
+        Parameters
+        ----------
+        subject: Entity
+            Instance that is the subject of the information just received
+        predicate: Predicate
+            Predicate of the information just received
+        object: Entity
+            Instance that is the object of the information just received
+        """
+
+        self._subject = subject
+        self._predicate = predicate
+        self._object = object
+
     @property
     def subject(self):
         # type: () -> Entity
-        raise NotImplementedError()
+        return self._subject
 
     @property
     def predicate(self):
         # type: () -> Predicate
-        raise NotImplementedError()
+        return self._predicate
 
     @property
     def object(self):
         # type: () -> Entity
-        raise NotImplementedError()
+        return self._object
+
+    @property
+    def subject_name(self):
+        # type: () -> str
+        return self._subject.label
+
+    @property
+    def predicate_name(self):
+        # type: () -> str
+        return self._predicate.label
+
+    @property
+    def object_name(self):
+        # type: () -> str
+        return self._object.label
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        self._subject.casefold(format)
+        self._predicate.casefold(format)
+        self._object.casefold(format)
+
+    def __repr__(self):
+        return '{}'.format(hash_statement_id([self.subject_name, self.predicate_name, self.object_name]))
 
 
 class Provenance(object):
     def __init__(self, author, date):
-        # type: (str, datetime) -> Provenance
+        # type: (str, date) -> Provenance
         """
         Construct Provenance Object
         Parameters
         ----------
         author: str
             Person who said the mention
-        date: datetime
+        date: date
             Date when the mention was said
         """
 
         self._author = author
-        self._date = date
+        self._date = datetime.strptime(date, '%Y-%m-%d')
 
     @property
     def author(self):
@@ -141,8 +254,31 @@ class Provenance(object):
 
     @property
     def date(self):
-        # type: () -> datetime
+        # type: () -> date
         return self._date
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        if format == 'triple':
+            # Label
+            self._author = self.author.lower().replace(" ", "_")
+
+        elif format == 'natural':
+            # Label
+            self._author = self.author.lower().replace("_", " ")
+
+    def __repr__(self):
+        return '{} on {}'.format(self.author, self.date.strftime("%B,%Y"))
 
 
 class CardinalityConflict(object):
@@ -177,13 +313,31 @@ class CardinalityConflict(object):
 
     @property
     def date(self):
-        # type: () -> datetime
+        # type: () -> date
         return self._provenance.date
 
     @property
     def object_name(self):
         # type: () -> str
         return self._object.label
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        self._provenance.casefold(format)
+        self._object.casefold(format)
+
+    def __repr__(self):
+        return '{} about {}'.format(self._provenance.__repr__(), self.object_name)
 
 
 class NegationConflict(object):
@@ -218,13 +372,31 @@ class NegationConflict(object):
 
     @property
     def date(self):
-        # type: () -> datetime
+        # type: () -> date
         return self._provenance.date
 
     @property
     def predicate_name(self):
         # type: () -> str
         return self._predicate.label
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        self._provenance.casefold(format)
+        self._predicate.casefold(format)
+
+    def __repr__(self):
+        return '{} about {}'.format(self._provenance.__repr__(), self.predicate_name)
 
 
 # TODO revise overlap with provenance
@@ -252,24 +424,41 @@ class StatementNovelty(object):
 
     @property
     def date(self):
-        # type: () -> datetime
+        # type: () -> date
         return self._provenance.date
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        self._provenance.casefold(format)
+
+    def __repr__(self):
+        return '{}'.format(self._provenance.__repr__())
 
 
 class EntityNovelty(object):
-    def __init__(self, existance_subject, existance_object):
+    def __init__(self, existence_subject, existence_object):
         # type: (bool, bool) -> EntityNovelty
         """
         Construct EntityNovelty Object
         Parameters
         ----------
-        existance_subject: bool
+        existence_subject: bool
             Truth value for determining if this subject is something new
-        existance_object: bool
+        existence_object: bool
             Truth value for determining if this object is something new
         """
-        self._subject = not existance_subject
-        self._object = not existance_object
+        self._subject = not existence_subject
+        self._object = not existence_object
 
     @property
     def subject(self):
@@ -280,6 +469,9 @@ class EntityNovelty(object):
     def object(self):
         # type: () -> bool
         return self._object
+
+    def __repr__(self):
+        return '{} - {}'.format(self.subject, self.object)
 
 
 class Gap(object):
@@ -317,6 +509,29 @@ class Gap(object):
         # type: () -> List[str]
         return self._entity.types
 
+    @property
+    def entity_range_name(self):
+        # type: () -> str
+        return self._entity.types_names
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        self._predicate.casefold(format)
+        self._entity.casefold(format)
+
+    def __repr__(self):
+        return '{} {}'.format(self.predicate_name, self.entity_range_name)
+
 
 class Gaps(object):
     def __init__(self, subject_gaps, object_gaps):
@@ -342,6 +557,28 @@ class Gaps(object):
     def subject(self):
         # type: () -> List[Gap]
         return self._object
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        for g in self._subject:
+            g.casefold(format)
+        for g in self._object:
+            g.casefold(format)
+
+    def __repr__(self):
+        s = random.choice(self._subject) if self._subject else ''
+        o = random.choice(self._object) if self._object else ''
+        return '{} - {}'.format(s.__repr__(), o.__repr__())
 
 
 class Overlap(object):
@@ -374,7 +611,7 @@ class Overlap(object):
 
     @property
     def date(self):
-        # type: () -> datetime
+        # type: () -> date
         return self._provenance.date
 
     @property
@@ -384,8 +621,26 @@ class Overlap(object):
 
     @property
     def entity_types(self):
-        # type: () -> str
+        # type: () -> List[str]
         return self._entity.types
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        self._provenance.casefold(format)
+        self._entity.casefold(format)
+
+    def __repr__(self):
+        return '{} about {}'.format(self._provenance.__repr__(), self.entity_name)
 
 
 class Overlaps(object):
@@ -413,10 +668,32 @@ class Overlaps(object):
         # type: () -> List[Overlap]
         return self._object
 
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        for g in self._subject:
+            g.casefold(format)
+        for g in self._object:
+            g.casefold(format)
+
+    def __repr__(self):
+        s = random.choice(self._subject) if self._subject else ''
+        o = random.choice(self._object) if self._object else ''
+        return '{} - {}'.format(s.__repr__(), o.__repr__())
+
 
 class Thoughts(object):
     def __init__(self, statement_novelty, entity_novelty, negation_conflicts, object_conflict,
-                 subject_gaps, object_gaps, overlaps, trust) :
+                 subject_gaps, object_gaps, overlaps, trust):
         # type: (List[StatementNovelty], EntityNovelty, List[NegationConflict], List[CardinalityConflict], Gaps, Gaps, Overlaps, float) -> Thoughts
         """
         Construct Thoughts object
@@ -480,3 +757,25 @@ class Thoughts(object):
     def trust(self):
         # type: () -> float
         return self._trust
+
+    def casefold(self, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+        for n in self._statement_novelty:
+            n.casefold(format)
+        for c in self._negation_conflicts:
+            c.casefold(format)
+        for c in self._object_conflict:
+            c.casefold(format)
+        self._subject_gaps.casefold(format)
+        self._object_gaps.casefold(format)
+        self._overlaps.casefold(format)
