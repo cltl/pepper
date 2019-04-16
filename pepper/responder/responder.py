@@ -20,7 +20,7 @@ class ResponderType(Enum):
     Personal = 5
     Conversational = 4
     Internet = 3
-    PAID = 1
+    PAID = 2
     Unknown = 1
 
 

@@ -126,6 +126,7 @@ class AffirmationResponder(Responder):
         "good",
         "ok",
         "well",
+        "fair",
         "correctamundo",
         "splendid",
         "indeed",

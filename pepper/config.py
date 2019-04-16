@@ -12,6 +12,9 @@ import os
 APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 NAME = "Leolani"
+HUMAN_UNKNOWN = "Stranger"
+HUMAN_CROWD = "Humans"
+
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -126,8 +129,8 @@ MICROPHONE_CHANNELS = 1
 
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
 
-CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
-CAMERA_FRAME_RATE = 2
+CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
+CAMERA_FRAME_RATE = 4
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
