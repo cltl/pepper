@@ -1,6 +1,6 @@
 from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps, Thoughts
-from pepper.brain.utils.helper_functions import hash_statement_id, read_query
+from pepper.brain.utils.helper_functions import hash_statement_id, read_query, casefold_text
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.basic_brain import BasicBrain
 # from pepper.language.language import UtteranceType
@@ -67,8 +67,9 @@ class LongTermMemory(BasicBrain):
             in the triple store
 
         """
+        # Casefold
+        utterance.casefold(format='triple')
 
-        # TODO for now we assume the triple in the utterance has been casefolded, but we have to still implement this!!
         # Create graphs and triples
         instance = self._model_graphs_(utterance)
 
@@ -146,13 +147,13 @@ class LongTermMemory(BasicBrain):
         :return:
         """
 
-        if casefold(item, format='triple') in self.get_classes():
+        if casefold_text(item, format='triple') in self.get_classes():
             # If this is in the ontology already as a class, create sensor triples directly
             text = 'I know about %s. I will remember this object' % item
             return item, text
 
         temp = self.get_labels_and_classes()
-        if casefold(item, format='triple') in temp.keys():
+        if casefold_text(item, format='triple') in temp.keys():
             # If this is in the ontology already as a label, create sensor triples directly
             text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
             return item, text
@@ -163,7 +164,7 @@ class LongTermMemory(BasicBrain):
             # Had to learn it, but I can create triples now
             text = ' I did not know what %s is, but I searched on the display and I found that it is a %s. ' \
                    'I will remember this object' % (item, class_type)
-            return casefold(class_type, format='triple'), text
+            return casefold_text(class_type, format='triple'), text
 
         if not exact_only:
             # Second go at dbpedia, relaxed approach
@@ -172,7 +173,7 @@ class LongTermMemory(BasicBrain):
                 # Had to really search for it to learn it, but I can create triples now
                 text = ' I did not know what %s is, but I searched for fuzzy matches on the display and I found that it ' \
                        'is a %s. I will remember this object' % (item, class_type)
-                return casefold(class_type, format='triple'), text
+                return casefold_text(class_type, format='triple'), text
 
         # Failure, nothing found
         text = ' I am sorry, I could not learn anything on %s so I will not remember it' % item

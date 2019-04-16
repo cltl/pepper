@@ -1,47 +1,53 @@
-from pepper.brain.long_term_memory import LongTermMemory
-from pepper.language.generation.phrasing import phrase_all_conflicts, phrase_cardinality_conflicts, \
-    phrase_negation_conflicts, phrase_statement_novelty, phrase_type_novelty, phrase_update
+from pepper.language.generation.phrasing import phrase_update
+from pepper.brain import LongTermMemory, RdfBuilder
+from pepper.language import Chat, Utterance
+from pepper.framework import UtteranceHypothesis
 
-import json
 from datetime import date
+
+
+def transform_capsule(capsule, context=None):
+    """
+    Build proper Utterance object from capsule. Step required for proper refactoring
+    Parameters
+    ----------
+    capsule
+    context
+
+    Returns
+    -------
+
+    """
+    chat = Chat(capsule['author'], context)
+    hyp = UtteranceHypothesis('this is a test', 0.99)
+
+    utt = Utterance(chat, [hyp], False, capsule['turn'])
+
+    builder = RdfBuilder()
+
+    triple = builder.fill_triple(capsule['subject'], capsule['predicate'], capsule['object'])
+
+    utt.set_triple(triple)
+
+    return utt
 
 
 # Create brain connection
 brain = LongTermMemory()
 
 conlficts = brain.get_all_conflicts()
-print(phrase_all_conflicts(conlficts))
 
-# capsule_serbia = {  # lenka saw a dog
-#         "subject": {
-#             "label": "lenka",
-#             "type": ""
-#         },
-#         "predicate": {
-#             "type": "sees"
-#         },
-#         "object": {
-#             "label": "dog",
-#             "type": ""
-#         },
-#         "author": "selene",
-#         "chat": 1,
-#         "turn": 1,
-#         "position": "0-25",
-#         "date": date(2018, 3, 19)
-#     }
-
-capsule_serbia = {  # lenka is from Serbia
+capsule_serbia = {  # lenka saw a dog
         "subject": {
-            "label": "bram",
+            "label": "dimitris",
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "knows"
         },
         "object": {
-            "label": "mongolia",
-            "type": "location"
+            "label": "piek",
+            "type": "person"
         },
         "author": "selene",
         "chat": 1,
@@ -50,18 +56,37 @@ capsule_serbia = {  # lenka is from Serbia
         "date": date(2018, 3, 19)
     }
 
+# capsule_serbia = {  # bram is from mongolia
+#         "subject": {
+#             "label": "bram",
+#             "type": "person"
+#         },
+#         "predicate": {
+#             "type": "is_from"
+#         },
+#         "object": {
+#             "label": "mongolia",
+#             "type": "location"
+#         },
+#         "author": "selene",
+#         "chat": 1,
+#         "turn": 1,
+#         "position": "0-25",
+#         "date": date(2018, 3, 19)
+#     }
+
+# capsule_serbia = { # human likes pizza
+#     u'predicate': {u'type': u'like'},
+#     u'chat': 490254330820530247757705225416035124L,
+#     u'author': u'Human',
+#     u'object': {u'type': u'', u'id': u'', u'label': u'pizza'},
+#     u'turn': 6,
+#     u'utterance_type': 'STATEMENT',
+#     u'date': date(2019, 3, 29), u'position': u'',
+#     u'response': {u'role': u'', u'format': u''},
+#     u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
+
+capsule_serbia = transform_capsule(capsule_serbia)
+
 x = brain.update(capsule_serbia)
-print(json.dumps(x, indent=4, sort_keys=True))
-print(phrase_cardinality_conflicts(x['cardinality_conflicts'], capsule_serbia))
-print(phrase_negation_conflicts(x['negation_conflicts'], capsule_serbia))
-print(phrase_statement_novelty(x['statement_novelty']))
-print(phrase_type_novelty(x['entity_novelty'], capsule_serbia))
-
-
-print('\n\n')
-print(phrase_update(x))
-
-
-
-
-
+print(phrase_update(x, True, True))
