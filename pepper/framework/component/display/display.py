@@ -45,10 +45,16 @@ class DisplayComponent(AbstractComponent):
                 if self._display_info:
                     server.update(json.dumps(self._display_info))
 
+                x,y,z,c = image.scatter()
+
                 self._display_info = {
                     "hash": hash(str(image.image)),
                     "img": encode_image(Image.fromarray(image.image)),
-                    "items": []
+                    "items": [],
+                    "x": x.tolist(),
+                    "y": y.tolist(),
+                    "z": z.tolist(),
+                    "c": c.tolist()
                 }
 
         def add_items(items):

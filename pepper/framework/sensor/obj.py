@@ -31,8 +31,8 @@ class Object(object):
         self._image_bounds = bounds
         self._image = image
 
-        x0, y0 = image.position_2D((self._image_bounds.x0, self._image_bounds.y0))
-        x1, y1 = image.position_2D((self._image_bounds.x1, self._image_bounds.y1))
+        x0, y0 = image.position((self._image_bounds.x0, self._image_bounds.y0))
+        x1, y1 = image.position((self._image_bounds.x1, self._image_bounds.y1))
         self._bounds = Bounds(x0, y0, x1, y1)
 
     @property
@@ -82,7 +82,7 @@ class Object(object):
 
     @property
     def position(self):
-        return self.image.position_2D(self.image_bounds.center)
+        return self.image.position(self.image_bounds.center)
 
     def __repr__(self):
         return "{}({}, {:3.0%})".format(self.__class__.__name__, self.name, self.confidence)

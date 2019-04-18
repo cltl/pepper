@@ -69,7 +69,7 @@ class NAOqiCamera(AbstractCamera):
         self._client = self._service.subscribeCameras(
             str(getrandbits(128)),  # Random Client ID's to prevent name collision
             [int(NAOqiCameraIndex.TOP), int(NAOqiCameraIndex.DEPTH)],
-            [NAOqiCamera.RESOLUTION_CODE[resolution], NAOqiCamera.RESOLUTION_CODE_3D['kQ720p']],
+            [NAOqiCamera.RESOLUTION_CODE[resolution], 12],
             [NAOqiCamera.COLOR_SPACE_YUV, NAOqiCamera.COLOR_SPACE_3D],
             rate
         )
@@ -93,7 +93,7 @@ class NAOqiCamera(AbstractCamera):
                 t0 = time()
 
                 # Get Yaw and Pitch from Head Sensors
-                origin = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
+                yaw, pitch = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
 
                 image_rgb = None
                 image_3D = None
@@ -105,10 +105,13 @@ class NAOqiCamera(AbstractCamera):
                     angle_left, angle_top, angle_right, angle_bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:
-                        image_3D = np.frombuffer(data, np.uint16).reshape(height, width, 1)
+                        image_3D = np.frombuffer(data, np.uint16).reshape(height, width)
                     else:
                         image_rgb = self._yuv2rgb(width, height, data)
-                        image_bounds = Bounds(angle_right, angle_bottom, angle_left ,angle_top)
+                        image_bounds = Bounds(angle_right + yaw,
+                                              angle_bottom + pitch,
+                                              angle_left + yaw,
+                                              angle_top + pitch)
 
                 self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))
 

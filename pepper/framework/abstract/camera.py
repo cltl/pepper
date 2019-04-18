@@ -2,6 +2,8 @@ from pepper.framework.util import Mailbox, Scheduler, Bounds
 from pepper import CameraResolution
 from pepper import logger
 
+from cv2 import resize
+
 import numpy as np
 
 from collections import deque
@@ -9,8 +11,12 @@ from time import time
 
 from typing import Tuple
 
+import matplotlib.pyplot as plt
+
 
 class AbstractImage(object):
+
+
     def __init__(self, image, bounds, depth=None):
         # type: (np.ndarray) -> None
         """
@@ -44,7 +50,7 @@ class AbstractImage(object):
     def bounds(self):
         return self._bounds
 
-    def position_2D(self, coordinates):
+    def position(self, coordinates):
         # type: (Tuple[float, float]) -> Tuple[float, float]
         """
         Return 2D position in Spherical Coordinates
@@ -59,6 +65,52 @@ class AbstractImage(object):
         """
         return (self.bounds.x0 + coordinates[0] * self.bounds.width,
                 self.bounds.y0 + coordinates[1] * self.bounds.height)
+
+    def scatter(self):
+
+        target_shape = 40, 30
+
+        color = resize(self.image, target_shape).astype(np.float32) / 256
+        depth = resize(self.depth, target_shape).astype(np.float32) / 1000
+
+        # Get Spherical Image Coordinates
+        phi, theta = np.meshgrid(np.linspace(self.bounds.x0, self.bounds.x1, depth.shape[1]),
+                                 np.linspace(self.bounds.y0, self.bounds.y1, depth.shape[0]))
+
+        theta += np.pi / 2
+
+        # plt.subplot(221)
+        # plt.imshow(color)
+        # plt.colorbar()
+        # plt.subplot(222)
+        # plt.imshow(depth)
+        # plt.colorbar()
+        # plt.subplot(223)
+        # plt.imshow(phi)
+        # plt.colorbar()
+        # plt.subplot(224)
+        # plt.imshow(theta)
+        # plt.colorbar()
+        # plt.show()
+
+
+        # Get Samples that have a legit Depth Value
+        indices = depth > 1
+
+        print(indices.shape)
+
+        color = color[indices]
+        depth = depth[indices]
+        phi = phi[indices]
+        theta = theta[indices]
+
+        # Spherical to Cartesian Coordinates
+        x = depth * np.sin(theta) * np.cos(phi)
+        z = depth * np.sin(theta) * np.sin(phi)
+        y = depth * np.cos(theta)
+
+        return x, y, z, color
+
 
     def __repr__(self):
         return "{}{}".format(self.__class__.__name__, self.image.shape)

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Hello Pepper</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -14,7 +15,7 @@
             padding: 0;
             margin: auto;
             display: block;
-            position: absolute;
+            position: relative;
             top: 0;
             bottom: 0;
             left: 0;
@@ -23,12 +24,11 @@
     </style>
 </head>
 <body>
-<canvas id="canvas" width="800" height="600"></canvas>
+
+<canvas id="camera_canvas" width="800" height="600"></canvas>
+<canvas id="scatter_canvas" width="800" height="600"></canvas>
 
 <script>
-
-WIDTH = 4;
-HEIGHT= 3;
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   if (w < 2 * r) r = w / 2;
@@ -43,9 +43,7 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   return this;
 }
 
-function scale_canvas(w, h) {
-    canvas = $('canvas');
-
+function scale_canvas(canvas, w, h) {
     if (window.innerWidth/w < window.innerHeight/h) {
         canvas.width(window.innerWidth);
         canvas.height(window.innerWidth/w*h);
@@ -56,69 +54,147 @@ function scale_canvas(w, h) {
     }
 }
 
+
+WIDTH = 4; HEIGHT = 3;
+
+camera_canvas = $("#camera_canvas");
+scatter_canvas = $("#scatter_canvas");
+
+// Scale Canvas on window Resize
 $(window).resize(function() {
-    scale_canvas(WIDTH, HEIGHT);
+    scale_canvas(camera_canvas, WIDTH, HEIGHT);
+    scale_canvas(scatter_canvas, WIDTH, HEIGHT);
 });
 
+
 $(function() {
+
     var FONT_SIZE = 30;
 
-    scale_canvas(WIDTH, HEIGHT);
-    var canvas = $('canvas');
-    var ctx = canvas[0].getContext('2d');
+    // Scale Canvas on Start
+    scale_canvas(camera_canvas, WIDTH, HEIGHT);
+    scale_canvas(scatter_canvas, WIDTH, HEIGHT);
 
-    ctx.font = '25px Helvetica';
-    // ctx.imageSmoothingEnabled = false;  // Make Blocky
+    var width = camera_canvas[0].width;
+    var height = camera_canvas[0].height;
 
-    var canvas_width = document.getElementById("canvas").width;
-    var canvas_height = document.getElementById("canvas").height;
+    // -- Initialize Camera View Context -- //
+    var camera_ctx = camera_canvas[0].getContext('2d');
+    camera_ctx.font = '25px Helvetica';
 
+    // -- Initialize Scatter Plot Context -- //
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xffffff );
+
+    var camera = new THREE.PerspectiveCamera( 75, width / height, 0.1, 1000);
+    camera.position.z = -2;
+    camera.position.y = 1;
+    camera.position.x = 0;
+    camera.lookAt(0, 0, 0);
+
+    var renderer = new THREE.WebGLRenderer({canvas: scatter_canvas[0]});
+    renderer.setSize(width, height);
+
+    var grid = new THREE.GridHelper(20, 20);
+    scene.add(grid);
+
+    var plot = new THREE.Object3D();
+    scene.add(plot);
+
+    var material = new THREE.PointsMaterial({size: 0.02, vertexColors: true});
+
+    var down = false;
+    var sx = 0, sy = 0;
+
+    window.onmousedown = function(ev) {
+        down = true;
+        sx = ev.clientX;
+        sy = ev.clientY;
+    };
+    window.onmouseup = function() {
+        down = false;
+    };
+    window.onmousemove = function(ev) {
+        if (down) {
+            var dx = ev.clientX - sx;
+            var dy = ev.clientY - sy;
+            plot.rotation.y += dx * 0.01;
+            camera.position.y += dy * 0.01;
+            sx += dx;
+            sy += dy;
+        }
+    }
+
+    function animate() {
+        requestAnimationFrame( animate );
+
+        renderer.render( scene, camera );
+    }
+    animate();
+
+
+    // -- Create WebSocket Connection with Host -- //
     var host = "ws://localhost:9090/ws";
     var socket = new WebSocket(host);
 
+    // Image for Camera View
     var img = new Image;
 
     socket.onopen = function() { console.log("Connection Opened!"); }
     socket.onmessage = function(msg){
+
         data = JSON.parse(msg.data);
+
+        // Plot Object Bounding Boxes
         items = data['items'];
-
         img.onload = function(){
-        ctx.clearRect(0, 0, canvas_width, canvas_height);
-        ctx.drawImage(img, 0, 0, img.width, img.height,
-                           0, 0, canvas_width, canvas_height);
 
-        for (i=0; i<items.length; i++) {
-            bounds = items[i]['bounds'];
+            // Clear Image
+            camera_ctx.clearRect(0, 0, width, height);
 
-            ctx.beginPath();
-            ctx.lineWidth = "3";
-            ctx.strokeStyle = "black";
-            ctx.roundRect(bounds[0] * canvas_width,
-                     bounds[1] * canvas_height,
-                     (bounds[2]-bounds[0]) * canvas_width,
-                     (bounds[3]-bounds[1]) * canvas_height, 5);
-            ctx.stroke();
+            // Draw Image
+            camera_ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
 
-            ctx.beginPath();
-            ctx.lineWidth = "3";
-            ctx.fillStyle = "black";
-            ctx.roundRect(bounds[0] * canvas_width,
-                     bounds[3] * canvas_height - FONT_SIZE,
-                     (bounds[2]-bounds[0]) * canvas_width,
-                     FONT_SIZE, 5);
-            ctx.fill();
+            for (i=0; i<items.length; i++) {
+                bounds = items[i]['bounds'];
 
-            ctx.fillStyle = 'white';
-            ctx.fillText(items[i]['name'],
-                         bounds[0] * canvas_width + 10,
-                         bounds[3] * canvas_height - FONT_SIZE/4);
+                // Draw Bounding Box
+                camera_ctx.beginPath();
+                camera_ctx.lineWidth = "3";
+                camera_ctx.strokeStyle = "black";
+                camera_ctx.roundRect(bounds[0] * width, bounds[1] * height, (bounds[2]-bounds[0]) * width, (bounds[3]-bounds[1]) * height, 5);
+                camera_ctx.stroke();
+
+                // Draw Text Box
+                camera_ctx.beginPath();
+                camera_ctx.lineWidth = "3";
+                camera_ctx.fillStyle = "black";
+                camera_ctx.roundRect(bounds[0] * width, bounds[3] * height - FONT_SIZE, (bounds[2]-bounds[0]) * width, FONT_SIZE, 5);
+                camera_ctx.fill();
+
+                // Draw Text
+                camera_ctx.fillStyle = 'white';
+                camera_ctx.fillText(items[i]['name'], bounds[0] * width + 10, bounds[3] * height - FONT_SIZE/4);
+            }
+        };
+
+        // Set Image (Which will trigger image.onload)
+        img.src = 'data:image/png;base64,' + data['img'];
+
+        var x = data['x'], y = data['y'], z = data['z'], c = data['c'];
+
+        // Plot Scatter
+        var points = new THREE.Geometry();
+
+        for (var i=0; i < x.length; i++) {
+            points.vertices.push(new THREE.Vector3(x[i], y[i], z[i]));
+            points.colors.push(new THREE.Color(c[i][0], c[i][1], c[i][2]));
         }
-    };
 
-    img.src = 'data:image/png;base64,' + data['img'];
-
+        var cloud = new THREE.Points(points, material);
+        plot.add(cloud);
     }
+
     socket.onclose = function() { console.log("Connection Closed!"); }
 });
 
