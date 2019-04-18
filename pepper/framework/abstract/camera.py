@@ -11,8 +11,8 @@ from typing import Tuple
 
 
 class AbstractImage(object):
-    def __init__(self, image):
-        # type: (np.ndarray) -> AbstractImage
+    def __init__(self, image, bounds, depth=None):
+        # type: (np.ndarray) -> None
         """
         Create (Abstract) Image Object
 
@@ -21,6 +21,8 @@ class AbstractImage(object):
         image: np.ndarray
         """
         self._image = image
+        self._bounds = bounds
+        self._depth = depth
 
     @property
     def image(self):
@@ -35,37 +37,14 @@ class AbstractImage(object):
         return self._image
 
     @property
-    def origin(self):
-        # type: () -> Tuple[float, float]
-        """
-        Image Origin in Radians (phi, theta) a.k.a. (x,y)
-
-        Returns
-        -------
-        origin: Tuple[float, float]
-        """
-        raise NotImplementedError()
-
-    @property
-    def aov(self):
-        # type: () -> Tuple[float, float]
-        """
-        Image Angle of View in Radians (phi, theta) a.k.a. (x,y)
-
-        Returns
-        -------
-        origin: Tuple[float, float]
-        """
-        raise NotImplementedError()
+    def depth(self):
+        return self._depth
 
     @property
     def bounds(self):
-        # type: () -> Bounds
-        x0, y0 = self.position_2d((-1, -1))
-        x1, y1 = self.position_2d((1, 1))
-        return Bounds(x0, y0, x1, y1)
+        return self._bounds
 
-    def position_2d(self, coordinates):
+    def position_2D(self, coordinates):
         # type: (Tuple[float, float]) -> Tuple[float, float]
         """
         Return 2D position in Spherical Coordinates
@@ -76,13 +55,10 @@ class AbstractImage(object):
 
         Returns
         -------
-        position_2d: Tuple[float, float]
+        position_2D: Tuple[float, float]
         """
-        phi_0, theta_0 = self.origin
-        phi_1, theta_1 = self.aov
-        x, y = coordinates
-
-        return phi_0 + (x*2-1) * phi_1, theta_0 + (y*2-1) * theta_1
+        return (self.bounds.x0 + coordinates[0] * self.bounds.width,
+                self.bounds.y0 + coordinates[1] * self.bounds.height)
 
     def __repr__(self):
         return "{}{}".format(self.__class__.__name__, self.image.shape)

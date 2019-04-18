@@ -111,8 +111,8 @@ class Context(object):
         objects = []
 
         for observations in self._objects.values():
-            for obj in observations.get():
-                objects.append(obj)
+            for instance in observations.objects:
+                objects.append(instance)
 
         return objects
 
@@ -220,10 +220,6 @@ class Observations(object):
         # type: () -> List[Object]
         return self._unique_objects
 
-    def get(self):
-        # type: () -> List[Object]
-        return self._unique_objects
-
     def add(self, image, objects):
         # type: (AbstractImage, List[Object]) -> None
 
@@ -249,7 +245,7 @@ class Observations(object):
 
                     # Add most recent observation of each Unique Objects to List
                     if group != -1:
-                        unique_objects.append(self._observations[indices[0]])
+                        unique_objects.append(self._observations[indices[0]][0])
 
                     for i, index in enumerate(indices):
 
