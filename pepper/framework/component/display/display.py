@@ -1,5 +1,5 @@
 from pepper.framework import AbstractComponent, AbstractImage
-from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent
+from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, SceneComponent
 from .server import DisplayServer
 
 from threading import Thread, Lock
@@ -20,6 +20,10 @@ class DisplayComponent(AbstractComponent):
         server_thread.start()
 
         lock = Lock()
+
+        face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
+        object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
+        scene = self.require(DisplayComponent, SceneComponent) # type: SceneComponent
 
         self._display_info = {}
 
@@ -45,7 +49,7 @@ class DisplayComponent(AbstractComponent):
                 if self._display_info:
                     server.update(json.dumps(self._display_info))
 
-                x,y,z,c = image.scatter()
+                x,y,z,c = scene.scatter_map
 
                 self._display_info = {
                     "hash": hash(str(image.image)),
@@ -65,9 +69,6 @@ class DisplayComponent(AbstractComponent):
                          "confidence": item.confidence,
                          "bounds": item.image_bounds.to_list()
                          } for item in items]
-
-        face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
-        object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
 
         self.backend.camera.callbacks += [on_image]
         face_recognition.on_face_known_callbacks += [add_items]

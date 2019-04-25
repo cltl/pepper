@@ -31,17 +31,17 @@ class NAOqiCamera(AbstractCamera):
         Which NAOqi Camera to use
     """
 
+    RESOLUTION_CODE_3D = {
+        'kQ720p': 1,    # (320, 240)
+        'kQQ720p': 0,   # (160, 120)
+        'kQQQ720p': 7,  # (80, 60)
+        'kQQQQ720p': 8, # (40, 30)
+    }
+
     SERVICE = "ALVideoDevice"
     COLOR_SPACE_YUV = 9  # YUV442
-    COLOR_SPACE_3D = 21  # Distance from Camera in mm
-
-    RESOLUTION_CODE_3D = {
-        'k720p': 5,
-        'kQ720p': 9,
-        'kQQ720p': 10,
-        'kQQQ720p': 11,
-        'kQQQQ720p': 12,
-    }
+    COLOR_SPACE_3D = 17  # Distance from Camera in mm
+    RESOLUTION_3D =  RESOLUTION_CODE_3D['kQQ720p']
 
     RESOLUTION_CODE = {
         CameraResolution.NATIVE: 2,
@@ -69,7 +69,7 @@ class NAOqiCamera(AbstractCamera):
         self._client = self._service.subscribeCameras(
             str(getrandbits(128)),  # Random Client ID's to prevent name collision
             [int(NAOqiCameraIndex.TOP), int(NAOqiCameraIndex.DEPTH)],
-            [NAOqiCamera.RESOLUTION_CODE[resolution], 12],
+            [NAOqiCamera.RESOLUTION_CODE[resolution], NAOqiCamera.RESOLUTION_3D],
             [NAOqiCamera.COLOR_SPACE_YUV, NAOqiCamera.COLOR_SPACE_3D],
             rate
         )
@@ -92,12 +92,13 @@ class NAOqiCamera(AbstractCamera):
 
                 t0 = time()
 
-                # Get Yaw and Pitch from Head Sensors
-                yaw, pitch = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
-
                 image_rgb = None
                 image_3D = None
                 image_bounds = None
+
+                # Get Yaw and Pitch from Head Sensors
+                yaw, pitch = self._motion.getAngles("HeadYaw", False)[0], \
+                             self._motion.getAngles("HeadPitch", False)[0]
 
                 # Get Image from Robot
                 for image in self._service.getImagesRemote(self._client):
@@ -108,9 +109,9 @@ class NAOqiCamera(AbstractCamera):
                         image_3D = np.frombuffer(data, np.uint16).reshape(height, width)
                     else:
                         image_rgb = self._yuv2rgb(width, height, data)
-                        image_bounds = Bounds(angle_right + yaw,
+                        image_bounds = Bounds(angle_right - yaw,
                                               angle_bottom + pitch,
-                                              angle_left + yaw,
+                                              angle_left - yaw,
                                               angle_top + pitch)
 
                 self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))

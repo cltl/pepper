@@ -8,6 +8,7 @@ from .text_to_speech import TextToSpeechComponent
 from .brain import BrainComponent
 
 from .context import ContextComponent
+from .scene import SceneComponent
 
 from .statistics import StatisticsComponent
 from .display.display import DisplayComponent

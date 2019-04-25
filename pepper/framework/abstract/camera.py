@@ -11,11 +11,8 @@ from time import time
 
 from typing import Tuple
 
-import matplotlib.pyplot as plt
-
 
 class AbstractImage(object):
-
 
     def __init__(self, image, bounds, depth=None):
         # type: (np.ndarray) -> None
@@ -79,25 +76,8 @@ class AbstractImage(object):
 
         theta += np.pi / 2
 
-        # plt.subplot(221)
-        # plt.imshow(color)
-        # plt.colorbar()
-        # plt.subplot(222)
-        # plt.imshow(depth)
-        # plt.colorbar()
-        # plt.subplot(223)
-        # plt.imshow(phi)
-        # plt.colorbar()
-        # plt.subplot(224)
-        # plt.imshow(theta)
-        # plt.colorbar()
-        # plt.show()
-
-
         # Get Samples that have a legit Depth Value
         indices = depth > 1
-
-        print(indices.shape)
 
         color = color[indices]
         depth = depth[indices]
