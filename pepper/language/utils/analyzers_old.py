@@ -1,5 +1,4 @@
-from pepper import logger
-from utils import *
+from pepper.language.utils.helper_functions import *
 
 
 LOG = logger.getChild(__name__)
@@ -48,6 +47,7 @@ def analyze_np(np_list, speaker):
 
     return morphology
 
+
 def analyze_possessive_np(poss, np_list):
     '''
     This function is called to analyze possessive constructions like "my name"
@@ -72,6 +72,7 @@ def analyze_possessive_np(poss, np_list):
     morphology['predicate'] = np_list[1] + '-is'
 
     return morphology
+
 
 def extract_named_entities(np_list):
     '''

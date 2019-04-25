@@ -1,7 +1,13 @@
 from __future__ import unicode_literals
 
 from pepper.language.pos import POS
-from pepper.brain import RdfBuilder
+from pepper.language.analyzer import Analyzer
+from pepper.language.utils.atoms import UtteranceType
+from pepper.language.utils.helper_functions import names, check_rdf_completeness
+
+from pepper.brain.utils.helper_functions import casefold_text
+from pepper.brain.utils.rdf_builder import RdfBuilder
+from pepper.brain.utils.response import Triple
 
 from pepper import logger, config
 
@@ -17,31 +23,70 @@ import os
 from typing import List, Optional
 
 
-class UtteranceType(enum.Enum):
-    STATEMENT = 0
-    QUESTION = 1
-    EXPERIENCE = 2  # TODO
+class Time(enum.Enum):
+    PAST = -1
+    PRESENT = 0
+    FUTURE = 1
 
 
-class Certainty(enum.Enum):
-    CERTAIN = 0
-    PROBABLE = 1
-    POSSIBLE = 2
-    UNDERSPECIFIED = 3
-
-
-class Sentiment(enum.Enum):
-    NEGATIVE = 0
-    POSITIVE = 1
-
-
-class Emotion(enum.Enum):
+class Emotion(enum.Enum):  # Not used yet
     ANGER = 0
     DISGUST = 1
     FEAR = 2
     HAPPINESS = 3
     SADNESS = 4
     SURPRISE = 5
+
+
+class Perspective(object):
+    def __init__(self, certainty, polarity, sentiment, time=None, emotion=None):
+        # type: (float, int, float, Time, Emotion) -> Perspective
+        """
+        Construct Perspective object
+        Parameters
+        ----------
+        certainty: float
+            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain
+        polarity: int
+            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment
+        sentiment: float
+            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent
+            positive sentiments.
+        time: Time
+            Enumerator representing time. This is extracted from the tense
+        emotion: Emotion
+            Enumerator representing one of the 6 universal emotions.
+        """
+        self._certainty = certainty
+        self._polarity = polarity
+        self._sentiment = sentiment
+        self._time = time
+        self._emotion = emotion
+
+    @property
+    def certainty(self):
+        # type: () -> float
+        return self._certainty
+
+    @property
+    def polarity(self):
+        # type: () -> int
+        return self._polarity
+
+    @property
+    def sentiment(self):
+        # type: () -> float
+        return self._sentiment
+
+    @property
+    def time(self):
+        # type: () -> Optional[Time]
+        return self._time
+
+    @property
+    def emotion(self):
+        # type: () -> Optional[Emotion]
+        return self._emotion
 
 
 class Chat(object):
@@ -182,9 +227,12 @@ class Utterance(object):
         self._tokens = self._clean(self._tokenize(self.transcript))
 
         self._parser = None if self.me else Parser(self)
-
-        self._triple = None
+        # analyze sets triple, perspective and type
         self._type = 'Statement'  # UtteranceType.STATEMENT # TODO do not keep this hard coded
+
+        # TODO Check this with Bram, currently we initialize with None and have set methods
+        self._triple = None
+        self._perspective = None
 
     @property
     def chat(self):
@@ -285,6 +333,17 @@ class Utterance(object):
         return self._triple
 
     @property
+    def perspective(self):
+        # type: () -> Perspective
+        """
+        Returns
+        -------
+        perspective: Perspective
+            NLP features related to the utterance
+        """
+        return self._perspective
+
+    @property
     def datetime(self):
         return self._datetime
 
@@ -296,21 +355,6 @@ class Utterance(object):
         language: str
             Original language of the Transcript
         """
-        raise NotImplementedError()
-
-    @property
-    def certainty(self):
-        # type: () -> Certainty
-        raise NotImplementedError()
-
-    @property
-    def sentiment(self):
-        # type: () -> Sentiment
-        raise NotImplementedError()
-
-    @property
-    def emotion(self):
-        # type: () -> Emotion
         raise NotImplementedError()
 
     @property
@@ -333,9 +377,102 @@ class Utterance(object):
         """
         return self._parser
 
+    def analyze(self):
+        """
+        Determines the type of utterance, extracts the RDF triple and perspective attaching them to the last utterance
+        Parameters
+        ----------
+        chat
+
+        Returns
+        -------
+
+        """
+        analyzer = Analyzer.analyze(self._chat)
+
+        if not analyzer:
+            return "I cannot parse your input"
+
+        Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
+
+        if analyzer.utterance_type == UtteranceType.STATEMENT:
+            if not check_rdf_completeness(analyzer.rdf):
+                # TODO intransitive verbs
+                Analyzer.LOG.debug('incomplete statement RDF')
+                return
+
+        self.write_template(analyzer.rdf, analyzer.utterance_type)
+
+        '''
+        if analyzer.utterance_type == UtteranceType.STATEMENT:
+            perspective = analyzer.perspective
+            print(perspective)
+            for el in perspective:
+                if el!='fix':
+                    template[el] = perspective[el]
+        '''
+
+    def write_template(self, rdf, utterance_type):
+        """
+        Sets utterance type, the extracted triple and (in future) the perspective
+        Parameters
+        ----------
+        rdf
+        utterance_type
+
+        Returns
+        -------
+
+        """
+        self._type = utterance_type  # TODO make a setter?
+        if type(rdf) == str:
+            return rdf
+
+        if not rdf:
+            return 'error in the rdf'
+
+        builder = RdfBuilder()
+
+        # Build subject
+        subject = builder.fill_entity(casefold_text(rdf['subject'], format='triple'), ["person"])  # capitalization
+
+        # Build predicate
+        if rdf['predicate'] == 'seen':
+            predicate = builder.fill_predicate('sees')
+            # template['object']['hack'] = True  # TODO what does this mean?
+        else:
+            predicate = builder.fill_predicate(casefold_text(rdf['predicate'], format='triple'))
+
+        # Build object
+        if rdf['object'] in names:
+            object = builder.fill_entity(casefold_text(rdf['object'], format='triple'), ["person"])
+
+        elif type(rdf['object']) is list:
+            if rdf['object'][0] and rdf['object'][0].strip() in ['a', 'an', 'the']:
+                rdf['object'].remove(rdf['object'][0])
+
+            if len(rdf['object']) > 1:
+                object = builder.fill_entity(casefold_text(rdf['object'][0], format='triple'),
+                                             casefold_text(rdf['object'][1], format='triple'))
+            else:
+                object = builder.fill_entity_from_label(casefold_text(rdf['object'][0], format='triple'))
+
+        else:
+            if rdf['object'].lower().startswith('a '):
+                rdf['object'] = rdf['object'][2:]
+            object = builder.fill_entity_from_label(casefold_text(rdf['object'], format='triple'))
+
+        self.set_triple(Triple(subject, predicate, object))
+        # new things in template: certainty , sentiment, types of NE, mention indexes
+
     # TODO check this with Bram
     def set_triple(self, triple):
+        # type: (Triple) -> ()
         self._triple = triple
+
+    def set_perspective(self, perspective):
+        # type: (Perspective) -> ()
+        self._perspective = perspective
 
     def casefold(self, format='triple'):
         # type (str) -> ()
@@ -349,7 +486,7 @@ class Utterance(object):
         -------
 
         """
-        self.triple.casefold(format)
+        self._triple.casefold(format)
 
     def _choose_hypothesis(self, hypotheses):
         return sorted(self._patch_names(hypotheses), key=lambda hypothesis: hypothesis.confidence, reverse=True)[0]
@@ -522,7 +659,6 @@ class Parser(object):
         for word, tag in pos:
             if '?' in word:
                 word=word[:-1]
-                print(word)
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
                 pos[ind] = (pos[ind][0], 'PRPPOS')

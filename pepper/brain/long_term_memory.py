@@ -3,7 +3,7 @@ from pepper.brain.utils.response import CardinalityConflict, NegationConflict, S
 from pepper.brain.utils.helper_functions import hash_statement_id, read_query, casefold_text
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.basic_brain import BasicBrain
-# from pepper.language.language import UtteranceType
+from pepper.language.utils.atoms import UtteranceType
 
 from pepper import config
 
@@ -592,28 +592,29 @@ class LongTermMemory(BasicBrain):
     def _create_actor(self, utterance, interaction_graph):
         # Actor
         actor = self._rdf_builder.fill_entity(utterance.chat_speaker,
-                                              ['Instance', 'Actor', '%s' % ('person' if utterance.type == 'Statement'
+                                              ['Instance', 'Actor', '%s' % ('person' 
+                                                                            if utterance.type == UtteranceType.STATEMENT
                                                                             else 'sensor')],
                                               'LF')
         self._link_entity(actor, interaction_graph)
 
         # Add leolani knows/senses actor
-        predicate = self._rdf_builder.fill_predicate('knows') if utterance.type == 'Statement' \
+        predicate = self._rdf_builder.fill_predicate('knows') if utterance.type == UtteranceType.STATEMENT \
             else self._rdf_builder.fill_predicate('senses')
         interaction_graph.add((self.myself.id, predicate.id, actor.id))
-        _ = self._create_claim_graph(self.myself, predicate, actor, 'Experience')  # TODO link this to a context
+        _ = self._create_claim_graph(self.myself, predicate, actor, UtteranceType.EXPERIENCE)  # TODO link this to a context
 
         return actor
 
     def _create_events(self, utterance, interaction_graph, time, actor):
         # Chat or visual
         event_id = self._rdf_builder.fill_literal(utterance.chat.id, datatype=self.namespaces['XML']['string'])
-        event_type = 'Chat' if utterance.type == 'Statement' else 'Visual'
+        event_type = 'Chat' if utterance.type == UtteranceType.STATEMENT else 'Visual'
         event_label = '%s%s' % (event_type, utterance.chat.id)
 
         # Utterance or object
         subevent_id = self._rdf_builder.fill_literal(utterance.turn, datatype=self.namespaces['XML']['string'])
-        subevent_type = '%s' % ('Utterance' if utterance.type == 'Statement' else 'Object')
+        subevent_type = '%s' % ('Utterance' if utterance.type == UtteranceType.STATEMENT else 'Object')
         subevent_label = '%s_%s%s' % (event_label, subevent_type, utterance.turn)
 
         # Add context to subevent
@@ -653,10 +654,10 @@ class LongTermMemory(BasicBrain):
         instance_graph = self.dataset.graph(instance_graph_uri)
 
         # Subject
-        if utterance.type == 'Statement':  # UtteranceType.STATEMENT:
+        if utterance.type == UtteranceType.STATEMENT:
             utterance.triple.subject.add_types(['Instance'])
             self._link_entity(utterance.triple.subject, instance_graph)
-        elif utterance.type == 'Experience':  # UtteranceType.EXPERIENCE:
+        elif utterance.type == UtteranceType.EXPERIENCE:
             self._link_leolani(instance_graph)
 
         # Object
@@ -664,7 +665,7 @@ class LongTermMemory(BasicBrain):
         self._link_entity(utterance.triple.object, instance_graph)
 
         # Claim graph
-        predicate = utterance.triple.predicate if utterance.type == 'Statement' \
+        predicate = utterance.triple.predicate if utterance.type == UtteranceType.STATEMENT \
             else self._rdf_builder.fill_predicate('sees')
 
         statement = self._create_claim_graph(utterance.triple.subject, predicate, utterance.triple.object,
@@ -680,7 +681,7 @@ class LongTermMemory(BasicBrain):
         # Statement
         statement_label = hash_statement_id([subject.label, predicate.label, object.label])
 
-        statement = self._rdf_builder.fill_entity(statement_label, ['Event', 'Instance', claim_type], 'LW')
+        statement = self._rdf_builder.fill_entity(statement_label, ['Event', 'Instance', claim_type.name.title()], 'LW')
         self._link_entity(statement, claim_graph)
 
         # Create graph and add triple
@@ -691,10 +692,12 @@ class LongTermMemory(BasicBrain):
 
     def _create_interaction_graph(self, utterance):
         # Interaction graph
-        if utterance.type == 'Statement':  # UtteranceType.STATEMENT:
+        if utterance.type == UtteranceType.STATEMENT:
             graph_to_write = 'Interactions'
-        elif utterance.type == 'Experience':  # UtteranceType.EXPERIENCE:
+        elif utterance.type == UtteranceType.EXPERIENCE:
             graph_to_write = 'Sensors'
+        else:
+            graph_to_write = 'Interactions'
 
         interaction_graph_uri = self._rdf_builder.create_resource_uri('LTa', graph_to_write)
         interaction_graph = self.dataset.graph(interaction_graph_uri)
@@ -724,7 +727,7 @@ class LongTermMemory(BasicBrain):
         perspective_graph = self.dataset.graph(perspective_graph_uri)
 
         # Mention
-        mention_unit = 'Char' if utterance.type == 'Statement' else 'Pixel'
+        mention_unit = 'Char' if utterance.type == UtteranceType.STATEMENT else 'Pixel'
         mention_position = '0-%s' % len(utterance.transcript)
         mention_label = '%s%s%s' % (subevent.label, mention_unit, mention_position)
 

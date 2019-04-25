@@ -16,9 +16,9 @@ def is_proper_noun(types):
 
 def casefold_text(text, format='triple'):
     if format == 'triple':
-        return text.lower().replace(" ", "_") if isinstance(text, basestring) else text
+        return text.strip().lower().replace(" ", "-") if isinstance(text, basestring) else text
     elif format == 'natural':
-        return text.lower().replace("_", " ") if isinstance(text, basestring) else text
+        return text.strip().lower().replace("-", " ") if isinstance(text, basestring) else text
     else:
         return text
 
@@ -50,5 +50,4 @@ def date_from_uri(uri):
 
 
 def hash_statement_id(triple):
-    # TODO check if we need to change the hashing to join by - or _
-    return '-'.join(triple)
+    return '_'.join(triple)

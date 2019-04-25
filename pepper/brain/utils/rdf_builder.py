@@ -1,6 +1,6 @@
 from pepper.brain.utils.response import Predicate, Entity, Triple, Provenance
 
-from rdflib import Dataset, Namespace, OWL, Graph
+from rdflib import Dataset, Namespace, OWL
 from rdflib import URIRef, Literal
 from iribaker import to_iri
 
@@ -136,7 +136,7 @@ class RdfBuilder(object):
 
     def fill_entity(self, label, types, namespace='LW'):
         """
-        Create an RDF entity given its label and its namespace
+        Create an RDF entity given its label, types and its namespace
         Parameters
         ----------
         label: str
@@ -171,6 +171,36 @@ class RdfBuilder(object):
         predicate_id = self.create_resource_uri(namespace, label)
 
         return Predicate(predicate_id, Literal(label))
+
+    def fill_entity_from_label(self, label, namespace='LW'):
+        """
+        Create an RDF entity given its label and its namespace
+        Parameters
+        ----------
+        label: str
+            Label of entity
+        namespace: str
+            Namespace where entity belongs to
+
+        Returns
+        -------
+            Entity object with given label and no type information
+        """
+        entity_id = self.create_resource_uri(namespace, label)
+
+        return Entity(entity_id, Literal(label), [''])
+
+    def empty_entity(self):
+        """
+        Create an empty RDF entity
+        Parameters
+        ----------
+
+        Returns
+        -------
+            Entity object with no label and no type information
+        """
+        return Entity('', Literal(''), [''])
 
     def fill_provenance(self, author, date):
         """
@@ -212,6 +242,31 @@ class RdfBuilder(object):
         object = self.fill_entity(object_dict['label'], [object_dict['type']], namespace=namespace)
 
         return Triple(subject, predicate, object)
+
+    def fill_triple_from_label(self, subject_label, predicate, object_label, namespace='LW'):
+        """
+        Create an RDF entity given its label and its namespace
+        Parameters
+        ----------
+        subject_label: str
+            Information about label of subject
+        predicate: str
+            Information about predicate
+        object_label: str
+            Information about label of object
+        namespace: str
+            Information about which namespace the entities belongs to
+
+        Returns
+        -------
+            Entity object with given label
+        """
+        subject = self.fill_entity_from_label(subject_label, namespace=namespace)
+        predicate = self.fill_predicate(predicate)
+        object = self.fill_entity_from_label(object_label, namespace=namespace)
+
+        return Triple(subject, predicate, object)
+
 
     ########## basic reverse engineer ##########
     def label_from_uri(self, uri, namespace='LTi'):

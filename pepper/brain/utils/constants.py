@@ -1,3 +1,9 @@
+"""
+Other agreements/notes
+    Labels are connected by a -
+    Statements are hashed to be connected by a _
+"""
+
 NAMESPACE_MAPPING = {
     'Instance': 'GRASP',
     'Statement': 'GRASP',

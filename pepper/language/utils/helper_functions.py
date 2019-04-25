@@ -7,35 +7,36 @@ from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 
 from datetime import date
-import random
 import json
 import re
 import os
-import analyzers_old
+from pepper.language.utils.analyzers_old import analyze_np
 
 import urllib2, urllib
 import traceback, sys
 
-
 LOG = logger.getChild(__name__)
-
 
 wnl = WordNetLemmatizer()
 
-ROOT = os.path.join(os.path.dirname(__file__))
+ROOT = os.path.join(os.path.dirname(__file__), '..')
 json_dict = json.load(open(os.path.join(ROOT, 'data', 'lexicon.json')))
 grammar = json_dict
 
-names = ['selene', 'bram', 'leolani', 'piek','selene', 'lenka']
-statements = [['my favorite food is cake','lenka'],['I know Bram', 'Piek'],
+names = ['selene', 'bram', 'leolani', 'piek', 'selene', 'lenka']
+statements = [['my favorite food is cake', 'lenka'], ['I know Bram', 'Piek'],
               ['My name is lenka', 'person'],
-               ['i like action movies', 'bram'],['bram likes romantic movies', 'selene'],
+              ['i like action movies', 'bram'], ['bram likes romantic movies', 'selene'],
               ['bram is from Italy', 'selene']]  # [question, speaker]
-questions = [['where is selene from?','jo'], ['what does piek like?', 'jo'], ['What is your name', 'person'], ['who knows bram?', 'ji'],
-             ['who likes soccer?','selene'],
-             ['who is from italy?','jill'], ['where are you from', 'person'], ['who do i know?', 'bram'],['where do you live?','person']]
-             #['Have you ever met Michael Jordan?', 'piek'], ['Has Selene ever met piek', 'person'], ['Does Selene know piek', 'bram'],
-             #['Does bram know Beyonce', 'person'], ['Do you know me','bram']]
+questions = [['where is selene from?', 'jo'], ['what does piek like?', 'jo'], ['What is your name', 'person'],
+             ['who knows bram?', 'ji'],
+             ['who likes soccer?', 'selene'],
+             ['who is from italy?', 'jill'], ['where are you from', 'person'], ['who do i know?', 'bram'],
+             ['where do you live?', 'person']]
+
+
+# ['Have you ever met Michael Jordan?', 'piek'], ['Has Selene ever met piek', 'person'], ['Does Selene know piek', 'bram'],
+# ['Does bram know Beyonce', 'person'], ['Do you know me','bram']]
 
 def tokenize(utterance):
     '''
@@ -47,6 +48,7 @@ def tokenize(utterance):
         clean_word = re.sub('[?!]', '', word)
         words.append(clean_word.lower())
     return words
+
 
 def fix_contractions(words):
     '''
@@ -68,17 +70,18 @@ def get_synonims(word):
     '''
     syns = wordnet.synsets(word)
     for s in syns:
-        print(word+' - ' + s.lemmas()[0].name() + ': ' + s.definition())
+        print(word + ' - ' + s.lemmas()[0].name() + ': ' + s.definition())
         print(s.lemmas()[0].antonyms())
+
 
 def extract_np(words, tagged, index):
     '''
     This function extracts a list of non-verbs (np = noun phrase)
     '''
     np = words[index]
-    for pos in tagged[index+1:]:
-        if (not pos[1].startswith('V') and (not pos[0] in ['like'])) or (pos[0] in names) :
-            np += ' '+pos[0]
+    for pos in tagged[index + 1:]:
+        if (not pos[1].startswith('V') and (not pos[0] in ['like'])) or (pos[0] in names):
+            np += ' ' + pos[0]
             index += 1
         else:
             break
@@ -86,7 +89,6 @@ def extract_np(words, tagged, index):
 
 
 def reply_to_question(brain_response, viewed_objects):
-
     say = ''
     previous_author = ''
     previous_subject = ''
@@ -122,41 +124,42 @@ def reply_to_question(brain_response, viewed_objects):
     previous_response = ''
     for response in brain_response['response'][:4]:
 
-        #avoid repetition?
-        if response==previous_response:
+        # avoid repetition?
+        if response == previous_response:
             break
         else:
             previous_response = response
 
         person = ''
-        if 'authorlabel' in response and response['authorlabel']['value']!=previous_author:
+        if 'authorlabel' in response and response['authorlabel']['value'] != previous_author:
             if response['authorlabel']['value'].lower() == brain_response['question']['author'].lower():
-                say+=' you told me '
+                say += ' you told me '
             else:
-                say += response['authorlabel']['value'] +' told me '
+                say += response['authorlabel']['value'] + ' told me '
             previous_author = response['authorlabel']['value'].lower()
-        elif 'authorlabel' in response and response['authorlabel']['value'].lower()==previous_author:
+        elif 'authorlabel' in response and response['authorlabel']['value'].lower() == previous_author:
             if brain_response['question']['predicate']['type'] != previous_predicate:
-                say+=' that '
+                say += ' that '
 
         print('response', response)
-
 
         if not brain_response['question']['predicate']['type'].endswith('-is'):
 
             if 'slabel' in response:
-                if response['slabel']['value'].lower()==brain_response['question']['author'].lower():
-                    say+= 'you'
+                if response['slabel']['value'].lower() == brain_response['question']['author'].lower():
+                    say += 'you'
                     person = 'second'
-                elif response['slabel']['value'].lower()=='leolani'  and brain_response['question']['predicate']['type'][-3:]!='-is':
-                    say+='I'
-                    person='first'
+                elif response['slabel']['value'].lower() == 'leolani' and brain_response['question']['predicate'][
+                                                                              'type'][-3:] != '-is':
+                    say += 'I'
+                    person = 'first'
 
-                elif (response['slabel']['value'].lower() == previous_subject.lower()) or (response['slabel']['value'].lower() == response['authorlabel']['value'].lower()):
-                    if response['slabel']['value'].lower() in ['bram','piek']:
-                        say+= 'he'
-                    elif response['slabel']['value'].lower() in ['selene','lenka']:
-                        say+= 'she'
+                elif (response['slabel']['value'].lower() == previous_subject.lower()) or (
+                        response['slabel']['value'].lower() == response['authorlabel']['value'].lower()):
+                    if response['slabel']['value'].lower() in ['bram', 'piek']:
+                        say += 'he'
+                    elif response['slabel']['value'].lower() in ['selene', 'lenka']:
+                        say += 'she'
 
                 else:
                     say += response['slabel']['value'].lower()
@@ -170,25 +173,26 @@ def reply_to_question(brain_response, viewed_objects):
             elif 'slabel' in response:
                 say += response['slabel']['value']
 
-
-        if 'subject' in brain_response['question'] and brain_response['question']['subject']['label'].lower() != previous_subject.lower():
+        if 'subject' in brain_response['question'] and brain_response['question']['subject'][
+            'label'].lower() != previous_subject.lower():
             if brain_response['question']['subject']['label'].lower() == brain_response['question']['author'].lower():
                 person = 'second'
-                say+=' you '
+                say += ' you '
             elif brain_response['question']['subject']['label'].lower() == 'leolani':
-                say+=' I '
+                say += ' I '
                 person = 'first'
             else:
                 say += brain_response['question']['subject']['label'].lower()
             previous_subject = brain_response['question']['subject']['label'].lower()
 
-        #if brain_response['question']['predicate']['type'] in grammar['predicates']:
-        if brain_response['question']['predicate']['type'] == previous_predicate: #and response['slabel'].lower()==previous_subject.lower():
+        # if brain_response['question']['predicate']['type'] in grammar['predicates']:
+        if brain_response['question']['predicate'][
+            'type'] == previous_predicate:  # and response['slabel'].lower()==previous_subject.lower():
             pass
         else:
             previous_predicate = brain_response['question']['predicate']['type']
             if brain_response['question']['predicate']['type'] == 'sees':
-                say+=' saw'
+                say += ' saw'
             elif brain_response['question']['predicate']['type'] == 'be-from':
                 if person == 'first':
                     say += ' am from '
@@ -198,15 +202,17 @@ def reply_to_question(brain_response, viewed_objects):
                     say += ' is from '
 
             elif brain_response['question']['predicate']['type'].endswith('-is'):
-                say+=' is '
+                say += ' is '
                 print(brain_response['question']['object']['label'].lower())
-                if brain_response['question']['object']['label'].lower() == brain_response['question']['author'].lower() or \
-                                brain_response['question']['subject']['label'].lower() == brain_response['question']['author'].lower():
+                if brain_response['question']['object']['label'].lower() == brain_response['question'][
+                    'author'].lower() or \
+                        brain_response['question']['subject']['label'].lower() == brain_response['question'][
+                    'author'].lower():
                     say += ' your '
-                elif brain_response['question']['object']['label'].lower() == 'leolani'or \
-                                brain_response['question']['subject']['label'].lower() == 'leolani':
+                elif brain_response['question']['object']['label'].lower() == 'leolani' or \
+                        brain_response['question']['subject']['label'].lower() == 'leolani':
                     say += ' my '
-                say+=brain_response['question']['predicate']['type'][:-3]
+                say += brain_response['question']['predicate']['type'][:-3]
 
                 return say
 
@@ -215,68 +221,24 @@ def reply_to_question(brain_response, viewed_objects):
                 if person in ['first', 'second'] and brain_response['question']['predicate']['type'].endswith('s'):
                     say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
                 else:
-                    say += ' '+brain_response['question']['predicate']['type']+' '
+                    say += ' ' + brain_response['question']['predicate']['type'] + ' '
 
         if 'olabel' in response:
             say += response['olabel']['value']
         elif 'object' in brain_response['question'].keys():
-            if brain_response['question']['object']['label'].lower()==brain_response['question']['author'].lower():
-                say+=' you'
-            elif brain_response['question']['object']['label'].lower()=='leolani':
-                say+=' me'
+            if brain_response['question']['object']['label'].lower() == brain_response['question']['author'].lower():
+                say += ' you'
+            elif brain_response['question']['object']['label'].lower() == 'leolani':
+                say += ' me'
             elif brain_response['question']['predicate']['type'].lower() in ['sees', 'owns']:
-                say+=' a '+brain_response['question']['object']['label']
+                say += ' a ' + brain_response['question']['object']['label']
             else:
                 say += brain_response['question']['object']['label']
 
-        say+=' and '
+        say += ' and '
 
     return say[:-5]
 
-def write_template(speaker, rdf, chat_id, chat_turn, utterance_type):
-    template = json.load(open(os.path.join(ROOT, 'data', 'template.json')))
-
-    # print(template)
-
-    template['author'] = speaker.title()
-    template['utterance_type'] = utterance_type
-    if type(rdf) == str:
-        return rdf
-
-    if not rdf:
-        return 'error in the rdf'
-
-    template['subject']['label'] = rdf['subject'].strip().lower() #capitalization
-    template['subject']['type'] = "person"
-    if rdf['predicate']=='seen':
-        template['predicate']['type'] = 'sees'
-        template['object']['hack'] = True
-    else:
-        template['predicate']['type'] = rdf['predicate'].strip()
-    if rdf['object'] in names:
-        template['object']['label'] = rdf['object'].strip()
-        template['object']['type'] = 'PERSON'
-    elif type(rdf['object']) is list:
-        if rdf['object'][0] and rdf['object'][0].strip() in ['a', 'an', 'the']:
-            rdf['object'].remove(rdf['object'][0])
-        template['object']['label'] = rdf['object'][0].strip()
-        if len(rdf['object'])>1: template['object']['type'] = rdf['object'][1]
-    else:
-        if rdf['object'].lower().startswith('a '):
-            rdf['object'] = rdf['object'][2:]
-        template['object']['label'] = rdf['object'].strip()
-    template['date'] = date.today()
-    template['chat'] = chat_id
-    template['turn'] = chat_turn
-
-    # new things in template: certainty , sentiment, types of NE, mention indexes
-
-    #template['subject']['type'] = rdf['subject']['type']
-    #template['object']['type'] = rdf['object']['type']
-    #template['position'] ?
-
-
-    return template
 
 def fix_predicate_morphology(predicate):
     new_predicate = ''
@@ -290,6 +252,7 @@ def fix_predicate_morphology(predicate):
 
     return new_predicate
 
+
 def reply_to_statement(template, speaker, viewed_objects, brain):
     subject = template['statement']['subject']['label']
     predicate = template['statement']['predicate']['type']
@@ -297,28 +260,28 @@ def reply_to_statement(template, speaker, viewed_objects, brain):
 
     if predicate == 'isFrom': predicate = 'is from'
 
-    subject = 'you ' if (speaker.lower() in [subject.lower(),'speaker'] or subject=='Speaker') else 'i' if subject.lower()=='leolani' else subject.title()
-    if subject=='you ':
+    subject = 'you ' if (speaker.lower() in [subject.lower(),
+                                             'speaker'] or subject == 'Speaker') else 'i' if subject.lower() == 'leolani' else subject.title()
+    if subject == 'you ':
         predicate = fix_predicate_morphology(predicate)
 
-    if subject =='i' and predicate.endswith('s'): predicate = predicate[:-1]
+    if subject == 'i' and predicate.endswith('s'): predicate = predicate[:-1]
 
-    if object.lower() == speaker.lower(): object='you'
+    if object.lower() == speaker.lower(): object = 'you'
 
-
-    response = subject +' '+predicate+' '+object
+    response = subject + ' ' + predicate + ' ' + object
 
     print("INITIAL RESPONSE ", response)
 
     if predicate == 'own':
-        response = subject+' '+predicate+' a '+object
+        response = subject + ' ' + predicate + ' a ' + object
 
-    if predicate in ['see','sees']:
+    if predicate in ['see', 'sees']:
 
-        response = subject+' '+predicate+' a '+object
+        response = subject + ' ' + predicate + ' a ' + object
 
         if object.lower() in viewed_objects:
-            response+=', I see a '+object+', too!'
+            response += ', I see a ' + object + ', too!'
         else:
             response += ', but I don\'t see it!'
 
@@ -351,9 +314,9 @@ def reply_to_statement(template, speaker, viewed_objects, brain):
     elif predicate.strip() == 'sees-not':
         response = 'You don\'t see a ' + object
         if object.lower() in viewed_objects:
-            response+= ', but I see it'
+            response += ', but I see it'
         else:
-            response+= ', and I also don\'t see it'
+            response += ', and I also don\'t see it'
 
     return response
 
@@ -361,31 +324,33 @@ def reply_to_statement(template, speaker, viewed_objects, brain):
 def extract_roles_from_statement(words, speaker, viewed_objects):
     rdf = {'subject': '', 'predicate': '', 'object': ''}
     pos_list = pos_tag(words)
-    i=0
+    i = 0
 
     # OBJECT DETECTION SENTENCE
     if pos_list[0][0] in ['there', 'this', 'it', 'that']:
         if pos_list[1][0] in grammar['to be']:
 
             if pos_list[2][0] in grammar['possessive']:
-                morph = analyzers_old.analyze_np(words[2:], speaker)
-                #print(morph)
+                morph = analyze_np(words[2:], speaker)
+                # print(morph)
                 if morph['predicate'].endswith('-is'):
                     rdf['predicate'] = 'owns'
                     rdf['object'] = morph['predicate'][:-3]
-                    if morph['person'] == 'first': rdf['subject'] = speaker
-                    elif morph['person']=='second': rdf['subject'] = 'leolani'
+                    if morph['person'] == 'first':
+                        rdf['subject'] = speaker
+                    elif morph['person'] == 'second':
+                        rdf['subject'] = 'leolani'
             else:
-                rdf['subject']=speaker
-                rdf['predicate']='sees'
+                rdf['subject'] = speaker
+                rdf['predicate'] = 'sees'
                 for word in words[2:]:
                     if word in ['no', 'not']:
                         rdf['predicate'] = 'sees-not'
-                    elif word!='a': # does it matter which objects leolani sees?
+                    elif word != 'a':  # does it matter which objects leolani sees?
                         rdf['object'] += (word + ' ')
 
-    elif len(pos_list)>2 and pos_list[2][0] == 'see':
-        if pos_list[1][0] =='can':
+    elif len(pos_list) > 2 and pos_list[2][0] == 'see':
+        if pos_list[1][0] == 'can':
             rdf['predicate'] = 'sees'
 
         elif pos_list[1][0] in ['can\'t', 'cannot', 'don\'t']:
@@ -395,23 +360,23 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
             rdf['subject'] = speaker
 
         for word in words[3:]:
-            if word!='a':
+            if word != 'a':
                 rdf['object'] += (word + ' ')
     else:
         for pos in pos_list:
             if pos[1].startswith('V') or wnl.lemmatize(words[i]) in grammar['verbs']:
-                if pos_list[i+1] and pos_list[i+1][0]=='from':
+                if pos_list[i + 1] and pos_list[i + 1][0] == 'from':
                     rdf['predicate'] = 'is_from'
-                    i+=1
+                    i += 1
                 else:
-                    rdf['predicate'] = words[i]+'s'if not words[i].endswith('s') else words[i]
+                    rdf['predicate'] = words[i] + 's' if not words[i].endswith('s') else words[i]
                     if rdf['predicate'] == 'cans': rdf['predicate'] = 'can'
                     if rdf['predicate'] == 'haves': rdf['predicate'] = 'owns'
                 break
-            rdf['subject']+=(words[i]+' ')
-            i+= 1
-        for word in words[i+1:]:
-            rdf['object']+=(word+' ')
+            rdf['subject'] += (words[i] + ' ')
+            i += 1
+        for word in words[i + 1:]:
+            rdf['object'] += (word + ' ')
     return rdf
 
 
@@ -427,6 +392,7 @@ def check_rdf_completeness(rdf):
     '''
 
     return True
+
 
 def pack_rdf_from_np_info(np_info, speaker, rdf):
     if 'object' in np_info.keys():
@@ -448,6 +414,7 @@ def pack_rdf_from_np_info(np_info, speaker, rdf):
 
     return rdf
 
+
 def fix_pronouns(dict, speaker):
     if 'pronoun' in dict:
         dict = dict['pronoun']
@@ -459,49 +426,49 @@ def fix_pronouns(dict, speaker):
 
 
 def dereference_pronouns(self, rdf, grammar, speaker):
-
     for el in rdf:
-        #print(rdf[el])
-        if len(rdf[el].split())>1:
+        if len(rdf[el].split()) > 1:
             pos = rdf[el].split()[0]
             rest = rdf[el].split()[1]
             for w in rdf[el].split()[2:]:
-                rest+= '-'+ w
+                rest += '-' + w
+
             l = find(pos, self.GRAMMAR)
             if l and 'person' in l:
                 rdf[el] = fix_pronouns(l, speaker)
-                rdf['predicate'] = rest+'-is'
+                rdf['predicate'] = rest + '-is'
                 break
-
 
         else:
             rdf[el] = rdf[el].strip()
             if rdf[el].lower() in grammar['pronouns']['subject']:
-                print('dereferencing ',rdf[el])
                 dict = {}
                 dict['pronoun'] = grammar['pronouns']['subject'][rdf[el].lower()]
 
                 if dict['pronoun']['person'] == 'third':
-                    if len(self.chat.utterances)>2:
+                    if len(self.chat.utterances) > 2:
                         print(self.chat.utterances[-2].parser.constituents)
                     else:
-                        print('Which '+rdf[el]+ ' do you mean?')
+                        print('Which ' + rdf[el] + ' do you mean?')
                 else:
                     rdf[el] = fix_pronouns(dict, speaker)
     return rdf
 
+
 from nltk.stem import WordNetLemmatizer
 
-def lemmatize(word, tag =''):
+
+def lemmatize(word, tag=''):
     lemmatizer = WordNetLemmatizer()
     lem = ''
-    if len(word.split())>1:
+    if len(word.split()) > 1:
         for el in word.split():
-            lem+=lemmatizer.lemmatize(el)+' '
+            lem += lemmatizer.lemmatize(el) + ' '
         return lem.strip()
-    if tag!='':
-        return lemmatizer.lemmatize(word,tag)
+    if tag != '':
+        return lemmatizer.lemmatize(word, tag)
     return lemmatizer.lemmatize(word)
+
 
 def get_node_label(tree, word):
     label = ''
@@ -593,10 +560,7 @@ def find(word, lexicon, typ=None):
                       question_words,
                       kinship]
 
-
-
-
-    #print("looking up: ", word)
+    # print("looking up: ", word)
 
     for category in categories:
         for item in category:

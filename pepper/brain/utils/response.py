@@ -1,4 +1,5 @@
 import random
+from rdflib import Literal
 from datetime import date, datetime
 from typing import List, Optional
 
@@ -62,11 +63,11 @@ class RDFBase(object):
         """
         if format == 'triple':
             # Label
-            self._label = self.label.lower().replace(" ", "_")
+            self._label = Literal(self.label.lower().replace(" ", "-"))
 
         elif format == 'natural':
             # Label
-            self._label = self.label.lower().replace("_", " ")
+            self._label = self.label.lower().replace("-", " ")
 
     def __repr__(self):
         return '{}'.format(self.label)
@@ -122,7 +123,7 @@ class Entity(RDFBase):
         """
         if format == 'triple':
             # Label
-            self._label = self.label.lower().replace(" ", "_")
+            self._label = Literal(self.label.lower().replace(" ", "-"))
             # Types
             self._types = [t.lower().replace(" ", "_") for t in self.types]
 
@@ -199,17 +200,30 @@ class Triple(object):
     @property
     def subject_name(self):
         # type: () -> str
-        return self._subject.label
+        return self._subject.label if self._subject is not None else None
 
     @property
     def predicate_name(self):
         # type: () -> str
-        return self._predicate.label
+        return self._predicate.label if self._predicate is not None else None
 
     @property
     def object_name(self):
         # type: () -> str
-        return self._object.label
+        return self._object.label if self._object is not None else None
+
+    # TODO check this with Bram
+    def set_subject(self, subject):
+        # type: (Entity) -> ()
+        self._subject = subject
+
+    def set_predicate(self, predicate):
+        # type: (Predicate) -> ()
+        self._predicate = predicate
+
+    def set_object(self, object):
+        # type: (Entity) -> ()
+        self._object = object
 
     def casefold(self, format='triple'):
         # type (str) -> ()
@@ -227,8 +241,19 @@ class Triple(object):
         self._predicate.casefold(format)
         self._object.casefold(format)
 
+    def __iter__(self):
+        return iter([('subject', self.subject), ('predicate', self.predicate), ('object', self.object)])
+
     def __repr__(self):
-        return '{}'.format(hash_statement_id([self.subject_name, self.predicate_name, self.object_name]))
+        return '{}'.format(hash_statement_id([self.subject_name
+                                              if self.subject_name is not None
+                                                 and self.subject_name not in ['', Literal('')] else '?',
+                                              self.predicate_name
+                                              if self.predicate_name is not None
+                                                 and self.predicate_name not in ['', Literal('')] else '?',
+                                              self.object_name
+                                              if self.object_name is not None
+                                                 and self.object_name not in ['', Literal('')] else '?']))
 
 
 class Provenance(object):
@@ -779,3 +804,11 @@ class Thoughts(object):
         self._subject_gaps.casefold(format)
         self._object_gaps.casefold(format)
         self._overlaps.casefold(format)
+
+    def __repr__(self):
+        representation = {'statement_novelty': self._statement_novelty, 'entity_novelty': self._entity_novelty,
+                          'negation_conflicts': self._negation_conflicts, 'object_conflict': self._object_conflict,
+                          'subject_gaps': self._subject_gaps, 'object_gaps': self._object_gaps,
+                          'overlaps': self._overlaps}
+
+        return '{}'.format(representation)
