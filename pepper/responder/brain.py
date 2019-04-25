@@ -1,11 +1,12 @@
 from pepper.framework import *
 from pepper import logger
 
-from pepper.language import Utterance, utils
-from pepper.language.generation import phrasing
+from pepper.language import Utterance
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
+from pepper.language.generation.reply import reply_to_question
 
 from .responder import Responder, ResponderType
-from pepper.language import analyze, UtteranceType
+from pepper.language import UtteranceType
 
 import re
 
@@ -28,25 +29,23 @@ class BrainResponder(Responder):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
 
         try:
+            utterance.analyze()
 
-            template = analyze(utterance.chat)
+            self._log.debug("TRIPLE: {}".format(utterance.triple))
 
-            self._log.debug("TEMPLATE: {}".format(template))
+            if utterance.type == UtteranceType.QUESTION:
+                brain_response = app.brain.query_brain(utterance)
+                reply = reply_to_question(brain_response)
+            else:
+                brain_response = app.brain.update(utterance)
+                reply = phrase_thoughts(brain_response, True, True)
 
-            if isinstance(template, dict):
-                if template["utterance_type"] == UtteranceType.QUESTION:
-                    brain_response = app.brain.query_brain(template)
-                    reply = utils.reply_to_question(brain_response, [])
-                else:
-                    brain_response = app.brain.update(template)
-                    reply = phrasing.phrase_update(brain_response, True, True)
+            self._log.debug("REPLY: {}".format(reply))
 
-                self._log.debug("REPLY: {}".format(reply))
-
-                if (isinstance(reply, str) or isinstance(reply, unicode)) and reply != "":
-                    # Return Score and Response
-                    # Make sure to not execute the response here, but just to return the response function
-                    return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
+            if (isinstance(reply, str) or isinstance(reply, unicode)) and reply != "":
+                # Return Score and Response
+                # Make sure to not execute the response here, but just to return the response function
+                return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
 
         except Exception as e:
             self._log.error(e)

@@ -1,5 +1,5 @@
-from .language import Chat, Utterance, UtteranceType
-from .analyzer import analyze
+from .language import Chat, Utterance
+from .utils.atoms import UtteranceType
 
 
 # Download NLTK Dependencies

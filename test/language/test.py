@@ -1,39 +1,30 @@
 from pepper.language import *
 from pepper.brain import LongTermMemory
 from pepper.framework import UtteranceHypothesis
-from pepper.language import utils
-
-
-
+from pepper.language.generation.reply import reply_to_question, reply_to_statement
 
 
 def test():
-    utterances = ["who is your best friend"]
-    # "I am Bill", "Who am I?", "I hate rainy weather", "What do I hate?","What do you like?",  "who loves my apartment"
+    utterances = ["Who is from London", "I am Bill", "Who am I?", "I hate rainy weather", "What do I hate?",
+                  "What do you like?"]
     chat = Chat("Lenka", None)
     brain = LongTermMemory()
     for utterance in utterances:
         chat.add_utterance([UtteranceHypothesis(utterance, 1.0)], False)
-        print(utterance)
-        template = analyze(chat)
+        chat.last_utterance.analyze()
 
-        if type(template)==str:
-            print(template)
-            break
-
-        elif template["utterance_type"]== language.UtteranceType.QUESTION:
-            brain_response = brain.query_brain(template)
-            reply = utils.reply_to_question(brain_response, [])
+        if chat.last_utterance.type == language.UtteranceType.QUESTION:
+            brain_response = brain.query_brain(chat.last_utterance)
+            reply = reply_to_question(brain_response, [])
         else:
-            brain_response = brain.update(template)
-            reply = utils.reply_to_statement(brain_response, chat.speaker, [], brain)
+            brain_response = brain.update(chat.last_utterance)
+            reply = reply_to_statement(brain_response, chat.speaker, brain)
 
         print(brain_response)
+        # print(reply)
 
-        print(reply)
-
-        print('\n\n')
     return
+
 
 if __name__ == "__main__":
     test()

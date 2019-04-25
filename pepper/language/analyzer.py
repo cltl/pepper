@@ -1,10 +1,11 @@
-from .language import UtteranceType
 from .ner import NER
-from . import utils
+from .utils.helper_functions import lemmatize, dereference_pronouns, find, get_node_label
+from .utils.atoms import UtteranceType
 import wordnet_utils as wu
 
 from pepper import logger
 
+import urllib
 import json
 import os
 
@@ -69,7 +70,6 @@ class Analyzer(object):
             else:
                 print("Error: ", sentence_type)
 
-
     @property
     def chat(self):
         """
@@ -119,8 +119,8 @@ class Analyzer(object):
         perspective: dict or None
         """
 
-
         return None
+
 
 class StatementAnalyzer(Analyzer):
     """Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function"""
@@ -173,6 +173,7 @@ class StatementAnalyzer(Analyzer):
         """
         raise NotImplementedError()
 
+
 class GeneralStatementAnalyzer(StatementAnalyzer):
     def __init__(self, chat):
         """
@@ -188,21 +189,17 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
         rdf = {'subject': '', 'predicate': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
-        print(cons)
 
         rdf['subject'] = cons[0]['raw']
 
-        if len(cons)>2 and cons[2]['label'] == 'PP':
-
-            if not utils.find(cons[0]['raw'].lower(),self.GRAMMAR,'pos'):
-                pp = cons[2]['raw'].split()[0]
-                remainder = ''
-                for rest in cons[2]['raw'].split()[1:]:
-                    remainder += rest + ' '
-                rdf['predicate'] = utils.lemmatize(cons[1]['raw'],'v') + '-' + pp
-                #print('trying to lemmatize ', cons[1]['raw'], utils.lemmatize(cons[1]['raw'],'v'))
-                rdf['object'] = remainder.strip()
-
+        if len(cons) > 2 and cons[2]['label'] == 'PP':
+            pp = cons[2]['raw'].split()[0]
+            remainder = ''
+            for rest in cons[2]['raw'].split()[1:]:
+                remainder += rest + ' '
+            rdf['predicate'] = lemmatize(cons[1]['raw'], 'v') + '-' + pp
+            # print('trying to lemmatize ', cons[1]['raw'], utils.lemmatize(cons[1]['raw'],'v'))
+            rdf['object'] = remainder.strip()
 
         else:
             if cons[1]['label'] == 'MOD':
@@ -217,35 +214,28 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                             else:
                                 rdf['predicate'] = eli.leaves()[0]
 
-            elif len(cons)>2 and cons[2]['label'] == 'CP': #recursive parse?
+            elif cons[2]['label'] == 'CP':  # recursive parse?
                 rdf['predicate'] += ' ' + cons[2]['raw'].split()[1]
                 for el in cons[2]['raw'].split()[2:]:
-                    rdf['object'] += el+' '
+                    rdf['object'] += el + ' '
                 rdf['subject'] = cons[2]['raw'].split()[0]
 
-            elif '-' not in rdf['predicate'] and len(rdf['predicate'].split())==1:
-                rdf['predicate'] = utils.lemmatize(cons[1]['raw'])
+            elif '-' not in rdf['predicate'] and len(rdf['predicate'].split()) == 1:
+                rdf['predicate'] = lemmatize(cons[1]['raw'])
 
             else:
 
-                rdf['predicate'] = utils.lemmatize(cons[1]['raw'])
+                rdf['predicate'] = lemmatize(cons[1]['raw'])
 
-            if len(cons) > 2 and rdf['object']=='':
+            if len(cons) > 2 and rdf['object'] == '':
                 rdf['object'] = cons[2]['raw']
 
-
-        if len(rdf['subject'].split())>0:
+        if len(rdf['subject'].split()) > 0:
             pos = rdf['subject'].split()[0]
-            entry = utils.find(pos.lower(),self.GRAMMAR, typ='pos')
-            if entry and 'person' in entry and entry['person']=='first':
-                if len(rdf['predicate'].split('-'))>1:
-                    rdf['object']=rdf['predicate'].split('-')[1]+'-'+rdf['object']
-                rdf['predicate']=''
-                for el in rdf['subject'].split()[1:]:
-                    rdf['predicate'] += el+'-'
-                rdf['predicate']+='is'
+            entry = find(pos.lower(), self.GRAMMAR, typ='pos')
+            if entry and 'person' in entry and entry['person'] == 'first':
+                rdf['predicate'] = rdf['subject'].split()[1] + '-is'
                 rdf['subject'] = chat.speaker
-
 
         '''
         interpret_elements(cons)
@@ -256,11 +246,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         self._perspective = perspective
         '''
 
-        rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
-        print(rdf)
+        rdf = dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         self._rdf = rdf
-        
-
 
     @property
     def rdf(self):
@@ -279,6 +266,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         perspective: dict or None
         """
         return self._perspective
+
 
 class ObjectStatementAnalyzer(StatementAnalyzer):
     def __init__(self, chat):
@@ -352,6 +340,7 @@ class QuestionAnalyzer(Analyzer):
         """
         raise NotImplementedError()
 
+
 class WhQuestionAnalyzer(QuestionAnalyzer):
     def __init__(self, chat):
         """
@@ -367,79 +356,54 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
 
-        print('cons ', cons)
-
-        for el in cons:
-            #print(el, cons[el])
-            if cons[el]['label'].startswith('V'):
-                if rdf['predicate'] and rdf['predicate']!='do':
-                    rdf['object'] = cons[el]['raw']
+        # Main setting of things
+        for key, elem in cons.items():
+            if elem['label'].startswith('V'):
+                if rdf['predicate'] and rdf['predicate'] != 'do':
+                    rdf['object'] = elem['raw']
                 else:
-                    rdf['predicate'] = cons[el]['raw']
+                    rdf['predicate'] = elem['raw']
 
-            if cons[el]['label'] == 'PP':
-                if 'structure' in cons[el]:
-                    tree = cons[el]['structure']
+            if elem['label'] == 'PP':
+                if 'structure' in elem:
+                    tree = elem['structure']
                     for branch in tree:
                         for node in branch:
-                            #print(node.label())
                             if node.label().startswith('N'):
                                 rdf['subject'] = node.leaves()[0]
-                            if node.label()=='IN':
+                            if node.label() == 'IN':
                                 rdf['predicate']+='-'+node.leaves()[0]
 
-            elif cons[el]['label'] == 'NP':
-                if el!=len(cons)-1:
-                    rdf['subject'] = cons[el]['raw']
+            elif elem['label'] == 'NP':
+                if key != len(cons) - 1:
+                    rdf['subject'] = elem['raw']
                 else:
-                    rdf['object'] = cons[el]['raw']
+                    rdf['object'] = elem['raw']
 
-        #analyze_predicate(rdf['predicate'], self.GRAMMAR)
+        # Fixes
+        if find(rdf['object'], self.GRAMMAR, 'verb'):
+            rdf['object'] = ''
+        elif rdf['predicate'] == 'do':
+            rdf['predicate'] = rdf['object']
+            rdf['object'] = ''
 
+        if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who':
+            rdf['subject'] = rdf['object'].split()[0]
+            rdf['predicate'] = 'be-' + rdf['object'].split()[1]
+            rdf['object'] = ''
 
-        if len(cons[2]['raw'])>2 and len(cons[2]['raw'].split()) > 1:
-            if utils.find(cons[2]['raw'].split()[0], self.GRAMMAR, 'pos'):
-                print('JESAM', rdf['predicate'])
-                if utils.find(rdf['predicate'], self.GRAMMAR, 'to_be'):
-                    print('i ovde')
-                    rdf['subject'] = utils.fix_pronouns(utils.find(rdf['object'].split()[0], self.GRAMMAR, 'pos'), chat.speaker)
-                    rdf['predicate']=''
-                    for el in rdf['object'].split()[1:]:
-                        rdf['predicate']+=el+'-'
-                    rdf['predicate']+='is'
-                    rdf['object']=''
+        if rdf['object'] == 'from':
+            rdf['object'] = ''
+            rdf['predicate'] = 'be-from'
 
-        rdf['predicate'] = utils.lemmatize(rdf['predicate'], 'v')
+        if '-' in rdf['predicate'] and rdf['predicate'].split('-')[1] == 'from':
+            rdf['predicate'] = 'be-from'
 
-        print('RDF ', rdf)
-
-        if utils.find(rdf['object'],self.GRAMMAR,'verb'):
-            rdf['object']=''
-
-        elif rdf['predicate']=='do':
-            rdf['predicate']=rdf['object']
-            rdf['object']=''
-
-        if rdf['subject']=='' and self.chat.last_utterance.tokens[0].lower() not in ['who','what']:
-            rdf['subject']=rdf['object'].split()[0]
-            rdf['predicate'] = 'be-'+rdf['object'].split()[1]
-            rdf['object']=''
-
-        elif rdf['object']=='' and self.chat.last_utterance.tokens[0].lower() == 'who':
+        if cons[0]['raw'].lower() == 'who':
             rdf['object'] = rdf['subject']
             rdf['subject'] = ''
 
-
-
-        if '-' in rdf['predicate'] and rdf['predicate'].split('-')[1]=='from':
-            rdf['predicate']='be-from'
-
-        if cons[0]['raw'].lower()=='who':
-            rdf['object'] = rdf['subject']
-            rdf['subject']=''
-        #interpret_elements(cons)
-        rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
-        print('final rdf', rdf)
+        rdf = dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         self._rdf = rdf
 
     @property
@@ -451,6 +415,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         """
         return self._rdf
 
+
 def analyze_predicate(predicate, lexicon):
     sent = {}
     cert = {}
@@ -458,23 +423,23 @@ def analyze_predicate(predicate, lexicon):
 
     for word in predicate.split():
         if word == 'not':
-            polarity=-1
-        word = utils.lemmatize(word)
-        entry = utils.find(word, lexicon, 'verb')
+            polarity = -1
+        word = lemmatize(word)
+        entry = find(word, lexicon, 'verb')
         if entry:
             if 'sentiment' in entry:
                 sent[word] = entry['sentiment']
             if 'certainty' in entry:
                 cert[word] = entry['certainty']
 
-    S = calculate_sentiment(sent)*polarity
+    S = calculate_sentiment(sent) * polarity
     C = calculate_certainty(cert)
     perspective = {'sentiment': S, 'certainty': C, 'polarity': polarity}
 
-    if polarity==-1:
+    if polarity == -1:
         p = ''
         for word in predicate.split()[2:]:
-            p+=word+' '
+            p += word + ' '
         p = p.strip()
         perspective['fix'] = p
 
@@ -484,16 +449,17 @@ def analyze_predicate(predicate, lexicon):
 def calculate_certainty(cert):
     C = 1
     for el in cert:
-        C*=cert[el]
+        C *= cert[el]
     return C
+
 
 def calculate_sentiment(sent):
     if not len(sent):
-        S=0
+        S = 0
     else:
-        S=1
+        S = 1
         for el in sent:
-            S*=sent[el]
+            S *= sent[el]
     return S
 
 
@@ -514,9 +480,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         cons = self.chat.last_utterance.parser.constituents
 
         for el in cons:
-            print(el, cons[el])
-
-            if cons[el]['label'].startswith('V') or cons[el]['label']=='MD':
+            if cons[el]['label'].startswith('V') or cons[el]['label'] == 'MD':
                 if rdf['predicate']:
                     if rdf['predicate'].lower() not in self.GRAMMAR['verbs']['auxiliaries']['to do']:
                         rdf['object'] = cons[el]['raw']
@@ -527,17 +491,14 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
             if 'structure' in cons[el]:
                 tree = cons[el]['structure']
-                print(tree)
 
-            if cons[el]['label'].startswith('N') or cons[el]['label']=='PRP':
+            if cons[el]['label'].startswith('N') or cons[el]['label'] == 'PRP':
                 if rdf['subject']:
                     rdf['object'] = cons[el]['raw']
                 else:
                     rdf['subject'] = cons[el]['raw']
 
-
-
-        rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
+        rdf = dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         self._rdf = rdf
 
     @property
@@ -555,12 +516,12 @@ def interpret_elements(cons):
         # wordnet lookup
         if 'structure' in cons[el]:
             for word in cons[el]['raw'].split():
-                label = utils.get_node_label(cons[el]['structure'], word)
-                print('node label ',label)
+                label = get_node_label(cons[el]['structure'], word)
+                print('node label ', label)
                 syn = wu.get_synsets(word, label)
                 if syn: print(wu.get_lexname(syn[0]))
                 print(get_uri(word))
-                #print(utils.get_uri(word))
+                # print(utils.get_uri(word))
         else:
             word = cons[el]['raw']
             label = cons[el]['label']
@@ -572,11 +533,7 @@ def interpret_elements(cons):
         # TODO DBpedia lookup
 
 
-import urllib
-import json
-
 def dbp_query(q, baseURL, format="application/json"):
-
     print('LOOKING UP: ', q)
     params = {
         "default-graph": "",
@@ -616,31 +573,3 @@ for ent in doc.ents:
     print(ent.text, ent.label_, uri)
 '''
 
-def analyze(chat):
-    analyzer = Analyzer.analyze(chat)
-
-    if not analyzer:
-        return "I cannot parse your input"
-
-    Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
-
-    if analyzer.utterance_type == UtteranceType.STATEMENT:
-        if not utils.check_rdf_completeness(analyzer.rdf):
-            #TODO intransitive verbs
-            Analyzer.LOG.debug('incomplete statement RDF')
-            return
-
-    template = utils.write_template(chat.speaker, analyzer.rdf, chat.id, chat.last_utterance.turn,
-                                    analyzer.utterance_type)
-
-    '''
-    if analyzer.utterance_type == UtteranceType.STATEMENT:
-        perspective = analyzer.perspective
-        print(perspective)
-        for el in perspective:
-            if el!='fix':
-                template[el] = perspective[el]
-    '''
-
-    print(template)
-    return template

@@ -1,4 +1,0 @@
-select distinct ?o where {
-            ?s a ?o .
-            FILTER(regex(str(?o), "n2mu")) .
-        } ORDER BY (str(?p))
