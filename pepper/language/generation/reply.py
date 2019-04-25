@@ -1,5 +1,16 @@
 
-def fix_predicate_morphology(predicate):
+def fix_predicate_morphology(subject, predicate):
+    """
+    Conjugation
+    Parameters
+    ----------
+    subject
+    predicate
+
+    Returns
+    -------
+
+    """
     new_predicate = ''
     for el in predicate.split():
         if el != 'is':

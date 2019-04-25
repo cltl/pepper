@@ -6,13 +6,13 @@ from pepper.knowledge.sentences import UNDERSTAND, NEW_KNOWLEDGE, EXISTING_KNOWL
     TRUST, NO_TRUST
 
 
-def replace_pronouns(author, speaker, subject):
-    if speaker.lower() in [subject.lower(), 'speaker'] or subject == 'Speaker':
+def replace_pronouns(speaker, entity_label, author=''):
+    if speaker.lower() in [entity_label.lower(), 'speaker'] or entity_label == 'Speaker':
         pronoun = 'you'
-    elif subject.lower() == 'leolani':
+    elif entity_label.lower() == 'leolani':
         [pronoun] = 'I'
     else:
-        pronoun = subject.title()
+        pronoun = entity_label.title()
 
     return pronoun
 
@@ -103,6 +103,8 @@ def _phrase_type_novelty(novelties, utterance):
     entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
     novelty = novelties.subject if entity_role == 'subject' else novelties.object
 
+    entity_label = replace_pronouns(utterance.chat_speaker, entity_label)
+
     if novelty:
         say = random.choice(NEW_KNOWLEDGE)
         say += ' I have never heard about %s before!' % entity_label
@@ -183,6 +185,7 @@ def _phrase_object_gaps(all_gaps, utterance):
 def _phrase_overlaps(all_overlaps, utterance):
     entity_role = random.choice(['subject', 'object'])
     overlaps = all_overlaps.subject if entity_role == 'subject' else all_overlaps.object
+    predicate = fix_predicate_morphology(utterance.triple.predicate_name)
 
     if not overlaps and entity_role == 'subject':
         say = random.choice(HAPPY)
@@ -233,7 +236,19 @@ def phrase_trust(trust):
 
 
 def phrase_thoughts(update, proactive=True, persist=False):
+    """
+    Phrase a random thought
+    Parameters
+    ----------
+    update
+    proactive
+    persist
 
+    Returns
+    -------
+
+    """
+    # TODO conjugate through fix predicate
     options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
 
     if proactive:
