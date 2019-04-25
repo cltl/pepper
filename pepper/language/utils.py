@@ -57,7 +57,9 @@ def fix_contractions(words):
 
     if words[1] == 'm': words[1] = 'am'
     if words[1] == 're': words[1] = 'are'
-    if words[1] == 's': words[1] = 'is'
+    if words[1] == 's':
+        if words[2] in ['a','an','the']: #determiner, adjective, verb
+            words[1] = 'is'
 
     return words
 
@@ -171,7 +173,7 @@ def reply_to_question(brain_response, viewed_objects):
                 say += response['slabel']['value']
 
 
-        if 'subject' in brain_response['question'] and brain_response['question']['subject']['label'].lower() != previous_subject.lower():
+        if 'subject' in brain_response['question'] and brain_response['question']['subject']['label'].lower() != previous_subject.lower() and not brain_response['question']['predicate']['type'].endswith('-is'):
             if brain_response['question']['subject']['label'].lower() == brain_response['question']['author'].lower():
                 person = 'second'
                 say+=' you '
@@ -414,12 +416,17 @@ def extract_roles_from_statement(words, speaker, viewed_objects):
             rdf['object']+=(word+' ')
     return rdf
 
+import transitivity
 
 def check_rdf_completeness(rdf):
-    for el in ['predicate', 'subject', 'object']:
+    for el in ['predicate', 'subject']:
         if not rdf[el] or not len(rdf[el]):
             LOG.warning("Cannot find {} in statement".format(el))
             return False
+
+    #intransitive verbs don't require objects
+    print('trans ',transitivity.get_transitivity(rdf['predicate']))
+
     '''    
     if rdf['predicate'] not in grammar['predicates'] and not rdf['predicate'].endswith('-not'):
         LOG.error('Nonexisting predicate: {}'.format(rdf['predicate']))
@@ -468,9 +475,13 @@ def dereference_pronouns(self, rdf, grammar, speaker):
             for w in rdf[el].split()[2:]:
                 rest+= '-'+ w
             l = find(pos, self.GRAMMAR)
-            if l and 'person' in l:
-                rdf[el] = fix_pronouns(l, speaker)
+            if l and 'person' in l and rdf['predicate'] in grammar['verbs']['to be']:
+                rdf['object'] = rdf['subject']
+                rdf['subject'] = fix_pronouns(l, speaker)
                 rdf['predicate'] = rest+'-is'
+                entry = find(rdf['object'].lower(),grammar)
+                if entry and 'person' in entry:
+                    rdf['object'] = fix_pronouns(entry, speaker)
                 break
 
 
@@ -564,8 +575,10 @@ def find(word, lexicon, typ=None):
                       to_do,
                       modals,
                       lexicals]
+    elif typ=='to_be':
+        categories = [to_be]
 
-    if typ == 'pos':
+    elif typ == 'pos':
         categories = [dep_possessives]
     else:
         categories = [subject_pros,
@@ -636,3 +649,5 @@ def get_uri(string):
         return uris[0]
     else:
         return None
+
+

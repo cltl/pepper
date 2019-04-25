@@ -193,13 +193,16 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         rdf['subject'] = cons[0]['raw']
 
         if len(cons)>2 and cons[2]['label'] == 'PP':
-            pp = cons[2]['raw'].split()[0]
-            remainder = ''
-            for rest in cons[2]['raw'].split()[1:]:
-                remainder += rest + ' '
-            rdf['predicate'] = utils.lemmatize(cons[1]['raw'],'v') + '-' + pp
-            #print('trying to lemmatize ', cons[1]['raw'], utils.lemmatize(cons[1]['raw'],'v'))
-            rdf['object'] = remainder.strip()
+
+            if not utils.find(cons[0]['raw'].lower(),self.GRAMMAR,'pos'):
+                pp = cons[2]['raw'].split()[0]
+                remainder = ''
+                for rest in cons[2]['raw'].split()[1:]:
+                    remainder += rest + ' '
+                rdf['predicate'] = utils.lemmatize(cons[1]['raw'],'v') + '-' + pp
+                #print('trying to lemmatize ', cons[1]['raw'], utils.lemmatize(cons[1]['raw'],'v'))
+                rdf['object'] = remainder.strip()
+
 
         else:
             if cons[1]['label'] == 'MOD':
@@ -214,7 +217,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                             else:
                                 rdf['predicate'] = eli.leaves()[0]
 
-            elif cons[2]['label'] == 'CP': #recursive parse?
+            elif len(cons)>2 and cons[2]['label'] == 'CP': #recursive parse?
                 rdf['predicate'] += ' ' + cons[2]['raw'].split()[1]
                 for el in cons[2]['raw'].split()[2:]:
                     rdf['object'] += el+' '
@@ -235,7 +238,12 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
             pos = rdf['subject'].split()[0]
             entry = utils.find(pos.lower(),self.GRAMMAR, typ='pos')
             if entry and 'person' in entry and entry['person']=='first':
-                rdf['predicate'] = rdf['subject'].split()[1]+'-is'
+                if len(rdf['predicate'].split('-'))>1:
+                    rdf['object']=rdf['predicate'].split('-')[1]+'-'+rdf['object']
+                rdf['predicate']=''
+                for el in rdf['subject'].split()[1:]:
+                    rdf['predicate'] += el+'-'
+                rdf['predicate']+='is'
                 rdf['subject'] = chat.speaker
 
 
@@ -251,6 +259,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         print(rdf)
         self._rdf = rdf
+        
 
 
     @property
@@ -387,22 +396,40 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
         #analyze_predicate(rdf['predicate'], self.GRAMMAR)
 
+
+        if len(cons[2]['raw'])>2 and len(cons[2]['raw'].split()) > 1:
+            if utils.find(cons[2]['raw'].split()[0], self.GRAMMAR, 'pos'):
+                print('JESAM', rdf['predicate'])
+                if utils.find(rdf['predicate'], self.GRAMMAR, 'to_be'):
+                    print('i ovde')
+                    rdf['subject'] = utils.fix_pronouns(utils.find(rdf['object'].split()[0], self.GRAMMAR, 'pos'), chat.speaker)
+                    rdf['predicate']=''
+                    for el in rdf['object'].split()[1:]:
+                        rdf['predicate']+=el+'-'
+                    rdf['predicate']+='is'
+                    rdf['object']=''
+
+        rdf['predicate'] = utils.lemmatize(rdf['predicate'], 'v')
+
+        print('RDF ', rdf)
+
         if utils.find(rdf['object'],self.GRAMMAR,'verb'):
             rdf['object']=''
+
         elif rdf['predicate']=='do':
             rdf['predicate']=rdf['object']
             rdf['object']=''
 
-        if rdf['subject']=='' and self.chat.last_utterance.tokens[0].lower()!='who':
+        if rdf['subject']=='' and self.chat.last_utterance.tokens[0].lower() not in ['who','what']:
             rdf['subject']=rdf['object'].split()[0]
             rdf['predicate'] = 'be-'+rdf['object'].split()[1]
             rdf['object']=''
 
-        print('RDF ',rdf)
+        elif rdf['object']=='' and self.chat.last_utterance.tokens[0].lower() == 'who':
+            rdf['object'] = rdf['subject']
+            rdf['subject'] = ''
 
-        if rdf['object']=='from':
-            rdf['object']=''
-            rdf['predicate']='be-from'
+
 
         #interpret_elements(cons)
         rdf = utils.dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
