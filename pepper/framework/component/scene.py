@@ -5,8 +5,8 @@ import numpy as np
 
 class SceneComponent(AbstractComponent):
 
-    RESOLUTION = 512
-    SAMPLES = 20
+    RESOLUTION = 300
+    SAMPLES = 10
     DEPTH_THRESHOLD = 0.2
 
     def __init__(self, backend):
