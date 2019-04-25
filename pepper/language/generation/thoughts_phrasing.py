@@ -1,14 +1,18 @@
 import random
 
-from pepper.knowledge.sentences import NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
+from pepper.brain.utils.helper_functions import casefold_text
+from pepper.language.generation.reply import fix_predicate_morphology
+from pepper.knowledge.sentences import UNDERSTAND, NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
     TRUST, NO_TRUST
 
 
 def replace_pronouns(author, speaker, subject):
-    pronoun = None
-
-    if subject in ['Leolani', 'leolani']:
-        pronoun = 'I'
+    if speaker.lower() in [subject.lower(), 'speaker'] or subject == 'Speaker':
+        pronoun = 'you'
+    elif subject.lower() == 'leolani':
+        [pronoun] = 'I'
+    else:
+        pronoun = subject.title()
 
     return pronoun
 
@@ -19,7 +23,7 @@ def phrase_all_conflicts(conflicts, speaker=None):
 
     # Conflict of subject
     if len(conflict['objects']) > 1:
-        predicate = casefold(conflict['predicate'], format='natural')
+        predicate = casefold_text(conflict['predicate'], format='natural')
         options = ['%s %s like %s told me' % (predicate, item['value'], item['author']) for item in conflict['objects']]
         options = ' or '.join(options)
         subject = replace_pronouns(conflict['objects'][1]['author'], speaker, conflict['subject'])
@@ -33,7 +37,7 @@ def _phrase_cardinality_conflicts(conflicts, utterance):
 
     # There is no conflict, so just be happy to learn
     if not conflicts:
-        say = random.choice(NEW_KNOWLEDGE)
+        say = random.choice(UNDERSTAND)
 
     # There is a conflict, so we phrase it
     else:
@@ -228,7 +232,7 @@ def phrase_trust(trust):
     return say
 
 
-def phrase_update(update, proactive=True, persist=False):
+def phrase_thoughts(update, proactive=True, persist=False):
 
     options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
 
@@ -264,6 +268,6 @@ def phrase_update(update, proactive=True, persist=False):
         say = _phrase_overlaps(thoughts.overlaps(), utterance)
 
     if persist and say == '':
-        say = phrase_update(update, proactive, persist)
+        say = phrase_thoughts(update, proactive, persist)
 
     return say

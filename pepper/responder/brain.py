@@ -1,11 +1,12 @@
 from pepper.framework import *
 from pepper import logger
 
-from pepper.language import Utterance, utils
-from pepper.language.generation import phrasing
+from pepper.language import Utterance
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
+from pepper.language.generation.reply import reply_to_question
 
 from .responder import Responder, ResponderType
-from pepper.language import analyze, UtteranceType
+from pepper.language import UtteranceType
 
 import re
 
@@ -34,10 +35,10 @@ class BrainResponder(Responder):
 
             if utterance.type == UtteranceType.QUESTION:
                 brain_response = app.brain.query_brain(utterance)
-                reply = utils.reply_to_question(brain_response, [])
+                reply = reply_to_question(brain_response)
             else:
                 brain_response = app.brain.update(utterance)
-                reply = phrasing.phrase_update(brain_response, True, True)
+                reply = phrase_thoughts(brain_response, True, True)
 
             self._log.debug("REPLY: {}".format(reply))
 

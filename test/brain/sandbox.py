@@ -1,4 +1,4 @@
-from pepper.language.generation.phrasing import phrase_update
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.brain import LongTermMemory, RdfBuilder
 from pepper.language import Chat, Utterance
 from pepper.framework import UtteranceHypothesis
@@ -37,56 +37,79 @@ brain = LongTermMemory()
 
 conlficts = brain.get_all_conflicts()
 
-capsule_serbia = {  # lenka saw a dog
+capsule_knows = {  # dimitris knows piek
         "subject": {
             "label": "dimitris",
             "type": "person"
         },
         "predicate": {
-            "type": "knows"
+            "type": "know"
         },
         "object": {
             "label": "piek",
             "type": "person"
         },
-        "author": "selene",
+        "author": "dimitris",
         "chat": 1,
         "turn": 1,
         "position": "0-25",
         "date": date(2018, 3, 19)
     }
 
-# capsule_serbia = {  # bram is from mongolia
-#         "subject": {
-#             "label": "bram",
-#             "type": "person"
-#         },
-#         "predicate": {
-#             "type": "is_from"
-#         },
-#         "object": {
-#             "label": "mongolia",
-#             "type": "location"
-#         },
-#         "author": "selene",
-#         "chat": 1,
-#         "turn": 1,
-#         "position": "0-25",
-#         "date": date(2018, 3, 19)
-#     }
+capsule_is_from = {  # bram is from mongolia
+        "subject": {
+            "label": "bram",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "be-from"
+        },
+        "object": {
+            "label": "mongolia",
+            "type": "location"
+        },
+        "author": "bram",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 19)
+    }
 
-# capsule_serbia = { # human likes pizza
-#     u'predicate': {u'type': u'like'},
-#     u'chat': 490254330820530247757705225416035124L,
-#     u'author': u'Human',
-#     u'object': {u'type': u'', u'id': u'', u'label': u'pizza'},
-#     u'turn': 6,
-#     u'utterance_type': 'STATEMENT',
-#     u'date': date(2019, 3, 29), u'position': u'',
-#     u'response': {u'role': u'', u'format': u''},
-#     u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
+capsule_likes = { # human likes pizza
+    u'predicate': {u'type': u'like'},
+    u'chat': 490254330820530247757705225416035124L,
+    u'author': u'Human',
+    u'object': {u'type': u'', u'id': u'', u'label': u'pizza'},
+    u'turn': 6,
+    u'utterance_type': 'STATEMENT',
+    u'date': date(2019, 3, 29), u'position': u'',
+    u'response': {u'role': u'', u'format': u''},
+    u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
 
-capsule_serbia = transform_capsule(capsule_serbia)
+capsules = [capsule_knows, capsule_is_from, capsule_likes]
 
-x = brain.update(capsule_serbia)
-print(phrase_update(x, True, True))
+for capsule in capsules:
+    capsule = transform_capsule(capsule)
+
+    x = brain.update(capsule)
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))

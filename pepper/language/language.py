@@ -219,6 +219,7 @@ class Utterance(object):
 
         self._datetime = datetime.now()
         self._chat = chat
+        self._chat_speaker = self._chat.speaker
         self._turn = turn
         self._me = me
 
@@ -228,9 +229,8 @@ class Utterance(object):
 
         self._parser = None if self.me else Parser(self)
         # analyze sets triple, perspective and type
-        self._type = 'Statement'  # UtteranceType.STATEMENT # TODO do not keep this hard coded
-
         # TODO Check this with Bram, currently we initialize with None and have set methods
+        self._type = UtteranceType.STATEMENT  # TODO do not keep this hard coded
         self._triple = None
         self._perspective = None
 
@@ -254,7 +254,7 @@ class Utterance(object):
         speaker: str
             Name of speaker (a.k.a. the person Pepper has a chat with)
         """
-        return self._chat.speaker
+        return self._chat_speaker
 
     @property
     def context(self):
@@ -487,6 +487,7 @@ class Utterance(object):
 
         """
         self._triple.casefold(format)
+        self._chat_speaker = casefold_text(self.chat_speaker, format)
 
     def _choose_hypothesis(self, hypotheses):
         return sorted(self._patch_names(hypotheses), key=lambda hypothesis: hypothesis.confidence, reverse=True)[0]

@@ -1,7 +1,7 @@
 from pepper.language import *
 from pepper.brain import LongTermMemory
 from pepper.framework import UtteranceHypothesis
-from pepper.language import utils
+from pepper.language.generation.reply import reply_to_question, reply_to_statement
 
 
 def test():
@@ -15,10 +15,10 @@ def test():
 
         if chat.last_utterance.type == language.UtteranceType.QUESTION:
             brain_response = brain.query_brain(chat.last_utterance)
-            # reply = utils.reply_to_question(brain_response, [])
+            reply = reply_to_question(brain_response, [])
         else:
             brain_response = brain.update(chat.last_utterance)
-            # reply = utils.reply_to_statement(brain_response, chat.speaker, [], brain)
+            reply = reply_to_statement(brain_response, chat.speaker, brain)
 
         print(brain_response)
         # print(reply)
