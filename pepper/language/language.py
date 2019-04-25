@@ -19,6 +19,7 @@ from random import getrandbits
 from datetime import datetime
 import enum
 import os
+import utils
 
 from typing import List, Optional
 
@@ -549,7 +550,7 @@ class Utterance(object):
         """
 
         tokens_raw = transcript.replace("'", " ").split() # TODO possessive
-        dict = {'m': 'am', 're': 'are', 'll': 'will', 's': 'is'}
+        dict = {'m': 'am', 're': 'are', 'll': 'will'}
         for key in dict:
             if key in tokens_raw:
                 index = tokens_raw.index(key)
@@ -575,6 +576,13 @@ class Utterance(object):
                 index = tokens_raw.index('doesn')
                 tokens_raw.remove('doesn')
                 tokens_raw.insert(index, 'does')
+
+        if 's' in tokens_raw:
+            index = tokens_raw.index('s')
+            tag = utils.pos_tag([tokens_raw[index+1]])
+            if tag[0][1] in ['DT','JJ','IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
+                tokens_raw.remove('s')
+                tokens_raw.insert(index, 'is')
 
         '''
         tokens = []
