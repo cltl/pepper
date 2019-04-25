@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello Pepper</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
+    <script>function require(){ return THREE; }</script>
+    <script src="https://cdn.jsdelivr.net/npm/three-orbitcontrols@2.102.1/OrbitControls.min.js"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
         canvas {
@@ -30,6 +34,12 @@
 
 <script>
 
+WIDTH = 4; HEIGHT = 3;
+
+camera_canvas = $("#camera_canvas");
+scatter_canvas = $("#scatter_canvas");
+var renderer;
+
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   if (w < 2 * r) r = w / 2;
   if (h < 2 * r) r = h / 2;
@@ -47,18 +57,14 @@ function scale_canvas(canvas, w, h) {
     if (window.innerWidth/w < window.innerHeight/h) {
         canvas.width(window.innerWidth);
         canvas.height(window.innerWidth/w*h);
+        if (renderer) renderer.setSize(window.innerWidth, window.innerWidth/w*h);
     }
     else {
         canvas.height(window.innerHeight);
         canvas.width(window.innerHeight/h*w);
+        if (renderer) renderer.setSize(window.innerHeight/h*w, window.innerHeight);
     }
 }
-
-
-WIDTH = 4; HEIGHT = 3;
-
-camera_canvas = $("#camera_canvas");
-scatter_canvas = $("#scatter_canvas");
 
 // Scale Canvas on window Resize
 $(window).resize(function() {
@@ -84,15 +90,15 @@ $(function() {
 
     // -- Initialize Scatter Plot Context -- //
     var scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xdddddd );
+    scene.background = new THREE.Color( 0xaaaaaa );
 
     var camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100);
     camera.position.z = -5;
-    camera.position.y = 1.8;
+    camera.position.y = 2;
     camera.position.x = 0;
     camera.lookAt(0, 1, 0);
 
-    var renderer = new THREE.WebGLRenderer({canvas: scatter_canvas[0]});
+    renderer = new THREE.WebGLRenderer({canvas: scatter_canvas[0]});
     renderer.setSize(width, height);
 
     var grid = new THREE.GridHelper(20, 20);
@@ -101,33 +107,16 @@ $(function() {
     var plot = new THREE.Object3D();
     scene.add(plot);
 
-    var material = new THREE.PointsMaterial({size: 0.04, vertexColors: true});
+    var material = new THREE.PointsMaterial({size: 0.08, vertexColors: true});
 
     var down = false;
     var sx = 0, sy = 0;
 
-    window.onmousedown = function(ev) {
-        down = true;
-        sx = ev.clientX;
-        sy = ev.clientY;
-    };
-    window.onmouseup = function() {
-        down = false;
-    };
-    window.onmousemove = function(ev) {
-        if (down) {
-            var dx = ev.clientX - sx;
-            var dy = ev.clientY - sy;
-            plot.rotation.y += dx * 0.01;
-            camera.position.y += dy * 0.01;
-            sx += dx;
-            sy += dy;
-        }
-    }
+    var controls = new THREE.OrbitControls( camera, renderer.domElement );
 
     function animate() {
         requestAnimationFrame( animate );
-
+        controls.update();
         renderer.render( scene, camera );
     }
     animate();

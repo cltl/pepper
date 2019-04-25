@@ -114,7 +114,8 @@ class NAOqiCamera(AbstractCamera):
                                               angle_left - yaw,
                                               angle_top + pitch)
 
-                self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))
+                if image_rgb is not None and image_bounds is not None:
+                    self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))
 
                 # Maintain frame rate
                 sleep(max(0, 1. / self.rate - (time() - t0)))

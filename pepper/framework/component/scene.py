@@ -5,9 +5,10 @@ import numpy as np
 
 class SceneComponent(AbstractComponent):
 
-    RESOLUTION = 300
-    SAMPLES = 10
-    DEPTH_THRESHOLD = 0.2
+    RESOLUTION = 256
+    SAMPLES = 5
+    DEPTH_THRESHOLD = 0.5
+    VARIANCE_THRESHOLD = 0.5
 
     def __init__(self, backend):
         super(SceneComponent, self).__init__(backend)
@@ -34,21 +35,31 @@ class SceneComponent(AbstractComponent):
 
     @property
     def scatter_map(self):
-        indices = self.depth_map[..., -1] > self.DEPTH_THRESHOLD
 
-        if np.mean(indices):
-            depth = np.mean(self._depth_map[indices], 1)
-            color = np.mean(self._color_map[indices], 1)
-            phi = self._phi_map[indices]
-            theta = self._theta_map[indices]
+        # Get Per Pixel Min and Max Depth
+        min_depth = np.min(self._depth_map, -1)
+        max_depth = np.max(self._depth_map, -1)
 
-            # Spherical to Cartesian Coordinates
+        # Only draw pixels further than DEPTH_THRESHOLD, with less variance as VARIANCE_THRESHOLD
+        valid = np.logical_and(min_depth > self.DEPTH_THRESHOLD, max_depth - min_depth < self.VARIANCE_THRESHOLD)
+
+        if np.mean(valid):
+
+            # Get valid pixels to draw (and average depth and color samples)
+            depth = np.mean(self._depth_map[valid], 1)
+            color = np.mean(self._color_map[valid], 1)
+            phi = self._phi_map[valid]
+            theta = self._theta_map[valid]
+
+            # Convert Spherical Coordinates to Cartesian Coordinates
             x = depth * np.sin(theta) * np.cos(phi)
             z = depth * np.sin(theta) * np.sin(phi)
             y = depth * np.cos(theta)
 
-            return x - np.mean(x), y + 1.1, z - np.mean(z), color
+            # Return Centered Cartesian Coordinates and Color
+            return x - np.mean(x), y - np.min(y), z - np.mean(z), color
 
+        # Return Empty Result
         return np.array([]), np.array([]), np.array([]), np.array([])
 
     def on_image(self, image):
