@@ -209,7 +209,10 @@ class Bounds(object):
 
         intersection = self.intersection(other)
 
-        return min(intersection.area / self.area, self.area / intersection.area)
+        if intersection:
+            return min(intersection.area / self.area, self.area / intersection.area)
+        else:
+            return 0.0
 
     def is_subset_of(self, other):
         """
