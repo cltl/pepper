@@ -67,41 +67,47 @@ class LongTermMemory(BasicBrain):
             in the triple store
 
         """
-        # Casefold
-        utterance.casefold(format='triple')
+        if utterance.triple is not None:
 
-        # Create graphs and triples
-        instance = self._model_graphs_(utterance)
+            # Casefold
+            utterance.casefold(format='triple')
 
-        # Check if this knowledge already exists on the brain
-        statement_novelty = self.get_statement_novelty(instance.id)
+            # Create graphs and triples
+            instance = self._model_graphs_(utterance)
 
-        # Check how many items of the same type as subject and object we have
-        entity_novelty = self._fill_entity_novelty_(utterance.triple.subject.id, utterance.triple.object.id)
+            # Check if this knowledge already exists on the brain
+            statement_novelty = self.get_statement_novelty(instance.id)
 
-        # Find any overlaps
-        overlaps = self.get_overlaps(utterance)
+            # Check how many items of the same type as subject and object we have
+            entity_novelty = self._fill_entity_novelty_(utterance.triple.subject.id, utterance.triple.object.id)
 
-        # Finish process of uploading new knowledge to the triple store
-        data = self._serialize(self._brain_log)
-        code = self._upload_to_brain(data)
+            # Find any overlaps
+            overlaps = self.get_overlaps(utterance)
 
-        # Check for conflicts after adding the knowledge
-        negation_conflicts = self.get_negation_conflicts(utterance)
-        object_conflict = self.get_object_cardinality_conflicts(utterance)
+            # Finish process of uploading new knowledge to the triple store
+            data = self._serialize(self._brain_log)
+            code = self._upload_to_brain(data)
 
-        # Check for gaps, in case we want to be proactive
-        subject_gaps = self.get_entity_gaps(utterance.triple.subject)
-        object_gaps = self.get_entity_gaps(utterance.triple.object)
+            # Check for conflicts after adding the knowledge
+            negation_conflicts = self.get_negation_conflicts(utterance)
+            object_conflict = self.get_object_cardinality_conflicts(utterance)
 
-        # Report trust
-        trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
+            # Check for gaps, in case we want to be proactive
+            subject_gaps = self.get_entity_gaps(utterance.triple.subject)
+            object_gaps = self.get_entity_gaps(utterance.triple.object)
 
-        # Create JSON output
-        thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, object_conflict,
-                            subject_gaps, object_gaps, overlaps, trust)
-        output = {'response': code, 'statement': utterance, 'thoughts': thoughts}
+            # Report trust
+            trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
 
+            # Create JSON output
+            thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, object_conflict,
+                                subject_gaps, object_gaps, overlaps, trust)
+            output = {'response': code, 'statement': utterance, 'thoughts': thoughts}
+
+        else:
+            # Create JSON output
+            thoughts = None
+            output = {'response': None, 'statement': utterance, 'thoughts': thoughts}
         return output
 
     def experience(self, utterance):
@@ -785,10 +791,10 @@ class LongTermMemory(BasicBrain):
     ######################################### Helpers for question processing #########################################
 
     def _create_query(self, utterance):
-        _ = hash_statement_id([utterance.triple.subject_name, utterance.triple.predicate_name, utterance.triple.object_name])
+        empty = self._rdf_builder.fill_literal('')
 
         # Query subject
-        if utterance.triple.subject_name == "":
+        if utterance.triple.subject_name == empty:
             query = """
                 SELECT ?slabel ?authorlabel
                         WHERE { 
@@ -807,7 +813,7 @@ class LongTermMemory(BasicBrain):
                        utterance.triple.predicate_name)
 
         # Query object
-        elif utterance.triple.object_name == "":
+        elif utterance.triple.object_name == empty:
             query = """
                 SELECT ?olabel ?authorlabel
                         WHERE { 
