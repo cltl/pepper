@@ -3,6 +3,7 @@ from pepper.framework import AbstractComponent, AbstractImage
 from cv2 import resize
 import numpy as np
 
+
 class SceneComponent(AbstractComponent):
 
     RESOLUTION = 256

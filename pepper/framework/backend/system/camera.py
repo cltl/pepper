@@ -2,13 +2,16 @@ from pepper.framework.abstract import AbstractCamera, AbstractImage
 from pepper.framework.util import Scheduler, Bounds
 from pepper import CameraResolution
 
+import numpy as np
 import cv2
+
 
 from time import time, sleep
 
 
 class SystemImage(AbstractImage):
-    pass
+    def __init__(self, image, bounds):
+        super(SystemImage, self).__init__(image, bounds, np.ones(image.shape[:2]) * 1000)
 
 
 class SystemCamera(AbstractCamera):
