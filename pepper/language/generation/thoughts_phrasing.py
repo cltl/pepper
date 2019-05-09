@@ -1,20 +1,9 @@
 import random
 
-from pepper.brain.utils.helper_functions import casefold_text
-from pepper.language.generation.reply import fix_predicate_morphology
-from pepper.knowledge.sentences import UNDERSTAND, NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, HAPPY, \
+from pepper.language.generation.phrasing import *
+from pepper.knowledge.sentences import UNDERSTAND, NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, \
+    HAPPY, \
     TRUST, NO_TRUST
-
-
-def replace_pronouns(speaker, entity_label, author=''):
-    if speaker.lower() in [entity_label.lower(), 'speaker'] or entity_label == 'Speaker':
-        pronoun = 'you'
-    elif entity_label.lower() == 'leolani':
-        [pronoun] = 'I'
-    else:
-        pronoun = entity_label.title()
-
-    return pronoun
 
 
 def phrase_all_conflicts(conflicts, speaker=None):
@@ -26,7 +15,8 @@ def phrase_all_conflicts(conflicts, speaker=None):
         predicate = casefold_text(conflict['predicate'], format='natural')
         options = ['%s %s like %s told me' % (predicate, item['value'], item['author']) for item in conflict['objects']]
         options = ' or '.join(options)
-        subject = replace_pronouns(conflict['objects'][1]['author'], speaker, conflict['subject'])
+        subject = replace_pronouns(speaker, author=conflict['objects'][1]['author'], entity_label=conflict['subject'],
+                                   role='subject')
 
         say = say + ' For example, I do not know if %s %s' % (subject, options)
 
@@ -34,7 +24,6 @@ def phrase_all_conflicts(conflicts, speaker=None):
 
 
 def _phrase_cardinality_conflicts(conflicts, utterance):
-
     # There is no conflict, so just be happy to learn
     if not conflicts:
         say = random.choice(UNDERSTAND)
@@ -103,7 +92,7 @@ def _phrase_type_novelty(novelties, utterance):
     entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
     novelty = novelties.subject if entity_role == 'subject' else novelties.object
 
-    entity_label = replace_pronouns(utterance.chat_speaker, entity_label)
+    entity_label = replace_pronouns(utterance.chat_speaker, entity_label=entity_label, role=entity_role)
 
     if novelty:
         say = random.choice(NEW_KNOWLEDGE)
@@ -177,7 +166,8 @@ def _phrase_object_gaps(all_gaps, utterance):
             if '#' in gap.entity_range_name:
                 say += ' What is %s %s?' % (utterance.triple.object_name, gap.predicate_name)
             else:
-                say += ' What other %s was %s %s?' % (gap.entity_range_name, utterance.triple.object_name, gap.predicate_name)
+                say += ' What other %s was %s %s?' % (
+                gap.entity_range_name, utterance.triple.object_name, gap.predicate_name)
 
     return say
 

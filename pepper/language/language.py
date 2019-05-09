@@ -10,6 +10,7 @@ from pepper.brain.utils.rdf_builder import RdfBuilder
 from pepper.brain.utils.response import Triple
 
 from pepper import logger, config
+from nltk import pos_tag
 
 from nltk import CFG, RecursiveDescentParser, edit_distance
 
@@ -19,7 +20,6 @@ from random import getrandbits
 from datetime import datetime
 import enum
 import os
-import utils
 
 from typing import List, Optional
 
@@ -579,7 +579,7 @@ class Utterance(object):
 
         if 's' in tokens_raw:
             index = tokens_raw.index('s')
-            tag = utils.pos_tag([tokens_raw[index+1]])
+            tag = pos_tag([tokens_raw[index+1]])
             if tag[0][1] in ['DT','JJ','IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
                 tokens_raw.remove('s')
                 tokens_raw.insert(index, 'is')

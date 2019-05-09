@@ -117,7 +117,7 @@ class RdfBuilder(object):
 
         return uri
 
-    def fill_literal(self, value, datatype):
+    def fill_literal(self, value, datatype=None):
         """
         Create an RDF literal given its value and datatype
         Parameters
@@ -132,7 +132,7 @@ class RdfBuilder(object):
             Literal with value and datatype given
         """
 
-        return Literal(value, datatype=datatype)
+        return Literal(value, datatype=datatype) if datatype is not None else Literal(value)
 
     def fill_entity(self, label, types, namespace='LW'):
         """

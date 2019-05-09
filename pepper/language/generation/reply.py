@@ -1,26 +1,4 @@
-
-def fix_predicate_morphology(subject, predicate):
-    """
-    Conjugation
-    Parameters
-    ----------
-    subject
-    predicate
-
-    Returns
-    -------
-
-    """
-    new_predicate = ''
-    for el in predicate.split():
-        if el != 'is':
-            new_predicate += el + ' '
-        else:
-            new_predicate += 'are '
-
-    if predicate.endswith('s'): new_predicate = predicate[:-1]
-
-    return new_predicate
+from pepper.language.generation.phrasing import *
 
 
 def reply_to_statement(template, speaker, brain, viewed_objects=[]):
@@ -36,7 +14,7 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
         if subject.lower() == 'leolani':
             subject = 'i'
         else:
-           subject.title()
+            subject.title()
 
     if subject == 'you ':
         predicate = fix_predicate_morphology(predicate)
@@ -97,109 +75,91 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
     return response
 
 
-def reply_to_question(brain_response, viewed_objects=[]):
+def reply_to_question(brain_response):
     say = ''
     previous_author = ''
     previous_subject = ''
     previous_predicate = ''
 
+    utterance = brain_response['question']
+    response = brain_response['response']
+
     '''
-    if 'hack' not in brain_response['question']['object'] and (len(brain_response['response'])==0 or brain_response['question']['predicate']['type'] == 'sees'): #FIX
-        if brain_response['question']['predicate']['type'] == 'sees' and brain_response['question']['subject']['label'] == 'leolani':
-            print(viewed_objects)
-            say = 'I see '
-            for obj in viewed_objects:
-                if len(viewed_objects)>1 and obj == viewed_objects[len(viewed_objects)-1]:
-                    say += ', and a '+obj
-                else:
-                    say+=' a '+obj+', '
-
-            if brain_response['question']['object']['label']:
-                if brain_response['question']['object']['label'].lower() in viewed_objects:
-                    say = 'yes, I can see a ' + brain_response['question']['object']['label']
-                else:
-                    say = 'no, I cannot see a ' + brain_response['question']['object']['label']
-
-        else:
-            return None
-        return say+'\n'
-    '''
-
-    brain_response['response'].sort(key=lambda x: x['authorlabel']['value'])
-
-    previous_response = ''
-    for response in brain_response['response'][:4]:
-
-        # avoid repetition?
-        if response == previous_response:
-            break
-        else:
-            previous_response = response
-
-        person = ''
-        if 'authorlabel' in response and response['authorlabel']['value'] != previous_author:
-            if response['authorlabel']['value'].lower() == brain_response['question']['author'].lower():
-                say += ' you told me '
+    if utterance.triple.predicate_name == 'sees' and utterance.triple.subject_label == 'leolani':
+        print(viewed_objects)
+        say = 'I see '
+        for obj in viewed_objects:
+            if len(viewed_objects)>1 and obj == viewed_objects[len(viewed_objects)-1]:
+                say += ', and a '+obj
             else:
-                say += response['authorlabel']['value'] + ' told me '
-            previous_author = response['authorlabel']['value'].lower()
-        elif 'authorlabel' in response and response['authorlabel']['value'].lower() == previous_author:
-            if brain_response['question']['predicate']['type'] != previous_predicate:
+                say+=' a '+obj+', '
+
+        if utterance.triple.object_label:
+            if utterance.triple.object_label.lower() in viewed_objects:
+                say = 'yes, I can see a ' + utterance.triple.object_label
+            else:
+                say = 'no, I cannot see a ' + utterance.triple.object_label
+    '''
+
+    response.sort(key=lambda x: x['authorlabel']['value'])
+
+    for item in response[:4]:
+        author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
+        subject = replace_pronouns(utterance.chat_speaker, entity_label=utterance.triple.subject_name, role='subject')
+        predicate = utterance.triple.predicate_name
+        person = ''
+
+        # Deal with author
+        if author != previous_author:
+            say += author + ' told me '
+            previous_author = author
+
+        elif author == previous_author:
+            if predicate != previous_predicate:
                 say += ' that '
 
-        print('response', response)
-
-        if not brain_response['question']['predicate']['type'].endswith('-is'):
-
-            if 'slabel' in response:
-                if response['slabel']['value'].lower() == brain_response['question']['author'].lower():
-                    say += 'you'
+        # Deal with normal predicates attributes like can, read, etc
+        if not predicate.endswith('-is'):
+            # Deal with answers to who can fly for example
+            if 'slabel' in item:
+                slabel = replace_pronouns(utterance.chat_speaker, entity_label=item['slabel']['value'], role='subject')
+                if slabel == 'you':
                     person = 'second'
-                elif response['slabel']['value'].lower() == 'leolani' and brain_response['question']['predicate'][
-                                                                              'type'][-3:] != '-is':
-                    say += 'I'
+                elif slabel == 'I':
                     person = 'first'
 
-                elif (response['slabel']['value'].lower() == previous_subject.lower()) or (
-                        response['slabel']['value'].lower() == response['authorlabel']['value'].lower()):
-                    if response['slabel']['value'].lower() in ['bram', 'piek']:
-                        say += 'he'
-                    elif response['slabel']['value'].lower() in ['selene', 'lenka']:
-                        say += 'she'
+                elif (item['slabel']['value'].lower() == previous_subject.lower()) or (
+                        item['slabel']['value'].lower() == item['authorlabel']['value'].lower()):
+                    print('maybe error here')
 
                 else:
-                    say += response['slabel']['value'].lower()
-                    previous_subject = response['slabel']['value'].lower()
+                    previous_subject = item['slabel']['value'].lower()
+                say += slabel
 
-
+        # Deal with attribute predicates like favorite-is, mom-is, etc
         else:
-            print('response', response)
-            if 'olabel' in response:
-                say += response['olabel']['value']
-            elif 'slabel' in response:
-                say += response['slabel']['value']
+            if 'olabel' in item:
+                say += item['olabel']['value']
+            elif 'slabel' in item:
+                say += item['slabel']['value']
 
-        if 'subject' in brain_response['question'] and brain_response['question']['subject'][
-            'label'].lower() != previous_subject.lower():
-            if brain_response['question']['subject']['label'].lower() == brain_response['question']['author'].lower():
+        #
+        if subject.lower() != previous_subject.lower():
+            if subject == 'you':
                 person = 'second'
-                say += ' you '
-            elif brain_response['question']['subject']['label'].lower() == 'leolani':
-                say += ' I '
+            elif subject == 'I':
                 person = 'first'
-            else:
-                say += brain_response['question']['subject']['label'].lower()
-            previous_subject = brain_response['question']['subject']['label'].lower()
+            say += ' {} '.format(subject)
+            previous_subject = subject
 
-        # if brain_response['question']['predicate']['type'] in grammar['predicates']:
-        if brain_response['question']['predicate'][
-            'type'] == previous_predicate:  # and response['slabel'].lower()==previous_subject.lower():
+        # if predicate in grammar['predicates']:
+        if predicate == previous_predicate:  # and response['slabel'].lower()==previous_subject.lower():
             pass
         else:
-            previous_predicate = brain_response['question']['predicate']['type']
-            if brain_response['question']['predicate']['type'] == 'sees':
+            previous_predicate = predicate
+            if predicate == 'sees':
                 say += ' saw'
-            elif brain_response['question']['predicate']['type'] == 'be-from':
+            elif predicate == 'be-from':
                 if person == 'first':
                     say += ' am from '
                 elif person == 'second':
@@ -207,39 +167,37 @@ def reply_to_question(brain_response, viewed_objects=[]):
                 else:
                     say += ' is from '
 
-            elif brain_response['question']['predicate']['type'].endswith('-is'):
+            elif predicate.endswith('-is'):
                 say += ' is '
-                print(brain_response['question']['object']['label'].lower())
-                if brain_response['question']['object']['label'].lower() == brain_response['question'][
-                    'author'].lower() or \
-                        brain_response['question']['subject']['label'].lower() == brain_response['question'][
-                    'author'].lower():
+                print(utterance.triple.object_label.lower())
+                if utterance.triple.object_label.lower() == utterance.chat_speaker.lower() or \
+                        utterance.triple.subject_label.lower() == utterance.chat_speaker.lower():
                     say += ' your '
-                elif brain_response['question']['object']['label'].lower() == 'leolani' or \
-                        brain_response['question']['subject']['label'].lower() == 'leolani':
+                elif utterance.triple.object_label.lower() == 'leolani' or \
+                        utterance.triple.subject_label.lower() == 'leolani':
                     say += ' my '
-                say += brain_response['question']['predicate']['type'][:-3]
+                say += predicate[:-3]
 
                 return say
 
 
             else:
-                if person in ['first', 'second'] and brain_response['question']['predicate']['type'].endswith('s'):
-                    say += ' ' + brain_response['question']['predicate']['type'][:-1] + ' '
+                if person in ['first', 'second'] and predicate.endswith('s'):
+                    say += ' ' + predicate[:-1] + ' '
                 else:
-                    say += ' ' + brain_response['question']['predicate']['type'] + ' '
+                    say += ' ' + predicate + ' '
 
-        if 'olabel' in response:
-            say += response['olabel']['value']
-        elif 'object' in brain_response['question'].keys():
-            if brain_response['question']['object']['label'].lower() == brain_response['question']['author'].lower():
+        if 'olabel' in item:
+            say += item['olabel']['value']
+        elif 'object' in utterance.keys():
+            if utterance.triple.object_label.lower() == utterance.chat_speaker.lower():
                 say += ' you'
-            elif brain_response['question']['object']['label'].lower() == 'leolani':
+            elif utterance.triple.object_label.lower() == 'leolani':
                 say += ' me'
-            elif brain_response['question']['predicate']['type'].lower() in ['sees', 'owns']:
-                say += ' a ' + brain_response['question']['object']['label']
+            elif predicate.lower() in ['sees', 'owns']:
+                say += ' a ' + utterance.triple.object_label
             else:
-                say += brain_response['question']['object']['label']
+                say += utterance.triple.object_label
 
         say += ' and '
 

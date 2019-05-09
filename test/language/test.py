@@ -5,23 +5,23 @@ from pepper.language.generation.reply import reply_to_question, reply_to_stateme
 
 
 def test():
-    utterances = ["Who is from London", "I am Bill", "Who am I?", "I hate rainy weather", "What do I hate?",
-                  "What do you like?"]
+    utterances = ["who can fly"]
     chat = Chat("Lenka", None)
     brain = LongTermMemory()
     for utterance in utterances:
         chat.add_utterance([UtteranceHypothesis(utterance, 1.0)], False)
         chat.last_utterance.analyze()
 
+        x = chat.last_utterance.triple
+
         if chat.last_utterance.type == language.UtteranceType.QUESTION:
             brain_response = brain.query_brain(chat.last_utterance)
-            reply = reply_to_question(brain_response, [])
+            reply = reply_to_question(brain_response)
         else:
             brain_response = brain.update(chat.last_utterance)
             reply = reply_to_statement(brain_response, chat.speaker, brain)
 
-        print(brain_response)
-        # print(reply)
+        print(reply)
 
     return
 
