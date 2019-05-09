@@ -11,7 +11,7 @@ from time import time, sleep
 
 class SystemImage(AbstractImage):
     def __init__(self, image, bounds):
-        super(SystemImage, self).__init__(image, bounds, np.ones(image.shape[:2]) * 1000)
+        super(SystemImage, self).__init__(image, bounds, np.ones(image.shape[:2], np.float32))
 
 
 class SystemCamera(AbstractCamera):
@@ -59,7 +59,7 @@ class SystemCamera(AbstractCamera):
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                 # Call On Image Event
-                self.on_image(SystemImage(image, Bounds(-0.55, -0.41, 0.55, 0.41)))
+                self.on_image(SystemImage(image, Bounds(-0.55, -0.41+np.pi/2, 0.55, 0.41+np.pi/2)))
         else:
             self._camera.release()
             raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))

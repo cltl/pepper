@@ -94,7 +94,7 @@ $(function() {
 
     var camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100);
     camera.position.z = -5;
-    camera.position.y = 2;
+    camera.position.y = 1;
     camera.position.x = 0;
     camera.lookAt(0, 1, 0);
 
@@ -102,6 +102,7 @@ $(function() {
     renderer.setSize(width, height);
 
     var grid = new THREE.GridHelper(20, 20);
+    grid.position.y = -1;
     scene.add(grid);
 
     var plot = new THREE.Object3D();
@@ -131,6 +132,9 @@ $(function() {
 
     // Scatter Object for Plot View
     var scatter = null;
+    var objects = null;
+
+    var boxMaterial = new THREE.LineBasicMaterial({color: 0x000000});
 
     socket.onopen = function() { console.log("Connection Opened!"); }
     socket.onmessage = function(msg){
@@ -186,6 +190,27 @@ $(function() {
         if (scatter != null) plot.remove(scatter);
         scatter = new THREE.Points(points, material)
         plot.add(scatter);
+
+        // Update Plot With New Objects
+        if (objects != null) plot.remove(objects);
+        objects = new THREE.Object3D();
+        plot.add(objects);
+
+        var items3D = data['items3D'];
+        for (i=0; i<items3D.length; i++) {
+            var bounds3D = items3D[i]['bounds3D'];
+
+            var boxGeometry = new THREE.Geometry();
+
+            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[0][0], bounds3D[0][1], bounds3D[0][2]));
+            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[1][0], bounds3D[1][1], bounds3D[1][2]));
+            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[2][0], bounds3D[2][1], bounds3D[2][2]));
+            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[3][0], bounds3D[3][1], bounds3D[3][2]));
+            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[0][0], bounds3D[0][1], bounds3D[0][2]));
+
+            var box = new THREE.Line(boxGeometry, boxMaterial);
+            objects.add(box);
+        }
     }
 
     socket.onclose = function() { console.log("Connection Closed!"); }

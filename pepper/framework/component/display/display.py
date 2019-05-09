@@ -1,6 +1,8 @@
 from pepper.framework import AbstractComponent, AbstractImage
-from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, SceneComponent
+from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, SceneComponent, ContextComponent
 from .server import DisplayServer
+
+import numpy as np
 
 from threading import Thread, Lock
 
@@ -11,6 +13,7 @@ import json
 
 
 class DisplayComponent(AbstractComponent):
+
     def __init__(self, backend):
         super(DisplayComponent, self).__init__(backend)
 
@@ -23,6 +26,7 @@ class DisplayComponent(AbstractComponent):
 
         face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
+        context = self.require(DisplayComponent, ContextComponent)  # type: ContextComponent
         scene = self.require(DisplayComponent, SceneComponent) # type: SceneComponent
 
         self._display_info = {}
@@ -49,12 +53,18 @@ class DisplayComponent(AbstractComponent):
                 if self._display_info:
                     server.update(json.dumps(self._display_info))
 
+                # Get Scatter Coordinates
                 x,y,z,c = scene.scatter_map
 
+                # Construct Display Info (to be send to webclient)
                 self._display_info = {
                     "hash": hash(str(image.image)),
                     "img": encode_image(Image.fromarray(image.image)),
                     "items": [],
+                    "items3D": [{
+                        "position": item.position,
+                        "bounds3D": item.bounds3D
+                    } for item in context.context.objects],
                     "x": x.tolist(),
                     "y": y.tolist(),
                     "z": z.tolist(),
@@ -67,7 +77,9 @@ class DisplayComponent(AbstractComponent):
                     self._display_info["items"] += [
                         {"name": item.name,
                          "confidence": item.confidence,
-                         "bounds": item.image_bounds.to_list()
+                         "bounds": item.image_bounds.to_list(),
+                         "position": item.position,
+                         "bounds3D": item.bounds3D,
                          } for item in items]
 
         self.backend.camera.callbacks += [on_image]

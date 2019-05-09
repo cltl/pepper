@@ -22,14 +22,14 @@ class Context(object):
     OBSERVATION_TIMEOUT = 60
 
     _people = None  # type: Dict[str, Tuple[Face, float]]
-    _objects = None  # type: Dict[str, Observations]
+    _objects = None # type: Observations
 
     def __init__(self):
         self._chats = []
         self._chatting = False
 
         self._people = {}
-        self._objects = {}
+        self._objects = Observations()
         self._intention = None
 
         self._location = Location()
@@ -107,14 +107,7 @@ class Context(object):
         objects: list of Object
             List of Objects Seen within
         """
-
-        objects = []
-
-        for observations in self._objects.values():
-            for instance in observations.objects:
-                objects.append(instance)
-
-        return objects
+        return self._objects.instances
 
     @property
     def all_objects(self):
@@ -125,7 +118,7 @@ class Context(object):
         objects: list of Object
             List of All Objects Seen
         """
-        return self.objects
+        return self._objects.instances
 
     @property
     def intention(self):    # Why
@@ -149,29 +142,15 @@ class Context(object):
         self._intention = intention
 
     def add_objects(self, objects):
-        # type: (Iterable[Object]) -> None
+        # type: (List[Object]) -> None
         """
         Parameters
         ----------
         objects: list of Object
             List of Objects
         """
-
-        image = None
-
         if objects:
-            # Create New Observation Classes if Necessary
-            for obj in objects:
-
-                image = obj.image
-
-                if obj.name not in self._objects:
-                    self._objects[obj.name] = Observations()
-
-            # Add Observations for each Object Type
-            if image:
-                for name, observations in self._objects.items():
-                    observations.add(image, [obj for obj in objects if obj.name == name])
+            self._objects.add_observations(objects[0].image.bounds, objects)
 
     def add_people(self, people):
         # type: (Iterable[Face]) -> None
@@ -191,83 +170,94 @@ class Context(object):
     def stop_chat(self):
         self._chatting = False
 
-    @staticmethod
-    def _cluster_objects(objects):
-        pass
 
-
-class Observations(object):
-
-    LOCK = Lock()
-
-    def __init__(self, epsilon=0.1, min_samples=5, max_samples=10, timeout=5):
-
-        self._epsilon = epsilon
-        self._min_samples = min_samples
-        self._max_samples = max_samples
-        self._timeout = timeout
-
-        self._observations = deque()
-        self._unique_objects = []
+class Observations:
+    def __init__(self):
+        self._object_observations = {}
 
     @property
-    def observations(self):
-        # type: () -> Deque[Tuple[Object, float]]
-        return self._observations
+    def instances(self):
+        instances = []
+
+        for object_observations in self._object_observations.values():
+            instances.extend(object_observations.instances)
+
+        return instances
+
+    def add_observations(self, bounds, objects):
+        for obj in objects:
+            if obj.name not in self._object_observations:
+                self._object_observations[obj.name] = ObjectObservations()
+            self._object_observations[obj.name].add_observation(obj)
+
+        for object_observations in self._object_observations.values():
+            object_observations.update_view_bounds(bounds)
+
+
+
+class ObjectObservations:
+
+    EPSILON = 0.2
+    MIN_SAMPLES = 5
+    MAX_SAMPLES = 20
+    OBSERVATION_TIMEOUT = 1
+
+    def __init__(self):
+        self._observations = []
+        self._instances = []
 
     @property
-    def objects(self):
-        # type: () -> List[Object]
-        return self._unique_objects
+    def instances(self):
+        return self._instances
 
-    def add(self, image, objects):
-        # type: (AbstractImage, List[Object]) -> None
+    def update_view_bounds(self, view_bounds):
 
-        with self.LOCK:
+        # Go through observations oldest to newest
+        for observation in self._observations[::-1]:
 
-            # 1. Add Objects to Observations
-            for obj in objects:
-                self._observations.appendleft((obj, time()))
+            # If observation could be done with current view
+            if observation.bounds.contains(view_bounds.center):
 
-            if self._observations:
+                # Check if recent observation of this object is made
+                found_recent_observation = False
+                for obs in self._observations:
+                    if time() - obs.image.time > self.OBSERVATION_TIMEOUT:
+                        break
 
-                # 2. Cluster Observations
-                cluster = DBSCAN(self._epsilon, self._min_samples)
-                cluster.fit(np.array([obj.position for obj, t in self.observations]))
+                    if obs.bounds.contains(view_bounds.center):
+                        found_recent_observation = True
+                        break
 
-                groups = [(label, np.argwhere(cluster.labels_ == label).ravel()) for label in np.unique(cluster.labels_)]
+                # If no recent observation has been found -> remove one old observation
+                if not found_recent_observation:
+                    self._observations.remove(observation)
+                    break
 
-                # 3. Prune Observations
-                observations = []
-                unique_objects = []
+    def add_observation(self, obj):
+        self._observations.append(obj)
 
-                for group, indices in groups:
+        instances = []
+        removal = []
 
-                    # Add most recent observation of each Unique Objects to List
-                    if group != -1:
-                        unique_objects.append(self._observations[indices[0]][0])
+        # Cluster to find Object Instances
+        cluster = DBSCAN(eps=self.EPSILON, min_samples=self.MIN_SAMPLES)
+        cluster.fit([obj.position for obj in self._observations])
 
-                    for i, index in enumerate(indices):
+        unique_labels = np.unique(cluster.labels_)
 
-                        if i >= self._max_samples:
-                            break
+        # Find oldest instance per group add to Instances
+        for label in unique_labels:
+            if label != -1:  # Skip Noisy Observations
+                group_indices = np.argwhere(cluster.labels_ == label).ravel()
 
-                        sample, sample_time = self.observations[index]
+                newest_instance = self._observations[group_indices[-1]]
+                instances.append(newest_instance)
 
-                        if group != -1:
-                            # If Sample should be visible now -> Add only if currently visible
-                            if time() - sample_time > self._timeout and image.bounds.contains(sample.position):
-                                for obj in objects:
-                                    if obj.bounds.contains(sample.position):
-                                        observations.append((sample, sample_time))
-                                        break
-                            else:  # if Sample is not visible atm -> Add Sample for now
-                                observations.append((sample, sample_time))
-                        else:
-                            observations.append((sample, sample_time))
+                removal.extend(group_indices[:-self.MAX_SAMPLES])
 
-                self._observations = deque(observations)
-                self._unique_objects = unique_objects
+        self._instances = instances
+        self._observations = [self._observations[i] for i in range(len(self._observations)) if i not in removal]
 
-            else:
-                self._unique_objects = []
+
+
+

@@ -106,13 +106,13 @@ class NAOqiCamera(AbstractCamera):
                     angle_left, angle_top, angle_right, angle_bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:
-                        image_3D = np.frombuffer(data, np.uint16).reshape(height, width)
+                        image_3D = np.frombuffer(data, np.uint16).reshape(height, width).astype(np.float32) / 1000
                     else:
                         image_rgb = self._yuv2rgb(width, height, data)
                         image_bounds = Bounds(angle_right - yaw,
-                                              angle_bottom + pitch,
+                                              angle_bottom + pitch + np.pi/2,
                                               angle_left - yaw,
-                                              angle_top + pitch)
+                                              angle_top + pitch + np.pi/2)
 
                 if image_rgb is not None and image_bounds is not None:
                     self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))

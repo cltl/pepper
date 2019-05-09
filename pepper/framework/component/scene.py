@@ -57,8 +57,8 @@ class SceneComponent(AbstractComponent):
             z = depth * np.sin(theta) * np.sin(phi)
             y = depth * np.cos(theta)
 
-            # Return Centered Cartesian Coordinates and Color
-            return x - np.mean(x), y - np.min(y), z - np.mean(z), color
+            # Return Cartesian Coordinates and Color
+            return x, y, z, color
 
         # Return Empty Result
         return np.array([]), np.array([]), np.array([]), np.array([])
@@ -77,14 +77,14 @@ class SceneComponent(AbstractComponent):
         if self._last_bounds and image.bounds.overlap(self._last_bounds) > 0.9:
 
             color = resize(image.image, image.depth.shape[::-1]).astype(np.float32) / 256
-            depth = image.depth.astype(np.float32) / 1000
+            depth = image.depth.astype(np.float32)
 
             phi, theta = np.meshgrid(
-                np.linspace((image.bounds.x0+np.pi) * self.RESOLUTION / np.pi,
-                            (image.bounds.x1+np.pi) * self.RESOLUTION / np.pi,
+                np.linspace(image.bounds.x0 * self.RESOLUTION / np.pi,
+                            image.bounds.x1 * self.RESOLUTION / np.pi,
                             depth.shape[1]),
-                np.linspace((image.bounds.y0+np.pi/2) * self.RESOLUTION / np.pi,
-                            (image.bounds.y1+np.pi/2) * self.RESOLUTION / np.pi,
+                np.linspace(image.bounds.y0 * self.RESOLUTION / np.pi,
+                            image.bounds.y1 * self.RESOLUTION / np.pi,
                             depth.shape[0]))
 
             depth_threshold = image.depth > self.DEPTH_THRESHOLD

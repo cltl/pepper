@@ -2,9 +2,10 @@ from pepper.framework import *
 from pepper import config
 
 
-class ObjPosApp(AbstractApplication, StatisticsComponent, DisplayComponent, ContextComponent, SceneComponent,
+class ObjPosApp(AbstractApplication, DisplayComponent, ContextComponent, SceneComponent,
                 ObjectDetectionComponent, SpeechRecognitionComponent, FaceRecognitionComponent, TextToSpeechComponent):
-    pass
+    def on_object(self, objects):
+        print(self.context.objects)
 
 
 if __name__ == '__main__':

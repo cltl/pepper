@@ -31,9 +31,24 @@ class Object(object):
         self._image_bounds = bounds
         self._image = image
 
-        x0, y0 = image.position((self._image_bounds.x0, self._image_bounds.y0))
-        x1, y1 = image.position((self._image_bounds.x1, self._image_bounds.y1))
+        # Calculate Bounds in Angle Space
+        x0, y0 = image.direction((self._image_bounds.x0, self._image_bounds.y0))
+        x1, y1 = image.direction((self._image_bounds.x1, self._image_bounds.y1))
         self._bounds = Bounds(x0, y0, x1, y1)
+
+        self._direction =  self.image.direction(self.image_bounds.center)
+
+        # Calculate Position in 3D Space (Relative to Robot)
+        self._depth = self._calculate_object_depth()
+
+        self._position = self._spherical2cartesian(self._direction[0], self._direction[1], self._depth)
+
+        self._bounds3D = [
+            self._spherical2cartesian(x0, y0, self._depth),
+            self._spherical2cartesian(x0, y1, self._depth),
+            self._spherical2cartesian(x1, y1, self._depth),
+            self._spherical2cartesian(x1, y0, self._depth),
+        ]
 
     @property
     def name(self):
@@ -81,8 +96,46 @@ class Object(object):
         return self._image
 
     @property
+    def direction(self):
+        return self._direction
+
+    @property
     def position(self):
-        return self.image.position(self.image_bounds.center)
+        return self._position
+
+    @property
+    def depth(self):
+        return self._depth
+
+    @property
+    def bounds3D(self):
+        return self._bounds3D
+
+    def _spherical2cartesian(self, phi, theta, depth):
+        x = depth * np.sin(theta) * np.cos(phi)
+        z = depth * np.sin(theta) * np.sin(phi)
+        y = depth * np.cos(theta)
+
+        return x, y, z
+
+    def _calculate_object_depth(self):
+        depth_map = self.image.get_depth(self._image_bounds)
+
+        kernel = 10
+
+        depth_map_centre = depth_map[
+            depth_map.shape[0]//2-kernel:depth_map.shape[0]//2+kernel,
+            depth_map.shape[1]//2-kernel:depth_map.shape[1]//2+kernel
+        ]
+
+        valid = depth_map_centre != 0
+
+        if not np.sum(valid):
+            return np.min(depth_map_centre[valid], initial=100)
+        else:
+            return np.min(depth_map[depth_map != 0], initial=100)
+
+
 
     def __repr__(self):
         return "{}({}, {:3.0%})".format(self.__class__.__name__, self.name, self.confidence)
