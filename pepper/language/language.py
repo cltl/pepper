@@ -220,6 +220,7 @@ class Utterance(object):
 
         self._datetime = datetime.now()
         self._chat = chat
+        self._context = self._chat.context
         self._chat_speaker = self._chat.speaker
         self._turn = turn
         self._me = me
@@ -245,6 +246,17 @@ class Utterance(object):
             Utterance Chat
         """
         return self._chat
+
+    @property
+    def context(self):
+        # type: () -> Context
+        """
+        Returns
+        -------
+        context: Context
+            Context (a.k.a. people, objects and other detections )
+        """
+        return self._context
 
     @property
     def chat_speaker(self):

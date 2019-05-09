@@ -49,5 +49,5 @@ def date_from_uri(uri):
     return date(int(year), int(month), int(day))
 
 
-def hash_statement_id(triple):
+def hash_claim_id(triple):
     return '_'.join(triple)

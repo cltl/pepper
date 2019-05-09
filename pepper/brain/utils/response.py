@@ -4,7 +4,7 @@ from datetime import date, datetime
 from typing import List, Optional
 
 from pepper.brain.utils.constants import NOT_TO_MENTION_TYPES
-from pepper.brain.utils.helper_functions import hash_statement_id, is_proper_noun
+from pepper.brain.utils.helper_functions import hash_claim_id, is_proper_noun
 
 
 class RDFBase(object):
@@ -245,13 +245,13 @@ class Triple(object):
         return iter([('subject', self.subject), ('predicate', self.predicate), ('object', self.object)])
 
     def __repr__(self):
-        return '{}'.format(hash_statement_id([self.subject_name
+        return '{}'.format(hash_claim_id([self.subject_name
                                               if self.subject_name is not None
                                                  and self.subject_name not in ['', Literal('')] else '?',
-                                              self.predicate_name
+                                          self.predicate_name
                                               if self.predicate_name is not None
                                                  and self.predicate_name not in ['', Literal('')] else '?',
-                                              self.object_name
+                                          self.object_name
                                               if self.object_name is not None
                                                  and self.object_name not in ['', Literal('')] else '?']))
 

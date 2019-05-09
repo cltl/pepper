@@ -22,6 +22,10 @@ class BasicBrain(object):
         self._rdf_builder = RdfBuilder()
         self.namespaces = self._rdf_builder.namespaces
         self.dataset = self._rdf_builder.dataset
+        self.instance_graph = self._rdf_builder.instance_graph
+        self.perspective_graph = self._rdf_builder.perspective_graph
+        self.claim_graph = self._rdf_builder.claim_graph
+        self.interaction_graph = self._rdf_builder.interaction_graph
 
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")

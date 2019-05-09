@@ -17,6 +17,7 @@ class RdfBuilder(object):
         self._get_ontology_path()
         self._define_namespaces()
         self._bind_namespaces()
+        self._define_named_graphs()
 
     ########## setting up connection ##########
     def _define_namespaces(self):
@@ -45,10 +46,10 @@ class RdfBuilder(object):
         self.namespaces['LI'] = Namespace(attribution_resource_inputs)
 
         # Namespaces for the temporal layer-ish
-        time_vocab = 'http://www.w3.org/TR/owl-time/#'
-        self.namespaces['TIME'] = Namespace(time_vocab)
-        time_resource = 'http://cltl.nl/leolani/time/'
-        self.namespaces['LTi'] = Namespace(time_resource)
+        context_vocab = 'http://cltl.nl/episodicawareness/'
+        self.namespaces['EPS'] = Namespace(context_vocab)
+        context_resource = 'http://cltl.nl/leolani/context/'
+        self.namespaces['LC'] = Namespace(context_resource)
 
         # The namespaces of external ontologies
         skos = 'http://www.w3.org/2004/02/skos/core#'
@@ -60,8 +61,18 @@ class RdfBuilder(object):
         sem = 'http://semanticweb.cs.vu.nl/2009/11/sem/'
         self.namespaces['SEM'] = Namespace(sem)
 
+        time = 'http://www.w3.org/TR/owl-time/#'
+        self.namespaces['TIME'] = Namespace(time)
+
         xml = 'https://www.w3.org/TR/xmlschema-2/#'
         self.namespaces['XML'] = Namespace(xml)
+
+    def _define_named_graphs(self):
+        # Instance graph
+        self.instance_graph = self.dataset.graph(self.create_resource_uri('LW', 'Instances'))
+        self.perspective_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Perspectives'))
+        self.claim_graph = self.dataset.graph(self.create_resource_uri('LW', 'Claims'))
+        self.interaction_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Interactions'))
 
     def _get_ontology_path(self):
         """
@@ -86,7 +97,7 @@ class RdfBuilder(object):
             self.dataset.bind('leolaniFriends', self.namespaces['LF'])
             self.dataset.bind('leolaniInputs', self.namespaces['LI'])
             self.dataset.bind('time', self.namespaces['TIME'])
-            self.dataset.bind('leolaniTime', self.namespaces['LTi'])
+            self.dataset.bind('leolaniContext', self.namespaces['LC'])
             self.dataset.bind('skos', self.namespaces['SKOS'])
             self.dataset.bind('prov', self.namespaces['PROV'])
             self.dataset.bind('sem', self.namespaces['SEM'])
@@ -266,7 +277,6 @@ class RdfBuilder(object):
         object = self.fill_entity_from_label(object_label, namespace=namespace)
 
         return Triple(subject, predicate, object)
-
 
     ########## basic reverse engineer ##########
     def label_from_uri(self, uri, namespace='LTi'):

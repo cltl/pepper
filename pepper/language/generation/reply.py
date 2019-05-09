@@ -1,6 +1,30 @@
 from pepper.language.generation.phrasing import *
 
 
+def fix_predicate_morphology(subject, predicate):
+    """
+    Conjugation
+    Parameters
+    ----------
+    subject
+    predicate
+
+    Returns
+    -------
+
+    """
+    new_predicate = ''
+    for el in predicate.split():
+        if el != 'is':
+            new_predicate += el + ' '
+        else:
+            new_predicate += 'are '
+
+    if predicate.endswith('s'): new_predicate = predicate[:-1]
+
+    return new_predicate
+
+
 def reply_to_statement(template, speaker, brain, viewed_objects=[]):
     subject = template['statement'].triple.subject_name
     predicate = template['statement'].triple.predicate_name
@@ -14,7 +38,7 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
         if subject.lower() == 'leolani':
             subject = 'i'
         else:
-            subject.title()
+           subject.title()
 
     if subject == 'you ':
         predicate = fix_predicate_morphology(predicate)

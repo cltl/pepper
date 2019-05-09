@@ -2,8 +2,7 @@ import random
 
 from pepper.language.generation.phrasing import *
 from pepper.knowledge.sentences import UNDERSTAND, NEW_KNOWLEDGE, EXISTING_KNOWLEDGE, CONFLICTING_KNOWLEDGE, CURIOSITY, \
-    HAPPY, \
-    TRUST, NO_TRUST
+    HAPPY, TRUST, NO_TRUST
 
 
 def phrase_all_conflicts(conflicts, speaker=None):
@@ -175,7 +174,6 @@ def _phrase_object_gaps(all_gaps, utterance):
 def _phrase_overlaps(all_overlaps, utterance):
     entity_role = random.choice(['subject', 'object'])
     overlaps = all_overlaps.subject if entity_role == 'subject' else all_overlaps.object
-    predicate = fix_predicate_morphology(utterance.triple.predicate_name)
 
     if not overlaps and entity_role == 'subject':
         say = random.choice(HAPPY)

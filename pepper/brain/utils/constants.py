@@ -14,9 +14,11 @@ NAMESPACE_MAPPING = {
     'Object': 'GRASP',
     'Mention': 'GRASP',
     'Attribution': 'GRASP',
+    'Source': 'GRASP',
     'Actor': 'SEM',
     'Event': 'SEM',
-    'DateTimeDescription': 'TIME'
+    'DateTimeDescription': 'TIME',
+    'Context': 'EPS'
 }
 
 CAPITALIZED_TYPES = ['person']

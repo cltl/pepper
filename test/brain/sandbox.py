@@ -1,12 +1,12 @@
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.brain import LongTermMemory, RdfBuilder
 from pepper.language import Chat, Utterance
-from pepper.framework import UtteranceHypothesis
+from pepper.framework import UtteranceHypothesis, Context, Object, Face
 
 from datetime import date
 
 
-def transform_capsule(capsule, context=None):
+def transform_capsule(capsule):
     """
     Build proper Utterance object from capsule. Step required for proper refactoring
     Parameters
@@ -18,6 +18,13 @@ def transform_capsule(capsule, context=None):
     -------
 
     """
+    objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None), Object('cat', 0.51, None, None)}
+    faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
+
+    context = Context()
+    context.add_objects(objects)
+    context.add_people(faces)
+
     chat = Chat(capsule['author'], context)
     hyp = UtteranceHypothesis('this is a test', 0.99)
 
@@ -39,21 +46,20 @@ conlficts = brain.get_all_conflicts()
 
 capsule_knows = {  # dimitris knows piek
         "subject": {
-            "label": "dimitris",
+            "label": "karla",
             "type": "person"
         },
         "predicate": {
-            "type": "know"
+            "type": "live-in"
         },
         "object": {
-            "label": "piek",
-            "type": "person"
+            "label": "paris",
+            "type": "location"
         },
-        "author": "dimitris",
-        "chat": 1,
+        "author": "tom",
         "turn": 1,
         "position": "0-25",
-        "date": date(2018, 3, 19)
+        "date": date(2019, 1, 24)
     }
 
 capsule_is_from = {  # bram is from mongolia
@@ -92,24 +98,25 @@ for capsule in capsules:
     capsule = transform_capsule(capsule)
 
     x = brain.update(capsule)
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
+    break
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
