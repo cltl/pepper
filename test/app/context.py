@@ -27,14 +27,14 @@ class ContextApp(AbstractApplication,  # Base Application for given Backend
         # Called every time a human adds an utterance to the chat
         # Just reply with a random statement for now
         self.say(choice(["Interesting", "Right", "I see", "Ok"]))
-        processed_utterance = language.analyze(self.chat, self.brain)
+        language.analyze(self.chat, self.brain)
 
-        if processed_utterance.type == language.UtteranceType.QUESTION:
-            brain_response = self.brain.query_brain(processed_utterance)
+        if utterance.type == language.UtteranceType.QUESTION:
+            brain_response = self.brain.query_brain(utterance)
             print(language.utils.reply_to_question(brain_response, []))
 
-        elif processed_utterance.type == language.UtteranceType.STATEMENT:
-            brain_response = self.brain.update(processed_utterance)
+        elif utterance.type == language.UtteranceType.STATEMENT:
+            brain_response = self.brain.update(utterance)
             #print(self.brain.brain_help.phrase_update(response))
 
         else:

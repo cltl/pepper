@@ -1,0 +1,8 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+
+select (COUNT(?act) AS ?count) where {
+    ?act rdf:type sem:Actor .
+    ?act rdf:type n2mu:person .
+}

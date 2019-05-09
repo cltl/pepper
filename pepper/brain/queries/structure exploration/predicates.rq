@@ -1,0 +1,4 @@
+select distinct ?p where {
+            ?s ?p ?o .
+            FILTER(regex(str(?p), "n2mu")) .
+        } ORDER BY str(?p)

@@ -11,7 +11,6 @@ import os
 # More Backends will be added in the future!
 APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
-
 NAME = "Leolani"
 HUMAN_UNKNOWN = "Stranger"
 HUMAN_CROWD = "Humans"

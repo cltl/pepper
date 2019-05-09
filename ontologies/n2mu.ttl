@@ -69,230 +69,178 @@ ns:term_status rdf:type owl:AnnotationProperty .
 ###  http://cltl.nl/leolani/n2mu/acknowledge
 n2mu:acknowledge rdf:type owl:ObjectProperty ;
                  rdfs:subPropertyOf n2mu:perceive ;
-                 rdfs:domain n2mu:Robot ;
+                 rdfs:domain n2mu:robot ;
                  rdfs:range n2mu:Smell ,
                             n2mu:Taste ,
                             n2mu:Touch ;
                  owl:propertyDisjointWith n2mu:experience .
 
 
-###  http://cltl.nl/leolani/n2mu/bornIn
-n2mu:bornIn rdf:type owl:ObjectProperty ;
-            rdfs:subPropertyOf n2mu:isFrom ;
-            rdfs:domain n2mu:Person ;
-            rdfs:range n2mu:Location ;
-            owl:propertyDisjointWith n2mu:manufacturedIn .
+###  http://cltl.nl/leolani/n2mu/be-from
+n2mu:be-from rdf:type owl:ObjectProperty ;
+             rdfs:domain n2mu:agent ,
+                         n2mu:cuisine ;
+             rdfs:range n2mu:location .
 
 
-###  http://cltl.nl/leolani/n2mu/cookedBy
-n2mu:cookedBy rdf:type owl:ObjectProperty ;
-              rdfs:domain n2mu:Dish ;
-              rdfs:range n2mu:Agent .
+###  http://cltl.nl/leolani/n2mu/be-in
+n2mu:be-in rdf:type owl:ObjectProperty ,
+                    owl:TransitiveProperty ;
+           rdfs:domain n2mu:city ,
+                       n2mu:institution ;
+           rdfs:range n2mu:city ,
+                      n2mu:country .
 
 
-###  http://cltl.nl/leolani/n2mu/dislikes
-n2mu:dislikes rdf:type owl:ObjectProperty ;
-              rdfs:domain n2mu:Agent ;
-              rdfs:range n2mu:Agent ,
-                         n2mu:Interest ;
-              owl:propertyDisjointWith n2mu:likes .
+###  http://cltl.nl/leolani/n2mu/bestfriend-is
+n2mu:bestfriend-is rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf n2mu:friend-is .
+
+
+###  http://cltl.nl/leolani/n2mu/born-in
+n2mu:born-in rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf n2mu:be-from ;
+             rdfs:domain n2mu:person ;
+             rdfs:range n2mu:location ;
+             owl:propertyDisjointWith n2mu:manufacture-in .
+
+
+###  http://cltl.nl/leolani/n2mu/child-is
+n2mu:child-is rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf n2mu:family-is ;
+              rdfs:domain n2mu:agent ;
+              rdfs:range n2mu:agent .
+
+
+###  http://cltl.nl/leolani/n2mu/cook
+n2mu:cook rdf:type owl:ObjectProperty ;
+          rdfs:domain foaf:Agent ;
+          rdfs:range n2mu:dish .
+
+
+###  http://cltl.nl/leolani/n2mu/dislike
+n2mu:dislike rdf:type owl:ObjectProperty ;
+             rdfs:domain n2mu:agent ;
+             rdfs:range n2mu:agent ,
+                        n2mu:interest ;
+             owl:propertyDisjointWith n2mu:likes .
 
 
 ###  http://cltl.nl/leolani/n2mu/experience
 n2mu:experience rdf:type owl:ObjectProperty ;
                 rdfs:subPropertyOf n2mu:perceive ;
-                rdfs:domain n2mu:Person ;
+                rdfs:domain n2mu:person ;
                 rdfs:range n2mu:Smell ,
                            n2mu:Taste ,
                            n2mu:Touch .
 
 
-###  http://cltl.nl/leolani/n2mu/favorite
-n2mu:favorite rdf:type owl:ObjectProperty ;
-              rdfs:subPropertyOf n2mu:likes ;
-              owl:inverseOf n2mu:favorite_of ;
-              rdfs:domain n2mu:Agent ;
-              rdfs:range n2mu:Interest .
+###  http://cltl.nl/leolani/n2mu/family-is
+n2mu:family-is rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf n2mu:know ;
+               rdfs:domain n2mu:agent ;
+               rdfs:range n2mu:agent .
 
 
-###  http://cltl.nl/leolani/n2mu/favorite_of
-n2mu:favorite_of rdf:type owl:ObjectProperty ;
-                 rdfs:subPropertyOf n2mu:likedBy .
+###  http://cltl.nl/leolani/n2mu/favorite-is
+n2mu:favorite-is rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf n2mu:likes ;
+                 rdfs:domain n2mu:agent ;
+                 rdfs:range n2mu:interest .
 
 
-###  http://cltl.nl/leolani/n2mu/in
-n2mu:in rdf:type owl:ObjectProperty ,
-                 owl:TransitiveProperty ;
-        rdfs:domain n2mu:city ;
-        rdfs:range n2mu:country .
+###  http://cltl.nl/leolani/n2mu/friend-is
+n2mu:friend-is rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf n2mu:know .
 
 
-###  http://cltl.nl/leolani/n2mu/isChildOf
-n2mu:isChildOf rdf:type owl:ObjectProperty ;
-               rdfs:subPropertyOf n2mu:isFamilyOf ;
-               rdfs:domain n2mu:Agent ;
-               rdfs:range n2mu:Agent .
-
-
-###  http://cltl.nl/leolani/n2mu/isColleagueOf
-n2mu:isColleagueOf rdf:type owl:ObjectProperty ;
-                   rdfs:subPropertyOf n2mu:knows ;
-                   rdf:type owl:SymmetricProperty ;
-                   rdfs:domain [ owl:intersectionOf ( n2mu:Agent
-                                                      [ rdf:type owl:Restriction ;
-                                                        owl:onProperty n2mu:isMemberOf ;
-                                                        owl:someValuesFrom n2mu:Institution
-                                                      ]
-                                                    ) ;
-                                 rdf:type owl:Class
-                               ] ;
-                   rdfs:range [ owl:intersectionOf ( n2mu:Agent
-                                                     [ rdf:type owl:Restriction ;
-                                                       owl:onProperty n2mu:isMemberOf ;
-                                                       owl:someValuesFrom n2mu:Institution
-                                                     ]
-                                                   ) ;
-                                rdf:type owl:Class
-                              ] ;
-                   rdfs:comment """a isMemberOf x
-and
-b isMemberOf y
-and
-a Type Agent
-and
-b Type Agent
-and
-a != b
-and
-x Type Institution
-and
-y Type Institution
-and x == y""" .
-
-
-###  http://cltl.nl/leolani/n2mu/isFamilyOf
-n2mu:isFamilyOf rdf:type owl:ObjectProperty ;
-                rdfs:subPropertyOf n2mu:knows ;
-                rdfs:domain n2mu:Agent ;
-                rdfs:range n2mu:Agent .
-
-
-###  http://cltl.nl/leolani/n2mu/isFriendsWith
-n2mu:isFriendsWith rdf:type owl:ObjectProperty ;
-                   rdfs:subPropertyOf n2mu:knows .
-
-
-###  http://cltl.nl/leolani/n2mu/isFrom
-n2mu:isFrom rdf:type owl:ObjectProperty ;
-            rdfs:domain n2mu:Agent ,
-                        n2mu:Cuisine ;
-            rdfs:range n2mu:Location .
-
-
-###  http://cltl.nl/leolani/n2mu/isMemberOf
-n2mu:isMemberOf rdf:type owl:ObjectProperty ;
-                rdfs:domain n2mu:Agent ;
-                rdfs:range n2mu:Institution .
-
-
-###  http://cltl.nl/leolani/n2mu/isParentOf
-n2mu:isParentOf rdf:type owl:ObjectProperty ;
-                rdfs:subPropertyOf n2mu:isFamilyOf ;
-                rdfs:domain n2mu:Agent ;
-                rdfs:range n2mu:Agent .
-
-
-###  http://cltl.nl/leolani/n2mu/knows
-n2mu:knows rdf:type owl:ObjectProperty ,
-                    owl:SymmetricProperty ;
-           rdfs:domain n2mu:Agent ;
-           rdfs:range n2mu:Agent .
-
-
-###  http://cltl.nl/leolani/n2mu/likedBy
-n2mu:likedBy rdf:type owl:ObjectProperty ;
-             owl:inverseOf n2mu:likes .
+###  http://cltl.nl/leolani/n2mu/know
+n2mu:know rdf:type owl:ObjectProperty ,
+                   owl:SymmetricProperty ;
+          rdfs:domain n2mu:agent ;
+          rdfs:range n2mu:agent .
 
 
 ###  http://cltl.nl/leolani/n2mu/likes
 n2mu:likes rdf:type owl:ObjectProperty ;
-           rdfs:domain n2mu:Agent ;
-           rdfs:range n2mu:Agent ,
-                      n2mu:Interest .
+           rdfs:domain n2mu:agent ;
+           rdfs:range n2mu:agent ,
+                      n2mu:interest .
 
 
-###  http://cltl.nl/leolani/n2mu/livedIn
-n2mu:livedIn rdf:type owl:ObjectProperty ;
-             rdfs:domain n2mu:Agent ;
-             rdfs:range n2mu:Location .
+###  http://cltl.nl/leolani/n2mu/live-in
+n2mu:live-in rdf:type owl:ObjectProperty ;
+             rdfs:domain n2mu:agent ;
+             rdfs:range n2mu:location .
 
 
-###  http://cltl.nl/leolani/n2mu/located
-n2mu:located rdf:type owl:ObjectProperty ;
-             rdfs:domain n2mu:Institution ;
-             rdfs:range n2mu:city .
+###  http://cltl.nl/leolani/n2mu/manufacture-in
+n2mu:manufacture-in rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf n2mu:be-from ;
+                    rdfs:domain n2mu:robot ;
+                    rdfs:range n2mu:location .
 
 
-###  http://cltl.nl/leolani/n2mu/manufacturedIn
-n2mu:manufacturedIn rdf:type owl:ObjectProperty ;
-                    rdfs:subPropertyOf n2mu:isFrom ;
-                    rdfs:domain n2mu:Robot ;
-                    rdfs:range n2mu:Location .
+###  http://cltl.nl/leolani/n2mu/own
+n2mu:own rdf:type owl:ObjectProperty ;
+         rdfs:domain n2mu:agent ;
+         rdfs:range n2mu:object .
 
 
-###  http://cltl.nl/leolani/n2mu/owns
-n2mu:owns rdf:type owl:ObjectProperty ;
-          rdfs:domain n2mu:Agent ;
-          rdfs:range n2mu:Object .
+###  http://cltl.nl/leolani/n2mu/parent-is
+n2mu:parent-is rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf n2mu:family-is ;
+               rdfs:domain n2mu:agent ;
+               rdfs:range n2mu:agent .
 
 
 ###  http://cltl.nl/leolani/n2mu/perceive
 n2mu:perceive rdf:type owl:ObjectProperty ;
-              rdfs:domain n2mu:Agent ;
-              rdfs:range n2mu:Sensor .
+              rdfs:domain n2mu:agent ;
+              rdfs:range n2mu:sensor .
 
 
-###  http://cltl.nl/leolani/n2mu/plays
-n2mu:plays rdf:type owl:ObjectProperty ;
-           rdfs:domain n2mu:Agent ;
-           rdfs:range n2mu:Song ,
-                      n2mu:Sport .
+###  http://cltl.nl/leolani/n2mu/play
+n2mu:play rdf:type owl:ObjectProperty ;
+          rdfs:domain n2mu:agent ;
+          rdfs:range n2mu:song ,
+                     n2mu:sport .
 
 
-###  http://cltl.nl/leolani/n2mu/readBy
-n2mu:readBy rdf:type owl:ObjectProperty ;
-            rdfs:domain n2mu:Book ;
-            rdfs:range n2mu:Agent .
+###  http://cltl.nl/leolani/n2mu/read
+n2mu:read rdf:type owl:ObjectProperty ;
+          rdfs:domain foaf:Agent ;
+          rdfs:range n2mu:book .
 
 
 ###  http://cltl.nl/leolani/n2mu/sense
 n2mu:sense rdf:type owl:ObjectProperty ;
            rdfs:subPropertyOf n2mu:perceive ;
-           rdfs:domain n2mu:Agent ;
+           rdfs:domain n2mu:agent ;
            rdfs:range n2mu:Sound ,
                       n2mu:Visual .
 
 
-###  http://cltl.nl/leolani/n2mu/shareInterest
-n2mu:shareInterest rdf:type owl:ObjectProperty ,
-                            owl:SymmetricProperty ;
-                   rdfs:domain [ owl:intersectionOf ( n2mu:Agent
+###  http://cltl.nl/leolani/n2mu/share-interest
+n2mu:share-interest rdf:type owl:ObjectProperty ,
+                             owl:SymmetricProperty ;
+                    rdfs:domain [ owl:intersectionOf ( n2mu:agent
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty n2mu:likes ;
+                                                         owl:someValuesFrom n2mu:interest
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ;
+                    rdfs:range [ owl:intersectionOf ( n2mu:agent
                                                       [ rdf:type owl:Restriction ;
                                                         owl:onProperty n2mu:likes ;
-                                                        owl:someValuesFrom n2mu:Interest
+                                                        owl:someValuesFrom n2mu:interest
                                                       ]
                                                     ) ;
                                  rdf:type owl:Class
                                ] ;
-                   rdfs:range [ owl:intersectionOf ( n2mu:Agent
-                                                     [ rdf:type owl:Restriction ;
-                                                       owl:onProperty n2mu:likes ;
-                                                       owl:someValuesFrom n2mu:Interest
-                                                     ]
-                                                   ) ;
-                                rdf:type owl:Class
-                              ] ;
-                   rdfs:comment """a likes x
+                    rdfs:comment """a likes x
 and
 b likes y
 and
@@ -308,30 +256,49 @@ y Type Interest
 and x == y""" .
 
 
-###  http://cltl.nl/leolani/n2mu/studiesAt
-n2mu:studiesAt rdf:type owl:ObjectProperty ;
-               rdfs:subPropertyOf n2mu:isMemberOf ;
-               rdfs:domain n2mu:Agent ;
-               rdfs:range n2mu:University .
+###  http://cltl.nl/leolani/n2mu/studies-at
+n2mu:studies-at rdf:type owl:ObjectProperty ;
+                rdfs:domain n2mu:agent ;
+                rdfs:range n2mu:university .
 
 
-###  http://cltl.nl/leolani/n2mu/travelledTo
-n2mu:travelledTo rdf:type owl:ObjectProperty ;
-                 rdfs:domain n2mu:Agent ;
-                 rdfs:range n2mu:Location .
+###  http://cltl.nl/leolani/n2mu/travel-to
+n2mu:travel-to rdf:type owl:ObjectProperty ;
+               rdfs:domain n2mu:agent ;
+               rdfs:range n2mu:location .
 
 
-###  http://cltl.nl/leolani/n2mu/worksAt
-n2mu:worksAt rdf:type owl:ObjectProperty ;
-             rdfs:subPropertyOf n2mu:isMemberOf ;
-             rdfs:domain n2mu:Agent ;
-             rdfs:range n2mu:Institution .
+###  http://cltl.nl/leolani/n2mu/works-at
+n2mu:works-at rdf:type owl:ObjectProperty ;
+              rdfs:domain n2mu:agent ;
+              rdfs:range n2mu:institution .
 
 
-###  http://cltl.nl/leolani/n2mu/writtenBy
-n2mu:writtenBy rdf:type owl:ObjectProperty ;
-               rdfs:domain n2mu:Book ;
-               rdfs:range n2mu:Person .
+###  http://cltl.nl/leolani/n2mu/works-with
+n2mu:works-with rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf n2mu:know ;
+                rdf:type owl:SymmetricProperty ;
+                rdfs:comment """a isMemberOf x
+and
+b isMemberOf y
+and
+a Type Agent
+and
+b Type Agent
+and
+a != b
+and
+x Type Institution
+and
+y Type Institution
+and x == y""" .
+
+
+###  http://cltl.nl/leolani/n2mu/writes
+n2mu:writes rdf:type owl:ObjectProperty ;
+            rdfs:domain n2mu:person ,
+                        foaf:Person ;
+            rdfs:range n2mu:book .
 
 
 #################################################################
@@ -340,25 +307,25 @@ n2mu:writtenBy rdf:type owl:ObjectProperty ;
 
 ###  http://cltl.nl/leolani/n2mu/age
 n2mu:age rdf:type owl:DatatypeProperty ;
-         rdfs:domain n2mu:Person ;
+         rdfs:domain n2mu:person ;
          rdfs:range xsd:int .
 
 
 ###  http://cltl.nl/leolani/n2mu/birthday
 n2mu:birthday rdf:type owl:DatatypeProperty ;
-              rdfs:domain n2mu:Agent ;
+              rdfs:domain n2mu:agent ;
               rdfs:range xsd:dateTime .
 
 
 ###  http://cltl.nl/leolani/n2mu/faceID
 n2mu:faceID rdf:type owl:DatatypeProperty ;
-            rdfs:domain n2mu:Person ;
+            rdfs:domain n2mu:person ;
             rdfs:range rdfs:Literal .
 
 
 ###  http://cltl.nl/leolani/n2mu/name
 n2mu:name rdf:type owl:DatatypeProperty ;
-          rdfs:domain n2mu:Agent ;
+          rdfs:domain n2mu:agent ;
           rdfs:range rdfs:Literal .
 
 
@@ -366,247 +333,234 @@ n2mu:name rdf:type owl:DatatypeProperty ;
 #    Classes
 #################################################################
 
-###  http://cltl.nl/leolani/n2mu/Agent
-n2mu:Agent rdf:type owl:Class ;
-           owl:equivalentClass foaf:Agent .
-
-
-###  http://cltl.nl/leolani/n2mu/Book
-n2mu:Book rdf:type owl:Class ;
-          rdfs:subClassOf n2mu:InterestOccurrence .
-
-
-###  http://cltl.nl/leolani/n2mu/Company
-n2mu:Company rdf:type owl:Class ;
-             rdfs:subClassOf n2mu:Institution .
-
-
-###  http://cltl.nl/leolani/n2mu/Cuisine
-n2mu:Cuisine rdf:type owl:Class ;
-             rdfs:subClassOf n2mu:InterestField .
-
-
-###  http://cltl.nl/leolani/n2mu/Dish
-n2mu:Dish rdf:type owl:Class ;
-          rdfs:subClassOf n2mu:InterestOccurrence .
-
-
 ###  http://cltl.nl/leolani/n2mu/Electricity
 n2mu:Electricity rdf:type owl:Class ;
                  owl:equivalentClass obo:GO_0050952 ;
-                 rdfs:subClassOf n2mu:Sensor .
+                 rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/Equilibrium
 n2mu:Equilibrium rdf:type owl:Class ;
                  owl:equivalentClass obo:GO_0050957 ;
-                 rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/FilmGenre
-n2mu:FilmGenre rdf:type owl:Class ;
-               rdfs:subClassOf n2mu:InterestField .
+                 rdfs:subClassOf n2mu:sensor .
 
 
 ###  http://cltl.nl/leolani/n2mu/Gravity
 n2mu:Gravity rdf:type owl:Class ;
              owl:equivalentClass obo:GO_0070998 ;
-             rdfs:subClassOf n2mu:Sensor .
+             rdfs:subClassOf n2mu:sensor .
 
 
-###  http://cltl.nl/leolani/n2mu/Institution
-n2mu:Institution rdf:type owl:Class .
+###  http://cltl.nl/leolani/n2mu/Light
+n2mu:Light rdf:type owl:Class ;
+           owl:equivalentClass obo:GO_0050953 ;
+           rdfs:subClassOf n2mu:sensor .
 
 
-###  http://cltl.nl/leolani/n2mu/Interest
-n2mu:Interest rdf:type owl:Class ;
+###  http://cltl.nl/leolani/n2mu/Pain
+n2mu:Pain rdf:type owl:Class ;
+          owl:equivalentClass obo:GO_0019233 ;
+          rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/Smell
+n2mu:Smell rdf:type owl:Class ;
+           owl:equivalentClass obo:MF_0000055 ;
+           rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/Sound
+n2mu:Sound rdf:type owl:Class ;
+           owl:equivalentClass obo:MF_0000038 ;
+           rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/Taste
+n2mu:Taste rdf:type owl:Class ;
+           owl:equivalentClass obo:MF_0000054 ;
+           rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/Temperature
+n2mu:Temperature rdf:type owl:Class ;
+                 owl:equivalentClass obo:GO_0050951 ;
+                 rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/Touch
+n2mu:Touch rdf:type owl:Class ;
+           owl:equivalentClass obo:MF_0000056 ;
+           rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/Visual
+n2mu:Visual rdf:type owl:Class ;
+            owl:equivalentClass obo:MF_0000024 ;
+            rdfs:subClassOf n2mu:sensor .
+
+
+###  http://cltl.nl/leolani/n2mu/agent
+n2mu:agent rdf:type owl:Class ;
+           owl:equivalentClass foaf:Agent .
+
+
+###  http://cltl.nl/leolani/n2mu/animal
+n2mu:animal rdf:type owl:Class ;
+            rdfs:subClassOf n2mu:object .
+
+
+###  http://cltl.nl/leolani/n2mu/band
+n2mu:band rdf:type owl:Class ;
+          rdfs:subClassOf n2mu:object .
+
+
+###  http://cltl.nl/leolani/n2mu/book
+n2mu:book rdf:type owl:Class ;
+          rdfs:subClassOf n2mu:interest-ocurrence .
+
+
+###  http://cltl.nl/leolani/n2mu/city
+n2mu:city rdf:type owl:Class ;
+          rdfs:subClassOf n2mu:location .
+
+
+###  http://cltl.nl/leolani/n2mu/company
+n2mu:company rdf:type owl:Class ;
+             rdfs:subClassOf n2mu:institution .
+
+
+###  http://cltl.nl/leolani/n2mu/country
+n2mu:country rdf:type owl:Class ;
+             rdfs:subClassOf n2mu:location .
+
+
+###  http://cltl.nl/leolani/n2mu/cuisine
+n2mu:cuisine rdf:type owl:Class ;
+             rdfs:subClassOf n2mu:interest-field .
+
+
+###  http://cltl.nl/leolani/n2mu/device
+n2mu:device rdf:type owl:Class ;
+            rdfs:subClassOf n2mu:object .
+
+
+###  http://cltl.nl/leolani/n2mu/dish
+n2mu:dish rdf:type owl:Class ;
+          rdfs:subClassOf n2mu:interest-ocurrence .
+
+
+###  http://cltl.nl/leolani/n2mu/film-genre
+n2mu:film-genre rdf:type owl:Class ;
+                rdfs:subClassOf n2mu:interest-field .
+
+
+###  http://cltl.nl/leolani/n2mu/institution
+n2mu:institution rdf:type owl:Class .
+
+
+###  http://cltl.nl/leolani/n2mu/interest
+n2mu:interest rdf:type owl:Class ;
               owl:equivalentClass [ rdf:type owl:Restriction ;
-                                    owl:onProperty n2mu:likedBy ;
-                                    owl:someValuesFrom foaf:Agent
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
                                     owl:onProperty [ owl:inverseOf n2mu:likes
                                                    ] ;
                                     owl:someValuesFrom foaf:Agent
                                   ] .
 
 
-###  http://cltl.nl/leolani/n2mu/InterestField
-n2mu:InterestField rdf:type owl:Class ;
-                   rdfs:subClassOf n2mu:Interest .
+###  http://cltl.nl/leolani/n2mu/interest-field
+n2mu:interest-field rdf:type owl:Class ;
+                    rdfs:subClassOf n2mu:interest .
 
 
-###  http://cltl.nl/leolani/n2mu/InterestOccurrence
-n2mu:InterestOccurrence rdf:type owl:Class ;
-                        rdfs:subClassOf n2mu:Interest .
+###  http://cltl.nl/leolani/n2mu/interest-ocurrence
+n2mu:interest-ocurrence rdf:type owl:Class ;
+                        rdfs:subClassOf n2mu:interest .
 
 
-###  http://cltl.nl/leolani/n2mu/Light
-n2mu:Light rdf:type owl:Class ;
-           owl:equivalentClass obo:GO_0050953 ;
-           rdfs:subClassOf n2mu:Sensor .
+###  http://cltl.nl/leolani/n2mu/literature-genre
+n2mu:literature-genre rdf:type owl:Class ;
+                      rdfs:subClassOf n2mu:interest-field .
 
 
-###  http://cltl.nl/leolani/n2mu/LiteratureGenre
-n2mu:LiteratureGenre rdf:type owl:Class ;
-                     rdfs:subClassOf n2mu:InterestField .
-
-
-###  http://cltl.nl/leolani/n2mu/Location
-n2mu:Location rdf:type owl:Class ;
+###  http://cltl.nl/leolani/n2mu/location
+n2mu:location rdf:type owl:Class ;
               owl:equivalentClass <http://schema.org/Place> ,
                                   [ rdf:type owl:Restriction ;
-                                    owl:onProperty [ owl:inverseOf n2mu:isFrom
+                                    owl:onProperty [ owl:inverseOf n2mu:be-from
                                                    ] ;
                                     owl:someValuesFrom foaf:Agent
                                   ] .
 
 
-###  http://cltl.nl/leolani/n2mu/Movie
-n2mu:Movie rdf:type owl:Class ;
-           rdfs:subClassOf n2mu:InterestOccurrence .
-
-
-###  http://cltl.nl/leolani/n2mu/MusicGenre
-n2mu:MusicGenre rdf:type owl:Class ;
-                rdfs:subClassOf n2mu:InterestField .
-
-
-###  http://cltl.nl/leolani/n2mu/Object
-n2mu:Object rdf:type owl:Class .
-
-
-###  http://cltl.nl/leolani/n2mu/Pain
-n2mu:Pain rdf:type owl:Class ;
-          owl:equivalentClass obo:GO_0019233 ;
-          rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/Person
-n2mu:Person rdf:type owl:Class ;
-            owl:equivalentClass foaf:Person ;
-            rdfs:subClassOf n2mu:Agent ;
-            owl:disjointWith n2mu:Robot .
-
-
-###  http://cltl.nl/leolani/n2mu/PopularInterest
-n2mu:PopularInterest rdf:type owl:Class ;
-                     owl:equivalentClass [ owl:intersectionOf ( n2mu:Interest
-                                                                [ rdf:type owl:Restriction ;
-                                                                  owl:onProperty n2mu:likedBy ;
-                                                                  owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger ;
-                                                                  owl:onClass n2mu:Agent
-                                                                ]
-                                                              ) ;
-                                           rdf:type owl:Class
-                                         ] ;
-                     rdfs:subClassOf n2mu:Interest .
-
-
-###  http://cltl.nl/leolani/n2mu/Robot
-n2mu:Robot rdf:type owl:Class ;
-           rdfs:subClassOf n2mu:Agent .
-
-
-###  http://cltl.nl/leolani/n2mu/Sensor
-n2mu:Sensor rdf:type owl:Class ;
-            owl:equivalentClass obo:MF_0000019 .
-
-
-###  http://cltl.nl/leolani/n2mu/Smell
-n2mu:Smell rdf:type owl:Class ;
-           owl:equivalentClass obo:MF_0000055 ;
-           rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/Song
-n2mu:Song rdf:type owl:Class ;
-          rdfs:subClassOf n2mu:InterestOccurrence .
-
-
-###  http://cltl.nl/leolani/n2mu/Sound
-n2mu:Sound rdf:type owl:Class ;
-           owl:equivalentClass obo:MF_0000038 ;
-           rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/Sport
-n2mu:Sport rdf:type owl:Class ;
-           rdfs:subClassOf n2mu:InterestField .
-
-
-###  http://cltl.nl/leolani/n2mu/SportsTeam
-n2mu:SportsTeam rdf:type owl:Class ;
-                rdfs:subClassOf n2mu:InterestOccurrence .
-
-
-###  http://cltl.nl/leolani/n2mu/Taste
-n2mu:Taste rdf:type owl:Class ;
-           owl:equivalentClass obo:MF_0000054 ;
-           rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/Temperature
-n2mu:Temperature rdf:type owl:Class ;
-                 owl:equivalentClass obo:GO_0050951 ;
-                 rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/Touch
-n2mu:Touch rdf:type owl:Class ;
-           owl:equivalentClass obo:MF_0000056 ;
-           rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/University
-n2mu:University rdf:type owl:Class ;
-                rdfs:subClassOf n2mu:Institution .
-
-
-###  http://cltl.nl/leolani/n2mu/Visual
-n2mu:Visual rdf:type owl:Class ;
-            owl:equivalentClass obo:MF_0000024 ;
-            rdfs:subClassOf n2mu:Sensor .
-
-
-###  http://cltl.nl/leolani/n2mu/animal
-n2mu:animal rdf:type owl:Class ;
-            rdfs:subClassOf n2mu:Object .
-
-
-###  http://cltl.nl/leolani/n2mu/band
-n2mu:band rdf:type owl:Class ;
-          rdfs:subClassOf n2mu:Object .
-
-
-###  http://cltl.nl/leolani/n2mu/city
-n2mu:city rdf:type owl:Class ;
-          rdfs:subClassOf n2mu:Location .
-
-
-###  http://cltl.nl/leolani/n2mu/country
-n2mu:country rdf:type owl:Class ;
-             rdfs:subClassOf n2mu:Location .
-
-
-###  http://cltl.nl/leolani/n2mu/device
-n2mu:device rdf:type owl:Class ;
-            rdfs:subClassOf n2mu:Object .
-
-
 ###  http://cltl.nl/leolani/n2mu/mammal
 n2mu:mammal rdf:type owl:Class ;
-            rdfs:subClassOf n2mu:Object .
+            rdfs:subClassOf n2mu:object .
 
 
-###  http://cltl.nl/leolani/n2mu/musical_work
-n2mu:musical_work rdf:type owl:Class ;
-                  rdfs:subClassOf n2mu:Object .
+###  http://cltl.nl/leolani/n2mu/movie
+n2mu:movie rdf:type owl:Class ;
+           rdfs:subClassOf n2mu:interest-ocurrence .
+
+
+###  http://cltl.nl/leolani/n2mu/music-genre
+n2mu:music-genre rdf:type owl:Class ;
+                 rdfs:subClassOf n2mu:interest-field .
+
+
+###  http://cltl.nl/leolani/n2mu/musical-work
+n2mu:musical-work rdf:type owl:Class ;
+                  rdfs:subClassOf n2mu:object .
+
+
+###  http://cltl.nl/leolani/n2mu/object
+n2mu:object rdf:type owl:Class .
+
+
+###  http://cltl.nl/leolani/n2mu/person
+n2mu:person rdf:type owl:Class ;
+            owl:equivalentClass foaf:Person ;
+            rdfs:subClassOf n2mu:agent ;
+            owl:disjointWith n2mu:robot .
 
 
 ###  http://cltl.nl/leolani/n2mu/plant
 n2mu:plant rdf:type owl:Class ;
-           rdfs:subClassOf n2mu:Object .
+           rdfs:subClassOf n2mu:object .
+
+
+###  http://cltl.nl/leolani/n2mu/popular-interest
+n2mu:popular-interest rdf:type owl:Class ;
+                      rdfs:subClassOf n2mu:interest .
+
+
+###  http://cltl.nl/leolani/n2mu/robot
+n2mu:robot rdf:type owl:Class ;
+           rdfs:subClassOf n2mu:agent .
+
+
+###  http://cltl.nl/leolani/n2mu/sensor
+n2mu:sensor rdf:type owl:Class ;
+            owl:equivalentClass obo:MF_0000019 .
+
+
+###  http://cltl.nl/leolani/n2mu/song
+n2mu:song rdf:type owl:Class ;
+          rdfs:subClassOf n2mu:interest-ocurrence .
+
+
+###  http://cltl.nl/leolani/n2mu/sport
+n2mu:sport rdf:type owl:Class ;
+           rdfs:subClassOf n2mu:interest-field .
+
+
+###  http://cltl.nl/leolani/n2mu/sports-team
+n2mu:sports-team rdf:type owl:Class ;
+                 rdfs:subClassOf n2mu:interest-ocurrence .
+
+
+###  http://cltl.nl/leolani/n2mu/university
+n2mu:university rdf:type owl:Class ;
+                rdfs:subClassOf n2mu:institution .
 
 
 ###  http://purl.obolibrary.org/obo/GO_0007600
@@ -755,19 +709,19 @@ foaf:Person rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/world/amsterdam
 <http://cltl.nl/leolani/world/amsterdam> rdf:type owl:NamedIndividual ,
                                                   n2mu:city ;
-                                         n2mu:in <http://cltl.nl/leolani/world/netherlands> .
+                                         n2mu:be-in <http://cltl.nl/leolani/world/netherlands> .
 
 
 ###  http://cltl.nl/leolani/world/bram
 <http://cltl.nl/leolani/world/bram> rdf:type owl:NamedIndividual ,
-                                             n2mu:Person ;
+                                             n2mu:person ;
                                     n2mu:likes <http://cltl.nl/leolani/world/harry_potter> ;
-                                    n2mu:worksAt <http://cltl.nl/leolani/world/vu_amsterdam> .
+                                    n2mu:works-at <http://cltl.nl/leolani/world/vu_amsterdam> .
 
 
 ###  http://cltl.nl/leolani/world/football
 <http://cltl.nl/leolani/world/football> rdf:type owl:NamedIndividual ,
-                                                 n2mu:Sport .
+                                                 n2mu:sport .
 
 
 ###  http://cltl.nl/leolani/world/france
@@ -777,7 +731,7 @@ foaf:Person rdf:type owl:Class ;
 
 ###  http://cltl.nl/leolani/world/harry_potter
 <http://cltl.nl/leolani/world/harry_potter> rdf:type owl:NamedIndividual ,
-                                                     n2mu:Book .
+                                                     n2mu:book .
 
 
 ###  http://cltl.nl/leolani/world/japan
@@ -787,19 +741,18 @@ foaf:Person rdf:type owl:Class ;
 
 ###  http://cltl.nl/leolani/world/lenka
 <http://cltl.nl/leolani/world/lenka> rdf:type owl:NamedIndividual ,
-                                              n2mu:Person ;
+                                              n2mu:person ;
                                      n2mu:likes <http://cltl.nl/leolani/world/harry_potter> ;
-                                     n2mu:worksAt <http://cltl.nl/leolani/world/vu_amsterdam> .
+                                     n2mu:works-at <http://cltl.nl/leolani/world/vu_amsterdam> .
 
 
 ###  http://cltl.nl/leolani/world/leolani
 <http://cltl.nl/leolani/world/leolani> rdf:type owl:NamedIndividual ,
-                                                n2mu:Robot ;
-                                       n2mu:isMemberOf <http://cltl.nl/leolani/world/vu_amsterdam> ;
-                                       n2mu:knows <http://cltl.nl/leolani/world/selene> ;
+                                                n2mu:robot ;
+                                       n2mu:know <http://cltl.nl/leolani/world/selene> ;
                                        n2mu:likes <http://cltl.nl/leolani/world/harry_potter> ,
                                                   <http://cltl.nl/leolani/world/mulan> ;
-                                       n2mu:manufacturedIn <http://cltl.nl/leolani/world/france> ,
+                                       n2mu:manufacture-in <http://cltl.nl/leolani/world/france> ,
                                                            <http://cltl.nl/leolani/world/japan> ;
                                        n2mu:name "leolani"^^rdfs:Literal .
 
@@ -811,13 +764,12 @@ foaf:Person rdf:type owl:Class ;
 
 ###  http://cltl.nl/leolani/world/mulan
 <http://cltl.nl/leolani/world/mulan> rdf:type owl:NamedIndividual ,
-                                              n2mu:Movie .
+                                              n2mu:movie .
 
 
 ###  http://cltl.nl/leolani/world/my_tomorrows
 <http://cltl.nl/leolani/world/my_tomorrows> rdf:type owl:NamedIndividual ,
-                                                     n2mu:Company ;
-                                            n2mu:located <http://cltl.nl/leolani/world/amsterdam> .
+                                                     n2mu:company .
 
 
 ###  http://cltl.nl/leolani/world/netherlands
@@ -827,20 +779,20 @@ foaf:Person rdf:type owl:Class ;
 
 ###  http://cltl.nl/leolani/world/piek
 <http://cltl.nl/leolani/world/piek> rdf:type owl:NamedIndividual ,
-                                             n2mu:Person ;
+                                             n2mu:person ;
                                     n2mu:likes <http://cltl.nl/leolani/world/harry_potter> ;
-                                    n2mu:worksAt <http://cltl.nl/leolani/world/vu_amsterdam> .
+                                    n2mu:works-at <http://cltl.nl/leolani/world/vu_amsterdam> .
 
 
 ###  http://cltl.nl/leolani/world/selene
 <http://cltl.nl/leolani/world/selene> rdf:type owl:NamedIndividual ,
-                                               n2mu:Person ;
-                                      n2mu:bornIn <http://cltl.nl/leolani/world/mexico> ;
-                                      n2mu:favorite <http://cltl.nl/leolani/world/harry_potter> ,
-                                                    <http://cltl.nl/leolani/world/mulan> ;
+                                               n2mu:person ;
+                                      n2mu:born-in <http://cltl.nl/leolani/world/mexico> ;
+                                      n2mu:favorite-is <http://cltl.nl/leolani/world/harry_potter> ,
+                                                       <http://cltl.nl/leolani/world/mulan> ;
                                       n2mu:likes <http://cltl.nl/leolani/world/football> ;
-                                      n2mu:worksAt <http://cltl.nl/leolani/world/my_tomorrows> ,
-                                                   <http://cltl.nl/leolani/world/vu_amsterdam> ;
+                                      n2mu:works-at <http://cltl.nl/leolani/world/my_tomorrows> ,
+                                                    <http://cltl.nl/leolani/world/vu_amsterdam> ;
                                       n2mu:age "24"^^xsd:int ;
                                       n2mu:faceID "001"^^rdfs:Literal ;
                                       n2mu:name "selene"^^rdfs:Literal .
@@ -848,13 +800,12 @@ foaf:Person rdf:type owl:Class ;
 
 ###  http://cltl.nl/leolani/world/tacos
 <http://cltl.nl/leolani/world/tacos> rdf:type owl:NamedIndividual ,
-                                              n2mu:Dish .
+                                              n2mu:dish .
 
 
 ###  http://cltl.nl/leolani/world/vu_amsterdam
 <http://cltl.nl/leolani/world/vu_amsterdam> rdf:type owl:NamedIndividual ,
-                                                     n2mu:University ;
-                                            n2mu:located <http://cltl.nl/leolani/world/amsterdam> .
+                                                     n2mu:university .
 
 
 #################################################################
@@ -862,21 +813,21 @@ foaf:Person rdf:type owl:Class ;
 #################################################################
 
 [ rdf:type owl:AllDisjointClasses ;
-  owl:members ( n2mu:Book
-                n2mu:Dish
-                n2mu:Movie
-                n2mu:Song
-                n2mu:SportsTeam
+  owl:members ( n2mu:book
+                n2mu:dish
+                n2mu:movie
+                n2mu:song
+                n2mu:sports-team
               )
 ] .
 
 
 [ rdf:type owl:AllDisjointClasses ;
-  owl:members ( n2mu:Cuisine
-                n2mu:FilmGenre
-                n2mu:LiteratureGenre
-                n2mu:MusicGenre
-                n2mu:Sport
+  owl:members ( n2mu:cuisine
+                n2mu:film-genre
+                n2mu:literature-genre
+                n2mu:music-genre
+                n2mu:sport
               )
 ] .
 
@@ -923,4 +874,4 @@ foaf:Person rdf:type owl:Class ;
 ] .
 
 
-###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
