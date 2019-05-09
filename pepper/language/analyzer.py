@@ -388,9 +388,10 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['object'] = ''
 
         if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who':
-            rdf['subject'] = rdf['object'].split()[0]
-            rdf['predicate'] = 'be-' + rdf['object'].split()[1]
-            rdf['object'] = ''
+            if len(rdf['object'].split()) > 0:  # TODO revision by Lenka
+                rdf['subject'] = rdf['object'].split()[0]
+                rdf['predicate'] = 'be-' + rdf['object'].split()[1]
+                rdf['object'] = ''
 
         if rdf['object'] == 'from':
             rdf['object'] = ''

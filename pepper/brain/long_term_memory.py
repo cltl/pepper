@@ -106,8 +106,8 @@ class LongTermMemory(BasicBrain):
 
         else:
             # Create JSON output
-            thoughts = None
-            output = {'response': None, 'statement': utterance, 'thoughts': thoughts}
+            output = {'response': None, 'statement': utterance, 'thoughts': None}
+
         return output
 
     def experience(self, utterance):
@@ -796,7 +796,7 @@ class LongTermMemory(BasicBrain):
         # Query subject
         if utterance.triple.subject_name == empty:
             query = """
-                SELECT ?slabel ?authorlabel
+                SELECT distinct ?slabel ?authorlabel
                         WHERE { 
                             ?s n2mu:%s ?o . 
                             ?s rdfs:label ?slabel . 
@@ -815,7 +815,7 @@ class LongTermMemory(BasicBrain):
         # Query object
         elif utterance.triple.object_name == empty:
             query = """
-                SELECT ?olabel ?authorlabel
+                SELECT distinct ?olabel ?authorlabel
                         WHERE { 
                             ?s n2mu:%s ?o .   
                             ?s rdfs:label '%s' .  
@@ -834,7 +834,7 @@ class LongTermMemory(BasicBrain):
         # Query existence
         else:
             query = """
-                SELECT ?authorlabel ?v
+                SELECT distinct ?authorlabel ?v
                         WHERE { 
                             ?s n2mu:%s ?o .   
                             ?s rdfs:label '%s' .  
