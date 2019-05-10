@@ -18,7 +18,7 @@ def test():
             brain_response = brain.query_brain(chat.last_utterance)
             reply = reply_to_question(brain_response)
         else:
-            brain_response = brain.update(chat.last_utterance)
+            brain_response = brain.update(chat.last_utterance, reason_types=True)
             reply = reply_to_statement(brain_response, chat.speaker, brain)
 
         print(reply)

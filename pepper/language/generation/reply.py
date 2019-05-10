@@ -63,7 +63,7 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
         else:
             response += ', but I don\'t see it!'
 
-        class_recognized, text = brain.process_visual(object)
+        class_recognized, text = brain.reason_entity_type(object)
 
         if class_recognized is not None:
             capsule = {

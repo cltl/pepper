@@ -1,6 +1,6 @@
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.brain import LongTermMemory, RdfBuilder
-from pepper.language import Chat, Utterance
+from pepper.language import Chat, Utterance, UtteranceType
 from pepper.framework import UtteranceHypothesis, Context, Object, Face
 
 from datetime import date
@@ -29,6 +29,7 @@ def transform_capsule(capsule):
     hyp = UtteranceHypothesis('this is a test', 0.99)
 
     utt = Utterance(chat, [hyp], False, capsule['turn'])
+    utt._type = UtteranceType.STATEMENT
 
     builder = RdfBuilder()
 
@@ -97,7 +98,7 @@ capsules = [capsule_knows, capsule_is_from, capsule_likes]
 for capsule in capsules:
     capsule = transform_capsule(capsule)
 
-    x = brain.update(capsule)
+    x = brain.update(capsule, reason_types=True)
     break
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))

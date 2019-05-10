@@ -49,7 +49,7 @@ class LongTermMemory(BasicBrain):
 
     #################################### Main functions to interact with the brain ####################################
 
-    def update(self, utterance):
+    def update(self, utterance, reason_types=False):
         # type (Utterance) -> Thoughts
         """
         Main function to interact with if a statement is coming into the brain. Takes in an Utterance containing a
@@ -70,6 +70,16 @@ class LongTermMemory(BasicBrain):
 
             # Casefold
             utterance.casefold(format='triple')
+
+            if reason_types:
+                # Try to figure out what this entity is
+                if not utterance.triple.object.types:
+                    object_type, _ = self.reason_entity_type(str(utterance.triple.object_name), exact_only=True)
+                    utterance.triple.object.add_types([object_type])
+
+                if not utterance.triple.subject.types:
+                    subject_type, _ = self.reason_entity_type(str(utterance.triple.subject_name), exact_only=True)
+                    utterance.triple.object.add_types([subject_type])
 
             # Create graphs and triples
             instance = self._model_graphs_(utterance)
@@ -145,7 +155,7 @@ class LongTermMemory(BasicBrain):
 
         return output
 
-    def process_visual(self, item, exact_only=True):
+    def reason_entity_type(self, item, exact_only=True):
         """
         Main function to determine if this item can be recognized by the brain, learned, or none
         :param item:
@@ -161,13 +171,13 @@ class LongTermMemory(BasicBrain):
         if casefold_text(item, format='triple') in temp.keys():
             # If this is in the ontology already as a label, create sensor triples directly
             text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
-            return item, text
+            return temp[item], text
 
         # Query the display for information
         class_type, description = self.exact_match_dbpedia(item)
         if class_type is not None:
             # Had to learn it, but I can create triples now
-            text = ' I did not know what %s is, but I searched on the display and I found that it is a %s. ' \
+            text = ' I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
                    'I will remember this object' % (item, class_type)
             return casefold_text(class_type, format='triple'), text
 
@@ -176,7 +186,7 @@ class LongTermMemory(BasicBrain):
             class_type, description = self.keyword_match_dbpedia(item)
             if class_type is not None:
                 # Had to really search for it to learn it, but I can create triples now
-                text = ' I did not know what %s is, but I searched for fuzzy matches on the display and I found that it ' \
+                text = ' I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
                        'is a %s. I will remember this object' % (item, class_type)
                 return casefold_text(class_type, format='triple'), text
 
@@ -577,30 +587,50 @@ class LongTermMemory(BasicBrain):
                 entity_type = self._rdf_builder.create_resource_uri(namespace_mapping.get(item, 'N2MU'), item)
                 graph.add((entity.id, RDF.type, entity_type))
 
+    def reason_location(self):
+        # Query all locations and detections (through context)
+
+        # Compare one by one and determine most similar
+
+        # Pick most similar and determine equality based on a threshold
+        return 'Not unknow location anymore'
+
+    def set_location_label(self, label):
+        # https: // www.semanticarts.com / sparql - changing - instance - uris /
+        # Replace triples using old location as object (in this context)
+
+        # Replace triples using old location ad subject (in this context)
+
+        pass
+
     def create_context(self, cntxt):
         # Create an episodic awareness by making a context
-        context = self._rdf_builder.fill_entity('Context', ['Context'], 'LC')
+        context_id = self._rdf_builder.fill_literal(cntxt.id, datatype=self.namespaces['XML']['string'])
+        context = self._rdf_builder.fill_entity('context%s' % cntxt.id, ['Context'], 'LC')
         self._link_entity(context, self.interaction_graph)
+        self.interaction_graph.add((context.id, self.namespaces['N2MU']['id'], context_id))
 
         # Time
-        # time_label = '%s' % cntxt.datetime.strftime('%Y-%m-%d')
         time = self._rdf_builder.fill_entity(cntxt.datetime.strftime('%Y-%m-%d'), ['Time', 'DateTimeDescription'], 'LC')
         self._link_entity(time, self.interaction_graph)
+        self.interaction_graph.add((context.id, self.namespaces['SEM']['hasBeginTimeStamp'], time.id))
 
         # Set specifics of datetime
         day = self._rdf_builder.fill_literal(cntxt.datetime.day, datatype=self.namespaces['XML']['gDay'])
         month = self._rdf_builder.fill_literal(cntxt.datetime.month, datatype=self.namespaces['XML']['gMonthDay'])
         year = self._rdf_builder.fill_literal(cntxt.datetime.year, datatype=self.namespaces['XML']['gYear'])
         time_unit = self._rdf_builder.create_resource_uri('TIME', 'unitDay')
-
         self.interaction_graph.add((time.id, self.namespaces['TIME']['day'], day))
         self.interaction_graph.add((time.id, self.namespaces['TIME']['month'], month))
         self.interaction_graph.add((time.id, self.namespaces['TIME']['year'], year))
         self.interaction_graph.add((time.id, self.namespaces['TIME']['unitType'], time_unit))
 
         # Place # TODO guess name
+        location_id = self._rdf_builder.fill_literal(cntxt.location.id, datatype=self.namespaces['XML']['string'])
         location = self._rdf_builder.fill_entity(cntxt.location.label, ['Location', 'Place'], 'LC')
         self._link_entity(location, self.interaction_graph)
+        self.interaction_graph.add((location.id, self.namespaces['N2MU']['id'], location_id))
+        self.interaction_graph.add((context.id, self.namespaces['SEM']['hasPlace'], location.id))
 
         # Detections TODO label must be numbered to differentiate
         self._link_leolani()
@@ -608,7 +638,7 @@ class LongTermMemory(BasicBrain):
         object_type = self._rdf_builder.create_resource_uri('N2MU', 'object')
         for item in cntxt.all_objects:
             if item.name.lower() != 'person':
-                objct = self._rdf_builder.fill_entity(casefold_text(item.name, format='triple'),
+                objct = self._rdf_builder.fill_entity(casefold_text('%s %s' % (item.name, item.id), format='triple'),
                                                       [casefold_text(item.name, format='triple'), 'Detection',
                                                        'object'],
                                                       'LW')
@@ -631,9 +661,6 @@ class LongTermMemory(BasicBrain):
                 self.instance_graph.add((prsn.id, self.namespaces['EPS']['hasContext'], context.id))
                 face_detection_claim = self._create_claim_graph(self.myself, prdt, prsn, UtteranceType.EXPERIENCE)
                 self.claim_graph.add((face_detection_claim.id, self.namespaces['EPS']['hasContext'], context.id))
-
-        self.interaction_graph.add((context.id, self.namespaces['SEM']['hasBeginTimeStamp'], time.id))
-        self.interaction_graph.add((context.id, self.namespaces['SEM']['hasPlace'], location.id))
 
         return context
 
@@ -660,7 +687,7 @@ class LongTermMemory(BasicBrain):
     def _create_events(self, utterance, claim_type):
         # Chat
         chat_id = self._rdf_builder.fill_literal(utterance.chat.id, datatype=self.namespaces['XML']['string'])
-        chat_label = 'Chat%s' % utterance.chat.id
+        chat_label = 'chat%s' % utterance.chat.id
         chat = self._rdf_builder.fill_entity(chat_label, ['Event', 'Chat'], 'LTa')
         self._link_entity(chat, self.interaction_graph)
         self.interaction_graph.add((chat.id, self.namespaces['N2MU']['id'], chat_id))
@@ -668,7 +695,7 @@ class LongTermMemory(BasicBrain):
         # Utterance
         if claim_type == UtteranceType.STATEMENT:
             statement_id = self._rdf_builder.fill_literal(utterance.turn, datatype=self.namespaces['XML']['string'])
-            statement_label = '%s_Utterance%s' % (chat_label, utterance.turn)
+            statement_label = '%s_utterance%s' % (chat_label, utterance.turn)
             statement = self._rdf_builder.fill_entity(statement_label, ['Event', 'Utterance'], 'LTa')
             self._link_entity(statement, self.interaction_graph)
 
@@ -684,9 +711,9 @@ class LongTermMemory(BasicBrain):
             actor = None
             interaction = None
 
-        # Visual # TODO assign meaningful id
+        # Visual
         experience_id = self._rdf_builder.fill_literal(utterance.turn, datatype=self.namespaces['XML']['string'])
-        experience_label = '%s_Visual%s' % (chat_label, utterance.turn)
+        experience_label = '%s_visual%s' % (chat_label, utterance.turn)
         experience = self._rdf_builder.fill_entity(experience_label, ['Event', 'Visual'], 'LTa')
         self._link_entity(experience, self.interaction_graph)
 
@@ -781,9 +808,9 @@ class LongTermMemory(BasicBrain):
 
     def _create_perspective_graph(self, utterance, subevent):
         # Mention
-        mention_unit = 'Char' if utterance.type == UtteranceType.STATEMENT else 'Pixel'
+        mention_unit = 'char' if utterance.type == UtteranceType.STATEMENT else 'Pixel'
         mention_position = '0-%s' % len(utterance.transcript)
-        mention_label = '%s%s%s' % (subevent.label, mention_unit, mention_position)
+        mention_label = '%s_%s%s' % (subevent.label, mention_unit, mention_position)
 
         mention = self._rdf_builder.fill_entity(mention_label, ['Mention'], 'LTa')
         self._link_entity(mention, self.perspective_graph)
