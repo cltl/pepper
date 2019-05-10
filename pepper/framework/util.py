@@ -30,7 +30,7 @@ class Scheduler(Thread):
 
 class Mailbox(object):
 
-    EPSILSON = 1E-3
+    EPSILON = 1E-2
 
     def __init__(self):
         """Create Mailbox Object"""
@@ -65,7 +65,7 @@ class Mailbox(object):
         with self._mutex:
             if block:
                 while self._mail is None:
-                    sleep(Mailbox.EPSILSON)
+                    sleep(Mailbox.EPSILON)
                 return self._get()
 
             else:

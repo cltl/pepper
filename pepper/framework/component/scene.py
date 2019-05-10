@@ -9,7 +9,7 @@ from time import time
 
 class SceneComponent(AbstractComponent):
 
-    RESOLUTION = 256
+    RESOLUTION = 200
     SAMPLES = 5
     DEPTH_THRESHOLD = 0.5
     VARIANCE_THRESHOLD = 0.5

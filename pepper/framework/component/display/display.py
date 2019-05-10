@@ -1,5 +1,6 @@
 from pepper.framework import AbstractComponent, AbstractImage
-from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, SceneComponent, ContextComponent
+from pepper.framework.component import *
+from pepper.framework.util import Mailbox
 from .server import DisplayServer
 
 from threading import Thread, Lock
@@ -9,6 +10,8 @@ from io import BytesIO
 import base64
 import json
 
+from time import time
+
 
 class DisplayComponent(AbstractComponent):
 
@@ -16,11 +19,9 @@ class DisplayComponent(AbstractComponent):
         super(DisplayComponent, self).__init__(backend)
 
         server = DisplayServer()
-        server_thread = Thread(target=server.start)
+        server_thread = Thread(target=server.start, name="DisplayServerThread")
         server_thread.daemon = True
         server_thread.start()
-
-        lock = Lock()
 
         face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
@@ -47,39 +48,56 @@ class DisplayComponent(AbstractComponent):
 
         def on_image(image):
             # type: (AbstractImage) -> None
-            with lock:
-                if self._display_info:
-                    server.update(json.dumps(self._display_info))
 
-                # Get Scatter Coordinates
-                x,y,z,c = scene.scatter_map
+            t0 = time()
+            # Serialize Display Info
+            serialized_info = json.dumps(self._display_info)
+            serialized_info_time = time() - t0
 
-                # Construct Display Info (to be send to webclient)
-                self._display_info = {
-                    "hash": hash(str(image.image)),
-                    "img": encode_image(Image.fromarray(image.image)),
-                    "frustum": image.frustum(0.25, 4),
-                    "items": [],
-                    "items3D": [{
-                        "position": item.position,
-                        "bounds3D": item.bounds3D
-                    } for item in context.context.objects],
-                    "x": x.tolist(),
-                    "y": y.tolist(),
-                    "z": z.tolist(),
-                    "c": c.tolist()
-                }
+            t0 = time()
+            # Update Server with Display Info
+            server.update(serialized_info)
+            server_update_time = time() - t0
+
+            t0 = time()
+            # Get Scatter Coordinates
+            x,y,z,c = scene.scatter_map
+            scatter_map_time = time() - t0
+
+            t0 = time()
+            # Construct Display Info (to be send to webclient)
+            self._display_info = {
+                "hash": hash(str(image.image)),
+                "img": encode_image(Image.fromarray(image.image)),
+                "frustum": image.frustum(0.25, 4),
+                "items": [],
+                "items3D": [{
+                    "position": item.position,
+                    "bounds3D": item.bounds3D
+                } for item in context.context.objects],
+
+                "x": x.tolist(),
+                "y": y.tolist(),
+                "z": z.tolist(),
+                "c": c.tolist()
+            }
+
+            display_info_time = time() - t0
+
+            total_time = display_info_time + scatter_map_time + server_update_time + serialized_info_time
+            print("{:3.3f} = {:3.3f} + {:3.3f} + {:3.3f} + {:3.3f}".format(
+                total_time, serialized_info_time, server_update_time, scatter_map_time, display_info_time
+            ))
 
         def add_items(items):
             if self._display_info:
-                with lock:
-                    self._display_info["items"] += [
-                        {"name": item.name,
-                         "confidence": item.confidence,
-                         "bounds": item.image_bounds.to_list(),
-                         "position": item.position,
-                         "bounds3D": item.bounds3D,
-                         } for item in items]
+                self._display_info["items"] += [
+                    {"name": item.name,
+                     "confidence": item.confidence,
+                     "bounds": item.image_bounds.to_list(),
+                     "position": item.position,
+                     "bounds3D": item.bounds3D,
+                     } for item in items]
 
         self.backend.camera.callbacks += [on_image]
         face_recognition.on_face_known_callbacks += [add_items]
