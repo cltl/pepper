@@ -118,8 +118,7 @@ class NAOqiCamera(AbstractCamera):
                     self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))
 
                 # Maintain frame rate
-                sleep(1.0E-4)
-                # sleep(max(1.0E-6, 1.0 / self.rate - (time() - t0)))
+                sleep(max(1.0E-4, 1.0 / self.rate - (time() - t0)))
 
     def _yuv2rgb(self, width, height, data):
 

@@ -216,7 +216,7 @@ class ObjectObservations:
         for observation in self._observations[::-1]:
 
             # If observation could be done with current view
-            if observation.bounds.is_superset_of(view_bounds):
+            if observation.bounds.is_subset_of(view_bounds):
 
                 # Check if recent observation of this object is made
                 found_recent_observation = False
