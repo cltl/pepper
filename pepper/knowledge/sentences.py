@@ -126,11 +126,13 @@ DIFFERENT_FACE = [
 ]
 
 THINKING = [
-    "Let me think.",
-    "Hmmm",
-    "Well",
-    "I'm thinking",
-    "I heard you"
+    "...Let me think...",
+    "...Hmmm...",
+    "...Well...",
+    "...I'm thinking...",
+    "...I heard you...",
+    "...Let me tell you..."
+    "...Okay..."
 ]
 
 UNDERSTAND = [

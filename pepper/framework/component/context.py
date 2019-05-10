@@ -4,6 +4,7 @@ from ..sensor import UtteranceHypothesis, Face
 from ..abstract import AbstractComponent, AbstractImage
 
 from pepper.language import Utterance
+from pepper.knowledge import sentences
 from pepper import config
 
 from collections import deque
@@ -11,6 +12,7 @@ from threading import Thread, Lock
 from time import time
 
 from typing import Deque, List
+from random import choice
 
 import numpy as np
 
@@ -57,6 +59,8 @@ class ContextComponent(AbstractComponent):
 
             with context_lock:
                 if self.context.chatting and hypotheses:
+
+                    self.say(choice(sentences.THINKING), block=False)
 
                     # Add ASR Transcript to Chat as Utterance
                     utterance = self.context.chat.add_utterance(hypotheses, False)

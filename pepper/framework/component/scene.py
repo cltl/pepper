@@ -18,8 +18,8 @@ class SceneComponent(AbstractComponent):
         super(SceneComponent, self).__init__(backend)
 
         self._theta_map, self._phi_map = np.meshgrid(
-            np.linspace(0, np.pi, self.RESOLUTION),
-            np.linspace(0, 2 * np.pi, 2 * self.RESOLUTION)
+            np.linspace(0, np.pi, self.RESOLUTION, dtype=np.float32),
+            np.linspace(0, 2 * np.pi, 2 * self.RESOLUTION, dtype=np.float32)
         )
         self._depth_map = np.zeros((2 * self.RESOLUTION, self.RESOLUTION, self.SAMPLES), np.float32)
         self._color_map = np.zeros((2 * self.RESOLUTION, self.RESOLUTION, self.SAMPLES, 3), np.float32)
@@ -39,8 +39,6 @@ class SceneComponent(AbstractComponent):
 
     @property
     def scatter_map(self):
-        t0 = time()
-
         # Get Per Pixel Min and Max Depth
         min_depth = np.min(self._depth_map, -1)
         max_depth = np.max(self._depth_map, -1)

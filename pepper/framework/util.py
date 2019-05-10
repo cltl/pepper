@@ -7,7 +7,7 @@ import numpy as np
 class Scheduler(Thread):
     """Runs Task Continuously with certain interval"""
 
-    def __init__(self, target, interval=1E-2, name=None, args=(), kwargs={}):
+    def __init__(self, target, interval=1E-1, name=None, args=(), kwargs={}):
         Thread.__init__(self, name=name)
         self._target = target
         self._interval = interval
@@ -30,7 +30,7 @@ class Scheduler(Thread):
 
 class Mailbox(object):
 
-    EPSILON = 1E-2
+    EPSILON = 1E-1
 
     def __init__(self):
         """Create Mailbox Object"""

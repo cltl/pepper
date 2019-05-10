@@ -22,6 +22,7 @@ import enum
 import os
 
 from typing import List, Optional
+from time import time
 
 
 class Time(enum.Enum):
@@ -228,7 +229,9 @@ class Utterance(object):
 
         self._tokens = self._clean(self._tokenize(self.transcript))
 
+        # TODO: Optimize: takes 2.6 seconds now! Should be < 1 second!?
         self._parser = None if self.me else Parser(self)
+
         # analyze sets triple, perspective and type
         # TODO Check this with Bram, currently we initialize with None and have set methods
         self._type = UtteranceType.STATEMENT  # TODO do not keep this hard coded
