@@ -15,9 +15,6 @@ class VisionResponder(Responder):
     SEE_OBJECT = [
         "what do you see",
         "what can you see",
-    ]
-
-    SEE_OBJECT_ALL = [
         "what did you see",
         "what have you seen"
     ]
@@ -72,37 +69,29 @@ class VisionResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.objects]
+        objects = [obj.name for obj in utterance.chat.context.objects]
         people = [p.name for p in utterance.chat.context.people]
 
-        all_objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.all_objects]
         all_people = [p.name for p in utterance.chat.context.all_people]
 
         # Enumerate Currently Visible Objects
         if utterance.transcript.lower() in self.SEE_OBJECT:
             if objects:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(objects)))
-            else:
-                return 0.5, lambda: app.say(choice(self.NO_OBJECT))
-
-        # Enumerate All Observed Objects
-        elif utterance.transcript.lower() in self.SEE_OBJECT_ALL:
-            if all_objects:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._items_to_sentence(all_objects)))
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._objects_to_sequence(objects)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_OBJECT))
 
         # Enumerate Currently Visible People
         elif utterance.transcript.lower() in self.SEE_PERSON:
             if people:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(people)))
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._people_to_sentence(people)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
 
         # Enumerate All Observed People
         elif utterance.transcript.lower() in self.SEE_PERSON_ALL:
             if all_people:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._items_to_sentence(all_people)))
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._people_to_sentence(all_people)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
 
@@ -120,7 +109,7 @@ class VisionResponder(Responder):
                             response.append(item)
 
             if response:
-                return 1.0, lambda: app.say("Yes, I can see " + self._items_to_sentence(response))
+                return 1.0, lambda: app.say("Yes, I can see " + self._people_to_sentence(response))
 
     @staticmethod
     def _insert_a_an(word):
@@ -130,11 +119,29 @@ class VisionResponder(Responder):
             return "a {}".format(word)
 
     @staticmethod
-    def _items_to_sentence(items):
+    def _objects_to_sequence(objects):
+        object_count = {}
+
+        for obj in objects:
+            if not obj in object_count:
+                object_count[obj] = 0
+
+            object_count[obj] += 1
+
+        items = [(name + ("s" if count > 1 else ""), count) for name, count in object_count.items()]
+
         if len(items) == 1:
-            return items[0]
+            return "{} {}".format(items[1], items[0])
         else:
-            return "{} and {}.".format(", ".join(items[:-1]), items[-1])
+            return "{} and {}.".format(", ".join("{} {}".format(i[1], i[0]) for i in items[:-1]),
+                                       "{} {}".format(items[-1][1], items[-1][0]))
+
+    @staticmethod
+    def _people_to_sentence(people):
+        if len(people) == 1:
+            return people[0]
+        else:
+            return "{} and {}.".format(", ".join(people[:-1]), people[-1])
 
 
 class PreviousUtteranceResponder(Responder):

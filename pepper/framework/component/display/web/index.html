@@ -133,7 +133,7 @@ $(function() {
     socket.onopen = function() { console.log("Connection Opened!"); }
     socket.onclose = function() {
         console.log("Connection Closed!");
-        var socket = new WebSocket(host);
+        socket = new WebSocket(host);
     }
     
     // Main Data Loop //
