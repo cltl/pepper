@@ -1,6 +1,9 @@
 from pepper import ObjectDetectionTarget
-from socket import socket, error as socket_error
+
 import numpy as np
+
+from socket import socket, error as socket_error
+from random import getrandbits
 import json
 
 
@@ -194,10 +197,17 @@ class Bounds(object):
 
 class Object:
     def __init__(self, name, confidence, bounds, image):
+
+        self._id = getrandbits(128)
+
         self._name = name
         self._confidence = confidence
         self._bounds = bounds
         self._image = image
+
+    @property
+    def id(self):
+        return self._id
 
     @property
     def name(self):
