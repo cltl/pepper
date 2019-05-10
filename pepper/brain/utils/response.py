@@ -212,7 +212,7 @@ class Triple(object):
         # type: () -> str
         return self._object.label if self._object is not None else None
 
-    # TODO check this with Bram
+    # TODO not good practice and not used, might think of deleting three setters below
     def set_subject(self, subject):
         # type: (Entity) -> ()
         self._subject = subject

@@ -230,9 +230,8 @@ class Utterance(object):
         self._tokens = self._clean(self._tokenize(self.transcript))
 
         self._parser = None if self.me else Parser(self)
-        # analyze sets triple, perspective and type
-        # TODO Check this with Bram, currently we initialize with None and have set methods
-        self._type = UtteranceType.STATEMENT  # TODO do not keep this hard coded
+        # TODO analyze sets triple, perspective and type, but currently is not called on constructor
+        self._type = None
         self._triple = None
         self._perspective = None
 
@@ -437,7 +436,7 @@ class Utterance(object):
         -------
 
         """
-        self._type = utterance_type  # TODO make a setter?
+        self._type = utterance_type
         if type(rdf) == str:
             return rdf
 

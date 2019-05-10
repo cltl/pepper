@@ -48,8 +48,7 @@ class RdfBuilder(object):
         # Namespaces for the temporal layer-ish
         context_vocab = 'http://cltl.nl/episodicawareness/'
         self.namespaces['EPS'] = Namespace(context_vocab)
-        context_resource = 'http://cltl.nl/leolani/context/'
-        self.namespaces['LC'] = Namespace(context_resource)
+        self.namespaces['LC'] = Namespace('http://cltl.nl/leolani/context/')
 
         # The namespaces of external ontologies
         skos = 'http://www.w3.org/2004/02/skos/core#'
@@ -97,6 +96,7 @@ class RdfBuilder(object):
             self.dataset.bind('leolaniFriends', self.namespaces['LF'])
             self.dataset.bind('leolaniInputs', self.namespaces['LI'])
             self.dataset.bind('time', self.namespaces['TIME'])
+            self.dataset.bind('eps', self.namespaces['EPS'])
             self.dataset.bind('leolaniContext', self.namespaces['LC'])
             self.dataset.bind('skos', self.namespaces['SKOS'])
             self.dataset.bind('prov', self.namespaces['PROV'])

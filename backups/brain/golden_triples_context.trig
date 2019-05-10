@@ -26,8 +26,7 @@ leolaniTalk:Perspectives {
         grasp:denotes leolaniWorld:karla-livedin-paris ;
         grasp:hasAttribution leolaniTalk:chat4_utterance1_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:tom ;
-        prov:wasDerivedFrom leolaniTalk:chat4,
-            leolaniTalk:chat4_utterance1 .
+        prov:wasDerivedFrom leolaniTalk:chat4_utterance1 .
 
     leolaniTalk:chat4_utterance1_char0-25_CERTAIN a grasp:Attribution ;
         grasp:isAttributionFor leolaniTalk:chat4_utterance1_char0-25 ;
@@ -110,7 +109,8 @@ leolaniTalk:Interactions {
     leolaniTalk:chat4 a grasp:Chat,
             sem:Event ;
         n2mu:id 4 ;
-        sem:hasSubEvent leolaniTalk:chat4_utterance1 .
+        sem:hasSubEvent leolaniTalk:chat4_utterance1 ,
+         leolaniTalk:chat4_visual1 .
 
     leolaniTalk:chat4_utterance1 a grasp:Utterance,
             sem:Event ;
