@@ -401,8 +401,10 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['predicate'] = 'be-from'
 
         if cons[0]['raw'].lower() == 'who':
-            rdf['object'] = rdf['subject']
+            #rdf['object'] = rdf['subject']
             rdf['subject'] = ''
+            rdf['object'] = cons[0]['raw'].lower()
+            rdf['predicate'] = lemmatize(cons[1]['raw'].lower(), 'v')
 
         rdf = dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         self._rdf = rdf

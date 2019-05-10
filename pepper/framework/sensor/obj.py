@@ -5,6 +5,7 @@ from pepper import ObjectDetectionTarget
 import numpy as np
 
 from socket import socket, error as socket_error
+from random import getrandbits
 import json
 
 from typing import List
@@ -26,6 +27,9 @@ class Object(object):
         image: AbstractImage
             Image from which Object was Recognised
         """
+
+        self._id = getrandbits(128)
+
         self._name = name
         self._confidence = confidence
         self._image_bounds = bounds
@@ -39,6 +43,10 @@ class Object(object):
         self._depth = self._calculate_object_depth()
         self._position = spherical2cartesian(self._direction[0], self._direction[1], self._depth)
         self._bounds3D = self._calculate_bounds_3D()
+
+    @property
+    def id(self):
+        return self._id
 
     @property
     def name(self):
