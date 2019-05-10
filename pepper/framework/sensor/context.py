@@ -4,6 +4,7 @@ from pepper.framework.sensor.location import Location
 from .face import Face
 from .obj import Object
 
+from random import getrandbits
 from datetime import datetime
 from time import time
 
@@ -18,6 +19,9 @@ class Context(object):
     _objects = None  # type: Dict[str, Tuple[Object, float]]
 
     def __init__(self):
+
+        self._id = getrandbits(128)
+
         self._chats = []
         self._chatting = False
 
@@ -26,6 +30,10 @@ class Context(object):
         self._intention = None
 
         self._location = Location()
+
+    @property
+    def id(self):
+        return self._id
 
     @property
     def chats(self):

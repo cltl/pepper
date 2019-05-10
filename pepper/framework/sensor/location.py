@@ -5,6 +5,7 @@ import subprocess
 import os
 import re
 import reverse_geocoder
+from random import getrandbits
 
 
 class Location(object):
@@ -14,10 +15,16 @@ class Location(object):
     def __init__(self):
         loc = requests.get("https://ipinfo.io").json()
 
+        self._id = getrandbits(128)
+
         self._country = pycountry.countries.get(alpha_2=loc['country']).name
         self._region = loc['region']
         self._city = loc['city']
         self._label = self.UNKNOWN
+
+    @property
+    def id(self):
+        return self._id
 
     @property
     def country(self):
