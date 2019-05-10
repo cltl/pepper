@@ -130,9 +130,9 @@ class VisionResponder(Responder):
 
         items = [(name + ("s" if count > 1 else ""), count) for name, count in object_count.items()]
         if len(items) == 0:
-            return "I don't see any object for sure, yet!"
+            return "I don't see any objects, yet!"
         if len(items) == 1:
-            return "{} {}".format(items[1], items[0])
+            return "{} {}".format(items[0][1], items[0][0])
         else:
             return "{} and {}.".format(", ".join("{} {}".format(i[1], i[0]) for i in items[:-1]),
                                        "{} {}".format(items[-1][1], items[-1][0]))

@@ -158,7 +158,7 @@ class Context(object):
             List of Objects
         """
         if objects:
-            self._objects.add_observations(objects[0].image.bounds, objects)
+            self._objects.add_observations(objects[0].image, objects)
 
     def add_people(self, people):
         # type: (Iterable[Face]) -> None
@@ -192,15 +192,14 @@ class Observations:
 
         return instances
 
-    def add_observations(self, bounds, objects):
+    def add_observations(self, image, objects):
         for obj in objects:
             if obj.name not in self._object_observations:
                 self._object_observations[obj.name] = ObjectObservations()
             self._object_observations[obj.name].add_observation(obj)
 
         for object_observations in self._object_observations.values():
-            object_observations.update_view_bounds(bounds)
-
+            object_observations.update_view(image)
 
 
 class ObjectObservations:
@@ -208,7 +207,7 @@ class ObjectObservations:
     EPSILON = 0.4
     MIN_SAMPLES = 5
     MAX_SAMPLES = 50
-    OBSERVATION_TIMEOUT = 1
+    OBSERVATION_TIMEOUT = 2
 
     def __init__(self):
         self._observations = []
@@ -218,28 +217,34 @@ class ObjectObservations:
     def instances(self):
         return self._instances
 
-    def update_view_bounds(self, view_bounds):
+    def update_view(self, image):
 
         # Go through observations oldest to newest
         for observation in self._observations[::-1]:
 
             # If observation could be done with current view
-            if observation.bounds.is_subset_of(view_bounds):
+            if image.bounds.contains(observation.bounds.center):
 
-                # Check if recent observation of this object is made
-                found_recent_observation = False
-                for obs in self._observations:
-                    if time() - obs.image.time > self.OBSERVATION_TIMEOUT:
+                current_depth = image.get_depth(observation.image_bounds)
+                current_depth = np.min(current_depth[current_depth != 0], initial=np.inf)
+
+                # If nothing is occluding her view
+                if current_depth > observation.depth - self.EPSILON:
+
+                    # Check if recent observation of this object is made
+                    found_recent_observation = False
+                    for obs in self._observations:
+                        if time() - obs.image.time > self.OBSERVATION_TIMEOUT:
+                            break
+
+                        if image.bounds.contains(obs.bounds.center):
+                            found_recent_observation = True
+                            break
+
+                    # If no recent observation has been found -> remove one old observation
+                    if not found_recent_observation:
+                        self._observations.remove(observation)
                         break
-
-                    if obs.bounds.is_superset_of(view_bounds):
-                        found_recent_observation = True
-                        break
-
-                # If no recent observation has been found -> remove one old observation
-                if not found_recent_observation:
-                    self._observations.remove(observation)
-                    break
 
     def add_observation(self, obj):
         self._observations.append(obj)
@@ -255,13 +260,14 @@ class ObjectObservations:
 
         # Find oldest instance per group add to Instances
         for label in unique_labels:
-            if label != -1:  # Skip Noisy Observations
-                group_indices = np.argwhere(cluster.labels_ == label).ravel()
 
+            group_indices = np.argwhere(cluster.labels_ == label).ravel()
+
+            if label != -1:  # Skip Noisy Observations
                 newest_instance = self._observations[group_indices[-1]]
                 instances.append(newest_instance)
 
-                removal.extend(group_indices[:-self.MAX_SAMPLES])
+            removal.extend(group_indices[:-self.MAX_SAMPLES])
 
         self._instances = instances
         self._observations = [self._observations[i] for i in range(len(self._observations)) if i not in removal]
