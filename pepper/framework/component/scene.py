@@ -1,7 +1,10 @@
 from pepper.framework import AbstractComponent, AbstractImage
+from pepper.framework.util import spherical2cartesian
 
 from cv2 import resize
 import numpy as np
+
+from time import time
 
 
 class SceneComponent(AbstractComponent):
@@ -36,6 +39,7 @@ class SceneComponent(AbstractComponent):
 
     @property
     def scatter_map(self):
+        t0 = time()
 
         # Get Per Pixel Min and Max Depth
         min_depth = np.min(self._depth_map, -1)
@@ -53,9 +57,7 @@ class SceneComponent(AbstractComponent):
             theta = self._theta_map[valid]
 
             # Convert Spherical Coordinates to Cartesian Coordinates
-            x = depth * np.sin(theta) * np.cos(phi)
-            z = depth * np.sin(theta) * np.sin(phi)
-            y = depth * np.cos(theta)
+            x, y, z = spherical2cartesian(phi, theta, depth)
 
             # Return Cartesian Coordinates and Color
             return x, y, z, color

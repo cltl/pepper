@@ -1,8 +1,6 @@
-from pepper.framework.util import Mailbox, Scheduler, Bounds
+from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
 from pepper import CameraResolution
 from pepper import logger
-
-from cv2 import resize
 
 import numpy as np
 
@@ -68,7 +66,7 @@ class AbstractImage(object):
     def direction(self, coordinates):
         # type: (Tuple[float, float]) -> Tuple[float, float]
         """
-        Return 2D position in Spherical Coordinates
+        Convert 2D Relative Coordinates to 2D position in Spherical Coordinates
 
         Parameters
         ----------
@@ -84,6 +82,19 @@ class AbstractImage(object):
     @property
     def time(self):
         return self._time
+
+    def frustum(self, depth_min, depth_max):
+        return [
+            spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_min),
+            spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_min),
+            spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_min),
+            spherical2cartesian(self._bounds.x1, self._bounds.y0, depth_min),
+
+            spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_max),
+            spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_max),
+            spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_max),
+            spherical2cartesian(self._bounds.x1, self._bounds.y0, depth_max),
+        ]
 
     def __repr__(self):
         return "{}{}".format(self.__class__.__name__, self.image.shape)

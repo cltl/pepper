@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractImage
-from pepper.framework.util import Bounds
+from pepper.framework.util import Bounds, spherical2cartesian
 from pepper import ObjectDetectionTarget
 
 import numpy as np
@@ -31,24 +31,14 @@ class Object(object):
         self._image_bounds = bounds
         self._image = image
 
-        # Calculate Bounds in Angle Space
-        x0, y0 = image.direction((self._image_bounds.x0, self._image_bounds.y0))
-        x1, y1 = image.direction((self._image_bounds.x1, self._image_bounds.y1))
-        self._bounds = Bounds(x0, y0, x1, y1)
-
-        self._direction =  self.image.direction(self.image_bounds.center)
+        # Calculate Position in 2D Angular Space (Phi, Theta)
+        self._bounds = self._calculate_bounds()
+        self._direction = self.bounds.center
 
         # Calculate Position in 3D Space (Relative to Robot)
         self._depth = self._calculate_object_depth()
-
-        self._position = self._spherical2cartesian(self._direction[0], self._direction[1], self._depth)
-
-        self._bounds3D = [
-            self._spherical2cartesian(x0, y0, self._depth),
-            self._spherical2cartesian(x0, y1, self._depth),
-            self._spherical2cartesian(x1, y1, self._depth),
-            self._spherical2cartesian(x1, y0, self._depth),
-        ]
+        self._position = spherical2cartesian(self._direction[0], self._direction[1], self._depth)
+        self._bounds3D = self._calculate_bounds_3D()
 
     @property
     def name(self):
@@ -111,31 +101,27 @@ class Object(object):
     def bounds3D(self):
         return self._bounds3D
 
-    def _spherical2cartesian(self, phi, theta, depth):
-        x = depth * np.sin(theta) * np.cos(phi)
-        z = depth * np.sin(theta) * np.sin(phi)
-        y = depth * np.cos(theta)
-
-        return x, y, z
-
     def _calculate_object_depth(self):
         depth_map = self.image.get_depth(self._image_bounds)
+        depth_map_valid = depth_map != 0
 
-        kernel = 10
-
-        depth_map_centre = depth_map[
-            depth_map.shape[0]//2-kernel:depth_map.shape[0]//2+kernel,
-            depth_map.shape[1]//2-kernel:depth_map.shape[1]//2+kernel
-        ]
-
-        valid = depth_map_centre != 0
-
-        if not np.sum(valid):
-            return np.min(depth_map_centre[valid], initial=100)
+        if np.sum(depth_map_valid):
+            return np.median(depth_map[depth_map_valid])
         else:
-            return np.min(depth_map[depth_map != 0], initial=100)
+            return 0.0
 
+    def _calculate_bounds(self):
+        x0, y0 = self._image.direction((self._image_bounds.x0, self._image_bounds.y0))
+        x1, y1 = self._image.direction((self._image_bounds.x1, self._image_bounds.y1))
+        return Bounds(x0, y0, x1, y1)
 
+    def _calculate_bounds_3D(self):
+        return [
+            spherical2cartesian(self._bounds.x0, self._bounds.y0, self._depth),
+            spherical2cartesian(self._bounds.x0, self._bounds.y1, self._depth),
+            spherical2cartesian(self._bounds.x1, self._bounds.y1, self._depth),
+            spherical2cartesian(self._bounds.x1, self._bounds.y0, self._depth),
+        ]
 
     def __repr__(self):
         return "{}({}, {:3.0%})".format(self.__class__.__name__, self.name, self.confidence)
@@ -143,7 +129,6 @@ class Object(object):
 
 class ObjectDetectionClient(object):
     def __init__(self, target):
-        # type: (ObjectDetectionTarget) -> ObjectDetectionClient
         self._target = target
         self._address = target.value
 

@@ -43,6 +43,8 @@ class NAOqiCamera(AbstractCamera):
     COLOR_SPACE_3D = 17  # Distance from Camera in mm
     RESOLUTION_3D =  RESOLUTION_CODE_3D['kQQ720p']
 
+    INTERNAL_RATE = 24
+
     RESOLUTION_CODE = {
         CameraResolution.NATIVE: 2,
         CameraResolution.QQQQVGA: 8,
@@ -71,7 +73,7 @@ class NAOqiCamera(AbstractCamera):
             [int(NAOqiCameraIndex.TOP), int(NAOqiCameraIndex.DEPTH)],
             [NAOqiCamera.RESOLUTION_CODE[resolution], NAOqiCamera.RESOLUTION_3D],
             [NAOqiCamera.COLOR_SPACE_YUV, NAOqiCamera.COLOR_SPACE_3D],
-            rate
+            self.INTERNAL_RATE
         )
 
         # Access Head Motion for Image Coordinates
@@ -118,7 +120,7 @@ class NAOqiCamera(AbstractCamera):
                     self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))
 
                 # Maintain frame rate
-                sleep(max(0, 1. / self.rate - (time() - t0)))
+                sleep(max(1.0E-6, 1.0 / self.rate - (time() - t0)))
 
     def _yuv2rgb(self, width, height, data):
 

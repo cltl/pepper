@@ -1,6 +1,7 @@
 from threading import Thread, Lock
 from Queue import Empty
 from time import sleep
+import numpy as np
 
 
 class Scheduler(Thread):
@@ -288,3 +289,11 @@ class Bounds(object):
 
     def __repr__(self):
         return "Bounds[({:3f}, {:3f}), ({:3f}, {:3f})]".format(self.x0, self.y0, self.x1, self.y1)
+
+
+def spherical2cartesian(phi, theta, depth):
+    x = depth * np.sin(theta) * np.cos(phi)
+    z = depth * np.sin(theta) * np.sin(phi)
+    y = depth * np.cos(theta)
+
+    return x, y, z

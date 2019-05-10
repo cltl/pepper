@@ -197,9 +197,9 @@ class Observations:
 
 class ObjectObservations:
 
-    EPSILON = 0.2
+    EPSILON = 0.4
     MIN_SAMPLES = 5
-    MAX_SAMPLES = 20
+    MAX_SAMPLES = 50
     OBSERVATION_TIMEOUT = 1
 
     def __init__(self):
@@ -216,7 +216,7 @@ class ObjectObservations:
         for observation in self._observations[::-1]:
 
             # If observation could be done with current view
-            if observation.bounds.contains(view_bounds.center):
+            if observation.bounds.is_superset_of(view_bounds):
 
                 # Check if recent observation of this object is made
                 found_recent_observation = False
@@ -224,7 +224,7 @@ class ObjectObservations:
                     if time() - obs.image.time > self.OBSERVATION_TIMEOUT:
                         break
 
-                    if obs.bounds.contains(view_bounds.center):
+                    if obs.bounds.is_superset_of(view_bounds):
                         found_recent_observation = True
                         break
 

@@ -2,29 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello Pepper</title>
+    <title>Pepper Web View</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
     <script>function require(){ return THREE; }</script>
     <script src="https://cdn.jsdelivr.net/npm/three-orbitcontrols@2.102.1/OrbitControls.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        canvas {
-            padding: 0;
-            margin: auto;
-            display: block;
-            position: relative;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
+        body { margin: 0; padding: 0; overflow-x: hidden; }
+        canvas { padding: 0; margin: auto; display: block; position: relative; top: 0; bottom: 0; left: 0; right: 0; }
     </style>
 </head>
 <body>
@@ -34,12 +20,17 @@
 
 <script>
 
+// Global Variables //
 WIDTH = 4; HEIGHT = 3;
+
+FONT_SIZE = 30;
 
 camera_canvas = $("#camera_canvas");
 scatter_canvas = $("#scatter_canvas");
+
 var renderer;
 
+// Utility Functions //
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   if (w < 2 * r) r = w / 2;
   if (h < 2 * r) r = h / 2;
@@ -66,7 +57,8 @@ function scale_canvas(canvas, w, h) {
     }
 }
 
-// Scale Canvas on window Resize
+// Main Logic //
+
 $(window).resize(function() {
     scale_canvas(camera_canvas, WIDTH, HEIGHT);
     scale_canvas(scatter_canvas, WIDTH, HEIGHT);
@@ -74,9 +66,6 @@ $(window).resize(function() {
 
 
 $(function() {
-
-    var FONT_SIZE = 30;
-
     // Scale Canvas on Start
     scale_canvas(camera_canvas, WIDTH, HEIGHT);
     scale_canvas(scatter_canvas, WIDTH, HEIGHT);
@@ -89,18 +78,23 @@ $(function() {
     camera_ctx.font = '25px Helvetica';
 
     // -- Initialize Scatter Plot Context -- //
-    var scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xaaaaaa );
 
+    // Create 3D Renderer
+    var renderer = new THREE.WebGLRenderer({canvas: scatter_canvas[0]});
+    renderer.setSize(width, height);
+
+    // Create Camera
     var camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100);
     camera.position.z = -5;
     camera.position.y = 1;
     camera.position.x = 0;
     camera.lookAt(0, 1, 0);
 
-    renderer = new THREE.WebGLRenderer({canvas: scatter_canvas[0]});
-    renderer.setSize(width, height);
+    // Create 3D Scene
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xaaaaaa );
 
+    // Create FLoor Grid
     var grid = new THREE.GridHelper(20, 20);
     grid.position.y = -1;
     scene.add(grid);
@@ -108,13 +102,14 @@ $(function() {
     var plot = new THREE.Object3D();
     scene.add(plot);
 
-    var material = new THREE.PointsMaterial({size: 0.08, vertexColors: true});
+    // Define Materials for ScatterPlot and Object Boxing
+    var scatterMaterial = new THREE.PointsMaterial({size: 0.1, vertexColors: true});
+    var boxMaterial = new THREE.LineBasicMaterial({color: 0x000000});
 
-    var down = false;
-    var sx = 0, sy = 0;
-
+    // Create Orbit Controls
     var controls = new THREE.OrbitControls( camera, renderer.domElement );
 
+    // Animate Scene
     function animate() {
         requestAnimationFrame( animate );
         controls.update();
@@ -128,20 +123,26 @@ $(function() {
     var socket = new WebSocket(host);
 
     // Image for Camera View
-    var img = new Image;
+    var img = new Image();
 
     // Scatter Object for Plot View
     var scatter = null;
     var objects = null;
-
-    var boxMaterial = new THREE.LineBasicMaterial({color: 0x000000});
+    var frustum = null;
 
     socket.onopen = function() { console.log("Connection Opened!"); }
+    socket.onclose = function() {
+        console.log("Connection Closed!");
+        var socket = new WebSocket(host);
+    }
+    
+    // Main Data Loop //
     socket.onmessage = function(msg){
 
+        // -- Receive Data from Host -- //
         data = JSON.parse(msg.data);
 
-        // Plot Object Bounding Boxes
+        // -- Update Live View with Camera Image and Object Bounding Boxes -- //
         items = data['items'];
         img.onload = function(){
 
@@ -177,21 +178,23 @@ $(function() {
         // Set Image (Which will trigger image.onload)
         img.src = 'data:image/png;base64,' + data['img'];
 
+
+        // -- Update 3D View with ScatterPoints and Object Bounding Boxes //
         var x = data['x'], y = data['y'], z = data['z'], c = data['c'];
 
-        // Plot Scatter
+        // Plot 3D ScatterPoints //
         var points = new THREE.Geometry();
         for (var i=0; i < x.length; i++) {
             points.vertices.push(new THREE.Vector3(x[i], y[i], z[i]));
             points.colors.push(new THREE.Color(c[i][0], c[i][1], c[i][2]));
         }
 
-        // Update Plot With New Scatter
-        if (scatter != null) plot.remove(scatter);
-        scatter = new THREE.Points(points, material)
+        // Update 3D Plot With New Scatter //
+        if (scatter != null){ scatter.geometry.dispose(); plot.remove(scatter); }
+        scatter = new THREE.Points(points, scatterMaterial);
         plot.add(scatter);
 
-        // Update Plot With New Objects
+        // Update 3D Plot With New Objects //
         if (objects != null) plot.remove(objects);
         objects = new THREE.Object3D();
         plot.add(objects);
@@ -202,18 +205,28 @@ $(function() {
 
             var boxGeometry = new THREE.Geometry();
 
-            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[0][0], bounds3D[0][1], bounds3D[0][2]));
-            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[1][0], bounds3D[1][1], bounds3D[1][2]));
-            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[2][0], bounds3D[2][1], bounds3D[2][2]));
-            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[3][0], bounds3D[3][1], bounds3D[3][2]));
-            boxGeometry.vertices.push(new THREE.Vector3(bounds3D[0][0], bounds3D[0][1], bounds3D[0][2]));
+            [0, 1, 2, 3, 0].forEach(function(i){
+                boxGeometry.vertices.push(new THREE.Vector3(bounds3D[i][0], bounds3D[i][1], bounds3D[i][2]));
+            });
 
             var box = new THREE.Line(boxGeometry, boxMaterial);
             objects.add(box);
         }
-    }
 
-    socket.onclose = function() { console.log("Connection Closed!"); }
+        // Update 3D Plot with Camera Frustum //
+
+        var frustumGeometry = new THREE.Geometry();
+
+        var frustumData = data['frustum'];
+
+        [0, 1, 2, 3, 0, 4, 5, 1, 5, 6, 2, 6, 7, 3, 7, 4].forEach(function(i){
+            frustumGeometry.vertices.push(new THREE.Vector3(frustumData[i][0], frustumData[i][1], frustumData[i][2]));
+        });
+
+        if (frustum != null) plot.remove(frustum);
+        frustum = new THREE.Line(frustumGeometry, boxMaterial);
+        plot.add(frustum);
+    }
 });
 
 

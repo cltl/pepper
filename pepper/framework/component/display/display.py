@@ -2,8 +2,6 @@ from pepper.framework import AbstractComponent, AbstractImage
 from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, SceneComponent, ContextComponent
 from .server import DisplayServer
 
-import numpy as np
-
 from threading import Thread, Lock
 
 from PIL import Image
@@ -60,6 +58,7 @@ class DisplayComponent(AbstractComponent):
                 self._display_info = {
                     "hash": hash(str(image.image)),
                     "img": encode_image(Image.fromarray(image.image)),
+                    "frustum": image.frustum(0.25, 4),
                     "items": [],
                     "items3D": [{
                         "position": item.position,
