@@ -130,11 +130,13 @@ class ContextComponent(AbstractComponent):
                     if closest_face:
                         self._conversation_time = time()
                         Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
+                        self._face_vectors.clear()
 
                 # If multiple people are in range, with nobody seemingly closest -> Start Group Conversation
                 elif len(closest_people) >= 2:
                     self._conversation_time = time()
                     Thread(target=self.on_chat_enter, args=(config.HUMAN_CROWD,)).start()
+                    self._face_vectors.clear()
 
             elif self.context.chatting:
 
@@ -156,10 +158,12 @@ class ContextComponent(AbstractComponent):
                             if closest_face:
                                 self._conversation_time = time()
                                 Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
+                                self._face_vectors.clear()
 
                         # Otherwise, Exit Chat
                         else:
                             self.on_chat_exit()
+                            self._face_vectors.clear()
 
                 else:  # When talking to a Specific Person
 
@@ -170,16 +174,16 @@ class ContextComponent(AbstractComponent):
 
                         if closest_face:
 
-                            # print(self.context.chat.speaker, closest_face.name)
-
-                            # If Still Chatting with Same Person -> Update Conversation Time
+                            # If Still Chatting with Same Person -> Update Conversation Time & Face Vectors
                             if closest_face.name == self.context.chat.speaker:
                                 self._conversation_time = time()
+                                self._face_vectors.append(closest_face.representation)
 
                             # If Chatting to Unknown Person and Known Person Appears -> Switch Chat
                             elif self.context.chat.speaker == config.HUMAN_UNKNOWN and closest_face.name != config.HUMAN_UNKNOWN:
                                 self._conversation_time = time()
                                 Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
+                                self._face_vectors.clear()
 
                     # Else, when conversation times out
                     elif time() - self._conversation_time >= self.CONVERSATION_TIMEOUT:
@@ -192,13 +196,16 @@ class ContextComponent(AbstractComponent):
                             if closest_face:
                                 self._conversation_time = time()
                                 Thread(target=self.on_chat_enter, args=(closest_face.name,)).start()
+                                self._face_vectors.clear()
 
                         # If Group enters conversation at this point -> Start Conversation with them
                         if len(closest_people) >= 2:
                             self._conversation_time = time()
                             Thread(target=self.on_chat_enter, args=(config.HUMAN_CROWD,)).start()
+                            self._face_vectors.clear()
                         else:
                             self.on_chat_exit()
+                            self._face_vectors.clear()
 
                 # Wipe face and people info after use
                 self._face_info = []

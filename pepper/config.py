@@ -9,8 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
-
+APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 NAME = "Leolani"
 HUMAN_UNKNOWN = "Stranger"
@@ -98,18 +97,6 @@ if not os.path.exists(KEY_WOLFRAM):
           "         See https://github.com/cltl/pepper/wiki/Installation#7-wolfram-alpha"
           "for more information\n".format(KEY_WOLFRAM))
 
-
-# Third Party Authentication
-
-# .json file with id tokens, with keys:
-#   "wolfram": <appid>
-with open(KEY_WOLFRAM) as tokens:
-    TOKENS = json.load(tokens)
-
-# Set GOOGLE CREDENTIALS
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = KEY_GOOGLE_CLOUD
-
-
 # General Logging
 LOG = pepper.LOGGING_FILE
 
@@ -125,6 +112,7 @@ BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
 NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
+# NAOQI_IP, NAOQI_PORT = "10.10.60.150", 9559  # Future Lab
 # NAOQI_IP, NAOQI_PORT = "192.168.137.172", 9559  # Local?
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
@@ -142,13 +130,22 @@ MICROPHONE_CHANNELS = 1
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
 
 CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
-CAMERA_FRAME_RATE = 5
+CAMERA_FRAME_RATE = 4
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
-NAOQI_USE_SYSTEM_MICROPHONE = False
+NAOQI_USE_SYSTEM_MICROPHONE = True
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
 NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
+
+
+# .json file with id tokens, with keys:
+#   "wolfram": <appid>
+with open(KEY_WOLFRAM) as tokens:
+    TOKENS = json.load(tokens)
+
+# Set GOOGLE CREDENTIALS
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = KEY_GOOGLE_CLOUD
 
 
 def get_backend():
