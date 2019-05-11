@@ -51,9 +51,9 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
         elif entity_label.lower() == 'leolani':
             pronoun = 'I'
         elif entity_label.lower() in ['bram', 'piek']:
-            pronoun = 'he'
+            pronoun = 'he' if role == 'subject' else 'him'
         elif entity_label.lower() in ['selene', 'lenka', 'suzana']:
-            pronoun = 'she'
+            pronoun = 'she' if role == 'subject' else 'her'
         else:
             pronoun = entity_label.title()
 

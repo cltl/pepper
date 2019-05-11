@@ -6,6 +6,17 @@ from pepper.framework import UtteranceHypothesis, Context, Object, Face
 from datetime import date
 
 
+def fake_context():
+    objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
+               Object('cat', 0.51, None, None)}
+    faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
+
+    context = Context()
+    context.add_objects(objects)
+    context.add_people(faces)
+    return context
+
+
 def transform_capsule(capsule):
     """
     Build proper Utterance object from capsule. Step required for proper refactoring
@@ -18,12 +29,7 @@ def transform_capsule(capsule):
     -------
 
     """
-    objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None), Object('cat', 0.51, None, None)}
-    faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
-
-    context = Context()
-    context.add_objects(objects)
-    context.add_people(faces)
+    context = fake_context()
 
     chat = Chat(capsule['author'], context)
     hyp = UtteranceHypothesis('this is a test', 0.99)
@@ -41,48 +47,86 @@ def transform_capsule(capsule):
 
 
 # Create brain connection
-brain = LongTermMemory()
+brain = LongTermMemory(clear_all=True)
 
 conlficts = brain.get_all_conflicts()
 
 capsule_knows = {  # dimitris knows piek
-        "subject": {
-            "label": "karla",
-            "type": "person"
-        },
-        "predicate": {
-            "type": "live-in"
-        },
-        "object": {
-            "label": "paris",
-            "type": "location"
-        },
-        "author": "tom",
-        "turn": 1,
-        "position": "0-25",
-        "date": date(2019, 1, 24)
-    }
+    "subject": {
+        "label": "karla",
+        "type": "person"
+    },
+    "predicate": {
+        "type": "live-in"
+    },
+    "object": {
+        "label": "paris",
+        "type": "location"
+    },
+    "author": "tom",
+    "turn": 1,
+    "position": "0-25",
+    "date": date(2019, 1, 24)
+}
 
 capsule_is_from = {  # bram is from mongolia
-        "subject": {
-            "label": "bram",
-            "type": "person"
-        },
-        "predicate": {
-            "type": "be-from"
-        },
-        "object": {
-            "label": "mongolia",
-            "type": "location"
-        },
-        "author": "bram",
-        "chat": 1,
-        "turn": 1,
-        "position": "0-25",
-        "date": date(2018, 3, 19)
-    }
+    "subject": {
+        "label": "bram",
+        "type": "person"
+    },
+    "predicate": {
+        "type": "be-from"
+    },
+    "object": {
+        "label": "netherlands",
+        "type": "location"
+    },
+    "author": "bram",
+    "chat": 1,
+    "turn": 1,
+    "position": "0-25",
+    "date": date(2018, 3, 19)
+}
 
-capsule_likes = { # human likes pizza
+capsule_is_from_2 = {  # bram is from mongolia
+    "subject": {
+        "label": "bram",
+        "type": "person"
+    },
+    "predicate": {
+        "type": "be-from"
+    },
+    "object": {
+        "label": "mongolia",
+        "type": "location"
+    },
+    "author": "lenka",
+    "chat": 1,
+    "turn": 1,
+    "position": "0-25",
+    "date": date(2018, 3, 25)
+}
+
+capsule_is_from_3 = {  # bram is from mongolia
+    "subject": {
+        "label": "piek",
+        "type": "person"
+    },
+    "predicate": {
+        "type": "be-from"
+    },
+    "object": {
+        "label": "netherlands",
+        "type": "location"
+    },
+    "author": "bram",
+    "chat": 1,
+    "turn": 1,
+    "position": "0-25",
+    "date": date(2018, 3, 25)
+}
+
+capsule_likes = {  # human likes pizza
     u'predicate': {u'type': u'like'},
     u'chat': 490254330820530247757705225416035124L,
     u'author': u'Human',
@@ -93,20 +137,22 @@ capsule_likes = { # human likes pizza
     u'response': {u'role': u'', u'format': u''},
     u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
 
-capsules = [capsule_knows, capsule_is_from, capsule_likes]
+capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes]
 
 for capsule in capsules:
     capsule = transform_capsule(capsule)
 
     x = brain.update(capsule, reason_types=True)
     break
-    # print(phrase_thoughts(x, True, True))
-    # print(phrase_thoughts(x, True, True))
-    # print(phrase_thoughts(x, True, True))
-    # print(phrase_thoughts(x, True, True))
-    # print(phrase_thoughts(x, True, True))
-    # print(phrase_thoughts(x, True, True))
-    # print(phrase_thoughts(x, True, True))
+    # y = brain.reason_location(fake_context())
+
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
+    print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))

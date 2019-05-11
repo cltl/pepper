@@ -51,3 +51,14 @@ def date_from_uri(uri):
 
 def hash_claim_id(triple):
     return '_'.join(triple)
+
+
+def confidence_to_certainty_value(confidence):
+    if confidence is not None:
+        if confidence > .90:
+            return 'CERTAIN'
+        if confidence > .50:
+            return 'PROBABLE'
+        if confidence > 0:
+            return 'POSIBLE'
+    return 'UNDERSPECIFIED'

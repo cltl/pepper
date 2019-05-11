@@ -14,10 +14,10 @@ class RdfBuilder(object):
         self.namespaces = {}
         self.dataset = Dataset()
 
-        self._get_ontology_path()
         self._define_namespaces()
         self._bind_namespaces()
         self._define_named_graphs()
+        self.load_ontology_integration()
 
     ########## setting up connection ##########
     def _define_namespaces(self):
@@ -68,9 +68,10 @@ class RdfBuilder(object):
 
     def _define_named_graphs(self):
         # Instance graph
+        self.ontology_graph = self.dataset.graph(self.create_resource_uri('LW', 'Ontology'))
         self.instance_graph = self.dataset.graph(self.create_resource_uri('LW', 'Instances'))
-        self.perspective_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Perspectives'))
         self.claim_graph = self.dataset.graph(self.create_resource_uri('LW', 'Claims'))
+        self.perspective_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Perspectives'))
         self.interaction_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Interactions'))
 
     def _get_ontology_path(self):
@@ -78,31 +79,34 @@ class RdfBuilder(object):
         Define ontology paths to key vocabularies
         :return:
         """
-        self.ontology_paths['n2mu'] = './../../knowledge_representation/ontologies/leolani.ttl'
-        self.ontology_paths['gaf'] = './../../knowledge_representation/ontologies/gaf.rdf'
-        self.ontology_paths['grasp'] = './../../knowledge_representation/ontologies/grasp.rdf'
-        self.ontology_paths['sem'] = './../../knowledge_representation/ontologies/sem.rdf'
+        self.ontology_paths['n2mu'] = './../../ontologies/leolani.ttl'
+        self.ontology_paths['gaf'] = './../../ontologies/gaf.rdf'
+        self.ontology_paths['grasp'] = './../../ontologies/grasp.rdf'
+        self.ontology_paths['sem'] = './../../ontologies/sem.rdf'
+
+    def load_ontology_integration(self):
+        self.ontology_graph.parse(location="./../../ontologies/integration.ttl", format="turtle")
 
     def _bind_namespaces(self):
-            """
-            Bind namespaces
-            :return:
-            """
-            self.dataset.bind('n2mu', self.namespaces['N2MU'])
-            self.dataset.bind('leolaniWorld', self.namespaces['LW'])
-            self.dataset.bind('gaf', self.namespaces['GAF'])
-            self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
-            self.dataset.bind('grasp', self.namespaces['GRASP'])
-            self.dataset.bind('leolaniFriends', self.namespaces['LF'])
-            self.dataset.bind('leolaniInputs', self.namespaces['LI'])
-            self.dataset.bind('time', self.namespaces['TIME'])
-            self.dataset.bind('eps', self.namespaces['EPS'])
-            self.dataset.bind('leolaniContext', self.namespaces['LC'])
-            self.dataset.bind('skos', self.namespaces['SKOS'])
-            self.dataset.bind('prov', self.namespaces['PROV'])
-            self.dataset.bind('sem', self.namespaces['SEM'])
-            self.dataset.bind('xml', self.namespaces['XML'])
-            self.dataset.bind('owl', OWL)
+        """
+        Bind namespaces
+        :return:
+        """
+        self.dataset.bind('n2mu', self.namespaces['N2MU'])
+        self.dataset.bind('leolaniWorld', self.namespaces['LW'])
+        self.dataset.bind('gaf', self.namespaces['GAF'])
+        self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
+        self.dataset.bind('grasp', self.namespaces['GRASP'])
+        self.dataset.bind('leolaniFriends', self.namespaces['LF'])
+        self.dataset.bind('leolaniInputs', self.namespaces['LI'])
+        self.dataset.bind('time', self.namespaces['TIME'])
+        self.dataset.bind('eps', self.namespaces['EPS'])
+        self.dataset.bind('leolaniContext', self.namespaces['LC'])
+        self.dataset.bind('skos', self.namespaces['SKOS'])
+        self.dataset.bind('prov', self.namespaces['PROV'])
+        self.dataset.bind('sem', self.namespaces['SEM'])
+        self.dataset.bind('xml', self.namespaces['XML'])
+        self.dataset.bind('owl', OWL)
 
     ########## basic constructors ##########
     def create_resource_uri(self, namespace, resource_name):

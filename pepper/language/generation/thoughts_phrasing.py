@@ -43,7 +43,7 @@ def _phrase_cardinality_conflicts(conflicts, utterance):
 
 def _phrase_negation_conflicts(conflicts, utterance):
     # There is no conflict entries, so just be happy to learn
-    if not conflicts[0]:
+    if not conflicts or not conflicts[0]:
         say = random.choice(NEW_KNOWLEDGE)
 
     # There is conflict entries
@@ -95,11 +95,21 @@ def _phrase_type_novelty(novelties, utterance):
 
     if novelty:
         say = random.choice(NEW_KNOWLEDGE)
-        say += ' I have never heard about %s before!' % entity_label
+        if entity_label != 'you':  # TODO or type person?
+            entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
+            say += ' I had never heard about %s before!' % replace_pronouns(utterance.chat_speaker,
+                                                                            entity_label=entity_label, role='object')
+        else:
+            say += ' I am excited to get to know about %s!' % entity_label
 
     else:
         say = random.choice(EXISTING_KNOWLEDGE)
-        say += ' I know about %s.' % entity_label
+        if entity_label != 'you':
+            entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
+            say += ' I have heard about %s before' % replace_pronouns(utterance.chat_speaker, entity_label=entity_label,
+                                                                      role='object')
+        else:
+            say += ' I love learning more and more about %s!' % entity_label
 
     return say
 
@@ -156,9 +166,10 @@ def _phrase_object_gaps(all_gaps, utterance):
         say = random.choice(CURIOSITY)
 
         if not gaps:
-            types = utterance.triple.object.types_names if utterance.triple.object.types_names != '' else 'things'
-            say += ' What types of %s like %s can be %s' % (types, utterance.triple.object_name,
-                                                            utterance.triple.predicate_name)
+            otypes = utterance.triple.object.types_names if utterance.triple.object.types_names != '' else 'things'
+            stypes = utterance.triple.subject.types_names if utterance.triple.subject.types_names != '' else 'actors'
+            say += ' What types of %s like %s do %s usually %s' % (otypes, utterance.triple.object_name, stypes,
+                                                                   utterance.triple.predicate_name)
 
         else:
             gap = random.choice(gaps)
@@ -166,7 +177,7 @@ def _phrase_object_gaps(all_gaps, utterance):
                 say += ' What is %s %s?' % (utterance.triple.object_name, gap.predicate_name)
             else:
                 say += ' What other %s was %s %s?' % (
-                gap.entity_range_name, utterance.triple.object_name, gap.predicate_name)
+                    gap.entity_range_name, utterance.triple.object_name, gap.predicate_name)
 
     return say
 
@@ -176,8 +187,16 @@ def _phrase_overlaps(all_overlaps, utterance):
     overlaps = all_overlaps.subject if entity_role == 'subject' else all_overlaps.object
 
     if not overlaps and entity_role == 'subject':
-        say = random.choice(HAPPY)
-        say += ' I did not know anything that %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name)
+        say = random.choice(HAPPY)  # TODO maybe anywhere if we know the domain
+        if 'person' in utterance.triple.object.types:
+            any_type = 'anybody'
+        elif 'location' in utterance.triple.object.types:
+            any_type = 'anywhere'
+        else:
+            any_type = 'anything'
+
+        say += ' I did not know %s that %s %s' % (any_type, utterance.triple.subject_name,
+                                                  utterance.triple.predicate_name)
 
     elif not overlaps and entity_role == 'object':
         say = random.choice(HAPPY)
@@ -236,6 +255,7 @@ def phrase_thoughts(update, proactive=True, persist=False):
     -------
 
     """
+
     # TODO conjugate through fix predicate
     options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
 
@@ -244,6 +264,9 @@ def phrase_thoughts(update, proactive=True, persist=False):
 
     # Casefold and select approach randomly
     utterance = update['statement']
+    if utterance.triple is None:
+        return None
+
     utterance.casefold(format='natural')
     thoughts = update['thoughts']
     thoughts.casefold(format='natural')

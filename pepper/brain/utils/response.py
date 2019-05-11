@@ -93,7 +93,7 @@ class Entity(RDFBase):
         """
         super(Entity, self).__init__(id, label, offset, confidence)
 
-        self._types = [t for t in types if t != '']
+        self._types = [t for t in types if t != '' and t is not None]
 
     @property
     def types(self):
@@ -107,7 +107,8 @@ class Entity(RDFBase):
 
     def add_types(self, types):
         # type: (List[str]) -> ()
-        self._types.extend(types)
+        fixed_types = [t for t in types if t != '' and t is not None]
+        self._types.extend(fixed_types)
 
     def casefold(self, format='triple'):
         # type (str) -> ()

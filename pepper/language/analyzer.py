@@ -520,24 +520,15 @@ def interpret_elements(cons):
         if 'structure' in cons[el]:
             for word in cons[el]['raw'].split():
                 label = get_node_label(cons[el]['structure'], word)
-                print('node label ', label)
                 syn = wu.get_synsets(word, label)
-                if syn: print(wu.get_lexname(syn[0]))
-                print(get_uri(word))
-                # print(utils.get_uri(word))
         else:
             word = cons[el]['raw']
             label = cons[el]['label']
             syn = wu.get_synsets(word, label)
-            if syn: print(wu.get_lexname(syn[0]))
-
-            print(get_uri(word))
-
         # TODO DBpedia lookup
 
 
 def dbp_query(q, baseURL, format="application/json"):
-    print('LOOKING UP: ', q)
     params = {
         "default-graph": "",
         "should-sponge": "soft",

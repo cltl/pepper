@@ -1,3 +1,5 @@
+import random
+
 from pepper.language.generation.phrasing import *
 
 
@@ -38,7 +40,7 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
         if subject.lower() == 'leolani':
             subject = 'i'
         else:
-           subject.title()
+            subject.title()
 
     if subject == 'you ':
         predicate = fix_predicate_morphology(predicate)
@@ -89,7 +91,7 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
 
         response += text
 
-    elif predicate.strip() == 'sees-not':
+    elif predicate.strip() == 'see-not':
         response = 'You don\'t see a ' + object
         if object.lower() in viewed_objects:
             response += ', but I see it'
@@ -108,8 +110,16 @@ def reply_to_question(brain_response):
     utterance = brain_response['question']
     response = brain_response['response']
 
+    if not response:
+        # TODO revise by lenka
+        subject_type = random.choice(utterance.triple.subject.types) if utterance.triple.subject.types else 'things'
+        object_type = random.choice(utterance.triple.object.types) if utterance.triple.object.types else 'things'
+        predicate = str(utterance.triple.predicate_name)
+        say += "I know %s usually %s %s, but I do not know this case" % (subject_type, predicate, object_type)
+        return say
+
     '''
-    if utterance.triple.predicate_name == 'sees' and utterance.triple.subject_label == 'leolani':
+    if utterance.triple.predicate_name == 'sees' and utterance.triple.subject_name == 'leolani':
         print(viewed_objects)
         say = 'I see '
         for obj in viewed_objects:
@@ -118,11 +128,11 @@ def reply_to_question(brain_response):
             else:
                 say+=' a '+obj+', '
 
-        if utterance.triple.object_label:
-            if utterance.triple.object_label.lower() in viewed_objects:
-                say = 'yes, I can see a ' + utterance.triple.object_label
+        if utterance.triple.object_name:
+            if utterance.triple.object_name.lower() in viewed_objects:
+                say = 'yes, I can see a ' + utterance.triple.object_name
             else:
-                say = 'no, I cannot see a ' + utterance.triple.object_label
+                say = 'no, I cannot see a ' + utterance.triple.object_name
     '''
 
     response.sort(key=lambda x: x['authorlabel']['value'])
@@ -181,7 +191,7 @@ def reply_to_question(brain_response):
             pass
         else:
             previous_predicate = predicate
-            if predicate == 'sees':
+            if predicate == 'see':
                 say += ' saw'
             elif predicate == 'be-from':
                 if person == 'first':
@@ -193,12 +203,12 @@ def reply_to_question(brain_response):
 
             elif predicate.endswith('-is'):
                 say += ' is '
-                print(utterance.triple.object_label.lower())
-                if utterance.triple.object_label.lower() == utterance.chat_speaker.lower() or \
-                        utterance.triple.subject_label.lower() == utterance.chat_speaker.lower():
+                print(utterance.triple.object_name.lower())
+                if utterance.triple.object_name.lower() == utterance.chat_speaker.lower() or \
+                        utterance.triple.subject_name.lower() == utterance.chat_speaker.lower():
                     say += ' your '
-                elif utterance.triple.object_label.lower() == 'leolani' or \
-                        utterance.triple.subject_label.lower() == 'leolani':
+                elif utterance.triple.object_name.lower() == 'leolani' or \
+                        utterance.triple.subject_name.lower() == 'leolani':
                     say += ' my '
                 say += predicate[:-3]
 
@@ -213,15 +223,15 @@ def reply_to_question(brain_response):
 
         if 'olabel' in item:
             say += item['olabel']['value']
-        elif 'object' in utterance.keys():
-            if utterance.triple.object_label.lower() == utterance.chat_speaker.lower():
-                say += ' you'
-            elif utterance.triple.object_label.lower() == 'leolani':
-                say += ' me'
-            elif predicate.lower() in ['sees', 'owns']:
-                say += ' a ' + utterance.triple.object_label
-            else:
-                say += utterance.triple.object_label
+
+        if utterance.triple.object_name.lower() == utterance.chat_speaker.lower():
+            say += ' you'
+        elif utterance.triple.object_name.lower() == 'leolani':
+            say += ' me'
+        elif predicate.lower() in ['see', 'own']:
+            say += ' a ' + utterance.triple.object_name
+        else:
+            say += utterance.triple.object_name
 
         say += ' and '
 

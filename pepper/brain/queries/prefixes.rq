@@ -1,10 +1,10 @@
 prefix gaf: <http://groundedannotationframework.org/gaf#>
 prefix grasp: <http://groundedannotationframework.org/grasp#>
-prefix eps: <http://cltl.nl/episodicawareness/> .
+prefix eps: <http://cltl.nl/episodicawareness/>
 prefix leolaniInputs: <http://cltl.nl/leolani/inputs/>
 prefix leolaniFriends: <http://cltl.nl/leolani/friends/>
 prefix leolaniTalk: <http://cltl.nl/leolani/talk/>
-prefix leolaniContext: <http://cltl.nl/leolani/context/> .
+prefix leolaniContext: <http://cltl.nl/leolani/context/>
 prefix leolaniWorld: <http://cltl.nl/leolani/world/>
 prefix n2mu: <http://cltl.nl/leolani/n2mu/>
 prefix ns1: <urn:x-rdflib:>
