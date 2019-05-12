@@ -20,6 +20,7 @@ def test():
     # *** DOES NOT WORK for "Does S love cooking" <- has issues with POS-tags bc. love gets processed as a noun
 
     #"Selene is from Mexico", "Where is Selene from","Who is from Mexico" <- is_from instead of be_from, but works ok
+    # "I'm from Serbia", "Where am I from" <- "you told me you is from serbia" 
 
     # "selene is your friend","who is your friend", "your name is leolani", "what is your name", "my sign is taurus", "what is my sign"
 
@@ -39,7 +40,7 @@ def test():
     # but  "do I live in amsterdam", "where do I live" <- DOESN'T (fuzzy predicate matching?)
 
 
-    utterances = []
+    utterances = ["Selene is from Mexico", "Where is Selene from","Who is from Mexico"]
     '''
     utterances_lower = [x.lower() for x in utterances]
     utterances.extend(utterances_lower)

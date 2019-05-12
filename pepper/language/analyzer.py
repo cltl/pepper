@@ -360,7 +360,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         cons = self.chat.last_utterance.parser.constituents
 
 
-        print(cons)
+        #print(cons)
 
 
         # Main setting of things
@@ -371,14 +371,14 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                 else:
                     rdf['predicate'] = lemmatize(elem['raw'], 'v')
 
-            if 'structure' in elem:
+            elif 'structure' in elem:
                 if elem['structure'].label().startswith('V'):
                     tree = elem['structure']
                     for branch in tree:
                         for node in branch:
                             if node.label()=='MD':
                                 rdf['predicate'] = node.leaves()[0]
-                            if node.label().startswith('V'):
+                            if node.label().startswith('V') and not find(node.leaves()[0], self.GRAMMAR, 'to_be'):
                                 rdf['object'] = node.leaves()[0]
 
             if elem['label'] == 'PP':

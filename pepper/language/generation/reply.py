@@ -167,9 +167,8 @@ def reply_to_question(brain_response):
         author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
         if brain_response['question'].transcript.split()[0].lower()!='who':
             subject = replace_pronouns(utterance.chat_speaker, entity_label=utterance.triple.subject_name, role='subject')
-            print('replaced ', subject)
         else:
-            print(item)
+            #print(item)
             if utterance.triple.subject_name!='':
                 subject = utterance.triple.subject_name
             else:
