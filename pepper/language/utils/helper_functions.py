@@ -385,3 +385,48 @@ def get_uri(string):
         return uris[0]
     else:
         return None
+
+
+def fix_predicate_morphology(subject, predicate, object, format='triple'):
+    """
+    Conjugation
+    Parameters
+    ----------
+    subject
+    predicate
+
+    Returns
+    -------
+
+    """
+    # TODO revise by Lenka
+    new_predicate = ''
+    if format == 'triple':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'is':
+                    new_predicate += 'be-'
+                else:
+                    new_predicate += el + '-'
+
+        elif predicate.endswith('s'):
+            new_predicate = wnl.lemmatize(predicate)
+
+        else:
+            new_predicate = predicate
+
+    elif format == 'natural':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'be':
+                    new_predicate += 'is '
+                else:
+                    new_predicate += el + ' '
+
+        #elif predicate == wnl.lemmatize(predicate):
+        #    new_predicate = predicate + 's'
+
+        else:
+            new_predicate = predicate
+
+    return new_predicate.strip(' ')

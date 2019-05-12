@@ -3,9 +3,10 @@ from rdflib import Literal
 from datetime import date, datetime
 from typing import List, Optional
 
+from nltk.stem import WordNetLemmatizer
+
 from pepper.brain.utils.constants import NOT_TO_MENTION_TYPES
 from pepper.brain.utils.helper_functions import hash_claim_id, is_proper_noun
-from pepper.language.generation.reply import fix_predicate_morphology
 
 
 class RDFBase(object):
@@ -185,12 +186,58 @@ class Predicate(RDFBase):
         if format == 'triple':
             # Label
             self._label = Literal(self.label.lower().replace(" ", "-"))
-            self._label = Literal(fix_predicate_morphology(subject_label, str(self.label), object_label, format=format))
+            self._label = Literal(self._fix_predicate_morphology(subject_label, str(self.label), object_label, format=format))
 
         elif format == 'natural':
             # Label
             self._label = self.label.lower().replace("-", " ")
-            self._label = fix_predicate_morphology(subject_label, self.label, object_label, format=format)
+            self._label = self._fix_predicate_morphology(subject_label, self.label, object_label, format=format)
+
+    @staticmethod
+    def _fix_predicate_morphology(subject, predicate, object, format='triple'):
+        """
+        Conjugation
+        Parameters
+        ----------
+        subject
+        predicate
+
+        Returns
+        -------
+
+        """
+        # TODO: Copied from language.utils.helper_functions, because of circular dependency issues...
+        # TODO revise by Lenka
+        new_predicate = ''
+        if format == 'triple':
+            if len(predicate.split()) > 1:
+                for el in predicate.split():
+                    if el == 'is':
+                        new_predicate += 'be-'
+                    else:
+                        new_predicate += el + '-'
+
+            elif predicate.endswith('s'):
+                new_predicate = WordNetLemmatizer().lemmatize(predicate)
+
+            else:
+                new_predicate = predicate
+
+        elif format == 'natural':
+            if len(predicate.split()) > 1:
+                for el in predicate.split():
+                    if el == 'be':
+                        new_predicate += 'is '
+                    else:
+                        new_predicate += el + ' '
+
+            # elif predicate == wnl.lemmatize(predicate):
+            #    new_predicate = predicate + 's'
+
+            else:
+                new_predicate = predicate
+
+        return new_predicate.strip(' ')
 
 
 class Triple(object):
