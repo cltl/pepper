@@ -8,7 +8,7 @@ from datetime import datetime
 
 class BasicBrain(object):
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL):
+    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
         """
         Interact with Triple store
 
@@ -17,16 +17,27 @@ class BasicBrain(object):
         address: str
             IP address and port of the Triple store
         """
-        # TODO refactor to use RDF classes
         self._connection = StoreConnector(address, format='trig')
         self._rdf_builder = RdfBuilder()
         self.namespaces = self._rdf_builder.namespaces
         self.dataset = self._rdf_builder.dataset
+        self.instance_graph = self._rdf_builder.instance_graph
+        self.claim_graph = self._rdf_builder.claim_graph
+        self.ontology_graph = self._rdf_builder.ontology_graph
+        self.perspective_graph = self._rdf_builder.perspective_graph
+        self.interaction_graph = self._rdf_builder.interaction_graph
 
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
+
+        # Possible clear all contents (testing purposes)
+        if clear_all:
+            self.clear_brain()
+
+        # Upload ontology here
+        self.upload_ontology()
 
     ########## basic post get behaviour ##########
     def _upload_to_brain(self, data):
@@ -39,7 +50,7 @@ class BasicBrain(object):
 
         return self._connection.upload(data)
 
-    def _submit_query(self, query, ask=False):
+    def _submit_query(self, query, ask=False, post=False):
         """
         Submit a query to the triple store
         Parameters
@@ -55,9 +66,19 @@ class BasicBrain(object):
         """
         self._log.debug("Posting query")
 
-        return self._connection.query(query, ask=ask)
+        return self._connection.query(query, ask=ask, post=post)
 
     ########## brain structure exploration ##########
+    def upload_ontology(self):
+        """
+        Upload ontology
+        :return: response status
+        """
+        self._log.debug("Uploading ontology to brain")
+        data = self._serialize(self._brain_log)
+
+        return self._connection.upload(data)
+
     def get_predicates(self):
         """
         Get predicates in social ontology
@@ -76,7 +97,7 @@ class BasicBrain(object):
         query = read_query('structure exploration/classes')
         response = self._submit_query(query)
 
-        return [elem['o']['value'].split('/')[-1] for elem in response]
+        return [elem['c']['value'].split('/')[-1] for elem in response]
 
     def get_labels_and_classes(self):
         """
@@ -169,3 +190,12 @@ class BasicBrain(object):
         query = read_query('content exploration/triples_with_predicate') % predicate
         response = self._submit_query(query)
         return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
+
+    def clear_brain(self):
+        """
+        Clear all data from the brain
+        :return: response status
+        """
+        self._log.debug("Clearing brain")
+        query = "delete {?s ?p ?o} where {?s ?p ?o .}  "
+        _ = self._connection.query(query, post=True)

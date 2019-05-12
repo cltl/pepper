@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import date
 
 from pepper.brain.utils.constants import CAPITALIZED_TYPES
@@ -49,5 +50,25 @@ def date_from_uri(uri):
     return date(int(year), int(month), int(day))
 
 
-def hash_statement_id(triple):
+def hash_claim_id(triple):
     return '_'.join(triple)
+
+
+def confidence_to_certainty_value(confidence):
+    if confidence is not None:
+        if confidence > .90:
+            return 'CERTAIN'
+        if confidence > .50:
+            return 'PROBABLE'
+        if confidence > 0:
+            return 'POSIBLE'
+    return 'UNDERSPECIFIED'
+
+
+# def replace_in_file(file, word, word_replacement):
+#     pattern = re.compile("<(\d{4,5})>")
+#     # ([":])(Unknown)
+#
+#     for i, line in enumerate(open(file)):
+#         for match in re.finditer(pattern, line):
+#             print 'Found on line %s: %s' % (i + 1, match.groups())

@@ -4,6 +4,10 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
 @base <http://cltl.nl/leolani/integration/> .
 
 <http://cltl.nl/leolani/integration/> rdf:type owl:Ontology .
@@ -48,326 +52,331 @@
 #    Object Properties
 #################################################################
 
-###  http://cltl.nl/leolani/integration/hasSensor
-:hasSensor rdf:type owl:ObjectProperty ;
-           rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
-           rdfs:domain <http://groundedannotationframework.org/grasp#Detection> ,
-                       <http://groundedannotationframework.org/grasp#Visual> ,
-                       <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
-           rdfs:range <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:acknowledge
+n2mu:acknowledge rdf:type owl:ObjectProperty ;
+                                          rdfs:subPropertyOf n2mu:perceive ;
+                                          rdfs:domain n2mu:robot;
+                                          rdfs:range n2mu:smell,
+                                                     n2mu:taste,
+                                                     n2mu:touch;
+                                          owl:propertyDisjointWith n2mu:experience .
 
 
-###  http://cltl.nl/leolani/n2mu/acknowledge
-<http://cltl.nl/leolani/n2mu/acknowledge> rdf:type owl:ObjectProperty ;
-                                          rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/perceive> ;
-                                          rdfs:domain <http://cltl.nl/leolani/n2mu/Robot> ;
-                                          rdfs:range <http://cltl.nl/leolani/n2mu/Smell> ,
-                                                     <http://cltl.nl/leolani/n2mu/Taste> ,
-                                                     <http://cltl.nl/leolani/n2mu/Touch> ;
-                                          owl:propertyDisjointWith <http://cltl.nl/leolani/n2mu/experience> .
+### n2mu:born-in
+n2mu:born-in rdf:type owl:ObjectProperty ;
+                                     rdfs:subPropertyOf n2mu:be-from ;
+                                     rdfs:range n2mu:location;
+                                      rdfs:domain n2mu:person.
 
 
-###  http://cltl.nl/leolani/n2mu/bornIn
-<http://cltl.nl/leolani/n2mu/bornIn> rdf:type owl:ObjectProperty ;
-                                     rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/isFrom> ;
-                                     rdfs:range <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:cook-by
+n2mu:cook-by rdf:type owl:ObjectProperty ;
+                                       rdfs:domain n2mu:dish,
+                                                   n2mu:food;
+                                       rdfs:range n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/cookedBy
-<http://cltl.nl/leolani/n2mu/cookedBy> rdf:type owl:ObjectProperty ;
-                                       rdfs:domain <http://cltl.nl/leolani/n2mu/Dish> ;
-                                       rdfs:range <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:dislike
+n2mu:dislike rdf:type owl:ObjectProperty ;
+                                       rdfs:domain n2mu:agent;
+                                       rdfs:range n2mu:agent,
+                                                  n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/dislikes
-<http://cltl.nl/leolani/n2mu/dislikes> rdf:type owl:ObjectProperty ;
-                                       rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                       rdfs:range <http://cltl.nl/leolani/n2mu/Agent> ,
-                                                  <http://cltl.nl/leolani/n2mu/Interest> .
+### n2mu:experience
+n2mu:experience rdf:type owl:ObjectProperty ;
+                                         rdfs:subPropertyOf n2mu:perceive ;
+                                         rdfs:domain n2mu:person;
+                                         rdfs:range n2mu:smell,
+                                                    n2mu:taste,
+                                                    n2mu:touch.
 
 
-###  http://cltl.nl/leolani/n2mu/experience
-<http://cltl.nl/leolani/n2mu/experience> rdf:type owl:ObjectProperty ;
-                                         rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/perceive> ;
-                                         rdfs:domain <http://cltl.nl/leolani/n2mu/Person> ;
-                                         rdfs:range <http://cltl.nl/leolani/n2mu/Smell> ,
-                                                    <http://cltl.nl/leolani/n2mu/Taste> ,
-                                                    <http://cltl.nl/leolani/n2mu/Touch> .
+### n2mu:favorite
+n2mu:favorite rdf:type owl:ObjectProperty ;
+                                       rdfs:subPropertyOf n2mu:like ;
+                                       owl:inverseOf n2mu:favorite-of ;
+                                       rdfs:domain n2mu:agent;
+                                       rdfs:range n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/favorite
-<http://cltl.nl/leolani/n2mu/favorite> rdf:type owl:ObjectProperty ;
-                                       rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/likes> ;
-                                       owl:inverseOf <http://cltl.nl/leolani/n2mu/favorite_of> ;
-                                       rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                       rdfs:range <http://cltl.nl/leolani/n2mu/Interest> .
+### n2mu:favorite-of
+n2mu:favorite-of rdf:type owl:ObjectProperty ;
+                                          rdfs:subPropertyOf n2mu:like-by ;
+                                       rdfs:range n2mu:agent;
+                                       rdfs:domain n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/favorite_of
-<http://cltl.nl/leolani/n2mu/favorite_of> rdf:type owl:ObjectProperty ;
-                                          rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/likedBy> .
-
-
-###  http://cltl.nl/leolani/n2mu/in
-<http://cltl.nl/leolani/n2mu/in> rdf:type owl:ObjectProperty ,
+### n2mu:in
+n2mu:in rdf:type owl:ObjectProperty ,
                                           owl:TransitiveProperty ;
-                                 rdfs:domain <http://cltl.nl/leolani/n2mu/city> ;
-                                 rdfs:range <http://cltl.nl/leolani/n2mu/country> .
+                                 rdfs:domain n2mu:city ;
+                                 rdfs:range n2mu:country .
 
 
-###  http://cltl.nl/leolani/n2mu/isChildOf
-<http://cltl.nl/leolani/n2mu/isChildOf> rdf:type owl:ObjectProperty ;
-                                        rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/isFamilyOf> ;
-                                        rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                        rdfs:range <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:be-child-of
+n2mu:be-child-of rdf:type owl:ObjectProperty ;
+                                        rdfs:subPropertyOf n2mu:be-family-of ;
+                                        rdfs:domain n2mu:agent;
+                                        rdfs:range n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/isColleagueOf
-<http://cltl.nl/leolani/n2mu/isColleagueOf> rdf:type owl:ObjectProperty ;
-                                            rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/knows> ;
-                                            rdfs:domain [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Agent>
+### n2mu:be-colleague-of
+n2mu:be-colleague-of rdf:type owl:ObjectProperty ;
+                                            rdfs:subPropertyOf n2mu:know ;
+                                            rdfs:domain [ owl:intersectionOf ( n2mu:agent
                                                                                [ rdf:type owl:Restriction ;
-                                                                                 owl:onProperty <http://cltl.nl/leolani/n2mu/isMemberOf> ;
-                                                                                 owl:someValuesFrom <http://cltl.nl/leolani/n2mu/Institution>
+                                                                                 owl:onProperty n2mu:be-member-of ;
+                                                                                 owl:someValuesFrom n2mu:institution
                                                                                ]
                                                                              ) ;
                                                           rdf:type owl:Class
                                                         ] ;
-                                            rdfs:range [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Agent>
+                                            rdfs:range [ owl:intersectionOf ( n2mu:agent
                                                                               [ rdf:type owl:Restriction ;
-                                                                                owl:onProperty <http://cltl.nl/leolani/n2mu/isMemberOf> ;
-                                                                                owl:someValuesFrom <http://cltl.nl/leolani/n2mu/Institution>
+                                                                                owl:onProperty n2mu:be-member-of ;
+                                                                                owl:someValuesFrom n2mu:institution
                                                                               ]
                                                                             ) ;
                                                          rdf:type owl:Class
                                                        ] .
 
 
-###  http://cltl.nl/leolani/n2mu/isFamilyOf
-<http://cltl.nl/leolani/n2mu/isFamilyOf> rdf:type owl:ObjectProperty ;
-                                         rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/knows> ;
-                                         rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                         rdfs:range <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:be-family-of
+n2mu:be-family-of rdf:type owl:ObjectProperty ;
+                                         rdfs:subPropertyOf n2mu:know ;
+                                         rdfs:domain n2mu:person;
+                                         rdfs:range n2mu:person.
 
 
-###  http://cltl.nl/leolani/n2mu/isFriendsWith
-<http://cltl.nl/leolani/n2mu/isFriendsWith> rdf:type owl:ObjectProperty ;
-                                            rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/knows> .
+### n2mu:be-friends-with
+n2mu:be-friends-with rdf:type owl:ObjectProperty ;
+                                            rdfs:subPropertyOf n2mu:know ;
+                                         rdfs:domain n2mu:person;
+                                         rdfs:range n2mu:person.
 
 
-###  http://cltl.nl/leolani/n2mu/isFrom
-<http://cltl.nl/leolani/n2mu/isFrom> rdf:type owl:ObjectProperty ;
-                                     rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ,
-                                                 <http://cltl.nl/leolani/n2mu/Cuisine> ;
-                                     rdfs:range <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:be-from
+n2mu:be-from rdf:type owl:ObjectProperty ;
+                                     rdfs:domain n2mu:agent,
+                                                 n2mu:cuisine;
+                                     rdfs:range n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/isMemberOf
-<http://cltl.nl/leolani/n2mu/isMemberOf> rdf:type owl:ObjectProperty ;
-                                         rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                         rdfs:range <http://cltl.nl/leolani/n2mu/Institution> .
+### n2mu:be-member-of
+n2mu:be-member-of rdf:type owl:ObjectProperty ;
+                                         rdfs:domain n2mu:agent;
+                                         rdfs:range n2mu:institution.
 
 
-###  http://cltl.nl/leolani/n2mu/isParentOf
-<http://cltl.nl/leolani/n2mu/isParentOf> rdf:type owl:ObjectProperty ;
-                                         rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/isFamilyOf> ;
-                                         rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                         rdfs:range <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:be-parent-of
+n2mu:be-parent-of rdf:type owl:ObjectProperty ;
+                                         rdfs:subPropertyOf n2mu:be-family-of ;
+                                         rdfs:domain n2mu:person;
+                                         rdfs:range n2mu:person.
 
 
-###  http://cltl.nl/leolani/n2mu/knows
-<http://cltl.nl/leolani/n2mu/knows> rdf:type owl:ObjectProperty ;
-                                    rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                    rdfs:range <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:know
+n2mu:know rdf:type owl:ObjectProperty ;
+                                    rdfs:domain n2mu:agent;
+                                    rdfs:range n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/likedBy
-<http://cltl.nl/leolani/n2mu/likedBy> rdf:type owl:ObjectProperty .
+### n2mu:like-by
+n2mu:like-by rdf:type owl:ObjectProperty ;
+                                    rdfs:range n2mu:agent;
+                                    rdfs:domain n2mu:agent,
+                                               n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/likes
-<http://cltl.nl/leolani/n2mu/likes> rdf:type owl:ObjectProperty ;
-                                    rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                    rdfs:range <http://cltl.nl/leolani/n2mu/Agent> ,
-                                               <http://cltl.nl/leolani/n2mu/Interest> .
+### n2mu:like
+n2mu:like rdf:type owl:ObjectProperty ;
+                                    rdfs:domain n2mu:agent;
+                                    rdfs:range n2mu:agent,
+                                               n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/livedIn
-<http://cltl.nl/leolani/n2mu/livedIn> rdf:type owl:ObjectProperty ;
-                                      rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                      rdfs:range <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:live-in
+n2mu:live-in rdf:type owl:ObjectProperty ;
+                                      rdfs:domain n2mu:agent;
+                                      rdfs:range n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/located
-<http://cltl.nl/leolani/n2mu/located> rdf:type owl:ObjectProperty ;
-                                      rdfs:domain <http://cltl.nl/leolani/n2mu/Institution> .
+### n2mu:locate-in
+n2mu:locate-in rdf:type owl:ObjectProperty ;
+                                      rdfs:domain n2mu:institution;
+                                      rdfs:range n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/manufacturedIn
-<http://cltl.nl/leolani/n2mu/manufacturedIn> rdf:type owl:ObjectProperty ;
-                                             rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/isFrom> ;
-                                             rdfs:range <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:manufacture-in
+n2mu:manufacture-in rdf:type owl:ObjectProperty ;
+                                             rdfs:subPropertyOf n2mu:be-from ;
+                                             rdfs:domain n2mu:robot ;
+                                             rdfs:range n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/owns
-<http://cltl.nl/leolani/n2mu/owns> rdf:type owl:ObjectProperty ;
-                                   rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                   rdfs:range <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:own
+n2mu:own rdf:type owl:ObjectProperty ;
+                                   rdfs:domain n2mu:agent,
+                                               n2mu:person;
+                                   rdfs:range n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/perceive
-<http://cltl.nl/leolani/n2mu/perceive> rdf:type owl:ObjectProperty ;
-                                       rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                       rdfs:range <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:perceive
+n2mu:perceive rdf:type owl:ObjectProperty ;
+                                       rdfs:domain n2mu:agent;
+                                       rdfs:range n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/plays
-<http://cltl.nl/leolani/n2mu/plays> rdf:type owl:ObjectProperty ;
-                                    rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                    rdfs:range <http://cltl.nl/leolani/n2mu/Song> ,
-                                               <http://cltl.nl/leolani/n2mu/Sport> .
+### n2mu:play
+n2mu:play rdf:type owl:ObjectProperty ;
+                                    rdfs:domain n2mu:agent;
+                                    rdfs:range n2mu:song,
+                                               n2mu:sport.
 
 
-###  http://cltl.nl/leolani/n2mu/readBy
-<http://cltl.nl/leolani/n2mu/readBy> rdf:type owl:ObjectProperty ;
-                                     rdfs:domain <http://cltl.nl/leolani/n2mu/Book> ;
-                                     rdfs:range <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:read-by
+n2mu:read-by rdf:type owl:ObjectProperty ;
+                                     rdfs:domain n2mu:book;
+                                     rdfs:range n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/sense
-<http://cltl.nl/leolani/n2mu/sense> rdf:type owl:ObjectProperty ;
-                                    rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/perceive> ;
-                                    rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:sense
+n2mu:sense rdf:type owl:ObjectProperty ;
+                                    rdfs:subPropertyOf n2mu:perceive ;
+                                    rdfs:domain n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/shareInterest
-<http://cltl.nl/leolani/n2mu/shareInterest> rdf:type owl:ObjectProperty ;
-                                            rdfs:domain [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Agent>
+### n2mu:share-interest
+n2mu:share-interest rdf:type owl:ObjectProperty ;
+                                            rdfs:domain [ owl:intersectionOf ( n2mu:agent
                                                                                [ rdf:type owl:Restriction ;
-                                                                                 owl:onProperty <http://cltl.nl/leolani/n2mu/likes> ;
-                                                                                 owl:someValuesFrom <http://cltl.nl/leolani/n2mu/Interest>
+                                                                                 owl:onProperty n2mu:like ;
+                                                                                 owl:someValuesFrom n2mu:interest
                                                                                ]
                                                                              ) ;
                                                           rdf:type owl:Class
                                                         ] ;
-                                            rdfs:range [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Agent>
+                                            rdfs:range [ owl:intersectionOf ( n2mu:agent
                                                                               [ rdf:type owl:Restriction ;
-                                                                                owl:onProperty <http://cltl.nl/leolani/n2mu/likes> ;
-                                                                                owl:someValuesFrom <http://cltl.nl/leolani/n2mu/Interest>
+                                                                                owl:onProperty n2mu:like ;
+                                                                                owl:someValuesFrom n2mu:interest
                                                                               ]
                                                                             ) ;
                                                          rdf:type owl:Class
                                                        ] .
 
 
-###  http://cltl.nl/leolani/n2mu/studiesAt
-<http://cltl.nl/leolani/n2mu/studiesAt> rdf:type owl:ObjectProperty ;
-                                        rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/isMemberOf> ;
-                                        rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:study-at
+n2mu:study-at rdf:type owl:ObjectProperty ;
+                                        rdfs:subPropertyOf n2mu:be-member-of ;
+                                        rdfs:domain n2mu:agent;
+                                          rdfs:range n2mu:institution.
 
 
-###  http://cltl.nl/leolani/n2mu/travelledTo
-<http://cltl.nl/leolani/n2mu/travelledTo> rdf:type owl:ObjectProperty ;
-                                          rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                          rdfs:range <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:travel-to
+n2mu:travel-to rdf:type owl:ObjectProperty ;
+                                          rdfs:domain n2mu:agent;
+                                          rdfs:range n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/worksAt
-<http://cltl.nl/leolani/n2mu/worksAt> rdf:type owl:ObjectProperty ;
-                                      rdfs:subPropertyOf <http://cltl.nl/leolani/n2mu/isMemberOf> ;
-                                      rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> ;
-                                      rdfs:range <http://cltl.nl/leolani/n2mu/Institution> .
+### n2mu:work-at
+n2mu:work-at rdf:type owl:ObjectProperty ;
+                                      rdfs:subPropertyOf n2mu:be-member-of ;
+                                      rdfs:domain n2mu:agent;
+                                      rdfs:range n2mu:institution.
 
 
-###  http://cltl.nl/leolani/n2mu/writtenBy
-<http://cltl.nl/leolani/n2mu/writtenBy> rdf:type owl:ObjectProperty ;
-                                        rdfs:domain <http://cltl.nl/leolani/n2mu/Book> .
+### n2mu:write-by
+n2mu:write-by rdf:type owl:ObjectProperty ;
+                                        rdfs:domain n2mu:book;
+                                      rdfs:range n2mu:person.
 
 
 ###  http://groundedannotationframework.org/gaf#containsDenotation
-<http://groundedannotationframework.org/gaf#containsDenotation> rdf:type owl:ObjectProperty ;
-                                                                rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
-                                                                rdfs:range <http://groundedannotationframework.org/gaf#Instance> .
+gaf:containsDenotation rdf:type owl:ObjectProperty ;
+                                                                rdfs:domain gaf:Mention ;
+                                                                rdfs:range gaf:Instance .
 
 
 ###  http://groundedannotationframework.org/gaf#denotedBy
-<http://groundedannotationframework.org/gaf#denotedBy> rdf:type owl:ObjectProperty ;
-                                                       rdfs:subPropertyOf <http://groundedannotationframework.org/gaf#denotedIn> ;
-                                                       rdfs:domain <http://groundedannotationframework.org/gaf#Instance> ;
-                                                       rdfs:range <http://groundedannotationframework.org/gaf#Mention> .
+gaf:denotedBy rdf:type owl:ObjectProperty ;
+                                                       rdfs:subPropertyOf gaf:denotedIn ;
+                                                       rdfs:domain gaf:Instance ;
+                                                       rdfs:range gaf:Mention .
 
 
 ###  http://groundedannotationframework.org/gaf#denotedIn
-<http://groundedannotationframework.org/gaf#denotedIn> rdf:type owl:ObjectProperty ;
-                                                       rdfs:domain <http://groundedannotationframework.org/gaf#Instance> ;
-                                                       rdfs:range <http://groundedannotationframework.org/gaf#Mention> .
+gaf:denotedIn rdf:type owl:ObjectProperty ;
+                                                       rdfs:domain gaf:Instance ;
+                                                       rdfs:range gaf:Mention .
 
 
 ###  http://groundedannotationframework.org/gaf#denotes
-<http://groundedannotationframework.org/gaf#denotes> rdf:type owl:ObjectProperty ;
-                                                     rdfs:subPropertyOf <http://groundedannotationframework.org/gaf#containsDenotation> ;
-                                                     rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
-                                                     rdfs:range <http://groundedannotationframework.org/gaf#Instance> .
+gaf:denotes rdf:type owl:ObjectProperty ;
+                                                     rdfs:subPropertyOf gaf:containsDenotation ;
+                                                     rdfs:domain gaf:Mention ;
+                                                     rdfs:range gaf:Instance .
 
 
 ###  http://groundedannotationframework.org/grasp#contextProperty
-<http://groundedannotationframework.org/grasp#contextProperty> rdf:type owl:ObjectProperty ;
+eps:contextProperty rdf:type owl:ObjectProperty ;
                                                                rdfs:comment "Context properties connect Context to other SEM Core entities." ;
                                                                rdfs:label "context property" .
 
 
 ###  http://groundedannotationframework.org/grasp#hasAttribution
-<http://groundedannotationframework.org/grasp#hasAttribution> rdf:type owl:ObjectProperty ;
-                                                              owl:inverseOf <http://groundedannotationframework.org/grasp#isAttributionFor> ;
-                                                              rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
-                                                              rdfs:range <http://groundedannotationframework.org/grasp#Attribution> .
+grasp:hasAttribution rdf:type owl:ObjectProperty ;
+                                                              owl:inverseOf grasp:isAttributionFor ;
+                                                              rdfs:domain gaf:Mention ;
+                                                              rdfs:range grasp:Attribution .
 
 
-###  http://groundedannotationframework.org/grasp#hasContext
-<http://groundedannotationframework.org/grasp#hasContext> rdf:type owl:ObjectProperty ;
+###  http://cltl.nl/episodicawareness/hasContext
+eps:hasContext rdf:type owl:ObjectProperty ;
                                                           rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
-                                                          rdfs:domain <http://groundedannotationframework.org/gaf#Instance> ,
-                                                                      <http://groundedannotationframework.org/grasp#Chat> ,
-                                                                      <http://groundedannotationframework.org/grasp#Detection> ,
-                                                                      <http://groundedannotationframework.org/grasp#Experience> ,
-                                                                      <http://groundedannotationframework.org/grasp#Statement> ,
-                                                                      <http://groundedannotationframework.org/grasp#Utterance> ,
-                                                                      <http://groundedannotationframework.org/grasp#Visual> ,
+                                                          rdfs:domain gaf:Instance ,
+                                                                      grasp:Chat ,
+                                                                      grasp:Visual ,
+                                                                      grasp:Utterance ,
+                                                                      grasp:Detection ,
+                                                                      grasp:Statement ,
+                                                                      grasp:Experience ,
                                                                       <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
-                                                          rdfs:range <http://groundedannotationframework.org/grasp#Context> .
+                                                          rdfs:range eps:Context .
 
 
-###  http://groundedannotationframework.org/grasp#hasDetection
-<http://groundedannotationframework.org/grasp#hasDetection> rdf:type owl:ObjectProperty ;
-                                                            rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ;
-                                                            rdfs:domain <http://groundedannotationframework.org/grasp#Context> ;
-                                                            rdfs:range <http://cltl.nl/leolani/n2mu/Object> ,
-                                                                       <http://cltl.nl/leolani/n2mu/Person> .
+###  http://cltl.nl/episodicawareness/hasDetection
+eps:hasDetection rdf:type owl:ObjectProperty ;
+                                                            rdfs:subPropertyOf eps:contextProperty ;
+                                                            rdfs:domain eps:Context ;
+                                                            rdfs:range n2mu:object,
+                                                                       n2mu:person.
 
 
 ###  http://groundedannotationframework.org/grasp#isAttributionFor
-<http://groundedannotationframework.org/grasp#isAttributionFor> rdf:type owl:ObjectProperty ;
+grasp:isAttributionFor rdf:type owl:ObjectProperty ;
                                                                 rdfs:subPropertyOf owl:topObjectProperty ;
-                                                                rdfs:domain <http://groundedannotationframework.org/grasp#Attribution> ;
-                                                                rdfs:range <http://groundedannotationframework.org/gaf#Mention> .
+                                                                rdfs:domain grasp:Attribution ;
+                                                                rdfs:range gaf:Mention .
 
 
 ###  http://groundedannotationframework.org/grasp#wasAttributedTo
-<http://groundedannotationframework.org/grasp#wasAttributedTo> rdf:type owl:ObjectProperty ;
-                                                               rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
-                                                               rdfs:range <http://cltl.nl/leolani/n2mu/Sensor> ,
-                                                                          <http://groundedannotationframework.org/grasp#Source> ,
+grasp:wasAttributedTo rdf:type owl:ObjectProperty ;
+                                                               rdfs:domain gaf:Mention ;
+                                                               rdfs:range n2mu:sensor,
+                                                                          grasp:Source ,
                                                                           <http://semanticweb.cs.vu.nl/2009/11/sem/Actor> ,
-                                                                          [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Agent>
-                                                                                                 <http://groundedannotationframework.org/gaf#Instance>
-                                                                                                 <http://groundedannotationframework.org/grasp#Source>
+                                                                          [ owl:intersectionOf ( n2mu:agent
+                                                                                                 gaf:Instance
+                                                                                                 grasp:Source
                                                                                                  <http://semanticweb.cs.vu.nl/2009/11/sem/Actor>
                                                                                                ) ;
                                                                             rdf:type owl:Class
                                                                           ] ,
-                                                                          [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Sensor>
-                                                                                                 <http://groundedannotationframework.org/gaf#Instance>
-                                                                                                 <http://groundedannotationframework.org/grasp#Source>
+                                                                          [ owl:intersectionOf ( n2mu:sensor
+                                                                                                 gaf:Instance
+                                                                                                 grasp:Source
                                                                                                  <http://semanticweb.cs.vu.nl/2009/11/sem/Actor>
                                                                                                ) ;
                                                                             rdf:type owl:Class
@@ -383,18 +392,18 @@
 ###  http://semanticweb.cs.vu.nl/2009/11/sem/hasActor
 <http://semanticweb.cs.vu.nl/2009/11/sem/hasActor> rdf:type owl:ObjectProperty ;
                                                    rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
-                                                   rdfs:domain <http://groundedannotationframework.org/grasp#Chat> ,
-                                                               <http://groundedannotationframework.org/grasp#Utterance> ,
+                                                   rdfs:domain grasp:Chat ,
+                                                               grasp:Utterance ,
                                                                <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
                                                    rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Actor> .
 
 
 ###  http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace
 <http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace> rdf:type owl:ObjectProperty ;
-                                                   rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ;
-                                                   rdfs:domain <http://groundedannotationframework.org/grasp#Context> ;
-                                                   rdfs:range <http://cltl.nl/leolani/n2mu/Location> ,
-                                                              [ owl:intersectionOf ( <http://groundedannotationframework.org/gaf#Instance>
+                                                   rdfs:subPropertyOf eps:contextProperty ;
+                                                   rdfs:domain eps:Context ;
+                                                   rdfs:range n2mu:location,
+                                                              [ owl:intersectionOf ( gaf:Instance
                                                                                      <http://semanticweb.cs.vu.nl/2009/11/sem/Place>
                                                                                    ) ;
                                                                 rdf:type owl:Class
@@ -404,18 +413,18 @@
 ###  http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent
 <http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent> rdf:type owl:ObjectProperty ;
                                                       rdfs:subPropertyOf <http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty> ;
-                                                      rdfs:domain <http://groundedannotationframework.org/grasp#Chat> ,
-                                                                  <http://groundedannotationframework.org/grasp#Visual> ,
+                                                      rdfs:domain grasp:Chat ,
+                                                                  grasp:Visual ,
                                                                   <http://semanticweb.cs.vu.nl/2009/11/sem/Event> ;
-                                                      rdfs:range <http://groundedannotationframework.org/grasp#Detection> ,
-                                                                 <http://groundedannotationframework.org/grasp#Utterance> ,
+                                                      rdfs:range grasp:Detection ,
+                                                                 grasp:Utterance ,
                                                                  <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
 ###  http://semanticweb.cs.vu.nl/2009/11/sem/hasTime
 <http://semanticweb.cs.vu.nl/2009/11/sem/hasTime> rdf:type owl:ObjectProperty ;
-                                                  rdfs:subPropertyOf <http://groundedannotationframework.org/grasp#contextProperty> ;
-                                                  rdfs:domain <http://groundedannotationframework.org/grasp#Context> ;
+                                                  rdfs:subPropertyOf eps:contextProperty ;
+                                                  rdfs:domain eps:Context ;
                                                   rdfs:range <http://semanticweb.cs.vu.nl/2009/11/sem/Time> .
 
 
@@ -431,11 +440,9 @@ rdf:value rdf:type owl:ObjectProperty .
 ###  http://www.w3.org/ns/prov#wasDerivedFrom
 <http://www.w3.org/ns/prov#wasDerivedFrom> rdf:type owl:ObjectProperty ;
                                            rdfs:subPropertyOf owl:topObjectProperty ;
-                                           rdfs:domain <http://groundedannotationframework.org/gaf#Mention> ;
-                                           rdfs:range <http://groundedannotationframework.org/grasp#Chat> ,
-                                                      <http://groundedannotationframework.org/grasp#Detection> ,
-                                                      <http://groundedannotationframework.org/grasp#Utterance> ,
-                                                      <http://groundedannotationframework.org/grasp#Visual> ;
+                                           rdfs:domain gaf:Mention ;
+                                           rdfs:range grasp:Detection ,
+                                                      grasp:Utterance ;
                                            rdfs:comment "The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable."@en ;
                                            rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ;
                                            rdfs:label "wasDerivedFrom" ;
@@ -450,14 +457,14 @@ rdf:value rdf:type owl:ObjectProperty .
 #    Data properties
 #################################################################
 
-###  http://cltl.nl/leolani/n2mu/birthday
-<http://cltl.nl/leolani/n2mu/birthday> rdf:type owl:DatatypeProperty ;
-                                       rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:birthday
+n2mu:birthday rdf:type owl:DatatypeProperty ;
+                                       rdfs:domain n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/name
-<http://cltl.nl/leolani/n2mu/name> rdf:type owl:DatatypeProperty ;
-                                   rdfs:domain <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:name
+n2mu:name rdf:type owl:DatatypeProperty ;
+                                   rdfs:domain n2mu:agent.
 
 
 #################################################################
@@ -466,259 +473,263 @@ rdf:value rdf:type owl:ObjectProperty .
 
 ###  http://cltl.nl/leolani/integration/chair
 :chair rdf:type owl:Class ;
-       rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+       rdfs:subClassOf n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/Agent
-<http://cltl.nl/leolani/n2mu/Agent> rdf:type owl:Class ;
+### n2mu:Agent
+n2mu:agent rdf:type owl:Class;
                                     owl:equivalentClass <http://xmlns.com/foaf/0.1/Agent> .
 
 
-###  http://cltl.nl/leolani/n2mu/Book
-<http://cltl.nl/leolani/n2mu/Book> rdf:type owl:Class ;
-                                   rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestOccurrence> .
+### n2mu:Book
+n2mu:book rdf:type owl:Class;
+                                   rdfs:subClassOf n2mu:interest-occurrence.
 
 
-###  http://cltl.nl/leolani/n2mu/Company
-<http://cltl.nl/leolani/n2mu/Company> rdf:type owl:Class ;
-                                      rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Institution> .
+### n2mu:Company
+n2mu:company rdf:type owl:Class;
+                                      rdfs:subClassOf n2mu:institution.
 
 
-###  http://cltl.nl/leolani/n2mu/Cuisine
-<http://cltl.nl/leolani/n2mu/Cuisine> rdf:type owl:Class ;
-                                      rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestField> .
+### n2mu:Cuisine
+n2mu:cuisine rdf:type owl:Class;
+                                      rdfs:subClassOf n2mu:interest-field.
 
 
-###  http://cltl.nl/leolani/n2mu/Dish
-<http://cltl.nl/leolani/n2mu/Dish> rdf:type owl:Class ;
-                                   rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestOccurrence> .
+### n2mu:Dish
+n2mu:dish rdf:type owl:Class;
+                                   rdfs:subClassOf n2mu:interest-occurrence.
+
+### n2mu:Food
+n2mu:food rdf:type owl:Class;
+                                   rdfs:subClassOf n2mu:interest-occurrence.
 
 
-###  http://cltl.nl/leolani/n2mu/Electricity
-<http://cltl.nl/leolani/n2mu/Electricity> rdf:type owl:Class ;
-                                          rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Electricity
+n2mu:electricity rdf:type owl:Class;
+                                          rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Equilibrium
-<http://cltl.nl/leolani/n2mu/Equilibrium> rdf:type owl:Class ;
-                                          rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Equilibrium
+n2mu:equilibrium rdf:type owl:Class;
+                                          rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/FilmGenre
-<http://cltl.nl/leolani/n2mu/FilmGenre> rdf:type owl:Class ;
-                                        rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestField> .
+### n2mu:film-genre
+n2mu:film-genre rdf:type owl:Class;
+                                        rdfs:subClassOf n2mu:interest-field.
 
 
-###  http://cltl.nl/leolani/n2mu/Gravity
-<http://cltl.nl/leolani/n2mu/Gravity> rdf:type owl:Class ;
-                                      rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Gravity
+n2mu:gravity rdf:type owl:Class;
+                                      rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Institution
-<http://cltl.nl/leolani/n2mu/Institution> rdf:type owl:Class .
+### n2mu:Institution
+n2mu:institution rdf:type owl:Class.
 
 
-###  http://cltl.nl/leolani/n2mu/Interest
-<http://cltl.nl/leolani/n2mu/Interest> rdf:type owl:Class ;
+### n2mu:Interest
+n2mu:interest rdf:type owl:Class;
                                        owl:equivalentClass [ rdf:type owl:Restriction ;
-                                                             owl:onProperty <http://cltl.nl/leolani/n2mu/likedBy> ;
+                                                             owl:onProperty n2mu:like-by ;
                                                              owl:someValuesFrom <http://xmlns.com/foaf/0.1/Agent>
                                                            ] ,
                                                            [ rdf:type owl:Restriction ;
-                                                             owl:onProperty [ owl:inverseOf <http://cltl.nl/leolani/n2mu/likes>
+                                                             owl:onProperty [ owl:inverseOf n2mu:like
                                                                             ] ;
                                                              owl:someValuesFrom <http://xmlns.com/foaf/0.1/Agent>
                                                            ] .
 
 
-###  http://cltl.nl/leolani/n2mu/InterestField
-<http://cltl.nl/leolani/n2mu/InterestField> rdf:type owl:Class ;
-                                            rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Interest> .
+### n2mu:interest-field
+n2mu:interest-field rdf:type owl:Class;
+                                            rdfs:subClassOf n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/InterestOccurrence
-<http://cltl.nl/leolani/n2mu/InterestOccurrence> rdf:type owl:Class ;
-                                                 rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Interest> .
+### n2mu:interest-occurrence
+n2mu:interest-occurrence rdf:type owl:Class;
+                                                 rdfs:subClassOf n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/Light
-<http://cltl.nl/leolani/n2mu/Light> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Light
+n2mu:light rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/LiteratureGenre
-<http://cltl.nl/leolani/n2mu/LiteratureGenre> rdf:type owl:Class ;
-                                              rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestField> .
+### n2mu:literature-genre
+n2mu:literature-genre rdf:type owl:Class;
+                                              rdfs:subClassOf n2mu:interest-field.
 
 
-###  http://cltl.nl/leolani/n2mu/Location
-<http://cltl.nl/leolani/n2mu/Location> rdf:type owl:Class ;
+### n2mu:Location
+n2mu:location rdf:type owl:Class;
                                        owl:equivalentClass <http://schema.org/Place> ,
                                                            [ rdf:type owl:Restriction ;
-                                                             owl:onProperty [ owl:inverseOf <http://cltl.nl/leolani/n2mu/isFrom>
+                                                             owl:onProperty [ owl:inverseOf n2mu:be-from
                                                                             ] ;
                                                              owl:someValuesFrom <http://xmlns.com/foaf/0.1/Agent>
                                                            ] .
 
 
-###  http://cltl.nl/leolani/n2mu/Movie
-<http://cltl.nl/leolani/n2mu/Movie> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestOccurrence> .
+### n2mu:Movie
+n2mu:movie rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:interest-occurrence.
 
 
-###  http://cltl.nl/leolani/n2mu/MusicGenre
-<http://cltl.nl/leolani/n2mu/MusicGenre> rdf:type owl:Class ;
-                                         rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestField> .
+### n2mu:music-genre
+n2mu:music-genre rdf:type owl:Class;
+                                         rdfs:subClassOf n2mu:interest-field.
 
 
-###  http://cltl.nl/leolani/n2mu/Object
-<http://cltl.nl/leolani/n2mu/Object> rdf:type owl:Class .
+### n2mu:Object
+n2mu:object rdf:type owl:Class.
 
 
-###  http://cltl.nl/leolani/n2mu/Pain
-<http://cltl.nl/leolani/n2mu/Pain> rdf:type owl:Class ;
-                                   rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Pain
+n2mu:pain rdf:type owl:Class;
+                                   rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Person
-<http://cltl.nl/leolani/n2mu/Person> rdf:type owl:Class ;
-                                     rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:Person
+n2mu:person rdf:type owl:Class;
+                                     rdfs:subClassOf n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/PopularInterest
-<http://cltl.nl/leolani/n2mu/PopularInterest> rdf:type owl:Class ;
-                                              owl:equivalentClass [ owl:intersectionOf ( <http://cltl.nl/leolani/n2mu/Interest>
+### n2mu:popular-interest
+n2mu:popular-interest rdf:type owl:Class;
+                                              owl:equivalentClass [ owl:intersectionOf ( n2mu:interest
                                                                                          [ rdf:type owl:Restriction ;
-                                                                                           owl:onProperty <http://cltl.nl/leolani/n2mu/likedBy> ;
+                                                                                           owl:onProperty n2mu:like-by ;
                                                                                            owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger ;
-                                                                                           owl:onClass <http://cltl.nl/leolani/n2mu/Agent>
+                                                                                           owl:onClass n2mu:agent
                                                                                          ]
                                                                                        ) ;
                                                                     rdf:type owl:Class
                                                                   ] ;
-                                              rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Interest> .
+                                              rdfs:subClassOf n2mu:interest.
 
 
-###  http://cltl.nl/leolani/n2mu/Robot
-<http://cltl.nl/leolani/n2mu/Robot> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Agent> .
+### n2mu:Robot
+n2mu:robot rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:agent.
 
 
-###  http://cltl.nl/leolani/n2mu/Sensor
-<http://cltl.nl/leolani/n2mu/Sensor> rdf:type owl:Class ;
+### n2mu:Sensor
+n2mu:sensor rdf:type owl:Class;
                                      owl:equivalentClass <http://purl.obolibrary.org/obo/MF_0000019> .
 
 
-###  http://cltl.nl/leolani/n2mu/Smell
-<http://cltl.nl/leolani/n2mu/Smell> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Smell
+n2mu:smell rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Song
-<http://cltl.nl/leolani/n2mu/Song> rdf:type owl:Class ;
-                                   rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestOccurrence> .
+### n2mu:Song
+n2mu:song rdf:type owl:Class;
+                                   rdfs:subClassOf n2mu:interest-occurrence.
 
 
-###  http://cltl.nl/leolani/n2mu/Sound
-<http://cltl.nl/leolani/n2mu/Sound> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Sound
+n2mu:sound rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Sport
-<http://cltl.nl/leolani/n2mu/Sport> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestField> .
+### n2mu:Sport
+n2mu:sport rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:interest-field.
 
 
-###  http://cltl.nl/leolani/n2mu/SportsTeam
-<http://cltl.nl/leolani/n2mu/SportsTeam> rdf:type owl:Class ;
-                                         rdfs:subClassOf <http://cltl.nl/leolani/n2mu/InterestOccurrence> .
+### n2mu:sports-team
+n2mu:sports-team rdf:type owl:Class;
+                                         rdfs:subClassOf n2mu:interest-occurrence.
 
 
-###  http://cltl.nl/leolani/n2mu/Taste
-<http://cltl.nl/leolani/n2mu/Taste> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Taste
+n2mu:taste rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Temperature
-<http://cltl.nl/leolani/n2mu/Temperature> rdf:type owl:Class ;
-                                          rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Temperature
+n2mu:temperature rdf:type owl:Class;
+                                          rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/Touch
-<http://cltl.nl/leolani/n2mu/Touch> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Touch
+n2mu:touch rdf:type owl:Class;
+                                    rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/University
-<http://cltl.nl/leolani/n2mu/University> rdf:type owl:Class ;
-                                         rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Institution> .
+### n2mu:University
+n2mu:university rdf:type owl:Class;
+                                         rdfs:subClassOf n2mu:institution.
 
 
-###  http://cltl.nl/leolani/n2mu/Visual
-<http://cltl.nl/leolani/n2mu/Visual> rdf:type owl:Class ;
-                                     rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Sensor> .
+### n2mu:Visual
+n2mu:visual rdf:type owl:Class;
+                                     rdfs:subClassOf n2mu:sensor.
 
 
-###  http://cltl.nl/leolani/n2mu/animal
-<http://cltl.nl/leolani/n2mu/animal> rdf:type owl:Class ;
-                                     rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:animal
+n2mu:animal rdf:type owl:Class ;
+                                     rdfs:subClassOf n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/band
-<http://cltl.nl/leolani/n2mu/band> rdf:type owl:Class ;
-                                   rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:band
+n2mu:band rdf:type owl:Class ;
+                                   rdfs:subClassOf n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/city
-<http://cltl.nl/leolani/n2mu/city> rdf:type owl:Class ;
-                                   rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:city
+n2mu:city rdf:type owl:Class ;
+                                   rdfs:subClassOf n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/country
-<http://cltl.nl/leolani/n2mu/country> rdf:type owl:Class ;
-                                      rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Location> .
+### n2mu:country
+n2mu:country rdf:type owl:Class ;
+                                      rdfs:subClassOf n2mu:location.
 
 
-###  http://cltl.nl/leolani/n2mu/device
-<http://cltl.nl/leolani/n2mu/device> rdf:type owl:Class ;
-                                     rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:device
+n2mu:device rdf:type owl:Class ;
+                                     rdfs:subClassOf n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/mammal
-<http://cltl.nl/leolani/n2mu/mammal> rdf:type owl:Class ;
-                                     rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:mammal
+n2mu:mammal rdf:type owl:Class ;
+                                     rdfs:subClassOf n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/musical_work
-<http://cltl.nl/leolani/n2mu/musical_work> rdf:type owl:Class ;
-                                           rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:musical-work
+n2mu:musical-work rdf:type owl:Class ;
+                                           rdfs:subClassOf n2mu:object.
 
 
-###  http://cltl.nl/leolani/n2mu/plant
-<http://cltl.nl/leolani/n2mu/plant> rdf:type owl:Class ;
-                                    rdfs:subClassOf <http://cltl.nl/leolani/n2mu/Object> .
+### n2mu:plant
+n2mu:plant rdf:type owl:Class ;
+                                    rdfs:subClassOf n2mu:object.
 
 
 ###  http://groundedannotationframework.org/gaf#Instance
-<http://groundedannotationframework.org/gaf#Instance> rdf:type owl:Class ;
+gaf:Instance rdf:type owl:Class ;
                                                       owl:equivalentClass [ rdf:type owl:Restriction ;
-                                                                            owl:onProperty <http://groundedannotationframework.org/gaf#denotedBy> ;
-                                                                            owl:someValuesFrom <http://groundedannotationframework.org/gaf#Mention>
+                                                                            owl:onProperty gaf:denotedBy ;
+                                                                            owl:someValuesFrom gaf:Mention
                                                                           ] ;
                                                       rdfs:subClassOf owl:Thing ;
-                                                      owl:disjointWith <http://groundedannotationframework.org/grasp#AttributionValue> ;
+                                                      owl:disjointWith grasp:AttributionValue ;
                                                       rdfs:comment "Instances are statements about real world entities, including actions, processes and abstract notions. They are the primary subject of individuals of type gaf:Mention that can denote them."^^xsd:string ;
                                                       rdfs:label "Instance" .
 
 
 ###  http://groundedannotationframework.org/gaf#Mention
-<http://groundedannotationframework.org/gaf#Mention> rdf:type owl:Class ;
+gaf:Mention rdf:type owl:Class ;
                                                      owl:equivalentClass [ rdf:type owl:Restriction ;
-                                                                           owl:onProperty <http://groundedannotationframework.org/gaf#denotes> ;
-                                                                           owl:someValuesFrom <http://groundedannotationframework.org/gaf#Instance>
+                                                                           owl:onProperty gaf:denotes ;
+                                                                           owl:someValuesFrom gaf:Instance
                                                                          ] ;
                                                      rdfs:subClassOf owl:Thing ;
-                                                     owl:disjointWith <http://groundedannotationframework.org/grasp#AttributionValue> ;
+                                                     owl:disjointWith grasp:AttributionValue ;
                                                      rdfs:comment """Mentions are references to members of the gaf:Instance class as they occur in (web) media such as texts, video, audio, images, etc. Mentions denote gaf:Instances.
 
 A Mention uniquely identifies the (part of a) web source that denotes the mention. We refer to the standard use of fragment identifiers for different media types. """^^xsd:string ;
@@ -726,34 +737,34 @@ A Mention uniquely identifies the (part of a) web source that denotes the mentio
 
 
 ###  http://groundedannotationframework.org/grasp#Attribution
-<http://groundedannotationframework.org/grasp#Attribution> rdf:type owl:Class ;
+grasp:Attribution rdf:type owl:Class ;
                                                            owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
                                                                                                         owl:onProperty rdf:value ;
-                                                                                                        owl:someValuesFrom <http://groundedannotationframework.org/grasp#AttributionValue>
+                                                                                                        owl:someValuesFrom grasp:AttributionValue
                                                                                                       ]
                                                                                                       [ rdf:type owl:Restriction ;
-                                                                                                        owl:onProperty [ owl:inverseOf <http://groundedannotationframework.org/grasp#hasAttribution>
+                                                                                                        owl:onProperty [ owl:inverseOf grasp:hasAttribution
                                                                                                                        ] ;
-                                                                                                        owl:someValuesFrom <http://groundedannotationframework.org/gaf#Mention>
+                                                                                                        owl:someValuesFrom gaf:Mention
                                                                                                       ]
                                                                                                     ) ;
                                                                                  rdf:type owl:Class
                                                                                ] ;
                                                            rdfs:subClassOf owl:Thing ;
-                                                           owl:disjointWith <http://groundedannotationframework.org/grasp#AttributionValue> ;
+                                                           owl:disjointWith grasp:AttributionValue ;
                                                            rdfs:comment "A grasp:Attribution reflects the attribution of some interpretation, some perspective to a gaf:Mention. An attribution expresses such things as certainty, emotion, polarity, sentiment, temporality."^^xsd:string ;
                                                            rdfs:label "Attribution" .
 
 
 ###  http://groundedannotationframework.org/grasp#AttributionValue
-<http://groundedannotationframework.org/grasp#AttributionValue> rdf:type owl:Class ;
+grasp:AttributionValue rdf:type owl:Class ;
                                                                 rdfs:subClassOf owl:Thing ;
                                                                 rdfs:comment "The value of a grasp:Attribution"^^xsd:string ;
                                                                 rdfs:label "Attribution value"^^xsd:string .
 
 
 ###  http://groundedannotationframework.org/grasp#CertaintyValue
-<http://groundedannotationframework.org/grasp#CertaintyValue> rdf:type owl:Class ;
+grasp:CertaintyValue rdf:type owl:Class ;
                                                               owl:equivalentClass [ rdf:type owl:Class ;
                                                                                     owl:oneOf ( <http://groundedannotationframework.org/grasp/factuality#certain>
                                                                                                 <http://groundedannotationframework.org/grasp/factuality#possible>
@@ -761,29 +772,29 @@ A Mention uniquely identifies the (part of a) web source that denotes the mentio
                                                                                                 <http://groundedannotationframework.org/grasp/factuality#underspecified>
                                                                                               )
                                                                                   ] ;
-                                                              rdfs:subClassOf <http://groundedannotationframework.org/grasp#FactualityValue> ;
-                                                              owl:disjointWith <http://groundedannotationframework.org/grasp#PolarityValue> ,
-                                                                               <http://groundedannotationframework.org/grasp#TemporalValue> ;
+                                                              rdfs:subClassOf grasp:FactualityValue ;
+                                                              owl:disjointWith grasp:PolarityValue ,
+                                                                               grasp:TemporalValue ;
                                                               rdfs:comment "The level of certainty of a gaf:Mention"^^xsd:string ;
                                                               rdfs:label "Certainty Value" .
 
 
 ###  http://groundedannotationframework.org/grasp#Chat
-<http://groundedannotationframework.org/grasp#Chat> rdf:type owl:Class ;
+grasp:Chat rdf:type owl:Class ;
                                                     rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
 ###  http://groundedannotationframework.org/grasp#Context
-<http://groundedannotationframework.org/grasp#Context> rdf:type owl:Class .
+eps:Context rdf:type owl:Class .
 
 
 ###  http://groundedannotationframework.org/grasp#Detection
-<http://groundedannotationframework.org/grasp#Detection> rdf:type owl:Class ;
+grasp:Detection rdf:type owl:Class ;
                                                          rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
 ###  http://groundedannotationframework.org/grasp#EmotionValue
-<http://groundedannotationframework.org/grasp#EmotionValue> rdf:type owl:Class ;
+grasp:EmotionValue rdf:type owl:Class ;
                                                             owl:equivalentClass [ rdf:type owl:Class ;
                                                                                   owl:oneOf ( <http://groundedannotationframework.org/grasp/emotion#anger>
                                                                                               <http://groundedannotationframework.org/grasp/emotion#disgust>
@@ -793,83 +804,83 @@ A Mention uniquely identifies the (part of a) web source that denotes the mentio
                                                                                               <http://groundedannotationframework.org/grasp/emotion#surprise>
                                                                                             )
                                                                                 ] ;
-                                                            rdfs:subClassOf <http://groundedannotationframework.org/grasp#AttributionValue> ;
-                                                            owl:disjointWith <http://groundedannotationframework.org/grasp#FactualityValue> ,
-                                                                             <http://groundedannotationframework.org/grasp#SentimentValue> ;
+                                                            rdfs:subClassOf grasp:AttributionValue ;
+                                                            owl:disjointWith grasp:FactualityValue ,
+                                                                             grasp:SentimentValue ;
                                                             rdfs:comment "The emotion expressed in a gaf:Mention"^^xsd:string ;
                                                             rdfs:label "Emotion Value" .
 
 
 ###  http://groundedannotationframework.org/grasp#Experience
-<http://groundedannotationframework.org/grasp#Experience> rdf:type owl:Class ;
-                                                          rdfs:subClassOf <http://groundedannotationframework.org/gaf#Instance> ,
+grasp:Experience rdf:type owl:Class ;
+                                                          rdfs:subClassOf gaf:Instance ,
                                                                           <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
 ###  http://groundedannotationframework.org/grasp#FactualityValue
-<http://groundedannotationframework.org/grasp#FactualityValue> rdf:type owl:Class ;
-                                                               rdfs:subClassOf <http://groundedannotationframework.org/grasp#AttributionValue> ;
-                                                               owl:disjointWith <http://groundedannotationframework.org/grasp#SentimentValue> ;
+grasp:FactualityValue rdf:type owl:Class ;
+                                                               rdfs:subClassOf grasp:AttributionValue ;
+                                                               owl:disjointWith grasp:SentimentValue ;
                                                                rdfs:label "Factuality value"^^xsd:string .
 
 
 ###  http://groundedannotationframework.org/grasp#PolarityValue
-<http://groundedannotationframework.org/grasp#PolarityValue> rdf:type owl:Class ;
+grasp:PolarityValue rdf:type owl:Class ;
                                                              owl:equivalentClass [ rdf:type owl:Class ;
                                                                                    owl:oneOf ( <http://groundedannotationframework.org/grasp/factuality#negative>
                                                                                                <http://groundedannotationframework.org/grasp/factuality#positive>
                                                                                              )
                                                                                  ] ;
-                                                             rdfs:subClassOf <http://groundedannotationframework.org/grasp#FactualityValue> ;
-                                                             owl:disjointWith <http://groundedannotationframework.org/grasp#TemporalValue> ;
+                                                             rdfs:subClassOf grasp:FactualityValue ;
+                                                             owl:disjointWith grasp:TemporalValue ;
                                                              rdfs:comment "The polarity of a gaf:Mention (e.g. if something is or isn't the case)"^^xsd:string ;
                                                              rdfs:label "Polarity Value" .
 
 
 ###  http://groundedannotationframework.org/grasp#SentimentValue
-<http://groundedannotationframework.org/grasp#SentimentValue> rdf:type owl:Class ;
+grasp:SentimentValue rdf:type owl:Class ;
                                                               owl:equivalentClass [ rdf:type owl:Class ;
                                                                                     owl:oneOf ( <http://groundedannotationframework.org/grasp/sentiment#negative>
                                                                                                 <http://groundedannotationframework.org/grasp/sentiment#positive>
                                                                                               )
                                                                                   ] ;
-                                                              rdfs:subClassOf <http://groundedannotationframework.org/grasp#AttributionValue> ;
+                                                              rdfs:subClassOf grasp:AttributionValue ;
                                                               rdfs:comment "The sentiment expressed by a gaf:Mention"^^xsd:string ;
                                                               rdfs:label "Sentiment Value" .
 
 
 ###  http://groundedannotationframework.org/grasp#Source
-<http://groundedannotationframework.org/grasp#Source> rdf:type owl:Class ;
+grasp:Source rdf:type owl:Class ;
                                                       rdfs:subClassOf owl:Thing ;
                                                       rdfs:comment "" ;
                                                       rdfs:label "Source" .
 
 
 ###  http://groundedannotationframework.org/grasp#Statement
-<http://groundedannotationframework.org/grasp#Statement> rdf:type owl:Class ;
-                                                         rdfs:subClassOf <http://groundedannotationframework.org/gaf#Instance> ,
+grasp:Statement rdf:type owl:Class ;
+                                                         rdfs:subClassOf gaf:Instance ,
                                                                          <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
 ###  http://groundedannotationframework.org/grasp#TemporalValue
-<http://groundedannotationframework.org/grasp#TemporalValue> rdf:type owl:Class ;
+grasp:TemporalValue rdf:type owl:Class ;
                                                              owl:equivalentClass [ rdf:type owl:Class ;
                                                                                    owl:oneOf ( <http://groundedannotationframework.org/grasp/factuality#future>
                                                                                                <http://groundedannotationframework.org/grasp/factuality#non-future>
                                                                                              )
                                                                                  ] ;
-                                                             rdfs:subClassOf <http://groundedannotationframework.org/grasp#FactualityValue> ;
+                                                             rdfs:subClassOf grasp:FactualityValue ;
                                                              rdfs:comment "The temporal property of a gaf:Mention"^^xsd:string ;
                                                              rdfs:label "Temporal Value" .
 
 
 ###  http://groundedannotationframework.org/grasp#Utterance
-<http://groundedannotationframework.org/grasp#Utterance> rdf:type owl:Class ;
+grasp:Utterance rdf:type owl:Class ;
                                                          rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
 ###  http://groundedannotationframework.org/grasp#Visual
-<http://groundedannotationframework.org/grasp#Visual> rdf:type owl:Class ;
+grasp:Visual rdf:type owl:Class ;
                                                       rdfs:subClassOf <http://semanticweb.cs.vu.nl/2009/11/sem/Event> .
 
 
@@ -938,84 +949,84 @@ A Mention uniquely identifies the (part of a) web source that denotes the mentio
 
 ###  http://groundedannotationframework.org/grasp/emotion#anger
 <http://groundedannotationframework.org/grasp/emotion#anger> rdf:type owl:NamedIndividual ,
-                                                                      <http://groundedannotationframework.org/grasp#EmotionValue> .
+                                                                      grasp:EmotionValue .
 
 
 ###  http://groundedannotationframework.org/grasp/emotion#disgust
 <http://groundedannotationframework.org/grasp/emotion#disgust> rdf:type owl:NamedIndividual ,
-                                                                        <http://groundedannotationframework.org/grasp#EmotionValue> .
+                                                                        grasp:EmotionValue .
 
 
 ###  http://groundedannotationframework.org/grasp/emotion#fear
 <http://groundedannotationframework.org/grasp/emotion#fear> rdf:type owl:NamedIndividual ,
-                                                                     <http://groundedannotationframework.org/grasp#EmotionValue> .
+                                                                     grasp:EmotionValue .
 
 
 ###  http://groundedannotationframework.org/grasp/emotion#happiness
 <http://groundedannotationframework.org/grasp/emotion#happiness> rdf:type owl:NamedIndividual ,
-                                                                          <http://groundedannotationframework.org/grasp#EmotionValue> .
+                                                                          grasp:EmotionValue .
 
 
 ###  http://groundedannotationframework.org/grasp/emotion#sadness
 <http://groundedannotationframework.org/grasp/emotion#sadness> rdf:type owl:NamedIndividual ,
-                                                                        <http://groundedannotationframework.org/grasp#EmotionValue> .
+                                                                        grasp:EmotionValue .
 
 
 ###  http://groundedannotationframework.org/grasp/emotion#surprise
 <http://groundedannotationframework.org/grasp/emotion#surprise> rdf:type owl:NamedIndividual ,
-                                                                         <http://groundedannotationframework.org/grasp#EmotionValue> .
+                                                                         grasp:EmotionValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#certain
 <http://groundedannotationframework.org/grasp/factuality#certain> rdf:type owl:NamedIndividual ,
-                                                                           <http://groundedannotationframework.org/grasp#CertaintyValue> .
+                                                                           grasp:CertaintyValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#future
 <http://groundedannotationframework.org/grasp/factuality#future> rdf:type owl:NamedIndividual ,
-                                                                          <http://groundedannotationframework.org/grasp#TemporalValue> .
+                                                                          grasp:TemporalValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#negative
 <http://groundedannotationframework.org/grasp/factuality#negative> rdf:type owl:NamedIndividual ,
-                                                                            <http://groundedannotationframework.org/grasp#PolarityValue> ,
-                                                                            <http://groundedannotationframework.org/grasp#SentimentValue> .
+                                                                            grasp:PolarityValue ,
+                                                                            grasp:SentimentValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#non-future
 <http://groundedannotationframework.org/grasp/factuality#non-future> rdf:type owl:NamedIndividual ,
-                                                                              <http://groundedannotationframework.org/grasp#TemporalValue> .
+                                                                              grasp:TemporalValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#positive
 <http://groundedannotationframework.org/grasp/factuality#positive> rdf:type owl:NamedIndividual ,
-                                                                            <http://groundedannotationframework.org/grasp#PolarityValue> ,
-                                                                            <http://groundedannotationframework.org/grasp#SentimentValue> .
+                                                                            grasp:PolarityValue ,
+                                                                            grasp:SentimentValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#possible
 <http://groundedannotationframework.org/grasp/factuality#possible> rdf:type owl:NamedIndividual ,
-                                                                            <http://groundedannotationframework.org/grasp#CertaintyValue> .
+                                                                            grasp:CertaintyValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#probable
 <http://groundedannotationframework.org/grasp/factuality#probable> rdf:type owl:NamedIndividual ,
-                                                                            <http://groundedannotationframework.org/grasp#CertaintyValue> .
+                                                                            grasp:CertaintyValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#underspecified
 <http://groundedannotationframework.org/grasp/factuality#underspecified> rdf:type owl:NamedIndividual ,
-                                                                                  <http://groundedannotationframework.org/grasp#CertaintyValue> .
+                                                                                  grasp:CertaintyValue .
 
 
 ###  http://groundedannotationframework.org/grasp/sentiment#negative
 <http://groundedannotationframework.org/grasp/sentiment#negative> rdf:type owl:NamedIndividual ,
-                                                                           <http://groundedannotationframework.org/grasp#SentimentValue> .
+                                                                           grasp:SentimentValue .
 
 
 ###  http://groundedannotationframework.org/grasp/sentiment#positive
 <http://groundedannotationframework.org/grasp/sentiment#positive> rdf:type owl:NamedIndividual ,
-                                                                           <http://groundedannotationframework.org/grasp#SentimentValue> .
+                                                                           grasp:SentimentValue .
 
 
 ###  http://www.w3.org/ns/prov-o-20130430
@@ -1068,21 +1079,21 @@ A Mention uniquely identifies the (part of a) web source that denotes the mentio
 #################################################################
 
 [ rdf:type owl:AllDisjointClasses ;
-  owl:members ( <http://cltl.nl/leolani/n2mu/Book>
-                <http://cltl.nl/leolani/n2mu/Dish>
-                <http://cltl.nl/leolani/n2mu/Movie>
-                <http://cltl.nl/leolani/n2mu/Song>
-                <http://cltl.nl/leolani/n2mu/SportsTeam>
+  owl:members ( n2mu:book
+                n2mu:dish
+                n2mu:movie
+                n2mu:song
+                n2mu:sports-team
               )
 ] .
 
 
 [ rdf:type owl:AllDisjointClasses ;
-  owl:members ( <http://cltl.nl/leolani/n2mu/Cuisine>
-                <http://cltl.nl/leolani/n2mu/FilmGenre>
-                <http://cltl.nl/leolani/n2mu/LiteratureGenre>
-                <http://cltl.nl/leolani/n2mu/MusicGenre>
-                <http://cltl.nl/leolani/n2mu/Sport>
+  owl:members ( n2mu:cuisine
+                n2mu:film-genre
+                n2mu:literature-genre
+                n2mu:music-genre
+                n2mu:sport
               )
 ] .
 

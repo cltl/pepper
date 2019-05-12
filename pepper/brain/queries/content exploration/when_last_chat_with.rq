@@ -1,21 +1,24 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX grasp: <http://groundedannotationframework.org/grasp#>
 PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX time: <http://www.w3.org/TR/owl-time/#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
-select ?chatid ?time ?day ?month ?year where {
+select ?chatid ?time ?day ?month ?year
+where {
     ?chat rdf:type grasp:Chat .
-    ?chat sem:hasSubevent ?turn .
+    ?chat sem:hasSubEvent ?turn .
     ?chat n2mu:id ?chatid .
 
-    ?chat sem:hasActor ?actor .
+    ?turn sem:hasActor ?actor .
     ?actor rdfs:label "%s" .
 
-    ?chat sem:hasTime ?time .
+    ?context sem:hasEvent ?chat .
+    ?context sem:hasBeginTimeStamp ?time .
     ?time time:day ?day .
     ?time time:month ?month .
     ?time time:year ?year .
-} ORDER BY DESC (?time)
+}
+ORDER BY DESC (?time)
 LIMIT 1

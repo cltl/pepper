@@ -22,7 +22,6 @@ import enum
 import os
 
 from typing import List, Optional
-from time import time
 
 
 class Time(enum.Enum):
@@ -221,6 +220,7 @@ class Utterance(object):
 
         self._datetime = datetime.now()
         self._chat = chat
+        self._context = self._chat.context
         self._chat_speaker = self._chat.speaker
         self._turn = turn
         self._me = me
@@ -231,10 +231,8 @@ class Utterance(object):
 
         # TODO: Optimize: takes 2.6 seconds now! Should be < 1 second!?
         self._parser = None if self.me else Parser(self)
-
-        # analyze sets triple, perspective and type
-        # TODO Check this with Bram, currently we initialize with None and have set methods
-        self._type = UtteranceType.STATEMENT  # TODO do not keep this hard coded
+        # TODO analyze sets triple, perspective and type, but currently is not called on constructor
+        self._type = None
         self._triple = None
         self._perspective = None
 
@@ -248,6 +246,17 @@ class Utterance(object):
             Utterance Chat
         """
         return self._chat
+
+    @property
+    def context(self):
+        # type: () -> Context
+        """
+        Returns
+        -------
+        context: Context
+            Context (a.k.a. people, objects and other detections )
+        """
+        return self._context
 
     @property
     def chat_speaker(self):
@@ -428,7 +437,7 @@ class Utterance(object):
         -------
 
         """
-        self._type = utterance_type  # TODO make a setter?
+        self._type = utterance_type
         if type(rdf) == str:
             return rdf
 
@@ -446,7 +455,6 @@ class Utterance(object):
             # template['object']['hack'] = True  # TODO what does this mean?
         else:
             predicate = builder.fill_predicate(casefold_text(rdf['predicate'], format='triple'))
-
         # Build object
         if rdf['object'] in names:
             object = builder.fill_entity(casefold_text(rdf['object'], format='triple'), ["person"])
@@ -642,6 +650,7 @@ class Parser(object):
 
     def _parse(self, utterance):
         tokenized_sentence = utterance.tokens
+        #print(tokenized_sentence)
         pos = self.POS_TAGGER.tag(tokenized_sentence)
         self._log.debug(pos)
 
@@ -666,6 +675,8 @@ class Parser(object):
 
         if pos[0][0]=='Does':
             pos[0] = ('Does', 'VBD')
+
+        print(pos)
 
         ind = 0
         for word, tag in pos:
@@ -721,11 +732,9 @@ class Parser(object):
                             index+=1
 
             else:
-                print('no forest')
-                print(pos)
+                self._log.info("no forest")
 
             for el in s_r:
-                #print(el, s_r[el])
                 if type(s_r[el]['raw']) == list:
                     string = ''
                     for e in s_r[el]['raw']:

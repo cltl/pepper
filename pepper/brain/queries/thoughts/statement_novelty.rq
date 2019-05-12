@@ -8,9 +8,12 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 select ?date ?authorlabel where {
     <%s> grasp:denotedBy ?m .
 
-    ?m prov:wasDerivedFrom ?chat .
-    ?chat rdf:type grasp:Chat .
-    ?chat sem:hasTime ?date .
+    ?m prov:wasDerivedFrom ?utt .
+
+    ?chat sem:hasSubEvent ?utt .
+    ?context sem:hasEvent ?chat .
+    ?context sem:hasBeginTimeStamp ?d .
+    ?d rdfs:label ?date .
 
     ?m grasp:wasAttributedTo ?author .
     ?author rdfs:label ?authorlabel .

@@ -11,12 +11,16 @@ NAMESPACE_MAPPING = {
     'Chat': 'GRASP',
     'Visual': 'GRASP',
     'Utterance': 'GRASP',
-    'Object': 'GRASP',
+    'Detection': 'GRASP',
     'Mention': 'GRASP',
     'Attribution': 'GRASP',
+    'Source': 'GRASP',
     'Actor': 'SEM',
     'Event': 'SEM',
-    'DateTimeDescription': 'TIME'
+    'Place': 'SEM',
+    'Time': 'SEM',
+    'DateTimeDescription': 'TIME',
+    'Context': 'EPS'
 }
 
 CAPITALIZED_TYPES = ['person']
