@@ -298,3 +298,14 @@ class RdfBuilder(object):
             clean_types.append(bare_type)
 
         return clean_types
+
+    def clean_aggregated_detections(self, aggregared_detections):
+        split_detections = aggregared_detections.split('|')
+
+        clean_detections = []
+        for detection_label in split_detections:
+            if '-' in detection_label:
+                [detection_label, detection_id] = detection_label.rsplit('-', 1)
+            clean_detections.append(detection_label)
+
+        return clean_detections

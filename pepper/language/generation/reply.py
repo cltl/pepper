@@ -27,7 +27,7 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
                     new_predicate += el + '-'
 
         elif predicate.endswith('s'):
-            new_predicate = wnl.lemmatize(predicate)
+            new_predicate = wnl.lemmatize(predicate, 'v')
 
         else:
             new_predicate = predicate
@@ -40,7 +40,7 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
                 else:
                     new_predicate += el + ' '
 
-        elif predicate == wnl.lemmatize(predicate):
+        elif predicate == wnl.lemmatize(predicate, 'v'):
             new_predicate = predicate + 's'
 
         else:

@@ -50,7 +50,7 @@ class BasicBrain(object):
 
         return self._connection.upload(data)
 
-    def _submit_query(self, query, ask=False):
+    def _submit_query(self, query, ask=False, post=False):
         """
         Submit a query to the triple store
         Parameters
@@ -66,7 +66,7 @@ class BasicBrain(object):
         """
         self._log.debug("Posting query")
 
-        return self._connection.query(query, ask=ask)
+        return self._connection.query(query, ask=ask, post=post)
 
     ########## brain structure exploration ##########
     def upload_ontology(self):
