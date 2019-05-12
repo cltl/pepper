@@ -1,9 +1,10 @@
 import random
 
 from pepper.language.generation.phrasing import *
+from pepper.language.utils.helper_functions import wnl
 
 
-def fix_predicate_morphology(subject, predicate):
+def fix_predicate_morphology(subject, predicate, object, format='triple'):
     """
     Conjugation
     Parameters
@@ -15,16 +16,37 @@ def fix_predicate_morphology(subject, predicate):
     -------
 
     """
+    # TODO revise by Lenka
     new_predicate = ''
-    for el in predicate.split():
-        if el != 'is':
-            new_predicate += el + ' '
+    if format == 'triple':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'is':
+                    new_predicate += 'be-'
+                else:
+                    new_predicate += el + '-'
+
+        elif predicate.endswith('s'):
+            new_predicate = wnl.lemmatize(predicate)
+
         else:
-            new_predicate += 'are '
+            new_predicate = predicate
 
-    if predicate.endswith('s'): new_predicate = predicate[:-1]
+    elif format == 'natural':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'be':
+                    new_predicate += 'is '
+                else:
+                    new_predicate += el + ' '
 
-    return new_predicate
+        elif predicate == wnl.lemmatize(predicate):
+            new_predicate = predicate + 's'
+
+        else:
+            new_predicate = predicate
+
+    return new_predicate.strip(' ')
 
 
 def reply_to_statement(template, speaker, brain, viewed_objects=[]):
@@ -43,7 +65,7 @@ def reply_to_statement(template, speaker, brain, viewed_objects=[]):
             subject.title()
 
     if subject == 'you ':
-        predicate = fix_predicate_morphology(predicate)
+        predicate = fix_predicate_morphology(predicate, format='natural')
 
     if subject == 'i' and predicate.endswith('s'): predicate = predicate[:-1]
 
@@ -110,8 +132,11 @@ def reply_to_question(brain_response):
     utterance = brain_response['question']
     response = brain_response['response']
 
+    # TODO revise by Lenka (we conjugate the predicate by doing this)
+    utterance.casefold(format='natural')
+
     if not response:
-        # TODO revise by lenka
+        # TODO revise by lenka (we catch responses we could have known here)
         subject_type = random.choice(utterance.triple.subject.types) if utterance.triple.subject.types else 'things'
         object_type = random.choice(utterance.triple.object.types) if utterance.triple.object.types else 'things'
         predicate = str(utterance.triple.predicate_name)

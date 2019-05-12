@@ -729,11 +729,9 @@ class Parser(object):
                             index+=1
 
             else:
-                print('no forest')
-                print(pos)
+                self._log.info("no forest")
 
             for el in s_r:
-                #print(el, s_r[el])
                 if type(s_r[el]['raw']) == list:
                     string = ''
                     for e in s_r[el]['raw']:

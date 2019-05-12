@@ -16,7 +16,7 @@ def fake_context():
 
 
 def test():
-    utterances = ["What do you like", "You like pizza", "What do you like",
+    utterances = ["What do you like", "You like pizza", "What do you like", "Who likes pizza",
                   "Do you like coffee", "You like coffee", "Do you like coffee",
                   "My favourite animal is cat", "What is my favourite animal",
                   "I own a bottle", "What do I own",
@@ -27,11 +27,9 @@ def test():
     chat = Chat("Lenka", fake_context())
     brain = LongTermMemory(
         clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
-    for utterance in utterances:
+    for utterance in utterances[:-3]:
         chat.add_utterance([UtteranceHypothesis(utterance, 1.0)], False)
         chat.last_utterance.analyze()
-
-        x = chat.last_utterance.triple
 
         if chat.last_utterance.type == language.UtteranceType.QUESTION:
             brain_response = brain.query_brain(chat.last_utterance)
@@ -42,6 +40,9 @@ def test():
             reply = phrase_thoughts(brain_response, True, True)
 
         print(chat.last_utterance)
+        # if chat.last_utterance.triple is not None:
+        #     chat.last_utterance.triple.casefold(format='triple')
+        print(chat.last_utterance.triple)
         print(reply)
 
     return

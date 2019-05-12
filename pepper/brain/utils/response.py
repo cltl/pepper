@@ -5,6 +5,7 @@ from typing import List, Optional
 
 from pepper.brain.utils.constants import NOT_TO_MENTION_TYPES
 from pepper.brain.utils.helper_functions import hash_claim_id, is_proper_noun
+from pepper.language.generation.reply import fix_predicate_morphology
 
 
 class RDFBase(object):
@@ -163,6 +164,34 @@ class Predicate(RDFBase):
         # type: () -> int
         return self._cardinality
 
+    def casefold(self, subject, object, format='triple'):
+        # type (str) -> ()
+        """
+        Format the labels to match triples or natural language
+        Parameters
+        ----------
+        format
+
+        Returns
+        -------
+
+        """
+
+        subject_label = subject.label if subject is not None and subject.label not in ['', Literal('')] else (
+            subject.types if subject is not None else '?')
+        object_label = object.label if object is not None and object.label not in ['', Literal('')] else (
+            object.types if object is not None else '?')
+
+        if format == 'triple':
+            # Label
+            self._label = Literal(self.label.lower().replace(" ", "-"))
+            self._label = Literal(fix_predicate_morphology(subject_label, str(self.label), object_label, format=format))
+
+        elif format == 'natural':
+            # Label
+            self._label = self.label.lower().replace("-", " ")
+            self._label = fix_predicate_morphology(subject_label, self.label, object_label, format=format)
+
 
 class Triple(object):
     def __init__(self, subject, predicate, object):
@@ -239,22 +268,22 @@ class Triple(object):
 
         """
         self._subject.casefold(format)
-        self._predicate.casefold(format)
         self._object.casefold(format)
+        self._predicate.casefold(self.subject, self.object, format)
 
     def __iter__(self):
         return iter([('subject', self.subject), ('predicate', self.predicate), ('object', self.object)])
 
     def __repr__(self):
         return '{}'.format(hash_claim_id([self.subject_name
-                                              if self.subject_name is not None
-                                                 and self.subject_name not in ['', Literal('')] else '?',
+                                          if self.subject_name is not None
+                                             and self.subject_name not in ['', Literal('')] else '?',
                                           self.predicate_name
-                                              if self.predicate_name is not None
-                                                 and self.predicate_name not in ['', Literal('')] else '?',
+                                          if self.predicate_name is not None
+                                             and self.predicate_name not in ['', Literal('')] else '?',
                                           self.object_name
-                                              if self.object_name is not None
-                                                 and self.object_name not in ['', Literal('')] else '?']))
+                                          if self.object_name is not None
+                                             and self.object_name not in ['', Literal('')] else '?']))
 
 
 class Provenance(object):
@@ -552,8 +581,8 @@ class Gap(object):
         -------
 
         """
-        self._predicate.casefold(format)
         self._entity.casefold(format)
+        self._predicate.casefold(self.entity, None, format)
 
     def __repr__(self):
         return '{} {}'.format(self.predicate_name, self.entity_range_name)
