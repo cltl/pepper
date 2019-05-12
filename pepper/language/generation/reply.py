@@ -27,7 +27,7 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
                     new_predicate += el + '-'
 
         elif predicate.endswith('s'):
-            new_predicate = wnl.lemmatize(predicate, 'v')
+            new_predicate = wnl.lemmatize(predicate)
 
         else:
             new_predicate = predicate
@@ -40,8 +40,8 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
                 else:
                     new_predicate += el + ' '
 
-        elif predicate == wnl.lemmatize(predicate, 'v'):
-            new_predicate = predicate + 's'
+        #elif predicate == wnl.lemmatize(predicate):
+        #    new_predicate = predicate + 's'
 
         else:
             new_predicate = predicate
@@ -163,8 +163,18 @@ def reply_to_question(brain_response):
     response.sort(key=lambda x: x['authorlabel']['value'])
 
     for item in response[:4]:
+        # print(response)
         author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
-        subject = replace_pronouns(utterance.chat_speaker, entity_label=utterance.triple.subject_name, role='subject')
+        if brain_response['question'].transcript.split()[0].lower()!='who':
+            subject = replace_pronouns(utterance.chat_speaker, entity_label=utterance.triple.subject_name, role='subject')
+            print('replaced ', subject)
+        else:
+            print(item)
+            if utterance.triple.subject_name!='':
+                subject = utterance.triple.subject_name
+            else:
+                subject = item['slabel']['value']
+
         predicate = utterance.triple.predicate_name
         person = ''
 
@@ -178,10 +188,11 @@ def reply_to_question(brain_response):
                 say += ' that '
 
         # Deal with normal predicates attributes like can, read, etc
-        if not predicate.endswith('-is'):
+        if not predicate.endswith('is'):
             # Deal with answers to who can fly for example
             if 'slabel' in item:
-                slabel = replace_pronouns(utterance.chat_speaker, entity_label=item['slabel']['value'], role='subject')
+                #slabel = replace_pronouns(utterance.chat_speaker, entity_label=item['slabel']['value'], role='subject')
+                slabel = item['slabel']['value']
                 if slabel == 'you':
                     person = 'second'
                 elif slabel == 'I':
@@ -194,6 +205,8 @@ def reply_to_question(brain_response):
                 else:
                     previous_subject = item['slabel']['value'].lower()
                 say += slabel
+            else:
+                say+= subject
 
         # Deal with attribute predicates like favorite-is, mom-is, etc
         else:
@@ -203,6 +216,7 @@ def reply_to_question(brain_response):
                 say += item['slabel']['value']
 
         #
+        '''
         if subject.lower() != previous_subject.lower():
             if subject == 'you':
                 person = 'second'
@@ -210,10 +224,11 @@ def reply_to_question(brain_response):
                 person = 'first'
             say += ' {} '.format(subject)
             previous_subject = subject
+        '''
 
         # if predicate in grammar['predicates']:
         if predicate == previous_predicate:  # and response['slabel'].lower()==previous_subject.lower():
-            pass
+            say+= ' '+predicate+' '
         else:
             previous_predicate = predicate
             if predicate == 'see':
@@ -226,7 +241,8 @@ def reply_to_question(brain_response):
                 else:
                     say += ' is from '
 
-            elif predicate.endswith('-is'):
+            elif predicate.endswith('is'):
+                #print('ODJE SAM')
                 say += ' is '
                 print(utterance.triple.object_name.lower())
                 if utterance.triple.object_name.lower() == utterance.chat_speaker.lower() or \
@@ -239,12 +255,11 @@ def reply_to_question(brain_response):
 
                 return say
 
+            elif subject.strip() in ['he','she'] and len(predicate.split())==1:
+                say+= ' '+predicate+'s '
 
             else:
-                if person in ['first', 'second'] and predicate.endswith('s'):
-                    say += ' ' + predicate[:-1] + ' '
-                else:
-                    say += ' ' + predicate + ' '
+                say += ' ' + predicate + ' '
 
         if 'olabel' in item:
             say += item['olabel']['value']
@@ -253,10 +268,14 @@ def reply_to_question(brain_response):
             say += ' you'
         elif utterance.triple.object_name.lower() == 'leolani':
             say += ' me'
-        elif predicate.lower() in ['see', 'own']:
-            say += ' a ' + utterance.triple.object_name
+
         else:
             say += utterance.triple.object_name
+
+        '''
+                elif predicate.lower() in ['see', 'own']:
+            say += ' a ' + utterance.triple.object_name
+        '''
 
         say += ' and '
 
