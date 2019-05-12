@@ -39,9 +39,6 @@ class LongTermMemory(BasicBrain):
         self.myself = None  # NOT USED, ONLY WHEN UPLOADING/EXPERIENCING
         self.query_prefixes = read_query('prefixes')  # NOT USED, ONLY WHEN QUERYING
 
-        # Launch first query
-        self.count_statements()
-
     #################################### Main functions to interact with the brain ####################################
 
     def update(self, utterance, reason_types=False):
@@ -558,6 +555,46 @@ class LongTermMemory(BasicBrain):
         return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
 
     ######################################## Helpers for statement processing ########################################
+    def _measure_detection_overlap(self, detections_1, detections_2):
+        if detections_1 == detections_2:
+            return 1.0
+        else:
+            try:
+                overlap = [value for value in detections_1 if value in detections_2]
+                overlap = float(2 * len(overlap)) / float(len(detections_1) + len(detections_2))
+                return float(overlap)
+            except:
+                return 0.0
+
+    def _fill_episodic_memory_(self, raw_episode):
+        """
+        Structure overlap to get the provenance and entity on which they overlap
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            Overlap object containing an entity and the provenance of the mention causing the overlap
+        """
+        preprocessed_date = self._rdf_builder.label_from_uri(raw_episode['date']['value'], 'LC')
+        preprocessed_detections = self._rdf_builder.clean_aggregated_detections(raw_episode['detections']['value'])
+
+        return {'context': raw_episode['cl']['value'], 'place': raw_episode['pl']['value'], 'date': preprocessed_date,
+                'detections': preprocessed_detections}
+
+    def get_episodic_memory(self):
+        # Role as subject
+        query = read_query('context/detections_per_context')
+        response = self._submit_query(query)
+
+        if response[0]['detections']['value'] != '':
+            episodic_memory = [self._fill_episodic_memory_(elem) for elem in response]
+        else:
+            episodic_memory = []
+
+        return episodic_memory
 
     def _link_leolani(self):
         if self.myself is None:
@@ -583,21 +620,95 @@ class LongTermMemory(BasicBrain):
                 entity_type = self._rdf_builder.create_resource_uri(namespace_mapping.get(item, 'N2MU'), item)
                 graph.add((entity.id, RDF.type, entity_type))
 
-    def reason_location(self, cntct):
+    def reason_location(self, cntxt):
+        if cntxt.location.label != cntxt.location.UNKNOWN:
+            return cntxt.location.label
+
         # Query all locations and detections (through context)
+        memory = self.get_episodic_memory()
 
-        # Compare one by one and determine most similar
+        if memory:
+            # Generate set of current detections
+            observations = []
+            for item in cntxt.all_objects:
+                if item.name.lower() != 'person':
+                    observations.append(casefold_text(item.name, format='triple'))
+            for item in cntxt.all_people:
+                if item.name.lower() != item.UNKNOWN.lower():
+                    observations.append(casefold_text(item.name, format='triple'))
 
-        # Pick most similar and determine equality based on a threshold
-        return 'Not unknow location anymore'
+            # Compare one by one and determine most similar
+            for mem in memory:
+                mem['overlap'] = self._measure_detection_overlap(mem['detections'], observations)
 
-    def set_location_label(self, label):
+            # Pick most similar and determine equality based on a threshold
+            memory.sort(key=lambda x: x['overlap'])
+            best_guess = memory[0]
+            return best_guess['place'] if best_guess['overlap'] > 0.5 \
+                                          and best_guess['place'] != cntxt.location.UNKNOWN else None
+
+        else:
+            return None
+
+    def set_location_label(self, label, default='Unknown'):
         # https: // www.semanticarts.com / sparql - changing - instance - uris /
-        # Replace triples using old location as object (in this context)
+        # Replace as subject, replace label, replace as object
+        queries = read_query('context/rename_location') % (default, label,
+                                                           default, default, default, default, label,
+                                                           default, label)
+        for query in queries.split(';'):
+            response = self._submit_query(query, post=True)
 
-        # Replace triples using old location ad subject (in this context)
+        return None
 
-        pass
+    def _create_detections(self, cntxt, context):
+        # Detections: objects
+        self._link_leolani()
+        prdt = self._rdf_builder.fill_predicate('see')
+        object_type = self._rdf_builder.create_resource_uri('N2MU', 'object')
+        instances = []
+        observations = []
+
+        for item in cntxt.all_objects:
+            if item.name.lower() != 'person':
+                # Create instance and link detection to graph
+                objct = self._rdf_builder.fill_entity(casefold_text('%s %s' % (item.name, item.id), format='triple'),
+                                                      [casefold_text(item.name, format='triple'), 'Instance',
+                                                       'object'],
+                                                      'LW')
+                self._link_entity(objct, self.instance_graph)
+                instances.append(objct)
+                # Bidirectional link to context
+                self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], objct.id))
+                self.instance_graph.add((objct.id, self.namespaces['EPS']['hasContext'], context.id))
+                # Create detection
+                objct_detection = self._create_claim_graph(self.myself, prdt, objct, UtteranceType.EXPERIENCE)
+                self.claim_graph.add((objct_detection.id, self.namespaces['EPS']['hasContext'], context.id))
+
+                observations.append(objct_detection)
+
+                # Open ended learning
+                learnable_type = self._rdf_builder.create_resource_uri('N2MU',
+                                                                       casefold_text(item.name, format='triple'))
+                self.ontology_graph.add((learnable_type, RDFS.subClassOf, object_type))
+
+        # Detections: faces
+        for item in cntxt.all_people:
+            if item.name.lower() != item.UNKNOWN.lower():
+                # Create and link detection to instance graph
+                prsn = self._rdf_builder.fill_entity(casefold_text(item.name, format='triple'), ['person', 'Instance'],
+                                                     'LW')
+                instances.append(prsn)
+                self._link_entity(prsn, self.instance_graph)
+                # Bidirectional link to context
+                self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], prsn.id))
+                self.instance_graph.add((prsn.id, self.namespaces['EPS']['hasContext'], context.id))
+                # Create detection
+                face_detection = self._create_claim_graph(self.myself, prdt, prsn, UtteranceType.EXPERIENCE)
+                self.claim_graph.add((face_detection.id, self.namespaces['EPS']['hasContext'], context.id))
+                observations.append(face_detection)
+
+        return instances, observations
 
     def create_context(self, cntxt):
         # Create an episodic awareness by making a context
@@ -628,50 +739,8 @@ class LongTermMemory(BasicBrain):
         self.interaction_graph.add((location.id, self.namespaces['N2MU']['id'], location_id))
         self.interaction_graph.add((context.id, self.namespaces['SEM']['hasPlace'], location.id))
 
-        # Detections: objects
-        self._link_leolani()
-        prdt = self._rdf_builder.fill_predicate('see')
-        object_type = self._rdf_builder.create_resource_uri('N2MU', 'object')
-        instances = []
-        observations = []
-
-        for item in cntxt.all_objects:
-            if item.name.lower() != 'person':
-                # Create instance and link detection to graph
-                objct = self._rdf_builder.fill_entity(casefold_text('%s %s' % (item.name, item.id), format='triple'),
-                                                      [casefold_text(item.name, format='triple'), 'Instance',
-                                                       'object'],
-                                                      'LW')
-                self._link_entity(objct, self.instance_graph)
-                instances.append(objct)
-                # Bidirectional link to context
-                self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], objct.id))
-                self.instance_graph.add((objct.id, self.namespaces['EPS']['hasContext'], context.id))
-                # Create detection
-                objct_detection = self._create_claim_graph(self.myself, prdt, objct, UtteranceType.EXPERIENCE)
-                self.claim_graph.add((objct_detection.id, self.namespaces['EPS']['hasContext'], context.id))
-                observations.append(objct_detection)
-
-                # Open ended learning
-                learnable_type = self._rdf_builder.create_resource_uri('N2MU',
-                                                                       casefold_text(item.name, format='triple'))
-                self.ontology_graph.add((learnable_type, RDFS.subClassOf, object_type))
-
-        # Detections: faces
-        for item in cntxt.all_people:
-            if item.name.lower() != item.UNKNOWN.lower():
-                # Create and link detection to instance graph
-                prsn = self._rdf_builder.fill_entity(casefold_text(item.name, format='triple'), ['person', 'Instance'],
-                                                     'LW')
-                instances.append(prsn)
-                self._link_entity(prsn, self.instance_graph)
-                # Bidirectional link to context
-                self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], prsn.id))
-                self.instance_graph.add((prsn.id, self.namespaces['EPS']['hasContext'], context.id))
-                # Create detection
-                face_detection = self._create_claim_graph(self.myself, prdt, prsn, UtteranceType.EXPERIENCE)
-                self.claim_graph.add((face_detection.id, self.namespaces['EPS']['hasContext'], context.id))
-                observations.append(face_detection)
+        # Detections
+        instances, observations = self._create_detections(cntxt, context)
 
         return context, instances, observations
 

@@ -4,20 +4,31 @@ from pepper.language import Chat, Utterance, UtteranceType
 from pepper.framework import UtteranceHypothesis, Context, Object, Face
 
 from datetime import date
+from random import choice
+
+places = ['Office', 'Classroom', 'Forest', 'Playground', 'Monastery']
 
 
-def fake_context():
+def fake_context(empty=False, no_people=False, place=False):
     objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
                Object('cat', 0.51, None, None)}
     faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
     context = Context()
-    context.add_objects(objects)
-    context.add_people(faces)
+    if not empty:
+        context.add_objects(objects)
+        context.add_people(faces)
+
+    if not no_people:
+        context.add_objects(objects)
+
+    if place:
+        context.location._label = choice(places)
+
     return context
 
 
-def transform_capsule(capsule):
+def transform_capsule(capsule, empty=False, no_people=False, place=False):
     """
     Build proper Utterance object from capsule. Step required for proper refactoring
     Parameters
@@ -29,7 +40,7 @@ def transform_capsule(capsule):
     -------
 
     """
-    context = fake_context()
+    context = fake_context(empty=empty, no_people=no_people, place=place)
 
     chat = Chat(capsule['author'], context)
     hyp = UtteranceHypothesis('this is a test', 0.99)
@@ -138,21 +149,32 @@ capsule_likes = {  # human likes pizza
     u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
 
 capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes]
+bl = [True, False]
 
 for capsule in capsules:
-    capsule = transform_capsule(capsule)
-
+    say = ''
+    em = choice(bl)
+    np = choice(bl)
+    p = False # choice(bl)
+    capsule = transform_capsule(capsule, empty=em, no_people=np, place=p)
     x = brain.update(capsule, reason_types=True)
-    break
-    # y = brain.reason_location(fake_context())
 
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
-    print(phrase_thoughts(x, True, True))
+    if capsule.context.location.label == capsule.context.location.UNKNOWN:
+        y = brain.reason_location(capsule.context)
+        if y is None:
+            z = choice(places)
+            brain.set_location_label(z)
+            capsule.context.location._label = z
+            say += 'Having a talk at what I will call %s' % capsule.context.location.label
+        else:
+            brain.set_location_label(y)
+            capsule.context.location._label = y
+            say += 'Having a talk at what I figure out is %s' % capsule.context.location.label
+
+    else:
+        say += 'Having a talk at %s' % capsule.context.location.label
+    print(say)
+
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))
@@ -167,3 +189,30 @@ for capsule in capsules:
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))
     # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+    # print(phrase_thoughts(x, True, True))
+
+# for x in range(10):
+#     say = ''
+#     emn = choice(bl)
+#     npn = choice(bl)
+#     context = fake_context(empty=emn, no_people=npn)
+#     say += 'Compared with context b: %s,%s\n' % (emn, npn)
+#
+#     y = brain.reason_location(context)
+#     if y is None:
+#         z = choice(places)
+#         # brain.set_location_label(z)
+#         context.location._label = z
+#         say += 'I did not know where I was, but I will call it %s' % context.location.label
+#     else:
+#         # brain.set_location_label(y)
+#         context.location._label = y
+#         say += 'I assume I am at %s' % context.location.label
+#
+#     print(say)
