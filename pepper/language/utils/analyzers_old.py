@@ -138,7 +138,6 @@ def analyze_verb(verb):
             morphology['person']='third'
 
         verb_lemma = wnl.lemmatize(verb, pos='v')
-        #print(verb_lemma)
 
         if verb_lemma=='can':
             morphology['predicate'] = verb_lemma
@@ -255,14 +254,11 @@ def analyze_verb_question(words, speaker, viewed_objects):
     verb = words[index + 1]
     verb_info = analyze_verb(verb)
 
-    print("VERB", verb, str(verb_info))
-
     if 'predicate' in verb_info:
         rdf['predicate'] = verb_info['predicate']  # 'knows' instead of 'know' - predicate mapping
 
     rdf['object'] = words[index + 2:]
     morphology = analyze_np(rdf['object'], speaker)
-    print(morphology)
     if 'pronoun' in morphology:
         if morphology['pronoun']['person'] == 'first':
             rdf['object'] = speaker.lower()

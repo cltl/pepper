@@ -220,17 +220,20 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                     rdf['object'] += el + ' '
                 rdf['subject'] = cons[2]['raw'].split()[0]
 
+            else:
+                rdf['predicate'] = lemmatize(cons[1]['raw'],'v')
+
+            '''
             elif '-' not in rdf['predicate'] and len(rdf['predicate'].split()) == 1:
                 rdf['predicate'] = lemmatize(cons[1]['raw'])
-
-            else:
-
-                rdf['predicate'] = lemmatize(cons[1]['raw'])
+            '''
 
             if len(cons) > 2 and rdf['object'] == '':
                 rdf['object'] = cons[2]['raw']
 
-        if len(rdf['subject'].split()) > 0:
+        print('RDF ', rdf)
+
+        if len(rdf['subject'].split()) > 1:
             pos = rdf['subject'].split()[0]
             entry = find(pos.lower(), self.GRAMMAR, typ='pos')
             if entry and 'person' in entry and entry['person'] == 'first':
@@ -356,13 +359,27 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
 
+
+        #print(cons)
+
+
         # Main setting of things
         for key, elem in cons.items():
             if elem['label'].startswith('V'):
                 if rdf['predicate'] and rdf['predicate'] != 'do':
                     rdf['object'] = elem['raw']
                 else:
-                    rdf['predicate'] = elem['raw']
+                    rdf['predicate'] = lemmatize(elem['raw'], 'v')
+
+            elif 'structure' in elem:
+                if elem['structure'].label().startswith('V'):
+                    tree = elem['structure']
+                    for branch in tree:
+                        for node in branch:
+                            if node.label()=='MD':
+                                rdf['predicate'] = node.leaves()[0]
+                            if node.label().startswith('V') and not find(node.leaves()[0], self.GRAMMAR, 'to_be'):
+                                rdf['object'] = node.leaves()[0]
 
             if elem['label'] == 'PP':
                 if 'structure' in elem:
@@ -380,12 +397,20 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                 else:
                     rdf['object'] = elem['raw']
 
+        print('initial ',rdf)
+
         # Fixes
+        '''
         if find(rdf['object'], self.GRAMMAR, 'verb'):
             rdf['object'] = ''
-        elif rdf['predicate'] == 'do':
+            print(rdf)
+        '''
+
+
+        if find(rdf['predicate'], self.GRAMMAR, 'aux'):
             rdf['predicate'] = rdf['object']
             rdf['object'] = ''
+            #print('fix ',rdf)
 
         if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who':
             if len(rdf['object'].split()) > 0:  # TODO revision by Lenka
@@ -393,19 +418,25 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                 rdf['predicate'] = 'be-' + rdf['object'].split()[1]
                 rdf['object'] = ''
 
-        if rdf['object'] == 'from':
-            rdf['object'] = ''
-            rdf['predicate'] = 'be-from'
-
         if '-' in rdf['predicate'] and rdf['predicate'].split('-')[1] == 'from':
             rdf['predicate'] = 'be-from'
 
-        if cons[0]['raw'].lower() == 'who':
-            #rdf['object'] = rdf['subject']
-            rdf['subject'] = ''
-            rdf['object'] = cons[0]['raw'].lower()
-            rdf['predicate'] = lemmatize(cons[1]['raw'].lower(), 'v')
 
+        #print('WHO-ANALYZER ', rdf)
+        if cons[0]['raw'].lower() == 'who' and rdf['subject']!='':
+            rdf['object'] = rdf['subject']
+            rdf['subject'] = ''
+            #rdf['object'] = cons[len(cons)-1]['raw'].lower()
+
+            if '-' not in rdf['predicate']:
+                rdf['predicate'] = lemmatize(cons[1]['raw'].lower(), 'v')
+
+        if '-' not in rdf['predicate']:
+            rdf['predicate'] = lemmatize(rdf['predicate'], 'v')
+
+
+
+        #print('final ',rdf)
         rdf = dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         self._rdf = rdf
 
@@ -520,24 +551,15 @@ def interpret_elements(cons):
         if 'structure' in cons[el]:
             for word in cons[el]['raw'].split():
                 label = get_node_label(cons[el]['structure'], word)
-                print('node label ', label)
                 syn = wu.get_synsets(word, label)
-                if syn: print(wu.get_lexname(syn[0]))
-                print(get_uri(word))
-                # print(utils.get_uri(word))
         else:
             word = cons[el]['raw']
             label = cons[el]['label']
             syn = wu.get_synsets(word, label)
-            if syn: print(wu.get_lexname(syn[0]))
-
-            print(get_uri(word))
-
         # TODO DBpedia lookup
 
 
 def dbp_query(q, baseURL, format="application/json"):
-    print('LOOKING UP: ', q)
     params = {
         "default-graph": "",
         "should-sponge": "soft",

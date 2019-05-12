@@ -9,6 +9,9 @@ from random import getrandbits
 
 
 class Location(object):
+
+    UNKNOWN = "Unknown"
+
     def __init__(self):
         loc = requests.get("https://ipinfo.io").json()
 
@@ -17,6 +20,7 @@ class Location(object):
         self._country = pycountry.countries.get(alpha_2=loc['country']).name
         self._region = loc['region']
         self._city = loc['city']
+        self._label = self.UNKNOWN
 
     @property
     def id(self):
@@ -34,6 +38,10 @@ class Location(object):
     def city(self):
         return self._city
 
+    @property
+    def label(self):
+        return self._label
+
     @staticmethod
     def _get_lat_lon():
         try:
@@ -47,6 +55,9 @@ class Location(object):
         except:
             print("Couldn't get GPS Coordinates")
             return None
+
+    def set_label(self, label):
+        self._label = label
 
     def __repr__(self):
         return "{}({}, {}, {})".format(self.__class__.__name__, self.city, self.region, self.country)

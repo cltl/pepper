@@ -38,7 +38,7 @@ class BrainResponder(Responder):
                     brain_response = app.brain.query_brain(utterance)
                     reply = reply_to_question(brain_response)
                 else:
-                    brain_response = app.brain.update(utterance)
+                    brain_response = app.brain.update(utterance, reason_types=True)  # Searches for types in dbpedia
                     reply = phrase_thoughts(brain_response, True, True)
 
                 self._log.debug("REPLY: {}".format(reply))

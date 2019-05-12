@@ -33,17 +33,27 @@ class StoreConnector(object):
 
         return str(response.status_code)
 
-    def query(self, query, ask=False):
+    def query(self, query, ask=False, post=False):
         # Set up connection
-        sparql = SPARQLWrapper(self.address)
+        endpoint = self.address
+        if post:
+            endpoint += '/statements'
+
+        sparql = SPARQLWrapper(endpoint)
 
         # Response parameters
         sparql.setQuery(query)
         sparql.setReturnFormat(JSON)
         sparql.addParameter('Accept', 'application/sparql-results+json')
+
+        if post:
+            sparql.method = 'POST'
+
         response = sparql.query().convert()
 
         if ask:
             return response['boolean']
+        if post:
+            return response
         else:
             return response["results"]["bindings"]

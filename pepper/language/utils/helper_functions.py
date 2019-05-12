@@ -202,8 +202,20 @@ def dereference_pronouns(self, rdf, grammar, speaker):
 
             l = find(pos, self.GRAMMAR)
             if l and 'person' in l:
+                #print('dereferencing ', l)
+
                 rdf[el] = fix_pronouns(l, speaker)
                 rdf['predicate'] = rest + '-is'
+                if l['person']=='second':
+                    rdf['object'] = rdf['subject']
+                    rdf['subject'] = 'leolani'
+
+                    '''
+                    if rdf['subject']=='':
+                    '''
+                elif l['person']=='first':
+                    rdf['subject']=speaker
+
                 break
 
         else:
@@ -299,8 +311,14 @@ def find(word, lexicon, typ=None):
                       modals,
                       lexicals]
 
-    if typ == 'pos':
+    elif typ == 'pos':
         categories = [dep_possessives]
+
+    elif typ == 'to_be':
+        categories = [to_be]
+
+    elif typ == 'aux':
+        categories = [to_be, to_do]
     else:
         categories = [subject_pros,
                       object_pros,

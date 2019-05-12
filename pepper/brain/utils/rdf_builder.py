@@ -14,9 +14,10 @@ class RdfBuilder(object):
         self.namespaces = {}
         self.dataset = Dataset()
 
-        self._get_ontology_path()
         self._define_namespaces()
         self._bind_namespaces()
+        self._define_named_graphs()
+        self.load_ontology_integration()
 
     ########## setting up connection ##########
     def _define_namespaces(self):
@@ -45,10 +46,9 @@ class RdfBuilder(object):
         self.namespaces['LI'] = Namespace(attribution_resource_inputs)
 
         # Namespaces for the temporal layer-ish
-        time_vocab = 'http://www.w3.org/TR/owl-time/#'
-        self.namespaces['TIME'] = Namespace(time_vocab)
-        time_resource = 'http://cltl.nl/leolani/time/'
-        self.namespaces['LTi'] = Namespace(time_resource)
+        context_vocab = 'http://cltl.nl/episodicawareness/'
+        self.namespaces['EPS'] = Namespace(context_vocab)
+        self.namespaces['LC'] = Namespace('http://cltl.nl/leolani/context/')
 
         # The namespaces of external ontologies
         skos = 'http://www.w3.org/2004/02/skos/core#'
@@ -60,38 +60,53 @@ class RdfBuilder(object):
         sem = 'http://semanticweb.cs.vu.nl/2009/11/sem/'
         self.namespaces['SEM'] = Namespace(sem)
 
+        time = 'http://www.w3.org/TR/owl-time/#'
+        self.namespaces['TIME'] = Namespace(time)
+
         xml = 'https://www.w3.org/TR/xmlschema-2/#'
         self.namespaces['XML'] = Namespace(xml)
+
+    def _define_named_graphs(self):
+        # Instance graph
+        self.ontology_graph = self.dataset.graph(self.create_resource_uri('LW', 'Ontology'))
+        self.instance_graph = self.dataset.graph(self.create_resource_uri('LW', 'Instances'))
+        self.claim_graph = self.dataset.graph(self.create_resource_uri('LW', 'Claims'))
+        self.perspective_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Perspectives'))
+        self.interaction_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Interactions'))
 
     def _get_ontology_path(self):
         """
         Define ontology paths to key vocabularies
         :return:
         """
-        self.ontology_paths['n2mu'] = './../../knowledge_representation/ontologies/leolani.ttl'
-        self.ontology_paths['gaf'] = './../../knowledge_representation/ontologies/gaf.rdf'
-        self.ontology_paths['grasp'] = './../../knowledge_representation/ontologies/grasp.rdf'
-        self.ontology_paths['sem'] = './../../knowledge_representation/ontologies/sem.rdf'
+        self.ontology_paths['n2mu'] = './../../ontologies/leolani.ttl'
+        self.ontology_paths['gaf'] = './../../ontologies/gaf.rdf'
+        self.ontology_paths['grasp'] = './../../ontologies/grasp.rdf'
+        self.ontology_paths['sem'] = './../../ontologies/sem.rdf'
+
+    def load_ontology_integration(self):
+        self.ontology_graph.parse(location="./../../ontologies/integration.ttl", format="turtle")
 
     def _bind_namespaces(self):
-            """
-            Bind namespaces
-            :return:
-            """
-            self.dataset.bind('n2mu', self.namespaces['N2MU'])
-            self.dataset.bind('leolaniWorld', self.namespaces['LW'])
-            self.dataset.bind('gaf', self.namespaces['GAF'])
-            self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
-            self.dataset.bind('grasp', self.namespaces['GRASP'])
-            self.dataset.bind('leolaniFriends', self.namespaces['LF'])
-            self.dataset.bind('leolaniInputs', self.namespaces['LI'])
-            self.dataset.bind('time', self.namespaces['TIME'])
-            self.dataset.bind('leolaniTime', self.namespaces['LTi'])
-            self.dataset.bind('skos', self.namespaces['SKOS'])
-            self.dataset.bind('prov', self.namespaces['PROV'])
-            self.dataset.bind('sem', self.namespaces['SEM'])
-            self.dataset.bind('xml', self.namespaces['XML'])
-            self.dataset.bind('owl', OWL)
+        """
+        Bind namespaces
+        :return:
+        """
+        self.dataset.bind('n2mu', self.namespaces['N2MU'])
+        self.dataset.bind('leolaniWorld', self.namespaces['LW'])
+        self.dataset.bind('gaf', self.namespaces['GAF'])
+        self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
+        self.dataset.bind('grasp', self.namespaces['GRASP'])
+        self.dataset.bind('leolaniFriends', self.namespaces['LF'])
+        self.dataset.bind('leolaniInputs', self.namespaces['LI'])
+        self.dataset.bind('time', self.namespaces['TIME'])
+        self.dataset.bind('eps', self.namespaces['EPS'])
+        self.dataset.bind('leolaniContext', self.namespaces['LC'])
+        self.dataset.bind('skos', self.namespaces['SKOS'])
+        self.dataset.bind('prov', self.namespaces['PROV'])
+        self.dataset.bind('sem', self.namespaces['SEM'])
+        self.dataset.bind('xml', self.namespaces['XML'])
+        self.dataset.bind('owl', OWL)
 
     ########## basic constructors ##########
     def create_resource_uri(self, namespace, resource_name):
@@ -267,7 +282,6 @@ class RdfBuilder(object):
 
         return Triple(subject, predicate, object)
 
-
     ########## basic reverse engineer ##########
     def label_from_uri(self, uri, namespace='LTi'):
         return uri.strip(self.namespaces[namespace])
@@ -284,3 +298,14 @@ class RdfBuilder(object):
             clean_types.append(bare_type)
 
         return clean_types
+
+    def clean_aggregated_detections(self, aggregared_detections):
+        split_detections = aggregared_detections.split('|')
+
+        clean_detections = []
+        for detection_label in split_detections:
+            if '-' in detection_label:
+                [detection_label, detection_id] = detection_label.rsplit('-', 1)
+            clean_detections.append(detection_label)
+
+        return clean_detections
