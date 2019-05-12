@@ -6,12 +6,22 @@ from pepper.framework import UtteranceHypothesis, Context, Object, Face
 from datetime import date
 from random import choice
 
-places = ['Office', 'Classroom', 'Forest', 'Playground', 'Monastery']
+places = ['Office', 'Classroom']  # , 'Forest', 'Playground', 'Monastery', 'House', 'University', 'Hotel']
 
 
 def fake_context(empty=False, no_people=False, place=False):
-    objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
-               Object('cat', 0.51, None, None)}
+    bl = [True, False]
+
+    if choice(bl):
+        objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
+                   Object('dog', 0.88, None, None), Object('cat', 0.51, None, None)}
+    elif choice(bl):
+        objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
+                   Object('teddy bear', 0.88, None, None), Object('cat', 0.51, None, None)}
+    else:
+        objects = {Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
+                   Object('cat', 0.51, None, None), Object('banana', 0.88, None, None)}
+
     faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
     context = Context()
@@ -148,14 +158,15 @@ capsule_likes = {  # human likes pizza
     u'response': {u'role': u'', u'format': u''},
     u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
 
-capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes]
+capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes,
+            capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes]
 bl = [True, False]
 
 for capsule in capsules:
     say = ''
     em = choice(bl)
     np = choice(bl)
-    p = False # choice(bl)
+    p = choice(bl)
     capsule = transform_capsule(capsule, empty=em, no_people=np, place=p)
     x = brain.update(capsule, reason_types=True)
 
