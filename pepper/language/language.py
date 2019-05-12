@@ -454,7 +454,6 @@ class Utterance(object):
             # template['object']['hack'] = True  # TODO what does this mean?
         else:
             predicate = builder.fill_predicate(casefold_text(rdf['predicate'], format='triple'))
-
         # Build object
         if rdf['object'] in names:
             object = builder.fill_entity(casefold_text(rdf['object'], format='triple'), ["person"])
@@ -650,6 +649,7 @@ class Parser(object):
 
     def _parse(self, utterance):
         tokenized_sentence = utterance.tokens
+        #print(tokenized_sentence)
         pos = self.POS_TAGGER.tag(tokenized_sentence)
         self._log.debug(pos)
 
@@ -674,6 +674,8 @@ class Parser(object):
 
         if pos[0][0]=='Does':
             pos[0] = ('Does', 'VBD')
+
+        print(pos)
 
         ind = 0
         for word, tag in pos:
