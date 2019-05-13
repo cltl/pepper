@@ -186,22 +186,36 @@ class LocationResponder(Responder):
         "what is here",
     ]
 
+    SET_LOCATION_CUE = [
+        "we are in ",
+    ]
+
     @property
     def type(self):
         return ResponderType.Sensory
 
     @property
     def requirements(self):
-        return [TextToSpeechComponent]
+        return [TextToSpeechComponent, BrainComponent]
 
     def respond(self, utterance, app):
-        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
         if utterance.transcript.lower() in self.CUE_FULL:
             return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
+        else:
+            for cue in self.SET_LOCATION_CUE:
+                if utterance.transcript.lower().startswith(cue):
+                    location = utterance.transcript.lower().replace(cue, "").strip().title()
+                    utterance.context.location.set_label(location)
+                    app.brain.set_location_label(location)
+                    return 1, lambda: app.say("Aha, so {}".format(self._location_to_text(utterance.context.location)))
 
     @staticmethod
     def _location_to_text(location):
-        return "We're in {}, {}, {}.".format(location.city, location.region, location.country)
+        if location.label == location.UNKNOWN:
+            return "We're in {}, {}, {}.".format(location.city, location.region, location.country)
+        else:
+            return "We're in {}".format(location.label)
 
 
 class TimeResponder(Responder):

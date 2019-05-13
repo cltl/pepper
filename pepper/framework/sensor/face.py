@@ -14,6 +14,9 @@ import os
 
 
 class Face(Object):
+
+    UNKNOWN = config.HUMAN_UNKNOWN
+
     def __init__(self, name, confidence, representation, bounds, image):
         """
         Parameters
