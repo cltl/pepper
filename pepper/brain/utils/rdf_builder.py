@@ -16,7 +16,7 @@ class RdfBuilder(object):
 
         self._define_namespaces()
         self._bind_namespaces()
-        self._define_named_graphs()
+        self.define_named_graphs()
         self.load_ontology_integration()
 
     ########## setting up connection ##########
@@ -66,7 +66,7 @@ class RdfBuilder(object):
         xml = 'https://www.w3.org/TR/xmlschema-2/#'
         self.namespaces['XML'] = Namespace(xml)
 
-    def _define_named_graphs(self):
+    def define_named_graphs(self):
         # Instance graph
         self.ontology_graph = self.dataset.graph(self.create_resource_uri('LW', 'Ontology'))
         self.instance_graph = self.dataset.graph(self.create_resource_uri('LW', 'Instances'))

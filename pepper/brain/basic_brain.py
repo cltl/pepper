@@ -18,14 +18,6 @@ class BasicBrain(object):
             IP address and port of the Triple store
         """
         self._connection = StoreConnector(address, format='trig')
-        self._rdf_builder = RdfBuilder()
-        self.namespaces = self._rdf_builder.namespaces
-        self.dataset = self._rdf_builder.dataset
-        self.instance_graph = self._rdf_builder.instance_graph
-        self.claim_graph = self._rdf_builder.claim_graph
-        self.ontology_graph = self._rdf_builder.ontology_graph
-        self.perspective_graph = self._rdf_builder.perspective_graph
-        self.interaction_graph = self._rdf_builder.interaction_graph
 
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
@@ -35,6 +27,9 @@ class BasicBrain(object):
         # Possible clear all contents (testing purposes)
         if clear_all:
             self.clear_brain()
+
+        # Start with a clean local memory
+        self.clean_local_memory()
 
         # Upload ontology here
         self.upload_ontology()
@@ -191,6 +186,8 @@ class BasicBrain(object):
         response = self._submit_query(query)
         return [(elem['sname']['value'], elem['oname']['value']) for elem in response]
 
+    ########## WARNING deletions area ##########
+
     def clear_brain(self):
         """
         Clear all data from the brain
@@ -199,3 +196,14 @@ class BasicBrain(object):
         self._log.debug("Clearing brain")
         query = "delete {?s ?p ?o} where {?s ?p ?o .}  "
         _ = self._connection.query(query, post=True)
+
+    def clean_local_memory(self):
+        self._rdf_builder = RdfBuilder()
+
+        self.namespaces = self._rdf_builder.namespaces
+        self.dataset = self._rdf_builder.dataset
+        self.instance_graph = self._rdf_builder.instance_graph
+        self.claim_graph = self._rdf_builder.claim_graph
+        self.ontology_graph = self._rdf_builder.ontology_graph
+        self.perspective_graph = self._rdf_builder.perspective_graph
+        self.interaction_graph = self._rdf_builder.interaction_graph

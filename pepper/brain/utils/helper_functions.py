@@ -65,10 +65,18 @@ def confidence_to_certainty_value(confidence):
     return 'UNDERSPECIFIED'
 
 
-# def replace_in_file(file, word, word_replacement):
-#     pattern = re.compile("<(\d{4,5})>")
-#     # ([":])(Unknown)
-#
-#     for i, line in enumerate(open(file)):
-#         for match in re.finditer(pattern, line):
-#             print 'Found on line %s: %s' % (i + 1, match.groups())
+def replace_in_file(file, word, word_replacement):
+    for i, line in enumerate(open(file)):
+        line.replace(':%s' % word, ':%s' % word_replacement)
+        line.replace('"%s' % word, '"%s' % word_replacement)
+
+
+def get_object_id(memory, category):
+    cat_mem = memory.get(casefold_text(category, format='triple'), {'brain_ids': [], 'local_ids': [], 'ids': []})
+    l = cat_mem['ids']
+    id = l[0]
+    tail = l[1:]
+
+    cat_mem['ids'] = tail
+    memory[casefold_text(category, format='triple')] = cat_mem
+    return id, memory

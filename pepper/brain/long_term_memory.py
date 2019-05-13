@@ -1,6 +1,6 @@
 from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps, Thoughts
-from pepper.brain.utils.helper_functions import hash_claim_id, read_query, casefold_text, confidence_to_certainty_value
+from pepper.brain.utils.helper_functions import hash_claim_id, read_query, casefold_text, confidence_to_certainty_value, get_object_id
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.basic_brain import BasicBrain
 from pepper.language.utils.atoms import UtteranceType
@@ -580,9 +580,27 @@ class LongTermMemory(BasicBrain):
         """
         preprocessed_date = self._rdf_builder.label_from_uri(raw_episode['date']['value'], 'LC')
         preprocessed_detections = self._rdf_builder.clean_aggregated_detections(raw_episode['detections']['value'])
+        preprocessed_geo = self._rdf_builder.clean_aggregated_detections(raw_episode['geo']['value'])
 
         return {'context': raw_episode['cl']['value'], 'place': raw_episode['pl']['value'], 'date': preprocessed_date,
-                'detections': preprocessed_detections}
+                'detections': preprocessed_detections, 'geo': preprocessed_geo}
+
+    def _fill_location_memory_(self, raw_objects_in_location):
+        """
+        Structure overlap to get the provenance and entity on which they overlap
+        Parameters
+        ----------
+        raw_conflict: dict
+            standard row result from SPARQL
+
+        Returns
+        -------
+            Overlap object containing an entity and the provenance of the mention causing the overlap
+        """
+        [preprocessed_types] = self._rdf_builder.clean_aggregated_types(raw_objects_in_location['type']['value'])
+
+        return preprocessed_types, {'brain_ids': raw_objects_in_location['ids']['value'].split('|'),
+                                    'local_ids': []}
 
     def get_episodic_memory(self):
         # Role as subject
@@ -595,6 +613,33 @@ class LongTermMemory(BasicBrain):
             episodic_memory = []
 
         return episodic_memory
+
+    def get_location_memory(self, cntxt):
+        # brain object memories
+        query = read_query('context/ranked_object_ids_per_type') % cntxt.location.label
+        response = self._submit_query(query)
+
+        location_memory = {}
+        if response[0]['type']['value'] != '':
+            for elem in response:
+                category, ids_dict = self._fill_location_memory_(elem)
+                location_memory[category] = ids_dict
+
+        # Local object memories
+        for item in cntxt.all_objects:
+            if item.name.lower() != 'person':
+                temp = location_memory.get(casefold_text(item.name, format='triple'),
+                                           {'brain_ids': [], 'local_ids': []})
+                temp['local_ids'].append(str(item.id))
+                location_memory[casefold_text(item.name, format='triple')] = temp
+
+        # Merge giving priority to brain elements
+        for cat, ids in location_memory.items():
+            all_ids = ids['brain_ids']
+            all_ids.extend(ids['local_ids'])
+            ids['ids'] = all_ids
+
+        return location_memory
 
     def _link_leolani(self):
         if self.myself is None:
@@ -636,10 +681,15 @@ class LongTermMemory(BasicBrain):
             for item in cntxt.all_people:
                 if item.name.lower() != item.UNKNOWN.lower():
                     observations.append(casefold_text(item.name, format='triple'))
+            observations.append(cntxt.location.city)
+            observations.append(cntxt.location.country)
+            observations.append(cntxt.location.region)
 
             # Compare one by one and determine most similar
             for mem in memory:
-                mem['overlap'] = self._measure_detection_overlap(mem['detections'], observations)
+                all = mem['detections']
+                all.extend(mem['geo'])
+                mem['overlap'] = self._measure_detection_overlap(all, observations)
 
             # Pick most similar and determine equality based on a threshold
             memory.sort(key=lambda x: x['overlap'])
@@ -652,7 +702,8 @@ class LongTermMemory(BasicBrain):
 
     def set_location_label(self, label, default='Unknown'):
         # https: // www.semanticarts.com / sparql - changing - instance - uris /
-        # Replace as subject, replace label, replace as object
+        # Replace as subject, replace label, replace as object in the database (long term memory)
+
         queries = read_query('context/rename_location') % (default, label,
                                                            default, default, default, default, label,
                                                            default, label)
@@ -662,6 +713,9 @@ class LongTermMemory(BasicBrain):
         return None
 
     def _create_detections(self, cntxt, context):
+        # Get ids of existing objects in this location
+        memory = self.get_location_memory(cntxt)
+
         # Detections: objects
         self._link_leolani()
         prdt = self._rdf_builder.fill_predicate('see')
@@ -672,11 +726,14 @@ class LongTermMemory(BasicBrain):
         for item in cntxt.all_objects:
             if item.name.lower() != 'person':
                 # Create instance and link detection to graph
-                objct = self._rdf_builder.fill_entity(casefold_text('%s %s' % (item.name, item.id), format='triple'),
+                mem_id, memory = get_object_id(memory, item.name)
+                objct_id = self._rdf_builder.fill_literal(mem_id, datatype=self.namespaces['XML']['string'])
+                objct = self._rdf_builder.fill_entity(casefold_text('%s %s' % (item.name, objct_id), format='triple'),
                                                       [casefold_text(item.name, format='triple'), 'Instance',
                                                        'object'],
                                                       'LW')
                 self._link_entity(objct, self.instance_graph)
+                self.interaction_graph.add((objct.id, self.namespaces['N2MU']['id'], objct_id))
                 instances.append(objct)
                 # Bidirectional link to context
                 self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], objct.id))
@@ -734,9 +791,18 @@ class LongTermMemory(BasicBrain):
 
         # Place
         location_id = self._rdf_builder.fill_literal(cntxt.location.id, datatype=self.namespaces['XML']['string'])
+        location_city = self._rdf_builder.fill_entity(cntxt.location.city, ['location', 'city', 'Place'], 'LW')
+        self._link_entity(location_city, self.interaction_graph)
+        location_country = self._rdf_builder.fill_entity(cntxt.location.country, ['location', 'country', 'Place'], 'LW')
+        self._link_entity(location_country, self.interaction_graph)
+        location_region = self._rdf_builder.fill_entity(cntxt.location.region, ['location', 'region', 'Place'], 'LW')
+        self._link_entity(location_region, self.interaction_graph)
         location = self._rdf_builder.fill_entity(cntxt.location.label, ['location', 'Place'], 'LC')
         self._link_entity(location, self.interaction_graph)
         self.interaction_graph.add((location.id, self.namespaces['N2MU']['id'], location_id))
+        self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_city.id))
+        self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_country.id))
+        self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_region.id))
         self.interaction_graph.add((context.id, self.namespaces['SEM']['hasPlace'], location.id))
 
         # Detections
@@ -917,7 +983,11 @@ class LongTermMemory(BasicBrain):
         # Save to file but return the python representation
         with open(file_path + '.' + self._connection.format, 'w') as f:
             self.dataset.serialize(f, format=self._connection.format)
-        return self.dataset.serialize(format=self._connection.format)
+
+        data = self.dataset.serialize(format=self._connection.format)
+        self.clean_local_memory()
+
+        return data
 
     def _model_graphs_(self, utterance):
         # Leolani world (includes instance and claim graphs)
