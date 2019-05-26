@@ -1,0 +1,4093 @@
+@prefix : <http://cltl.nl/leolani/n2mu/> .
+@prefix leolaniContext: <http://cltl.nl/leolani/context/> .
+@prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
+@prefix geonames: <http://www.geonames.org/ontology/documentation.html> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ns: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns2: <http://cltl.nl/leolani/world/looks_likes_but_i_don'> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix ns1: <urn:x-rdflib:> .
+@prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix oboInOwl: <http://www.geneontology.org/formats/oboInOwl#> .
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix leolaniTime: <http://cltl.nl/leolani/time/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
+@prefix time: <http://www.w3.org/TR/owl-time/#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+
+leolaniWorld:Ontology {
+  rdf:value a owl:ObjectProperty .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:karla a grasp:Instance, :person .
+  
+  leolaniWorld:paris a grasp:Instance, :location .
+}
+
+leolaniWorld:Ontology {
+  grasp:hasAttribution a owl:ObjectProperty .
+  
+  grasp:wasAttributedTo a owl:ObjectProperty .
+}
+
+leolaniTalk:Interactions {
+  leolaniFriends:tom a grasp:Instance, grasp:Source, sem:Actor, :person .
+}
+
+leolaniWorld:Ontology {
+  prov:wasDerivedFrom a owl:ObjectProperty .
+  
+  grasp:Attribution a owl:Class .
+  
+  grasp:isAttributionFor a owl:ObjectProperty .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:leolani a :robot .
+}
+
+leolaniWorld:Ontology {
+  grasp:Statement a owl:Class .
+  
+  sem:Event a owl:Class .
+  
+  grasp:Detection a owl:Class .
+  
+  grasp:Source a owl:Class .
+  
+  sem:Actor a owl:Class .
+  
+  grasp:Chat a owl:Class .
+  
+  sem:hasActor a owl:ObjectProperty .
+  
+  sem:hasSubEvent a owl:ObjectProperty .
+  
+  grasp:Utterance a owl:Class .
+  
+  sem:Time a owl:Class .
+  
+  sem:Place a owl:Class .
+  
+  sem:hasTime a owl:ObjectProperty .
+  
+  sem:hasPlace a owl:ObjectProperty .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:bram a grasp:Instance, :person .
+}
+
+leolaniWorld:Ontology {
+  :person a owl:Class .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:pizza a grasp:Instance, :food .
+}
+
+leolaniWorld:Ontology {
+  :acknowledge a owl:ObjectProperty .
+  
+  :perceive a owl:ObjectProperty .
+  
+  :experience a owl:ObjectProperty .
+  
+  :favorite a owl:ObjectProperty .
+  
+  :in a owl:TransitiveProperty, owl:ObjectProperty .
+  
+  :sense a owl:ObjectProperty .
+  
+  :name a owl:DatatypeProperty .
+  
+  foaf:Agent a owl:Class .
+  
+  <http://schema.org/Place> a owl:Class .
+  
+  obo:MF_0000019 a owl:Class .
+  
+  :sport a owl:Class .
+  
+  :dish a owl:Class .
+  
+  :movie a owl:Class .
+  
+  :book a owl:Class .
+  
+  :location a owl:Class .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:piek a grasp:Instance, :person .
+  
+  leolaniWorld:selene a grasp:Instance, :person .
+}
+
+leolaniWorld:Ontology {
+  :country a owl:Class .
+  
+  :robot a owl:Class .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:netherlands a grasp:Instance, :location .
+}
+
+leolaniTalk:Interactions {
+  leolaniFriends:lenka a grasp:Instance, grasp:Source, sem:Actor, :person .
+  
+  leolaniFriends:bram a grasp:Instance, grasp:Source, sem:Actor, :person .
+}
+
+leolaniWorld:Ontology {
+  :mammal a owl:Class .
+  
+  :band a owl:Class .
+  
+  :plant a owl:Class .
+  
+  :food a owl:Class .
+  
+  :device a owl:Class .
+  
+  :animal a owl:Class .
+  
+  :agent a owl:Class .
+  
+  grasp:Experience a owl:Class .
+  
+  grasp:Visual a owl:Class .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:human a grasp:Instance .
+}
+
+leolaniTalk:Interactions {
+  leolaniFriends:human a grasp:Instance, grasp:Source, sem:Actor, :person .
+}
+
+leolaniWorld:Ontology {
+  :sensor a owl:Class .
+  
+  :smell a owl:Class .
+  
+  :taste a owl:Class .
+  
+  :touch a owl:Class .
+  
+  :interest a owl:Class .
+  
+  :city a owl:Class .
+  
+  :institution a owl:Class .
+  
+  :sound a owl:Class .
+  
+  :visual a owl:Class .
+  
+  :university a owl:Class .
+  
+  :company a owl:Class .
+  
+  :cuisine a owl:Class .
+  
+  :electricity a owl:Class .
+  
+  :equilibrium a owl:Class .
+  
+  :gravity a owl:Class .
+  
+  :light a owl:Class .
+  
+  :pain a owl:Class .
+  
+  :song a owl:Class .
+  
+  :temperature a owl:Class .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:mongolia a grasp:Instance, :location .
+}
+
+leolaniWorld:Ontology {
+  :like a owl:ObjectProperty .
+  
+  :object a owl:Class .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:human_like_pizza a grasp:Instance, grasp:Statement, sem:Event .
+}
+
+leolaniWorld:Ontology {
+  :know a owl:ObjectProperty .
+  
+  <http://cltl.nl/leolani/integration/> a owl:Ontology .
+  
+  skos:broadMatch a owl:AnnotationProperty .
+  
+  skos:closeMatch a owl:AnnotationProperty .
+  
+  skos:narrowMatch a owl:AnnotationProperty .
+  
+  prov:category a owl:AnnotationProperty .
+  
+  prov:component a owl:AnnotationProperty .
+  
+  prov:definition a owl:AnnotationProperty .
+  
+  prov:inverse a owl:AnnotationProperty .
+  
+  prov:qualifiedForm a owl:AnnotationProperty .
+  
+  sem:eventProperty a owl:ObjectProperty .
+  
+  gaf:containsDenotation a owl:ObjectProperty .
+  
+  gaf:Mention a owl:Class .
+  
+  gaf:Instance a owl:Class .
+  
+  gaf:denotedBy a owl:ObjectProperty .
+  
+  gaf:denotedIn a owl:ObjectProperty .
+  
+  gaf:denotes a owl:ObjectProperty .
+  
+  prov:hadDerivation a owl:ObjectProperty .
+  
+  <http://www.w3.org/ns/prov-o#> a owl:NamedIndividual .
+  
+  :birthday a owl:DatatypeProperty .
+  
+  <http://cltl.nl/leolani/integration/chair> a owl:Class .
+  
+  grasp:AttributionValue a owl:Class .
+  
+  grasp:CertaintyValue a owl:Class .
+  
+  <http://groundedannotationframework.org/grasp/factuality#certain> a owl:NamedIndividual,
+      grasp:CertaintyValue .
+  
+  <http://groundedannotationframework.org/grasp/factuality#possible> a owl:NamedIndividual,
+      grasp:CertaintyValue .
+  
+  <http://groundedannotationframework.org/grasp/factuality#probable> a owl:NamedIndividual,
+      grasp:CertaintyValue .
+  
+  <http://groundedannotationframework.org/grasp/factuality#underspecified> a owl:NamedIndividual,
+      grasp:CertaintyValue .
+  
+  grasp:FactualityValue a owl:Class .
+  
+  grasp:PolarityValue a owl:Class .
+  
+  grasp:TemporalValue a owl:Class .
+  
+  grasp:EmotionValue a owl:Class .
+  
+  <http://groundedannotationframework.org/grasp/emotion#anger> a owl:NamedIndividual,
+      grasp:EmotionValue .
+  
+  <http://groundedannotationframework.org/grasp/emotion#disgust> a owl:NamedIndividual,
+      grasp:EmotionValue .
+  
+  <http://groundedannotationframework.org/grasp/emotion#fear> a owl:NamedIndividual,
+      grasp:EmotionValue .
+  
+  <http://groundedannotationframework.org/grasp/emotion#happiness> a owl:NamedIndividual,
+      grasp:EmotionValue .
+  
+  <http://groundedannotationframework.org/grasp/emotion#sadness> a owl:NamedIndividual,
+      grasp:EmotionValue .
+  
+  <http://groundedannotationframework.org/grasp/emotion#surprise> a owl:NamedIndividual,
+      grasp:EmotionValue .
+  
+  grasp:SentimentValue a owl:Class .
+  
+  <http://groundedannotationframework.org/grasp/factuality#negative> a owl:NamedIndividual,
+      grasp:PolarityValue, grasp:SentimentValue .
+  
+  <http://groundedannotationframework.org/grasp/factuality#positive> a owl:NamedIndividual,
+      grasp:PolarityValue, grasp:SentimentValue .
+  
+  <http://groundedannotationframework.org/grasp/sentiment#negative> a owl:NamedIndividual,
+      grasp:SentimentValue .
+  
+  <http://groundedannotationframework.org/grasp/sentiment#positive> a owl:NamedIndividual,
+      grasp:SentimentValue .
+  
+  <http://groundedannotationframework.org/grasp/factuality#future> a owl:NamedIndividual,
+      grasp:TemporalValue .
+  
+  <http://groundedannotationframework.org/grasp/factuality#non-future> a owl:NamedIndividual,
+      grasp:TemporalValue .
+  
+  <http://www.w3.org/ns/prov-o-20130430> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov#> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov-aq#> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov-dc#> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov-dictionary#> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov-links#> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov-o-inverses#> a owl:NamedIndividual .
+  
+  <http://www.w3.org/ns/prov-dc-refinements#> a owl:NamedIndividual .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:karla_live-in_paris a grasp:Instance, grasp:Statement, sem:Event .
+}
+
+leolaniWorld:Ontology {
+  :live-in a owl:ObjectProperty .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_know_tom a grasp:Instance, grasp:Statement, sem:Event .
+}
+
+leolaniWorld:Ontology {
+  eps:Context a owl:Class .
+  
+  eps:hasContext a owl:ObjectProperty .
+  
+  eps:hasDetection a owl:ObjectProperty .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_sense_front-camera a grasp:Instance, sem:Event, grasp:Experience .
+}
+
+leolaniTalk:Interactions {
+  leolaniInputs:front-camera a grasp:Instance, grasp:Source, sem:Actor, :sensor .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:bram_be-from_mongolia a grasp:Instance, grasp:Statement, sem:Event .
+}
+
+leolaniWorld:Ontology {
+  :be-from a owl:ObjectProperty .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_know_bram a grasp:Instance, grasp:Statement, sem:Event .
+}
+
+leolaniWorld:Ontology {
+  :born-in a owl:ObjectProperty .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_selene a grasp:Instance, sem:Event, grasp:Experience .
+}
+
+leolaniWorld:Ontology {
+  :be-parent-of a owl:ObjectProperty .
+  
+  :be-family-of a owl:ObjectProperty .
+  
+  :cook-by a owl:ObjectProperty .
+  
+  :dislike a owl:ObjectProperty .
+  
+  :favorite-of a owl:ObjectProperty .
+  
+  :musical-work a owl:Class .
+  
+  :popular-interest a owl:Class .
+  
+  :read-by a owl:ObjectProperty .
+  
+  :share-interest a owl:ObjectProperty .
+  
+  :be-member-of a owl:ObjectProperty .
+  
+  :film-genre a owl:Class .
+  
+  :interest-field a owl:Class .
+  
+  :literature-genre a owl:Class .
+  
+  :interest-occurrence a owl:Class .
+  
+  :music-genre a owl:Class .
+  
+  :sports-team a owl:Class .
+  
+  :be-child-of a owl:ObjectProperty .
+  
+  :be-colleague-of a owl:ObjectProperty .
+  
+  :be-friends-with a owl:ObjectProperty .
+  
+  :locate-in a owl:ObjectProperty .
+  
+  :manufacture-in a owl:ObjectProperty .
+  
+  :own a owl:ObjectProperty .
+  
+  :play a owl:ObjectProperty .
+  
+  :like-by a owl:ObjectProperty .
+  
+  :study-at a owl:ObjectProperty .
+  
+  :travel-to a owl:ObjectProperty .
+  
+  :work-at a owl:ObjectProperty .
+  
+  :write-by a owl:ObjectProperty .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:bram_be-from_netherlands a grasp:Instance, grasp:Statement, sem:Event .
+  
+  leolaniWorld:leolani_know_lenka a grasp:Instance, grasp:Statement, sem:Event .
+  
+  leolaniWorld:piek_be-from_netherlands a grasp:Instance, grasp:Statement, sem:Event .
+  
+  leolaniWorld:leolani_know_human a grasp:Instance, grasp:Statement, sem:Event .
+}
+
+leolaniWorld:Ontology {
+  eps:contextProperty a owl:ObjectProperty .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:Playground a sem:Place, <http://schema.org/Place>, :location, _:node66895,
+      _:node66974, _:node67053, _:node67132, _:node67211 .
+  
+  leolaniWorld:Netherlands a sem:Place, <http://schema.org/Place>, :location, :country,
+      _:node66895, _:node66974, _:node67053, _:node67132, _:node67211 .
+  
+  leolaniContext:Hotel a sem:Place, <http://schema.org/Place>, :location, _:node66895,
+      _:node66974, _:node67053, _:node67132, _:node67211 .
+  
+  leolaniContext:2019-05-13 a sem:Time, time:DateTimeDescription .
+  
+  leolaniWorld:Groningen a sem:Place, <http://schema.org/Place>, :location, :city, :region,
+      _:node66895, _:node66974, _:node67053, _:node67132, _:node67211 .
+  
+  leolaniContext:Market a sem:Place, <http://schema.org/Place>, :location, _:node66895,
+      _:node66974, _:node67053, _:node67132, _:node67211 .
+}
+
+leolaniWorld:Ontology {
+  _:node66835 a owl:Class .
+  
+  _:node66838 a owl:Restriction .
+  
+  _:node66839 a owl:Class .
+  
+  _:node66842 a owl:Restriction .
+  
+  _:node66843 a owl:Class .
+  
+  _:node66846 a owl:Restriction .
+  
+  _:node66847 a owl:Class .
+  
+  _:node66850 a owl:Restriction .
+  
+  _:node66851 a owl:Class .
+  
+  _:node66854 a owl:Restriction .
+  
+  _:node66855 a owl:Class .
+  
+  _:node66860 a owl:Class .
+  
+  _:node66865 a owl:Class .
+  
+  _:node66868 a owl:Class .
+  
+  _:node66870 a owl:Restriction .
+  
+  _:node66872 a owl:Restriction .
+  
+  _:node66874 a owl:Class .
+  
+  _:node66877 a owl:Class .
+  
+  _:node66882 a owl:Class .
+  
+  _:node66885 a owl:Class .
+  
+  _:node66892 a owl:Class .
+  
+  _:node66895 a owl:Restriction .
+  
+  _:node66897 a owl:Restriction .
+  
+  _:node66898 a owl:Restriction .
+  
+  _:node66899 a owl:Restriction .
+  
+  _:node66901 a owl:Restriction .
+  
+  _:node66902 a owl:AllDisjointClasses .
+  
+  _:node66908 a owl:AllDisjointClasses .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 a grasp:Mention .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14_CERTAIN
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6 a sem:Event, grasp:Utterance .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 a grasp:Mention .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:apple-171716995914020740368111899377149903920 a grasp:Instance, :object,
+      :apple .
+
+  leolaniWorld:apple-387696995914020740368111899377149903920 a grasp:Instance, :object,
+      :apple .
+  
+  leolaniWorld:avocado-103560896991006461496921978917434291349 a grasp:Instance, :object,
+      :avocado .
+  
+  leolaniWorld:banana-157043524714537207621825916987989245988 a grasp:Instance, :object,
+      :banana .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920 a grasp:Instance,
+      sem:Event, grasp:Experience .
+  
+  leolaniWorld:leolani_see_avocado-103560896991006461496921978917434291349 a grasp:Instance,
+      sem:Event, grasp:Experience .
+  
+  leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 a grasp:Instance,
+      sem:Event, grasp:Experience .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5_PROBABLE
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6 a sem:Event,
+      grasp:Detection .
+}
+
+leolaniWorld:Ontology {
+  _:node66914 a owl:Class .
+  
+  _:node66917 a owl:Restriction .
+  
+  _:node66918 a owl:Class .
+  
+  _:node66921 a owl:Restriction .
+  
+  _:node66922 a owl:Class .
+  
+  _:node66925 a owl:Restriction .
+  
+  _:node66926 a owl:Class .
+  
+  _:node66929 a owl:Restriction .
+  
+  _:node66930 a owl:Class .
+  
+  _:node66933 a owl:Restriction .
+  
+  _:node66934 a owl:Class .
+  
+  _:node66939 a owl:Class .
+  
+  _:node66944 a owl:Class .
+  
+  _:node66947 a owl:Class .
+  
+  _:node66949 a owl:Restriction .
+  
+  _:node66951 a owl:Restriction .
+  
+  _:node66953 a owl:Class .
+  
+  _:node66956 a owl:Class .
+  
+  _:node66961 a owl:Class .
+  
+  _:node66964 a owl:Class .
+  
+  _:node66971 a owl:Class .
+  
+  _:node66974 a owl:Restriction .
+  
+  _:node66976 a owl:Restriction .
+  
+  _:node66977 a owl:Restriction .
+  
+  _:node66978 a owl:Restriction .
+  
+  _:node66980 a owl:Restriction .
+  
+  _:node66981 a owl:AllDisjointClasses .
+  
+  _:node66987 a owl:AllDisjointClasses .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context268358801010872561227946612498800656772 a eps:Context .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136 a sem:Event, grasp:Chat .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136 a sem:Event, grasp:Visual .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 a grasp:Mention .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14_CERTAIN a
+      grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1 a sem:Event, grasp:Utterance .
+}
+
+leolaniWorld:Ontology {
+  _:node66993 a owl:Class .
+  
+  _:node66996 a owl:Restriction .
+  
+  _:node66997 a owl:Class .
+  
+  _:node67000 a owl:Restriction .
+  
+  _:node67001 a owl:Class .
+  
+  _:node67004 a owl:Restriction .
+  
+  _:node67005 a owl:Class .
+  
+  _:node67008 a owl:Restriction .
+  
+  _:node67009 a owl:Class .
+  
+  _:node67012 a owl:Restriction .
+  
+  _:node67013 a owl:Class .
+  
+  _:node67018 a owl:Class .
+  
+  _:node67023 a owl:Class .
+  
+  _:node67026 a owl:Class .
+  
+  _:node67028 a owl:Restriction .
+  
+  _:node67030 a owl:Restriction .
+  
+  _:node67032 a owl:Class .
+  
+  _:node67035 a owl:Class .
+  
+  _:node67040 a owl:Class .
+  
+  _:node67043 a owl:Class .
+  
+  _:node67050 a owl:Class .
+  
+  _:node67053 a owl:Restriction .
+  
+  _:node67055 a owl:Restriction .
+  
+  _:node67056 a owl:Restriction .
+  
+  _:node67057 a owl:Restriction .
+  
+  _:node67059 a owl:Restriction .
+  
+  _:node67060 a owl:AllDisjointClasses .
+  
+  _:node67066 a owl:AllDisjointClasses .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context276443412661626738866204441578881670415 a eps:Context .
+  
+  leolaniTalk:chat561262076562447624216563137011585548 a sem:Event, grasp:Chat .
+  
+  leolaniTalk:visual561262076562447624216563137011585548 a sem:Event, grasp:Visual .
+  
+  leolaniTalk:visual561262076562447624216563137011585548_detection1 a sem:Event, grasp:Detection .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 a grasp:Mention .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14_CERTAIN
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1 a sem:Event, grasp:Utterance .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 a grasp:Mention .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:cat-160256241836485773146108183553436465282 a grasp:Instance, :object,
+      :cat .
+  
+  leolaniWorld:dog-271928704518081354188953704989628402285 a grasp:Instance, :object,
+      :dog .
+  
+  leolaniWorld:teddy-bear-43173798375972659992424885596688528626 a grasp:Instance, :object,
+      :teddy-bear .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_cat-160256241836485773146108183553436465282 a grasp:Instance,
+      sem:Event, grasp:Experience .
+  
+  leolaniWorld:leolani_see_dog-271928704518081354188953704989628402285 a grasp:Instance,
+      sem:Event, grasp:Experience .
+  
+  leolaniWorld:leolani_see_teddy-bear-43173798375972659992424885596688528626 a grasp:Instance,
+      sem:Event, grasp:Experience .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5_PROBABLE
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1 a sem:Event,
+      grasp:Detection .
+}
+
+leolaniWorld:Ontology {
+  _:node67072 a owl:Class .
+  
+  _:node67075 a owl:Restriction .
+  
+  _:node67076 a owl:Class .
+  
+  _:node67079 a owl:Restriction .
+  
+  _:node67080 a owl:Class .
+  
+  _:node67083 a owl:Restriction .
+  
+  _:node67084 a owl:Class .
+  
+  _:node67087 a owl:Restriction .
+  
+  _:node67088 a owl:Class .
+  
+  _:node67091 a owl:Restriction .
+  
+  _:node67092 a owl:Class .
+  
+  _:node67097 a owl:Class .
+  
+  _:node67102 a owl:Class .
+  
+  _:node67105 a owl:Class .
+  
+  _:node67107 a owl:Restriction .
+  
+  _:node67109 a owl:Restriction .
+  
+  _:node67111 a owl:Class .
+  
+  _:node67114 a owl:Class .
+  
+  _:node67119 a owl:Class .
+  
+  _:node67122 a owl:Class .
+  
+  _:node67129 a owl:Class .
+  
+  _:node67132 a owl:Restriction .
+  
+  _:node67134 a owl:Restriction .
+  
+  _:node67135 a owl:Restriction .
+  
+  _:node67136 a owl:Restriction .
+  
+  _:node67138 a owl:Restriction .
+  
+  _:node67139 a owl:AllDisjointClasses .
+  
+  _:node67145 a owl:AllDisjointClasses .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context323211227412813149797367793961883883538 a eps:Context .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664 a sem:Event, grasp:Chat .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664 a sem:Event, grasp:Visual .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 a grasp:Mention .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14_CERTAIN
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1 a sem:Event, grasp:Utterance .
+}
+
+leolaniWorld:Ontology {
+  _:node67151 a owl:Class .
+  
+  _:node67154 a owl:Restriction .
+  
+  _:node67155 a owl:Class .
+  
+  _:node67158 a owl:Restriction .
+  
+  _:node67159 a owl:Class .
+  
+  _:node67162 a owl:Restriction .
+  
+  _:node67163 a owl:Class .
+  
+  _:node67166 a owl:Restriction .
+  
+  _:node67167 a owl:Class .
+  
+  _:node67170 a owl:Restriction .
+  
+  _:node67171 a owl:Class .
+  
+  _:node67176 a owl:Class .
+  
+  _:node67181 a owl:Class .
+  
+  _:node67184 a owl:Class .
+  
+  _:node67186 a owl:Restriction .
+  
+  _:node67188 a owl:Restriction .
+  
+  _:node67190 a owl:Class .
+  
+  _:node67193 a owl:Class .
+  
+  _:node67198 a owl:Class .
+  
+  _:node67201 a owl:Class .
+  
+  _:node67208 a owl:Class .
+  
+  _:node67211 a owl:Restriction .
+  
+  _:node67213 a owl:Restriction .
+  
+  _:node67214 a owl:Restriction .
+  
+  _:node67215 a owl:Restriction .
+  
+  _:node67217 a owl:Restriction .
+  
+  _:node67218 a owl:AllDisjointClasses .
+  
+  _:node67224 a owl:AllDisjointClasses .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context206450068019373130455198369583978026520 a eps:Context .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247 a sem:Event, grasp:Chat .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247 a sem:Event, grasp:Visual .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247_detection1 a sem:Event, grasp:Detection .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 a grasp:Mention .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14_CERTAIN
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1 a sem:Event, grasp:Utterance .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 a grasp:Mention .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2_PROBABLE
+    a grasp:Attribution .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1 a sem:Event, grasp:Detection .
+}
+
+leolaniWorld:Ontology {
+  _:node67230 a owl:Class .
+  
+  _:node67233 a owl:Restriction .
+  
+  _:node67234 a owl:Class .
+  
+  _:node67237 a owl:Restriction .
+  
+  _:node67238 a owl:Class .
+  
+  _:node67241 a owl:Restriction .
+  
+  _:node67242 a owl:Class .
+  
+  _:node67245 a owl:Restriction .
+  
+  _:node67246 a owl:Class .
+  
+  _:node67249 a owl:Restriction .
+  
+  _:node67250 a owl:Class .
+  
+  _:node67255 a owl:Class .
+  
+  _:node67260 a owl:Class .
+  
+  _:node67263 a owl:Class .
+  
+  _:node67265 a owl:Restriction .
+  
+  _:node67267 a owl:Restriction .
+  
+  _:node67269 a owl:Class .
+  
+  _:node67272 a owl:Class .
+  
+  _:node67277 a owl:Class .
+  
+  _:node67280 a owl:Class .
+  
+  _:node67287 a owl:Class .
+  
+  _:node67290 a owl:Restriction .
+  
+  _:node67292 a owl:Restriction .
+  
+  _:node67293 a owl:Restriction .
+  
+  _:node67294 a owl:Restriction .
+  
+  _:node67296 a owl:Restriction .
+  
+  _:node67297 a owl:AllDisjointClasses .
+  
+  _:node67303 a owl:AllDisjointClasses .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context208470771577368122218453609782553146589 a eps:Context .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723 a sem:Event, grasp:Chat .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723 a sem:Event, grasp:Visual .
+}
+
+leolaniWorld:Ontology {
+  prov:wasDerivedFrom rdfs:subPropertyOf owl:topObjectProperty .
+  
+  grasp:isAttributionFor rdfs:subPropertyOf owl:topObjectProperty .
+  
+  sem:hasActor rdfs:subPropertyOf sem:eventProperty .
+  
+  sem:hasSubEvent rdfs:subPropertyOf sem:eventProperty .
+  
+  sem:hasTime rdfs:subPropertyOf eps:contextProperty .
+  
+  sem:hasPlace rdfs:subPropertyOf eps:contextProperty .
+  
+  :acknowledge rdfs:subPropertyOf :perceive .
+  
+  :experience rdfs:subPropertyOf :perceive .
+  
+  :favorite rdfs:subPropertyOf :like .
+  
+  :sense rdfs:subPropertyOf :perceive .
+  
+  gaf:denotedBy rdfs:subPropertyOf gaf:denotedIn .
+  
+  gaf:denotes rdfs:subPropertyOf gaf:containsDenotation .
+  
+  eps:hasContext rdfs:subPropertyOf sem:eventProperty .
+  
+  eps:hasDetection rdfs:subPropertyOf eps:contextProperty .
+  
+  :born-in rdfs:subPropertyOf :be-from .
+  
+  :be-parent-of rdfs:subPropertyOf :be-family-of .
+  
+  :be-family-of rdfs:subPropertyOf :know .
+  
+  :favorite-of rdfs:subPropertyOf :like-by .
+  
+  :be-child-of rdfs:subPropertyOf :be-family-of .
+  
+  :be-colleague-of rdfs:subPropertyOf :know .
+  
+  :be-friends-with rdfs:subPropertyOf :know .
+  
+  :manufacture-in rdfs:subPropertyOf :be-from .
+  
+  :study-at rdfs:subPropertyOf :be-member-of .
+  
+  :work-at rdfs:subPropertyOf :be-member-of .
+  
+  grasp:Attribution rdfs:subClassOf owl:Thing .
+  
+  grasp:Statement rdfs:subClassOf sem:Event, gaf:Instance .
+  
+  grasp:Detection rdfs:subClassOf sem:Event .
+  
+  grasp:Source rdfs:subClassOf owl:Thing .
+  
+  grasp:Chat rdfs:subClassOf sem:Event .
+  
+  grasp:Utterance rdfs:subClassOf sem:Event .
+  
+  :person rdfs:subClassOf :agent .
+  
+  :sport rdfs:subClassOf :interest-field .
+  
+  :dish rdfs:subClassOf :interest-occurrence .
+  
+  :movie rdfs:subClassOf :interest-occurrence .
+  
+  :book rdfs:subClassOf :interest-occurrence .
+  
+  :country rdfs:subClassOf :location .
+  
+  :robot rdfs:subClassOf :agent .
+  
+  :mammal rdfs:subClassOf :object .
+  
+  :band rdfs:subClassOf :object .
+  
+  :plant rdfs:subClassOf :object .
+  
+  :food rdfs:subClassOf :interest-occurrence .
+  
+  :device rdfs:subClassOf :object .
+  
+  :animal rdfs:subClassOf :object .
+  
+  grasp:Experience rdfs:subClassOf sem:Event, gaf:Instance .
+  
+  grasp:Visual rdfs:subClassOf sem:Event .
+  
+  :smell rdfs:subClassOf :sensor .
+  
+  :taste rdfs:subClassOf :sensor .
+  
+  :touch rdfs:subClassOf :sensor .
+  
+  :city rdfs:subClassOf :location .
+  
+  :sound rdfs:subClassOf :sensor .
+  
+  :visual rdfs:subClassOf :sensor .
+  
+  :university rdfs:subClassOf :institution .
+  
+  :company rdfs:subClassOf :institution .
+  
+  :cuisine rdfs:subClassOf :interest-field .
+  
+  :electricity rdfs:subClassOf :sensor .
+  
+  :equilibrium rdfs:subClassOf :sensor .
+  
+  :gravity rdfs:subClassOf :sensor .
+  
+  :light rdfs:subClassOf :sensor .
+  
+  :pain rdfs:subClassOf :sensor .
+  
+  :song rdfs:subClassOf :interest-occurrence .
+  
+  :temperature rdfs:subClassOf :sensor .
+  
+  gaf:Mention rdfs:subClassOf owl:Thing .
+  
+  gaf:Instance rdfs:subClassOf owl:Thing .
+  
+  <http://cltl.nl/leolani/integration/chair> rdfs:subClassOf :object .
+  
+  grasp:AttributionValue rdfs:subClassOf owl:Thing .
+  
+  grasp:CertaintyValue rdfs:subClassOf grasp:FactualityValue .
+  
+  grasp:FactualityValue rdfs:subClassOf grasp:AttributionValue .
+  
+  grasp:PolarityValue rdfs:subClassOf grasp:FactualityValue .
+  
+  grasp:TemporalValue rdfs:subClassOf grasp:FactualityValue .
+  
+  grasp:EmotionValue rdfs:subClassOf grasp:AttributionValue .
+  
+  grasp:SentimentValue rdfs:subClassOf grasp:AttributionValue .
+  
+  :cat rdfs:subClassOf :object .
+  
+  :teddy-bear rdfs:subClassOf :object .
+  
+  :musical-work rdfs:subClassOf :object .
+  
+  :popular-interest rdfs:subClassOf :interest .
+  
+  :film-genre rdfs:subClassOf :interest-field .
+  
+  :interest-field rdfs:subClassOf :interest .
+  
+  :literature-genre rdfs:subClassOf :interest-field .
+  
+  :interest-occurrence rdfs:subClassOf :interest .
+  
+  :music-genre rdfs:subClassOf :interest-field .
+  
+  :sports-team rdfs:subClassOf :interest-occurrence .
+  
+  :dog rdfs:subClassOf :object .
+  
+  :apple rdfs:subClassOf :object .
+  
+  :banana rdfs:subClassOf :object .
+  
+  :avocado rdfs:subClassOf :object .
+  
+  grasp:hasAttribution rdfs:domain gaf:Mention .
+  
+  grasp:wasAttributedTo rdfs:domain gaf:Mention .
+  
+  prov:wasDerivedFrom rdfs:domain gaf:Mention .
+  
+  grasp:isAttributionFor rdfs:domain grasp:Attribution .
+  
+  sem:hasActor rdfs:domain sem:Event, grasp:Chat, grasp:Utterance .
+  
+  sem:hasSubEvent rdfs:domain sem:Event, grasp:Chat, grasp:Visual .
+  
+  sem:hasTime rdfs:domain eps:Context .
+  
+  sem:hasPlace rdfs:domain eps:Context .
+  
+  :acknowledge rdfs:domain :robot .
+  
+  :perceive rdfs:domain :agent .
+  
+  :experience rdfs:domain :person .
+  
+  :favorite rdfs:domain :agent .
+  
+  :in rdfs:domain :city .
+  
+  :sense rdfs:domain :agent .
+  
+  :name rdfs:domain :agent .
+  
+  :like rdfs:domain :agent .
+  
+  :know rdfs:domain :agent .
+  
+  gaf:containsDenotation rdfs:domain gaf:Mention .
+  
+  gaf:denotedBy rdfs:domain gaf:Instance .
+  
+  gaf:denotedIn rdfs:domain gaf:Instance .
+  
+  gaf:denotes rdfs:domain gaf:Mention .
+  
+  :birthday rdfs:domain :agent .
+  
+  :live-in rdfs:domain :agent .
+  
+  eps:hasContext rdfs:domain grasp:Statement, sem:Event, grasp:Detection, grasp:Chat,
+      grasp:Utterance, grasp:Experience, grasp:Visual, gaf:Instance .
+  
+  eps:hasDetection rdfs:domain eps:Context .
+  
+  :be-from rdfs:domain :agent, :cuisine .
+  
+  :born-in rdfs:domain :person .
+  
+  :be-parent-of rdfs:domain :person .
+  
+  :be-family-of rdfs:domain :person .
+  
+  :cook-by rdfs:domain :dish, :food .
+  
+  :dislike rdfs:domain :agent .
+  
+  :favorite-of rdfs:domain :interest .
+  
+  :read-by rdfs:domain :book .
+  
+  :share-interest rdfs:domain _:node66847, _:node66926, _:node67005, _:node67084, _:node67163,
+      _:node67242 .
+  
+  :be-member-of rdfs:domain :agent .
+  
+  :be-child-of rdfs:domain :agent .
+  
+  :be-colleague-of rdfs:domain _:node66835, _:node66914, _:node66993, _:node67072, _:node67151,
+      _:node67230 .
+  
+  :be-friends-with rdfs:domain :person .
+  
+  :locate-in rdfs:domain :institution .
+  
+  :manufacture-in rdfs:domain :robot .
+  
+  :own rdfs:domain :person, :agent .
+  
+  :play rdfs:domain :agent .
+  
+  :like-by rdfs:domain :agent, :interest .
+  
+  :study-at rdfs:domain :agent .
+  
+  :travel-to rdfs:domain :agent .
+  
+  :work-at rdfs:domain :agent .
+  
+  :write-by rdfs:domain :book .
+  
+  grasp:hasAttribution rdfs:range grasp:Attribution .
+  
+  grasp:wasAttributedTo rdfs:range grasp:Source, sem:Actor, :sensor, _:node66855, _:node66860,
+      _:node66934, _:node66939, _:node67013, _:node67018, _:node67092, _:node67097, _:node67171,
+      _:node67176, _:node67250, _:node67255 .
+  
+  prov:wasDerivedFrom rdfs:range grasp:Detection, grasp:Utterance .
+  
+  grasp:isAttributionFor rdfs:range gaf:Mention .
+  
+  sem:hasActor rdfs:range sem:Actor .
+  
+  sem:hasSubEvent rdfs:range sem:Event, grasp:Detection, grasp:Utterance .
+  
+  sem:hasTime rdfs:range sem:Time .
+  
+  sem:hasPlace rdfs:range :location, _:node66865, _:node66944, _:node67023, _:node67102,
+      _:node67181, _:node67260 .
+  
+  :acknowledge rdfs:range :smell, :taste, :touch .
+  
+  :perceive rdfs:range :sensor .
+  
+  :experience rdfs:range :smell, :taste, :touch .
+  
+  :favorite rdfs:range :interest .
+  
+  :in rdfs:range :country .
+  
+  :like rdfs:range :agent, :interest .
+  
+  :know rdfs:range :agent .
+  
+  gaf:containsDenotation rdfs:range gaf:Instance .
+  
+  gaf:denotedBy rdfs:range gaf:Mention .
+  
+  gaf:denotedIn rdfs:range gaf:Mention .
+  
+  gaf:denotes rdfs:range gaf:Instance .
+  
+  :live-in rdfs:range :location .
+  
+  eps:hasContext rdfs:range eps:Context .
+  
+  eps:hasDetection rdfs:range :person, :object .
+  
+  :be-from rdfs:range :location .
+  
+  :born-in rdfs:range :location .
+  
+  :be-parent-of rdfs:range :person .
+  
+  :be-family-of rdfs:range :person .
+  
+  :cook-by rdfs:range :agent .
+  
+  :dislike rdfs:range :agent, :interest .
+  
+  :favorite-of rdfs:range :agent .
+  
+  :read-by rdfs:range :agent .
+  
+  :share-interest rdfs:range _:node66851, _:node66930, _:node67009, _:node67088, _:node67167,
+      _:node67246 .
+  
+  :be-member-of rdfs:range :institution .
+  
+  :be-child-of rdfs:range :agent .
+  
+  :be-colleague-of rdfs:range _:node66839, _:node66918, _:node66997, _:node67076, _:node67155,
+      _:node67234 .
+  
+  :be-friends-with rdfs:range :person .
+  
+  :locate-in rdfs:range :location .
+  
+  :manufacture-in rdfs:range :location .
+  
+  :own rdfs:range :object .
+  
+  :play rdfs:range :sport, :song .
+  
+  :like-by rdfs:range :agent .
+  
+  :study-at rdfs:range :institution .
+  
+  :travel-to rdfs:range :location .
+  
+  :work-at rdfs:range :institution .
+  
+  :write-by rdfs:range :person .
+  
+  grasp:Attribution owl:equivalentClass _:node66868, _:node66947, _:node67026, _:node67105,
+      _:node67184, _:node67263 .
+  
+  :location owl:equivalentClass <http://schema.org/Place>, _:node66895, _:node66974,
+      _:node67053, _:node67132, _:node67211, _:node67290 .
+  
+  :agent owl:equivalentClass foaf:Agent .
+  
+  :sensor owl:equivalentClass obo:MF_0000019 .
+  
+  :interest owl:equivalentClass _:node66898, _:node66899, _:node66977, _:node66978,
+      _:node67056, _:node67057, _:node67135, _:node67136, _:node67214, _:node67215, _:node67293,
+      _:node67294 .
+  
+  gaf:Mention owl:equivalentClass _:node66897, _:node66976, _:node67055, _:node67134,
+      _:node67213, _:node67292 .
+  
+  gaf:Instance owl:equivalentClass _:node66901, _:node66980, _:node67059, _:node67138,
+      _:node67217, _:node67296 .
+  
+  grasp:CertaintyValue owl:equivalentClass _:node66877, _:node66956, _:node67035, _:node67114,
+      _:node67193, _:node67272 .
+  
+  grasp:PolarityValue owl:equivalentClass _:node66874, _:node66953, _:node67032, _:node67111,
+      _:node67190, _:node67269 .
+  
+  grasp:TemporalValue owl:equivalentClass _:node66882, _:node66961, _:node67040, _:node67119,
+      _:node67198, _:node67277 .
+  
+  grasp:EmotionValue owl:equivalentClass _:node66885, _:node66964, _:node67043, _:node67122,
+      _:node67201, _:node67280 .
+  
+  grasp:SentimentValue owl:equivalentClass _:node66892, _:node66971, _:node67050, _:node67129,
+      _:node67208, _:node67287 .
+  
+  :popular-interest owl:equivalentClass _:node66843, _:node66922, _:node67001, _:node67080,
+      _:node67159, _:node67238 .
+  
+  grasp:hasAttribution owl:inverseOf grasp:isAttributionFor .
+  
+  :favorite owl:inverseOf :favorite-of .
+  
+  prov:hadDerivation owl:inverseOf prov:wasDerivedFrom .
+  
+  _:node66873 owl:inverseOf grasp:hasAttribution .
+  
+  _:node66896 owl:inverseOf :be-from .
+  
+  _:node66900 owl:inverseOf :like .
+  
+  _:node66952 owl:inverseOf grasp:hasAttribution .
+  
+  _:node66975 owl:inverseOf :be-from .
+  
+  _:node66979 owl:inverseOf :like .
+  
+  _:node67031 owl:inverseOf grasp:hasAttribution .
+  
+  _:node67054 owl:inverseOf :be-from .
+  
+  _:node67058 owl:inverseOf :like .
+  
+  _:node67110 owl:inverseOf grasp:hasAttribution .
+  
+  _:node67133 owl:inverseOf :be-from .
+  
+  _:node67137 owl:inverseOf :like .
+  
+  _:node67189 owl:inverseOf grasp:hasAttribution .
+  
+  _:node67212 owl:inverseOf :be-from .
+  
+  _:node67216 owl:inverseOf :like .
+  
+  _:node67268 owl:inverseOf grasp:hasAttribution .
+  
+  _:node67291 owl:inverseOf :be-from .
+  
+  _:node67295 owl:inverseOf :like .
+  
+  _:node66836 rdf:first :agent .
+  
+  _:node66837 rdf:first _:node66838 .
+  
+  _:node66840 rdf:first :agent .
+  
+  _:node66841 rdf:first _:node66842 .
+  
+  _:node66844 rdf:first :interest .
+  
+  _:node66845 rdf:first _:node66846 .
+  
+  _:node66848 rdf:first :agent .
+  
+  _:node66849 rdf:first _:node66850 .
+  
+  _:node66852 rdf:first :agent .
+  
+  _:node66853 rdf:first _:node66854 .
+  
+  _:node66856 rdf:first :agent .
+  
+  _:node66857 rdf:first gaf:Instance .
+  
+  _:node66858 rdf:first grasp:Source .
+  
+  _:node66859 rdf:first sem:Actor .
+  
+  _:node66861 rdf:first :sensor .
+  
+  _:node66862 rdf:first gaf:Instance .
+  
+  _:node66863 rdf:first grasp:Source .
+  
+  _:node66864 rdf:first sem:Actor .
+  
+  _:node66866 rdf:first gaf:Instance .
+  
+  _:node66867 rdf:first sem:Place .
+  
+  _:node66869 rdf:first _:node66870 .
+  
+  _:node66871 rdf:first _:node66872 .
+  
+  _:node66875 rdf:first <http://groundedannotationframework.org/grasp/factuality#negative> .
+  
+  _:node66876 rdf:first <http://groundedannotationframework.org/grasp/factuality#positive> .
+  
+  _:node66878 rdf:first <http://groundedannotationframework.org/grasp/factuality#certain> .
+  
+  _:node66879 rdf:first <http://groundedannotationframework.org/grasp/factuality#possible> .
+  
+  _:node66880 rdf:first <http://groundedannotationframework.org/grasp/factuality#probable> .
+  
+  _:node66881 rdf:first <http://groundedannotationframework.org/grasp/factuality#underspecified> .
+  
+  _:node66883 rdf:first <http://groundedannotationframework.org/grasp/factuality#future> .
+  
+  _:node66884 rdf:first <http://groundedannotationframework.org/grasp/factuality#non-future> .
+  
+  _:node66886 rdf:first <http://groundedannotationframework.org/grasp/emotion#anger> .
+  
+  _:node66887 rdf:first <http://groundedannotationframework.org/grasp/emotion#disgust> .
+  
+  _:node66888 rdf:first <http://groundedannotationframework.org/grasp/emotion#fear> .
+  
+  _:node66889 rdf:first <http://groundedannotationframework.org/grasp/emotion#happiness> .
+  
+  _:node66890 rdf:first <http://groundedannotationframework.org/grasp/emotion#sadness> .
+  
+  _:node66891 rdf:first <http://groundedannotationframework.org/grasp/emotion#surprise> .
+  
+  _:node66893 rdf:first <http://groundedannotationframework.org/grasp/sentiment#negative> .
+  
+  _:node66894 rdf:first <http://groundedannotationframework.org/grasp/sentiment#positive> .
+  
+  _:node66903 rdf:first :book .
+  
+  _:node66904 rdf:first :dish .
+  
+  _:node66905 rdf:first :movie .
+  
+  _:node66906 rdf:first :song .
+  
+  _:node66907 rdf:first :sports-team .
+  
+  _:node66909 rdf:first :cuisine .
+  
+  _:node66910 rdf:first :film-genre .
+  
+  _:node66911 rdf:first :literature-genre .
+  
+  _:node66912 rdf:first :music-genre .
+  
+  _:node66913 rdf:first :sport .
+  
+  _:node66915 rdf:first :agent .
+  
+  _:node66916 rdf:first _:node66917 .
+  
+  _:node66919 rdf:first :agent .
+  
+  _:node66920 rdf:first _:node66921 .
+  
+  _:node66923 rdf:first :interest .
+  
+  _:node66924 rdf:first _:node66925 .
+  
+  _:node66927 rdf:first :agent .
+  
+  _:node66928 rdf:first _:node66929 .
+  
+  _:node66931 rdf:first :agent .
+  
+  _:node66932 rdf:first _:node66933 .
+  
+  _:node66935 rdf:first :agent .
+  
+  _:node66936 rdf:first gaf:Instance .
+  
+  _:node66937 rdf:first grasp:Source .
+  
+  _:node66938 rdf:first sem:Actor .
+  
+  _:node66940 rdf:first :sensor .
+  
+  _:node66941 rdf:first gaf:Instance .
+  
+  _:node66942 rdf:first grasp:Source .
+  
+  _:node66943 rdf:first sem:Actor .
+  
+  _:node66945 rdf:first gaf:Instance .
+  
+  _:node66946 rdf:first sem:Place .
+  
+  _:node66948 rdf:first _:node66949 .
+  
+  _:node66950 rdf:first _:node66951 .
+  
+  _:node66954 rdf:first <http://groundedannotationframework.org/grasp/factuality#negative> .
+  
+  _:node66955 rdf:first <http://groundedannotationframework.org/grasp/factuality#positive> .
+  
+  _:node66957 rdf:first <http://groundedannotationframework.org/grasp/factuality#certain> .
+  
+  _:node66958 rdf:first <http://groundedannotationframework.org/grasp/factuality#possible> .
+  
+  _:node66959 rdf:first <http://groundedannotationframework.org/grasp/factuality#probable> .
+  
+  _:node66960 rdf:first <http://groundedannotationframework.org/grasp/factuality#underspecified> .
+  
+  _:node66962 rdf:first <http://groundedannotationframework.org/grasp/factuality#future> .
+  
+  _:node66963 rdf:first <http://groundedannotationframework.org/grasp/factuality#non-future> .
+  
+  _:node66965 rdf:first <http://groundedannotationframework.org/grasp/emotion#anger> .
+  
+  _:node66966 rdf:first <http://groundedannotationframework.org/grasp/emotion#disgust> .
+  
+  _:node66967 rdf:first <http://groundedannotationframework.org/grasp/emotion#fear> .
+  
+  _:node66968 rdf:first <http://groundedannotationframework.org/grasp/emotion#happiness> .
+  
+  _:node66969 rdf:first <http://groundedannotationframework.org/grasp/emotion#sadness> .
+  
+  _:node66970 rdf:first <http://groundedannotationframework.org/grasp/emotion#surprise> .
+  
+  _:node66972 rdf:first <http://groundedannotationframework.org/grasp/sentiment#negative> .
+  
+  _:node66973 rdf:first <http://groundedannotationframework.org/grasp/sentiment#positive> .
+  
+  _:node66982 rdf:first :book .
+  
+  _:node66983 rdf:first :dish .
+  
+  _:node66984 rdf:first :movie .
+  
+  _:node66985 rdf:first :song .
+  
+  _:node66986 rdf:first :sports-team .
+  
+  _:node66988 rdf:first :cuisine .
+  
+  _:node66989 rdf:first :film-genre .
+  
+  _:node66990 rdf:first :literature-genre .
+  
+  _:node66991 rdf:first :music-genre .
+  
+  _:node66992 rdf:first :sport .
+  
+  _:node66994 rdf:first :agent .
+  
+  _:node66995 rdf:first _:node66996 .
+  
+  _:node66998 rdf:first :agent .
+  
+  _:node66999 rdf:first _:node67000 .
+  
+  _:node67002 rdf:first :interest .
+  
+  _:node67003 rdf:first _:node67004 .
+  
+  _:node67006 rdf:first :agent .
+  
+  _:node67007 rdf:first _:node67008 .
+  
+  _:node67010 rdf:first :agent .
+  
+  _:node67011 rdf:first _:node67012 .
+  
+  _:node67014 rdf:first :agent .
+  
+  _:node67015 rdf:first gaf:Instance .
+  
+  _:node67016 rdf:first grasp:Source .
+  
+  _:node67017 rdf:first sem:Actor .
+  
+  _:node67019 rdf:first :sensor .
+  
+  _:node67020 rdf:first gaf:Instance .
+  
+  _:node67021 rdf:first grasp:Source .
+  
+  _:node67022 rdf:first sem:Actor .
+  
+  _:node67024 rdf:first gaf:Instance .
+  
+  _:node67025 rdf:first sem:Place .
+  
+  _:node67027 rdf:first _:node67028 .
+  
+  _:node67029 rdf:first _:node67030 .
+  
+  _:node67033 rdf:first <http://groundedannotationframework.org/grasp/factuality#negative> .
+  
+  _:node67034 rdf:first <http://groundedannotationframework.org/grasp/factuality#positive> .
+  
+  _:node67036 rdf:first <http://groundedannotationframework.org/grasp/factuality#certain> .
+  
+  _:node67037 rdf:first <http://groundedannotationframework.org/grasp/factuality#possible> .
+  
+  _:node67038 rdf:first <http://groundedannotationframework.org/grasp/factuality#probable> .
+  
+  _:node67039 rdf:first <http://groundedannotationframework.org/grasp/factuality#underspecified> .
+  
+  _:node67041 rdf:first <http://groundedannotationframework.org/grasp/factuality#future> .
+  
+  _:node67042 rdf:first <http://groundedannotationframework.org/grasp/factuality#non-future> .
+  
+  _:node67044 rdf:first <http://groundedannotationframework.org/grasp/emotion#anger> .
+  
+  _:node67045 rdf:first <http://groundedannotationframework.org/grasp/emotion#disgust> .
+  
+  _:node67046 rdf:first <http://groundedannotationframework.org/grasp/emotion#fear> .
+  
+  _:node67047 rdf:first <http://groundedannotationframework.org/grasp/emotion#happiness> .
+  
+  _:node67048 rdf:first <http://groundedannotationframework.org/grasp/emotion#sadness> .
+  
+  _:node67049 rdf:first <http://groundedannotationframework.org/grasp/emotion#surprise> .
+  
+  _:node67051 rdf:first <http://groundedannotationframework.org/grasp/sentiment#negative> .
+  
+  _:node67052 rdf:first <http://groundedannotationframework.org/grasp/sentiment#positive> .
+  
+  _:node67061 rdf:first :book .
+  
+  _:node67062 rdf:first :dish .
+  
+  _:node67063 rdf:first :movie .
+  
+  _:node67064 rdf:first :song .
+  
+  _:node67065 rdf:first :sports-team .
+  
+  _:node67067 rdf:first :cuisine .
+  
+  _:node67068 rdf:first :film-genre .
+  
+  _:node67069 rdf:first :literature-genre .
+  
+  _:node67070 rdf:first :music-genre .
+  
+  _:node67071 rdf:first :sport .
+  
+  _:node67073 rdf:first :agent .
+  
+  _:node67074 rdf:first _:node67075 .
+  
+  _:node67077 rdf:first :agent .
+  
+  _:node67078 rdf:first _:node67079 .
+  
+  _:node67081 rdf:first :interest .
+  
+  _:node67082 rdf:first _:node67083 .
+  
+  _:node67085 rdf:first :agent .
+  
+  _:node67086 rdf:first _:node67087 .
+  
+  _:node67089 rdf:first :agent .
+  
+  _:node67090 rdf:first _:node67091 .
+  
+  _:node67093 rdf:first :agent .
+  
+  _:node67094 rdf:first gaf:Instance .
+  
+  _:node67095 rdf:first grasp:Source .
+  
+  _:node67096 rdf:first sem:Actor .
+  
+  _:node67098 rdf:first :sensor .
+  
+  _:node67099 rdf:first gaf:Instance .
+  
+  _:node67100 rdf:first grasp:Source .
+  
+  _:node67101 rdf:first sem:Actor .
+  
+  _:node67103 rdf:first gaf:Instance .
+  
+  _:node67104 rdf:first sem:Place .
+  
+  _:node67106 rdf:first _:node67107 .
+  
+  _:node67108 rdf:first _:node67109 .
+  
+  _:node67112 rdf:first <http://groundedannotationframework.org/grasp/factuality#negative> .
+  
+  _:node67113 rdf:first <http://groundedannotationframework.org/grasp/factuality#positive> .
+  
+  _:node67115 rdf:first <http://groundedannotationframework.org/grasp/factuality#certain> .
+  
+  _:node67116 rdf:first <http://groundedannotationframework.org/grasp/factuality#possible> .
+  
+  _:node67117 rdf:first <http://groundedannotationframework.org/grasp/factuality#probable> .
+  
+  _:node67118 rdf:first <http://groundedannotationframework.org/grasp/factuality#underspecified> .
+  
+  _:node67120 rdf:first <http://groundedannotationframework.org/grasp/factuality#future> .
+  
+  _:node67121 rdf:first <http://groundedannotationframework.org/grasp/factuality#non-future> .
+  
+  _:node67123 rdf:first <http://groundedannotationframework.org/grasp/emotion#anger> .
+  
+  _:node67124 rdf:first <http://groundedannotationframework.org/grasp/emotion#disgust> .
+  
+  _:node67125 rdf:first <http://groundedannotationframework.org/grasp/emotion#fear> .
+  
+  _:node67126 rdf:first <http://groundedannotationframework.org/grasp/emotion#happiness> .
+  
+  _:node67127 rdf:first <http://groundedannotationframework.org/grasp/emotion#sadness> .
+  
+  _:node67128 rdf:first <http://groundedannotationframework.org/grasp/emotion#surprise> .
+  
+  _:node67130 rdf:first <http://groundedannotationframework.org/grasp/sentiment#negative> .
+  
+  _:node67131 rdf:first <http://groundedannotationframework.org/grasp/sentiment#positive> .
+  
+  _:node67140 rdf:first :book .
+  
+  _:node67141 rdf:first :dish .
+  
+  _:node67142 rdf:first :movie .
+  
+  _:node67143 rdf:first :song .
+  
+  _:node67144 rdf:first :sports-team .
+  
+  _:node67146 rdf:first :cuisine .
+  
+  _:node67147 rdf:first :film-genre .
+  
+  _:node67148 rdf:first :literature-genre .
+  
+  _:node67149 rdf:first :music-genre .
+  
+  _:node67150 rdf:first :sport .
+  
+  _:node67152 rdf:first :agent .
+  
+  _:node67153 rdf:first _:node67154 .
+  
+  _:node67156 rdf:first :agent .
+  
+  _:node67157 rdf:first _:node67158 .
+  
+  _:node67160 rdf:first :interest .
+  
+  _:node67161 rdf:first _:node67162 .
+  
+  _:node67164 rdf:first :agent .
+  
+  _:node67165 rdf:first _:node67166 .
+  
+  _:node67168 rdf:first :agent .
+  
+  _:node67169 rdf:first _:node67170 .
+  
+  _:node67172 rdf:first :agent .
+  
+  _:node67173 rdf:first gaf:Instance .
+  
+  _:node67174 rdf:first grasp:Source .
+  
+  _:node67175 rdf:first sem:Actor .
+  
+  _:node67177 rdf:first :sensor .
+  
+  _:node67178 rdf:first gaf:Instance .
+  
+  _:node67179 rdf:first grasp:Source .
+  
+  _:node67180 rdf:first sem:Actor .
+  
+  _:node67182 rdf:first gaf:Instance .
+  
+  _:node67183 rdf:first sem:Place .
+  
+  _:node67185 rdf:first _:node67186 .
+  
+  _:node67187 rdf:first _:node67188 .
+  
+  _:node67191 rdf:first <http://groundedannotationframework.org/grasp/factuality#negative> .
+  
+  _:node67192 rdf:first <http://groundedannotationframework.org/grasp/factuality#positive> .
+  
+  _:node67194 rdf:first <http://groundedannotationframework.org/grasp/factuality#certain> .
+  
+  _:node67195 rdf:first <http://groundedannotationframework.org/grasp/factuality#possible> .
+  
+  _:node67196 rdf:first <http://groundedannotationframework.org/grasp/factuality#probable> .
+  
+  _:node67197 rdf:first <http://groundedannotationframework.org/grasp/factuality#underspecified> .
+  
+  _:node67199 rdf:first <http://groundedannotationframework.org/grasp/factuality#future> .
+  
+  _:node67200 rdf:first <http://groundedannotationframework.org/grasp/factuality#non-future> .
+  
+  _:node67202 rdf:first <http://groundedannotationframework.org/grasp/emotion#anger> .
+  
+  _:node67203 rdf:first <http://groundedannotationframework.org/grasp/emotion#disgust> .
+  
+  _:node67204 rdf:first <http://groundedannotationframework.org/grasp/emotion#fear> .
+  
+  _:node67205 rdf:first <http://groundedannotationframework.org/grasp/emotion#happiness> .
+  
+  _:node67206 rdf:first <http://groundedannotationframework.org/grasp/emotion#sadness> .
+  
+  _:node67207 rdf:first <http://groundedannotationframework.org/grasp/emotion#surprise> .
+  
+  _:node67209 rdf:first <http://groundedannotationframework.org/grasp/sentiment#negative> .
+  
+  _:node67210 rdf:first <http://groundedannotationframework.org/grasp/sentiment#positive> .
+  
+  _:node67219 rdf:first :book .
+  
+  _:node67220 rdf:first :dish .
+  
+  _:node67221 rdf:first :movie .
+  
+  _:node67222 rdf:first :song .
+  
+  _:node67223 rdf:first :sports-team .
+  
+  _:node67225 rdf:first :cuisine .
+  
+  _:node67226 rdf:first :film-genre .
+  
+  _:node67227 rdf:first :literature-genre .
+  
+  _:node67228 rdf:first :music-genre .
+  
+  _:node67229 rdf:first :sport .
+  
+  _:node67231 rdf:first :agent .
+  
+  _:node67232 rdf:first _:node67233 .
+  
+  _:node67235 rdf:first :agent .
+  
+  _:node67236 rdf:first _:node67237 .
+  
+  _:node67239 rdf:first :interest .
+  
+  _:node67240 rdf:first _:node67241 .
+  
+  _:node67243 rdf:first :agent .
+  
+  _:node67244 rdf:first _:node67245 .
+  
+  _:node67247 rdf:first :agent .
+  
+  _:node67248 rdf:first _:node67249 .
+  
+  _:node67251 rdf:first :agent .
+  
+  _:node67252 rdf:first gaf:Instance .
+  
+  _:node67253 rdf:first grasp:Source .
+  
+  _:node67254 rdf:first sem:Actor .
+  
+  _:node67256 rdf:first :sensor .
+  
+  _:node67257 rdf:first gaf:Instance .
+  
+  _:node67258 rdf:first grasp:Source .
+  
+  _:node67259 rdf:first sem:Actor .
+  
+  _:node67261 rdf:first gaf:Instance .
+  
+  _:node67262 rdf:first sem:Place .
+  
+  _:node67264 rdf:first _:node67265 .
+  
+  _:node67266 rdf:first _:node67267 .
+  
+  _:node67270 rdf:first <http://groundedannotationframework.org/grasp/factuality#negative> .
+  
+  _:node67271 rdf:first <http://groundedannotationframework.org/grasp/factuality#positive> .
+  
+  _:node67273 rdf:first <http://groundedannotationframework.org/grasp/factuality#certain> .
+  
+  _:node67274 rdf:first <http://groundedannotationframework.org/grasp/factuality#possible> .
+  
+  _:node67275 rdf:first <http://groundedannotationframework.org/grasp/factuality#probable> .
+  
+  _:node67276 rdf:first <http://groundedannotationframework.org/grasp/factuality#underspecified> .
+  
+  _:node67278 rdf:first <http://groundedannotationframework.org/grasp/factuality#future> .
+  
+  _:node67279 rdf:first <http://groundedannotationframework.org/grasp/factuality#non-future> .
+  
+  _:node67281 rdf:first <http://groundedannotationframework.org/grasp/emotion#anger> .
+  
+  _:node67282 rdf:first <http://groundedannotationframework.org/grasp/emotion#disgust> .
+  
+  _:node67283 rdf:first <http://groundedannotationframework.org/grasp/emotion#fear> .
+  
+  _:node67284 rdf:first <http://groundedannotationframework.org/grasp/emotion#happiness> .
+  
+  _:node67285 rdf:first <http://groundedannotationframework.org/grasp/emotion#sadness> .
+  
+  _:node67286 rdf:first <http://groundedannotationframework.org/grasp/emotion#surprise> .
+  
+  _:node67288 rdf:first <http://groundedannotationframework.org/grasp/sentiment#negative> .
+  
+  _:node67289 rdf:first <http://groundedannotationframework.org/grasp/sentiment#positive> .
+  
+  _:node67298 rdf:first :book .
+  
+  _:node67299 rdf:first :dish .
+  
+  _:node67300 rdf:first :movie .
+  
+  _:node67301 rdf:first :song .
+  
+  _:node67302 rdf:first :sports-team .
+  
+  _:node67304 rdf:first :cuisine .
+  
+  _:node67305 rdf:first :film-genre .
+  
+  _:node67306 rdf:first :literature-genre .
+  
+  _:node67307 rdf:first :music-genre .
+  
+  _:node67308 rdf:first :sport .
+  
+  _:node66836 rdf:rest _:node66837 .
+  
+  _:node66837 rdf:rest rdf:nil .
+  
+  _:node66840 rdf:rest _:node66841 .
+  
+  _:node66841 rdf:rest rdf:nil .
+  
+  _:node66844 rdf:rest _:node66845 .
+  
+  _:node66845 rdf:rest rdf:nil .
+  
+  _:node66848 rdf:rest _:node66849 .
+  
+  _:node66849 rdf:rest rdf:nil .
+  
+  _:node66852 rdf:rest _:node66853 .
+  
+  _:node66853 rdf:rest rdf:nil .
+  
+  _:node66856 rdf:rest _:node66857 .
+  
+  _:node66857 rdf:rest _:node66858 .
+  
+  _:node66858 rdf:rest _:node66859 .
+  
+  _:node66859 rdf:rest rdf:nil .
+  
+  _:node66861 rdf:rest _:node66862 .
+  
+  _:node66862 rdf:rest _:node66863 .
+  
+  _:node66863 rdf:rest _:node66864 .
+  
+  _:node66864 rdf:rest rdf:nil .
+  
+  _:node66866 rdf:rest _:node66867 .
+  
+  _:node66867 rdf:rest rdf:nil .
+  
+  _:node66869 rdf:rest _:node66871 .
+  
+  _:node66871 rdf:rest rdf:nil .
+  
+  _:node66875 rdf:rest _:node66876 .
+  
+  _:node66876 rdf:rest rdf:nil .
+  
+  _:node66878 rdf:rest _:node66879 .
+  
+  _:node66879 rdf:rest _:node66880 .
+  
+  _:node66880 rdf:rest _:node66881 .
+  
+  _:node66881 rdf:rest rdf:nil .
+  
+  _:node66883 rdf:rest _:node66884 .
+  
+  _:node66884 rdf:rest rdf:nil .
+  
+  _:node66886 rdf:rest _:node66887 .
+  
+  _:node66887 rdf:rest _:node66888 .
+  
+  _:node66888 rdf:rest _:node66889 .
+  
+  _:node66889 rdf:rest _:node66890 .
+  
+  _:node66890 rdf:rest _:node66891 .
+  
+  _:node66891 rdf:rest rdf:nil .
+  
+  _:node66893 rdf:rest _:node66894 .
+  
+  _:node66894 rdf:rest rdf:nil .
+  
+  _:node66903 rdf:rest _:node66904 .
+  
+  _:node66904 rdf:rest _:node66905 .
+  
+  _:node66905 rdf:rest _:node66906 .
+  
+  _:node66906 rdf:rest _:node66907 .
+  
+  _:node66907 rdf:rest rdf:nil .
+  
+  _:node66909 rdf:rest _:node66910 .
+  
+  _:node66910 rdf:rest _:node66911 .
+  
+  _:node66911 rdf:rest _:node66912 .
+  
+  _:node66912 rdf:rest _:node66913 .
+  
+  _:node66913 rdf:rest rdf:nil .
+  
+  _:node66915 rdf:rest _:node66916 .
+  
+  _:node66916 rdf:rest rdf:nil .
+  
+  _:node66919 rdf:rest _:node66920 .
+  
+  _:node66920 rdf:rest rdf:nil .
+  
+  _:node66923 rdf:rest _:node66924 .
+  
+  _:node66924 rdf:rest rdf:nil .
+  
+  _:node66927 rdf:rest _:node66928 .
+  
+  _:node66928 rdf:rest rdf:nil .
+  
+  _:node66931 rdf:rest _:node66932 .
+  
+  _:node66932 rdf:rest rdf:nil .
+  
+  _:node66935 rdf:rest _:node66936 .
+  
+  _:node66936 rdf:rest _:node66937 .
+  
+  _:node66937 rdf:rest _:node66938 .
+  
+  _:node66938 rdf:rest rdf:nil .
+  
+  _:node66940 rdf:rest _:node66941 .
+  
+  _:node66941 rdf:rest _:node66942 .
+  
+  _:node66942 rdf:rest _:node66943 .
+  
+  _:node66943 rdf:rest rdf:nil .
+  
+  _:node66945 rdf:rest _:node66946 .
+  
+  _:node66946 rdf:rest rdf:nil .
+  
+  _:node66948 rdf:rest _:node66950 .
+  
+  _:node66950 rdf:rest rdf:nil .
+  
+  _:node66954 rdf:rest _:node66955 .
+  
+  _:node66955 rdf:rest rdf:nil .
+  
+  _:node66957 rdf:rest _:node66958 .
+  
+  _:node66958 rdf:rest _:node66959 .
+  
+  _:node66959 rdf:rest _:node66960 .
+  
+  _:node66960 rdf:rest rdf:nil .
+  
+  _:node66962 rdf:rest _:node66963 .
+  
+  _:node66963 rdf:rest rdf:nil .
+  
+  _:node66965 rdf:rest _:node66966 .
+  
+  _:node66966 rdf:rest _:node66967 .
+  
+  _:node66967 rdf:rest _:node66968 .
+  
+  _:node66968 rdf:rest _:node66969 .
+  
+  _:node66969 rdf:rest _:node66970 .
+  
+  _:node66970 rdf:rest rdf:nil .
+  
+  _:node66972 rdf:rest _:node66973 .
+  
+  _:node66973 rdf:rest rdf:nil .
+  
+  _:node66982 rdf:rest _:node66983 .
+  
+  _:node66983 rdf:rest _:node66984 .
+  
+  _:node66984 rdf:rest _:node66985 .
+  
+  _:node66985 rdf:rest _:node66986 .
+  
+  _:node66986 rdf:rest rdf:nil .
+  
+  _:node66988 rdf:rest _:node66989 .
+  
+  _:node66989 rdf:rest _:node66990 .
+  
+  _:node66990 rdf:rest _:node66991 .
+  
+  _:node66991 rdf:rest _:node66992 .
+  
+  _:node66992 rdf:rest rdf:nil .
+  
+  _:node66994 rdf:rest _:node66995 .
+  
+  _:node66995 rdf:rest rdf:nil .
+  
+  _:node66998 rdf:rest _:node66999 .
+  
+  _:node66999 rdf:rest rdf:nil .
+  
+  _:node67002 rdf:rest _:node67003 .
+  
+  _:node67003 rdf:rest rdf:nil .
+  
+  _:node67006 rdf:rest _:node67007 .
+  
+  _:node67007 rdf:rest rdf:nil .
+  
+  _:node67010 rdf:rest _:node67011 .
+  
+  _:node67011 rdf:rest rdf:nil .
+  
+  _:node67014 rdf:rest _:node67015 .
+  
+  _:node67015 rdf:rest _:node67016 .
+  
+  _:node67016 rdf:rest _:node67017 .
+  
+  _:node67017 rdf:rest rdf:nil .
+  
+  _:node67019 rdf:rest _:node67020 .
+  
+  _:node67020 rdf:rest _:node67021 .
+  
+  _:node67021 rdf:rest _:node67022 .
+  
+  _:node67022 rdf:rest rdf:nil .
+  
+  _:node67024 rdf:rest _:node67025 .
+  
+  _:node67025 rdf:rest rdf:nil .
+  
+  _:node67027 rdf:rest _:node67029 .
+  
+  _:node67029 rdf:rest rdf:nil .
+  
+  _:node67033 rdf:rest _:node67034 .
+  
+  _:node67034 rdf:rest rdf:nil .
+  
+  _:node67036 rdf:rest _:node67037 .
+  
+  _:node67037 rdf:rest _:node67038 .
+  
+  _:node67038 rdf:rest _:node67039 .
+  
+  _:node67039 rdf:rest rdf:nil .
+  
+  _:node67041 rdf:rest _:node67042 .
+  
+  _:node67042 rdf:rest rdf:nil .
+  
+  _:node67044 rdf:rest _:node67045 .
+  
+  _:node67045 rdf:rest _:node67046 .
+  
+  _:node67046 rdf:rest _:node67047 .
+  
+  _:node67047 rdf:rest _:node67048 .
+  
+  _:node67048 rdf:rest _:node67049 .
+  
+  _:node67049 rdf:rest rdf:nil .
+  
+  _:node67051 rdf:rest _:node67052 .
+  
+  _:node67052 rdf:rest rdf:nil .
+  
+  _:node67061 rdf:rest _:node67062 .
+  
+  _:node67062 rdf:rest _:node67063 .
+  
+  _:node67063 rdf:rest _:node67064 .
+  
+  _:node67064 rdf:rest _:node67065 .
+  
+  _:node67065 rdf:rest rdf:nil .
+  
+  _:node67067 rdf:rest _:node67068 .
+  
+  _:node67068 rdf:rest _:node67069 .
+  
+  _:node67069 rdf:rest _:node67070 .
+  
+  _:node67070 rdf:rest _:node67071 .
+  
+  _:node67071 rdf:rest rdf:nil .
+  
+  _:node67073 rdf:rest _:node67074 .
+  
+  _:node67074 rdf:rest rdf:nil .
+  
+  _:node67077 rdf:rest _:node67078 .
+  
+  _:node67078 rdf:rest rdf:nil .
+  
+  _:node67081 rdf:rest _:node67082 .
+  
+  _:node67082 rdf:rest rdf:nil .
+  
+  _:node67085 rdf:rest _:node67086 .
+  
+  _:node67086 rdf:rest rdf:nil .
+  
+  _:node67089 rdf:rest _:node67090 .
+  
+  _:node67090 rdf:rest rdf:nil .
+  
+  _:node67093 rdf:rest _:node67094 .
+  
+  _:node67094 rdf:rest _:node67095 .
+  
+  _:node67095 rdf:rest _:node67096 .
+  
+  _:node67096 rdf:rest rdf:nil .
+  
+  _:node67098 rdf:rest _:node67099 .
+  
+  _:node67099 rdf:rest _:node67100 .
+  
+  _:node67100 rdf:rest _:node67101 .
+  
+  _:node67101 rdf:rest rdf:nil .
+  
+  _:node67103 rdf:rest _:node67104 .
+  
+  _:node67104 rdf:rest rdf:nil .
+  
+  _:node67106 rdf:rest _:node67108 .
+  
+  _:node67108 rdf:rest rdf:nil .
+  
+  _:node67112 rdf:rest _:node67113 .
+  
+  _:node67113 rdf:rest rdf:nil .
+  
+  _:node67115 rdf:rest _:node67116 .
+  
+  _:node67116 rdf:rest _:node67117 .
+  
+  _:node67117 rdf:rest _:node67118 .
+  
+  _:node67118 rdf:rest rdf:nil .
+  
+  _:node67120 rdf:rest _:node67121 .
+  
+  _:node67121 rdf:rest rdf:nil .
+  
+  _:node67123 rdf:rest _:node67124 .
+  
+  _:node67124 rdf:rest _:node67125 .
+  
+  _:node67125 rdf:rest _:node67126 .
+  
+  _:node67126 rdf:rest _:node67127 .
+  
+  _:node67127 rdf:rest _:node67128 .
+  
+  _:node67128 rdf:rest rdf:nil .
+  
+  _:node67130 rdf:rest _:node67131 .
+  
+  _:node67131 rdf:rest rdf:nil .
+  
+  _:node67140 rdf:rest _:node67141 .
+  
+  _:node67141 rdf:rest _:node67142 .
+  
+  _:node67142 rdf:rest _:node67143 .
+  
+  _:node67143 rdf:rest _:node67144 .
+  
+  _:node67144 rdf:rest rdf:nil .
+  
+  _:node67146 rdf:rest _:node67147 .
+  
+  _:node67147 rdf:rest _:node67148 .
+  
+  _:node67148 rdf:rest _:node67149 .
+  
+  _:node67149 rdf:rest _:node67150 .
+  
+  _:node67150 rdf:rest rdf:nil .
+  
+  _:node67152 rdf:rest _:node67153 .
+  
+  _:node67153 rdf:rest rdf:nil .
+  
+  _:node67156 rdf:rest _:node67157 .
+  
+  _:node67157 rdf:rest rdf:nil .
+  
+  _:node67160 rdf:rest _:node67161 .
+  
+  _:node67161 rdf:rest rdf:nil .
+  
+  _:node67164 rdf:rest _:node67165 .
+  
+  _:node67165 rdf:rest rdf:nil .
+  
+  _:node67168 rdf:rest _:node67169 .
+  
+  _:node67169 rdf:rest rdf:nil .
+  
+  _:node67172 rdf:rest _:node67173 .
+  
+  _:node67173 rdf:rest _:node67174 .
+  
+  _:node67174 rdf:rest _:node67175 .
+  
+  _:node67175 rdf:rest rdf:nil .
+  
+  _:node67177 rdf:rest _:node67178 .
+  
+  _:node67178 rdf:rest _:node67179 .
+  
+  _:node67179 rdf:rest _:node67180 .
+  
+  _:node67180 rdf:rest rdf:nil .
+  
+  _:node67182 rdf:rest _:node67183 .
+  
+  _:node67183 rdf:rest rdf:nil .
+  
+  _:node67185 rdf:rest _:node67187 .
+  
+  _:node67187 rdf:rest rdf:nil .
+  
+  _:node67191 rdf:rest _:node67192 .
+  
+  _:node67192 rdf:rest rdf:nil .
+  
+  _:node67194 rdf:rest _:node67195 .
+  
+  _:node67195 rdf:rest _:node67196 .
+  
+  _:node67196 rdf:rest _:node67197 .
+  
+  _:node67197 rdf:rest rdf:nil .
+  
+  _:node67199 rdf:rest _:node67200 .
+  
+  _:node67200 rdf:rest rdf:nil .
+  
+  _:node67202 rdf:rest _:node67203 .
+  
+  _:node67203 rdf:rest _:node67204 .
+  
+  _:node67204 rdf:rest _:node67205 .
+  
+  _:node67205 rdf:rest _:node67206 .
+  
+  _:node67206 rdf:rest _:node67207 .
+  
+  _:node67207 rdf:rest rdf:nil .
+  
+  _:node67209 rdf:rest _:node67210 .
+  
+  _:node67210 rdf:rest rdf:nil .
+  
+  _:node67219 rdf:rest _:node67220 .
+  
+  _:node67220 rdf:rest _:node67221 .
+  
+  _:node67221 rdf:rest _:node67222 .
+  
+  _:node67222 rdf:rest _:node67223 .
+  
+  _:node67223 rdf:rest rdf:nil .
+  
+  _:node67225 rdf:rest _:node67226 .
+  
+  _:node67226 rdf:rest _:node67227 .
+  
+  _:node67227 rdf:rest _:node67228 .
+  
+  _:node67228 rdf:rest _:node67229 .
+  
+  _:node67229 rdf:rest rdf:nil .
+  
+  _:node67231 rdf:rest _:node67232 .
+  
+  _:node67232 rdf:rest rdf:nil .
+  
+  _:node67235 rdf:rest _:node67236 .
+  
+  _:node67236 rdf:rest rdf:nil .
+  
+  _:node67239 rdf:rest _:node67240 .
+  
+  _:node67240 rdf:rest rdf:nil .
+  
+  _:node67243 rdf:rest _:node67244 .
+  
+  _:node67244 rdf:rest rdf:nil .
+  
+  _:node67247 rdf:rest _:node67248 .
+  
+  _:node67248 rdf:rest rdf:nil .
+  
+  _:node67251 rdf:rest _:node67252 .
+  
+  _:node67252 rdf:rest _:node67253 .
+  
+  _:node67253 rdf:rest _:node67254 .
+  
+  _:node67254 rdf:rest rdf:nil .
+  
+  _:node67256 rdf:rest _:node67257 .
+  
+  _:node67257 rdf:rest _:node67258 .
+  
+  _:node67258 rdf:rest _:node67259 .
+  
+  _:node67259 rdf:rest rdf:nil .
+  
+  _:node67261 rdf:rest _:node67262 .
+  
+  _:node67262 rdf:rest rdf:nil .
+  
+  _:node67264 rdf:rest _:node67266 .
+  
+  _:node67266 rdf:rest rdf:nil .
+  
+  _:node67270 rdf:rest _:node67271 .
+  
+  _:node67271 rdf:rest rdf:nil .
+  
+  _:node67273 rdf:rest _:node67274 .
+  
+  _:node67274 rdf:rest _:node67275 .
+  
+  _:node67275 rdf:rest _:node67276 .
+  
+  _:node67276 rdf:rest rdf:nil .
+  
+  _:node67278 rdf:rest _:node67279 .
+  
+  _:node67279 rdf:rest rdf:nil .
+  
+  _:node67281 rdf:rest _:node67282 .
+  
+  _:node67282 rdf:rest _:node67283 .
+  
+  _:node67283 rdf:rest _:node67284 .
+  
+  _:node67284 rdf:rest _:node67285 .
+  
+  _:node67285 rdf:rest _:node67286 .
+  
+  _:node67286 rdf:rest rdf:nil .
+  
+  _:node67288 rdf:rest _:node67289 .
+  
+  _:node67289 rdf:rest rdf:nil .
+  
+  _:node67298 rdf:rest _:node67299 .
+  
+  _:node67299 rdf:rest _:node67300 .
+  
+  _:node67300 rdf:rest _:node67301 .
+  
+  _:node67301 rdf:rest _:node67302 .
+  
+  _:node67302 rdf:rest rdf:nil .
+  
+  _:node67304 rdf:rest _:node67305 .
+  
+  _:node67305 rdf:rest _:node67306 .
+  
+  _:node67306 rdf:rest _:node67307 .
+  
+  _:node67307 rdf:rest _:node67308 .
+  
+  _:node67308 rdf:rest rdf:nil .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14_CERTAIN
+    rdf:value grasp:CERTAIN .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5_PROBABLE
+    rdf:value grasp:PROBABLE .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14_CERTAIN rdf:value
+      grasp:CERTAIN .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14_CERTAIN
+    rdf:value grasp:CERTAIN .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5_PROBABLE
+    rdf:value grasp:PROBABLE .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14_CERTAIN
+    rdf:value grasp:CERTAIN .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14_CERTAIN
+    rdf:value grasp:CERTAIN .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2_PROBABLE
+    rdf:value grasp:PROBABLE .
+}
+
+leolaniWorld:Ontology {
+  prov:wasDerivedFrom rdfs:comment "The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable."@en .
+  
+  grasp:Attribution rdfs:comment "A grasp:Attribution reflects the attribution of some interpretation, some perspective to a gaf:Mention. An attribution expresses such things as certainty, emotion, polarity, sentiment, temporality." .
+  
+  sem:Event rdfs:comment "Events are things that happen. This comprises everything from historical events to web site sessions and mythical journeys. Event is the central class of SEM." .
+  
+  grasp:Source rdfs:comment "" .
+  
+  sem:Actor rdfs:comment """Actors are entities that take part in an Event, either actively or passively. Actors do not necessarily have to be sentient. They can also be objects. Actors are a thing, animate or inanimate, physical or non-physical.
+""" .
+  
+  sem:Time rdfs:comment "Time contains symbolic representations of when an Event took place. Time instances do not necessarily need to have a timestamp associated with them. The Time class exists to represent semantics of time, e.g. that one thing happens before another, even though the exact timestamps are unknown." .
+  
+  sem:Place rdfs:comment "Places are locations where an Event happens. They do not need to be physical places and hence do not necessarily need coordinates. Neither do they need to have any significance apart from them being the location of an Event." .
+  
+  sem:eventProperty rdfs:comment "Event properties connect Events to other SEM Core entities." .
+  
+  gaf:Mention rdfs:comment """Mentions are references to members of the gaf:Instance class as they occur in (web) media such as texts, video, audio, images, etc. Mentions denote gaf:Instances.
+
+A Mention uniquely identifies the (part of a) web source that denotes the mention. We refer to the standard use of fragment identifiers for different media types. """ .
+  
+  gaf:Instance rdfs:comment "Instances are statements about real world entities, including actions, processes and abstract notions. They are the primary subject of individuals of type gaf:Mention that can denote them." .
+  
+  grasp:AttributionValue rdfs:comment "The value of a grasp:Attribution" .
+  
+  grasp:CertaintyValue rdfs:comment "The level of certainty of a gaf:Mention" .
+  
+  grasp:PolarityValue rdfs:comment "The polarity of a gaf:Mention (e.g. if something is or isn't the case)" .
+  
+  grasp:TemporalValue rdfs:comment "The temporal property of a gaf:Mention" .
+  
+  grasp:EmotionValue rdfs:comment "The emotion expressed in a gaf:Mention" .
+  
+  grasp:SentimentValue rdfs:comment "The sentiment expressed by a gaf:Mention" .
+  
+  eps:contextProperty rdfs:comment "Context properties connect Context to other SEM Core entities." .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:karla rdfs:label "karla" .
+  
+  leolaniWorld:paris rdfs:label "paris" .
+}
+
+leolaniTalk:Interactions {
+  leolaniFriends:tom rdfs:label "tom" .
+}
+
+leolaniWorld:Ontology {
+  prov:wasDerivedFrom rdfs:label "wasDerivedFrom" .
+  
+  grasp:Attribution rdfs:label "Attribution" .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:leolani rdfs:label "leolani" .
+}
+
+leolaniWorld:Ontology {
+  sem:Event rdfs:label "Event" .
+  
+  grasp:Source rdfs:label "Source" .
+  
+  sem:Actor rdfs:label "Actor" .
+  
+  sem:Time rdfs:label "Time" .
+  
+  sem:Place rdfs:label "Place" .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:bram rdfs:label "bram" .
+  
+  leolaniWorld:pizza rdfs:label "pizza" .
+  
+  leolaniWorld:piek rdfs:label "piek" .
+  
+  leolaniWorld:selene rdfs:label "selene" .
+  
+  leolaniWorld:netherlands rdfs:label "netherlands" .
+}
+
+leolaniTalk:Interactions {
+  leolaniFriends:lenka rdfs:label "lenka" .
+  
+  leolaniFriends:bram rdfs:label "bram" .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:human rdfs:label "human" .
+}
+
+leolaniTalk:Interactions {
+  leolaniFriends:human rdfs:label "human" .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:mongolia rdfs:label "mongolia" .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:human_like_pizza rdfs:label "human_like_pizza" .
+}
+
+leolaniWorld:Ontology {
+  sem:eventProperty rdfs:label "event property" .
+  
+  gaf:Mention rdfs:label "Mention" .
+  
+  gaf:Instance rdfs:label "Instance" .
+  
+  grasp:AttributionValue rdfs:label "Attribution value" .
+  
+  grasp:CertaintyValue rdfs:label "Certainty Value" .
+  
+  grasp:FactualityValue rdfs:label "Factuality value" .
+  
+  grasp:PolarityValue rdfs:label "Polarity Value" .
+  
+  grasp:TemporalValue rdfs:label "Temporal Value" .
+  
+  grasp:EmotionValue rdfs:label "Emotion Value" .
+  
+  grasp:SentimentValue rdfs:label "Sentiment Value" .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:karla_live-in_paris rdfs:label "karla_live-in_paris" .
+  
+  leolaniWorld:leolani_know_tom rdfs:label "leolani_know_tom" .
+  
+  leolaniWorld:leolani_sense_front-camera rdfs:label "leolani_sense_front-camera" .
+}
+
+leolaniTalk:Interactions {
+  leolaniInputs:front-camera rdfs:label "front-camera" .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:bram_be-from_mongolia rdfs:label "bram_be-from_mongolia" .
+  
+  leolaniWorld:leolani_know_bram rdfs:label "leolani_know_bram" .
+  
+  leolaniWorld:leolani_see_selene rdfs:label "leolani_see_selene" .
+  
+  leolaniWorld:bram_be-from_netherlands rdfs:label "bram_be-from_netherlands" .
+  
+  leolaniWorld:leolani_know_lenka rdfs:label "leolani_know_lenka" .
+  
+  leolaniWorld:piek_be-from_netherlands rdfs:label "piek_be-from_netherlands" .
+  
+  leolaniWorld:leolani_know_human rdfs:label "leolani_know_human" .
+}
+
+leolaniWorld:Ontology {
+  eps:contextProperty rdfs:label "context property" .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:Playground rdfs:label "Playground" .
+  
+  leolaniWorld:Netherlands rdfs:label "Netherlands" .
+  
+  leolaniContext:Hotel rdfs:label "Hotel" .
+  
+  leolaniContext:2019-05-13 rdfs:label "2019-05-13" .
+  
+  leolaniWorld:Groningen rdfs:label "Groningen" .
+  
+  leolaniContext:Market rdfs:label "Market" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 rdfs:label
+      "chat127965516845996952525259496385465333136_utterance6_char0-14" .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14_CERTAIN
+    rdfs:label "chat127965516845996952525259496385465333136_utterance6_char0-14_CERTAIN" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6 rdfs:label "chat127965516845996952525259496385465333136_utterance6" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 rdfs:label
+      "visual127965516845996952525259496385465333136_detection6_pixel0-5" .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:apple-171716995914020740368111899377149903920 rdfs:label "apple-171716995914020740368111899377149903920" .
+  
+  leolaniWorld:avocado-103560896991006461496921978917434291349 rdfs:label "avocado-103560896991006461496921978917434291349" .
+  
+  leolaniWorld:banana-157043524714537207621825916987989245988 rdfs:label "banana-157043524714537207621825916987989245988" .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920 rdfs:label
+      "leolani_see_apple-171716995914020740368111899377149903920" .
+  
+  leolaniWorld:leolani_see_avocado-103560896991006461496921978917434291349 rdfs:label
+      "leolani_see_avocado-103560896991006461496921978917434291349" .
+  
+  leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 rdfs:label
+      "leolani_see_banana-157043524714537207621825916987989245988" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5_PROBABLE
+    rdfs:label "visual127965516845996952525259496385465333136_detection6_pixel0-5_PROBABLE" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6 rdfs:label "visual127965516845996952525259496385465333136_detection6" .
+  
+  leolaniContext:context268358801010872561227946612498800656772 rdfs:label "context268358801010872561227946612498800656772" .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136 rdfs:label "chat127965516845996952525259496385465333136" .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136 rdfs:label "visual127965516845996952525259496385465333136" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 rdfs:label
+      "chat561262076562447624216563137011585548_utterance1_char0-14" .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14_CERTAIN rdfs:label
+      "chat561262076562447624216563137011585548_utterance1_char0-14_CERTAIN" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1 rdfs:label "chat561262076562447624216563137011585548_utterance1" .
+  
+  leolaniContext:context276443412661626738866204441578881670415 rdfs:label "context276443412661626738866204441578881670415" .
+  
+  leolaniTalk:chat561262076562447624216563137011585548 rdfs:label "chat561262076562447624216563137011585548" .
+  
+  leolaniTalk:visual561262076562447624216563137011585548 rdfs:label "visual561262076562447624216563137011585548" .
+  
+  leolaniTalk:visual561262076562447624216563137011585548_detection1 rdfs:label "visual561262076562447624216563137011585548_detection1" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 rdfs:label
+      "chat302729188735346550529483623746197972664_utterance1_char0-14" .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14_CERTAIN
+    rdfs:label "chat302729188735346550529483623746197972664_utterance1_char0-14_CERTAIN" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1 rdfs:label "chat302729188735346550529483623746197972664_utterance1" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 rdfs:label
+      "visual302729188735346550529483623746197972664_detection1_pixel0-5" .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:cat-160256241836485773146108183553436465282 rdfs:label "cat-160256241836485773146108183553436465282" .
+  
+  leolaniWorld:dog-271928704518081354188953704989628402285 rdfs:label "dog-271928704518081354188953704989628402285" .
+  
+  leolaniWorld:teddy-bear-43173798375972659992424885596688528626 rdfs:label "teddy-bear-43173798375972659992424885596688528626" .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_cat-160256241836485773146108183553436465282 rdfs:label "leolani_see_cat-160256241836485773146108183553436465282" .
+  
+  leolaniWorld:leolani_see_dog-271928704518081354188953704989628402285 rdfs:label "leolani_see_dog-271928704518081354188953704989628402285" .
+  
+  leolaniWorld:leolani_see_teddy-bear-43173798375972659992424885596688528626 rdfs:label
+      "leolani_see_teddy-bear-43173798375972659992424885596688528626" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5_PROBABLE
+    rdfs:label "visual302729188735346550529483623746197972664_detection1_pixel0-5_PROBABLE" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1 rdfs:label "visual302729188735346550529483623746197972664_detection1" .
+  
+  leolaniContext:context323211227412813149797367793961883883538 rdfs:label "context323211227412813149797367793961883883538" .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664 rdfs:label "chat302729188735346550529483623746197972664" .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664 rdfs:label "visual302729188735346550529483623746197972664" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 rdfs:label
+      "chat83285352374109998231665090916579739247_utterance1_char0-14" .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14_CERTAIN
+    rdfs:label "chat83285352374109998231665090916579739247_utterance1_char0-14_CERTAIN" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1 rdfs:label "chat83285352374109998231665090916579739247_utterance1" .
+  
+  leolaniContext:context206450068019373130455198369583978026520 rdfs:label "context206450068019373130455198369583978026520" .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247 rdfs:label "chat83285352374109998231665090916579739247" .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247 rdfs:label "visual83285352374109998231665090916579739247" .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247_detection1 rdfs:label "visual83285352374109998231665090916579739247_detection1" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 rdfs:label
+      "chat25513658489733247324587982954325908723_utterance1_char0-14" .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14_CERTAIN
+    rdfs:label "chat25513658489733247324587982954325908723_utterance1_char0-14_CERTAIN" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1 rdfs:label "chat25513658489733247324587982954325908723_utterance1" .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 rdfs:label
+      "visual25513658489733247324587982954325908723_detection1_pixel0-2" .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2_PROBABLE
+    rdfs:label "visual25513658489733247324587982954325908723_detection1_pixel0-2_PROBABLE" .
+}
+
+leolaniTalk:Interactions {
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1 rdfs:label "visual25513658489733247324587982954325908723_detection1" .
+  
+  leolaniContext:context208470771577368122218453609782553146589 rdfs:label "context208470771577368122218453609782553146589" .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723 rdfs:label "chat25513658489733247324587982954325908723" .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723 rdfs:label "visual25513658489733247324587982954325908723" .
+}
+
+leolaniWorld:Ontology {
+  prov:wasDerivedFrom rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 grasp:containsDenotation
+      leolaniWorld:pizza, leolaniWorld:human .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 grasp:containsDenotation
+      leolaniWorld:selene, leolaniWorld:apple-171716995914020740368111899377149903920, leolaniWorld:avocado-103560896991006461496921978917434291349,
+      leolaniWorld:banana-157043524714537207621825916987989245988 .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 grasp:containsDenotation
+      leolaniWorld:bram, leolaniWorld:netherlands .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 grasp:containsDenotation
+      leolaniWorld:bram, leolaniWorld:mongolia .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 grasp:containsDenotation
+      leolaniWorld:selene, leolaniWorld:cat-160256241836485773146108183553436465282, leolaniWorld:dog-271928704518081354188953704989628402285,
+      leolaniWorld:teddy-bear-43173798375972659992424885596688528626 .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 grasp:containsDenotation
+      leolaniWorld:piek, leolaniWorld:netherlands .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 grasp:containsDenotation
+      leolaniWorld:karla, leolaniWorld:paris .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 grasp:containsDenotation
+      leolaniWorld:apple-171716995914020740368111899377149903920, leolaniWorld:banana-157043524714537207621825916987989245988 .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 grasp:denotes
+      leolaniWorld:human_like_pizza .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 grasp:denotes
+      leolaniWorld:leolani_see_selene, leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920,
+      leolaniWorld:leolani_see_avocado-103560896991006461496921978917434291349, leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 grasp:denotes
+      leolaniWorld:bram_be-from_netherlands .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 grasp:denotes
+      leolaniWorld:bram_be-from_mongolia .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 grasp:denotes
+      leolaniWorld:leolani_see_selene, leolaniWorld:leolani_see_cat-160256241836485773146108183553436465282,
+      leolaniWorld:leolani_see_dog-271928704518081354188953704989628402285, leolaniWorld:leolani_see_teddy-bear-43173798375972659992424885596688528626 .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 grasp:denotes
+      leolaniWorld:piek_be-from_netherlands .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 grasp:denotes
+      leolaniWorld:karla_live-in_paris .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 grasp:denotes
+      leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920, leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 grasp:hasAttribution
+      leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14_CERTAIN .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 grasp:hasAttribution
+      leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5_PROBABLE .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 grasp:hasAttribution
+      leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14_CERTAIN .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 grasp:hasAttribution
+      leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14_CERTAIN .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 grasp:hasAttribution
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5_PROBABLE .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 grasp:hasAttribution
+      leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14_CERTAIN .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 grasp:hasAttribution
+      leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14_CERTAIN .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 grasp:hasAttribution
+      leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2_PROBABLE .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 grasp:wasAttributedTo
+      leolaniFriends:human .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 grasp:wasAttributedTo
+      leolaniInputs:front-camera .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 grasp:wasAttributedTo
+      leolaniFriends:bram .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 grasp:wasAttributedTo
+      leolaniFriends:lenka .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 grasp:wasAttributedTo
+      leolaniInputs:front-camera .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 grasp:wasAttributedTo
+      leolaniFriends:bram .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 grasp:wasAttributedTo
+      leolaniFriends:tom .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 grasp:wasAttributedTo
+      leolaniInputs:front-camera .
+}
+
+leolaniWorld:Ontology {
+  <http://www.w3.org/ns/prov#> prov:wasDerivedFrom <http://www.w3.org/ns/prov-o#>, <http://www.w3.org/ns/prov-o-20130430>,
+      <http://www.w3.org/ns/prov-aq#>, <http://www.w3.org/ns/prov-dc#>, <http://www.w3.org/ns/prov-dictionary#>,
+      <http://www.w3.org/ns/prov-links#>, <http://www.w3.org/ns/prov-o-inverses#> .
+  
+  <http://www.w3.org/ns/prov-dc#> prov:wasDerivedFrom <http://www.w3.org/ns/prov-dc-refinements#> .
+  
+  <http://www.w3.org/ns/prov-o-inverses#> prov:wasDerivedFrom <http://www.w3.org/ns/prov-o-20130430> .
+}
+
+leolaniTalk:Perspectives {
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 prov:wasDerivedFrom
+      leolaniTalk:chat127965516845996952525259496385465333136_utterance6 .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 prov:wasDerivedFrom
+      leolaniTalk:visual127965516845996952525259496385465333136_detection6 .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 prov:wasDerivedFrom
+      leolaniTalk:chat561262076562447624216563137011585548_utterance1 .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 prov:wasDerivedFrom
+      leolaniTalk:chat302729188735346550529483623746197972664_utterance1 .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 prov:wasDerivedFrom
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1 .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 prov:wasDerivedFrom
+      leolaniTalk:chat83285352374109998231665090916579739247_utterance1 .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 prov:wasDerivedFrom
+      leolaniTalk:chat25513658489733247324587982954325908723_utterance1 .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 prov:wasDerivedFrom
+      leolaniTalk:visual25513658489733247324587982954325908723_detection1 .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14_CERTAIN
+    grasp:isAttributionFor leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5_PROBABLE
+    grasp:isAttributionFor leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14_CERTAIN grasp:isAttributionFor
+      leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14_CERTAIN
+    grasp:isAttributionFor leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5_PROBABLE
+    grasp:isAttributionFor leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14_CERTAIN
+    grasp:isAttributionFor leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14_CERTAIN
+    grasp:isAttributionFor leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2_PROBABLE
+    grasp:isAttributionFor leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:karla grasp:denotedIn leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 .
+  
+  leolaniWorld:paris grasp:denotedIn leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 .
+  
+  leolaniWorld:bram grasp:denotedIn leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14,
+      leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 .
+  
+  leolaniWorld:pizza grasp:denotedIn leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 .
+  
+  leolaniWorld:piek grasp:denotedIn leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 .
+  
+  leolaniWorld:selene grasp:denotedIn leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5,
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniWorld:netherlands grasp:denotedIn leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14,
+      leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 .
+  
+  leolaniWorld:human grasp:denotedIn leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 .
+  
+  leolaniWorld:mongolia grasp:denotedIn leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 .
+  
+  leolaniWorld:apple-171716995914020740368111899377149903920 grasp:denotedIn leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5,
+      leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 .
+  
+  leolaniWorld:avocado-103560896991006461496921978917434291349 grasp:denotedIn leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 .
+  
+  leolaniWorld:banana-157043524714537207621825916987989245988 grasp:denotedIn leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5,
+      leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 .
+  
+  leolaniWorld:cat-160256241836485773146108183553436465282 grasp:denotedIn leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniWorld:dog-271928704518081354188953704989628402285 grasp:denotedIn leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniWorld:teddy-bear-43173798375972659992424885596688528626 grasp:denotedIn leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:human_like_pizza grasp:denotedBy leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 .
+  
+  leolaniWorld:karla_live-in_paris grasp:denotedBy leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 .
+  
+  leolaniWorld:leolani_know_tom grasp:denotedBy leolaniTalk:chat25513658489733247324587982954325908723_utterance1_char0-14 .
+  
+  leolaniWorld:leolani_sense_front-camera grasp:denotedBy leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5,
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5, leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 .
+  
+  leolaniWorld:bram_be-from_mongolia grasp:denotedBy leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 .
+  
+  leolaniWorld:leolani_know_bram grasp:denotedBy leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14,
+      leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 .
+  
+  leolaniWorld:leolani_see_selene grasp:denotedBy leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5,
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniWorld:bram_be-from_netherlands grasp:denotedBy leolaniTalk:chat561262076562447624216563137011585548_utterance1_char0-14 .
+  
+  leolaniWorld:leolani_know_lenka grasp:denotedBy leolaniTalk:chat302729188735346550529483623746197972664_utterance1_char0-14 .
+  
+  leolaniWorld:piek_be-from_netherlands grasp:denotedBy leolaniTalk:chat83285352374109998231665090916579739247_utterance1_char0-14 .
+  
+  leolaniWorld:leolani_know_human grasp:denotedBy leolaniTalk:chat127965516845996952525259496385465333136_utterance6_char0-14 .
+  
+  leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920 grasp:denotedBy
+      leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5, leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 .
+  
+  leolaniWorld:leolani_see_avocado-103560896991006461496921978917434291349 grasp:denotedBy
+      leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5 .
+  
+  leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 grasp:denotedBy
+      leolaniTalk:visual127965516845996952525259496385465333136_detection6_pixel0-5, leolaniTalk:visual25513658489733247324587982954325908723_detection1_pixel0-2 .
+  
+  leolaniWorld:leolani_see_cat-160256241836485773146108183553436465282 grasp:denotedBy
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniWorld:leolani_see_dog-271928704518081354188953704989628402285 grasp:denotedBy
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+  
+  leolaniWorld:leolani_see_teddy-bear-43173798375972659992424885596688528626 grasp:denotedBy
+      leolaniTalk:visual302729188735346550529483623746197972664_detection1_pixel0-5 .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:Playground :id "294443517279446903612704361066947657036"^^xml1:string .
+  
+  leolaniContext:Hotel :id "142231918168264819785131440772971598793"^^xml1:string .
+  
+  leolaniContext:Market :id "106451906413663382171199006862482133564"^^xml1:string,
+      "120123489311443286556375522712004633464"^^xml1:string, "338182758595495775443648809426455528117"^^xml1:string .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6 :id "6"^^xml1:string .
+  
+  leolaniWorld:apple-171716995914020740368111899377149903920 :id "171716995914020740368111899377149903920"^^xml1:string .
+  
+  leolaniWorld:avocado-103560896991006461496921978917434291349 :id "103560896991006461496921978917434291349"^^xml1:string .
+  
+  leolaniWorld:banana-157043524714537207621825916987989245988 :id "157043524714537207621825916987989245988"^^xml1:string .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6 :id "6"^^xml1:string .
+  
+  leolaniContext:context268358801010872561227946612498800656772 :id "268358801010872561227946612498800656772"^^xml1:string .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136 :id "127965516845996952525259496385465333136"^^xml1:string .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136 :id "127965516845996952525259496385465333136"^^xml1:string .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1 :id "1"^^xml1:string .
+  
+  leolaniContext:context276443412661626738866204441578881670415 :id "276443412661626738866204441578881670415"^^xml1:string .
+  
+  leolaniTalk:chat561262076562447624216563137011585548 :id "561262076562447624216563137011585548"^^xml1:string .
+  
+  leolaniTalk:visual561262076562447624216563137011585548 :id "561262076562447624216563137011585548"^^xml1:string .
+  
+  leolaniTalk:visual561262076562447624216563137011585548_detection1 :id "1"^^xml1:string .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1 :id "1"^^xml1:string .
+  
+  leolaniWorld:cat-160256241836485773146108183553436465282 :id "160256241836485773146108183553436465282"^^xml1:string .
+  
+  leolaniWorld:dog-271928704518081354188953704989628402285 :id "271928704518081354188953704989628402285"^^xml1:string .
+  
+  leolaniWorld:teddy-bear-43173798375972659992424885596688528626 :id "43173798375972659992424885596688528626"^^xml1:string .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1 :id "1"^^xml1:string .
+  
+  leolaniContext:context323211227412813149797367793961883883538 :id "323211227412813149797367793961883883538"^^xml1:string .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664 :id "302729188735346550529483623746197972664"^^xml1:string .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664 :id "302729188735346550529483623746197972664"^^xml1:string .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1 :id "1"^^xml1:string .
+  
+  leolaniContext:context206450068019373130455198369583978026520 :id "206450068019373130455198369583978026520"^^xml1:string .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247 :id "83285352374109998231665090916579739247"^^xml1:string .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247 :id "83285352374109998231665090916579739247"^^xml1:string .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247_detection1 :id "1"^^xml1:string .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1 :id "1"^^xml1:string .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1 :id "1"^^xml1:string .
+  
+  leolaniContext:context208470771577368122218453609782553146589 :id "208470771577368122218453609782553146589"^^xml1:string .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723 :id "25513658489733247324587982954325908723"^^xml1:string .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723 :id "25513658489733247324587982954325908723"^^xml1:string .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136_utterance6 sem:hasActor leolaniFriends:human .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136_detection6 sem:hasActor
+      leolaniInputs:front-camera .
+  
+  leolaniTalk:chat561262076562447624216563137011585548_utterance1 sem:hasActor leolaniFriends:bram .
+  
+  leolaniTalk:visual561262076562447624216563137011585548_detection1 sem:hasActor leolaniInputs:front-camera .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664_utterance1 sem:hasActor leolaniFriends:lenka .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664_detection1 sem:hasActor
+      leolaniInputs:front-camera .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247_utterance1 sem:hasActor leolaniFriends:bram .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247_detection1 sem:hasActor leolaniInputs:front-camera .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723_utterance1 sem:hasActor leolaniFriends:tom .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723_detection1 sem:hasActor leolaniInputs:front-camera .
+  
+  leolaniTalk:chat127965516845996952525259496385465333136 sem:hasSubEvent leolaniTalk:chat127965516845996952525259496385465333136_utterance6 .
+  
+  leolaniTalk:visual127965516845996952525259496385465333136 sem:hasSubEvent leolaniTalk:visual127965516845996952525259496385465333136_detection6 .
+  
+  leolaniTalk:chat561262076562447624216563137011585548 sem:hasSubEvent leolaniTalk:chat561262076562447624216563137011585548_utterance1 .
+  
+  leolaniTalk:visual561262076562447624216563137011585548 sem:hasSubEvent leolaniTalk:visual561262076562447624216563137011585548_detection1 .
+  
+  leolaniTalk:chat302729188735346550529483623746197972664 sem:hasSubEvent leolaniTalk:chat302729188735346550529483623746197972664_utterance1 .
+  
+  leolaniTalk:visual302729188735346550529483623746197972664 sem:hasSubEvent leolaniTalk:visual302729188735346550529483623746197972664_detection1 .
+  
+  leolaniTalk:chat83285352374109998231665090916579739247 sem:hasSubEvent leolaniTalk:chat83285352374109998231665090916579739247_utterance1 .
+  
+  leolaniTalk:visual83285352374109998231665090916579739247 sem:hasSubEvent leolaniTalk:visual83285352374109998231665090916579739247_detection1 .
+  
+  leolaniTalk:chat25513658489733247324587982954325908723 sem:hasSubEvent leolaniTalk:chat25513658489733247324587982954325908723_utterance1 .
+  
+  leolaniTalk:visual25513658489733247324587982954325908723 sem:hasSubEvent leolaniTalk:visual25513658489733247324587982954325908723_detection1 .
+  
+  leolaniContext:2019-05-13 time:day "13"^^xml1:gDay;
+    time:month "5"^^xml1:gMonthDay;
+    time:unitType time:unitDay;
+    time:year "2019"^^xml1:gYear .
+  
+  leolaniContext:context268358801010872561227946612498800656772 sem:hasPlace leolaniContext:Market .
+  
+  leolaniContext:context276443412661626738866204441578881670415 sem:hasPlace leolaniContext:Market .
+  
+  leolaniContext:context323211227412813149797367793961883883538 sem:hasPlace leolaniContext:Playground .
+  
+  leolaniContext:context206450068019373130455198369583978026520 sem:hasPlace leolaniContext:Hotel .
+  
+  leolaniContext:context208470771577368122218453609782553146589 sem:hasPlace leolaniContext:Market .
+  
+  leolaniContext:Playground :in leolaniWorld:Netherlands, leolaniWorld:Groningen .
+  
+  leolaniContext:Hotel :in leolaniWorld:Netherlands, leolaniWorld:Groningen .
+  
+  leolaniContext:Market :in leolaniWorld:Netherlands, leolaniWorld:Groningen .
+}
+
+leolaniWorld:leolani_sense_front-camera {
+  leolaniWorld:leolani :sense leolaniInputs:front-camera .
+}
+
+leolaniWorld:Ontology {
+  :acknowledge owl:propertyDisjointWith :experience .
+  
+  _:node66838 owl:onProperty :be-member-of .
+  
+  _:node66842 owl:onProperty :be-member-of .
+  
+  _:node66846 owl:onProperty :like-by .
+  
+  _:node66850 owl:onProperty :like .
+  
+  _:node66854 owl:onProperty :like .
+  
+  _:node66870 owl:onProperty rdf:value .
+  
+  _:node66872 owl:onProperty _:node66873 .
+  
+  _:node66895 owl:onProperty _:node66896 .
+  
+  _:node66897 owl:onProperty gaf:denotes .
+  
+  _:node66898 owl:onProperty :like-by .
+  
+  _:node66899 owl:onProperty _:node66900 .
+  
+  _:node66901 owl:onProperty gaf:denotedBy .
+  
+  _:node66917 owl:onProperty :be-member-of .
+  
+  _:node66921 owl:onProperty :be-member-of .
+  
+  _:node66925 owl:onProperty :like-by .
+  
+  _:node66929 owl:onProperty :like .
+  
+  _:node66933 owl:onProperty :like .
+  
+  _:node66949 owl:onProperty rdf:value .
+  
+  _:node66951 owl:onProperty _:node66952 .
+  
+  _:node66974 owl:onProperty _:node66975 .
+  
+  _:node66976 owl:onProperty gaf:denotes .
+  
+  _:node66977 owl:onProperty :like-by .
+  
+  _:node66978 owl:onProperty _:node66979 .
+  
+  _:node66980 owl:onProperty gaf:denotedBy .
+  
+  _:node66996 owl:onProperty :be-member-of .
+  
+  _:node67000 owl:onProperty :be-member-of .
+  
+  _:node67004 owl:onProperty :like-by .
+  
+  _:node67008 owl:onProperty :like .
+  
+  _:node67012 owl:onProperty :like .
+  
+  _:node67028 owl:onProperty rdf:value .
+  
+  _:node67030 owl:onProperty _:node67031 .
+  
+  _:node67053 owl:onProperty _:node67054 .
+  
+  _:node67055 owl:onProperty gaf:denotes .
+  
+  _:node67056 owl:onProperty :like-by .
+  
+  _:node67057 owl:onProperty _:node67058 .
+  
+  _:node67059 owl:onProperty gaf:denotedBy .
+  
+  _:node67075 owl:onProperty :be-member-of .
+  
+  _:node67079 owl:onProperty :be-member-of .
+  
+  _:node67083 owl:onProperty :like-by .
+  
+  _:node67087 owl:onProperty :like .
+  
+  _:node67091 owl:onProperty :like .
+  
+  _:node67107 owl:onProperty rdf:value .
+  
+  _:node67109 owl:onProperty _:node67110 .
+  
+  _:node67132 owl:onProperty _:node67133 .
+  
+  _:node67134 owl:onProperty gaf:denotes .
+  
+  _:node67135 owl:onProperty :like-by .
+  
+  _:node67136 owl:onProperty _:node67137 .
+  
+  _:node67138 owl:onProperty gaf:denotedBy .
+  
+  _:node67154 owl:onProperty :be-member-of .
+  
+  _:node67158 owl:onProperty :be-member-of .
+  
+  _:node67162 owl:onProperty :like-by .
+  
+  _:node67166 owl:onProperty :like .
+  
+  _:node67170 owl:onProperty :like .
+  
+  _:node67186 owl:onProperty rdf:value .
+  
+  _:node67188 owl:onProperty _:node67189 .
+  
+  _:node67211 owl:onProperty _:node67212 .
+  
+  _:node67213 owl:onProperty gaf:denotes .
+  
+  _:node67214 owl:onProperty :like-by .
+  
+  _:node67215 owl:onProperty _:node67216 .
+  
+  _:node67217 owl:onProperty gaf:denotedBy .
+  
+  _:node67233 owl:onProperty :be-member-of .
+  
+  _:node67237 owl:onProperty :be-member-of .
+  
+  _:node67241 owl:onProperty :like-by .
+  
+  _:node67245 owl:onProperty :like .
+  
+  _:node67249 owl:onProperty :like .
+  
+  _:node67265 owl:onProperty rdf:value .
+  
+  _:node67267 owl:onProperty _:node67268 .
+  
+  _:node67290 owl:onProperty _:node67291 .
+  
+  _:node67292 owl:onProperty gaf:denotes .
+  
+  _:node67293 owl:onProperty :like-by .
+  
+  _:node67294 owl:onProperty _:node67295 .
+  
+  _:node67296 owl:onProperty gaf:denotedBy .
+  
+  _:node66838 owl:someValuesFrom :institution .
+  
+  _:node66842 owl:someValuesFrom :institution .
+  
+  _:node66850 owl:someValuesFrom :interest .
+  
+  _:node66854 owl:someValuesFrom :interest .
+  
+  _:node66870 owl:someValuesFrom grasp:AttributionValue .
+  
+  _:node66872 owl:someValuesFrom gaf:Mention .
+  
+  _:node66895 owl:someValuesFrom foaf:Agent .
+  
+  _:node66897 owl:someValuesFrom gaf:Instance .
+  
+  _:node66898 owl:someValuesFrom foaf:Agent .
+  
+  _:node66899 owl:someValuesFrom foaf:Agent .
+  
+  _:node66901 owl:someValuesFrom gaf:Mention .
+  
+  _:node66917 owl:someValuesFrom :institution .
+  
+  _:node66921 owl:someValuesFrom :institution .
+  
+  _:node66929 owl:someValuesFrom :interest .
+  
+  _:node66933 owl:someValuesFrom :interest .
+  
+  _:node66949 owl:someValuesFrom grasp:AttributionValue .
+  
+  _:node66951 owl:someValuesFrom gaf:Mention .
+  
+  _:node66974 owl:someValuesFrom foaf:Agent .
+  
+  _:node66976 owl:someValuesFrom gaf:Instance .
+  
+  _:node66977 owl:someValuesFrom foaf:Agent .
+  
+  _:node66978 owl:someValuesFrom foaf:Agent .
+  
+  _:node66980 owl:someValuesFrom gaf:Mention .
+  
+  _:node66996 owl:someValuesFrom :institution .
+  
+  _:node67000 owl:someValuesFrom :institution .
+  
+  _:node67008 owl:someValuesFrom :interest .
+  
+  _:node67012 owl:someValuesFrom :interest .
+  
+  _:node67028 owl:someValuesFrom grasp:AttributionValue .
+  
+  _:node67030 owl:someValuesFrom gaf:Mention .
+  
+  _:node67053 owl:someValuesFrom foaf:Agent .
+  
+  _:node67055 owl:someValuesFrom gaf:Instance .
+  
+  _:node67056 owl:someValuesFrom foaf:Agent .
+  
+  _:node67057 owl:someValuesFrom foaf:Agent .
+  
+  _:node67059 owl:someValuesFrom gaf:Mention .
+  
+  _:node67075 owl:someValuesFrom :institution .
+  
+  _:node67079 owl:someValuesFrom :institution .
+  
+  _:node67087 owl:someValuesFrom :interest .
+  
+  _:node67091 owl:someValuesFrom :interest .
+  
+  _:node67107 owl:someValuesFrom grasp:AttributionValue .
+  
+  _:node67109 owl:someValuesFrom gaf:Mention .
+  
+  _:node67132 owl:someValuesFrom foaf:Agent .
+  
+  _:node67134 owl:someValuesFrom gaf:Instance .
+  
+  _:node67135 owl:someValuesFrom foaf:Agent .
+  
+  _:node67136 owl:someValuesFrom foaf:Agent .
+  
+  _:node67138 owl:someValuesFrom gaf:Mention .
+  
+  _:node67154 owl:someValuesFrom :institution .
+  
+  _:node67158 owl:someValuesFrom :institution .
+  
+  _:node67166 owl:someValuesFrom :interest .
+  
+  _:node67170 owl:someValuesFrom :interest .
+  
+  _:node67186 owl:someValuesFrom grasp:AttributionValue .
+  
+  _:node67188 owl:someValuesFrom gaf:Mention .
+  
+  _:node67211 owl:someValuesFrom foaf:Agent .
+  
+  _:node67213 owl:someValuesFrom gaf:Instance .
+  
+  _:node67214 owl:someValuesFrom foaf:Agent .
+  
+  _:node67215 owl:someValuesFrom foaf:Agent .
+  
+  _:node67217 owl:someValuesFrom gaf:Mention .
+  
+  _:node67233 owl:someValuesFrom :institution .
+  
+  _:node67237 owl:someValuesFrom :institution .
+  
+  _:node67245 owl:someValuesFrom :interest .
+  
+  _:node67249 owl:someValuesFrom :interest .
+  
+  _:node67265 owl:someValuesFrom grasp:AttributionValue .
+  
+  _:node67267 owl:someValuesFrom gaf:Mention .
+  
+  _:node67290 owl:someValuesFrom foaf:Agent .
+  
+  _:node67292 owl:someValuesFrom gaf:Instance .
+  
+  _:node67293 owl:someValuesFrom foaf:Agent .
+  
+  _:node67294 owl:someValuesFrom foaf:Agent .
+  
+  _:node67296 owl:someValuesFrom gaf:Mention .
+  
+  _:node66835 owl:intersectionOf _:node66836 .
+  
+  _:node66839 owl:intersectionOf _:node66840 .
+  
+  _:node66843 owl:intersectionOf _:node66844 .
+  
+  _:node66847 owl:intersectionOf _:node66848 .
+  
+  _:node66851 owl:intersectionOf _:node66852 .
+  
+  _:node66855 owl:intersectionOf _:node66856 .
+  
+  _:node66860 owl:intersectionOf _:node66861 .
+  
+  _:node66865 owl:intersectionOf _:node66866 .
+  
+  _:node66868 owl:intersectionOf _:node66869 .
+  
+  _:node66914 owl:intersectionOf _:node66915 .
+  
+  _:node66918 owl:intersectionOf _:node66919 .
+  
+  _:node66922 owl:intersectionOf _:node66923 .
+  
+  _:node66926 owl:intersectionOf _:node66927 .
+  
+  _:node66930 owl:intersectionOf _:node66931 .
+  
+  _:node66934 owl:intersectionOf _:node66935 .
+  
+  _:node66939 owl:intersectionOf _:node66940 .
+  
+  _:node66944 owl:intersectionOf _:node66945 .
+  
+  _:node66947 owl:intersectionOf _:node66948 .
+  
+  _:node66993 owl:intersectionOf _:node66994 .
+  
+  _:node66997 owl:intersectionOf _:node66998 .
+  
+  _:node67001 owl:intersectionOf _:node67002 .
+  
+  _:node67005 owl:intersectionOf _:node67006 .
+  
+  _:node67009 owl:intersectionOf _:node67010 .
+  
+  _:node67013 owl:intersectionOf _:node67014 .
+  
+  _:node67018 owl:intersectionOf _:node67019 .
+  
+  _:node67023 owl:intersectionOf _:node67024 .
+  
+  _:node67026 owl:intersectionOf _:node67027 .
+  
+  _:node67072 owl:intersectionOf _:node67073 .
+  
+  _:node67076 owl:intersectionOf _:node67077 .
+  
+  _:node67080 owl:intersectionOf _:node67081 .
+  
+  _:node67084 owl:intersectionOf _:node67085 .
+  
+  _:node67088 owl:intersectionOf _:node67089 .
+  
+  _:node67092 owl:intersectionOf _:node67093 .
+  
+  _:node67097 owl:intersectionOf _:node67098 .
+  
+  _:node67102 owl:intersectionOf _:node67103 .
+  
+  _:node67105 owl:intersectionOf _:node67106 .
+  
+  _:node67151 owl:intersectionOf _:node67152 .
+  
+  _:node67155 owl:intersectionOf _:node67156 .
+  
+  _:node67159 owl:intersectionOf _:node67160 .
+  
+  _:node67163 owl:intersectionOf _:node67164 .
+  
+  _:node67167 owl:intersectionOf _:node67168 .
+  
+  _:node67171 owl:intersectionOf _:node67172 .
+  
+  _:node67176 owl:intersectionOf _:node67177 .
+  
+  _:node67181 owl:intersectionOf _:node67182 .
+  
+  _:node67184 owl:intersectionOf _:node67185 .
+  
+  _:node67230 owl:intersectionOf _:node67231 .
+  
+  _:node67234 owl:intersectionOf _:node67235 .
+  
+  _:node67238 owl:intersectionOf _:node67239 .
+  
+  _:node67242 owl:intersectionOf _:node67243 .
+  
+  _:node67246 owl:intersectionOf _:node67247 .
+  
+  _:node67250 owl:intersectionOf _:node67251 .
+  
+  _:node67255 owl:intersectionOf _:node67256 .
+  
+  _:node67260 owl:intersectionOf _:node67261 .
+  
+  _:node67263 owl:intersectionOf _:node67264 .
+  
+  grasp:Attribution owl:disjointWith grasp:AttributionValue .
+  
+  gaf:Mention owl:disjointWith grasp:AttributionValue .
+  
+  gaf:Instance owl:disjointWith grasp:AttributionValue .
+  
+  grasp:CertaintyValue owl:disjointWith grasp:PolarityValue, grasp:TemporalValue .
+  
+  grasp:FactualityValue owl:disjointWith grasp:SentimentValue .
+  
+  grasp:PolarityValue owl:disjointWith grasp:TemporalValue .
+  
+  grasp:EmotionValue owl:disjointWith grasp:FactualityValue, grasp:SentimentValue .
+  
+  _:node66846 owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger .
+  
+  _:node66925 owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger .
+  
+  _:node67004 owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger .
+  
+  _:node67083 owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger .
+  
+  _:node67162 owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger .
+  
+  _:node67241 owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger .
+  
+  _:node66846 owl:onClass :agent .
+  
+  _:node66925 owl:onClass :agent .
+  
+  _:node67004 owl:onClass :agent .
+  
+  _:node67083 owl:onClass :agent .
+  
+  _:node67162 owl:onClass :agent .
+  
+  _:node67241 owl:onClass :agent .
+  
+  _:node66902 owl:members _:node66903 .
+  
+  _:node66908 owl:members _:node66909 .
+  
+  _:node66981 owl:members _:node66982 .
+  
+  _:node66987 owl:members _:node66988 .
+  
+  _:node67060 owl:members _:node67061 .
+  
+  _:node67066 owl:members _:node67067 .
+  
+  _:node67139 owl:members _:node67140 .
+  
+  _:node67145 owl:members _:node67146 .
+  
+  _:node67218 owl:members _:node67219 .
+  
+  _:node67224 owl:members _:node67225 .
+  
+  _:node67297 owl:members _:node67298 .
+  
+  _:node67303 owl:members _:node67304 .
+}
+
+leolaniWorld:human_like_pizza {
+  leolaniWorld:human :like leolaniWorld:pizza .
+}
+
+leolaniWorld:leolani_know_tom {
+  leolaniWorld:leolani :know leolaniFriends:tom .
+}
+
+leolaniWorld:leolani_know_lenka {
+  leolaniWorld:leolani :know leolaniFriends:lenka .
+}
+
+leolaniWorld:leolani_know_bram {
+  leolaniWorld:leolani :know leolaniFriends:bram .
+}
+
+leolaniWorld:leolani_know_human {
+  leolaniWorld:leolani :know leolaniFriends:human .
+}
+
+leolaniWorld:Ontology {
+  sem:Event skos:broadMatch <http://linkedevents.org/ontology/Event>, <http://purl.org/NET/c4dm/event.owl#Event> .
+  
+  sem:Actor skos:broadMatch <http://sw.opencyc.org/2009/04/07/concept/en/SomethingExisting>,
+      <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant> .
+  
+  sem:Time skos:broadMatch <http://www.w3.org/2006/timeTemporalEntity> .
+  
+  sem:Event skos:closeMatch <http://purl.org/dc/dcmitype/Event>, <http://sw.opencyc.org/2009/04/07/concept/en/Situation>,
+      <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#perdurant>, <http://www.ontologyportal.org/translations/SUMO.owl.txt#Process>,
+      <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E5.Event> .
+  
+  sem:Actor skos:closeMatch foaf:Agent, <http://purl.org/dc/terms/Agent>, <http://purl.org/dc/terms/AgentClass>,
+      <http://sw.opencyc.org/2009/04/07/concept/en/Agent-Generic>, <http://www.ontologyportal.org/translations/SUMO.owl.txt#Agent>,
+      <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E39.Actor> .
+  
+  sem:Place skos:closeMatch <http://purl.org/dc/terms/Location>, <http://sw.opencyc.org/2009/04/07/concept/en/EnduringThing-Localized>,
+      <http://www.ontologyportal.org/translations/SUMO.owl.txt#GeographicArea>, <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E53.Place>;
+    skos:narrowMatch <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#PhysicalRegion>,
+      wgs:SpatialThing .
+  
+  prov:wasDerivedFrom prov:category "starting-point";
+    prov:component "derivations";
+    prov:definition "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."@en;
+    prov:inverse "hadDerivation";
+    prov:qualifiedForm prov:Derivation .
+  
+  _:node66874 owl:oneOf _:node66875 .
+  
+  _:node66877 owl:oneOf _:node66878 .
+  
+  _:node66882 owl:oneOf _:node66883 .
+  
+  _:node66885 owl:oneOf _:node66886 .
+  
+  _:node66892 owl:oneOf _:node66893 .
+  
+  _:node66953 owl:oneOf _:node66954 .
+  
+  _:node66956 owl:oneOf _:node66957 .
+  
+  _:node66961 owl:oneOf _:node66962 .
+  
+  _:node66964 owl:oneOf _:node66965 .
+  
+  _:node66971 owl:oneOf _:node66972 .
+  
+  _:node67032 owl:oneOf _:node67033 .
+  
+  _:node67035 owl:oneOf _:node67036 .
+  
+  _:node67040 owl:oneOf _:node67041 .
+  
+  _:node67043 owl:oneOf _:node67044 .
+  
+  _:node67050 owl:oneOf _:node67051 .
+  
+  _:node67111 owl:oneOf _:node67112 .
+  
+  _:node67114 owl:oneOf _:node67115 .
+  
+  _:node67119 owl:oneOf _:node67120 .
+  
+  _:node67122 owl:oneOf _:node67123 .
+  
+  _:node67129 owl:oneOf _:node67130 .
+  
+  _:node67190 owl:oneOf _:node67191 .
+  
+  _:node67193 owl:oneOf _:node67194 .
+  
+  _:node67198 owl:oneOf _:node67199 .
+  
+  _:node67201 owl:oneOf _:node67202 .
+  
+  _:node67208 owl:oneOf _:node67209 .
+  
+  _:node67269 owl:oneOf _:node67270 .
+  
+  _:node67272 owl:oneOf _:node67273 .
+  
+  _:node67277 owl:oneOf _:node67278 .
+  
+  _:node67280 owl:oneOf _:node67281 .
+  
+  _:node67287 owl:oneOf _:node67288 .
+}
+
+leolaniWorld:karla_live-in_paris {
+  leolaniWorld:karla :live-in leolaniWorld:paris .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context268358801010872561227946612498800656772 sem:hasEvent leolaniTalk:chat127965516845996952525259496385465333136,
+      leolaniTalk:visual127965516845996952525259496385465333136 .
+  
+  leolaniContext:context276443412661626738866204441578881670415 sem:hasEvent leolaniTalk:chat561262076562447624216563137011585548,
+      leolaniTalk:visual561262076562447624216563137011585548 .
+  
+  leolaniContext:context323211227412813149797367793961883883538 sem:hasEvent leolaniTalk:chat302729188735346550529483623746197972664,
+      leolaniTalk:visual302729188735346550529483623746197972664 .
+  
+  leolaniContext:context206450068019373130455198369583978026520 sem:hasEvent leolaniTalk:chat83285352374109998231665090916579739247,
+      leolaniTalk:visual83285352374109998231665090916579739247 .
+  
+  leolaniContext:context208470771577368122218453609782553146589 sem:hasEvent leolaniTalk:chat25513658489733247324587982954325908723,
+      leolaniTalk:visual25513658489733247324587982954325908723 .
+  
+  leolaniContext:context268358801010872561227946612498800656772 sem:hasBeginTimeStamp
+      leolaniContext:2019-05-13 .
+  
+  leolaniContext:context276443412661626738866204441578881670415 sem:hasBeginTimeStamp
+      leolaniContext:2019-05-13 .
+  
+  leolaniContext:context323211227412813149797367793961883883538 sem:hasBeginTimeStamp
+      leolaniContext:2019-05-13 .
+  
+  leolaniContext:context206450068019373130455198369583978026520 sem:hasBeginTimeStamp
+      leolaniContext:2019-05-13 .
+  
+  leolaniContext:context208470771577368122218453609782553146589 sem:hasBeginTimeStamp
+      leolaniContext:2019-05-13 .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:selene eps:hasContext leolaniContext:context268358801010872561227946612498800656772,
+      leolaniContext:context323211227412813149797367793961883883538 .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_selene eps:hasContext leolaniContext:context268358801010872561227946612498800656772,
+      leolaniContext:context323211227412813149797367793961883883538 .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:apple-171716995914020740368111899377149903920 eps:hasContext leolaniContext:context268358801010872561227946612498800656772,
+      leolaniContext:context208470771577368122218453609782553146589 .
+  
+  leolaniWorld:avocado-103560896991006461496921978917434291349 eps:hasContext leolaniContext:context268358801010872561227946612498800656772 .
+  
+  leolaniWorld:banana-157043524714537207621825916987989245988 eps:hasContext leolaniContext:context268358801010872561227946612498800656772,
+      leolaniContext:context208470771577368122218453609782553146589 .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920 eps:hasContext
+      leolaniContext:context268358801010872561227946612498800656772, leolaniContext:context208470771577368122218453609782553146589 .
+  
+  leolaniWorld:leolani_see_avocado-103560896991006461496921978917434291349 eps:hasContext
+      leolaniContext:context268358801010872561227946612498800656772 .
+  
+  leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 eps:hasContext
+      leolaniContext:context268358801010872561227946612498800656772, leolaniContext:context208470771577368122218453609782553146589 .
+}
+
+leolaniWorld:Instances {
+  leolaniWorld:cat-160256241836485773146108183553436465282 eps:hasContext leolaniContext:context323211227412813149797367793961883883538 .
+  
+  leolaniWorld:dog-271928704518081354188953704989628402285 eps:hasContext leolaniContext:context323211227412813149797367793961883883538 .
+  
+  leolaniWorld:teddy-bear-43173798375972659992424885596688528626 eps:hasContext leolaniContext:context323211227412813149797367793961883883538 .
+}
+
+leolaniWorld:Claims {
+  leolaniWorld:leolani_see_cat-160256241836485773146108183553436465282 eps:hasContext
+      leolaniContext:context323211227412813149797367793961883883538 .
+  
+  leolaniWorld:leolani_see_dog-271928704518081354188953704989628402285 eps:hasContext
+      leolaniContext:context323211227412813149797367793961883883538 .
+  
+  leolaniWorld:leolani_see_teddy-bear-43173798375972659992424885596688528626 eps:hasContext
+      leolaniContext:context323211227412813149797367793961883883538 .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context268358801010872561227946612498800656772 eps:hasDetection leolaniWorld:selene,
+      leolaniWorld:apple-171716995914020740368111899377149903920, leolaniWorld:avocado-103560896991006461496921978917434291349,
+      leolaniWorld:banana-157043524714537207621825916987989245988 .
+  
+  leolaniContext:context323211227412813149797367793961883883538 eps:hasDetection leolaniWorld:selene,
+      leolaniWorld:cat-160256241836485773146108183553436465282, leolaniWorld:dog-271928704518081354188953704989628402285,
+      leolaniWorld:teddy-bear-43173798375972659992424885596688528626 .
+  
+  leolaniContext:context208470771577368122218453609782553146589 eps:hasDetection leolaniWorld:apple-171716995914020740368111899377149903920,
+      leolaniWorld:banana-157043524714537207621825916987989245988, leolaniWorld:apple-387696995914020740368111899377149903920 .
+}
+
+leolaniWorld:bram_be-from_netherlands {
+  leolaniWorld:bram :be-from leolaniWorld:netherlands .
+}
+
+leolaniWorld:bram_be-from_mongolia {
+  leolaniWorld:bram :be-from leolaniWorld:mongolia .
+}
+
+leolaniWorld:piek_be-from_netherlands {
+  leolaniWorld:piek :be-from leolaniWorld:netherlands .
+}
+
+leolaniWorld:leolani_see_selene {
+  leolaniWorld:leolani :see leolaniWorld:selene .
+}
+
+leolaniWorld:leolani_see_apple-171716995914020740368111899377149903920 {
+  leolaniWorld:leolani :see leolaniWorld:apple-171716995914020740368111899377149903920 .
+}
+
+leolaniWorld:leolani_see_avocado-103560896991006461496921978917434291349 {
+  leolaniWorld:leolani :see leolaniWorld:avocado-103560896991006461496921978917434291349 .
+}
+
+leolaniWorld:leolani_see_banana-157043524714537207621825916987989245988 {
+  leolaniWorld:leolani :see leolaniWorld:banana-157043524714537207621825916987989245988 .
+}
+
+leolaniWorld:leolani_see_cat-160256241836485773146108183553436465282 {
+  leolaniWorld:leolani :see leolaniWorld:cat-160256241836485773146108183553436465282 .
+}
+
+leolaniWorld:leolani_see_dog-271928704518081354188953704989628402285 {
+  leolaniWorld:leolani :see leolaniWorld:dog-271928704518081354188953704989628402285 .
+}
+
+leolaniWorld:leolani_see_teddy-bear-43173798375972659992424885596688528626 {
+  leolaniWorld:leolani :see leolaniWorld:teddy-bear-43173798375972659992424885596688528626 .
+}
+
+leolaniTalk:Interactions {
+  leolaniContext:context268358801010872561227946612498800656772 eps:contextProperty
+      leolaniContext:Market .
+  
+  leolaniContext:context276443412661626738866204441578881670415 eps:contextProperty
+      leolaniContext:Market .
+  
+  leolaniContext:context323211227412813149797367793961883883538 eps:contextProperty
+      leolaniContext:Playground .
+  
+  leolaniContext:context206450068019373130455198369583978026520 eps:contextProperty
+      leolaniContext:Hotel .
+}
