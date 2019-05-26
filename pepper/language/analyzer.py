@@ -359,10 +359,6 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
 
-
-        #print(cons)
-
-
         # Main setting of things
         for key, elem in cons.items():
             if elem['label'].startswith('V'):
@@ -378,7 +374,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                         for node in branch:
                             if node.label()=='MD':
                                 rdf['predicate'] = node.leaves()[0]
-                            if node.label().startswith('V') and not find(node.leaves()[0], self.GRAMMAR, 'to_be'):
+                            if node.label().startswith('V') and not find(node.leaves()[0], self.GRAMMAR, 'aux'):
                                 rdf['object'] = node.leaves()[0]
 
             if elem['label'] == 'PP':
