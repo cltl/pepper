@@ -142,8 +142,12 @@ def _phrase_subject_gaps(all_gaps, utterance):
             if 'is ' in gap.predicate_name or ' is' in gap.predicate_name:
                 say += ' Is there a %s that %s %s?' % (
                     gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
+            elif ' of' in gap.predicate_name:
+                say += ' Is there a %s that %s is %s?' % (
+                    gap.entity_range_name, utterance.triple.subject_name, gap.predicate_name)
+
             elif ' ' in gap.predicate_name:
-                say += ' Is there a %s that %s %s?' % (
+                say += ' Is there a %s that is %s %s?' % (
                     gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
             else:
                 say += ' Has %s %s %s?' % (gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
