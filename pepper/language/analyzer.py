@@ -411,6 +411,9 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['object'] = ''
             #print('fix ',rdf)
 
+        if find(rdf['object'], self.GRAMMAR, 'aux'):
+            rdf['object'] = ''
+
         if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who' and rdf['predicate']!='be':
             if len(rdf['object'].split()) > 0:  # TODO revision by Lenka
                 rdf['subject'] = rdf['object'].split()[0]
