@@ -130,6 +130,9 @@ def reply_to_question(brain_response):
                 subject = item['slabel']['value']
 
         predicate = utterance.triple.predicate_name
+        #print('PRED ',predicate)
+        if predicate=='go':
+            predicate+=' to '
         person = ''
 
         # Deal with author

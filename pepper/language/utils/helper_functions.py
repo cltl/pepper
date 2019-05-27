@@ -201,6 +201,7 @@ def dereference_pronouns(self, rdf, grammar, speaker):
                 rest += '-' + w
 
             l = find(pos, self.GRAMMAR)
+            #print('deref ',pos,l)
             if l and 'person' in l:
                 #print('dereferencing ', l)
 
@@ -214,7 +215,9 @@ def dereference_pronouns(self, rdf, grammar, speaker):
                     if rdf['subject']=='':
                     '''
                 elif l['person']=='first':
+                    rdf['object'] = rdf['subject']
                     rdf['subject']=speaker
+
 
                 break
 
