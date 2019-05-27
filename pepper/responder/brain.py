@@ -8,6 +8,9 @@ from pepper.language.generation.reply import reply_to_question
 from .responder import Responder, ResponderType
 from pepper.language import UtteranceType
 
+from pepper.knowledge import sentences
+from random import choice
+
 import re
 
 from typing import Optional, Union, Tuple, Callable
@@ -49,4 +52,4 @@ class BrainResponder(Responder):
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
 
         except Exception as e:
-            self._log.error(e)
+            raise

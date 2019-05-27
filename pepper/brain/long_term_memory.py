@@ -597,7 +597,9 @@ class LongTermMemory(BasicBrain):
         -------
             Overlap object containing an entity and the provenance of the mention causing the overlap
         """
-        [preprocessed_types] = self._rdf_builder.clean_aggregated_types(raw_objects_in_location['type']['value'])
+
+        # TODO: Selene: Fixed by Transforming to (Hashable) Tuple, is this a correct fix?
+        preprocessed_types = tuple(self._rdf_builder.clean_aggregated_types(raw_objects_in_location['type']['value']))
 
         return preprocessed_types, {'brain_ids': raw_objects_in_location['ids']['value'].split('|'),
                                     'local_ids': []}

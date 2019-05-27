@@ -202,7 +202,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
             rdf['object'] = remainder.strip()
 
         else:
-            if cons[1]['label'] == 'MOD':
+            if len(cons) > 1 and cons[1]['label'] == 'MOD':
                 if ' ' in rdf['predicate']:
                     rdf['object'] = rdf['predicate'].split()[1]
                     rdf['predicate'] = rdf['predicate'].split()[0]
@@ -214,7 +214,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                             else:
                                 rdf['predicate'] = eli.leaves()[0]
 
-            elif cons[2]['label'] == 'CP':  # recursive parse?
+            elif len(cons) > 2 and cons[2]['label'] == 'CP':  # recursive parse?
                 rdf['predicate'] += ' ' + cons[2]['raw'].split()[1]
                 for el in cons[2]['raw'].split()[2:]:
                     rdf['object'] += el + ' '
