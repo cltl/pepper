@@ -48,7 +48,11 @@ def test():
     chat = Chat("Lenka", fake_context())
     brain = LongTermMemory(
         clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
-    for utterance in utterances:
+    while 1:
+
+        utterance = str(input())
+        if utterance=='quit':
+            break
         chat.add_utterance([UtteranceHypothesis(utterance, 1.0)], False)
         chat.last_utterance.analyze()
 
@@ -65,6 +69,10 @@ def test():
         #     chat.last_utterance.triple.casefold(format='triple')
         print(chat.last_utterance.triple)
         print(reply)
+
+
+
+
 
     return
 

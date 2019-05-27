@@ -240,6 +240,9 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 rdf['predicate'] = rdf['subject'].split()[1] + '-is'
                 rdf['subject'] = chat.speaker
 
+        if rdf['predicate']=='go-to':
+            rdf['predicate']='go'
+
         '''
         interpret_elements(cons)
         perspective = analyze_predicate(rdf['predicate'], self.GRAMMAR)
@@ -408,7 +411,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             rdf['object'] = ''
             #print('fix ',rdf)
 
-        if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who':
+        if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who' and rdf['predicate']!='be':
             if len(rdf['object'].split()) > 0:  # TODO revision by Lenka
                 rdf['subject'] = rdf['object'].split()[0]
                 rdf['predicate'] = 'be-' + rdf['object'].split()[1]
@@ -417,6 +420,9 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         if '-' in rdf['predicate'] and rdf['predicate'].split('-')[1] == 'from':
             rdf['predicate'] = 'be-from'
 
+        if rdf['object']=='from':
+            rdf['predicate']='is-from'
+            rdf['object']=''
 
         #print('WHO-ANALYZER ', rdf)
         if cons[0]['raw'].lower() == 'who' and rdf['subject']!='':
@@ -432,7 +438,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
 
 
 
-        #print('final ',rdf)
+        print('final ',rdf)
         rdf = dereference_pronouns(self, rdf, self.GRAMMAR, self.chat.speaker)
         self._rdf = rdf
 
