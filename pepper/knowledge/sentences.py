@@ -133,11 +133,11 @@ THINKING = [
     "...You see...",
     "...Sure...",
 
-    # "...Let me think...",
-    # "...I'm thinking...",
-    # "...I heard you...",
-    # "...Let me tell you...",
-    # "...Give me a second...",
+    "...Let me think...",
+    "...I'm thinking...",
+    "...I heard you...",
+    "...Let me tell you...",
+    "...Give me a second...",
 ]
 
 UNDERSTAND = [
