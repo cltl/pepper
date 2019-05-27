@@ -190,6 +190,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         rdf = {'subject': '', 'predicate': '', 'object': ''}
         cons = self.chat.last_utterance.parser.constituents
 
+        print(cons)
+
         rdf['subject'] = cons[0]['raw']
 
         if len(cons) > 2 and cons[2]['label'] == 'PP':
@@ -209,10 +211,13 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 else:
                     for el in cons[1]['structure']:
                         for eli in el:
+                            if eli.leaves()[0]=='not':
+                                rdf['predicate']+='-not'
                             if rdf['predicate']:
                                 rdf['object'] = eli.leaves()[0]
                             else:
                                 rdf['predicate'] = eli.leaves()[0]
+
 
             elif cons[2]['label'] == 'CP':  # recursive parse?
                 rdf['predicate'] += ' ' + cons[2]['raw'].split()[1]
@@ -230,6 +235,10 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
             if len(cons) > 2 and rdf['object'] == '':
                 rdf['object'] = cons[2]['raw']
+
+        if rdf['predicate'] == 'can not eat':
+            rdf['predicate'] = 'can eat'
+            rdf['object'] = 'not food'
 
         print('RDF ', rdf)
 
@@ -412,6 +421,12 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
             #print('fix ',rdf)
 
         if find(rdf['object'], self.GRAMMAR, 'aux'):
+            rdf['object'] = ''
+
+
+        #FIX
+        if rdf['object']=='eat' and rdf['predicate']=='can':
+            rdf['predicate'] = 'can eat'
             rdf['object'] = ''
 
         if rdf['subject'] == '' and self.chat.last_utterance.tokens[0].lower() != 'who' and rdf['predicate']!='be':
