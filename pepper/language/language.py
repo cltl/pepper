@@ -666,7 +666,7 @@ class Parser(object):
         if pos[0][0]=='Does':
             pos[0] = ('Does', 'VBD')
 
-        print(pos)
+        # print(pos)
 
         ind = 0
         for word, tag in pos:

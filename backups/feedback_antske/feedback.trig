@@ -1,0 +1,951 @@
+@prefix : <http://cltl.nl/leolani/integration/> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix leolaniContext: <http://cltl.nl/leolani/context/> .
+@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
+@prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+@prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
+@prefix ns1: <urn:x-rdflib:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/TR/owl-time/#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+leolaniTalk:Perspectives {
+    leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 a grasp:Mention ; (grasp:Statement)
+        grasp:containsDenotation leolaniWorld:karla,
+            leolaniWorld:paris ;
+        grasp:denotes leolaniWorld:karla_live-in_paris ;
+        grasp:hasAttribution leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14_CERTAIN ;
+        prov:wasDerivedFrom leolaniTalk:chat83754061691870037768117075533786301842_utterance1 .
+        -> introduce something like mention type: statement or experience
+
+    leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 ; -> redundant, but maybe useful at query time not relevant for model
+        grasp:wasAttributedTo leolaniFriends:tom ;
+        rdf:value grasp:CERTAIN .
+        -> prov that
+
+    leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 a grasp:Experience ;
+        grasp:containsDenotation leolaniWorld:apple-28248883782911140876150137923737585159,
+            leolaniWorld:avocado-166750300582747596632246868157163262603,
+            leolaniWorld:banana-40246601230835486094755483670470606677,
+            leolaniWorld:selene ;
+        grasp:denotes leolaniWorld:leolani_see_apple-28248883782911140876150137923737585159,
+            leolaniWorld:leolani_see_avocado-166750300582747596632246868157163262603,
+            leolaniWorld:leolani_see_banana-40246601230835486094755483670470606677,
+            leolaniWorld:leolani_see_selene ;
+        grasp:hasAttribution leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5_PROBABLE ;
+        grasp:wasAttributedTo leolaniInputs:front-camera ; -> This is provenance
+        prov:wasDerivedFrom leolaniTalk:visual83754061691870037768117075533786301842_detection1 .
+
+    leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5_PROBABLE a grasp:Attribution ;
+        rdfs:label "visual83754061691870037768117075533786301842_detection1_pixel0-5_PROBABLE" ;
+        grasp:isAttributionFor leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 ;
+        rdf:value grasp:PROBABLE .
+           -> we need an attribution per statement/experience
+           _> grasp is meant to show uncertainty in the text, not on the processing of the text. the latter is more related to provenance
+           -> factuality values related of how certain the source is
+}
+
+leolaniWorld:Ontology {
+    eps:hasContext a owl:ObjectProperty ;
+        rdfs:domain gaf:Instance,
+            grasp:Chat,
+            grasp:Detection,
+            grasp:Experience,
+            grasp:Statement,
+            grasp:Utterance,
+            grasp:Visual,
+            sem:Event ;
+        rdfs:range eps:Context ;
+        rdfs:subPropertyOf sem:eventProperty .
+
+    eps:hasDetection a owl:ObjectProperty ;
+        rdfs:domain eps:Context ;
+        rdfs:range n2mu:object,
+            n2mu:person ;
+        rdfs:subPropertyOf eps:contextProperty .
+
+    : a owl:Ontology .
+
+    :chair a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:acknowledge a owl:ObjectProperty ;
+        rdfs:domain n2mu:robot ;
+        rdfs:range n2mu:smell,
+            n2mu:taste,
+            n2mu:touch ;
+        rdfs:subPropertyOf n2mu:perceive ;
+        owl:propertyDisjointWith n2mu:experience .
+
+    n2mu:animal a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:apple rdfs:subClassOf n2mu:object .
+
+    n2mu:avocado rdfs:subClassOf n2mu:object .
+
+    n2mu:banana rdfs:subClassOf n2mu:object .
+
+    n2mu:band a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:be-child-of a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:agent ;
+        rdfs:subPropertyOf n2mu:be-family-of .
+
+    n2mu:be-colleague-of a owl:ObjectProperty ;
+        rdfs:domain [ a owl:Class ;
+                owl:intersectionOf ( n2mu:agent [ a owl:Restriction ;
+                            owl:onProperty n2mu:be-member-of ;
+                            owl:someValuesFrom n2mu:institution ] ) ] ;
+        rdfs:range [ a owl:Class ;
+                owl:intersectionOf ( n2mu:agent [ a owl:Restriction ;
+                            owl:onProperty n2mu:be-member-of ;
+                            owl:someValuesFrom n2mu:institution ] ) ] ;
+        rdfs:subPropertyOf n2mu:know .
+
+    n2mu:be-friends-with a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:person ;
+        rdfs:subPropertyOf n2mu:know .
+
+    n2mu:be-parent-of a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:person ;
+        rdfs:subPropertyOf n2mu:be-family-of .
+
+    n2mu:birthday a owl:DatatypeProperty ;
+        rdfs:domain n2mu:agent .
+
+    n2mu:born-in a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:location ;
+        rdfs:subPropertyOf n2mu:be-from .
+
+    n2mu:company a owl:Class ;
+        rdfs:subClassOf n2mu:institution .
+
+    n2mu:cook-by a owl:ObjectProperty ;
+        rdfs:domain n2mu:dish,
+            n2mu:food ;
+        rdfs:range n2mu:agent .
+
+    n2mu:device a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:dislike a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:agent,
+            n2mu:interest .
+
+    n2mu:electricity a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:equilibrium a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:favorite a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:interest ;
+        rdfs:subPropertyOf n2mu:like ;
+        owl:inverseOf n2mu:favorite-of .
+
+    n2mu:gravity a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:in a owl:ObjectProperty,
+            owl:TransitiveProperty ;
+        rdfs:domain n2mu:city ;
+        rdfs:range n2mu:country .
+
+    n2mu:light a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:live-in a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:location .
+
+    n2mu:locate-in a owl:ObjectProperty ;
+        rdfs:domain n2mu:institution ;
+        rdfs:range n2mu:location .
+
+    n2mu:mammal a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:manufacture-in a owl:ObjectProperty ;
+        rdfs:domain n2mu:robot ;
+        rdfs:range n2mu:location ;
+        rdfs:subPropertyOf n2mu:be-from .
+
+    n2mu:musical-work a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:name a owl:DatatypeProperty ;
+        rdfs:domain n2mu:agent .
+
+    n2mu:own a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent,
+            n2mu:person ;
+        rdfs:range n2mu:object .
+
+    n2mu:pain a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:plant a owl:Class ;
+        rdfs:subClassOf n2mu:object .
+
+    n2mu:play a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:song,
+            n2mu:sport .
+
+    n2mu:popular-interest a owl:Class ;
+        rdfs:subClassOf n2mu:interest ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:intersectionOf ( n2mu:interest [ a owl:Restriction ;
+                            owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger ;
+                            owl:onClass n2mu:agent ;
+                            owl:onProperty n2mu:like-by ] ) ] .
+
+    n2mu:read-by a owl:ObjectProperty ;
+        rdfs:domain n2mu:book ;
+        rdfs:range n2mu:agent .
+
+    n2mu:sense a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:subPropertyOf n2mu:perceive .
+
+    n2mu:share-interest a owl:ObjectProperty ;
+        rdfs:domain [ a owl:Class ;
+                owl:intersectionOf ( n2mu:agent [ a owl:Restriction ;
+                            owl:onProperty n2mu:like ;
+                            owl:someValuesFrom n2mu:interest ] ) ] ;
+        rdfs:range [ a owl:Class ;
+                owl:intersectionOf ( n2mu:agent [ a owl:Restriction ;
+                            owl:onProperty n2mu:like ;
+                            owl:someValuesFrom n2mu:interest ] ) ] .
+
+    n2mu:sound a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:study-at a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:institution ;
+        rdfs:subPropertyOf n2mu:be-member-of .
+
+    n2mu:temperature a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:travel-to a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:location .
+
+    n2mu:university a owl:Class ;
+        rdfs:subClassOf n2mu:institution .
+
+    n2mu:visual a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:work-at a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:institution ;
+        rdfs:subPropertyOf n2mu:be-member-of .
+
+    n2mu:write-by a owl:ObjectProperty ;
+        rdfs:domain n2mu:book ;
+        rdfs:range n2mu:person .
+
+    grasp:wasAttributedTo a owl:ObjectProperty ;
+        rdfs:domain gaf:Mention ;
+        rdfs:range [ a owl:Class ;
+                owl:intersectionOf ( n2mu:agent gaf:Instance grasp:Source sem:Actor ) ],
+            [ a owl:Class ;
+                owl:intersectionOf ( n2mu:sensor gaf:Instance grasp:Source sem:Actor ) ],
+            n2mu:sensor,
+            grasp:Source,
+            sem:Actor .
+
+    sem:hasActor a owl:ObjectProperty ;
+        rdfs:domain grasp:Chat,
+            grasp:Utterance,
+            sem:Event ;
+        rdfs:range sem:Actor ;
+        rdfs:subPropertyOf sem:eventProperty .
+
+    sem:hasPlace a owl:ObjectProperty ;
+        rdfs:domain eps:Context ;
+        rdfs:range [ a owl:Class ;
+                owl:intersectionOf ( gaf:Instance sem:Place ) ],
+            n2mu:location ;
+        rdfs:subPropertyOf eps:contextProperty .
+
+    sem:hasSubEvent a owl:ObjectProperty ;
+        rdfs:domain grasp:Chat,
+            grasp:Visual,
+            sem:Event ;
+        rdfs:range grasp:Detection,
+            grasp:Utterance,
+            sem:Event ;
+        rdfs:subPropertyOf sem:eventProperty .
+
+    sem:hasTime a owl:ObjectProperty ;
+        rdfs:domain eps:Context ;
+        rdfs:range sem:Time ;
+        rdfs:subPropertyOf eps:contextProperty .
+
+    skos:broadMatch a owl:AnnotationProperty .
+
+    skos:closeMatch a owl:AnnotationProperty .
+
+    skos:narrowMatch a owl:AnnotationProperty .
+
+    prov: a owl:NamedIndividual ;
+        prov:wasDerivedFrom <http://www.w3.org/ns/prov-aq#>,
+            <http://www.w3.org/ns/prov-dc#>,
+            <http://www.w3.org/ns/prov-dictionary#>,
+            <http://www.w3.org/ns/prov-links#>,
+            <http://www.w3.org/ns/prov-o#>,
+            <http://www.w3.org/ns/prov-o-20130430>,
+            <http://www.w3.org/ns/prov-o-inverses#> .
+
+    prov:category a owl:AnnotationProperty .
+
+    prov:component a owl:AnnotationProperty .
+
+    prov:definition a owl:AnnotationProperty .
+
+    prov:hadDerivation a owl:ObjectProperty ;
+        owl:inverseOf prov:wasDerivedFrom .
+
+    prov:inverse a owl:AnnotationProperty .
+
+    prov:qualifiedForm a owl:AnnotationProperty .
+
+    n2mu:city a owl:Class ;
+        rdfs:subClassOf n2mu:location .
+
+    n2mu:country a owl:Class ;
+        rdfs:subClassOf n2mu:location .
+
+    n2mu:experience a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:smell,
+            n2mu:taste,
+            n2mu:touch ;
+        rdfs:subPropertyOf n2mu:perceive .
+
+    n2mu:favorite-of a owl:ObjectProperty ;
+        rdfs:domain n2mu:interest ;
+        rdfs:range n2mu:agent ;
+        rdfs:subPropertyOf n2mu:like-by .
+
+    n2mu:film-genre a owl:Class ;
+        rdfs:subClassOf n2mu:interest-field .
+
+    n2mu:food a owl:Class ;
+        rdfs:subClassOf n2mu:interest-occurrence .
+
+    n2mu:literature-genre a owl:Class ;
+        rdfs:subClassOf n2mu:interest-field .
+
+    n2mu:movie a owl:Class ;
+        rdfs:subClassOf n2mu:interest-occurrence .
+
+    n2mu:music-genre a owl:Class ;
+        rdfs:subClassOf n2mu:interest-field .
+
+    n2mu:sports-team a owl:Class ;
+        rdfs:subClassOf n2mu:interest-occurrence .
+
+    gaf:containsDenotation a owl:ObjectProperty ;
+        rdfs:domain gaf:Mention ;
+        rdfs:range gaf:Instance .
+
+    gaf:denotedBy a owl:ObjectProperty ;
+        rdfs:domain gaf:Instance ;
+        rdfs:range gaf:Mention ;
+        rdfs:subPropertyOf gaf:denotedIn .
+
+    gaf:denotedIn a owl:ObjectProperty ;
+        rdfs:domain gaf:Instance ;
+        rdfs:range gaf:Mention .
+
+    gaf:denotes a owl:ObjectProperty ;
+        rdfs:domain gaf:Mention ;
+        rdfs:range gaf:Instance ;
+        rdfs:subPropertyOf gaf:containsDenotation .
+
+    grasp:Experience a owl:Class ;
+        rdfs:subClassOf gaf:Instance,
+            sem:Event .
+
+    grasp:Statement a owl:Class ;
+        rdfs:subClassOf gaf:Instance,
+            sem:Event .
+
+    grasp:hasAttribution a owl:ObjectProperty ;
+        rdfs:domain gaf:Mention ;
+        rdfs:range grasp:Attribution ;
+        owl:inverseOf grasp:isAttributionFor .
+
+    grasp:isAttributionFor a owl:ObjectProperty ;
+        rdfs:domain grasp:Attribution ;
+        rdfs:range gaf:Mention ;
+        rdfs:subPropertyOf owl:topObjectProperty .
+
+    <http://groundedannotationframework.org/grasp/emotion#anger> a grasp:EmotionValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/emotion#disgust> a grasp:EmotionValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/emotion#fear> a grasp:EmotionValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/emotion#happiness> a grasp:EmotionValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/emotion#sadness> a grasp:EmotionValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/emotion#surprise> a grasp:EmotionValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#certain> a grasp:CertaintyValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#future> a grasp:TemporalValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#negative> a grasp:PolarityValue,
+            grasp:SentimentValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#non-future> a grasp:TemporalValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#positive> a grasp:PolarityValue,
+            grasp:SentimentValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#possible> a grasp:CertaintyValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#probable> a grasp:CertaintyValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/factuality#underspecified> a grasp:CertaintyValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/sentiment#negative> a grasp:SentimentValue,
+            owl:NamedIndividual .
+
+    <http://groundedannotationframework.org/grasp/sentiment#positive> a grasp:SentimentValue,
+            owl:NamedIndividual .
+
+    <http://purl.obolibrary.org/obo/MF_0000019> a owl:Class .
+
+    <http://schema.org/Place> a owl:Class .
+
+    sem:Place a owl:Class ;
+        rdfs:label "Place" ;
+        rdfs:comment "Places are locations where an Event happens. They do not need to be physical places and hence do not necessarily need coordinates. Neither do they need to have any significance apart from them being the location of an Event." ;
+        skos:closeMatch <http://purl.org/dc/terms/Location>,
+            <http://sw.opencyc.org/2009/04/07/concept/en/EnduringThing-Localized>,
+            <http://www.ontologyportal.org/translations/SUMO.owl.txt#GeographicArea>,
+            <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E53.Place> ;
+        skos:narrowMatch <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#PhysicalRegion>,
+            <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> .
+
+    sem:Time a owl:Class ;
+        rdfs:label "Time" ;
+        rdfs:comment "Time contains symbolic representations of when an Event took place. Time instances do not necessarily need to have a timestamp associated with them. The Time class exists to represent semantics of time, e.g. that one thing happens before another, even though the exact timestamps are unknown." ;
+        skos:broadMatch <http://www.w3.org/2006/timeTemporalEntity> .
+
+    rdf:value a owl:ObjectProperty .
+
+    prov:wasDerivedFrom a owl:ObjectProperty ;
+        rdfs:label "wasDerivedFrom" ;
+        rdfs:comment "The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable."@en ;
+        rdfs:domain gaf:Mention ;
+        rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ;
+        rdfs:range grasp:Detection,
+            grasp:Utterance ;
+        rdfs:subPropertyOf owl:topObjectProperty ;
+        prov:category "starting-point" ;
+        prov:component "derivations" ;
+        prov:definition "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."@en ;
+        prov:inverse "hadDerivation" ;
+        prov:qualifiedForm prov:Derivation .
+
+    <http://www.w3.org/ns/prov-aq#> a owl:NamedIndividual .
+
+    <http://www.w3.org/ns/prov-dc#> a owl:NamedIndividual ;
+        prov:wasDerivedFrom <http://www.w3.org/ns/prov-dc-refinements#> .
+
+    <http://www.w3.org/ns/prov-dc-refinements#> a owl:NamedIndividual .
+
+    <http://www.w3.org/ns/prov-dictionary#> a owl:NamedIndividual .
+
+    <http://www.w3.org/ns/prov-links#> a owl:NamedIndividual .
+
+    <http://www.w3.org/ns/prov-o-inverses#> a owl:NamedIndividual ;
+        prov:wasDerivedFrom <http://www.w3.org/ns/prov-o-20130430> .
+
+    n2mu:be-family-of a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:person ;
+        rdfs:subPropertyOf n2mu:know .
+
+    n2mu:cuisine a owl:Class ;
+        rdfs:subClassOf n2mu:interest-field .
+
+    n2mu:dish a owl:Class ;
+        rdfs:subClassOf n2mu:interest-occurrence .
+
+    n2mu:robot a owl:Class ;
+        rdfs:subClassOf n2mu:agent .
+
+    n2mu:smell a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:song a owl:Class ;
+        rdfs:subClassOf n2mu:interest-occurrence .
+
+    n2mu:sport a owl:Class ;
+        rdfs:subClassOf n2mu:interest-field .
+
+    n2mu:taste a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    n2mu:touch a owl:Class ;
+        rdfs:subClassOf n2mu:sensor .
+
+    grasp:Attribution a owl:Class ;
+        rdfs:label "Attribution" ;
+        rdfs:comment "A grasp:Attribution reflects the attribution of some interpretation, some perspective to a gaf:Mention. An attribution expresses such things as certainty, emotion, polarity, sentiment, temporality."^^xsd:string ;
+        rdfs:subClassOf owl:Thing ;
+        owl:disjointWith grasp:AttributionValue ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:intersectionOf ( [ a owl:Restriction ;
+                            owl:onProperty rdf:value ;
+                            owl:someValuesFrom grasp:AttributionValue ] [ a owl:Restriction ;
+                            owl:onProperty [ owl:inverseOf grasp:hasAttribution ] ;
+                            owl:someValuesFrom gaf:Mention ] ) ] .
+
+    grasp:Visual a owl:Class ;
+        rdfs:subClassOf sem:Event .
+
+    <http://www.w3.org/ns/prov-o#> a owl:NamedIndividual .
+
+    <http://www.w3.org/ns/prov-o-20130430> a owl:NamedIndividual .
+
+    eps:contextProperty a owl:ObjectProperty ;
+        rdfs:label "context property" ;
+        rdfs:comment "Context properties connect Context to other SEM Core entities." .
+
+    n2mu:be-from a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent,
+            n2mu:cuisine ;
+        rdfs:range n2mu:location .
+
+    n2mu:book a owl:Class ;
+        rdfs:subClassOf n2mu:interest-occurrence .
+
+    n2mu:know a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:agent .
+
+    n2mu:like-by a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent,
+            n2mu:interest ;
+        rdfs:range n2mu:agent .
+
+    n2mu:perceive a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:sensor .
+
+    grasp:Chat a owl:Class ;
+        rdfs:subClassOf sem:Event .
+
+    grasp:Detection a owl:Class ;
+        rdfs:subClassOf sem:Event .
+
+    grasp:PolarityValue a owl:Class ;
+        rdfs:label "Polarity Value" ;
+        rdfs:comment "The polarity of a gaf:Mention (e.g. if something is or isn't the case)"^^xsd:string ;
+        rdfs:subClassOf grasp:FactualityValue ;
+        owl:disjointWith grasp:TemporalValue ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:oneOf ( <http://groundedannotationframework.org/grasp/factuality#negative> <http://groundedannotationframework.org/grasp/factuality#positive> ) ] .
+
+    grasp:Source a owl:Class ;
+        rdfs:label "Source" ;
+        rdfs:comment "" ;
+        rdfs:subClassOf owl:Thing .
+
+    sem:eventProperty a owl:ObjectProperty ;
+        rdfs:label "event property" ;
+        rdfs:comment "Event properties connect Events to other SEM Core entities." .
+
+    eps:Context a owl:Class .
+
+    n2mu:be-member-of a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:institution .
+
+    n2mu:like a owl:ObjectProperty ;
+        rdfs:domain n2mu:agent ;
+        rdfs:range n2mu:agent,
+            n2mu:interest .
+
+    grasp:CertaintyValue a owl:Class ;
+        rdfs:label "Certainty Value" ;
+        rdfs:comment "The level of certainty of a gaf:Mention"^^xsd:string ;
+        rdfs:subClassOf grasp:FactualityValue ;
+        owl:disjointWith grasp:PolarityValue,
+            grasp:TemporalValue ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:oneOf ( <http://groundedannotationframework.org/grasp/factuality#certain> <http://groundedannotationframework.org/grasp/factuality#possible> <http://groundedannotationframework.org/grasp/factuality#probable> <http://groundedannotationframework.org/grasp/factuality#underspecified> ) ] .
+
+    grasp:FactualityValue a owl:Class ;
+        rdfs:label "Factuality value"^^xsd:string ;
+        rdfs:subClassOf grasp:AttributionValue ;
+        owl:disjointWith grasp:SentimentValue .
+
+    grasp:TemporalValue a owl:Class ;
+        rdfs:label "Temporal Value" ;
+        rdfs:comment "The temporal property of a gaf:Mention"^^xsd:string ;
+        rdfs:subClassOf grasp:FactualityValue ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:oneOf ( <http://groundedannotationframework.org/grasp/factuality#future> <http://groundedannotationframework.org/grasp/factuality#non-future> ) ] .
+
+    grasp:Utterance a owl:Class ;
+        rdfs:subClassOf sem:Event .
+
+    sem:Actor a owl:Class ;
+        rdfs:label "Actor" ;
+        rdfs:comment """Actors are entities that take part in an Event, either actively or passively. Actors do not necessarily have to be sentient. They can also be objects. Actors are a thing, animate or inanimate, physical or non-physical.
+""" ;
+        skos:broadMatch <http://sw.opencyc.org/2009/04/07/concept/en/SomethingExisting>,
+            <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant> ;
+        skos:closeMatch <http://purl.org/dc/terms/Agent>,
+            <http://purl.org/dc/terms/AgentClass>,
+            <http://sw.opencyc.org/2009/04/07/concept/en/Agent-Generic>,
+            <http://www.ontologyportal.org/translations/SUMO.owl.txt#Agent>,
+            <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E39.Actor>,
+            <http://xmlns.com/foaf/0.1/Agent> .
+
+    n2mu:interest-field a owl:Class ;
+        rdfs:subClassOf n2mu:interest .
+
+    <http://xmlns.com/foaf/0.1/Agent> a owl:Class .
+
+    n2mu:interest-occurrence a owl:Class ;
+        rdfs:subClassOf n2mu:interest .
+
+    grasp:EmotionValue a owl:Class ;
+        rdfs:label "Emotion Value" ;
+        rdfs:comment "The emotion expressed in a gaf:Mention"^^xsd:string ;
+        rdfs:subClassOf grasp:AttributionValue ;
+        owl:disjointWith grasp:FactualityValue,
+            grasp:SentimentValue ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:oneOf ( <http://groundedannotationframework.org/grasp/emotion#anger> <http://groundedannotationframework.org/grasp/emotion#disgust> <http://groundedannotationframework.org/grasp/emotion#fear> <http://groundedannotationframework.org/grasp/emotion#happiness> <http://groundedannotationframework.org/grasp/emotion#sadness> <http://groundedannotationframework.org/grasp/emotion#surprise> ) ] .
+
+    grasp:SentimentValue a owl:Class ;
+        rdfs:label "Sentiment Value" ;
+        rdfs:comment "The sentiment expressed by a gaf:Mention"^^xsd:string ;
+        rdfs:subClassOf grasp:AttributionValue ;
+        owl:equivalentClass [ a owl:Class ;
+                owl:oneOf ( <http://groundedannotationframework.org/grasp/sentiment#negative> <http://groundedannotationframework.org/grasp/sentiment#positive> ) ] .
+
+    grasp:AttributionValue a owl:Class ;
+        rdfs:label "Attribution value"^^xsd:string ;
+        rdfs:comment "The value of a grasp:Attribution"^^xsd:string ;
+        rdfs:subClassOf owl:Thing .
+
+    n2mu:institution a owl:Class .
+
+    n2mu:location a owl:Class ;
+        owl:equivalentClass [ a owl:Restriction ;
+                owl:onProperty [ owl:inverseOf n2mu:be-from ] ;
+                owl:someValuesFrom <http://xmlns.com/foaf/0.1/Agent> ],
+            <http://schema.org/Place> .
+
+    gaf:Mention a owl:Class ;
+        rdfs:label "Mention" ;
+        rdfs:comment """Mentions are references to members of the gaf:Instance class as they occur in (web) media such as texts, video, audio, images, etc. Mentions denote gaf:Instances.
+
+A Mention uniquely identifies the (part of a) web source that denotes the mention. We refer to the standard use of fragment identifiers for different media types. """^^xsd:string ;
+        rdfs:subClassOf owl:Thing ;
+        owl:disjointWith grasp:AttributionValue ;
+        owl:equivalentClass [ a owl:Restriction ;
+                owl:onProperty gaf:denotes ;
+                owl:someValuesFrom gaf:Instance ] .
+
+    sem:Event a owl:Class ;
+        rdfs:label "Event" ;
+        rdfs:comment "Events are things that happen. This comprises everything from historical events to web site sessions and mythical journeys. Event is the central class of SEM." ;
+        skos:broadMatch <http://linkedevents.org/ontology/Event>,
+            <http://purl.org/NET/c4dm/event.owl#Event> ;
+        skos:closeMatch <http://purl.org/dc/dcmitype/Event>,
+            <http://sw.opencyc.org/2009/04/07/concept/en/Situation>,
+            <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#perdurant>,
+            <http://www.ontologyportal.org/translations/SUMO.owl.txt#Process>,
+            <http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E5.Event> .
+
+    n2mu:interest a owl:Class ;
+        owl:equivalentClass [ a owl:Restriction ;
+                owl:onProperty n2mu:like-by ;
+                owl:someValuesFrom <http://xmlns.com/foaf/0.1/Agent> ],
+            [ a owl:Restriction ;
+                owl:onProperty [ owl:inverseOf n2mu:like ] ;
+                owl:someValuesFrom <http://xmlns.com/foaf/0.1/Agent> ] .
+
+    n2mu:person a owl:Class ;
+        rdfs:subClassOf n2mu:agent .
+
+    gaf:Instance a owl:Class ;
+        rdfs:label "Instance" ;
+        rdfs:comment "Instances are statements about real world entities, including actions, processes and abstract notions. They are the primary subject of individuals of type gaf:Mention that can denote them."^^xsd:string ;
+        rdfs:subClassOf owl:Thing ;
+        owl:disjointWith grasp:AttributionValue ;
+        owl:equivalentClass [ a owl:Restriction ;
+                owl:onProperty gaf:denotedBy ;
+                owl:someValuesFrom gaf:Mention ] .
+
+    n2mu:object a owl:Class .
+
+    n2mu:sensor a owl:Class ;
+        owl:equivalentClass <http://purl.obolibrary.org/obo/MF_0000019> .
+
+    n2mu:agent a owl:Class ;
+        owl:equivalentClass <http://xmlns.com/foaf/0.1/Agent> .
+
+    [] a owl:AllDisjointClasses ;
+        owl:members ( n2mu:book n2mu:dish n2mu:movie n2mu:song n2mu:sports-team ) .
+
+    [] a owl:AllDisjointClasses ;
+        owl:members ( n2mu:cuisine n2mu:film-genre n2mu:literature-genre n2mu:music-genre n2mu:sport ) .
+}
+
+leolaniWorld:karla_live-in_paris {
+    leolaniWorld:karla n2mu:live-in leolaniWorld:paris .
+}
+
+leolaniWorld:Claims {
+    leolaniWorld:karla_live-in_paris a grasp:Instance,
+            grasp:Statement,
+            sem:Event ;
+        rdfs:label "karla_live-in_paris" ;
+        grasp:denotedBy leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 .
+
+    leolaniWorld:leolani_know_tom a grasp:Instance,
+            grasp:Statement,
+            sem:Event ;
+        rdfs:label "leolani_know_tom" ;
+        grasp:denotedBy leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 .
+
+    leolaniWorld:leolani_see_apple-28248883782911140876150137923737585159 a grasp:Experience,
+            grasp:Instance,
+            sem:Event ;
+        rdfs:label "leolani_see_apple-28248883782911140876150137923737585159" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedBy leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:leolani_see_avocado-166750300582747596632246868157163262603 a grasp:Experience,
+            grasp:Instance,
+            sem:Event ;
+        rdfs:label "leolani_see_avocado-166750300582747596632246868157163262603" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedBy leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:leolani_see_banana-40246601230835486094755483670470606677 a grasp:Experience,
+            grasp:Instance,
+            sem:Event ;
+        rdfs:label "leolani_see_banana-40246601230835486094755483670470606677" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedBy leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:leolani_see_selene a grasp:Experience,
+            grasp:Instance,
+            sem:Event ;
+        rdfs:label "leolani_see_selene" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedBy leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:leolani_sense_front-camera a grasp:Experience,
+            grasp:Instance,
+            sem:Event ;
+        rdfs:label "leolani_sense_front-camera" ;
+        grasp:denotedBy leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+}
+
+leolaniWorld:Instances {
+    leolaniWorld:apple-28248883782911140876150137923737585159 a n2mu:apple,
+            n2mu:object,
+            grasp:Instance ;
+        rdfs:label "apple-28248883782911140876150137923737585159" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedIn leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:avocado-166750300582747596632246868157163262603 a n2mu:avocado,
+            n2mu:object,
+            grasp:Instance ;
+        rdfs:label "avocado-166750300582747596632246868157163262603" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedIn leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:banana-40246601230835486094755483670470606677 a n2mu:banana,
+            n2mu:object,
+            grasp:Instance ;
+        rdfs:label "banana-40246601230835486094755483670470606677" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedIn leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+
+    leolaniWorld:karla a n2mu:person,
+            grasp:Instance ;
+        rdfs:label "karla" ;
+        grasp:denotedIn leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 .
+
+    leolaniWorld:leolani a n2mu:robot ;
+        rdfs:label "leolani" .
+
+    leolaniWorld:paris a n2mu:location,
+            grasp:Instance ;
+        rdfs:label "paris" ;
+        grasp:denotedIn leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 .
+
+    leolaniWorld:selene a n2mu:person,
+            grasp:Instance ;
+        rdfs:label "selene" ;
+        eps:hasContext leolaniContext:context166728579047430930086447540983758333751 ;
+        grasp:denotedIn leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 .
+}
+
+leolaniWorld:leolani_see_avocado-166750300582747596632246868157163262603 {
+    leolaniWorld:leolani n2mu:see leolaniWorld:avocado-166750300582747596632246868157163262603 .
+}
+
+leolaniWorld:leolani_know_tom {
+    leolaniWorld:leolani n2mu:know leolaniFriends:tom .
+}
+
+leolaniWorld:leolani_see_banana-40246601230835486094755483670470606677 {
+    leolaniWorld:leolani n2mu:see leolaniWorld:banana-40246601230835486094755483670470606677 .
+}
+
+leolaniWorld:leolani_sense_front-camera {
+    leolaniWorld:leolani n2mu:sense leolaniInputs:front-camera .
+}
+
+leolaniWorld:leolani_see_apple-28248883782911140876150137923737585159 {
+    leolaniWorld:leolani n2mu:see leolaniWorld:apple-28248883782911140876150137923737585159 .
+}
+
+leolaniTalk:Interactions {
+    leolaniContext:context166728579047430930086447540983758333751 a eps:Context ;
+        rdfs:label "context166728579047430930086447540983758333751" ;
+        eps:hasDetection leolaniWorld:apple-28248883782911140876150137923737585159,
+            leolaniWorld:avocado-166750300582747596632246868157163262603,
+            leolaniWorld:banana-40246601230835486094755483670470606677,
+            leolaniWorld:selene ;
+        n2mu:id "166728579047430930086447540983758333751"^^xml1:string ;
+        sem:hasBeginTimeStamp <http://cltl.nl/leolani/context/2019-05-13> ;
+        sem:hasEvent leolaniTalk:chat83754061691870037768117075533786301842,
+            leolaniTalk:visual83754061691870037768117075533786301842 ;
+        sem:hasPlace leolaniContext:Market .
+
+    <http://cltl.nl/leolani/context/2019-05-13> a sem:Time,
+            time:DateTimeDescription ;
+        rdfs:label "2019-05-13" ;
+        time:day "13"^^xml1:gDay ;
+        time:month "5"^^xml1:gMonthDay ;
+        time:unitType time:unitDay ;
+        time:year "2019"^^xml1:gYear .
+
+    leolaniContext:Market a n2mu:location,
+            sem:Place ;
+        rdfs:label "Market" ;
+        n2mu:id "213321770146360124650926448459908505215"^^xml1:string ;
+        n2mu:in leolaniWorld:Netherlands,
+            leolaniWorld:Provincie_Gelderland,
+            leolaniWorld:Scherpenzeel .
+
+    leolaniFriends:tom a n2mu:person,
+            grasp:Instance,
+            grasp:Source,
+            sem:Actor ;
+        rdfs:label "tom" .
+    -> this is good
+
+    leolaniInputs:front-camera a n2mu:sensor,
+            grasp:Instance,
+            grasp:Source,
+            sem:Actor ;
+        rdfs:label "front-camera" .
+
+    leolaniTalk:chat83754061691870037768117075533786301842 a grasp:Chat,
+            sem:Event ;
+        rdfs:label "chat83754061691870037768117075533786301842" ;
+        n2mu:id "83754061691870037768117075533786301842"^^xml1:string ;
+        sem:hasSubEvent leolaniTalk:chat83754061691870037768117075533786301842_utterance1 .
+
+    leolaniTalk:chat83754061691870037768117075533786301842_utterance1 a grasp:Utterance,
+            sem:Event ;
+        rdfs:label "chat83754061691870037768117075533786301842_utterance1" ;
+        n2mu:id "1"^^xml1:string ;
+        sem:hasActor leolaniFriends:tom .
+
+    leolaniTalk:visual83754061691870037768117075533786301842 a grasp:Visual,
+            sem:Event ;
+        rdfs:label "visual83754061691870037768117075533786301842" ;
+        n2mu:id "83754061691870037768117075533786301842"^^xml1:string ;
+        sem:hasSubEvent leolaniTalk:visual83754061691870037768117075533786301842_detection1 .
+
+    leolaniTalk:visual83754061691870037768117075533786301842_detection1 a grasp:Detection, -> detection are not things in the real world, but how we acquired the knowledge of the thing (more like events though which we learn)
+            sem:Event ; -> this exists in the world
+        rdfs:label "visual83754061691870037768117075533786301842_detection1" ;
+        n2mu:id "1"^^xml1:string ;
+        sem:hasActor leolaniInputs:front-camera .
+
+    leolaniWorld:Netherlands a n2mu:country,
+            n2mu:location,
+            sem:Place ;
+        rdfs:label "Netherlands" .
+
+    leolaniWorld:Provincie_Gelderland a n2mu:location,
+            n2mu:region,
+            sem:Place ;
+        rdfs:label "Provincie Gelderland" .
+
+    leolaniWorld:Scherpenzeel a n2mu:city,
+            n2mu:location,
+            sem:Place ;
+        rdfs:label "Scherpenzeel" .
+
+    leolaniWorld:apple-28248883782911140876150137923737585159 n2mu:id "28248883782911140876150137923737585159"^^xml1:string .
+
+    leolaniWorld:avocado-166750300582747596632246868157163262603 n2mu:id "166750300582747596632246868157163262603"^^xml1:string .
+
+    leolaniWorld:banana-40246601230835486094755483670470606677 n2mu:id "40246601230835486094755483670470606677"^^xml1:string .
+}
+
+leolaniWorld:leolani_see_selene {
+    leolaniWorld:leolani n2mu:see leolaniWorld:selene .
+}
+

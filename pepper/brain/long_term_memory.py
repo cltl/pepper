@@ -626,7 +626,7 @@ class LongTermMemory(BasicBrain):
                 location_memory[category] = ids_dict
 
         # Local object memories
-        for item in cntxt.all_objects:
+        for item in cntxt.objects:
             if item.name.lower() != 'person':
                 temp = location_memory.get(casefold_text(item.name, format='triple'),
                                            {'brain_ids': [], 'local_ids': []})
@@ -675,10 +675,10 @@ class LongTermMemory(BasicBrain):
         if memory:
             # Generate set of current detections
             observations = []
-            for item in cntxt.all_objects:
+            for item in cntxt.objects:
                 if item.name.lower() != 'person':
                     observations.append(casefold_text(item.name, format='triple'))
-            for item in cntxt.all_people:
+            for item in cntxt.people:
                 if item.name.lower() != item.UNKNOWN.lower():
                     observations.append(casefold_text(item.name, format='triple'))
             observations.append(cntxt.location.city)
@@ -723,8 +723,10 @@ class LongTermMemory(BasicBrain):
         instances = []
         observations = []
 
-        for item in cntxt.all_objects:
+        for item in cntxt.objects:
             if item.name.lower() != 'person':
+                if item.name.lower() == 'banana':
+                    pass
                 # Create instance and link detection to graph
                 mem_id, memory = get_object_id(memory, item.name)
                 objct_id = self._rdf_builder.fill_literal(mem_id, datatype=self.namespaces['XML']['string'])
@@ -750,7 +752,7 @@ class LongTermMemory(BasicBrain):
                 self.ontology_graph.add((learnable_type, RDFS.subClassOf, object_type))
 
         # Detections: faces
-        for item in cntxt.all_people:
+        for item in cntxt.people:
             if item.name.lower() != item.UNKNOWN.lower():
                 # Create and link detection to instance graph
                 prsn = self._rdf_builder.fill_entity(casefold_text(item.name, format='triple'), ['person', 'Instance'],
@@ -938,8 +940,8 @@ class LongTermMemory(BasicBrain):
             mention_unit = 'char'
             mention_position = '0-%s' % len(utterance.transcript)
         else:
-            scores = [x.confidence for x in utterance.context.all_objects] + [x.confidence for x in
-                                                                              utterance.context.all_people]
+            scores = [x.confidence for x in utterance.context.objects] + [x.confidence for x in
+                                                                              utterance.context.people]
             certainty_value = confidence_to_certainty_value(sum(scores) / float(len(scores)))
             mention_unit = 'pixel'
             mention_position = '0-%s' % (len(scores))

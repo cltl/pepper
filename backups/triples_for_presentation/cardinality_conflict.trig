@@ -1,0 +1,107 @@
+@prefix : <http://cltl.nl/leolani/integration/> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix leolaniContext: <http://cltl.nl/leolani/context/> .
+@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
+@prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+@prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
+@prefix ns1: <urn:x-rdflib:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/TR/owl-time/#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+leolaniTalk:karla_born-in_france {
+    leolaniWorld:karla n2mu:born-in leolaniWorld:france .
+}
+
+leolaniTalk:karla_born-in_japan {
+    leolaniWorld:karla n2mu:born-in leolaniWorld:japan .
+}
+
+leolaniWorld:Instances {
+    leolaniWorld:karla a n2mu:person,
+            grasp:Instance ;
+        rdfs:label "Karla" ;
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25, leolaniTalk:chat2_utterance1_char0-20 .
+
+    leolaniWorld:france a n2mu:country,
+            grasp:Instance ;
+        rdfs:label "France" ;
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 .
+
+    leolaniWorld:japan a n2mu:country,
+            grasp:Instance ;
+        rdfs:label "Japan" ;
+        grasp:denotedIn leolaniTalk:chat2_utterance1_char0-20 .
+
+}
+
+leolaniTalk:Interactions {
+    leolaniFriends:tom a n2mu:person,
+            grasp:Source,
+            sem:Actor ;
+        rdfs:label "Tom" .
+
+    leolaniTalk:chat4 a grasp:chat,
+            sem:Event ;
+        n2mu:id 4 ;
+        sem:hasSubEvent leolaniTalk:chat4_utterance1 .
+
+    leolaniTalk:chat4_utterance1 a grasp:Utterance,
+            sem:Event ;
+        n2mu:id 1 ;
+        sem:hasActor leolaniFriends:tom .
+    
+    leolaniFriends:karla a n2mu:person,
+            grasp:Source,
+            sem:Actor ;
+        rdfs:label "Karla" .
+
+    leolaniTalk:chat4 a grasp:chat,
+            sem:Event ;
+        n2mu:id 4 ;
+        sem:hasSubEvent leolaniTalk:chat4_utterance1 .
+
+    leolaniTalk:chat4_utterance1 a grasp:utterance,
+            sem:Event ;
+        n2mu:id 1 ;
+        sem:hasActor leolaniFriends:tom .
+}
+
+leolaniFriends:karla owl:sameAs leolaniWorld:karla .
+
+leolaniTalk:Perspectives {
+    leolaniTalk:chat4_utterance1_char0-25 a grasp:Mention ;
+        grasp:containsDenotation leolaniWorld:karla,
+            leolaniWorld:france ;
+        grasp:denotes leolaniTalk:karla_born-in_france ;
+        grasp:hasAttribution leolaniTalk:chat4_utterance1_char0-25_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:tom ;
+        prov:wasDerivedFrom leolaniTalk:chat4_utterance1 .
+
+    leolaniTalk:chat4_utterance1_char0-25_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat4_utterance1_char0-25 ;
+        rdf:value grasp:CERTAIN .
+
+    leolaniTalk:chat2_utterance1_char0-20 a grasp:Mention ;
+        grasp:containsDenotation leolaniWorld:karla,
+            leolaniWorld:japan ;
+        grasp:denotes leolaniTalk:karla_born-in_france ;
+        grasp:hasAttribution leolaniTalk:chat2_utterance1_char0-20_CERTAIN ;
+        grasp:wasAttributedTo leolaniFriends:karla ;
+        prov:wasDerivedFrom leolaniTalk:chat2_utterance1 .
+
+    leolaniTalk:chat2_utterance1_char0-20_CERTAIN a grasp:Attribution ;
+        grasp:isAttributionFor leolaniTalk:chat2_utterance1_char0-20 ;
+        rdf:value grasp:CERTAIN .
+}

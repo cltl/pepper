@@ -23,9 +23,9 @@ def phrase_all_conflicts(conflicts, speaker=None):
 
 
 def _phrase_cardinality_conflicts(conflicts, utterance):
-    # There is no conflict, so just be happy to learn
+    # There is no conflict, so nothing
     if not conflicts:
-        say = random.choice(UNDERSTAND)
+        say = ''
 
     # There is a conflict, so we phrase it
     else:
@@ -42,9 +42,9 @@ def _phrase_cardinality_conflicts(conflicts, utterance):
 
 
 def _phrase_negation_conflicts(conflicts, utterance):
-    # There is no conflict entries, so just be happy to learn
+    # There is no conflict entries, so empty
     if not conflicts or not conflicts[0]:
-        say = random.choice(NEW_KNOWLEDGE)
+        say = ''
 
     # There is conflict entries
     else:
@@ -66,15 +66,31 @@ def _phrase_negation_conflicts(conflicts, utterance):
 
         # There is no conflict, so just be happy to learn
         else:
-            say = random.choice(NEW_KNOWLEDGE)
+            say = ''
 
     return say
 
 
-def _phrase_statement_novelty(novelties):
+def _phrase_statement_novelty(novelties, utterance):
     # I do not know this before, so be happy to learn
     if not novelties:
+        entity_role = random.choice(['subject', 'object'])
+
         say = random.choice(NEW_KNOWLEDGE)
+
+        if entity_role == 'subject':
+            if 'person' in utterance.triple.object.types:
+                any_type = 'anybody'
+            elif 'location' in utterance.triple.object.types:
+                any_type = 'anywhere'
+            else:
+                any_type = 'anything'
+
+            say += ' I did not know %s that %s %s' % (any_type, utterance.triple.subject_name,
+                                                      utterance.triple.predicate_name)
+
+        elif entity_role == 'object':
+            say += ' I did not know anybody who %s %s' % (utterance.triple.predicate_name, utterance.triple.object_name)
 
     # I already knew this
     else:
@@ -91,12 +107,10 @@ def _phrase_type_novelty(novelties, utterance):
     entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
     novelty = novelties.subject if entity_role == 'subject' else novelties.object
 
-    entity_label = replace_pronouns(utterance.chat_speaker, entity_label=entity_label, role=entity_role)
-
     if novelty:
+        entity_label = replace_pronouns(utterance.chat_speaker, entity_label=entity_label, role=entity_role)
         say = random.choice(NEW_KNOWLEDGE)
         if entity_label != 'you':  # TODO or type person?
-            entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
             say += ' I had never heard about %s before!' % replace_pronouns(utterance.chat_speaker,
                                                                             entity_label=entity_label, role='object')
         else:
@@ -105,7 +119,6 @@ def _phrase_type_novelty(novelties, utterance):
     else:
         say = random.choice(EXISTING_KNOWLEDGE)
         if entity_label != 'you':
-            entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.object_name
             say += ' I have heard about %s before' % replace_pronouns(utterance.chat_speaker, entity_label=entity_label,
                                                                       role='object')
         else:
@@ -126,8 +139,14 @@ def _phrase_subject_gaps(all_gaps, utterance):
 
         else:
             gap = random.choice(gaps)
-            say += ' Has a %s ever been %s %s?' % (gap.entity_range_name, gap.predicate_name,
-                                                   utterance.triple.subject_name)
+            if 'is ' in gap.predicate_name or ' is' in gap.predicate_name:
+                say += ' Is there a %s that %s %s?' % (
+                    gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
+            elif ' ' in gap.predicate_name:
+                say += ' Is there a %s that %s %s?' % (
+                    gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
+            else:
+                say += ' Has %s %s %s?' % (gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
 
     elif entity_role == 'object':
         say = random.choice(CURIOSITY)
@@ -140,6 +159,10 @@ def _phrase_subject_gaps(all_gaps, utterance):
             gap = random.choice(gaps)
             if '#' in gap.entity_range_name:
                 say += ' What is %s %s?' % (utterance.triple.subject_name, gap.predicate_name)
+            elif ' ' in gap.predicate_name:
+                say += ' Has %s ever %s %s?' % (
+                gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
+
             else:
                 say += ' Has %s ever %s a %s?' % (utterance.triple.subject_name, gap.predicate_name,
                                                   gap.entity_range_name)
@@ -159,8 +182,12 @@ def _phrase_object_gaps(all_gaps, utterance):
             say += ' What types can %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name)
 
         else:
-            gap = random.choice(gaps)
-            say += ' Has any %s %s %s?' % (gap.entity_range_name, gap.predicate_name, utterance.triple.object_name)
+            gap = random.choice(gaps)  # TODO Lenka/Suzanna improve logic here
+            if ' in' in gap.predicate_name:  # ' by' in gap.predicate_name
+                say += ' Is there a %s %s %s?' % (
+                    gap.entity_range_name, gap.predicate_name, utterance.triple.object_name)
+            else:
+                say += ' Has %s %s by a %s?' % (utterance.triple.object_name, gap.predicate_name, gap.entity_range_name)
 
     elif entity_role == 'object':
         say = random.choice(CURIOSITY)
@@ -175,9 +202,12 @@ def _phrase_object_gaps(all_gaps, utterance):
             gap = random.choice(gaps)
             if '#' in gap.entity_range_name:
                 say += ' What is %s %s?' % (utterance.triple.object_name, gap.predicate_name)
+            elif ' by' in gap.predicate_name:
+                say += ' Has %s ever %s a %s?' % (
+                    utterance.triple.object_name, gap.predicate_name, gap.entity_range_name)
             else:
-                say += ' What other %s was %s %s?' % (
-                    gap.entity_range_name, utterance.triple.object_name, gap.predicate_name)
+                say += ' Has %s ever %s a %s?' % (
+                    utterance.triple.object_name, gap.predicate_name, gap.entity_range_name)
 
     return say
 
@@ -186,21 +216,8 @@ def _phrase_overlaps(all_overlaps, utterance):
     entity_role = random.choice(['subject', 'object'])
     overlaps = all_overlaps.subject if entity_role == 'subject' else all_overlaps.object
 
-    if not overlaps and entity_role == 'subject':
-        say = random.choice(HAPPY)  # TODO maybe anywhere if we know the domain
-        if 'person' in utterance.triple.object.types:
-            any_type = 'anybody'
-        elif 'location' in utterance.triple.object.types:
-            any_type = 'anywhere'
-        else:
-            any_type = 'anything'
-
-        say += ' I did not know %s that %s %s' % (any_type, utterance.triple.subject_name,
-                                                  utterance.triple.predicate_name)
-
-    elif not overlaps and entity_role == 'object':
-        say = random.choice(HAPPY)
-        say += ' I did not know anybody who %s %s' % (utterance.triple.predicate_name, utterance.triple.object_name)
+    if not overlaps:
+        say = ''
 
     elif len(overlaps) < 2 and entity_role == 'subject':
         say = random.choice(HAPPY)
@@ -279,7 +296,7 @@ def phrase_thoughts(update, proactive=True, persist=False):
         say = _phrase_negation_conflicts(thoughts.negation_conflicts(), utterance)
 
     elif approach == 'statement_novelty':
-        say = _phrase_statement_novelty(thoughts.statement_novelties())
+        say = _phrase_statement_novelty(thoughts.statement_novelties(), utterance)
 
     elif approach == 'entity_novelty':
         say = _phrase_type_novelty(thoughts.entity_novelty(), utterance)
