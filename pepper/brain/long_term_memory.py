@@ -635,7 +635,7 @@ class LongTermMemory(BasicBrain):
 
         # Merge giving priority to brain elements
         for cat, ids in location_memory.items():
-            all_ids = ids['brain_ids']
+            all_ids = ids['brain_ids'][:]
             all_ids.extend(ids['local_ids'])
             ids['ids'] = all_ids
 
