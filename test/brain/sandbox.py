@@ -1,7 +1,8 @@
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.brain import LongTermMemory, RdfBuilder
 from pepper.language import Chat, Utterance, UtteranceType
-from pepper.framework import UtteranceHypothesis, Context, Object, Face
+from pepper.framework import UtteranceHypothesis, Context, Face
+from pepper.framework.sensor.obj import Object
 
 from datetime import date
 from random import choice
