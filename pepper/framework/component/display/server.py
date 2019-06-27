@@ -39,5 +39,6 @@ class DisplayServer(tornado.web.Application):
         tornado.ioloop.IOLoop.instance().start()
 
     def update(self, json):
-        for handler in self.HANDLERS:
-            handler.write_message(json)
+        if json:
+            for handler in self.HANDLERS:
+                handler.write_message(json)

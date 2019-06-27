@@ -1,11 +1,103 @@
-from pepper.framework.util import Mailbox, Scheduler
+from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
 from pepper import CameraResolution
 from pepper import logger
+
+import numpy as np
 
 from collections import deque
 from time import time
 
-import numpy as np
+from typing import Tuple
+
+
+class AbstractImage(object):
+
+    def __init__(self, image, bounds, depth=None):
+        # type: (np.ndarray) -> None
+        """
+        Create (Abstract) Image Object
+
+        Parameters
+        ----------
+        image: np.ndarray
+        """
+        self._image = image
+        self._bounds = bounds
+        self._depth = depth
+
+        self._time = time()
+
+    @property
+    def image(self):
+        # type: () -> np.ndarray
+        """
+        Image Pixels as Numpy Array
+
+        Returns
+        -------
+        image: np.ndarray
+        """
+        return self._image
+
+    @property
+    def depth(self):
+        return self._depth
+
+    @property
+    def bounds(self):
+        return self._bounds
+
+    def get_image(self, bounds):
+        x0 = int(bounds.x0 * self._image.shape[1])
+        x1 = int(bounds.x1 * self._image.shape[1])
+        y0 = int(bounds.y0 * self._image.shape[0])
+        y1 = int(bounds.y1 * self._image.shape[0])
+
+        return self._image[y0:y1, x0:x1]
+
+    def get_depth(self, bounds):
+        x0 = int(bounds.x0 * self._depth.shape[1])
+        x1 = int(bounds.x1 * self._depth.shape[1])
+        y0 = int(bounds.y0 * self._depth.shape[0])
+        y1 = int(bounds.y1 * self._depth.shape[0])
+
+        return self._depth[y0:y1, x0:x1]
+
+    def direction(self, coordinates):
+        # type: (Tuple[float, float]) -> Tuple[float, float]
+        """
+        Convert 2D Relative Coordinates to 2D position in Spherical Coordinates
+
+        Parameters
+        ----------
+        coordinates: Tuple[float, float]
+
+        Returns
+        -------
+        position_2D: Tuple[float, float]
+        """
+        return (self.bounds.x0 + coordinates[0] * self.bounds.width,
+                self.bounds.y0 + coordinates[1] * self.bounds.height)
+
+    @property
+    def time(self):
+        return self._time
+
+    def frustum(self, depth_min, depth_max):
+        return [
+            spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_min),
+            spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_min),
+            spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_min),
+            spherical2cartesian(self._bounds.x1, self._bounds.y0, depth_min),
+
+            spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_max),
+            spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_max),
+            spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_max),
+            spherical2cartesian(self._bounds.x1, self._bounds.y0, depth_max),
+        ]
+
+    def __repr__(self):
+        return "{}{}".format(self.__class__.__name__, self.image.shape)
 
 
 class AbstractCamera(object):
@@ -129,18 +221,6 @@ class AbstractCamera(object):
         return self._shape
 
     @property
-    def angles(self):
-        """
-        Max Image Angles
-
-        Returns
-        -------
-        angles: tuple
-            phi, theta corresponding with (1, 1) of normalized image coordinates
-        """
-        return (1, 1)
-
-    @property
     def callbacks(self):
         """
         Get/Set :func:`~AbstractCamera.on_image` Callbacks
@@ -174,25 +254,7 @@ class AbstractCamera(object):
         """
         return self._running
 
-    def image_angles(self, orientation, coordinates):
-        """
-        Return Image Angles (Yaw + Pitch) from Head Orientation and Image Coordinates
-
-        Parameters
-        ----------
-        orientation: float, float
-            Head Orientation
-        coordinates: float, float
-            Image Coordinates
-
-        Returns
-        -------
-        angles: float, float
-            Image Angles (phi, theta)
-        """
-        raise NotImplementedError()
-
-    def on_image(self, image, orientation):
+    def on_image(self, image):
         """
         On Image Event, Called for every Image captured by Camera
 
@@ -200,9 +262,9 @@ class AbstractCamera(object):
 
         Parameters
         ----------
-        image: np.ndarray
+        image: AbstractImage
         """
-        self._mailbox.put((image, orientation))
+        self._mailbox.put(image)
 
     def start(self):
         """Start Streaming Images from Camera"""
@@ -218,10 +280,10 @@ class AbstractCamera(object):
 
         Calls each callback for each image, threaded, for higher image throughput
         """
-        image, orientation = self._mailbox.get()
+        image = self._mailbox.get()
         if self._running:
             for callback in self.callbacks:
-                callback(image, orientation)
+                callback(image)
         self._update_dt()
 
     def _update_dt(self):

@@ -590,17 +590,20 @@ class LongTermMemory(BasicBrain):
         Structure overlap to get the provenance and entity on which they overlap
         Parameters
         ----------
-        raw_conflict: dict
-            standard row result from SPARQL
+        preprocessed_types: list
+            list of types for these ids
+        preprocessed_ids: list
+            list of ids for these types of objects
 
         Returns
         -------
             Overlap object containing an entity and the provenance of the mention causing the overlap
         """
-        [preprocessed_types] = self._rdf_builder.clean_aggregated_types(raw_objects_in_location['type']['value'])
 
-        return preprocessed_types, {'brain_ids': raw_objects_in_location['ids']['value'].split('|'),
-                                    'local_ids': []}
+        preprocessed_types = self._rdf_builder.clean_aggregated_types(raw_objects_in_location['type']['value'])
+        preprocessed_ids = raw_objects_in_location['ids']['value'].split('|')
+
+        return preprocessed_types, preprocessed_ids
 
     def get_episodic_memory(self):
         # Role as subject
@@ -622,11 +625,16 @@ class LongTermMemory(BasicBrain):
         location_memory = {}
         if response[0]['type']['value'] != '':
             for elem in response:
-                category, ids_dict = self._fill_location_memory_(elem)
-                location_memory[category] = ids_dict
+                categories, ids = self._fill_location_memory_(elem)
+                # assign multiple categories (eg selene is person and agent)
+                for category in categories:
+                    temp = location_memory.get(casefold_text(category, format='triple'),
+                                               {'brain_ids': [], 'local_ids': []})
+                    temp['brain_ids'].extend(ids)
+                    location_memory[casefold_text(category, format='triple')] = temp
 
         # Local object memories
-        for item in cntxt.objects:
+        for item in cntxt.objects: # Error, this skips the first element?
             if item.name.lower() != 'person':
                 temp = location_memory.get(casefold_text(item.name, format='triple'),
                                            {'brain_ids': [], 'local_ids': []})
@@ -725,8 +733,6 @@ class LongTermMemory(BasicBrain):
 
         for item in cntxt.objects:
             if item.name.lower() != 'person':
-                if item.name.lower() == 'banana':
-                    pass
                 # Create instance and link detection to graph
                 mem_id, memory = get_object_id(memory, item.name)
                 objct_id = self._rdf_builder.fill_literal(mem_id, datatype=self.namespaces['XML']['string'])

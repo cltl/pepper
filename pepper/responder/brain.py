@@ -8,6 +8,9 @@ from pepper.language.generation.reply import reply_to_question
 from .responder import Responder, ResponderType
 from pepper.language import UtteranceType
 
+from pepper.knowledge import sentences
+from random import choice
+
 import re
 
 from typing import Optional, Union, Tuple, Callable
@@ -44,12 +47,9 @@ class BrainResponder(Responder):
                 self._log.debug("REPLY: {}".format(reply))
 
                 if (isinstance(reply, str) or isinstance(reply, unicode)) and reply != "":
-                    if "but I do not know this case" in reply:
-                        app.say(reply + ". But, let me try and search the web!")
-                    else:
-                        # Return Score and Response
-                        # Make sure to not execute the response here, but just to return the response function
-                        return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
+                    # Return Score and Response
+                    # Make sure to not execute the response here, but just to return the response function
+                    return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
 
         except Exception as e:
-            self._log.error(e)
+            raise

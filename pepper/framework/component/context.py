@@ -1,15 +1,18 @@
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
-from ..sensor import Context, UtteranceHypothesis
-from ..abstract import AbstractComponent, Led
+from ..context import Context
+from ..sensor import UtteranceHypothesis, Face
+from ..abstract import AbstractComponent, AbstractImage
 
 from pepper.language import Utterance
+from pepper.knowledge import sentences
 from pepper import config
 
 from collections import deque
 from threading import Thread, Lock
 from time import time
 
-from typing import Deque
+from typing import Deque, List
+from random import choice
 
 import numpy as np
 
@@ -24,15 +27,6 @@ class ContextComponent(AbstractComponent):
     PERSON_DIFF_EXIT = 1.25
 
     CONVERSATION_TIMEOUT = 15
-
-    PEOPLE_LEDS = [Led.LeftFaceLed1, Led.RightFaceLed1,
-                   Led.LeftFaceLed2, Led.RightFaceLed2,
-                   Led.LeftFaceLed3, Led.RightFaceLed3,
-                   Led.LeftFaceLed4, Led.RightFaceLed4,
-                   Led.LeftFaceLed5, Led.RightFaceLed5,
-                   Led.LeftFaceLed6, Led.RightFaceLed6,
-                   Led.LeftFaceLed7, Led.RightFaceLed7,
-                   Led.LeftFaceLed8, Led.RightFaceLed8]
 
     def __init__(self, backend):
         super(ContextComponent, self).__init__(backend)
@@ -66,6 +60,8 @@ class ContextComponent(AbstractComponent):
             with context_lock:
                 if self.context.chatting and hypotheses:
 
+                    # self.say(choice(sentences.THINKING), block=False)
+
                     # Add ASR Transcript to Chat as Utterance
                     utterance = self.context.chat.add_utterance(hypotheses, False)
 
@@ -73,11 +69,12 @@ class ContextComponent(AbstractComponent):
                     self.on_chat_turn(utterance)
 
         def get_closest_people(people):
+            # type: (List[Face]) -> List[Face]
 
             person_area_threshold = (self.PERSON_AREA_EXIT if self.context.chatting else self.PERSON_AREA_ENTER)
             person_diff_threshold = (self.PERSON_DIFF_EXIT if self.context.chatting else self.PERSON_DIFF_ENTER)
 
-            people_in_range = [person for person in people if person.bounds.area >= person_area_threshold]
+            people_in_range = [person for person in people if person.image_bounds.area >= person_area_threshold]
 
             # If only one person is in range
             if len(people_in_range) == 1:
@@ -89,14 +86,14 @@ class ContextComponent(AbstractComponent):
             elif len(people_in_range) >= 2:
 
                 # Sort them by proximity
-                people_sorted = np.argsort([person.bounds.area for person in people_in_range])[::-1]
+                people_sorted = np.argsort([person.image_bounds.area for person in people_in_range])[::-1]
 
                 # Identify the two closest individuals
                 closest = people_in_range[people_sorted[0]]
                 next_closest = people_in_range[people_sorted[1]]
 
                 # If the closest individual is significantly closer than the next one
-                if closest.bounds.area >= person_diff_threshold * next_closest.bounds.area:
+                if closest.image_bounds.area >= person_diff_threshold * next_closest.image_bounds.area:
 
                     # Return Closest Individual
                     return [closest]
@@ -109,12 +106,20 @@ class ContextComponent(AbstractComponent):
             else:
                 return []
 
-        def get_face(person, faces):
+        def get_face_of_person(person, faces):
             for face in faces:
-                if face.bounds.is_subset_of(person.bounds):
+                if face.image_bounds.is_subset_of(person.image_bounds):
                     return face
 
-        def on_image(image, orientation):
+        def on_image(image):
+            # type: (AbstractImage) -> None
+            """
+            Figure out with who(m) a conversation is held and call on_chat_enter/exit appropriately
+
+            Parameters
+            ----------
+            image: AbstractImage
+            """
 
             # Get People within Conversation Bounds
             closest_people = get_closest_people(self._people_info)
@@ -124,7 +129,7 @@ class ContextComponent(AbstractComponent):
                 # If one person is closest and his/her face is identifiable -> Start Personal Conversation
                 if len(closest_people) == 1:
                     closest_person = closest_people[0]
-                    closest_face = get_face(closest_person, self._face_info)
+                    closest_face = get_face_of_person(closest_person, self._face_info)
 
                     if closest_face:
                         self._conversation_time = time()
@@ -152,7 +157,7 @@ class ContextComponent(AbstractComponent):
                         # If a single Person enters conversation at this point -> Start conversation with them
                         if len(closest_people) == 1:
                             closest_person = closest_people[0]
-                            closest_face = get_face(closest_person, self._face_info)
+                            closest_face = get_face_of_person(closest_person, self._face_info)
 
                             if closest_face:
                                 self._conversation_time = time()
@@ -169,7 +174,7 @@ class ContextComponent(AbstractComponent):
                     # If still in conversation with Person, update conversation time
                     if len(closest_people) == 1:
                         closest_person = closest_people[0]
-                        closest_face = get_face(closest_person, self._face_info)
+                        closest_face = get_face_of_person(closest_person, self._face_info)
 
                         if closest_face:
 
@@ -190,7 +195,7 @@ class ContextComponent(AbstractComponent):
                         # If another Person enters conversation at this point -> Start Conversation with them
                         if len(closest_people) == 1:
                             closest_person = closest_people[0]
-                            closest_face = get_face(closest_person, self._face_info)
+                            closest_face = get_face_of_person(closest_person, self._face_info)
 
                             if closest_face:
                                 self._conversation_time = time()
@@ -210,13 +215,19 @@ class ContextComponent(AbstractComponent):
                 self._face_info = []
                 self._people_info = []
 
-        def on_object(image, objects):
-            self._people_info = [obj for obj in objects if obj.name == "person"]
+        def on_object(objects):
+            # Update Context with Perceived Objects
             self.context.add_objects(objects)
 
+            # Add Perceived People to People Info
+            self._people_info = [obj for obj in objects if obj.name == "person"]
+
         def on_face(people):
-            self._face_info = people
+            # Update Context with Perceived People
             self.context.add_people(people)
+
+            # Add Perceived Faces to Face Info
+            self._face_info = people
 
         # Link Transcript, Object and Face Events to Context
         speech_comp.on_transcript_callbacks.append(on_transcript)
