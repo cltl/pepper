@@ -7,19 +7,21 @@ import numpy as np
 from collections import deque
 from time import time
 
-from typing import Tuple
+from typing import Tuple, List, Optional
 
 
 class AbstractImage(object):
 
     def __init__(self, image, bounds, depth=None):
-        # type: (np.ndarray) -> None
+        # type: (np.ndarray, Bounds, Optional[np.ndarray]) -> None
         """
-        Create (Abstract) Image Object
+        Abstract Image Container
 
         Parameters
         ----------
         image: np.ndarray
+        bounds: Bounds
+        depth: np.ndarray
         """
         self._image = image
         self._bounds = bounds
@@ -41,13 +43,16 @@ class AbstractImage(object):
 
     @property
     def depth(self):
+        # type: () -> Optional[np.ndarray]
         return self._depth
 
     @property
     def bounds(self):
+        # type: () -> Bounds
         return self._bounds
 
     def get_image(self, bounds):
+        # type: (Bounds) -> np.ndarray
         x0 = int(bounds.x0 * self._image.shape[1])
         x1 = int(bounds.x1 * self._image.shape[1])
         y0 = int(bounds.y0 * self._image.shape[0])
@@ -56,6 +61,11 @@ class AbstractImage(object):
         return self._image[y0:y1, x0:x1]
 
     def get_depth(self, bounds):
+        # type: (Bounds) -> Optional[np.ndarray]
+
+        if self._depth is None:
+            return None
+
         x0 = int(bounds.x0 * self._depth.shape[1])
         x1 = int(bounds.x1 * self._depth.shape[1])
         y0 = int(bounds.y0 * self._depth.shape[0])
@@ -81,9 +91,11 @@ class AbstractImage(object):
 
     @property
     def time(self):
+        # type: () -> float
         return self._time
 
     def frustum(self, depth_min, depth_max):
+        # type: (float, float) -> List[float]
         return [
             spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_min),
             spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_min),

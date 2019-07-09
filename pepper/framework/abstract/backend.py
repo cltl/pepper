@@ -7,8 +7,9 @@ class AbstractBackend(object):
 
     Exposes
     :class:`~pepper.framework.abstract.camera.AbstractCamera`,
-    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` and
-    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`.
+    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`,
+    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech` and
+    :class:`~pepper.framework.abstract.led.AbstractLed`.
 
     Parameters
     ----------
