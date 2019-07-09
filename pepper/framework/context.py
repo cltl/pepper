@@ -204,10 +204,11 @@ class Observations:
 
 class ObjectObservations:
 
-    EPSILON = 0.4
+    EPSILON = 0.2
     MIN_SAMPLES = 5
     MAX_SAMPLES = 50
     OBSERVATION_TIMEOUT = 2
+    INSTANCE_TIMEOUT = 120
 
     def __init__(self):
         self._observations = []
@@ -218,6 +219,10 @@ class ObjectObservations:
         return self._instances
 
     def update_view(self, image):
+
+        # Limit observations & Instances to be within INSTANCE TIMEOUT
+        self._observations = [obs for obs in self._observations if time() - obs.time < self.INSTANCE_TIMEOUT]
+        self._instances = [ins for ins in self._instances if time() - ins.time < self.INSTANCE_TIMEOUT]
 
         # Go through observations oldest to newest
         for observation in self._observations[::-1]:
@@ -258,7 +263,7 @@ class ObjectObservations:
 
         unique_labels = np.unique(cluster.labels_)
 
-        # Find oldest instance per group add to Instances
+        # Find newest instance per group add to Instances
         for label in unique_labels:
 
             group_indices = np.argwhere(cluster.labels_ == label).ravel()
@@ -270,8 +275,6 @@ class ObjectObservations:
             removal.extend(group_indices[:-self.MAX_SAMPLES])
 
         self._instances = instances
+
+        # Limit amount of stored observations
         self._observations = [self._observations[i] for i in range(len(self._observations)) if i not in removal]
-
-
-
-

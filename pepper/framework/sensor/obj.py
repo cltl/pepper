@@ -69,6 +69,10 @@ class Object(object):
         return self._confidence
 
     @property
+    def time(self):
+        return self.image.time
+
+    @property
     def image_bounds(self):
         """
         Object Bounds (Relative to Image)

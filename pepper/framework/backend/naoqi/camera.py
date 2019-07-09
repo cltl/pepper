@@ -67,8 +67,8 @@ class NAOqiCamera(AbstractCamera):
         # Get random camera id, to prevent name collision
         self._id = str(getrandbits(128))
 
-        self._color_space = 9  # YUV442
-        self._color_space_3D = 17  # Distance from Camera in mm
+        self._color_space = self.COLOR_SPACE['YUV422']
+        self._color_space_3D = self.COLOR_SPACE['Distance']
 
         self._resolution = resolution
         self._resolution_3D = resolution
@@ -116,8 +116,11 @@ class NAOqiCamera(AbstractCamera):
                     angle_left, angle_top, angle_right, angle_bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:
+
+                        # Distance from camera in meters
                         image_3D = np.frombuffer(data, np.uint16).reshape(height, width).astype(np.float32) / 1000
                     else:
+
                         image_rgb = self._yuv2rgb(width, height, data)
                         image_bounds = Bounds(
                             angle_right - yaw,
