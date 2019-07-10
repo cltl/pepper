@@ -61,6 +61,9 @@ class NAOqiCamera(AbstractCamera):
     SERVICE_VIDEO = "ALVideoDevice"
     SERVICE_MOTION = "ALMotion"
 
+    # Only take non-blurry pictures
+    HEAD_DELTA_THRESHOLD = 0.1
+
     def __init__(self, session, resolution, rate, callbacks=[], index=NAOqiCameraIndex.TOP):
         super(NAOqiCamera, self).__init__(resolution, rate, callbacks)
 
@@ -98,36 +101,57 @@ class NAOqiCamera(AbstractCamera):
         self._log.debug("Booted")
 
     def _run(self):
+
+        yaw_0, pitch_0 = 0, 0
+
         while True:
             if self._running:
 
                 t0 = time()
 
-                image_rgb = None
-                image_3D = None
-                image_bounds = None
+                # Initialize RGB, 3D and Image Bounds
+                image_rgb, image_3D, bounds = None, None, None
 
                 # Get Yaw and Pitch from Head Sensors
+                # TODO: Make sure these are the Head Yaw and Pitch at image capture time!
                 yaw, pitch = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
+
+                # Calculate Yaw and Pitch & Head Deltas
+                yaw_delta, pitch_delta = yaw - yaw_0, pitch - pitch_0
+                head_delta = np.sqrt(yaw_delta**2 + pitch_delta**2)
+                yaw_0, pitch_0 = yaw, pitch
 
                 # Get Image from Robot
                 for image in self._service.getImagesRemote(self._client):
-                    width, height, layers, color_space, seconds, milliseconds, data, camera, \
-                    angle_left, angle_top, angle_right, angle_bottom = image
+
+                    # Get Image Data
+                    width, height, _, _, _, _, data, camera, left, top, right, bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:
-                        image_3D = np.frombuffer(data, np.uint16).reshape(height, width).astype(np.float32) / 1000
-                    else:
-                        image_rgb = self._yuv2rgb(width, height, data)
-                        image_bounds = Bounds(
-                            angle_right - yaw,
-                            angle_bottom + pitch + np.pi/2,
-                            angle_left - yaw,
-                            angle_top + pitch + np.pi/2
-                        )
 
-                if image_rgb is not None and image_bounds is not None:
-                    self.on_image(NAOqiImage(image_rgb, image_bounds, image_3D))
+                        # Get Depth Image and Convert from Millimeters to Meters
+                        image_3D = np.frombuffer(data, np.uint16).reshape(height, width).astype(np.float32) / 1000
+
+                    else:
+
+                        # Get RGB Image and Convert from YUV422 to RGB
+                        image_rgb = self._yuv2rgb(width, height, data)
+
+                        # Calculate Image Bounds in Radians
+                        # Apply Yaw and Pitch to Image Bounds
+                        # Bring Theta from [-PI/2,+PI/2] to [0, PI] Space
+                        phi_min, phi_max = right - yaw, left - yaw
+                        theta_min, theta_max = bottom + pitch + np.pi/2, top + pitch + np.pi/2
+                        bounds = Bounds(phi_min, theta_min, phi_max, theta_max)
+
+                # Assert we have at least a RGB image and Bounds
+                if image_rgb is not None and bounds is not None:
+
+                    # Assert Head did not move too much (prevent blurry pictures)
+                    if head_delta < NAOqiCamera.HEAD_DELTA_THRESHOLD:
+
+                        # Call On Image Callback
+                        self.on_image(NAOqiImage(image_rgb, bounds, image_3D))
 
                 # Maintain frame rate
                 sleep(max(1.0E-4, 1.0 / self.rate - (time() - t0)))
