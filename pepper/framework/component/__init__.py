@@ -10,6 +10,8 @@ from .brain import BrainComponent
 from .context import ContextComponent
 from .scene import SceneComponent
 
+from .explore import ExploreComponent
+
 from .statistics import StatisticsComponent
 from .display.display import DisplayComponent
 

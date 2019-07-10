@@ -26,6 +26,7 @@ RESPONDERS = [
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
                    # DisplayComponent, SceneComponent,
+                   ExploreComponent,
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
     pass
@@ -39,7 +40,6 @@ class DefaultIntention(AbstractIntention, ResponderApp):
         super(DefaultIntention, self).__init__(application)
 
         self._ignored_people = {}
-
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
 
     def on_chat_enter(self, name):

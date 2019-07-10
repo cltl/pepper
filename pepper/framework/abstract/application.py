@@ -38,6 +38,26 @@ class AbstractApplication(AbstractComponent):
         """
         return self._log
 
+    @property
+    def camera(self):
+        return self.backend.camera
+
+    @property
+    def microphone(self):
+        return self.backend.microphone
+
+    @property
+    def text_to_speech(self):
+        return self.backend.text_to_speech
+
+    @property
+    def motion(self):
+        return self.backend.motion
+
+    @property
+    def led(self):
+        return self.backend.led
+
     def run(self):
         """
         Run Application

@@ -30,8 +30,9 @@ class VisionResponder(Responder):
     ]
 
     SEE_SPECIFIC = [
-        "do you see",
-        "can you see"
+        "do you see ",
+        "can you see ",
+        "where is the "
     ]
 
     I_SEE = [
@@ -64,10 +65,10 @@ class VisionResponder(Responder):
 
     @property
     def requirements(self):
-        return [TextToSpeechComponent]
+        return [AbstractApplication, TextToSpeechComponent]
 
     def respond(self, utterance, app):
-        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        # type: (Utterance, Union[AbstractApplication, TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
         objects = [obj.name for obj in utterance.chat.context.objects]
         people = [p.name for p in utterance.chat.context.people]
@@ -95,21 +96,22 @@ class VisionResponder(Responder):
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
 
-        # Respond to Individual Object/Person Queries
+        # Respond to Individual Object Queries
         else:
-
-            items = objects + people
-
-            response = []
-
             for cue in self.SEE_SPECIFIC:
                 if cue in utterance.transcript.lower():
-                    for item in items:
-                        if item.lower() in utterance.transcript.lower():
-                            response.append(item)
+                    for obj in utterance.context.objects:
+                        if obj.name.lower() in utterance.transcript.lower():
+                            return 1.0, lambda: self._point_to_objects(app, obj)
 
-            if response:
-                return 1.0, lambda: app.say("Yes, I can see " + self._people_to_sentence(response))
+                    return 1.0, lambda: app.say("I cannot see {}".format(self._insert_a_an(utterance.tokens[-1])))
+
+    def _point_to_objects(self, app, obj):
+        app.say("I can see {}".format(self._insert_a_an(obj.name)))
+        app.motion.point(obj.direction, speed=0.2)
+        app.motion.look(obj.direction, speed=0.1)
+        app.say("There it is!!")
+
 
     @staticmethod
     def _insert_a_an(word):

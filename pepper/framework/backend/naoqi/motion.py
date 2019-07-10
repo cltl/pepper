@@ -3,34 +3,61 @@ from pepper.framework.util import spherical2cartesian
 
 import numpy as np
 
+from threading import Thread
+from Queue import Queue
+
 
 class NAOqiMotion(AbstractMotion):
 
-    SERVICE = "ALMotion"
-    HEAD = ["HeadYaw", "HeadPitch"]
+    SERVICE_MOTION = "ALMotion"
+    SERVICE_TRACKER = "ALTracker"
+    COMMAND_LIMIT = 1
+    FRAME = 0  # With Respect to Torso
 
     def __init__(self, session):
-        self._service = session.service(NAOqiMotion.SERVICE)
-        self._tracker = session.service("ALTracker")
+        self._motion = session.service(NAOqiMotion.SERVICE_MOTION)
+        self._tracker = session.service(NAOqiMotion.SERVICE_TRACKER)
 
-    def look(self, direction, speed=3):
-        raise NotImplementedError()
+        self._look_queue = Queue()
+        self._look_thread = Thread(target=self._look_worker, name="NAOqiLookThread")
+        self._look_thread.daemon = True
+        self._look_thread.start()
 
-        if len(direction) == 2:
-            yaw, pitch = direction
-            yaw, pitch = [float(-yaw), float(pitch - np.pi/2)]
+        self._point_queue = Queue()
+        self._point_thread = Thread(target=self._point_worker, name="NAOqiPointThread")
+        self._point_thread.daemon = True
+        self._point_thread.start()
 
-            self._service.angleInterpolation(NAOqiMotion.HEAD, [yaw, pitch], [speed, speed], True)
+    def look(self, direction, speed=1):
+        if self._look_queue.qsize() <= NAOqiMotion.COMMAND_LIMIT:
+            self._look_queue.put((direction, speed))
 
-    def point(self, direction):
-        raise NotImplementedError()
+    def point(self, direction, speed=1):
+        if self._point_queue.qsize() <= NAOqiMotion.COMMAND_LIMIT:
+            self._point_queue.put((direction, speed))
 
-        coordinates = [float(coordinate) for coordinate in spherical2cartesian(-direction[0], direction[1] - np.pi/2, 2)]
-        coordinates = [coordinates[0], coordinates[2], -coordinates[1]]
+    def _look(self, direction, speed=1):
+        self._tracker.lookAt(self._dir2xyz(direction), NAOqiMotion.FRAME, float(np.clip(speed, 0, 1)), False)
 
-        print(direction, coordinates)
+    def _point(self, direction, speed=1):
+        coordinates = self._dir2xyz(direction)
 
         LR = "L" if coordinates[1] > 0 else "R"
 
-        self._tracker.pointAt("{}Arm".format(LR), coordinates, 0, 1)
-        self._service.openHand("{}Hand".format(LR))
+        coordinates[2] += 1
+
+        self._tracker.pointAt("{}Arm".format(LR), coordinates, NAOqiMotion.FRAME, float(np.clip(speed, 0, 1)))
+        self._motion.openHand("{}Hand".format(LR))
+        self._tracker.pointAt("{}Arm".format(LR), coordinates, NAOqiMotion.FRAME, float(np.clip(speed, 0, 1)))
+
+    def _dir2xyz(self, direction):
+        x, z, y = spherical2cartesian(-direction[0], direction[1], 5)
+        return [float(x), float(y), float(z)]
+
+    def _look_worker(self):
+        while True:
+            self._look(*self._look_queue.get())
+
+    def _point_worker(self):
+        while True:
+            self._point(*self._point_queue.get())
