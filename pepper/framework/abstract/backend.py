@@ -1,4 +1,4 @@
-from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractLed
+from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractMotion, AbstractLed
 
 
 class AbstractBackend(object):
@@ -23,10 +23,11 @@ class AbstractBackend(object):
         Backend :class:`~pepper.framework.abstract.led.AbstractLed`
     """
 
-    def __init__(self, camera, microphone, text_to_speech, led):
+    def __init__(self, camera, microphone, text_to_speech, motion, led):
         self._camera = camera
         self._microphone = microphone
         self._text_to_speech = text_to_speech
+        self._motion = motion
         self._led = led
 
     @property
@@ -61,6 +62,17 @@ class AbstractBackend(object):
         text_to_speech: AbstractTextToSpeech
         """
         return self._text_to_speech
+
+    @property
+    def motion(self):
+        """
+        Reference to :class:`~pepper.framework.abstract.motion.AbstractMotion`
+
+        Returns
+        -------
+        motion: AbstractMotion
+        """
+        return self._motion
 
     @property
     def led(self):
