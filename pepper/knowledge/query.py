@@ -28,6 +28,7 @@ class QnA:
 
     QNA_STATIC = {
         # Personal Information
+        "haha": "ha ha ha ha.. so funny",
         "What is the color of the sky": "Blue",
         "What is the color of water": "Water",
         "I like you": "I like you too!",

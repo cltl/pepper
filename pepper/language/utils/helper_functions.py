@@ -228,7 +228,9 @@ def dereference_pronouns(self, rdf, grammar, speaker):
                 dict['pronoun'] = grammar['pronouns']['subject'][rdf[el].lower()]
 
                 if dict['pronoun']['person'] == 'third':
-                    if len(self.chat.utterances) > 2:
+
+                    # TODO: Not each utterance necessarily has a parser.
+                    if len(self.chat.utterances) > 2 and self.chat.utterances[-2].parser:
                         print(self.chat.utterances[-2].parser.constituents)
                     else:
                         print('Which ' + rdf[el] + ' do you mean?')
