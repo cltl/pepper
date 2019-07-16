@@ -211,4 +211,4 @@ if __name__ == "__main__":
     for test_file in test_files:
         test_with_triples(test_file)
 
-    #test_scenarios()
+    test_scenarios()

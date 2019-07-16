@@ -440,9 +440,13 @@ class Utterance(object):
                                     final_type.append('preposition')
                                 elif node.startswith('V'):
                                     final_type.append('verb')
+                                elif node.startswith('N'):
+                                    final_type.append('noun')
 
                         elif 'proximity' in entry:
                             final_type.append('deictic')
+                        elif 'person' in entry:
+                            final_type.append('pronoun')
 
                     else:
                         final_type.append(rdf[el]['type'][typ])
