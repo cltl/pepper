@@ -286,8 +286,8 @@ class RdfBuilder(object):
     def label_from_uri(self, uri, namespace='LTi'):
         return uri.strip(self.namespaces[namespace])
 
-    def clean_aggregated_types(self, aggregared_types):
-        split_types = aggregared_types.split('|')
+    def clean_aggregated_types(self, aggregated_types):
+        split_types = aggregated_types.split('|')
 
         clean_types = []
         for type_uri in split_types:

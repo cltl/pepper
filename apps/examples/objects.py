@@ -20,7 +20,7 @@ class ObjectApplication(AbstractApplication,        # Each Application inherits 
         # Keep track of which objects are seen when
         self.object_time = {}
 
-    def on_object(self, image, objects):
+    def on_object(self, objects):
         """
         On Object Event.
         Called every time one or more objects are detected in a camera frame.

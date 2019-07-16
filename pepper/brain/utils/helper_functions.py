@@ -73,7 +73,7 @@ def replace_in_file(file, word, word_replacement):
 
 def get_object_id(memory, category):
     cat_mem = memory.get(casefold_text(category, format='triple'), {'brain_ids': [], 'local_ids': [], 'ids': []})
-    l = cat_mem['ids']
+    l = cat_mem['ids'][:]
     id = l[0]
     tail = l[1:]
 

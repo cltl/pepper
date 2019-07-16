@@ -33,6 +33,9 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         text: str
         animation: str
         """
+
+        text = text.replace('...', r'\\pau=1000\\')
+
         if animation:
             self._service.say("^startTag({1}){0}^stopTag({1})".format(text, animation))
         else:

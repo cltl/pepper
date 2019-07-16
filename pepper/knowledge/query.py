@@ -28,6 +28,7 @@ class QnA:
 
     QNA_STATIC = {
         # Personal Information
+        "haha": "ha ha ha ha.. so funny",
         "What is the color of the sky": "Blue",
         "What is the color of water": "Water",
         "I like you": "I like you too!",
@@ -74,7 +75,7 @@ class QnA:
         # Technology
         "Do you have a brain?": "Haha, no! My brain is located on the laptop of my programmers "
                                 "and part of it is even in the cloud. So modern!",
-        "Which programming language?": "I'm mostly programmed in Python, but also some C++ and possibly other languages!",
+        "programming language?": "I'm mostly programmed in Python, but also some C++ and possibly other languages!",
         "Do you need internet?": "I do need internet, for understanding speech and looking up facts about the world!",
         "Speech Recognition": "First I listen for an utterance, "
                               "I send that to Google, which gives me back a bunch of hypotheses about what you just said. "
