@@ -5,8 +5,8 @@ from pepper import CameraResolution
 import numpy as np
 import cv2
 
-
 from time import time, sleep
+from typing import List, Callable
 
 
 class SystemImage(AbstractImage):
@@ -16,6 +16,7 @@ class SystemImage(AbstractImage):
 
 class SystemCamera(AbstractCamera):
     def __init__(self, resolution, rate, callbacks=[], index=0):
+        # type: (CameraResolution, int, List[Callable[[AbstractImage], None]], int) -> None
         """
         System Camera
 

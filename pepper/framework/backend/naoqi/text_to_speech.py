@@ -1,7 +1,10 @@
 from __future__ import unicode_literals
 
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
-from urllib import quote
+
+import qi
+
+from typing import Union, Optional
 
 
 class NAOqiTextToSpeech(AbstractTextToSpeech):
@@ -9,6 +12,7 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
     SERVICE = "ALAnimatedSpeech"
 
     def __init__(self, session, language):
+        # type: (qi.Session, str) -> None
         """
         NAOqi Text to Speech
 
@@ -25,6 +29,7 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         self._log.debug("Booted")
 
     def on_text_to_speech(self, text, animation=None):
+        # type: (Union[str, unicode], Optional[str]) -> None
         """
         Say something through Text to Speech
 

@@ -3,9 +3,12 @@ from pepper.framework.abstract.microphone import AbstractMicrophone
 import pyaudio
 import numpy as np
 
+from typing import List, Callable
+
 
 class SystemMicrophone(AbstractMicrophone):
     def __init__(self, rate, channels, callbacks=[]):
+        # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
         """
         System Microphone
 

@@ -11,6 +11,8 @@ from random import getrandbits
 from time import sleep
 import os
 
+from typing import Union, Optional
+
 
 class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
 
@@ -19,6 +21,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
     TYPE = "Standard"
 
     def __init__(self, language):
+        # type: (str) -> None
         """
         Parameters
         ----------
@@ -40,6 +43,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
         self._log.debug("Booted ({} -> {})".format(self.source, self.target))
 
     def on_text_to_speech(self, text, animation=None):
+        # type: (Union[str, unicode], Optional[str]) -> None
         """
         Say something through Text to Speech
 
