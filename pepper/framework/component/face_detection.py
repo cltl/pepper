@@ -59,8 +59,12 @@ class FaceRecognitionComponent(AbstractComponent):
             on_face_new = []
 
             for face in on_face:
-                if face.confidence > config.FACE_RECOGNITION_THRESHOLD:
-                    (on_face_new if face.name == FaceClassifier.NEW else on_face_known).append(face)
+
+                if face.name == FaceClassifier.NEW:
+                    if face.confidence >= 1.0:
+                        on_face_new.append(face)
+                elif face.confidence > config.FACE_RECOGNITION_THRESHOLD:
+                    on_face_new.append(face)
 
             if on_face:
                 for callback in self.on_face_callbacks:

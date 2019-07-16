@@ -1,6 +1,6 @@
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
 from ..context import Context
-from ..sensor import UtteranceHypothesis, Face
+from ..sensor import UtteranceHypothesis, Face, FaceClassifier
 from ..abstract import AbstractComponent, AbstractImage
 
 from pepper.language import Utterance
@@ -18,13 +18,14 @@ import numpy as np
 
 
 class ContextComponent(AbstractComponent):
+
     # Minimum Distance of Person to Enter/Exit Conversation
     PERSON_AREA_ENTER = 0.25
     PERSON_AREA_EXIT = 0.2
 
     # Minimum Distance Difference of Person to Enter/Exit Conversation
     PERSON_DIFF_ENTER = 1.5
-    PERSON_DIFF_EXIT = 1.25
+    PERSON_DIFF_EXIT = 1.1
 
     CONVERSATION_TIMEOUT = 15
 
@@ -179,7 +180,7 @@ class ContextComponent(AbstractComponent):
                         if closest_face:
 
                             # If Still Chatting with Same Person -> Update Conversation Time & Face Vectors
-                            if closest_face.name == self.context.chat.speaker:
+                            if closest_face.name in [self.context.chat.speaker, FaceClassifier.NEW]:
                                 self._conversation_time = time()
                                 self._face_vectors.append(closest_face.representation)
 
