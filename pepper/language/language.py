@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 from pepper.language.pos import POS
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
-from pepper.language.utils.helper_functions import names, check_rdf_completeness
-
+from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
 from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.utils.rdf_builder import RdfBuilder
 from pepper.brain.utils.response import Triple
@@ -407,22 +406,10 @@ class Utterance(object):
 
         Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
 
-        if analyzer.utterance_type == UtteranceType.STATEMENT:
-            if not check_rdf_completeness(analyzer.rdf):
-                # TODO intransitive verbs
-                Analyzer.LOG.debug('incomplete statement RDF')
-                return
+        if analyzer.utterance_type==UtteranceType.STATEMENT:
+            self.pack_perspective(analyzer.perspective)
 
         self.write_template(analyzer.rdf, analyzer.utterance_type)
-
-        '''
-        if analyzer.utterance_type == UtteranceType.STATEMENT:
-            perspective = analyzer.perspective
-            print(perspective)
-            for el in perspective:
-                if el!='fix':
-                    template[el] = perspective[el]
-        '''
 
     def write_template(self, rdf, utterance_type):
         """
@@ -443,40 +430,62 @@ class Utterance(object):
         if not rdf:
             return 'error in the rdf'
 
-        builder = RdfBuilder()
+        builder = RdfBuilder() # TODO PACKING PERSPECTIVE
+
+        for el in rdf:
+            final_type = []
+            if rdf[el]['text']=='':
+                continue
+            if type(rdf[el]['type'])==dict:
+                for typ in rdf[el]['type']:
+                    if rdf[el]['type'][typ] in [None, '']:
+                        entry = lexicon_lookup(typ)
+                        if entry is None:
+                            if typ.lower() in ['lenka','leolani','selene','suzana','bram','piek'] or typ.capitalize()==typ:
+                                final_type.append('person')
+                            else:
+                                node = get_node_label(self.parser.forest[0], typ)
+                                if node in ['IN','TO']:
+                                    final_type.append('preposition')
+                                elif node.startswith('V'):
+                                    final_type.append('verb')
+
+                        elif 'proximity' in entry:
+                            final_type.append('deictic')
+
+                    else:
+                        final_type.append(rdf[el]['type'][typ])
+                rdf[el]['type'] = final_type
+
+            elif rdf[el]['type'] in [None, '']:
+                entry = lexicon_lookup(rdf[el]['text'])
+                if entry is None:
+                    if rdf[el]['text'].lower() in ['lenka', 'leolani', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize()==typ:
+                        rdf[el]['type'] = 'person'
+                elif 'proximity' in entry:
+                    rdf[el]['type'] = 'deictic'
+
+        for el in rdf:
+            #print(rdf[el])
+            if rdf[el]['type'] in [None, ''] and rdf[el]['text']!='':
+                print('unknown type ', rdf[el])
+            else:
+                print(rdf[el])
+
 
         # Build subject
-        subject = builder.fill_entity(casefold_text(rdf['subject'], format='triple'), ["person"])  # capitalization
+        subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'), ["person"])  # capitalization
 
-        # Build predicate
-        if rdf['predicate'] == 'seen':
-            predicate = builder.fill_predicate('sees')
-            # template['object']['hack'] = True  # TODO what does this mean?
-        else:
-            predicate = builder.fill_predicate(casefold_text(rdf['predicate'], format='triple'))
-        # Build object
-        if rdf['object'] in names:
-            object = builder.fill_entity(casefold_text(rdf['object'], format='triple'), ["person"])
+        predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
 
-        elif type(rdf['object']) is list:
-            if rdf['object'][0] and rdf['object'][0].strip() in ['a', 'an', 'the']:
-                rdf['object'].remove(rdf['object'][0])
-
-            if len(rdf['object']) > 1:
-                object = builder.fill_entity(casefold_text(rdf['object'][0], format='triple'),
-                                             casefold_text(rdf['object'][1], format='triple'))
-            else:
-                object = builder.fill_entity_from_label(casefold_text(rdf['object'][0], format='triple'))
-
-        else:
-            if rdf['object'].lower().startswith('a '):
-                rdf['object'] = rdf['object'][2:]
-            object = builder.fill_entity_from_label(casefold_text(rdf['object'], format='triple'))
+        object = builder.fill_entity_from_label(casefold_text(rdf['object']['text'], format='triple'))
 
         self.set_triple(Triple(subject, predicate, object))
-        # new things in template: certainty , sentiment, types of NE, mention indexes
 
-    # TODO check this with Bram
+
+    def pack_perspective(self, persp):
+        self.set_perspective(Perspective(persp['certainty'], persp['polarity'], persp['sentiment']))
+
     def set_triple(self, triple):
         # type: (Triple) -> ()
         self._triple = triple
@@ -559,33 +568,33 @@ class Utterance(object):
                 - remove contractions
         """
 
-        tokens_raw = transcript.replace("'", " ").split() # TODO possessive
+
+        openers = ['leolani', 'sorry', 'excuse me', 'hey']
+        introductions = ['can you tell me', 'do you know', 'please tell me', 'do you maybe know']
+
+        for o in openers:
+            if transcript.startswith(o):
+                transcript = transcript.replace(o, '')
+
+        for i in introductions:
+            if transcript.startswith(i):
+                tmp = transcript.replace(i, '')
+                first_word = tmp.split()[0]
+                if first_word in ['what', 'that', 'who', 'when', 'where', 'which']:
+                    transcript = transcript.replace(i, '')
+
+
+        tokens_raw = transcript.replace("'", " ").split()
         dict = {'m': 'am', 're': 'are', 'll': 'will'}
+        dict_not = {'won': 'will', 'don': 'do', 'doesn': 'does', 'didn': 'did', 'haven':'have', 'wouldn': 'would', 'aren': 'are'}
+
         for key in dict:
-            if key in tokens_raw:
-                index = tokens_raw.index(key)
-                tokens_raw.remove(key)
-                tokens_raw.insert(index, dict[key])
+            tokens_raw = self.replace_token(tokens_raw,key,dict[key])
 
         if 't' in tokens_raw:
-            index = tokens_raw.index('t')
-            tokens_raw.remove('t')
-            tokens_raw.insert(index, 'not')
-
-            if 'won' in tokens_raw:
-                index = tokens_raw.index('won')
-                tokens_raw.remove('won')
-                tokens_raw.insert(index, 'will')
-
-            if 'don' in tokens_raw:
-                index = tokens_raw.index('don')
-                tokens_raw.remove('don')
-                tokens_raw.insert(index, 'do')
-
-            if 'doesn' in tokens_raw:
-                index = tokens_raw.index('doesn')
-                tokens_raw.remove('doesn')
-                tokens_raw.insert(index, 'does')
+            tokens_raw = self.replace_token(tokens_raw, 't', 'not')
+            for key in dict_not:
+                tokens_raw = self.replace_token(tokens_raw,key,dict_not[key])
 
         if 's' in tokens_raw:
             index = tokens_raw.index('s')
@@ -593,14 +602,16 @@ class Utterance(object):
             if tag[0][1] in ['DT','JJ','IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
                 tokens_raw.remove('s')
                 tokens_raw.insert(index, 'is')
+            else:
+                tokens_raw.remove('s')
 
-        '''
-        tokens = []
-        for word in tokens_raw:
-            clean_word = re.sub('[!?]', '', word)
-            tokens.append(clean_word)
-        '''
+        return tokens_raw
 
+    def replace_token(self, tokens_raw, old, new):
+        if old in tokens_raw:
+            index = tokens_raw.index(old)
+            tokens_raw.remove(old)
+            tokens_raw.insert(index, new)
         return tokens_raw
 
     def _clean(self, tokens):
@@ -622,10 +633,11 @@ class Utterance(object):
         return '{:>10s}: "{}"'.format(author, self.transcript)
 
 
+
 class Parser(object):
 
     POS_TAGGER = None  # Type: POS
-    CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg.txt')
+    CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
     def __init__(self, utterance):
 
@@ -651,20 +663,24 @@ class Parser(object):
         tokenized_sentence = utterance.tokens
         #print(tokenized_sentence)
         pos = self.POS_TAGGER.tag(tokenized_sentence)
+        print(pos)
         self._log.debug(pos)
 
-        '''
+        import spacy
+        nlp = spacy.load('en_core_web_sm')
+
         doc = nlp(utterance.transcript)
         for token in doc:
             #print(token.text, token.lemma_, token.pos_)
             ind = 0
             for w in pos:
-                if w[0]==token.text and w[1]!=token.pos_:
-                    print('mismatch ',w[1],token.pos_)
-                    if w[1]=='IN' and token.pos_=='VERB':
-                        pos[ind]=(token.text,'VBP')
-                ind+=1
-        '''
+                if w[0]==token.text and w[1]!=token.tag_:
+                    if (w[1]=='TO' and token.tag_=='IN') or w[1][:-1]==token.tag_ or w[1]==token.tag_[:-1]:
+                        continue
+                    else:
+                        #print('pos_mismatch ',w[1],token.tag_)
+                        pos[ind] = (w[0],token.tag_)
+                ind += 1
 
         ind = 0
         for w in tokenized_sentence:
@@ -674,8 +690,6 @@ class Parser(object):
 
         if pos[0][0]=='Does':
             pos[0] = ('Does', 'VBD')
-
-        # print(pos)
 
         ind = 0
         for word, tag in pos:
@@ -689,10 +703,10 @@ class Parser(object):
                 new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
-
             ind+=1
 
         try:
+            #print(self._cfg)
             cfg_parser = CFG.fromstring(self._cfg)
             RD = RecursiveDescentParser(cfg_parser)
 
@@ -709,26 +723,18 @@ class Parser(object):
             forest = [tree for tree in parsed]
 
             if len(forest):
+                if (len(forest))>1:
+                    print('* Ambiguity in grammar *')
                 for tree in forest[0]: #alternative trees? f
                     for branch in tree:
+                        s_r[index] = {'label': branch.label(), 'structure' : branch}
+                        raw=''
                         for node in branch:
-                            if type(node)== unicode or type(node)==str:
-                                s_r[index] = {'label': branch.label()}
-                                s_r[index]['raw'] = node
+                            for leaf in node.leaves():
+                                    raw+=leaf+'-'
 
-                            else:
-                                s_r[index] = {'label': node.label()}
-                                raw = ''
-                                if len(node.leaves())>1:
-                                    s_r[index]['structure']= branch
-                                    for n in node.leaves():
-                                        raw+=n+' '
-                                    # deeper structure
-                                else:
-                                    raw = node.leaves()
-
-                                s_r[index]['raw'] = raw
-                            index+=1
+                        s_r[index]['raw'] = raw[:-1]
+                        index += 1
 
             else:
                 self._log.info("no forest")

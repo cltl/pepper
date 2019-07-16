@@ -616,7 +616,7 @@ class LongTermMemory(BasicBrain):
 
     def get_location_memory(self, cntxt):
         # brain object memories
-        query = read_query('context/ranked_object_ids_per_type') % cntxt.location.label
+        query = read_query('context/ranked_object_ids_per_type') % 'cntxt.location.label'
         response = self._submit_query(query)
 
         location_memory = {}
@@ -792,20 +792,22 @@ class LongTermMemory(BasicBrain):
         self.interaction_graph.add((time.id, self.namespaces['TIME']['unitType'], time_unit))
 
         # Place
-        location_id = self._rdf_builder.fill_literal(cntxt.location.id, datatype=self.namespaces['XML']['string'])
-        location_city = self._rdf_builder.fill_entity(cntxt.location.city, ['location', 'city', 'Place'], 'LW')
-        self._link_entity(location_city, self.interaction_graph)
-        location_country = self._rdf_builder.fill_entity(cntxt.location.country, ['location', 'country', 'Place'], 'LW')
-        self._link_entity(location_country, self.interaction_graph)
-        location_region = self._rdf_builder.fill_entity(cntxt.location.region, ['location', 'region', 'Place'], 'LW')
-        self._link_entity(location_region, self.interaction_graph)
-        location = self._rdf_builder.fill_entity(cntxt.location.label, ['location', 'Place'], 'LC')
-        self._link_entity(location, self.interaction_graph)
-        self.interaction_graph.add((location.id, self.namespaces['N2MU']['id'], location_id))
-        self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_city.id))
-        self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_country.id))
-        self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_region.id))
-        self.interaction_graph.add((context.id, self.namespaces['SEM']['hasPlace'], location.id))
+
+        if cntxt.location is not None:
+            location_id = self._rdf_builder.fill_literal(cntxt.location.id, datatype=self.namespaces['XML']['string'])
+            location_city = self._rdf_builder.fill_entity(cntxt.location.city, ['location', 'city', 'Place'], 'LW')
+            self._link_entity(location_city, self.interaction_graph)
+            location_country = self._rdf_builder.fill_entity(cntxt.location.country, ['location', 'country', 'Place'], 'LW')
+            self._link_entity(location_country, self.interaction_graph)
+            location_region = self._rdf_builder.fill_entity(cntxt.location.region, ['location', 'region', 'Place'], 'LW')
+            self._link_entity(location_region, self.interaction_graph)
+            location = self._rdf_builder.fill_entity(cntxt.location.label, ['location', 'Place'], 'LC')
+            self._link_entity(location, self.interaction_graph)
+            self.interaction_graph.add((location.id, self.namespaces['N2MU']['id'], location_id))
+            self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_city.id))
+            self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_country.id))
+            self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_region.id))
+            self.interaction_graph.add((context.id, self.namespaces['SEM']['hasPlace'], location.id))
 
         # Detections
         instances, observations = self._create_detections(cntxt, context)

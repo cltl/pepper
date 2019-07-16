@@ -29,7 +29,8 @@ class Context(object):
         self._objects = {}
         self._intention = None
 
-        self._location = Location()
+        self._location = None
+        #self._location = Location()
 
     @property
     def id(self):

@@ -1,17 +1,15 @@
 U -> S | Q
-Q -> W VP | V NP VP
-W -> WRB | WP
-S -> NP VP | AdvP NP VP | NP VP AdvP | DT VP
-VP -> V | V NP | V PP | V NP NP | V AP | V NP AP | V NP V| VT PP | VT NP | V CP | MOD
+Q -> W VP |W NP VP | W V NP VP| W NP VP NP | V NP VP | V NP NP | V NP VP NP  | V NP PP
+W -> WRB | WP | WDT
+S -> NP VP | NP VP PREP S |NP VP S | DT VP 
+VP -> RB VP | V NP | V PP | V NP NP | V AP | V NP AP | V NP V| VT PP | VT NP | MOD | VB VBG PP| V | V VP | V PREP
+PP -> PREP NP | NP IN | PREP VP
+PREP -> IN | TO
 MOD -> MD V | MD RB V
-CP -> NP VP
-PP -> IN NP | NP JJ | NP IN | TO NP
-VT -> V RB V | V VB V | V RB | V VB
-NP -> D NP | D AP NP | N CC N | PRP | N | D N PP | J N | POS
-POS -> PRPPOS NP
-AP -> JJ | VBN | VBG | RB JJ | N POS
-AdvP -> N | RB
+VT -> V RB V | V VB V | V RB | V VB 
+NP -> D NP | RB NP | AP NP | AP | N CC N | N N| N | N PP | N AP
+AP -> RB AP | J | J NP 
 V -> VBD | VBP | VBZ | VBN | VBG | VB | MD
-D -> DT | PRP | N POS | CD
-N -> NN | NNS | NNP | NNPS
+D -> DT | CD | PRPPOS
+N -> NN | NNS | NNP | NNPS | PRP
 J -> JJ | JJR | JJS
