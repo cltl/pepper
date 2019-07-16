@@ -9,7 +9,7 @@ import os
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
-APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
+APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 NAME = "Leolani"
 HUMAN_UNKNOWN = "Stranger"

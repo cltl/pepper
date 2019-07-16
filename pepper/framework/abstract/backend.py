@@ -32,6 +32,7 @@ class AbstractBackend(object):
 
     @property
     def camera(self):
+        # type: () -> AbstractCamera
         """
         Reference to :class:`~pepper.framework.abstract.camera.AbstractCamera`
 
@@ -43,6 +44,7 @@ class AbstractBackend(object):
 
     @property
     def microphone(self):
+        # type: () -> AbstractMicrophone
         """
         Reference to :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`
 
@@ -54,6 +56,7 @@ class AbstractBackend(object):
 
     @property
     def text_to_speech(self):
+        # type: () -> AbstractTextToSpeech
         """
         Reference to :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`
 
@@ -65,6 +68,7 @@ class AbstractBackend(object):
 
     @property
     def motion(self):
+        # type: () -> AbstractMotion
         """
         Reference to :class:`~pepper.framework.abstract.motion.AbstractMotion`
 
@@ -76,6 +80,7 @@ class AbstractBackend(object):
 
     @property
     def led(self):
+        # type: () -> AbstractLed
         """
         Reference to :class:`~pepper.framework.abstract.led.AbstractLed`
 

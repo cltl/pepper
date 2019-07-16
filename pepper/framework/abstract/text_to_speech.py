@@ -17,6 +17,7 @@ class AbstractTextToSpeech(object):
     """
 
     def __init__(self, language):
+        # type: (str) -> None
         self._language = language
 
         self._queue = Queue()
@@ -29,6 +30,7 @@ class AbstractTextToSpeech(object):
 
     @property
     def language(self):
+        # type: () -> str
         """
         Language Code, See: https://cloud.google.com/speech/docs/languages
 
@@ -41,6 +43,7 @@ class AbstractTextToSpeech(object):
 
     @property
     def talking(self):
+        # type: () -> bool
         """
         Returns whether system is currently producing speech
 
@@ -73,6 +76,7 @@ class AbstractTextToSpeech(object):
             sleep(1E-3)
 
     def on_text_to_speech(self, text, animation=None):
+        # type: (Union[str, unicode], Optional[str]) -> None
         """
         Say something through Text to Speech (Implementation)
 

@@ -7,7 +7,7 @@ import numpy as np
 from collections import deque
 from time import time
 
-from typing import Tuple, List, Optional
+from typing import Tuple, List, Optional, Callable
 
 
 class AbstractImage(object):
@@ -24,10 +24,9 @@ class AbstractImage(object):
         depth: np.ndarray
         """
 
-        # TODO: Depth is not really optional now..
         self._image = image
         self._bounds = bounds
-        self._depth = depth
+        self._depth = depth if depth else np.ones((100, 100), np.float32)
 
         self._time = time()
 
@@ -127,6 +126,8 @@ class AbstractCamera(object):
     """
 
     def __init__(self, resolution, rate, callbacks):
+        # type: (CameraResolution, int, List[Callable[[AbstractImage], None]]) -> None
+
         self._resolution = resolution
         self._width = self._resolution.value[1]
         self._height = self._resolution.value[0]
@@ -151,6 +152,7 @@ class AbstractCamera(object):
 
     @property
     def resolution(self):
+        # type: () -> CameraResolution
         """
         Returns :class:`~pepper.config.CameraResolution`
 
@@ -162,6 +164,7 @@ class AbstractCamera(object):
 
     @property
     def width(self):
+        # type: () -> int
         """
         Image Width
 
@@ -174,6 +177,7 @@ class AbstractCamera(object):
 
     @property
     def height(self):
+        # type: () -> int
         """
         Image Height
 
@@ -186,6 +190,7 @@ class AbstractCamera(object):
 
     @property
     def channels(self):
+        # type: () -> int
         """
         Image (Color) Channels
 
@@ -198,6 +203,7 @@ class AbstractCamera(object):
 
     @property
     def rate(self):
+        # type: () -> int
         """
         Image Rate
 
@@ -210,6 +216,7 @@ class AbstractCamera(object):
 
     @property
     def true_rate(self):
+        # type: () -> float
         """
         Actual Image Rate
 
@@ -224,6 +231,7 @@ class AbstractCamera(object):
 
     @property
     def shape(self):
+        # type: () -> np.ndarray
         """
         Image Shape
 
@@ -236,6 +244,7 @@ class AbstractCamera(object):
 
     @property
     def callbacks(self):
+        # type: () -> List[Callable[[AbstractImage], None]]
         """
         Get/Set :func:`~AbstractCamera.on_image` Callbacks
 
@@ -248,6 +257,7 @@ class AbstractCamera(object):
 
     @callbacks.setter
     def callbacks(self, value):
+        # type: (List[Callable[[AbstractImage], None]]) -> None
         """
         Get/Set :func:`~AbstractCamera.on_image` Callbacks
 
@@ -259,6 +269,7 @@ class AbstractCamera(object):
 
     @property
     def running(self):
+        # type: () -> bool
         """
         Returns whether Camera is Running
 
@@ -269,6 +280,7 @@ class AbstractCamera(object):
         return self._running
 
     def on_image(self, image):
+        # type: (AbstractImage) -> None
         """
         On Image Event, Called for every Image captured by Camera
 

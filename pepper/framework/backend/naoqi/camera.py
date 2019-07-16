@@ -2,11 +2,15 @@ from pepper.framework.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.util import Bounds
 from pepper import NAOqiCameraIndex, CameraResolution
 
+import qi
+
 import numpy as np
 
 from random import getrandbits
 from threading import Thread
 from time import time, sleep
+
+from typing import List, Callable
 
 
 class NAOqiImage(AbstractImage):
@@ -65,6 +69,7 @@ class NAOqiCamera(AbstractCamera):
     HEAD_DELTA_THRESHOLD = 0.1
 
     def __init__(self, session, resolution, rate, callbacks=[], index=NAOqiCameraIndex.TOP):
+        # type: (qi.Session, CameraResolution, int, List[Callable[[AbstractImage], None]], NAOqiCameraIndex) -> None
         super(NAOqiCamera, self).__init__(resolution, rate, callbacks)
 
         # Get random camera id, to prevent name collision
@@ -82,6 +87,7 @@ class NAOqiCamera(AbstractCamera):
         # Connect to Camera Service and Subscribe with Settings
         self._service = session.service(NAOqiCamera.SERVICE_VIDEO)
 
+        # Subscribe to Robot Cameras
         self._client = self._service.subscribeCameras(
             str(getrandbits(128)),  # Random Client ID's to prevent name collision
             [int(NAOqiCameraIndex.TOP), int(NAOqiCameraIndex.DEPTH)],

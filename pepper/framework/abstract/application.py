@@ -1,4 +1,4 @@
-from pepper.framework.abstract import AbstractBackend, AbstractComponent
+from pepper.framework.abstract import *
 from pepper import logger
 
 from time import sleep
@@ -40,29 +40,34 @@ class AbstractApplication(AbstractComponent):
 
     @property
     def camera(self):
+        # type: () -> AbstractCamera
         return self.backend.camera
 
     @property
     def microphone(self):
+        # type: () -> AbstractMicrophone
         return self.backend.microphone
 
     @property
     def text_to_speech(self):
+        # type: () -> AbstractTextToSpeech
         return self.backend.text_to_speech
 
     @property
     def motion(self):
+        # type: () -> AbstractMotion
         return self.backend.motion
 
     @property
     def led(self):
+        # type: () -> AbstractLed
         return self.backend.led
 
     def run(self):
         """
         Run Application
 
-        Starts Camera & Microphone and Sleeps
+        Starts Camera & Microphone and Runs until KeyboardInterrupt
         """
         self.backend.camera.start()
         self.backend.microphone.start()
