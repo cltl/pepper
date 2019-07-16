@@ -2,6 +2,7 @@ from pepper.framework.abstract import AbstractComponent, AbstractApplication
 from pepper.framework.abstract.component import ComponentDependencyError
 from pepper import logger
 
+from typing import Iterator, ClassVar
 
 class AbstractIntention(object):
     """
@@ -16,6 +17,7 @@ class AbstractIntention(object):
     """
 
     def __init__(self, application):
+        # type: (AbstractApplication) -> None
         self._application = application
 
         # Reset Application Events to their default
@@ -45,6 +47,7 @@ class AbstractIntention(object):
 
     @property
     def application(self):
+        # type: () -> AbstractApplication
         """
         :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on
 
@@ -56,6 +59,7 @@ class AbstractIntention(object):
 
     @property
     def dependencies(self):
+        # type: () -> Iterator[ClassVar[AbstractComponent]]
         """
         Intention Dependencies
 
@@ -69,6 +73,7 @@ class AbstractIntention(object):
                 yield cls
 
     def require_dependency(self, dependency):
+        # type: (ClassVar[AbstractComponent]) -> AbstractComponent
         """
         Enforce Component Dependency
 

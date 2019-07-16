@@ -8,6 +8,8 @@ from time import time
 
 from collections import deque
 
+from typing import List, Callable
+
 
 class AbstractMicrophone(object):
     """
@@ -21,6 +23,7 @@ class AbstractMicrophone(object):
     """
 
     def __init__(self, rate, channels, callbacks):
+        # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
         self._rate = rate
         self._channels = channels
         self._callbacks = callbacks
@@ -40,6 +43,7 @@ class AbstractMicrophone(object):
 
     @property
     def rate(self):
+        # type: () -> int
         """
         Audio bit rate
 
@@ -52,6 +56,7 @@ class AbstractMicrophone(object):
 
     @property
     def true_rate(self):
+        # type: () -> float
         """
         Actual Audio bit rate
 
@@ -66,6 +71,7 @@ class AbstractMicrophone(object):
 
     @property
     def channels(self):
+        # type: () -> int
         """
         Audio channels
 
@@ -78,6 +84,7 @@ class AbstractMicrophone(object):
 
     @property
     def callbacks(self):
+        # type: () -> List[Callable[[np.ndarray], None]]
         """
         Get/Set :func:`~AbstractCamera.on_audio` Callbacks
 
@@ -89,6 +96,7 @@ class AbstractMicrophone(object):
 
     @callbacks.setter
     def callbacks(self, value):
+        # type: (List[Callable[[np.ndarray], None]]) -> None
         """
         Get/Set :func:`~AbstractCamera.on_audio` Callbacks
 
@@ -100,6 +108,7 @@ class AbstractMicrophone(object):
 
     @property
     def running(self):
+        # type: () -> bool
         """
         Returns whether Microphone is Running
 
@@ -110,6 +119,7 @@ class AbstractMicrophone(object):
         return self._running
 
     def on_audio(self, audio):
+        # type: (np.ndarray) -> None
         """
         On Audio Event, Called for every frame of audio captured by Microphone
 

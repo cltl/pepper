@@ -1,6 +1,8 @@
 from pepper.framework.abstract import AbstractBackend
 from pepper import logger
 
+from typing import ClassVar
+
 
 class ComponentDependencyError(Exception):
     """Raised when a Component Dependency is not met"""
@@ -18,6 +20,7 @@ class AbstractComponent(object):
     """
 
     def __init__(self, backend):
+        # type: (AbstractBackend) -> None
         super(AbstractComponent, self).__init__()
 
         self._backend = backend
@@ -36,6 +39,7 @@ class AbstractComponent(object):
 
     @property
     def backend(self):
+        # type: () -> AbstractBackend
         """
         Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
 
@@ -46,7 +50,7 @@ class AbstractComponent(object):
         return self._backend
 
     def require(self, cls, dependency):
-        # type: (object, object) -> object
+        # type: (ClassVar[AbstractComponent], ClassVar[AbstractComponent]) -> AbstractComponent
         """
         Enforce Component Dependency
 
