@@ -23,6 +23,8 @@ class AbstractImage(object):
         bounds: Bounds
         depth: np.ndarray
         """
+
+        # TODO: Depth is not really optional now..
         self._image = image
         self._bounds = bounds
         self._depth = depth
@@ -73,7 +75,7 @@ class AbstractImage(object):
 
         return self._depth[y0:y1, x0:x1]
 
-    def direction(self, coordinates):
+    def get_direction(self, coordinates):
         # type: (Tuple[float, float]) -> Tuple[float, float]
         """
         Convert 2D Relative Coordinates to 2D position in Spherical Coordinates

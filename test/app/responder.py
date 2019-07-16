@@ -6,10 +6,11 @@ from pepper import config
 
 from pepper.knowledge import sentences
 
+import numpy as np
+
+from typing import List, Callable
 from random import choice
 from time import time
-
-import numpy as np
 import os
 
 
@@ -62,6 +63,40 @@ class DefaultIntention(AbstractIntention, ResponderApp):
         elif isinstance(responder, GoodbyeResponder):
             self._ignored_people[utterance.chat.speaker] = time()
             self.context.stop_chat()
+
+
+# TODO: What are you thinking about? -> Well, Bram, I thought....
+
+class BinaryQuestionIntention(AbstractIntention, ResponderApp):
+
+    NEGATION = NegationResponder
+    AFFIRMATION = AffirmationResponder
+
+    def __init__(self, application, question, callback, responders):
+        # type: (AbstractApplication, List[str], Callable[bool], List[Responder]) -> None
+        super(BinaryQuestionIntention, self).__init__(application)
+
+        self.question = question
+        self.callback = callback
+
+        # Add Necessary Responders if not already included
+        for responder_class in [self.NEGATION, self.AFFIRMATION]:
+            if not responder_class in [responder.__class__ for responder in responders]:
+                responders.append(responder_class())
+
+        self.response_picker = ResponsePicker(self, responders)
+
+        self.say(choice(question))
+
+    def on_chat_turn(self, utterance):
+        responder = self.response_picker.respond(utterance)
+
+        if isinstance(responder, self.AFFIRMATION):
+            self.callback(True)
+        elif isinstance(responder, self.NEGATION):
+            self.callback(False)
+        else:
+            self.say(choice(self.question))
 
 
 class MeetIntention(AbstractIntention, ResponderApp):

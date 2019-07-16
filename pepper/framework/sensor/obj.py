@@ -8,7 +8,7 @@ from socket import socket, error as socket_error
 from random import getrandbits
 import json
 
-from typing import List
+from typing import List, Tuple
 
 
 class Object(object):
@@ -46,10 +46,12 @@ class Object(object):
 
     @property
     def id(self):
+        # type: () -> int
         return self._id
 
     @property
     def name(self):
+        # type: () -> str
         """
         Returns
         -------
@@ -60,6 +62,7 @@ class Object(object):
 
     @property
     def confidence(self):
+        # type: () -> float
         """
         Returns
         -------
@@ -70,27 +73,41 @@ class Object(object):
 
     @property
     def time(self):
+        # type: () -> float
         return self.image.time
 
     @property
     def image_bounds(self):
+        # type: () -> Bounds
         """
-        Object Bounds (Relative to Image)
+        Object Bounds in Image Space {x: [0, 1], y: [0, 1]}
 
         Returns
         -------
         bounds: Bounds
-            Object Bounding Box
+            Object Bounding Box in Image Space
         """
         return self._image_bounds
 
     @property
     def bounds(self):
+        # type: () -> Bounds
+        """
+        Object Bounds in Camera Space {phi: [0, pi], theta: [-pi, +pi]}
+
+        Returns
+        -------
+        bounds: Bounds
+            Object Bounding Box in Camera Space
+        """
         return self._bounds
 
     @property
     def image(self):
+        # type: () -> AbstractImage
         """
+        Image associated with the observation of this Object
+
         Returns
         -------
         image: AbstractImage
@@ -99,21 +116,75 @@ class Object(object):
 
     @property
     def direction(self):
+        # type: () -> Tuple[float, float]
+        """
+        Returns
+        -------
+        direction: float, float
+            Direction of Object in Camera Space (equivalent to self.bounds.center)
+        """
         return self._direction
 
     @property
-    def position(self):
-        return self._position
-
-    @property
     def depth(self):
+        # type: () -> float
+        """
+        Returns
+        -------
+        depth: float
+            Distance from Camera to Object
+        """
         return self._depth
 
     @property
+    def position(self):
+        # type: () -> Tuple[float, float, float]
+        """
+        Returns
+        -------
+        position: Tuple[float, float, float]
+            Position of Object in Cartesian Space (x,y,z), Relative to Camera
+        """
+        return self._position
+
+    @property
     def bounds3D(self):
+        # type: () -> List[Tuple[float, float, float]]
+        """
+        Returns
+        -------
+        bounds3D: List[Tuple[float, float]]
+            3D bounds (for visualisation) [x,y,z]*4
+        """
         return self._bounds3D
 
+    def distance_to(self, obj):
+        """
+        Parameters
+        ----------
+        obj: Object
+
+        Returns
+        -------
+        distance: float
+        """
+        return np.sqrt(
+            (self.position[0] - obj.position[0])**2 +
+            (self.position[1] - obj.position[1])**2 +
+            (self.position[2] - obj.position[2])**2
+        )
+
     def _calculate_object_depth(self):
+        """
+
+        # TODO: Improve Depth Calculation
+        Calculate Distance of Object to Camera
+        Take the median of all valid depth pixels...
+
+        Returns
+        -------
+        depth: float
+        """
         depth_map = self.image.get_depth(self._image_bounds)
         depth_map_valid = depth_map != 0
 
@@ -123,8 +194,8 @@ class Object(object):
             return 0.0
 
     def _calculate_bounds(self):
-        x0, y0 = self._image.direction((self._image_bounds.x0, self._image_bounds.y0))
-        x1, y1 = self._image.direction((self._image_bounds.x1, self._image_bounds.y1))
+        x0, y0 = self._image.get_direction((self._image_bounds.x0, self._image_bounds.y0))
+        x1, y1 = self._image.get_direction((self._image_bounds.x1, self._image_bounds.y1))
         return Bounds(x0, y0, x1, y1)
 
     def _calculate_bounds_3D(self):
