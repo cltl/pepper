@@ -1,81 +1,51 @@
 import random
 
 from pepper.language.generation.phrasing import *
-from pepper.language.utils.helper_functions import fix_predicate_morphology
+from pepper.language.utils.helper_functions import wnl, lexicon_lookup
 
+def fix_predicate_morphology(subject, predicate, object, format='triple'):
+    """
+    Conjugation
+    Parameters
+    ----------
+    subject
+    predicate
 
-def reply_to_statement(template, speaker, brain, viewed_objects=[]):
-    subject = template['statement'].triple.subject_name
-    predicate = template['statement'].triple.predicate_name
-    object = template['statement'].triple.object_name
+    Returns
+    -------
 
-    if predicate == 'isFrom': predicate = 'is from'
+    """
+    # TODO revise by Lenka
+    new_predicate = ''
+    if format == 'triple':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'is':
+                    new_predicate += 'be-'
+                else:
+                    new_predicate += el + '-'
 
-    if (speaker.lower() in [subject.lower(), 'speaker'] or subject == 'Speaker'):
-        subject = 'you '
-    else:
-        if subject.lower() == 'leolani':
-            subject = 'i'
+        elif predicate.endswith('s'):
+            new_predicate = wnl.lemmatize(predicate)
+
         else:
-            subject.title()
+            new_predicate = predicate
 
-    if subject == 'you ':
-        predicate = fix_predicate_morphology(predicate, format='natural')
+    elif format == 'natural':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'be':
+                    new_predicate += 'is '
+                else:
+                    new_predicate += el + ' '
 
-    if subject == 'i' and predicate.endswith('s'): predicate = predicate[:-1]
+        #elif predicate == wnl.lemmatize(predicate):
+        #    new_predicate = predicate + 's'
 
-    if object.lower() == speaker.lower(): object = 'you'
-
-    response = subject + ' ' + predicate + ' ' + object
-
-    print("INITIAL RESPONSE ", response)
-
-    if predicate == 'own':
-        response = subject + ' ' + predicate + ' a ' + object
-
-    if predicate in ['see', 'sees']:
-
-        response = subject + ' ' + predicate + ' a ' + object
-
-        if object.lower() in viewed_objects:
-            response += ', I see a ' + object + ', too!'
         else:
-            response += ', but I don\'t see it!'
+            new_predicate = predicate
 
-        class_recognized, text = brain.reason_entity_type(object)
-
-        if class_recognized is not None:
-            capsule = {
-                "subject": {
-                    "label": "",
-                    "type": ""
-                },
-                "predicate": {
-                    "type": ""
-                },
-                "object": {
-                    "label": "apple",
-                    "type": class_recognized
-                },
-                "author": "front_camera",
-                "chat": None,
-                "turn": None,
-                "position": "0-15-0-15",
-                "date": date.today()
-            }
-
-            brain.experience(capsule)
-
-        response += text
-
-    elif predicate.strip() == 'see-not':
-        response = 'You don\'t see a ' + object
-        if object.lower() in viewed_objects:
-            response += ', but I see it'
-        else:
-            response += ', and I also don\'t see it'
-
-    return response
+    return new_predicate.strip(' ')
 
 
 def reply_to_question(brain_response):
@@ -83,6 +53,7 @@ def reply_to_question(brain_response):
     previous_author = ''
     previous_subject = ''
     previous_predicate = ''
+    person = ''
 
     utterance = brain_response['question']
     response = brain_response['response']
@@ -117,122 +88,78 @@ def reply_to_question(brain_response):
 
     response.sort(key=lambda x: x['authorlabel']['value'])
 
-    for item in response[:4]:
-        # print(response)
+    for item in response:
+        # INITIALIZATION
+
         author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
-        if brain_response['question'].transcript.split()[0].lower()!='who':
-            subject = replace_pronouns(utterance.chat_speaker, entity_label=utterance.triple.subject_name, role='subject')
+        if utterance.triple.subject_name != '':
+            subject = utterance.triple.subject_name
         else:
-            #print(item)
-            if utterance.triple.subject_name!='':
-                subject = utterance.triple.subject_name
-            else:
-                subject = item['slabel']['value']
+            subject = item['slabel']['value']
+
+        if utterance.triple.object_name!='':
+            object = utterance.triple.object_name
+        elif 'olabel' in item:
+            object = item['olabel']['value']
+        else:
+            object = ''
 
         predicate = utterance.triple.predicate_name
-        #print('PRED ',predicate)
-        if predicate=='go':
-            predicate+=' to '
-        person = ''
+
+        subject = replace_pronouns(utterance.chat_speaker, entity_label=subject, role='subject')
+
+        '''
+        new_sub = replace_pronouns(utterance.chat_speaker, entity_label=subject, role='subject')
+
+        if utterance.transcript.split()[0].lower()!='who' or new_sub.lower() in ['i','you']:
+            subject = new_sub
+        '''
+
+        if '-' in subject:
+            new_sub = ''
+            for word in subject.split('-'):
+                new_sub += replace_pronouns(utterance.chat_speaker, entity_label = word, role='pos')+' '
+            subject = new_sub
+
+        subject_entry = lexicon_lookup(subject.lower())
+
+        if subject_entry and 'person' in subject_entry:
+            person = subject_entry['person']
 
         # Deal with author
         if author != previous_author:
             say += author + ' told me '
             previous_author = author
-
-        elif author == previous_author:
+        else:
             if predicate != previous_predicate:
                 say += ' that '
 
-        # Deal with normal predicates attributes like can, read, etc
-        if not predicate.endswith('is'):
-            # Deal with answers to who can fly for example
-            if 'slabel' in item:
-                #slabel = replace_pronouns(utterance.chat_speaker, entity_label=item['slabel']['value'], role='subject')
-                slabel = item['slabel']['value']
-                if slabel == 'you':
-                    person = 'second'
-                elif slabel == 'I':
-                    person = 'first'
+        if predicate.endswith('is'):
 
-                elif (item['slabel']['value'].lower() == previous_subject.lower()) or (
-                        item['slabel']['value'].lower() == item['authorlabel']['value'].lower()):
-                    print('maybe error here')
+            say += object+' is'
+            if utterance.triple.object_name.lower() == utterance.chat_speaker.lower() or \
+                    utterance.triple.subject_name.lower() == utterance.chat_speaker.lower():
+                say += ' your '
+            elif utterance.triple.object_name.lower() == 'leolani' or \
+                    utterance.triple.subject_name.lower() == 'leolani':
+                say += ' my '
+            say += predicate[:-3]
 
-                else:
-                    previous_subject = item['slabel']['value'].lower()
-                say += slabel
-            else:
-                say+= subject
-
-        # Deal with attribute predicates like favorite-is, mom-is, etc
+            return say
         else:
-            if 'olabel' in item:
-                say += item['olabel']['value']
-            elif 'slabel' in item:
-                say += item['slabel']['value']
+            be = {'first': 'am', 'second': 'are', 'third': 'is'}
+            if predicate=='be': # or third person singular
+                if subject_entry and 'number' in subject_entry:
+                    if subject_entry['number']=='singular':
+                        predicate = be[person]
+                    else:
+                        predicate = 'are'
+            elif person=='third' and not '-' in predicate:
+                predicate+='s'
 
-        #
-        '''
-        if subject.lower() != previous_subject.lower():
-            if subject == 'you':
-                person = 'second'
-            elif subject == 'I':
-                person = 'first'
-            say += ' {} '.format(subject)
-            previous_subject = subject
-        '''
 
-        # if predicate in grammar['predicates']:
-        if predicate == previous_predicate:  # and response['slabel'].lower()==previous_subject.lower():
-            say+= ' '+predicate+' '
-        else:
-            previous_predicate = predicate
-            if predicate == 'see':
-                say += ' saw'
-            elif predicate == 'be-from':
-                if person == 'first':
-                    say += ' am from '
-                elif person == 'second':
-                    say += ' are from '
-                else:
-                    say += ' is from '
+            say += subject + ' '+ predicate+' '+object
 
-            elif predicate.endswith('is'):
-                #print('ODJE SAM')
-                say += ' is '
-                print(utterance.triple.object_name.lower())
-                if utterance.triple.object_name.lower() == utterance.chat_speaker.lower() or \
-                        utterance.triple.subject_name.lower() == utterance.chat_speaker.lower():
-                    say += ' your '
-                elif utterance.triple.object_name.lower() == 'leolani' or \
-                        utterance.triple.subject_name.lower() == 'leolani':
-                    say += ' my '
-                say += predicate[:-3]
-
-                return say
-
-            elif subject.strip() in ['he','she'] and len(predicate.split())==1:
-                say+= ' '+predicate+'s '
-
-            else:
-                say += ' ' + predicate + ' '
-
-        if 'olabel' in item:
-            say += item['olabel']['value']
-
-        if utterance.triple.object_name.lower() == utterance.chat_speaker.lower():
-            say += ' you'
-        elif utterance.triple.object_name.lower() == 'leolani':
-            say += ' me'
-
-        else:
-            say += utterance.triple.object_name
-
-        '''
-                elif predicate.lower() in ['see', 'own']:
-            say += ' a ' + utterance.triple.object_name
-        '''
 
         say += ' and '
 
