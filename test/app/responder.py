@@ -26,7 +26,7 @@ RESPONDERS = [
 
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
-                   # DisplayComponent, SceneComponent,
+                   DisplayComponent, SceneComponent,
                    ExploreComponent,
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
