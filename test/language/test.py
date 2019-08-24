@@ -1,18 +1,25 @@
 from pepper.language import *
 from pepper.brain import LongTermMemory
-from pepper.framework import UtteranceHypothesis, Context, Object, Face
+from pepper.framework import UtteranceHypothesis, Context, Face
+from pepper.framework.sensor.obj import Object, Bounds
 from pepper.language.generation import reply_to_question
 
 
 def fake_context():
-    objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
-               Object('cat', 0.51, None, None)}
-    faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
+    # objects = [
+    #     Object('person', 0.79,
+    #            Bounds(0.28307148814201355, 0.17469951510429382, 0.9940123558044434, 0.9931463003158569), None),
+    #     Object('teddy bear', 0.88,
+    #            Bounds(0.6867070198059082, 0.8278850317001343, 0.7545689344406128, 0.8985785245895386), None),
+    #     Object('cat', 0.51,
+    #            Bounds(0.6174041032791138, 0.5926545262336731, 0.8797773122787476, 0.7594344019889832), None)]
+    # faces = [Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)]
 
     context = Context()
-    context.add_objects(objects)
-    context.add_people(faces)
+    # context.add_objects(objects)
+    # context.add_people(faces)
     return context
+
 
 def load_golden_triples(filename):
     file = open(filename, "r")
@@ -23,34 +30,32 @@ def load_golden_triples(filename):
 
     for sample in test:
         rdf = {}
-        if sample=='\n':
+        if sample == '\n':
             break
 
-        #print(sample.split(':')[0],sample.split(':')[1])
+        # print(sample.split(':')[0],sample.split(':')[1])
         test_suite.append(sample.split(':')[0])
-        rdf['subject']= sample.split(':')[1].split()[0].lower()
+        rdf['subject'] = sample.split(':')[1].split()[0].lower()
         rdf['predicate'] = sample.split(':')[1].split()[1].lower()
-        if len(sample.split(':')[1].split())>2:
+        if len(sample.split(':')[1].split()) > 2:
             rdf['object'] = sample.split(':')[1].split()[2].lower()
         else:
-            rdf['object']=''
+            rdf['object'] = ''
 
         if len(sample.split(':')) > 2:
-
             rdf['perspective'] = {}
             rdf['perspective']['certainty'] = float(sample.split(':')[2].split()[0])
             rdf['perspective']['polarity'] = float(sample.split(':')[2].split()[1])
             rdf['perspective']['sentiment'] = float(sample.split(':')[2].split()[2])
-            #print('stored perspective ', rdf['perspective'])
-
+            # print('stored perspective ', rdf['perspective'])
 
         for el in rdf:
-            if rdf[el]=='?':
-                rdf[el]=''
+            if rdf[el] == '?':
+                rdf[el] = ''
 
         gold.append(rdf)
 
-    return test_suite,gold
+    return test_suite, gold
 
 
 def load_scenarios(filepath):
@@ -60,7 +65,7 @@ def load_scenarios(filepath):
 
     for sample in test:
         print(sample)
-        if sample=='\n':
+        if sample == '\n':
             break
         scenario = {'statement': '', 'questions': [], 'reply': ''}
         scenario['statement'] = sample.split('-')[0]
@@ -71,6 +76,7 @@ def load_scenarios(filepath):
         scenarios.append(scenario)
 
     return scenarios
+
 
 def compare_triples(triple, gold):
     correct = 0
@@ -117,23 +123,23 @@ def test_scenario(statement, questions, gold):
         reply = reply_to_question(brain_response)
         print(reply)
         if '-' in reply:
-            reply = reply.replace('-',' ')
-        if reply.lower().strip()!=gold.lower().strip():
+            reply = reply.replace('-', ' ')
+        if reply.lower().strip() != gold.lower().strip():
             print('MISMATCH RESPONSE ', reply.lower().strip(), gold.lower().strip())
         else:
-            correct+=1
+            correct += 1
 
     return correct
 
 
 def test_scenarios():
-    scenarios = load_scenarios("/Users/lenka/Desktop/scenarios.txt")
+    scenarios = load_scenarios("./data/scenarios.txt")
     correct = 0
     total = 0
     for sc in scenarios:
-        correct+=test_scenario(sc['statement'], sc['questions'], sc['reply'])
-        total+=len(sc['questions'])
-    print(correct, total-correct)
+        correct += test_scenario(sc['statement'], sc['questions'], sc['reply'])
+        total += len(sc['questions'])
+    print(correct, total - correct)
 
 
 def test_with_triples(path):
@@ -151,38 +157,39 @@ def test_with_triples(path):
         chat.add_utterance([UtteranceHypothesis(utterance, 1.0)], False)
         chat.last_utterance.analyze()
 
-        if chat.last_utterance.triple==None:
-            print(chat.last_utterance,'ERROR')
-            incorrect+=3
-            index+=1
+        if chat.last_utterance.triple == None:
+            print(chat.last_utterance, 'ERROR')
+            incorrect += 3
+            index += 1
             issues[chat.last_utterance.transcript] = 'NOT PARSED'
             continue
 
-
         t = compare_triples(chat.last_utterance.triple, gold[index])
-        if t<3:
+        if t < 3:
             issues[chat.last_utterance.transcript] = t
-        correct+=t
-        incorrect+=(3-t)
+        correct += t
+        incorrect += (3 - t)
 
         if chat.last_utterance.type == language.UtteranceType.QUESTION:
             brain_response = brain.query_brain(chat.last_utterance)
-            #reply = reply_to_question(brain_response)
-            #print(reply)
+            # reply = reply_to_question(brain_response)
+            # print(reply)
 
         else:
             if 'perspective' in gold[index]:
                 perspective = chat.last_utterance.perspective
-                extracted_perspective={'polarity': perspective.polarity, 'certainty':perspective.certainty, 'sentiment':perspective.sentiment}
+                extracted_perspective = {'polarity': perspective.polarity, 'certainty': perspective.certainty,
+                                         'sentiment': perspective.sentiment}
                 for key in extracted_perspective:
-                    if float(extracted_perspective[key])!=gold[index]['perspective'][key]:
+                    if float(extracted_perspective[key]) != gold[index]['perspective'][key]:
                         print('MISMATCH PERSPECTIVE ', key, extracted_perspective[key], gold[index]['perspective'][key])
-                        incorrect+=1
-                        #print(issues[chat.last_utterance.transcript])
-                        #print([extracted_perspective[key], gold[index]['perspective'][key]])
-                        issues[chat.last_utterance.transcript] = [extracted_perspective[key], gold[index]['perspective'][key]]
+                        incorrect += 1
+                        # print(issues[chat.last_utterance.transcript])
+                        # print([extracted_perspective[key], gold[index]['perspective'][key]])
+                        issues[chat.last_utterance.transcript] = [extracted_perspective[key],
+                                                                  gold[index]['perspective'][key]]
                     else:
-                        correct+=1
+                        correct += 1
 
             '''
             brain_response = brain.update(chat.last_utterance, reason_types=True)
@@ -192,21 +199,21 @@ def test_with_triples(path):
 
         print(chat.last_utterance)
         print(chat.last_utterance.triple)
-        #print(reply)
-        index+=1
+        # print(reply)
+        index += 1
 
     print(correct, incorrect)
-    print('issues ',issues)
+    print('issues ', issues)
 
     return
 
 
 if __name__ == "__main__":
 
-    all_test_files = ["/Users/lenka/Desktop/wh-questions.txt", "/Users/lenka/Desktop/verb-questions.txt",
-                  "/Users/lenka/Desktop/statements.txt", "/Users/lenka/Desktop/perspective.txt"]
+    all_test_files = ["./data/wh-questions.txt", "./data/verb-questions.txt",
+                      "./data/statements.txt", "./data/perspective.txt"]
 
-    test_files = ["/Users/lenka/Desktop/statements.txt"]
+    test_files = ["./data/statements.txt"]
 
     for test_file in test_files:
         test_with_triples(test_file)

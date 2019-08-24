@@ -1,0 +1,21 @@
+lana can read a book: lana can-read a-book
+lana must read: lana must-read
+john will come to Amsterdam: john will-come-to Amsterdam
+you have been in paris: leolani have-been-in paris
+animals must drink water: animals must-drink water
+food should be healthy: food should-be healthy
+lana is reading a book: lana read a-book
+you are going to England: leolani go-to england
+you like talking to people: leolani like talking-to-people
+john enjoys watching movies: john enjoy watching-movies
+lana read a book: lana read a-book
+I live in the Netherlands: lenka live-in the-netherlands
+you live in this office: leolani live-in this-office
+you are a robot: leolani be a-robot
+I am a person: lenka be a-person
+humans can eat food: humans can-eat food
+swimming is a sport: swimming be a-sport
+bram loves sport: bram love sport
+you come from france: leolani come-from france
+
+
