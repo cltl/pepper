@@ -79,11 +79,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -179,35 +174,43 @@
     <span class="k">if</span> <span class="n">entity_label</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">author</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">speaker</span>
 
-    <span class="c1"># Author</span>
-    <span class="k">if</span> <span class="n">author</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span><span class="n">speaker</span><span class="p">,</span> <span class="n">entity_label</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">entity_label</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;your&#39;</span>
+        <span class="k">elif</span> <span class="n">entity_label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;leolani&#39;</span><span class="p">:</span>
+            <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;my&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pronoun</span> <span class="o">=</span> <span class="n">entity_label</span>  <span class="c1"># third person pos.</span>
+        <span class="k">return</span> <span class="n">pronoun</span>
+
+    <span class="k">elif</span> <span class="n">author</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="n">author</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s1">&#39;speaker&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">author</span> <span class="o">==</span> <span class="s1">&#39;Speaker&#39;</span><span class="p">:</span>
             <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;you&#39;</span>
         <span class="k">elif</span> <span class="n">author</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;leolani&#39;</span><span class="p">:</span>
             <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;I&#39;</span>
-        <span class="c1"># elif author.lower() in [&#39;bram&#39;, &#39;piek&#39;]:</span>
-        <span class="c1">#     pronoun = &#39;he&#39;</span>
-        <span class="c1"># elif author.lower() in [&#39;selene&#39;, &#39;lenka&#39;, &#39;suzana&#39;]:</span>
-        <span class="c1">#     pronoun = &#39;she&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pronoun</span> <span class="o">=</span> <span class="n">author</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">pronoun</span>
 
     <span class="c1"># Entity</span>
-    <span class="k">if</span> <span class="n">entity_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">entity_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">:</span>
         <span class="k">if</span> <span class="n">speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="n">entity_label</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s1">&#39;speaker&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">entity_label</span> <span class="o">==</span> <span class="s1">&#39;Speaker&#39;</span><span class="p">:</span>
             <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;you&#39;</span>
         <span class="k">elif</span> <span class="n">entity_label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;leolani&#39;</span><span class="p">:</span>
             <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;I&#39;</span>
-        <span class="k">elif</span> <span class="n">entity_label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bram&#39;</span><span class="p">,</span> <span class="s1">&#39;piek&#39;</span><span class="p">]:</span>
-            <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;he&#39;</span> <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;subject&#39;</span> <span class="k">else</span> <span class="s1">&#39;him&#39;</span> <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span>  <span class="k">else</span> <span class="n">entity_label</span>
-        <span class="k">elif</span> <span class="n">entity_label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">]:</span>
-            <span class="n">pronoun</span> <span class="o">=</span> <span class="s1">&#39;she&#39;</span> <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;subject&#39;</span> <span class="k">else</span> <span class="s1">&#39;her&#39;</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        elif entity_label.lower() in [&#39;bram&#39;, &#39;piek&#39;]:</span>
+<span class="sd">            pronoun = &#39;he&#39; if role == &#39;subject&#39; else &#39;him&#39; if role == &#39;object&#39;  else entity_label</span>
+<span class="sd">        elif entity_label.lower() in [&#39;selene&#39;, &#39;lenka&#39;, &#39;suzana&#39;]:</span>
+<span class="sd">            pronoun = &#39;she&#39; if role == &#39;subject&#39; else &#39;her&#39;</span>
+<span class="sd">            &#39;&#39;&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pronoun</span> <span class="o">=</span> <span class="n">entity_label</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">pronoun</span></div>
+
 </pre></div>
 
            </div>

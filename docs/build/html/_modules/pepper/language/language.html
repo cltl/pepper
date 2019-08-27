@@ -79,11 +79,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -153,8 +148,7 @@
 <span class="kn">from</span> <span class="nn">pepper.language.pos</span> <span class="k">import</span> <span class="n">POS</span>
 <span class="kn">from</span> <span class="nn">pepper.language.analyzer</span> <span class="k">import</span> <span class="n">Analyzer</span>
 <span class="kn">from</span> <span class="nn">pepper.language.utils.atoms</span> <span class="k">import</span> <span class="n">UtteranceType</span>
-<span class="kn">from</span> <span class="nn">pepper.language.utils.helper_functions</span> <span class="k">import</span> <span class="n">names</span><span class="p">,</span> <span class="n">check_rdf_completeness</span>
-
+<span class="kn">from</span> <span class="nn">pepper.language.utils.helper_functions</span> <span class="k">import</span> <span class="n">lexicon_lookup</span><span class="p">,</span> <span class="n">get_node_label</span>
 <span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">casefold_text</span>
 <span class="kn">from</span> <span class="nn">pepper.brain.utils.rdf_builder</span> <span class="k">import</span> <span class="n">RdfBuilder</span>
 <span class="kn">from</span> <span class="nn">pepper.brain.utils.response</span> <span class="k">import</span> <span class="n">Triple</span>
@@ -549,21 +543,9 @@
         <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RDF </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_rdf_completeness</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">):</span>
-                <span class="c1"># TODO intransitive verbs</span>
-                <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;incomplete statement RDF&#39;</span><span class="p">)</span>
-                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pack_perspective</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">perspective</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">write_template</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">,</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span><span class="p">)</span>
-
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        if analyzer.utterance_type == UtteranceType.STATEMENT:</span>
-<span class="sd">            perspective = analyzer.perspective</span>
-<span class="sd">            print(perspective)</span>
-<span class="sd">            for el in perspective:</span>
-<span class="sd">                if el!=&#39;fix&#39;:</span>
-<span class="sd">                    template[el] = perspective[el]</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_template</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">,</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Utterance.write_template"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.write_template">[docs]</a>    <span class="k">def</span> <span class="nf">write_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -584,40 +566,66 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">rdf</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;error in the rdf&#39;</span>
 
-        <span class="n">builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>  <span class="c1"># TODO PACKING PERSPECTIVE</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">:</span>
+            <span class="n">final_type</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
+                        <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">typ</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span>
+                                               <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
+                                <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">node</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">typ</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">]:</span>
+                                    <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;preposition&#39;</span><span class="p">)</span>
+                                <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
+                                    <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;verb&#39;</span><span class="p">)</span>
+                                <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
+                                    <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;noun&#39;</span><span class="p">)</span>
+
+                        <span class="k">elif</span> <span class="s1">&#39;proximity&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                            <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;deictic&#39;</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                            <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;pronoun&#39;</span><span class="p">)</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">])</span>
+                <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_type</span>
+
+            <span class="k">elif</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span>
+                                                   <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
+                        <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;person&#39;</span>
+                <span class="k">elif</span> <span class="s1">&#39;proximity&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                    <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;deictic&#39;</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unknown type &#39;</span><span class="p">,</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
 
         <span class="c1"># Build subject</span>
-        <span class="n">subject</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">])</span>  <span class="c1"># capitalization</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
+                                      <span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">])</span>  <span class="c1"># capitalization</span>
 
-        <span class="c1"># Build predicate</span>
-        <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;seen&#39;</span><span class="p">:</span>
-            <span class="n">predicate</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="s1">&#39;sees&#39;</span><span class="p">)</span>
-            <span class="c1"># template[&#39;object&#39;][&#39;hack&#39;] = True  # TODO what does this mean?</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">predicate</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
-        <span class="c1"># Build object</span>
-        <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-            <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">])</span>
+        <span class="n">predicate</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
 
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">]:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
-                                             <span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity_from_label</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;a &#39;</span><span class="p">):</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span>
-            <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity_from_label</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
+        <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity_from_label</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_triple</span><span class="p">(</span><span class="n">Triple</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="nb">object</span><span class="p">))</span></div>
-        <span class="c1"># new things in template: certainty , sentiment, types of NE, mention indexes</span>
 
-    <span class="c1"># TODO check this with Bram</span>
+<div class="viewcode-block" id="Utterance.pack_perspective"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.pack_perspective">[docs]</a>    <span class="k">def</span> <span class="nf">pack_perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persp</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_perspective</span><span class="p">(</span><span class="n">Perspective</span><span class="p">(</span><span class="n">persp</span><span class="p">[</span><span class="s1">&#39;certainty&#39;</span><span class="p">],</span> <span class="n">persp</span><span class="p">[</span><span class="s1">&#39;polarity&#39;</span><span class="p">],</span> <span class="n">persp</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]))</span></div>
+
 <div class="viewcode-block" id="Utterance.set_triple"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.set_triple">[docs]</a>    <span class="k">def</span> <span class="nf">set_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
         <span class="c1"># type: (Triple) -&gt; ()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="n">triple</span></div>
@@ -700,49 +708,50 @@
 <span class="sd">                - remove contractions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">tokens_raw</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># TODO possessive</span>
+        <span class="n">openers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;sorry&#39;</span><span class="p">,</span> <span class="s1">&#39;excuse me&#39;</span><span class="p">,</span> <span class="s1">&#39;hey&#39;</span><span class="p">]</span>
+        <span class="n">introductions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;can you tell me&#39;</span><span class="p">,</span> <span class="s1">&#39;do you know&#39;</span><span class="p">,</span> <span class="s1">&#39;please tell me&#39;</span><span class="p">,</span> <span class="s1">&#39;do you maybe know&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">openers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transcript</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+                <span class="n">transcript</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">introductions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transcript</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">first_word</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">first_word</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;what&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="s1">&#39;who&#39;</span><span class="p">,</span> <span class="s1">&#39;when&#39;</span><span class="p">,</span> <span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="s1">&#39;which&#39;</span><span class="p">]:</span>
+                    <span class="n">transcript</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">tokens_raw</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="s1">&#39;am&#39;</span><span class="p">,</span> <span class="s1">&#39;re&#39;</span><span class="p">:</span> <span class="s1">&#39;are&#39;</span><span class="p">,</span> <span class="s1">&#39;ll&#39;</span><span class="p">:</span> <span class="s1">&#39;will&#39;</span><span class="p">}</span>
+        <span class="n">dict_not</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;won&#39;</span><span class="p">:</span> <span class="s1">&#39;will&#39;</span><span class="p">,</span> <span class="s1">&#39;don&#39;</span><span class="p">:</span> <span class="s1">&#39;do&#39;</span><span class="p">,</span> <span class="s1">&#39;doesn&#39;</span><span class="p">:</span> <span class="s1">&#39;does&#39;</span><span class="p">,</span> <span class="s1">&#39;didn&#39;</span><span class="p">:</span> <span class="s1">&#39;did&#39;</span><span class="p">,</span> <span class="s1">&#39;haven&#39;</span><span class="p">:</span> <span class="s1">&#39;have&#39;</span><span class="p">,</span> <span class="s1">&#39;wouldn&#39;</span><span class="p">:</span> <span class="s1">&#39;would&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;aren&#39;</span><span class="p">:</span> <span class="s1">&#39;are&#39;</span><span class="p">}</span>
+
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="n">tokens_raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_token</span><span class="p">(</span><span class="n">tokens_raw</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="s1">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-            <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-            <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="s1">&#39;won&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;won&#39;</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;won&#39;</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;will&#39;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="s1">&#39;don&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;don&#39;</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;don&#39;</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;do&#39;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="s1">&#39;doesn&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;doesn&#39;</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;doesn&#39;</span><span class="p">)</span>
-                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;does&#39;</span><span class="p">)</span>
+            <span class="n">tokens_raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_token</span><span class="p">(</span><span class="n">tokens_raw</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dict_not</span><span class="p">:</span>
+                <span class="n">tokens_raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_token</span><span class="p">(</span><span class="n">tokens_raw</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dict_not</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="s1">&#39;s&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
-            <span class="n">tag</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">([</span><span class="n">tokens_raw</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
-            <span class="k">if</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DT&#39;</span><span class="p">,</span><span class="s1">&#39;JJ&#39;</span><span class="p">,</span><span class="s1">&#39;IN&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>  <span class="c1"># determiner, adjective, verb</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">([</span><span class="n">tokens_raw</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span>
+            <span class="k">if</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DT&#39;</span><span class="p">,</span> <span class="s1">&#39;JJ&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>  <span class="c1"># determiner, adjective, verb</span>
                 <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
                 <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span>
-
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        tokens = []</span>
-<span class="sd">        for word in tokens_raw:</span>
-<span class="sd">            clean_word = re.sub(&#39;[!?]&#39;, &#39;&#39;, word)</span>
-<span class="sd">            tokens.append(clean_word)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">tokens_raw</span>
+
+<div class="viewcode-block" id="Utterance.replace_token"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.replace_token">[docs]</a>    <span class="k">def</span> <span class="nf">replace_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens_raw</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">old</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+            <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+            <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tokens_raw</span></div>
 
     <span class="k">def</span> <span class="nf">_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -764,9 +773,8 @@
 
 
 <div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="n">POS_TAGGER</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Type: POS</span>
-    <span class="n">CFG_GRAMMAR_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;cfg.txt&#39;</span><span class="p">)</span>
+    <span class="n">CFG_GRAMMAR_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;cfg_new.txt&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
 
@@ -790,38 +798,38 @@
 
     <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
         <span class="n">tokenized_sentence</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">tokens</span>
-        <span class="c1">#print(tokenized_sentence)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">POS_TAGGER</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
 
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        doc = nlp(utterance.transcript)</span>
-<span class="sd">        for token in doc:</span>
-<span class="sd">            #print(token.text, token.lemma_, token.pos_)</span>
-<span class="sd">            ind = 0</span>
-<span class="sd">            for w in pos:</span>
-<span class="sd">                if w[0]==token.text and w[1]!=token.pos_:</span>
-<span class="sd">                    print(&#39;mismatch &#39;,w[1],token.pos_)</span>
-<span class="sd">                    if w[1]==&#39;IN&#39; and token.pos_==&#39;VERB&#39;:</span>
-<span class="sd">                        pos[ind]=(token.text,&#39;VBP&#39;)</span>
-<span class="sd">                ind+=1</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># # Fixing POS matching</span>
+        <span class="c1"># import spacy</span>
+        <span class="c1"># nlp = spacy.load(&#39;en_core_web_sm&#39;)</span>
+        <span class="c1">#</span>
+        <span class="c1"># doc = nlp(utterance.transcript)</span>
+        <span class="c1"># for token in doc:</span>
+        <span class="c1">#     #print(token.text, token.lemma_, token.pos_)</span>
+        <span class="c1">#     ind = 0</span>
+        <span class="c1">#     for w in pos:</span>
+        <span class="c1">#         if w[0]==token.text and w[1]!=token.tag_:</span>
+        <span class="c1">#             if (w[1]==&#39;TO&#39; and token.tag_==&#39;IN&#39;) or w[1][:-1]==token.tag_ or w[1]==token.tag_[:-1]:</span>
+        <span class="c1">#                 continue</span>
+        <span class="c1">#             else:</span>
+        <span class="c1">#                 #print(&#39;pos_mismatch &#39;,w[1],token.tag_)</span>
+        <span class="c1">#                 pos[ind] = (w[0],token.tag_)</span>
+        <span class="c1">#         ind += 1</span>
 
         <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">tokenized_sentence</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">w</span><span class="o">==</span><span class="s1">&#39;like&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="s1">&#39;like&#39;</span><span class="p">:</span>
                 <span class="n">pos</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s1">&#39;VB&#39;</span><span class="p">)</span>
-            <span class="n">ind</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">ind</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Does&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Does&#39;</span><span class="p">:</span>
             <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Does&#39;</span><span class="p">,</span> <span class="s1">&#39;VBD&#39;</span><span class="p">)</span>
-
-        <span class="c1"># print(pos)</span>
 
         <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
-                <span class="n">word</span><span class="o">=</span><span class="n">word</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
                 <span class="n">new_rule</span> <span class="o">=</span> <span class="n">tag</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;POS -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">word</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
                 <span class="n">pos</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;PRPPOS&#39;</span><span class="p">)</span>
@@ -830,46 +838,37 @@
                 <span class="n">new_rule</span> <span class="o">=</span> <span class="n">tag</span> <span class="o">+</span> <span class="s1">&#39; -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">word</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
             <span class="k">if</span> <span class="n">new_rule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">+=</span> <span class="n">new_rule</span>
-
-            <span class="n">ind</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">ind</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">cfg_parser</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
             <span class="n">RD</span> <span class="o">=</span> <span class="n">RecursiveDescentParser</span><span class="p">(</span><span class="n">cfg_parser</span><span class="p">)</span>
 
-            <span class="n">last_token</span> <span class="o">=</span> <span class="n">tokenized_sentence</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">last_token</span> <span class="o">=</span> <span class="n">tokenized_sentence</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">last_token</span><span class="p">:</span>
-                <span class="n">tokenized_sentence</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">tokenized_sentence</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="n">parsed</span> <span class="o">=</span> <span class="n">RD</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
 
-            <span class="n">s_r</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#syntactic_realizations</span>
+            <span class="n">s_r</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># syntactic_realizations</span>
             <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="n">forest</span> <span class="o">=</span> <span class="p">[</span><span class="n">tree</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">forest</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="c1">#alternative trees? f</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">forest</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;* Ambiguity in grammar *&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># alternative trees? f</span>
                     <span class="k">for</span> <span class="n">branch</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+                        <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="o">.</span><span class="n">label</span><span class="p">(),</span> <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="p">}</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">branch</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">==</span> <span class="n">unicode</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">==</span><span class="nb">str</span><span class="p">:</span>
-                                <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="o">.</span><span class="n">label</span><span class="p">()}</span>
-                                <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+                            <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">():</span>
+                                <span class="n">raw</span> <span class="o">+=</span> <span class="n">leaf</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
 
-                            <span class="k">else</span><span class="p">:</span>
-                                <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">()}</span>
-                                <span class="n">raw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">())</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-                                    <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;structure&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">branch</span>
-                                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">():</span>
-                                        <span class="n">raw</span><span class="o">+=</span><span class="n">n</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
-                                    <span class="c1"># deeper structure</span>
-                                <span class="k">else</span><span class="p">:</span>
-                                    <span class="n">raw</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">()</span>
-
-                                <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw</span>
-                            <span class="n">index</span><span class="o">+=</span><span class="mi">1</span>
+                        <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;no forest&quot;</span><span class="p">)</span>

@@ -79,11 +79,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../pepper.html">pepper package</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -149,17 +144,17 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This is the main repository for Pepper/Nao Applications created as part of the</span>
 <span class="sd">Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.</span>
-<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># TODO: Cluster (Sensory) Information in object, accessible in Applications</span>
-<span class="c1">#   Conversation, Utterance, Objects (COCO, OID, AVA), People, Location, Date, Time</span>
-<span class="c1">#   How long does this Information stay relevant? (Use Last Knowledge / Timeout?)</span>
-<span class="c1">#   Verify the here and now, by looking at the places where she&#39;s last seen things</span>
-<span class="c1"># TODO: Formalize &#39;Responder&#39; Functions (Utterance, SensoryInformation) -&gt; Response or None</span>
-<span class="c1">#   Performance, Multi-Threading, Priority</span>
-<span class="c1"># TODO: Conversation Focus:</span>
-<span class="c1">#   Face Tracking, Speech Identification, Continuous Face/Speech Learning</span>
-<span class="c1"># TODO: Add Leolani in Utterances</span>
+<span class="sd">The pepper package is split in a number of subpackages:</span>
+
+<span class="sd">- pepper.brain is concerned with managing and querying pepper&#39;s triple store database</span>
+<span class="sd">- pepper.framework contains the backends and sensory processing needed to run robot apps</span>
+<span class="sd">- pepper.knowledge contains pepper&#39;s hardwired and internet knowledge</span>
+<span class="sd">- pepper.language contains the grammars and scripts to parse and generate natural language</span>
+<span class="sd">- pepper.responder contains scripts that reply to certain (natural language) queries</span>
+
+<span class="sd">pepper.config lists all application configuration options</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">enum</span>

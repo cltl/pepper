@@ -79,11 +79,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../pepper.html">pepper package</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pepper.framework.component.html">pepper.framework.component package</a></li>
-</ul>
 
             
           
@@ -155,13 +150,16 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<span class="c1"># Application Settings</span>
+<span class="c1"># Application Configuration Settings</span>
 
 <span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
 <span class="c1"># More Backends will be added in the future!</span>
 <span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
 
+<span class="c1"># Name of Robot</span>
 <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;Leolani&quot;</span>
+
+<span class="c1"># Name of Unknown and Groups of Humans</span>
 <span class="n">HUMAN_UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;Stranger&quot;</span>
 <span class="n">HUMAN_CROWD</span> <span class="o">=</span> <span class="s2">&quot;Humans&quot;</span>
 
@@ -270,21 +268,28 @@
 <span class="c1"># Application Sensor Parameters</span>
 <span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+<span class="c1"># Set which Object Recognition Backends to use</span>
+<span class="c1"># NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow</span>
+<span class="c1"># NOTE: running multiple targets at once</span>
 <span class="n">OBJECT_RECOGNITION_TARGETS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">pepper</span><span class="o">.</span><span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span>
 <span class="p">]</span>
 
+<span class="c1"># Microphone sample rate (Hz) and number of channels</span>
+<span class="c1"># NOTE: Fixed at 16000 Hz and 1 Channel (mono)</span>
 <span class="n">MICROPHONE_SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">16000</span>
 <span class="n">MICROPHONE_CHANNELS</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
-
+<span class="c1"># Camera resolution (in pixels) and frame rate (Hz)</span>
+<span class="c1"># NOTE: Both resolution and frame rate impact system performance...</span>
 <span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQVGA</span>
 <span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">3</span>
 
 <span class="c1"># NAOqi Specific Overrides</span>
 <span class="n">NAOQI_USE_SYSTEM_CAMERA</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">NAOqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
 

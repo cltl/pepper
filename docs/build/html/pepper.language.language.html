@@ -389,7 +389,7 @@
 </table>
 <dl class="attribute">
 <dt id="pepper.language.language.Parser.CFG_GRAMMAR_FILE">
-<code class="descname">CFG_GRAMMAR_FILE</code><em class="property"> = u'/Users/bram/Documents/pepper/pepper/pepper/language/data/cfg.txt'</em><a class="headerlink" href="#pepper.language.language.Parser.CFG_GRAMMAR_FILE" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CFG_GRAMMAR_FILE</code><em class="property"> = u'/Users/bram/Documents/pepper/pepper/pepper/language/data/cfg_new.txt'</em><a class="headerlink" href="#pepper.language.language.Parser.CFG_GRAMMAR_FILE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -549,21 +549,27 @@
 <tr class="row-even"><td><a class="reference internal" href="#pepper.language.language.Utterance.casefold" title="pepper.language.language.Utterance.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
 <td>Format the labels to match triples or natural language Parameters ———- format</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.Utterance.set_triple" title="pepper.language.language.Utterance.set_triple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_triple</span></code></a>(triple)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.language.language.Utterance.write_template" title="pepper.language.language.Utterance.write_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_template</span></code></a>(rdf,&nbsp;utterance_type)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.Utterance.write_template" title="pepper.language.language.Utterance.write_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_template</span></code></a>(rdf,&nbsp;utterance_type)</td>
 <td>Sets utterance type, the extracted triple and (in future) the perspective Parameters ———- rdf utterance_type</td>
 </tr>
 </tbody>
 </table>
 <table border="1" class="docutils">
 <colgroup>
-<col width="66%" />
-<col width="34%" />
+<col width="67%" />
+<col width="33%" />
 </colgroup>
 <tbody valign="top">
+<tr class="row-odd"><td><strong>pack_perspective</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>replace_token</strong></td>
+<td>&#160;</td>
+</tr>
 <tr class="row-odd"><td><strong>set_perspective</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>set_triple</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -699,6 +705,11 @@ format</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="pepper.language.language.Utterance.pack_perspective">
+<code class="descname">pack_perspective</code><span class="sig-paren">(</span><em>persp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance.pack_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance.pack_perspective" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="pepper.language.language.Utterance.parser">
 <code class="descname">parser</code><a class="headerlink" href="#pepper.language.language.Utterance.parser" title="Permalink to this definition">¶</a></dt>
@@ -733,6 +744,11 @@ format</p>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="pepper.language.language.Utterance.replace_token">
+<code class="descname">replace_token</code><span class="sig-paren">(</span><em>tokens_raw</em>, <em>old</em>, <em>new</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance.replace_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance.replace_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pepper.language.language.Utterance.set_perspective">

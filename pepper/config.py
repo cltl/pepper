@@ -5,13 +5,16 @@ import json
 import os
 
 
-# Application Settings
+# Application Configuration Settings
 
 # Application Backend to Use (SYSTEM or NAOQI)
 # More Backends will be added in the future!
 APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
+# Name of Robot
 NAME = "Leolani"
+
+# Name of Unknown and Groups of Humans
 HUMAN_UNKNOWN = "Stranger"
 HUMAN_CROWD = "Humans"
 
@@ -120,15 +123,22 @@ NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 # Application Sensor Parameters
 FACE_RECOGNITION_THRESHOLD = 0.5
 OBJECT_RECOGNITION_THRESHOLD = 0.5
+VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
+
+# Set which Object Recognition Backends to use
+# NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow
+# NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
     pepper.ObjectDetectionTarget.COCO
 ]
 
+# Microphone sample rate (Hz) and number of channels
+# NOTE: Fixed at 16000 Hz and 1 Channel (mono)
 MICROPHONE_SAMPLE_RATE = 16000
 MICROPHONE_CHANNELS = 1
 
-VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
-
+# Camera resolution (in pixels) and frame rate (Hz)
+# NOTE: Both resolution and frame rate impact system performance...
 CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
 CAMERA_FRAME_RATE = 3
 
