@@ -87,20 +87,22 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.abstract.component module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
@@ -114,7 +116,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
@@ -227,7 +231,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.require_dependency" title="pepper.framework.abstract.component.AbstractComponent.require_dependency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code></a>(cls,&nbsp;dependency)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.require" title="pepper.framework.abstract.component.AbstractComponent.require"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code></a>(cls,&nbsp;dependency)</td>
 <td>Enforce Component Dependency</td>
 </tr>
 </tbody>
@@ -269,8 +273,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.framework.abstract.component.AbstractComponent.require_dependency">
-<code class="descname">require_dependency</code><span class="sig-paren">(</span><em>cls</em>, <em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#AbstractComponent.require_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.require_dependency" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.framework.abstract.component.AbstractComponent.require">
+<code class="descname">require</code><span class="sig-paren">(</span><em>cls</em>, <em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#AbstractComponent.require"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.require" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enforce Component Dependency</p>
 <p>Checks whether Dependency Component is present Dependent Component in mro</p>
 <table class="docutils field-list" frame="void" rules="none">

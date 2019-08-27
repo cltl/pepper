@@ -14,6 +14,8 @@ pepper.framework.abstract package
    pepper.framework.abstract.camera
    pepper.framework.abstract.component
    pepper.framework.abstract.intention
+   pepper.framework.abstract.led
    pepper.framework.abstract.microphone
+   pepper.framework.abstract.motion
    pepper.framework.abstract.text_to_speech
 

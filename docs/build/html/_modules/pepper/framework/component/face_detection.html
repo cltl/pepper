@@ -148,16 +148,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.component.face_detection</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.sensor.face</span> <span class="k">import</span> <span class="n">OpenFace</span><span class="p">,</span> <span class="n">FaceClassifier</span><span class="p">,</span> <span class="n">Face</span><span class="p">,</span> <span class="n">Person</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.sensor.face</span> <span class="k">import</span> <span class="n">OpenFace</span><span class="p">,</span> <span class="n">FaceClassifier</span><span class="p">,</span> <span class="n">Face</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">NoReturn</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
 
 
-<div class="viewcode-block" id="FaceDetectionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent">[docs]</a><span class="k">class</span> <span class="nc">FaceDetectionComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="FaceRecognitionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceRecognitionComponent">[docs]</a><span class="k">class</span> <span class="nc">FaceRecognitionComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform Face Detection using :class:`~pepper.sensor.face.OpenFace` and :class:`~pepper.sensor.face.FaceClassifier`</span>
 <span class="sd">    on every :class:`~pepper.framework.abstract.camera.AbstractCamera` on_image event.</span>
@@ -171,11 +171,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        backend: AbstractBackend</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FaceDetectionComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FaceRecognitionComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">on_face_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">on_person_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">on_new_person_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_face_known_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_face_new_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Initialize OpenFace</span>
         <span class="n">open_face</span> <span class="o">=</span> <span class="n">OpenFace</span><span class="p">()</span>
@@ -187,51 +187,47 @@
         <span class="c1"># Initialize Face Classifier</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">face_classifier</span> <span class="o">=</span> <span class="n">FaceClassifier</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
 
-        <span class="n">face_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
-        <span class="n">person_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+            <span class="c1"># type: (AbstractImage) -&gt; None</span>
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Raw On Image Event. Called every time the camera yields a frame.</span>
 
 <span class="sd">            Parameters</span>
 <span class="sd">            ----------</span>
-<span class="sd">            image: np.ndarray</span>
+<span class="sd">            image: AbstractImage</span>
 <span class="sd">            &quot;&quot;&quot;</span>
-
-            <span class="c1"># Find Persons</span>
-            <span class="n">faces</span> <span class="o">=</span> <span class="n">open_face</span><span class="o">.</span><span class="n">represent</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-            <span class="n">persons</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
-            <span class="n">persons</span> <span class="o">=</span> <span class="p">[</span><span class="n">person</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">persons</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">FACE_RECOGNITION_THRESHOLD</span><span class="p">]</span>
-
-            <span class="n">face_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
-            <span class="n">person_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">persons</span><span class="p">)</span>
+            <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
-            <span class="n">faces</span> <span class="o">=</span> <span class="n">face_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-                <span class="c1"># Call on_face Event Function</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">on_face</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
+            <span class="n">on_face</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_classifier</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">open_face</span><span class="o">.</span><span class="n">represent</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">image</span><span class="p">)]</span>
 
-                <span class="c1"># Call Callbacks</span>
+            <span class="n">on_face_known</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">on_face_new</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">on_face</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">FaceClassifier</span><span class="o">.</span><span class="n">NEW</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                        <span class="n">on_face_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">face</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">FACE_RECOGNITION_THRESHOLD</span><span class="p">:</span>
+                    <span class="n">on_face_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">on_face</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_face_callbacks</span><span class="p">:</span>
-                    <span class="n">callback</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
-
-            <span class="n">persons</span> <span class="o">=</span> <span class="n">person_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">persons</span><span class="p">:</span>
-
-                <span class="k">if</span> <span class="n">persons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">FaceClassifier</span><span class="o">.</span><span class="n">NEW</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">on_new_person</span><span class="p">(</span><span class="n">persons</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_new_person_callbacks</span><span class="p">:</span>
-                        <span class="n">callback</span><span class="p">(</span><span class="n">persons</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Call on_person Event Function</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">on_person</span><span class="p">(</span><span class="n">persons</span><span class="p">)</span>
-
-                    <span class="c1"># Call Callback Functions</span>
-                    <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_person_callbacks</span><span class="p">:</span>
-                        <span class="n">callback</span><span class="p">(</span><span class="n">persons</span><span class="p">)</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">on_face</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_face</span><span class="p">(</span><span class="n">on_face</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">on_face_known</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_face_known_callbacks</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">on_face_known</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_face_known</span><span class="p">(</span><span class="n">on_face_known</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">on_face_new</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_face_new_callbacks</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">on_face_new</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_face_new</span><span class="p">(</span><span class="n">on_face_new</span><span class="p">)</span>
 
         <span class="c1"># Initialize Queue &amp; Worker</span>
         <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;FaceDetectionComponentThread&quot;</span><span class="p">)</span>
@@ -240,41 +236,17 @@
         <span class="c1"># Add on_image to Camera Callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">on_image</span><span class="p">]</span>
 
-<div class="viewcode-block" id="FaceDetectionComponent.on_face"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent.on_face">[docs]</a>    <span class="k">def</span> <span class="nf">on_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
-        <span class="c1"># type: (List[Face]) -&gt; NoReturn</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        On Face Event. Called every time a face is detected.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        faces: list of pepper.sensor.face.Face</span>
-<span class="sd">            Face Object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FaceRecognitionComponent.on_face"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceRecognitionComponent.on_face">[docs]</a>    <span class="k">def</span> <span class="nf">on_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+        <span class="c1"># type: (List[Face]) -&gt; None</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="FaceDetectionComponent.on_person"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent.on_person">[docs]</a>    <span class="k">def</span> <span class="nf">on_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persons</span><span class="p">):</span>
-        <span class="c1"># type: (List[Person]) -&gt; NoReturn</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        On Person Event. Called every time a known face is detected.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        persons: list of pepper.sensor.face.Person</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FaceRecognitionComponent.on_face_known"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceRecognitionComponent.on_face_known">[docs]</a>    <span class="k">def</span> <span class="nf">on_face_known</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+        <span class="c1"># type: (List[Face]) -&gt; None</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="FaceDetectionComponent.on_new_person"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceDetectionComponent.on_new_person">[docs]</a>    <span class="k">def</span> <span class="nf">on_new_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persons</span><span class="p">):</span>
-        <span class="c1"># type: (List[Person]) -&gt; NoReturn</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        On New Person Event. Called every time an unknown face is detected.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        persons: list of pepper.sensor.face.Person</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FaceRecognitionComponent.on_face_new"><a class="viewcode-back" href="../../../../pepper.framework.component.face_detection.html#pepper.framework.component.face_detection.FaceRecognitionComponent.on_face_new">[docs]</a>    <span class="k">def</span> <span class="nf">on_face_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+        <span class="c1"># type: (List[Face]) -&gt; None</span>
         <span class="k">pass</span></div></div>
-
-
 </pre></div>
 
            </div>

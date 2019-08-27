@@ -151,6 +151,9 @@
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="AbstractTextToSpeech"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech">[docs]</a><span class="k">class</span> <span class="nc">AbstractTextToSpeech</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -164,6 +167,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_language</span> <span class="o">=</span> <span class="n">language</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
@@ -176,6 +180,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Language Code, See: https://cloud.google.com/speech/docs/languages</span>
 
@@ -188,6 +193,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">talking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether system is currently producing speech</span>
 
@@ -198,20 +204,29 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_talking_jobs</span> <span class="o">&gt;=</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="AbstractTextToSpeech.say"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractTextToSpeech.say"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str], bool) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Say something through Text to Speech (Interface)</span>
+<span class="sd">        Say Text (with optional Animation) through Text-to-Speech</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        text: str</span>
-<span class="sd">        animation: str</span>
+<span class="sd">            Text to say through Text-to-Speech</span>
+<span class="sd">        animation: str or None</span>
+<span class="sd">            (Naoqi) Animation to play</span>
+<span class="sd">        block: bool</span>
+<span class="sd">            Whether this function should block or immediately return after calling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span>
+        <span class="c1"># self._log.info(text.replace(&#39;\n&#39;, &#39; &#39;))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_talking_jobs</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="n">block</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">talking</span><span class="p">:</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mf">1E-3</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AbstractTextToSpeech.on_text_to_speech"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech">[docs]</a>    <span class="k">def</span> <span class="nf">on_text_to_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Say something through Text to Speech (Implementation)</span>
 

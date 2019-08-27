@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.component.display.server module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.naoqi.html">pepper.framework.component.naoqi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.camera.html">pepper.framework.component.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.context.html">pepper.framework.component.context module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.explore.html">pepper.framework.component.explore module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.microphone.html">pepper.framework.component.microphone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.object_detection.html">pepper.framework.component.object_detection module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.scene.html">pepper.framework.component.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.speech_recognition.html">pepper.framework.component.speech_recognition module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.display.display.html">pepper.framework.component.display.display module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.component.display.server module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.naoqi.html">pepper.framework.component.naoqi package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.camera.html">pepper.framework.component.camera module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.context.html">pepper.framework.component.context module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.explore.html">pepper.framework.component.explore module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.microphone.html">pepper.framework.component.microphone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.object_detection.html">pepper.framework.component.object_detection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.scene.html">pepper.framework.component.scene module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.speech_recognition.html">pepper.framework.component.speech_recognition module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.component.html">pepper.framework.component package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.component.display.html">pepper.framework.component.display package</a> &raquo;</li>
+        
+      <li>pepper.framework.component.display.server module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.component.display.server.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.component.display.server">
+<span id="pepper-framework-component-display-server-module"></span><h1>pepper.framework.component.display.server module<a class="headerlink" href="#module-pepper.framework.component.display.server" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.component.display.server.DisplayServer">
+<em class="property">class </em><code class="descclassname">pepper.framework.component.display.server.</code><code class="descname">DisplayServer</code><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tornado.web.Application</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_handlers</span></code>(host_pattern,&nbsp;host_handlers)</td>
+<td>Appends the given handlers to our handler list.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_handler_delegate</span></code>(request,&nbsp;target_class)</td>
+<td>Returns <cite>~.httputil.HTTPMessageDelegate</cite> that can serve a request for application and <cite>RequestHandler</cite> subclass.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">listen</span></code>(port[,&nbsp;address])</td>
+<td>Starts an HTTP server for this application on the given port.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_request</span></code>(handler)</td>
+<td>Writes a completed HTTP request to the logs.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_close</span></code>(server_conn)</td>
+<td>This method is called when a connection has been closed.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_url</span></code>(name,&nbsp;*args)</td>
+<td>Returns a URL path for handler named <code class="docutils literal notranslate"><span class="pre">name</span></code></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="63%" />
+<col width="37%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>__call__</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>add_transform</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>find_handler</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>start</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>start_request</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>update</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.component.display.server.DisplayServer.HANDLERS">
+<code class="descname">HANDLERS</code><em class="property"> = set([])</em><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.HANDLERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.component.display.server.DisplayServer.PORT">
+<code class="descname">PORT</code><em class="property"> = 9090</em><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.PORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.component.display.server.DisplayServer.ROOT">
+<code class="descname">ROOT</code><em class="property"> = '/Users/bram/Documents/pepper/pepper/pepper/framework/component/display/web'</em><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.ROOT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.component.display.server.DisplayServer.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.component.display.server.DisplayServer.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

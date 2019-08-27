@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.context module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.context module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+      <li>pepper.framework.context module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.context.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.context">
+<span id="pepper-framework-context-module"></span><h1>pepper.framework.context module<a class="headerlink" href="#module-pepper.framework.context" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.context.Context">
+<em class="property">class </em><code class="descclassname">pepper.framework.context.</code><code class="descname">Context</code><a class="reference internal" href="_modules/pepper/framework/context.html#Context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.framework.context.Context.all_objects" title="pepper.framework.context.Context.all_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_objects</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.all_people" title="pepper.framework.context.Context.all_people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_people</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><strong>chat</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.chats" title="pepper.framework.context.Context.chats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chats</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><strong>chatting</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.datetime" title="pepper.framework.context.Context.datetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><strong>id</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.intention" title="pepper.framework.context.Context.intention"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intention</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.location" title="pepper.framework.context.Context.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.objects" title="pepper.framework.context.Context.objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">objects</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.context.Context.people" title="pepper.framework.context.Context.people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">people</span></code></a></dt>
+<dd><p class="first last">Returns</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.context.Context.add_objects" title="pepper.framework.context.Context.add_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_objects</span></code></a>(objects)</td>
+<td><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.context.Context.add_people" title="pepper.framework.context.Context.add_people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_people</span></code></a>(people)</td>
+<td><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="58%" />
+<col width="42%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>start_chat</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>stop_chat</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.OBSERVATION_TIMEOUT">
+<code class="descname">OBSERVATION_TIMEOUT</code><em class="property"> = 60</em><a class="headerlink" href="#pepper.framework.context.Context.OBSERVATION_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.context.Context.add_objects">
+<code class="descname">add_objects</code><span class="sig-paren">(</span><em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#Context.add_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Context.add_objects" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>objects: list of Object</strong></dt>
+<dd><p class="first last">List of Objects</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.context.Context.add_people">
+<code class="descname">add_people</code><span class="sig-paren">(</span><em>people</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#Context.add_people"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Context.add_people" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>people: list of Face</strong></dt>
+<dd><p class="first last">List of People</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.all_objects">
+<code class="descname">all_objects</code><a class="headerlink" href="#pepper.framework.context.Context.all_objects" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>objects: list of Object</strong></dt>
+<dd><p class="first last">List of All Objects Seen</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.all_people">
+<code class="descname">all_people</code><a class="headerlink" href="#pepper.framework.context.Context.all_people" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>people: list of Face</strong></dt>
+<dd><p class="first last">List of All People Seen within Observation Timeout</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.chat">
+<code class="descname">chat</code><a class="headerlink" href="#pepper.framework.context.Context.chat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.chats">
+<code class="descname">chats</code><a class="headerlink" href="#pepper.framework.context.Context.chats" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>chats: list of Chat</strong></dt>
+<dd><p class="first last">List of all Chats that were held during current session</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.chatting">
+<code class="descname">chatting</code><a class="headerlink" href="#pepper.framework.context.Context.chatting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.datetime">
+<code class="descname">datetime</code><a class="headerlink" href="#pepper.framework.context.Context.datetime" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>datetime: datetime</strong></dt>
+<dd><p class="first last">Current Date and Time</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.id">
+<code class="descname">id</code><a class="headerlink" href="#pepper.framework.context.Context.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.intention">
+<code class="descname">intention</code><a class="headerlink" href="#pepper.framework.context.Context.intention" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>intention: AbstractIntention</strong></dt>
+<dd><p class="first last">Current Intention</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.location">
+<code class="descname">location</code><a class="headerlink" href="#pepper.framework.context.Context.location" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>location: Location</strong></dt>
+<dd><p class="first last">Current Location</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.objects">
+<code class="descname">objects</code><a class="headerlink" href="#pepper.framework.context.Context.objects" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>objects: list of Object</strong></dt>
+<dd><p class="first last">List of Objects Seen within</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Context.people">
+<code class="descname">people</code><a class="headerlink" href="#pepper.framework.context.Context.people" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>people: list of Face</strong></dt>
+<dd><p class="first last">List of People Seen within Observation Timeout</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.context.Context.start_chat">
+<code class="descname">start_chat</code><span class="sig-paren">(</span><em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#Context.start_chat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Context.start_chat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.context.Context.stop_chat">
+<code class="descname">stop_chat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#Context.stop_chat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Context.stop_chat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.context.ObjectObservations">
+<em class="property">class </em><code class="descclassname">pepper.framework.context.</code><code class="descname">ObjectObservations</code><a class="reference internal" href="_modules/pepper/framework/context.html#ObjectObservations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.ObjectObservations" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>instances</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>add_observation</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>update_view</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.context.ObjectObservations.EPSILON">
+<code class="descname">EPSILON</code><em class="property"> = 0.2</em><a class="headerlink" href="#pepper.framework.context.ObjectObservations.EPSILON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.ObjectObservations.INSTANCE_TIMEOUT">
+<code class="descname">INSTANCE_TIMEOUT</code><em class="property"> = 120</em><a class="headerlink" href="#pepper.framework.context.ObjectObservations.INSTANCE_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.ObjectObservations.MAX_SAMPLES">
+<code class="descname">MAX_SAMPLES</code><em class="property"> = 50</em><a class="headerlink" href="#pepper.framework.context.ObjectObservations.MAX_SAMPLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.ObjectObservations.MIN_SAMPLES">
+<code class="descname">MIN_SAMPLES</code><em class="property"> = 5</em><a class="headerlink" href="#pepper.framework.context.ObjectObservations.MIN_SAMPLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.ObjectObservations.OBSERVATION_TIMEOUT">
+<code class="descname">OBSERVATION_TIMEOUT</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.framework.context.ObjectObservations.OBSERVATION_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.context.ObjectObservations.add_observation">
+<code class="descname">add_observation</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#ObjectObservations.add_observation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.ObjectObservations.add_observation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.ObjectObservations.instances">
+<code class="descname">instances</code><a class="headerlink" href="#pepper.framework.context.ObjectObservations.instances" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.context.ObjectObservations.update_view">
+<code class="descname">update_view</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#ObjectObservations.update_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.ObjectObservations.update_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.context.Observations">
+<em class="property">class </em><code class="descclassname">pepper.framework.context.</code><code class="descname">Observations</code><a class="reference internal" href="_modules/pepper/framework/context.html#Observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Observations" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>instances</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="67%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>add_observations</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pepper.framework.context.Observations.add_observations">
+<code class="descname">add_observations</code><span class="sig-paren">(</span><em>image</em>, <em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#Observations.add_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Observations.add_observations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.context.Observations.instances">
+<code class="descname">instances</code><a class="headerlink" href="#pepper.framework.context.Observations.instances" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.framework.context.getrandbits">
+<code class="descclassname">pepper.framework.context.</code><code class="descname">getrandbits</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span> &#x2192; x.  Generates a long int with k random bits.<a class="headerlink" href="#pepper.framework.context.getrandbits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

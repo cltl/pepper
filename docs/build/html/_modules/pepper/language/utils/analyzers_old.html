@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.utils.analyzers_old &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.language.utils.analyzers_old</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.language.utils.analyzers_old</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.language.utils.helper_functions</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="analyze_question_word"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_question_word">[docs]</a><span class="k">def</span> <span class="nf">analyze_question_word</span><span class="p">(</span><span class="n">question_word</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function returns the response type of a question based on its first word</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">question_word</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s2">&quot;question words&quot;</span><span class="p">]:</span>
+        <span class="n">response_type</span> <span class="o">=</span> <span class="n">grammar</span><span class="p">[</span><span class="s2">&quot;question words&quot;</span><span class="p">][</span><span class="n">question_word</span><span class="p">][</span><span class="s2">&quot;response&quot;</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">pos</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;VB&#39;</span><span class="p">):</span>
+        <span class="n">response_type</span> <span class="o">=</span> <span class="s1">&#39;bool&#39;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;unknown question word: &#39;</span><span class="o">+</span><span class="n">question_word</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response_type</span></div>
+
+
+<div class="viewcode-block" id="analyze_np"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_np">[docs]</a><span class="k">def</span> <span class="nf">analyze_np</span><span class="p">(</span><span class="n">np_list</span><span class="p">,</span> <span class="n">speaker</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function analyzes a noun phrase (consists of pronouns, nouns, names, or possessive pronouns + prepositions)</span>
+<span class="sd">    Morphological information which is stored in pronouns is extracted, names are simply marked as &#39;human&#39; and</span>
+<span class="sd">    possessive syntax constructions are analyzed</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">morphology</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">first_word</span> <span class="o">=</span> <span class="p">(</span><span class="n">np_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">np_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">np_list</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">first_word</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;pronouns&#39;</span><span class="p">]:</span>
+        <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;pronoun&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analyze_pronoun</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">speaker</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">first_word</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;human&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_word</span>
+        <span class="c1"># what if it is a name but not of an acquaintance?</span>
+
+    <span class="k">elif</span> <span class="n">first_word</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;possessive&#39;</span><span class="p">]:</span>
+        <span class="n">morphology</span> <span class="o">=</span> <span class="n">analyze_possessive_np</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">np_list</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_word</span> <span class="c1">#FIX TODO</span>
+        <span class="c1">#morphology[&#39;entities&#39;] = extract_named_entities(np_list)</span>
+
+    <span class="k">return</span> <span class="n">morphology</span></div>
+
+
+<div class="viewcode-block" id="analyze_possessive_np"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_possessive_np">[docs]</a><span class="k">def</span> <span class="nf">analyze_possessive_np</span><span class="p">(</span><span class="n">poss</span><span class="p">,</span> <span class="n">np_list</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function is called to analyze possessive constructions like &quot;my name&quot;</span>
+<span class="sd">    It extracts the person who is possessing and what does the person possess - the category in this case would be &quot;name&quot; and the person possessing is the speaker</span>
+<span class="sd">    The predicate is created by adding a suffix &quot;-is&quot; to the category e.g. &quot;name-is&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1">#TODO: more complex possessives e.g. &quot;my best friend&#39;s name&quot;</span>
+
+    <span class="n">morphology</span> <span class="o">=</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;possessive&#39;</span><span class="p">][</span><span class="n">poss</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">np_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]:</span>
+            <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">word</span>
+            <span class="k">if</span> <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+                <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;leolani&#39;</span>
+
+            <span class="k">if</span> <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;first&#39;</span><span class="p">:</span>
+                <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;speaker&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;unknown category for possessive: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np_list</span><span class="p">))</span>
+
+    <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-is&#39;</span>
+
+    <span class="k">return</span> <span class="n">morphology</span></div>
+
+
+<div class="viewcode-block" id="extract_named_entities"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.extract_named_entities">[docs]</a><span class="k">def</span> <span class="nf">extract_named_entities</span><span class="p">(</span><span class="n">np_list</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Using the Stanford NER package, this function tries to extract named entities such as persons, locations, organizations etc.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1">#TODO: BETTER NER FUNCTION</span>
+
+    <span class="kn">from</span> <span class="nn">nltk.tag</span> <span class="k">import</span> <span class="n">StanfordNERTagger</span>
+    <span class="n">ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">ner</span> <span class="o">=</span> <span class="n">StanfordNERTagger</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ROOT</span><span class="p">,</span> <span class="s1">&#39;stanford-ner&#39;</span><span class="p">,</span> <span class="s1">&#39;english.muc.7class.distsim.crf.ser&#39;</span><span class="p">),</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ROOT</span><span class="p">,</span> <span class="s1">&#39;stanford-ner&#39;</span><span class="p">,</span> <span class="s1">&#39;stanford-ner.jar&#39;</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="n">recognized_entities</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">ner_text</span> <span class="o">=</span> <span class="n">ner</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">np_list</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;NER: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ner_text</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ner_text</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span>
+            <span class="n">recognized_entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># instead of &#39;Michael&#39;, &#39;Jordan&#39; =&gt; &#39;Michael Jordan&#39;</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">recognized_entities</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">recognized_entities</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">recognized_entities</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">recognized_entities</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">recognized_entities</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="n">recognized_entities</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">recognized_entities</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">recognized_entities</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">recognized_entities</span></div>
+
+
+<div class="viewcode-block" id="analyze_pronoun"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_pronoun">[docs]</a><span class="k">def</span> <span class="nf">analyze_pronoun</span><span class="p">(</span><span class="n">pronoun</span><span class="p">,</span> <span class="n">speaker</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function returns a morphology which it reads from the grammar (grammar_new.json)</span>
+<span class="sd">    The grammar has information about person (1st, 2nd, 3rd) and number (singular or plural) for regular and possessive pronouns</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">morphology</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">pronoun</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;possessive&#39;</span><span class="p">]:</span>
+        <span class="n">morphology</span> <span class="o">=</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;possessive&#39;</span><span class="p">][</span><span class="n">pronoun</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">pronoun</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;pronouns&#39;</span><span class="p">]:</span>
+        <span class="n">morphology</span> <span class="o">=</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;pronouns&#39;</span><span class="p">][</span><span class="n">pronoun</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;unknown pronoun: &#39;</span><span class="o">+</span><span class="n">pronoun</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">morphology</span></div>
+
+
+<div class="viewcode-block" id="analyze_verb"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_verb">[docs]</a><span class="k">def</span> <span class="nf">analyze_verb</span><span class="p">(</span><span class="n">verb</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function is called when a verb is detected, it can be either the verb to be or one of the verbs from the predicate list</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">morphology</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">verb</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;to be&#39;</span><span class="p">]:</span>
+        <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;to be&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;to be&#39;</span><span class="p">][</span><span class="n">verb</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verb</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
+            <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;third&#39;</span>
+
+        <span class="n">verb_lemma</span> <span class="o">=</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">verb</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verb_lemma</span><span class="o">==</span><span class="s1">&#39;can&#39;</span><span class="p">:</span>
+            <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verb_lemma</span>
+        <span class="k">elif</span> <span class="n">verb_lemma</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;verbs&#39;</span><span class="p">]:</span>
+           <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verb_lemma</span><span class="o">+</span><span class="s1">&#39;s&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;unknown verb: &#39;</span><span class="o">+</span><span class="n">verb</span><span class="o">+</span><span class="s1">&#39;, lemma: &#39;</span><span class="o">+</span><span class="n">verb_lemma</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">morphology</span></div>
+
+
+<div class="viewcode-block" id="analyze_wh_question"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_wh_question">[docs]</a><span class="k">def</span> <span class="nf">analyze_wh_question</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">response_type</span><span class="p">,</span> <span class="n">viewed_object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function analyzes questions which start with who, what, where (why and when are also in this category but are not yet comprehended by Leolani)</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">tagged</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+    <span class="n">rdf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+
+
+    <span class="k">if</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;to be&#39;</span><span class="p">]:</span>
+        <span class="n">to_be</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">morphology</span> <span class="o">=</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;to be&#39;</span><span class="p">][</span><span class="n">to_be</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;verbs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="o">+</span><span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;predicates&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">grammar</span><span class="p">[</span><span class="s2">&quot;modal_verbs&quot;</span><span class="p">]:</span>
+        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;modal_verbs&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">]:</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;I seem to have misunderstood the word &quot;</span><span class="o">+</span><span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot; in your question&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">3</span> <span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Too few words in this question&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">third_word</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">third_pos</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">([</span><span class="n">third_word</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">third_pos</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PRP$&#39;</span><span class="p">,</span> <span class="s1">&#39;NN&#39;</span><span class="p">,</span><span class="s1">&#39;PRP&#39;</span><span class="p">,</span><span class="s1">&#39;NNS&#39;</span><span class="p">]:</span>
+        <span class="n">np</span> <span class="o">=</span> <span class="p">[</span><span class="n">third_word</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">tagged</span><span class="p">[</span><span class="mi">3</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;IN&#39;</span><span class="p">:</span>  <span class="c1"># where are you FROM</span>
+                <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;is_from&#39;</span>
+                <span class="k">break</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">np_info</span> <span class="o">=</span> <span class="n">analyze_np</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">speaker</span><span class="p">)</span>
+        <span class="n">rdf</span> <span class="o">=</span> <span class="n">pack_rdf_from_np_info</span><span class="p">(</span><span class="n">np_info</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">rdf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;verbs&#39;</span><span class="p">]:</span>
+            <span class="n">verb_info</span> <span class="o">=</span> <span class="n">analyze_verb</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="s1">&#39;predicate&#39;</span> <span class="ow">in</span> <span class="n">verb_info</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verb_info</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span> <span class="o">==</span><span class="s1">&#39;see&#39;</span><span class="p">:</span> <span class="c1">#what do you see</span>
+            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;sees&#39;</span>
+
+    <span class="k">elif</span> <span class="n">third_pos</span> <span class="o">==</span> <span class="s1">&#39;IN&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">third_word</span> <span class="o">==</span> <span class="s1">&#39;from&#39;</span><span class="p">:</span>
+            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;is_from&#39;</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="mi">3</span><span class="p">:]:</span>
+                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">word</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;This word &quot;</span><span class="o">+</span><span class="n">third_word</span><span class="o">+</span><span class="s2">&quot; is surprising me&quot;</span><span class="p">)</span>
+
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;analysis of wh-question produced this rdf: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">rdf</span></div>
+
+
+<div class="viewcode-block" id="analyze_verb_question"><a class="viewcode-back" href="../../../../pepper.language.utils.analyzers_old.html#pepper.language.utils.analyzers_old.analyze_verb_question">[docs]</a><span class="k">def</span> <span class="nf">analyze_verb_question</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">viewed_objects</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function analyzes questions which start with a verb to be or a modal verb</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">tagged</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+    <span class="n">rdf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+
+    <span class="n">words_new</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;do&#39;</span> <span class="ow">and</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="s1">&#39;you&#39;</span> <span class="ow">and</span> <span class="n">words</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">==</span><span class="s1">&#39;know&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">5</span><span class="p">:</span>
+        <span class="n">words_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">words_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">words_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">6</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="mi">6</span><span class="p">:]:</span>
+                <span class="n">words_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_new</span><span class="p">)</span> <span class="ow">and</span> <span class="n">words_new</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;question words&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">analyze_wh_question</span><span class="p">(</span><span class="n">words_new</span><span class="p">,</span><span class="n">speaker</span><span class="p">,</span><span class="n">grammar</span><span class="p">[</span><span class="s1">&#39;question words&#39;</span><span class="p">][</span><span class="n">words_new</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span><span class="n">viewed_objects</span><span class="p">)</span>
+
+    <span class="c1"># extract subject</span>
+    <span class="n">np</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">extract_np</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">tagged</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">np_info</span> <span class="o">=</span> <span class="n">analyze_np</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">speaker</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;pronoun&#39;</span> <span class="ow">in</span> <span class="n">np_info</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">np_info</span><span class="p">[</span><span class="s1">&#39;pronoun&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">np_info</span><span class="p">[</span><span class="s1">&#39;pronoun&#39;</span><span class="p">][</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;leolani&#39;</span>
+        <span class="k">elif</span> <span class="n">np_info</span><span class="p">[</span><span class="s1">&#39;pronoun&#39;</span><span class="p">][</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;first&#39;</span><span class="p">:</span>
+            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">speaker</span>
+
+    <span class="k">if</span> <span class="s1">&#39;human&#39;</span> <span class="ow">in</span> <span class="n">np_info</span><span class="p">:</span>
+        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_info</span><span class="p">[</span><span class="s1">&#39;human&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">np_info</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;issue with extracting noun phrase: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;Sorry, I am confused&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;Sorry, I am confused&#39;</span><span class="p">)</span>
+
+    <span class="n">verb</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">verb_info</span> <span class="o">=</span> <span class="n">analyze_verb</span><span class="p">(</span><span class="n">verb</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;predicate&#39;</span> <span class="ow">in</span> <span class="n">verb_info</span><span class="p">:</span>
+        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verb_info</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span>  <span class="c1"># &#39;knows&#39; instead of &#39;know&#39; - predicate mapping</span>
+
+    <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:]</span>
+    <span class="n">morphology</span> <span class="o">=</span> <span class="n">analyze_np</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">],</span> <span class="n">speaker</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;pronoun&#39;</span> <span class="ow">in</span> <span class="n">morphology</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;pronoun&#39;</span><span class="p">][</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;first&#39;</span><span class="p">:</span>
+            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">morphology</span><span class="p">[</span><span class="s1">&#39;pronoun&#39;</span><span class="p">][</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;leolani&#39;</span>
+
+    <span class="k">return</span> <span class="n">rdf</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

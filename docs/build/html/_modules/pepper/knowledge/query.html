@@ -224,16 +224,8 @@
         <span class="c1"># Technology</span>
         <span class="s2">&quot;Do you have a brain?&quot;</span><span class="p">:</span> <span class="s2">&quot;Haha, no! My brain is located on the laptop of my programmers &quot;</span>
                                 <span class="s2">&quot;and part of it is even in the cloud. So modern!&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Which programming language?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m mostly programmed in Python, but also some C++ and possibly other languages!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;programming language?&quot;</span><span class="p">:</span> <span class="s2">&quot;I&#39;m mostly programmed in Python, but also some C++ and possibly other languages!&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Do you need internet?&quot;</span><span class="p">:</span> <span class="s2">&quot;I do need internet, for understanding speech and looking up facts about the world!&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;What technologies do you use?&quot;</span><span class="p">:</span> <span class="s2">&quot;I use: &quot;</span>
-                                         <span class="s2">&quot;Google Speech API for speech recognition, &quot;</span>
-                                         <span class="s2">&quot;OpenFace and K Nearest Neighbours for face recognition, &quot;</span>
-                                         <span class="s2">&quot;COCO and Inception for object recognition, &quot;</span>
-                                         <span class="s2">&quot;NLTK for Natural Language Understanding, &quot;</span>
-                                         <span class="s2">&quot;Wolfram Alpha for getting factual information from the internet, &quot;</span>
-                                         <span class="s2">&quot;A triple store through GraphDB for representing my personal brain and &quot;</span>
-                                         <span class="s2">&quot;Nice arm and head animations for believability! Amazing, right?&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Speech Recognition&quot;</span><span class="p">:</span> <span class="s2">&quot;First I listen for an utterance, &quot;</span>
                               <span class="s2">&quot;I send that to Google, which gives me back a bunch of hypotheses about what you just said. &quot;</span>
                               <span class="s2">&quot;From those hypotheses I try to make sense what you mean. And all of this, hopefully, within a second!&quot;</span><span class="p">,</span>
@@ -276,7 +268,7 @@
                 <span class="n">ratio</span> <span class="o">=</span> <span class="n">r</span>
 
         <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">answer</span></div></div>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">answer</span></div></div>
 
 </pre></div>
 

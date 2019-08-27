@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.transitivity module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.language.wordnet_utils module" href="pepper.language.wordnet_utils.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzer.html">pepper.language.analyzer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.name.html">pepper.language.name module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.pos.html">pepper.language.pos module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.language.transitivity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.wordnet_utils.html">pepper.language.wordnet_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
+        
+      <li>pepper.language.transitivity module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.language.transitivity.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.language.transitivity">
+<span id="pepper-language-transitivity-module"></span><h1>pepper.language.transitivity module<a class="headerlink" href="#module-pepper.language.transitivity" title="Permalink to this headline">¶</a></h1>
+<p>Created on Wed Apr  3 11:28:43 2019</p>
+<p>&#64;author: andrasaponyi</p>
+<dl class="function">
+<dt id="pepper.language.transitivity.check_synonyms">
+<code class="descclassname">pepper.language.transitivity.</code><code class="descname">check_synonyms</code><span class="sig-paren">(</span><em>verb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/transitivity.html#check_synonyms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.transitivity.check_synonyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the transitivity of a verb’s synonyms. 
+To be called if the initial transitivity score is 0, but there is
+reason to believe that the verb is indeed transitive.
+I am still working on a method to determine how this decision can be made.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.transitivity.get_synonyms">
+<code class="descclassname">pepper.language.transitivity.</code><code class="descname">get_synonyms</code><span class="sig-paren">(</span><em>verb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/transitivity.html#get_synonyms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.transitivity.get_synonyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the synonyms of the most frequent sense of a verb.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.transitivity.get_transitivity">
+<code class="descclassname">pepper.language.transitivity.</code><code class="descname">get_transitivity</code><span class="sig-paren">(</span><em>verb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/transitivity.html#get_transitivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.transitivity.get_transitivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a verb lemma as input.
+Return transitivity score and VerbNet (VN) frames if available.</p>
+<dl class="docutils">
+<dt>The returned tuple is constructed in the following way:</dt>
+<dd><dl class="first last docutils">
+<dt>-the first element is the transitivity score, where:</dt>
+<dd>-1 equals transitive
+-0 equals intransitive (or at least according to VN)</dd>
+<dt>-the second element is a list of tuples, each of which consists of:</dt>
+<dd>-first, the VN class_id of a given meaning of a verb
+-second, the corresponding frame itself</dd>
+</dl>
+</dd>
+</dl>
+<p>Regardless of the length of the transitive frames list, 
+the transitivty score remains the same.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.language.wordnet_utils.html" class="btn btn-neutral float-right" title="pepper.language.wordnet_utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -153,12 +153,19 @@
 
 <span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.component.speech_recognition</span> <span class="k">import</span> <span class="n">SpeechRecognitionComponent</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.component</span> <span class="k">import</span> <span class="n">SpeechRecognitionComponent</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 
 
 <div class="viewcode-block" id="StatisticsComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.statistics.html#pepper.framework.component.statistics.StatisticsComponent">[docs]</a><span class="k">class</span> <span class="nc">StatisticsComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
 
     <span class="n">PERFORMANCE_ERROR_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+    <span class="n">LIVE_SPEECH</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">LIVE_SPEECH_TIMEOUT</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">LIVE_SPEECH_TIME</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -170,8 +177,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
-        <span class="n">speech_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="n">SpeechRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: SpeechRecognitionComponent</span>
+        <span class="n">speech_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">StatisticsComponent</span><span class="p">,</span> <span class="n">SpeechRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: SpeechRecognitionComponent</span>
         <span class="n">vad</span> <span class="o">=</span> <span class="n">speech_recognition</span><span class="o">.</span><span class="n">vad</span>
+        <span class="n">asr</span> <span class="o">=</span> <span class="n">speech_recognition</span><span class="o">.</span><span class="n">asr</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
 
@@ -192,10 +200,18 @@
             <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">cam_rate_true</span> <span class="o">&lt;</span> <span class="n">cam_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERFORMANCE_ERROR_THRESHOLD</span> <span class="ow">or</span>
                      <span class="n">mic_rate_true</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">mic_rate</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERFORMANCE_ERROR_THRESHOLD</span><span class="p">)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Microphone </span><span class="si">{:3.1f}</span><span class="s2"> kHz | Camera </span><span class="si">{:4.1f}</span><span class="s2"> Hz | Voice </span><span class="si">{:12s}</span><span class="s2"> </span><span class="si">{:4.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">mic_rate_true</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">cam_rate_true</span><span class="p">,</span>
+            <span class="k">if</span> <span class="n">asr</span><span class="o">.</span><span class="n">live</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">LIVE_SPEECH</span> <span class="o">=</span> <span class="n">asr</span><span class="o">.</span><span class="n">live</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">LIVE_SPEECH_TIME</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">LIVE_SPEECH_TIME</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">LIVE_SPEECH_TIMEOUT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">LIVE_SPEECH</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Threads </span><span class="si">{:2d}</span><span class="s2"> | Cam </span><span class="si">{:4.1f}</span><span class="s2"> Hz | Mic </span><span class="si">{:4.1f}</span><span class="s2"> kHz | TTS </span><span class="si">{:12s}</span><span class="s2"> &gt;&gt;&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">threading</span><span class="o">.</span><span class="n">active_count</span><span class="p">(),</span>
+                <span class="n">cam_rate_true</span><span class="p">,</span>
+                <span class="n">mic_rate_true</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span>
                 <span class="n">voice_print</span> <span class="k">if</span> <span class="n">mic_running</span> <span class="k">else</span> <span class="n">empty_voice_print</span><span class="p">,</span>
-                <span class="n">vad</span><span class="o">.</span><span class="n">activation</span> <span class="k">if</span> <span class="n">mic_running</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">LIVE_SPEECH</span><span class="p">),</span>
                 <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="p">(</span><span class="n">stderr</span> <span class="k">if</span> <span class="n">error</span> <span class="k">else</span> <span class="n">stdout</span><span class="p">))</span>
 
         <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>

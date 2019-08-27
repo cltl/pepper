@@ -9,11 +9,17 @@ pepper.language package
 
 .. toctree::
 
-   pepper.language.analyzers
+    pepper.language.generation
+    pepper.language.utils
+
+
+.. toctree::
+
+   pepper.language.analyzer
    pepper.language.language
-   pepper.language.names
+   pepper.language.name
    pepper.language.ner
    pepper.language.pos
-   pepper.language.process_utterance
-   pepper.language.utils
+   pepper.language.transitivity
+   pepper.language.wordnet_utils
 

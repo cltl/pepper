@@ -88,20 +88,22 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
@@ -113,7 +115,9 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
@@ -193,13 +197,14 @@
 <span id="pepper-framework-abstract-backend-module"></span><h1>pepper.framework.abstract.backend module<a class="headerlink" href="#module-pepper.framework.abstract.backend" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pepper.framework.abstract.backend.AbstractBackend">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.backend.</code><code class="descname">AbstractBackend</code><span class="sig-paren">(</span><em>camera</em>, <em>microphone</em>, <em>text_to_speech</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/backend.html#AbstractBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.backend.</code><code class="descname">AbstractBackend</code><span class="sig-paren">(</span><em>camera</em>, <em>microphone</em>, <em>text_to_speech</em>, <em>motion</em>, <em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/backend.html#AbstractBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract Backend on which all Backends are based</p>
 <p>Exposes
 <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a>,
-<a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a> and
-<a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a>.</p>
+<a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a>,
+<a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a> and
+<a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -214,6 +219,9 @@
 <dt><strong>text_to_speech: AbstractTextToSpeech</strong></dt>
 <dd><p class="first last">Backend <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a></p>
 </dd>
+<dt><strong>led: AbstractLed</strong></dt>
+<dd><p class="first last">Backend <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a></p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -221,8 +229,14 @@
 <dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.camera" title="pepper.framework.abstract.backend.AbstractBackend.camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">camera</span></code></a></dt>
 <dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a></p>
 </dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.led" title="pepper.framework.abstract.backend.AbstractBackend.led"><code class="xref py py-obj docutils literal notranslate"><span class="pre">led</span></code></a></dt>
+<dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a></p>
+</dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.microphone" title="pepper.framework.abstract.backend.AbstractBackend.microphone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">microphone</span></code></a></dt>
 <dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a></p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.motion" title="pepper.framework.abstract.backend.AbstractBackend.motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">motion</span></code></a></dt>
+<dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMotion</span></code></a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.text_to_speech" title="pepper.framework.abstract.backend.AbstractBackend.text_to_speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_to_speech</span></code></a></dt>
 <dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a></p>
@@ -251,6 +265,24 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pepper.framework.abstract.backend.AbstractBackend.led">
+<code class="descname">led</code><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend.led" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>text_to_speech: AbstractLed</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pepper.framework.abstract.backend.AbstractBackend.microphone">
 <code class="descname">microphone</code><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend.microphone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reference to <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a></p>
@@ -260,6 +292,24 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>microphone: AbstractMicrophone</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.backend.AbstractBackend.motion">
+<code class="descname">motion</code><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend.motion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to <a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMotion</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>motion: AbstractMotion</strong></dt>
 <dd></dd>
 </dl>
 </td>

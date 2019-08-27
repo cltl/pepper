@@ -9,12 +9,21 @@ pepper.framework.component package
 
 .. toctree::
 
+    pepper.framework.component.display
+    pepper.framework.component.naoqi
+
+
+.. toctree::
+
    pepper.framework.component.brain
+   pepper.framework.component.camera
+   pepper.framework.component.context
+   pepper.framework.component.explore
    pepper.framework.component.face_detection
+   pepper.framework.component.microphone
    pepper.framework.component.object_detection
+   pepper.framework.component.scene
    pepper.framework.component.speech_recognition
    pepper.framework.component.statistics
    pepper.framework.component.text_to_speech
-   pepper.framework.component.video_display
-   pepper.framework.component.video_writer
 

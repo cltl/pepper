@@ -151,6 +151,16 @@
 <span class="sd">Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="c1"># TODO: Cluster (Sensory) Information in object, accessible in Applications</span>
+<span class="c1">#   Conversation, Utterance, Objects (COCO, OID, AVA), People, Location, Date, Time</span>
+<span class="c1">#   How long does this Information stay relevant? (Use Last Knowledge / Timeout?)</span>
+<span class="c1">#   Verify the here and now, by looking at the places where she&#39;s last seen things</span>
+<span class="c1"># TODO: Formalize &#39;Responder&#39; Functions (Utterance, SensoryInformation) -&gt; Response or None</span>
+<span class="c1">#   Performance, Multi-Threading, Priority</span>
+<span class="c1"># TODO: Conversation Focus:</span>
+<span class="c1">#   Face Tracking, Speech Identification, Continuous Face/Speech Learning</span>
+<span class="c1"># TODO: Add Leolani in Utterances</span>
+
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -182,6 +192,12 @@
     <span class="n">NAOQI</span> <span class="o">=</span> <span class="mi">1</span></div>
 
 
+<div class="viewcode-block" id="ObjectDetectionTarget"><a class="viewcode-back" href="../pepper.html#pepper.ObjectDetectionTarget">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionTarget</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">AVA</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27001</span><span class="p">)</span>
+    <span class="n">COCO</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27002</span><span class="p">)</span>
+    <span class="n">OID</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27003</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="CameraResolution"><a class="viewcode-back" href="../pepper.html#pepper.CameraResolution">[docs]</a><span class="k">class</span> <span class="nc">CameraResolution</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">NATIVE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">QQQQVGA</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span>
@@ -192,13 +208,13 @@
     <span class="n">VGA4</span> <span class="o">=</span> <span class="mi">960</span><span class="p">,</span> <span class="mi">1280</span></div>
 
 
-<div class="viewcode-block" id="NaoqiCameraIndex"><a class="viewcode-back" href="../pepper.html#pepper.NaoqiCameraIndex">[docs]</a><span class="k">class</span> <span class="nc">NaoqiCameraIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="NAOqiCameraIndex"><a class="viewcode-back" href="../pepper.html#pepper.NAOqiCameraIndex">[docs]</a><span class="k">class</span> <span class="nc">NAOqiCameraIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">TOP</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">BOTTOM</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">DEPTH</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="NaoqiMicrophoneIndex"><a class="viewcode-back" href="../pepper.html#pepper.NaoqiMicrophoneIndex">[docs]</a><span class="k">class</span> <span class="nc">NaoqiMicrophoneIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="NAOqiMicrophoneIndex"><a class="viewcode-back" href="../pepper.html#pepper.NAOqiMicrophoneIndex">[docs]</a><span class="k">class</span> <span class="nc">NAOqiMicrophoneIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">ALL</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">LEFT</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">RIGHT</span> <span class="o">=</span> <span class="mi">2</span>

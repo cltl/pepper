@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.responder.unknown &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.responder.unknown</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.responder.unknown</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="n">Utterance</span>
+<span class="kn">from</span> <span class="nn">.responder</span> <span class="k">import</span> <span class="n">Responder</span><span class="p">,</span> <span class="n">ResponderType</span>
+<span class="kn">from</span> <span class="nn">pepper.knowledge</span> <span class="k">import</span> <span class="n">animations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span><span class="p">,</span> <span class="n">random</span>
+
+
+<div class="viewcode-block" id="UnknownResponder"><a class="viewcode-back" href="../../../pepper.responder.unknown.html#pepper.responder.unknown.UnknownResponder">[docs]</a><span class="k">class</span> <span class="nc">UnknownResponder</span><span class="p">(</span><span class="n">Responder</span><span class="p">):</span>
+
+    <span class="n">ELOQUENCE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;I see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Interesting&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Very Interesting, Indeed!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Good to know&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I do not know, but I have a joke {insert joke}&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;As the prophecy foretold&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;But at what cost?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;So let it be written, ... so let it be done&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;So ... it   has come to this&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;That&#39;s just what he/she/they would&#39;ve said&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Is this why fate brought us together?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;And thus, I die&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;... just like in my dream&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Be that as it may, still may it be as it may be&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;There is no escape from destiny&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Wise words by wise men write wise deeds in wise pen&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;In this economy?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;and then the wolves came&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Many of us feel that way&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;But, why?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;May I ask you why?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Why?&quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">HEARD</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I think you said&quot;</span><span class="p">,</span> <span class="s2">&quot;I heard&quot;</span><span class="p">,</span> <span class="s2">&quot;I picked up&quot;</span><span class="p">,</span> <span class="s2">&quot;I&#39;m guessing you told me&quot;</span><span class="p">]</span>
+    <span class="n">NOT_UNDERSTAND</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I don&#39;t know what it means&quot;</span><span class="p">,</span> <span class="s2">&quot;I don&#39;t understand it&quot;</span><span class="p">,</span> <span class="s2">&quot;I couldn&#39;t parse it&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;I have no idea about it&quot;</span><span class="p">,</span> <span class="s2">&quot;I have no clue&quot;</span><span class="p">,</span> <span class="s2">&quot;this goes above my robot-skills&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;I find this quite difficult to understand&quot;</span><span class="p">,</span> <span class="s2">&quot;It doesn&#39;t ring any bells&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ResponderType</span><span class="o">.</span><span class="n">Unknown</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TextToSpeechComponent</span><span class="p">]</span>
+
+<div class="viewcode-block" id="UnknownResponder.respond"><a class="viewcode-back" href="../../../pepper.responder.unknown.html#pepper.responder.unknown.UnknownResponder.respond">[docs]</a>    <span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="c1"># type: (Utterance, Union[TextToSpeechComponent]) -&gt; Optional[Tuple[float, Callable]]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ELOQUENCE</span><span class="p">),</span> <span class="n">animation</span><span class="o">=</span><span class="n">choice</span><span class="p">([</span><span class="n">animations</span><span class="o">.</span><span class="n">COOL</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">COGITATE</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">, but </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">HEARD</span><span class="p">),</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NOT_UNDERSTAND</span><span class="p">)),</span>
+                <span class="n">choice</span><span class="p">([</span><span class="n">animations</span><span class="o">.</span><span class="n">NOT_KNOW</span><span class="p">,</span><span class="n">animations</span><span class="o">.</span><span class="n">UNFAMILIAR</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">UNCOMFORTABLE</span><span class="p">,</span> <span class="n">animations</span><span class="o">.</span><span class="n">SHAMEFACED</span><span class="p">]))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -152,11 +152,12 @@
 
 <span class="kn">import</span> <span class="nn">nltk</span>
 
-<span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="Wikipedia"><a class="viewcode-back" href="../../../pepper.knowledge.wikipedia.html#pepper.knowledge.wikipedia.Wikipedia">[docs]</a><span class="k">class</span> <span class="nc">Wikipedia</span><span class="p">:</span>
@@ -164,30 +165,50 @@
     <span class="n">FULL</span> <span class="o">=</span> <span class="s2">&quot;https://en.wikipedia.org/w/api.php?format=json&amp;action=query&amp;prop=extracts&amp;explaintext&amp;titles=&quot;</span>
     <span class="n">SUMMARY</span> <span class="o">=</span> <span class="s2">&quot;https://en.wikipedia.org/w/api.php?format=json&amp;action=query&amp;prop=extracts&amp;exintro&amp;explaintext&amp;titles=&quot;</span>
     <span class="n">LINKS</span> <span class="o">=</span> <span class="s2">&quot;https://en.wikipedia.org/w/api.php?format=json&amp;action=query&amp;prop=links&amp;pllimit=max&amp;titles=&quot;</span>
-    <span class="n">DISAMBIGUATION</span> <span class="o">=</span> <span class="s2">&quot;may refer to:&quot;</span>
+    <span class="n">THUMBNAIL</span> <span class="o">=</span> <span class="s2">&quot;http://en.wikipedia.org/w/api.php?action=query&amp;prop=pageimages&amp;format=json&amp;pithumbsize=1000&amp;titles=&quot;</span>
+    <span class="n">DISAMBIGUATION</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;refer to:&quot;</span><span class="p">,</span> <span class="s2">&quot;refers to:&quot;</span><span class="p">]</span>
 
     <span class="n">PARENTHESES</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;\(.*?\)&#39;</span><span class="p">)</span>
     <span class="n">DUPLICATE_SPACES</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;[ )(]+&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Wikipedia.query"><a class="viewcode-back" href="../../../pepper.knowledge.wikipedia.html#pepper.knowledge.wikipedia.Wikipedia.query">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="c1"># type: (Union[str, unicode]) -&gt; Optional[Tuple[unicode, Optional[unicode]]]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query Wikipedia</span>
 
-        <span class="n">pos</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_combine_nouns</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query: str or unicode</span>
+<span class="sd">            Simple Natural Language Query (about something Wikipedia would know)</span>
 
-        <span class="c1"># If this is a proper question about a Noun</span>
-        <span class="k">if</span> <span class="n">pos</span> <span class="ow">and</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VB&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MD&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;what&quot;</span><span class="p">,</span> <span class="s2">&quot;who&quot;</span><span class="p">]:</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result: Optional[Tuple[unicode, str]]</span>
+<span class="sd">            Wikipedia Answer and thumbnail image URL</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Tokenize, Tag Part of Speeches and Combine adjacent nouns into one token</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_combine_nouns</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">query</span><span class="p">)))</span>
+
+        <span class="c1"># If this is a proper question about a Noun (quite hacky here)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">and</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VB&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MD&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_is_queryable</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;what&quot;</span><span class="p">,</span> <span class="s2">&quot;who&quot;</span><span class="p">]:</span>
 
             <span class="c1"># And there is only one Noun in Question (a.k.a., question is simple enough)</span>
             <span class="k">if</span> <span class="nb">sum</span><span class="p">([</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">_is_queryable</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 
-                <span class="c1"># Query Wikipedia About last object</span>
                 <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+
+                    <span class="c1"># Try to Query Wikipedia about last object in sentence</span>
                     <span class="k">if</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_is_queryable</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
-                        <span class="n">answer</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_query</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">answer</span><span class="p">:</span>
-                            <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">DUPLICATE_SPACES</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">PARENTHESES</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">answer</span><span class="p">))</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_query</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+
+                            <span class="c1"># If Successful, Obtain Result and Image URL and return</span>
+                            <span class="n">query</span><span class="p">,</span> <span class="n">answer</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">result</span>
+                            <span class="n">answer</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">DUPLICATE_SPACES</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">PARENTHESES</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">answer</span><span class="p">))</span>
+                            <span class="k">return</span> <span class="n">answer</span><span class="p">,</span> <span class="n">url</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="kc">None</span></div>
@@ -195,21 +216,26 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
         <span class="n">query_websafe</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="c1"># Query Summary</span>
         <span class="n">json</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">FULL</span> <span class="o">+</span> <span class="n">query_websafe</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="n">extract</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_find_key</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="s1">&#39;extract&#39;</span><span class="p">)</span>
 
+        <span class="c1"># Query Thumbnail</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">THUMBNAIL</span> <span class="o">+</span> <span class="n">query_websafe</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_find_key</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">extract</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">DISAMBIGUATION</span> <span class="ow">in</span> <span class="n">extract</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">disambiguation</span> <span class="ow">in</span> <span class="n">extract</span> <span class="k">for</span> <span class="n">disambiguation</span> <span class="ow">in</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">DISAMBIGUATION</span><span class="p">]):</span>
                 <span class="n">links</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_find_key</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Wikipedia</span><span class="o">.</span><span class="n">LINKS</span> <span class="o">+</span> <span class="n">query_websafe</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="s1">&#39;links&#39;</span><span class="p">)</span>
-                <span class="c1"># shuffle(links)</span>
 
                 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
                     <span class="n">new_query</span> <span class="o">=</span> <span class="n">link</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
                     <span class="n">extract</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">_query</span><span class="p">(</span><span class="n">new_query</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">extract</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> may refer to </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">new_query</span><span class="p">,</span> <span class="n">extract</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">new_query</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> may refer to </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">new_query</span><span class="p">,</span> <span class="n">extract</span><span class="p">),</span> <span class="n">url</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">extract</span>
+                <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">extract</span><span class="p">,</span> <span class="n">url</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_find_key</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -231,16 +257,6 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_is_queryable</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;NN&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;JJ&quot;</span><span class="p">)</span></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
-
-    <span class="n">N</span> <span class="o">=</span> <span class="mi">10</span>
-
-    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span> <span class="n">Wikipedia</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;Who is Alan Turing?&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">((</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
 </pre></div>
 
            </div>

@@ -150,7 +150,7 @@
   <h1>Source code for pepper.config</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Pepper Configuration File&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">ApplicationBackend</span><span class="p">,</span> <span class="n">CameraResolution</span><span class="p">,</span> <span class="n">NaoqiMicrophoneIndex</span><span class="p">,</span> <span class="n">LOGGING_FILE</span>
+<span class="kn">import</span> <span class="nn">pepper</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -159,15 +159,21 @@
 
 <span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
 <span class="c1"># More Backends will be added in the future!</span>
-<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
+<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
+
+<span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;Leolani&quot;</span>
+<span class="n">HUMAN_UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;Stranger&quot;</span>
+<span class="n">HUMAN_CROWD</span> <span class="o">=</span> <span class="s2">&quot;Humans&quot;</span>
+
 
 <span class="c1"># Application Language to use</span>
 <span class="c1"># Full list of Languages and their formats can be found at</span>
 <span class="c1">#   https://cloud.google.com/speech-to-text/docs/languages</span>
 <span class="c1"># Please keep in mind that the internal system is English (en) only</span>
 <span class="c1">#   Translation happens during Speech-to-Text &amp; Text-to-Speech steps</span>
+<span class="c1">#   Translation can induce quite a bit of lag in the System</span>
 <span class="n">APPLICATION_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
-<span class="n">INTERNAL_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
+<span class="n">INTERNAL_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>  <span class="c1"># Must start with &#39;en-&#39; (Must by a dialect of English)</span>
 
 
 <span class="c1"># Application Paths</span>
@@ -214,9 +220,18 @@
 <span class="c1"># Root of people Robot has &quot;just met&quot;</span>
 <span class="n">PEOPLE_NEW_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PEOPLE_ROOT</span><span class="p">,</span> <span class="s1">&#39;new&#39;</span><span class="p">)</span>
 
+<span class="c1"># Names of Friends</span>
+<span class="n">PEOPLE_FRIENDS_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">PEOPLE_FRIENDS_ROOT</span><span class="p">)]</span>
+
 <span class="c1"># Path to GOOGLE_APPLICATION_CREDENTIALS file (.json)</span>
 <span class="c1"># See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries</span>
 <span class="n">KEY_GOOGLE_CLOUD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../google_cloud_key.json&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">KEY_GOOGLE_CLOUD</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: </span><span class="si">{}</span><span class="s2"> does not exist, </span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         Google Cloud Services will not work.</span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         See https://github.com/cltl/pepper/wiki/Installation#2-google-cloud-services&quot;</span>
+          <span class="s2">&quot;for more information</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">KEY_GOOGLE_CLOUD</span><span class="p">))</span>
 
 <span class="c1"># Path to other tokens (currently just WolframAlpha)</span>
 <span class="c1"># See for more details: https://products.wolframalpha.com/spoken-results-api/documentation/</span>
@@ -226,8 +241,14 @@
 <span class="c1"># }</span>
 <span class="n">KEY_WOLFRAM</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;../tokens.json&#39;</span><span class="p">)</span>
 
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">KEY_WOLFRAM</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: </span><span class="si">{}</span><span class="s2"> does not exist, </span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         Wolfram Alpha will not work.</span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         See https://github.com/cltl/pepper/wiki/Installation#7-wolfram-alpha&quot;</span>
+          <span class="s2">&quot;for more information</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">KEY_WOLFRAM</span><span class="p">))</span>
+
 <span class="c1"># General Logging</span>
-<span class="n">LOG</span> <span class="o">=</span> <span class="n">LOGGING_FILE</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">LOGGING_FILE</span>
 
 <span class="c1"># Brain Logging</span>
 <span class="n">BRAIN_LOG_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">,</span> <span class="s2">&quot;../backups/brain/brain_log_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -240,27 +261,32 @@
 <span class="n">BRAIN_URL_REMOTE</span> <span class="o">=</span> <span class="s2">&quot;http://145.100.58.167:50053/sparql&quot;</span>
 
 <span class="c1"># NAOqi Robot URL</span>
-<span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span><span class="p">,</span> <span class="mi">9559</span>
+<span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span><span class="p">,</span> <span class="mi">9559</span>  <span class="c1"># Default</span>
+<span class="c1"># NAOQI_IP, NAOQI_PORT = &quot;10.10.60.150&quot;, 9559  # Future Lab</span>
+<span class="c1"># NAOQI_IP, NAOQI_PORT = &quot;192.168.137.172&quot;, 9559  # Local?</span>
 <span class="n">NAOQI_URL</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span><span class="p">)</span>
 
 
 <span class="c1"># Application Sensor Parameters</span>
-<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">OBJECT_RECOGNITION_TARGETS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pepper</span><span class="o">.</span><span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span>
+<span class="p">]</span>
 
 <span class="n">MICROPHONE_SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">16000</span>
 <span class="n">MICROPHONE_CHANNELS</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
 
-<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span>
-<span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQVGA</span>
+<span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">3</span>
 
 <span class="c1"># NAOqi Specific Overrides</span>
 <span class="n">NAOQI_USE_SYSTEM_CAMERA</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">NaoqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
+<span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">NAOqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
 
 
 <span class="c1"># .json file with id tokens, with keys:</span>
@@ -281,10 +307,10 @@
 <span class="sd">    backend: AbstractBackend</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">backend</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemBackend</span>
         <span class="n">backend</span> <span class="o">=</span> <span class="n">SystemBackend</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pepper.framework.backend.naoqi</span> <span class="k">import</span> <span class="n">NAOqiBackend</span>
         <span class="n">backend</span> <span class="o">=</span> <span class="n">NAOqiBackend</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">backend</span></div>

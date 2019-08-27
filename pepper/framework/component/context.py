@@ -4,7 +4,6 @@ from ..sensor import UtteranceHypothesis, Face, FaceClassifier
 from ..abstract import AbstractComponent, AbstractImage
 
 from pepper.language import Utterance
-from pepper.knowledge import sentences
 from pepper import config
 
 from collections import deque
@@ -12,7 +11,6 @@ from threading import Thread, Lock
 from time import time
 
 from typing import Deque, List
-from random import choice
 
 import numpy as np
 

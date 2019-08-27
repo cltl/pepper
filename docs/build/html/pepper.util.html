@@ -27,9 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.util.image module" href="pepper.util.image.html" />
-    <link rel="prev" title="pepper.language.utils module" href="pepper.language.utils.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -78,20 +76,8 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.util package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.util.image.html">pepper.util.image module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
@@ -142,8 +128,6 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
       <li>pepper.util package</li>
     
     
@@ -165,11 +149,180 @@
             
   <div class="section" id="module-pepper.util">
 <span id="pepper-util-package"></span><h1>pepper.util package<a class="headerlink" href="#module-pepper.util" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.util.Mailbox">
+<em class="property">class </em><code class="descclassname">pepper.util.</code><code class="descname">Mailbox</code><a class="headerlink" href="#pepper.util.Mailbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.util.Mailbox.get" title="pepper.util.Mailbox.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>([block])</td>
+<td>Get Mail from Mailbox</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.util.Mailbox.put" title="pepper.util.Mailbox.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a>(mail)</td>
+<td>Put new Mail in Mailbox</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.util.Mailbox.EPSILSON">
+<code class="descname">EPSILSON</code><em class="property"> = 0.001</em><a class="headerlink" href="#pepper.util.Mailbox.EPSILSON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.util.Mailbox.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>block=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.util.Mailbox.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Mail from Mailbox</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>block: bool</strong></dt>
+<dd><p class="first last">If True: Wait for Mail until it arrives in Mailbox
+If False: Return Empty Exception when Mailbox is Empty</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>mail: Any</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.util.Mailbox.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>mail</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.util.Mailbox.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put new Mail in Mailbox</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>mail: Any</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.util.Scheduler">
+<em class="property">class </em><code class="descclassname">pepper.util.</code><code class="descname">Scheduler</code><span class="sig-paren">(</span><em>target</em>, <em>interval=0.01</em>, <em>name=None</em>, <em>args=()</em>, <em>kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.util.Scheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<p>Runs Task Continuously with certain interval</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">daemon</span></code></dt>
+<dd><p class="first last">A boolean value indicating whether this thread is a daemon thread (True) or not (False).</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ident</span></code></dt>
+<dd><p class="first last">Thread identifier of this thread or None if it has not been started.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></dt>
+<dd><p class="first last">A string used for identification purposes only.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">isAlive</span></code>()</td>
+<td>Return whether the thread is alive.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_alive</span></code>()</td>
+<td>Return whether the thread is alive.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code>()</td>
+<td>Start the thread’s activity.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>getName</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>isDaemon</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>join</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>run</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><strong>setDaemon</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>setName</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pepper.util.Scheduler.join">
+<code class="descname">join</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.util.Scheduler.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until the thread terminates.</p>
+<p>This blocks the calling thread until the thread whose join() method is
+called terminates – either normally or through an unhandled exception
+or until the optional timeout occurs.</p>
+<p>When the timeout argument is present and not None, it should be a
+floating point number specifying a timeout for the operation in seconds
+(or fractions thereof). As join() always returns None, you must call
+isAlive() after join() to decide whether a timeout happened – if the
+thread is still alive, the join() call timed out.</p>
+<p>When the timeout argument is not present or None, the operation will
+block until the thread terminates.</p>
+<p>A thread can be join()ed many times.</p>
+<p>join() raises a RuntimeError if an attempt is made to join the current
+thread as that would cause a deadlock. It is also an error to join() a
+thread before it has been started and attempts to do so raises the same
+exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.util.Scheduler.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pepper.util.Scheduler.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+</dd></dl>
+
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.util.image.html">pepper.util.image module</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.util.image.html">pepper.util.image module</a></li>
 </ul>
 </div>
 </div>
@@ -179,15 +332,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pepper.util.image.html" class="btn btn-neutral float-right" title="pepper.util.image module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="pepper.language.utils.html" class="btn btn-neutral" title="pepper.language.utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

@@ -152,7 +152,7 @@
 <span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">NoReturn</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="TextToSpeechComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent">[docs]</a><span class="k">class</span> <span class="nc">TextToSpeechComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
@@ -170,10 +170,10 @@
         <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TextToSpeechComponentThread&quot;</span><span class="p">)</span>
         <span class="n">schedule</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="TextToSpeechComponent.say"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># type: (str, Optional[str]) -&gt; NoReturn</span>
+<div class="viewcode-block" id="TextToSpeechComponent.say"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str], bool) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Say Text (with Animation) through Text-to-Speech</span>
+<span class="sd">        Say Text (with optional Animation) through Text-to-Speech</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -181,6 +181,8 @@
 <span class="sd">            Text to say through Text-to-Speech</span>
 <span class="sd">        animation: str or None</span>
 <span class="sd">            (Naoqi) Animation to play</span>
+<span class="sd">        block: bool</span>
+<span class="sd">            Whether this function should block or immediately return after calling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Acquire Microphone Lock</span>
@@ -190,7 +192,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
             <span class="c1"># Say Text through Text-to-Speech</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

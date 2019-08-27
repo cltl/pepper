@@ -158,7 +158,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span>
 
 
-<div class="viewcode-block" id="ASRHypothesis"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.ASRHypothesis">[docs]</a><span class="k">class</span> <span class="nc">ASRHypothesis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="UtteranceHypothesis"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.UtteranceHypothesis">[docs]</a><span class="k">class</span> <span class="nc">UtteranceHypothesis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">,</span> <span class="n">confidence</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Automatic Speech Recognition Hypothesis</span>
@@ -183,6 +183,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span>
 
+    <span class="nd">@transcript</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span> <span class="o">=</span> <span class="n">value</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
@@ -194,6 +198,10 @@
 <span class="sd">        confidence: float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
+
+    <span class="nd">@confidence</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&#39;</span><span class="si">{}</span><span class="s2">&#39; [</span><span class="si">{:3.2%}</span><span class="s2">]&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span></div>
@@ -266,7 +274,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        transcript: list of ASRHypothesis</span>
+<span class="sd">        transcript: list of UtteranceHypothesis</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
@@ -288,17 +296,44 @@
 <div class="viewcode-block" id="StreamedGoogleASR"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.StreamedGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">StreamedGoogleASR</span><span class="p">(</span><span class="n">BaseGoogleASR</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">StreamedGoogleASR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">hints</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">single_utterance</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_live</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">single_utterance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interim_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">live</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_live</span>
 
 <div class="viewcode-block" id="StreamedGoogleASR.transcribe"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.StreamedGoogleASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
-        <span class="c1"># type: (Iterable[np.ndarray]) -&gt; List[ASRHypothesis]</span>
+        <span class="c1"># type: (Iterable[np.ndarray]) -&gt; List[UtteranceHypothesis]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ASR Transcription Error (try </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+    <span class="k">def</span> <span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
         <span class="n">hypotheses</span> <span class="o">=</span> <span class="p">[]</span>
+
         <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">)):</span>
-            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+
+            <span class="n">live</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">is_final</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
-                        <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ASRHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">hypotheses</span></div>
+                        <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">UtteranceHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+                    <span class="n">live</span> <span class="o">+=</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_live</span> <span class="o">=</span> <span class="n">live</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">hypothesis</span><span class="p">:</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
@@ -320,13 +355,13 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        hypotheses: List[ASRHypothesis]</span>
+<span class="sd">        hypotheses: List[UtteranceHypothesis]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">hypotheses</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">))</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
-                <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ASRHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">hypotheses</span></div>
+                <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UtteranceHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">hypothesis</span><span class="p">:</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>

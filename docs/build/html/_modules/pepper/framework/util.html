@@ -151,12 +151,13 @@
 <span></span><span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Empty</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="Scheduler"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Scheduler">[docs]</a><span class="k">class</span> <span class="nc">Scheduler</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs Task Continuously with certain interval&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mf">5E-3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mf">1E-1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
         <span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span> <span class="o">=</span> <span class="n">interval</span>
@@ -179,7 +180,7 @@
 
 <div class="viewcode-block" id="Mailbox"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Mailbox">[docs]</a><span class="k">class</span> <span class="nc">Mailbox</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="n">EPSILSON</span> <span class="o">=</span> <span class="mf">1E-3</span>
+    <span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">1E-1</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create Mailbox Object&quot;&quot;&quot;</span>
@@ -214,7 +215,7 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">block</span><span class="p">:</span>
                 <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mail</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">sleep</span><span class="p">(</span><span class="n">Mailbox</span><span class="o">.</span><span class="n">EPSILSON</span><span class="p">)</span>
+                    <span class="n">sleep</span><span class="p">(</span><span class="n">Mailbox</span><span class="o">.</span><span class="n">EPSILON</span><span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">()</span>
 
             <span class="k">else</span><span class="p">:</span>
@@ -233,6 +234,219 @@
         <span class="n">mail</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mail</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mail</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">mail</span></div>
+
+
+<div class="viewcode-block" id="Bounds"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds">[docs]</a><span class="k">class</span> <span class="nc">Bounds</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x0: float</span>
+<span class="sd">        y0: float</span>
+<span class="sd">        x1: float</span>
+<span class="sd">        y1: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">x0</span> <span class="o">&gt;</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">y0</span> <span class="o">&gt;</span> <span class="n">y1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Rectangle Error: Point (x1,y1) must be bigger than point (x0, y0)&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x0</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span> <span class="o">=</span> <span class="n">y0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x1</span> <span class="o">=</span> <span class="n">x1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y1</span> <span class="o">=</span> <span class="n">y1</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        x0: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y0: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        x1: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x1</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y1: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y1</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        width: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        height: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        center: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        area: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span>
+
+<div class="viewcode-block" id="Bounds.intersection"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.intersection">[docs]</a>    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bounds: Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        intersection: Bounds or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">x0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span>
+        <span class="n">y0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">x0</span> <span class="o">&gt;=</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">y0</span> <span class="o">&gt;=</span> <span class="n">y1</span> <span class="k">else</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bounds.overlap"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.overlap">[docs]</a>    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate Overlap Factor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        overlap: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">intersection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">intersection</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">intersection</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="n">intersection</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span></div>
+
+<div class="viewcode-block" id="Bounds.is_subset_of"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.is_subset_of">[docs]</a>    <span class="k">def</span> <span class="nf">is_subset_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        is_subset_of: bool</span>
+<span class="sd">            Whether &#39;other&#39; Bounds is subset of &#39;this&#39; Bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span></div>
+
+<div class="viewcode-block" id="Bounds.is_superset_of"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.is_superset_of">[docs]</a>    <span class="k">def</span> <span class="nf">is_superset_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        is_superset_of: bool</span>
+<span class="sd">            Whether &#39;other&#39; Bounds is superset of &#39;this&#39; Bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span></div>
+
+<div class="viewcode-block" id="Bounds.contains"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point: Tuple[float, float]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        is_in: bool</span>
+<span class="sd">            Whether Point lies in Bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span></div>
+
+<div class="viewcode-block" id="Bounds.equals"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.equals">[docs]</a>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other: Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        equals: bool</span>
+<span class="sd">         Whether &#39;other&#39; bounds equals &#39;this&#39; bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span></div>
+
+<div class="viewcode-block" id="Bounds.scaled"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.scaled">[docs]</a>    <span class="k">def</span> <span class="nf">scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_scale</span><span class="p">,</span> <span class="n">y_scale</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return Scaled Bounds Object</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x_scale: float</span>
+<span class="sd">        y_scale: float</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Scaled Bounds object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Bounds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">x_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">*</span> <span class="n">y_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">*</span> <span class="n">y_scale</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bounds.to_list"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.to_list">[docs]</a>    <span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Bounds[(</span><span class="si">{:3f}</span><span class="s2">, </span><span class="si">{:3f}</span><span class="s2">), (</span><span class="si">{:3f}</span><span class="s2">, </span><span class="si">{:3f}</span><span class="s2">)]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="spherical2cartesian"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.spherical2cartesian">[docs]</a><span class="k">def</span> <span class="nf">spherical2cartesian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
 </pre></div>
 
            </div>

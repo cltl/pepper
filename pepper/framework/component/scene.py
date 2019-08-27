@@ -4,8 +4,6 @@ from pepper.framework.util import spherical2cartesian
 from cv2 import resize
 import numpy as np
 
-from time import time
-
 
 class SceneComponent(AbstractComponent):
 
@@ -27,7 +25,45 @@ class SceneComponent(AbstractComponent):
 
         self._last_bounds = None
 
-        self.backend.camera.callbacks += [self.on_image]
+        def on_image(image):
+            # type: (AbstractImage) -> None
+            """
+            On Image Event. Called every time an image was taken by Backend
+
+            Parameters
+            ----------
+            image: AbstractImage
+                Camera Frame
+            """
+
+            if self._last_bounds and image.bounds.overlap(self._last_bounds) > 0.9:
+                color = resize(image.image, image.depth.shape[::-1]).astype(np.float32) / 256
+                depth = image.depth.astype(np.float32)
+
+                phi, theta = np.meshgrid(
+                    np.linspace(image.bounds.x0 * self.RESOLUTION / np.pi,
+                                image.bounds.x1 * self.RESOLUTION / np.pi,
+                                depth.shape[1]),
+                    np.linspace(image.bounds.y0 * self.RESOLUTION / np.pi,
+                                image.bounds.y1 * self.RESOLUTION / np.pi,
+                                depth.shape[0]))
+
+                depth_threshold = image.depth > self.DEPTH_THRESHOLD
+
+                phi = phi[depth_threshold].astype(np.int)
+                theta = theta[depth_threshold].astype(np.int)
+                depth = depth[depth_threshold]
+                color = color[depth_threshold]
+
+                sample_index = self._index_map[phi, theta]
+
+                self._depth_map[phi, theta, sample_index] = depth
+                self._color_map[phi, theta, sample_index] = color
+                self._index_map[phi, theta] = (self._index_map[phi, theta] + 1) % self.SAMPLES
+
+            self._last_bounds = image.bounds
+
+        self.backend.camera.callbacks += [on_image]
 
     @property
     def depth_map(self):
@@ -62,42 +98,3 @@ class SceneComponent(AbstractComponent):
 
         # Return Empty Result
         return np.array([]), np.array([]), np.array([]), np.array([])
-
-    def on_image(self, image):
-        # type: (AbstractImage) -> None
-        """
-        On Image Event. Called every time an image was taken by Backend
-
-        Parameters
-        ----------
-        image: AbstractImage
-            Camera Frame
-        """
-
-        if self._last_bounds and image.bounds.overlap(self._last_bounds) > 0.9:
-
-            color = resize(image.image, image.depth.shape[::-1]).astype(np.float32) / 256
-            depth = image.depth.astype(np.float32)
-
-            phi, theta = np.meshgrid(
-                np.linspace(image.bounds.x0 * self.RESOLUTION / np.pi,
-                            image.bounds.x1 * self.RESOLUTION / np.pi,
-                            depth.shape[1]),
-                np.linspace(image.bounds.y0 * self.RESOLUTION / np.pi,
-                            image.bounds.y1 * self.RESOLUTION / np.pi,
-                            depth.shape[0]))
-
-            depth_threshold = image.depth > self.DEPTH_THRESHOLD
-
-            phi = phi[depth_threshold].astype(np.int)
-            theta = theta[depth_threshold].astype(np.int)
-            depth = depth[depth_threshold]
-            color = color[depth_threshold]
-
-            sample_index = self._index_map[phi, theta]
-
-            self._depth_map[phi, theta, sample_index] = depth
-            self._color_map[phi, theta, sample_index] = color
-            self._index_map[phi, theta] = (self._index_map[phi, theta] + 1) % self.SAMPLES
-
-        self._last_bounds = image.bounds

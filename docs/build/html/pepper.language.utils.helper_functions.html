@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.utils.helper_functions module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.language.analyzer module" href="pepper.language.analyzer.html" />
+    <link rel="prev" title="pepper.language.utils.atoms module" href="pepper.language.utils.atoms.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.analyzers_old.html">pepper.language.utils.analyzers_old module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.atoms.html">pepper.language.utils.atoms module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.language.utils.helper_functions module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzer.html">pepper.language.analyzer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.name.html">pepper.language.name module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.pos.html">pepper.language.pos module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.transitivity.html">pepper.language.transitivity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.wordnet_utils.html">pepper.language.wordnet_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
+        
+          <li><a href="pepper.language.utils.html">pepper.language.utils package</a> &raquo;</li>
+        
+      <li>pepper.language.utils.helper_functions module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.language.utils.helper_functions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.language.utils.helper_functions">
+<span id="pepper-language-utils-helper-functions-module"></span><h1>pepper.language.utils.helper_functions module<a class="headerlink" href="#module-pepper.language.utils.helper_functions" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.check_rdf_completeness">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">check_rdf_completeness</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#check_rdf_completeness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.check_rdf_completeness" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.dbp_query">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">dbp_query</code><span class="sig-paren">(</span><em>q</em>, <em>epr</em>, <em>f=u'application/json'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#dbp_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.dbp_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.dereference_pronouns">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">dereference_pronouns</code><span class="sig-paren">(</span><em>self</em>, <em>rdf</em>, <em>grammar</em>, <em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#dereference_pronouns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.dereference_pronouns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.extract_np">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">extract_np</code><span class="sig-paren">(</span><em>words</em>, <em>tagged</em>, <em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#extract_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.extract_np" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts a list of non-verbs (np = noun phrase)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.extract_roles_from_statement">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">extract_roles_from_statement</code><span class="sig-paren">(</span><em>words</em>, <em>speaker</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#extract_roles_from_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.extract_roles_from_statement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.find">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">find</code><span class="sig-paren">(</span><em>word</em>, <em>lexicon</em>, <em>typ=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return features of a given word in the lexicon.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.fix_contractions">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">fix_contractions</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#fix_contractions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.fix_contractions" title="Permalink to this definition">¶</a></dt>
+<dd><p>If there are contractions (I’m) this functions creates the full version (I am)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.fix_predicate_morphology">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">fix_predicate_morphology</code><span class="sig-paren">(</span><em>subject</em>, <em>predicate</em>, <em>object</em>, <em>format=u'triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#fix_predicate_morphology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.fix_predicate_morphology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conjugation
+Parameters
+———-
+subject
+predicate</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.fix_pronouns">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">fix_pronouns</code><span class="sig-paren">(</span><em>dict</em>, <em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#fix_pronouns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.fix_pronouns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.get_node_label">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_node_label</code><span class="sig-paren">(</span><em>tree</em>, <em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_node_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_node_label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.get_synonims">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_synonims</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_synonims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_synonims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get synonyms using WordNet</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.get_uri">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_uri</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_uri" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.lemmatize">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">lemmatize</code><span class="sig-paren">(</span><em>word</em>, <em>tag=u''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#lemmatize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.lemmatize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.pack_rdf_from_np_info">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">pack_rdf_from_np_info</code><span class="sig-paren">(</span><em>np_info</em>, <em>speaker</em>, <em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#pack_rdf_from_np_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.pack_rdf_from_np_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.helper_functions.tokenize">
+<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">tokenize</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#tokenize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.tokenize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns a list of clean tokens, parsed from the inputted utterance</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.language.analyzer.html" class="btn btn-neutral float-right" title="pepper.language.analyzer module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.language.utils.atoms.html" class="btn btn-neutral" title="pepper.language.utils.atoms module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

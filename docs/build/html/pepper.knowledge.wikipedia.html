@@ -28,7 +28,6 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.knowledge.wolfram module" href="pepper.knowledge.wolfram.html" />
     <link rel="prev" title="pepper.knowledge.sentences module" href="pepper.knowledge.sentences.html" /> 
 
   
@@ -86,13 +85,14 @@
 <li class="toctree-l3"><a class="reference internal" href="pepper.knowledge.animations.html">pepper.knowledge.animations module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.knowledge.query.html">pepper.knowledge.query module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.knowledge.sentences.html">pepper.knowledge.sentences module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.knowledge.wikipedia module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.knowledge.wikipedia module</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.knowledge.wolfram.html">pepper.knowledge.wolfram module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
@@ -175,20 +175,20 @@
 <dt id="pepper.knowledge.wikipedia.Wikipedia">
 <em class="property">class </em><code class="descclassname">pepper.knowledge.wikipedia.</code><code class="descname">Wikipedia</code><a class="reference internal" href="_modules/pepper/knowledge/wikipedia.html#Wikipedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Methods</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="47%" />
-<col width="53%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><strong>query</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.knowledge.wikipedia.Wikipedia.query" title="pepper.knowledge.wikipedia.Wikipedia.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query)</td>
+<td>Query Wikipedia</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="pepper.knowledge.wikipedia.Wikipedia.DISAMBIGUATION">
-<code class="descname">DISAMBIGUATION</code><em class="property"> = u'may refer to:'</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.DISAMBIGUATION" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DISAMBIGUATION</code><em class="property"> = [u'refer to:', u'refers to:']</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.DISAMBIGUATION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -216,10 +216,36 @@
 <code class="descname">SUMMARY</code><em class="property"> = u'https://en.wikipedia.org/w/api.php?format=json&amp;action=query&amp;prop=extracts&amp;exintro&amp;explaintext&amp;titles='</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.SUMMARY" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="pepper.knowledge.wikipedia.Wikipedia.THUMBNAIL">
+<code class="descname">THUMBNAIL</code><em class="property"> = u'http://en.wikipedia.org/w/api.php?action=query&amp;prop=pageimages&amp;format=json&amp;pithumbsize=1000&amp;titles='</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.THUMBNAIL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="staticmethod">
 <dt id="pepper.knowledge.wikipedia.Wikipedia.query">
 <em class="property">static </em><code class="descname">query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/knowledge/wikipedia.html#Wikipedia.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.query" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Query Wikipedia</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>query: str or unicode</strong></dt>
+<dd><p class="first last">Simple Natural Language Query (about something Wikipedia would know)</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>result: Optional[Tuple[unicode, str]]</strong></dt>
+<dd><p class="first last">Wikipedia Answer and thumbnail image URL</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -232,8 +258,6 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pepper.knowledge.wolfram.html" class="btn btn-neutral float-right" title="pepper.knowledge.wolfram module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="pepper.knowledge.sentences.html" class="btn btn-neutral" title="pepper.knowledge.sentences module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

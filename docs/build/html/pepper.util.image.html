@@ -27,8 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pepper.util package" href="pepper.util.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -77,22 +76,8 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="pepper.util.html">pepper.util package</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.util.image module</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
@@ -143,10 +128,6 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
-          <li><a href="pepper.util.html">pepper.util package</a> &raquo;</li>
-        
       <li>pepper.util.image module</li>
     
     
@@ -166,127 +147,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.util.image">
-<span id="pepper-util-image-module"></span><h1>pepper.util.image module<a class="headerlink" href="#module-pepper.util.image" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.util.image.ImageAnnotator">
-<em class="property">class </em><code class="descclassname">pepper.util.image.</code><code class="descname">ImageAnnotator</code><a class="reference internal" href="_modules/pepper/util/image.html#ImageAnnotator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.util.image.ImageAnnotator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.util.image.ImageAnnotator.annotate" title="pepper.util.image.ImageAnnotator.annotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate</span></code></a>(image,&nbsp;objects,&nbsp;persons[,&nbsp;…])</td>
-<td>Annotate Image</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="64%" />
-<col width="36%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>annotate_batch</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="pepper.util.image.ImageAnnotator.annotate">
-<code class="descname">annotate</code><span class="sig-paren">(</span><em>image</em>, <em>objects</em>, <em>persons</em>, <em>object_threshold=0.5</em>, <em>face_threshold=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/util/image.html#ImageAnnotator.annotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.util.image.ImageAnnotator.annotate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Annotate Image</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>image: Image.Image</strong></dt>
-<dd><p class="first last">Input Image</p>
-</dd>
-<dt><strong>objects: list of pepper.sensor.obj.CocoObject</strong></dt>
-<dd></dd>
-<dt><strong>faces: list of pepper.sensor.face.Face</strong></dt>
-<dd></dd>
-<dt><strong>persons: list of pepper.sensor.face.Person</strong></dt>
-<dd></dd>
-<dt><strong>object_threshold: float</strong></dt>
-<dd><p class="first last">Confidence Threshold for Object Recognition Annotations</p>
-</dd>
-<dt><strong>face_threshold: float</strong></dt>
-<dd><p class="first last">Confidence Threshold for Face Recognition Annotations</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>image: Image.Image</strong></dt>
-<dd><p class="first last">Annotated Image</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.util.image.ImageAnnotator.annotate_batch">
-<code class="descname">annotate_batch</code><span class="sig-paren">(</span><em>directory</em>, <em>output_directory=None</em>, <em>extension='.png'</em>, <em>object_threshold=0.5</em>, <em>face_threshold=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/util/image.html#ImageAnnotator.annotate_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.util.image.ImageAnnotator.annotate_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.util.image.ImageWriter">
-<em class="property">class </em><code class="descclassname">pepper.util.image.</code><code class="descname">ImageWriter</code><span class="sig-paren">(</span><em>path='/Users/bram/Documents/pepper/pepper/imglog'</em>, <em>extension='.jpeg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/util/image.html#ImageWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.util.image.ImageWriter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>extension</strong></dt>
-<dd></dd>
-<dt><strong>path</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="47%" />
-<col width="53%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>write</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.util.image.ImageWriter.extension">
-<code class="descname">extension</code><a class="headerlink" href="#pepper.util.image.ImageWriter.extension" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.util.image.ImageWriter.path">
-<code class="descname">path</code><a class="headerlink" href="#pepper.util.image.ImageWriter.path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.util.image.ImageWriter.write">
-<code class="descname">write</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/util/image.html#ImageWriter.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.util.image.ImageWriter.write" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-util-image-module">
+<h1>pepper.util.image module<a class="headerlink" href="#pepper-util-image-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -294,13 +156,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="pepper.util.html" class="btn btn-neutral" title="pepper.util package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

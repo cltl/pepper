@@ -153,9 +153,12 @@
 <span class="kn">import</span> <span class="nn">pyaudio</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+
 
 <div class="viewcode-block" id="SystemMicrophone"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.microphone.html#pepper.framework.backend.system.microphone.SystemMicrophone">[docs]</a><span class="k">class</span> <span class="nc">SystemMicrophone</span><span class="p">(</span><span class="n">AbstractMicrophone</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="c1"># type: (int, int, List[Callable[[np.ndarray], None]]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        System Microphone</span>
 

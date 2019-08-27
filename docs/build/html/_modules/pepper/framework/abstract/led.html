@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.abstract.led &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.framework.abstract.led</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.framework.abstract.led</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+
+<div class="viewcode-block" id="Led"><a class="viewcode-back" href="../../../../pepper.framework.abstract.led.html#pepper.framework.abstract.led.Led">[docs]</a><span class="k">class</span> <span class="nc">Led</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">LeftEarLeds</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">LeftEarLed1</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">LeftEarLed2</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">LeftEarLed3</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">LeftEarLed4</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">LeftEarLed5</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">LeftEarLed6</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">LeftEarLed7</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">LeftEarLed8</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">LeftEarLed9</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">LeftEarLed10</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">RightEarLeds</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">RightEarLed1</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">RightEarLed2</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="n">RightEarLed3</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">RightEarLed4</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">RightEarLed5</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">RightEarLed6</span> <span class="o">=</span> <span class="mi">17</span>
+    <span class="n">RightEarLed7</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">RightEarLed8</span> <span class="o">=</span> <span class="mi">19</span>
+    <span class="n">RightEarLed9</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">RightEarLed10</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">LeftFaceLeds</span> <span class="o">=</span> <span class="mi">22</span>
+    <span class="n">LeftFaceLed1</span> <span class="o">=</span> <span class="mi">23</span>
+    <span class="n">LeftFaceLed2</span> <span class="o">=</span> <span class="mi">24</span>
+    <span class="n">LeftFaceLed3</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="n">LeftFaceLed4</span> <span class="o">=</span> <span class="mi">26</span>
+    <span class="n">LeftFaceLed5</span> <span class="o">=</span> <span class="mi">27</span>
+    <span class="n">LeftFaceLed6</span> <span class="o">=</span> <span class="mi">28</span>
+    <span class="n">LeftFaceLed7</span> <span class="o">=</span> <span class="mi">29</span>
+    <span class="n">LeftFaceLed8</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">RightFaceLeds</span> <span class="o">=</span> <span class="mi">31</span>
+    <span class="n">RightFaceLed1</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">RightFaceLed2</span> <span class="o">=</span> <span class="mi">33</span>
+    <span class="n">RightFaceLed3</span> <span class="o">=</span> <span class="mi">34</span>
+    <span class="n">RightFaceLed4</span> <span class="o">=</span> <span class="mi">35</span>
+    <span class="n">RightFaceLed5</span> <span class="o">=</span> <span class="mi">36</span>
+    <span class="n">RightFaceLed6</span> <span class="o">=</span> <span class="mi">37</span>
+    <span class="n">RightFaceLed7</span> <span class="o">=</span> <span class="mi">38</span>
+    <span class="n">RightFaceLed8</span> <span class="o">=</span> <span class="mi">39</span></div>
+
+
+<div class="viewcode-block" id="AbstractLed"><a class="viewcode-back" href="../../../../pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed">[docs]</a><span class="k">class</span> <span class="nc">AbstractLed</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractLed.set"><a class="viewcode-back" href="../../../../pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leds</span><span class="p">,</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+        <span class="c1"># type: (List[Led], Tuple[float, float, float], float) -&gt; None</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AbstractLed.off"><a class="viewcode-back" href="../../../../pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed.off">[docs]</a>    <span class="k">def</span> <span class="nf">off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leds</span><span class="p">):</span>
+        <span class="c1"># type: (List[Led]) -&gt; None</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

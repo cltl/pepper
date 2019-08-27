@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.language.analyzers module" href="pepper.language.analyzers.html" /> 
+    <link rel="next" title="pepper.language.generation package" href="pepper.language.generation.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,17 +83,18 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.language package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzers.html">pepper.language.analyzers module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzer.html">pepper.language.analyzer module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.names.html">pepper.language.names module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.name.html">pepper.language.name module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.pos.html">pepper.language.pos module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.process_utterance.html">pepper.language.process_utterance module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.transitivity.html">pepper.language.transitivity module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.wordnet_utils.html">pepper.language.wordnet_utils module</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
@@ -170,24 +171,37 @@
             
   <div class="section" id="module-pepper.language">
 <span id="pepper-language-package"></span><h1>pepper.language package<a class="headerlink" href="#module-pepper.language" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="pepper.language.getrandbits">
-<code class="descclassname">pepper.language.</code><code class="descname">getrandbits</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span> &#x2192; x.  Generates a long int with k random bits.<a class="headerlink" href="#pepper.language.getrandbits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.language.analyzers.html">pepper.language.analyzers module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.generation.phrasing.html">pepper.language.generation.phrasing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.generation.reply.html">pepper.language.generation.reply module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.generation.thoughts_phrasing.html">pepper.language.generation.thoughts_phrasing module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.utils.analyzers_old.html">pepper.language.utils.analyzers_old module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.utils.atoms.html">pepper.language.utils.atoms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.utils.helper_functions.html">pepper.language.utils.helper_functions module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.language.analyzer.html">pepper.language.analyzer module</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.language.names.html">pepper.language.names module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.language.name.html">pepper.language.name module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.language.pos.html">pepper.language.pos module</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.language.process_utterance.html">pepper.language.process_utterance module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.language.transitivity.html">pepper.language.transitivity module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.language.wordnet_utils.html">pepper.language.wordnet_utils module</a></li>
 </ul>
 </div>
 </div>
@@ -200,7 +214,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.language.analyzers.html" class="btn btn-neutral float-right" title="pepper.language.analyzers module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.language.generation.html" class="btn btn-neutral float-right" title="pepper.language.generation package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

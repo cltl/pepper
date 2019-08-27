@@ -148,8 +148,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.sensor.face</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.sensor.obj</span> <span class="k">import</span> <span class="n">Bounds</span>
-<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.sensor.obj</span> <span class="k">import</span> <span class="n">Object</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Bounds</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
@@ -161,20 +163,29 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<div class="viewcode-block" id="Face"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.Face">[docs]</a><span class="k">class</span> <span class="nc">Face</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        OpenFace Face Information</span>
+<div class="viewcode-block" id="Face"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.Face">[docs]</a><span class="k">class</span> <span class="nc">Face</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
 
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">            Name of Person</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">            Name Confidence</span>
 <span class="sd">        representation: np.ndarray</span>
 <span class="sd">            Face Feature Vector</span>
 <span class="sd">        bounds: Bounds</span>
 <span class="sd">            Face Bounding Box</span>
+<span class="sd">        image: AbstractImage</span>
+<span class="sd">            Image Face was Found in</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Face</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">FaceClassifier</span><span class="o">.</span><span class="n">NEW</span> <span class="k">else</span> <span class="n">name</span><span class="p">,</span>
+                                   <span class="n">confidence</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_representation</span> <span class="o">=</span> <span class="n">representation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">representation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -186,60 +197,7 @@
 <span class="sd">        representation: np.ndarray</span>
 <span class="sd">            Face Feature Vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_representation</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Face Bounds (Relative to Image)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bounds: Bounds</span>
-<span class="sd">            Face Bounding Box</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span></div>
-
-
-<div class="viewcode-block" id="Person"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.Person">[docs]</a><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Face</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">confidence</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        face: Face</span>
-<span class="sd">            OpenFace Face</span>
-<span class="sd">        name: str</span>
-<span class="sd">            Name of Person</span>
-<span class="sd">        confidence: float</span>
-<span class="sd">            Name Confidence</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">representation</span><span class="p">,</span> <span class="n">face</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">confidence</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        name: str</span>
-<span class="sd">            Name of Person</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        confidence: float</span>
-<span class="sd">            Name Confidence</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">[</span><span class="si">{:3.0%}</span><span class="s2">]: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_representation</span></div>
 
 
 <div class="viewcode-block" id="OpenFace"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.OpenFace">[docs]</a><span class="k">class</span> <span class="nc">OpenFace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -290,8 +248,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        result: list of Face</span>
-<span class="sd">            List of Face objects</span>
+<span class="sd">        result: list of (np.ndarray, Bounds)</span>
+<span class="sd">            List of (representation, bounds)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -317,7 +275,7 @@
                 <span class="c1"># Face Representation</span>
                 <span class="n">representation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">FEATURE_DIM</span> <span class="o">*</span> <span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
-                <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Face</span><span class="p">(</span><span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">))</span>
+                <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">))</span>
 
             <span class="k">return</span> <span class="n">faces</span>
 
@@ -445,24 +403,39 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people</span>
 
-<div class="viewcode-block" id="FaceClassifier.classify"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.FaceClassifier.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<div class="viewcode-block" id="FaceClassifier.add"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.FaceClassifier.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="n">people</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people</span>
+        <span class="n">people</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">people</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indices</span><span class="p">)])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">people</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_classifier</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_neighbors</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FaceClassifier.classify"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.FaceClassifier.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Classify Face as Person</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face: Face</span>
+<span class="sd">        representation: np.ndarray</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">        image: np.ndarray</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        person: Person</span>
+<span class="sd">        person: Face</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Person</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Face</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NEW</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
 
         <span class="c1"># Get distances to nearest Neighbours</span>
-        <span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classifier</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">representation</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">OpenFace</span><span class="o">.</span><span class="n">FEATURE_DIM</span><span class="p">))</span>
+        <span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classifier</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">representation</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">OpenFace</span><span class="o">.</span><span class="n">FEATURE_DIM</span><span class="p">))</span>
         <span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Get numerical label associated with closest face</span>
@@ -473,7 +446,7 @@
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
         <span class="n">confidence</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">label</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">Person</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">confidence</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Face</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="FaceClassifier.accuracy"><a class="viewcode-back" href="../../../../pepper.framework.sensor.face.html#pepper.framework.sensor.face.FaceClassifier.accuracy">[docs]</a>    <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

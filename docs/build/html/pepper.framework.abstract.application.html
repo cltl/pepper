@@ -88,20 +88,22 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
@@ -115,7 +117,9 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
@@ -215,9 +219,19 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
+<dt><strong>camera</strong></dt>
+<dd></dd>
+<dt><strong>led</strong></dt>
+<dd></dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.log" title="pepper.framework.abstract.application.AbstractApplication.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
 <dd><p class="first last">Application Logger</p>
 </dd>
+<dt><strong>microphone</strong></dt>
+<dd></dd>
+<dt><strong>motion</strong></dt>
+<dd></dd>
+<dt><strong>text_to_speech</strong></dt>
+<dd></dd>
 </dl>
 </td>
 </tr>
@@ -230,7 +244,7 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require_dependency</span></code>(cls,&nbsp;dependency)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code>(cls,&nbsp;dependency)</td>
 <td>Enforce Component Dependency</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.run" title="pepper.framework.abstract.application.AbstractApplication.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>()</td>
@@ -238,6 +252,16 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pepper.framework.abstract.application.AbstractApplication.camera">
+<code class="descname">camera</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.camera" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.application.AbstractApplication.led">
+<code class="descname">led</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.led" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.log">
 <code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.log" title="Permalink to this definition">¶</a></dt>
@@ -256,12 +280,27 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pepper.framework.abstract.application.AbstractApplication.microphone">
+<code class="descname">microphone</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.microphone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.application.AbstractApplication.motion">
+<code class="descname">motion</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.motion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pepper.framework.abstract.application.AbstractApplication.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#AbstractApplication.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Application</p>
-<p>Starts Camera &amp; Microphone and Sleeps</p>
+<p>Starts Camera &amp; Microphone and Runs until KeyboardInterrupt</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.application.AbstractApplication.text_to_speech">
+<code class="descname">text_to_speech</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.text_to_speech" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

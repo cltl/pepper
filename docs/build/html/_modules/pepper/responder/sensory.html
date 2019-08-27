@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.responder.sensory &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.component.html">pepper.framework.component package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.responder.sensory</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.responder.sensory</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.responder</span> <span class="k">import</span> <span class="n">Responder</span><span class="p">,</span> <span class="n">ResponderType</span>
+
+<span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="n">Utterance</span>
+<span class="kn">from</span> <span class="nn">pepper.knowledge</span> <span class="k">import</span> <span class="n">animations</span><span class="p">,</span> <span class="n">QnA</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+
+
+<div class="viewcode-block" id="VisionResponder"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.VisionResponder">[docs]</a><span class="k">class</span> <span class="nc">VisionResponder</span><span class="p">(</span><span class="n">Responder</span><span class="p">):</span>
+
+    <span class="n">SEE_OBJECT</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;what do you see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what can you see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what did you see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what have you seen&quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">SEE_PERSON</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;who do you see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;who can you see&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">SEE_PERSON_ALL</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;who did you see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;who have you seen&quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">SEE_SPECIFIC</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;do you see &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can you see &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;where is the &quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">I_SEE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;I see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I can see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I think I see&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I observe&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">I_SAW</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;I saw&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I have seen&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I think I observed&quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">NO_OBJECT</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;I don&#39;t see anything&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I don&#39;t see any object&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">NO_PEOPLE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;I don&#39;t see anybody I know&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I don&#39;t see familiar faces&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I cannot identify any of my friends&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ResponderType</span><span class="o">.</span><span class="n">Sensory</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">AbstractApplication</span><span class="p">,</span> <span class="n">TextToSpeechComponent</span><span class="p">]</span>
+
+<div class="viewcode-block" id="VisionResponder.respond"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.VisionResponder.respond">[docs]</a>    <span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="c1"># type: (Utterance, Union[AbstractApplication, TextToSpeechComponent]) -&gt; Optional[Tuple[float, Callable]]</span>
+
+        <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">objects</span><span class="p">]</span>
+        <span class="n">people</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">people</span><span class="p">]</span>
+
+        <span class="n">all_people</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">all_people</span><span class="p">]</span>
+
+        <span class="c1"># Enumerate Currently Visible Objects</span>
+        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEE_OBJECT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">I_SEE</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects_to_sequence</span><span class="p">(</span><span class="n">objects</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">0.5</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NO_OBJECT</span><span class="p">))</span>
+
+        <span class="c1"># Enumerate Currently Visible People</span>
+        <span class="k">elif</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEE_PERSON</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">people</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">I_SEE</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people_to_sentence</span><span class="p">(</span><span class="n">people</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">0.5</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NO_PEOPLE</span><span class="p">))</span>
+
+        <span class="c1"># Enumerate All Observed People</span>
+        <span class="k">elif</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEE_PERSON_ALL</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">all_people</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">I_SAW</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people_to_sentence</span><span class="p">(</span><span class="n">all_people</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">0.5</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NO_PEOPLE</span><span class="p">))</span>
+
+        <span class="c1"># Respond to Individual Object Queries</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cue</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEE_SPECIFIC</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cue</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                            <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point_to_objects</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+
+                    <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;I cannot see </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_insert_a_an</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span></div>
+
+    <span class="k">def</span> <span class="nf">_point_to_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;I can see </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_insert_a_an</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">motion</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_direction</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">motion</span><span class="o">.</span><span class="n">look</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_direction</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;There it is!!&quot;</span><span class="p">)</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_insert_a_an</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;euioa&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;an </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;a </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_objects_to_sequence</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
+        <span class="n">object_count</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">object_count</span><span class="p">:</span>
+                <span class="n">object_count</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">object_count</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;s&quot;</span> <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">object_count</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;I don&#39;t see any objects, yet!&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                                       <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_people_to_sentence</span><span class="p">(</span><span class="n">people</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">people</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">people</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">people</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">people</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="PreviousUtteranceResponder"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.PreviousUtteranceResponder">[docs]</a><span class="k">class</span> <span class="nc">PreviousUtteranceResponder</span><span class="p">(</span><span class="n">Responder</span><span class="p">):</span>
+
+    <span class="n">CUE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;what did you say&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;i didn&#39;t hear you&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;i can&#39;t hear you&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;come again&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;excuse me&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">REPEAT</span> <span class="o">=</span> <span class="s2">&quot;I said:&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ResponderType</span><span class="o">.</span><span class="n">Sensory</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TextToSpeechComponent</span><span class="p">]</span>
+
+<div class="viewcode-block" id="PreviousUtteranceResponder.respond"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.PreviousUtteranceResponder.respond">[docs]</a>    <span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="c1"># type: (Utterance, Union[TextToSpeechComponent]) -&gt; Optional[Tuple[float, Callable]]</span>
+        <span class="k">for</span> <span class="n">cue</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CUE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cue</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">utterances</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">me</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">u</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">REPEAT</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">REPEAT</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span>
+                                                    <span class="n">animation</span><span class="o">=</span><span class="n">animations</span><span class="o">.</span><span class="n">EXPLAIN</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;I didn&#39;t say anything yet...&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="LocationResponder"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.LocationResponder">[docs]</a><span class="k">class</span> <span class="nc">LocationResponder</span><span class="p">(</span><span class="n">Responder</span><span class="p">):</span>
+
+    <span class="n">CUE_FULL</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;where are we&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;where are you&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;where we are&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;where you are&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what is here&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">SET_LOCATION_CUE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;we are in &quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ResponderType</span><span class="o">.</span><span class="n">Sensory</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TextToSpeechComponent</span><span class="p">,</span> <span class="n">BrainComponent</span><span class="p">]</span>
+
+<div class="viewcode-block" id="LocationResponder.respond"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.LocationResponder.respond">[docs]</a>    <span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="c1"># type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -&gt; Optional[Tuple[float, Callable]]</span>
+        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CUE_FULL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_location_to_text</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">location</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cue</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SET_LOCATION_CUE</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">cue</span><span class="p">):</span>
+                    <span class="n">location</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">cue</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+                    <span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+                    <span class="n">app</span><span class="o">.</span><span class="n">brain</span><span class="o">.</span><span class="n">set_location_label</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Aha, so </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_location_to_text</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">location</span><span class="p">)))</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_location_to_text</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">location</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">location</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;We&#39;re in </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="n">location</span><span class="o">.</span><span class="n">region</span><span class="p">,</span> <span class="n">location</span><span class="o">.</span><span class="n">country</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;We&#39;re in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TimeResponder"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.TimeResponder">[docs]</a><span class="k">class</span> <span class="nc">TimeResponder</span><span class="p">(</span><span class="n">Responder</span><span class="p">):</span>
+
+    <span class="n">DAYS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">,</span> <span class="s2">&quot;Wednesday&quot;</span><span class="p">,</span> <span class="s2">&quot;Thursday&quot;</span><span class="p">,</span> <span class="s2">&quot;Friday&quot;</span><span class="p">,</span> <span class="s2">&quot;Saturday&quot;</span><span class="p">,</span> <span class="s2">&quot;Sunday&quot;</span><span class="p">]</span>
+    <span class="n">MONTHS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;January&quot;</span><span class="p">,</span> <span class="s2">&quot;February&quot;</span><span class="p">,</span> <span class="s2">&quot;March&quot;</span><span class="p">,</span> <span class="s2">&quot;April&quot;</span><span class="p">,</span> <span class="s2">&quot;May&quot;</span><span class="p">,</span> <span class="s2">&quot;June&quot;</span><span class="p">,</span> <span class="s2">&quot;July&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;August&quot;</span><span class="p">,</span> <span class="s2">&quot;September&quot;</span><span class="p">,</span> <span class="s2">&quot;October&quot;</span><span class="p">,</span> <span class="s2">&quot;November&quot;</span><span class="p">,</span> <span class="s2">&quot;December&quot;</span><span class="p">]</span>
+
+    <span class="n">DATE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;what day is it&quot;</span><span class="p">,</span> <span class="s2">&quot;which day is it&quot;</span><span class="p">,</span> <span class="s2">&quot;what is the date&quot;</span><span class="p">,</span> <span class="s2">&quot;today&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ResponderType</span><span class="o">.</span><span class="n">Sensory</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TextToSpeechComponent</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TimeResponder.respond"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.TimeResponder.respond">[docs]</a>    <span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="c1"># type: (Utterance, Union[TextToSpeechComponent]) -&gt; Optional[Tuple[float, Callable]]</span>
+
+        <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">DATE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">dt</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">datetime</span>
+
+                <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Today is </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">DAYS</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday</span><span class="p">()],</span> <span class="bp">self</span><span class="o">.</span><span class="n">MONTHS</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+                <span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="IdentityResponder"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.IdentityResponder">[docs]</a><span class="k">class</span> <span class="nc">IdentityResponder</span><span class="p">(</span><span class="n">Responder</span><span class="p">):</span>
+
+    <span class="n">CUE_ME</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;who are you&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what is your name&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">ANSWER_ME</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;My name is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;I&#39;m&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">CUE_YOU</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;who am i&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what is my name&quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">ANSWER_YOU</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Your name is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;You are&quot;</span>
+    <span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ResponderType</span><span class="o">.</span><span class="n">Sensory</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TextToSpeechComponent</span><span class="p">]</span>
+
+<div class="viewcode-block" id="IdentityResponder.respond"><a class="viewcode-back" href="../../../pepper.responder.sensory.html#pepper.responder.sensory.IdentityResponder.respond">[docs]</a>    <span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="c1"># type: (Utterance, Union[TextToSpeechComponent]) -&gt; Optional[Tuple[float, Callable]]</span>
+            <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CUE_ME</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ANSWER_ME</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">NAME</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CUE_YOU</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ANSWER_YOU</span><span class="p">),</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

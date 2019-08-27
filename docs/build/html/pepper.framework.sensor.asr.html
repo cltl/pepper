@@ -89,17 +89,18 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.sensor.asr module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.face.html">pepper.framework.sensor.face module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.location.html">pepper.framework.sensor.location module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.obj.html">pepper.framework.sensor.obj module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.vad.html">pepper.framework.sensor.vad module</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
@@ -181,64 +182,6 @@
   <div class="section" id="module-pepper.framework.sensor.asr">
 <span id="pepper-framework-sensor-asr-module"></span><h1>pepper.framework.sensor.asr module<a class="headerlink" href="#module-pepper.framework.sensor.asr" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.sensor.asr.ASRHypothesis">
-<em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">ASRHypothesis</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#ASRHypothesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.ASRHypothesis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.sensor.asr.ASRHypothesis.confidence" title="pepper.framework.sensor.asr.ASRHypothesis.confidence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></a></dt>
-<dd><p class="first last">Automatic Speech Recognition Hypothesis Confidence</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.asr.ASRHypothesis.transcript" title="pepper.framework.sensor.asr.ASRHypothesis.transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcript</span></code></a></dt>
-<dd><p class="first last">Automatic Speech Recognition Hypothesis Transcript</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.framework.sensor.asr.ASRHypothesis.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#pepper.framework.sensor.asr.ASRHypothesis.confidence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Automatic Speech Recognition Hypothesis Confidence</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>confidence: float</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.asr.ASRHypothesis.transcript">
-<code class="descname">transcript</code><a class="headerlink" href="#pepper.framework.sensor.asr.ASRHypothesis.transcript" title="Permalink to this definition">¶</a></dt>
-<dd><p>Automatic Speech Recognition Hypothesis Transcript</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>transcript: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="pepper.framework.sensor.asr.AbstractASR">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">AbstractASR</code><span class="sig-paren">(</span><em>language='en-GB'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#AbstractASR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.AbstractASR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -305,7 +248,7 @@
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>transcript: list of ASRHypothesis</strong></dt>
+<dt><strong>transcript: list of UtteranceHypothesis</strong></dt>
 <dd></dd>
 </dl>
 </td>
@@ -458,6 +401,8 @@
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></dt>
 <dd><p class="first last">Automatic Speech Recognition Language</p>
 </dd>
+<dt><strong>live</strong></dt>
+<dd></dd>
 <dt><strong>source</strong></dt>
 <dd></dd>
 <dt><strong>target</strong></dt>
@@ -482,6 +427,11 @@
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pepper.framework.sensor.asr.StreamedGoogleASR.live">
+<code class="descname">live</code><a class="headerlink" href="#pepper.framework.sensor.asr.StreamedGoogleASR.live" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pepper.framework.sensor.asr.StreamedGoogleASR.transcribe">
 <code class="descname">transcribe</code><span class="sig-paren">(</span><em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#StreamedGoogleASR.transcribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.StreamedGoogleASR.transcribe" title="Permalink to this definition">¶</a></dt>
@@ -548,7 +498,65 @@
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>hypotheses: List[ASRHypothesis]</strong></dt>
+<dt><strong>hypotheses: List[UtteranceHypothesis]</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.sensor.asr.UtteranceHypothesis">
+<em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">UtteranceHypothesis</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#UtteranceHypothesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.UtteranceHypothesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.framework.sensor.asr.UtteranceHypothesis.confidence" title="pepper.framework.sensor.asr.UtteranceHypothesis.confidence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></a></dt>
+<dd><p class="first last">Automatic Speech Recognition Hypothesis Confidence</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.sensor.asr.UtteranceHypothesis.transcript" title="pepper.framework.sensor.asr.UtteranceHypothesis.transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcript</span></code></a></dt>
+<dd><p class="first last">Automatic Speech Recognition Hypothesis Transcript</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.sensor.asr.UtteranceHypothesis.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#pepper.framework.sensor.asr.UtteranceHypothesis.confidence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatic Speech Recognition Hypothesis Confidence</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>confidence: float</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.sensor.asr.UtteranceHypothesis.transcript">
+<code class="descname">transcript</code><a class="headerlink" href="#pepper.framework.sensor.asr.UtteranceHypothesis.transcript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatic Speech Recognition Hypothesis Transcript</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>transcript: str</strong></dt>
 <dd></dd>
 </dl>
 </td>

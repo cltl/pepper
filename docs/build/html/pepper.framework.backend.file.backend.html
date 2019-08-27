@@ -27,9 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.framework.backend.naoqi package" href="pepper.framework.backend.naoqi.html" />
-    <link rel="prev" title="pepper.framework.backend.file package" href="pepper.framework.backend.file.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -78,42 +76,12 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.backend.file.html">pepper.framework.backend.file package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
 </ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
-</ul>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.backend.file.html">pepper.framework.backend.file package</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.backend.file.backend module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
@@ -160,14 +128,6 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
-          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
-        
-          <li><a href="pepper.framework.backend.html">pepper.framework.backend package</a> &raquo;</li>
-        
-          <li><a href="pepper.framework.backend.file.html">pepper.framework.backend.file package</a> &raquo;</li>
-        
       <li>pepper.framework.backend.file.backend module</li>
     
     
@@ -187,69 +147,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.backend.file.backend">
-<span id="pepper-framework-backend-file-backend-module"></span><h1>pepper.framework.backend.file.backend module<a class="headerlink" href="#module-pepper.framework.backend.file.backend" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.backend.file.backend.FileBackend">
-<em class="property">class </em><code class="descclassname">pepper.framework.backend.file.backend.</code><code class="descname">FileBackend</code><span class="sig-paren">(</span><em>path</em>, <em>camera_resolution=&lt;CameraResolution.QVGA: (240</em>, <em>320)&gt;</em>, <em>camera_rate=2</em>, <em>microphone_channels=1</em>, <em>microphone_rate=16000</em>, <em>language='en-GB'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/file/backend.html#FileBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.file.backend.FileBackend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.backend.AbstractBackend</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">camera</span></code></dt>
-<dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a></p>
-</dd>
-<dt><strong>container</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">microphone</span></code></dt>
-<dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a></p>
-</dd>
-<dt><strong>streams</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_to_speech</span></code></dt>
-<dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a></p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="41%" />
-<col width="59%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>run</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.framework.backend.file.backend.FileBackend.INT16_MAX">
-<code class="descname">INT16_MAX</code><em class="property"> = 32767</em><a class="headerlink" href="#pepper.framework.backend.file.backend.FileBackend.INT16_MAX" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.backend.file.backend.FileBackend.container">
-<code class="descname">container</code><a class="headerlink" href="#pepper.framework.backend.file.backend.FileBackend.container" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.backend.file.backend.FileBackend.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/file/backend.html#FileBackend.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.file.backend.FileBackend.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.backend.file.backend.FileBackend.streams">
-<code class="descname">streams</code><a class="headerlink" href="#pepper.framework.backend.file.backend.FileBackend.streams" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-framework-backend-file-backend-module">
+<h1>pepper.framework.backend.file.backend module<a class="headerlink" href="#pepper-framework-backend-file-backend-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -257,15 +156,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pepper.framework.backend.naoqi.html" class="btn btn-neutral float-right" title="pepper.framework.backend.naoqi package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="pepper.framework.backend.file.html" class="btn btn-neutral" title="pepper.framework.backend.file package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

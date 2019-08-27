@@ -152,6 +152,7 @@
 <span class="kn">from</span> <span class="nn">pepper.framework.abstract.component</span> <span class="k">import</span> <span class="n">ComponentDependencyError</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">ClassVar</span>
 
 <div class="viewcode-block" id="AbstractIntention"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention">[docs]</a><span class="k">class</span> <span class="nc">AbstractIntention</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -166,6 +167,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractApplication) -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_application</span> <span class="o">=</span> <span class="n">application</span>
 
         <span class="c1"># Reset Application Events to their default</span>
@@ -195,6 +197,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; AbstractApplication</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on</span>
 
@@ -206,6 +209,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Iterator[ClassVar[AbstractComponent]]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Intention Dependencies</span>
 
@@ -219,6 +223,7 @@
                 <span class="k">yield</span> <span class="bp">cls</span>
 
 <div class="viewcode-block" id="AbstractIntention.require_dependency"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+        <span class="c1"># type: (ClassVar[AbstractComponent]) -&gt; AbstractComponent</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enforce Component Dependency</span>
 

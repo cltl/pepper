@@ -151,6 +151,8 @@
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractBackend</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">ClassVar</span>
+
 
 <div class="viewcode-block" id="ComponentDependencyError"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.ComponentDependencyError">[docs]</a><span class="k">class</span> <span class="nc">ComponentDependencyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raised when a Component Dependency is not met&quot;&quot;&quot;</span>
@@ -168,6 +170,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractBackend) -&gt; None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="n">backend</span>
@@ -186,6 +189,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">backend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; AbstractBackend</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`</span>
 
@@ -195,7 +199,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span>
 
-<div class="viewcode-block" id="AbstractComponent.require_dependency"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.require_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">require_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractComponent.require"><a class="viewcode-back" href="../../../../pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent.require">[docs]</a>    <span class="k">def</span> <span class="nf">require</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>
+        <span class="c1"># type: (ClassVar[AbstractComponent], ClassVar[AbstractComponent]) -&gt; AbstractComponent</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enforce Component Dependency</span>
 
