@@ -2,12 +2,12 @@ from .ner import NER
 from .utils.helper_functions import *
 from pepper.language.utils.atoms import UtteranceType
 
+
 class Analyzer(object):
     # Load Grammar Json
     GRAMMAR_JSON = os.path.join(os.path.dirname(__file__), 'data', 'lexicon.json')
     with open(GRAMMAR_JSON) as json_file:
         LEXICON = json.load(json_file)
-
 
     # Load Stanford Named Entity Recognition Server
     NER = None  # type: NER
@@ -61,7 +61,7 @@ class Analyzer(object):
             elif sentence_type == 'Q':
                 return QuestionAnalyzer.analyze(chat)
             else:
-                print("Error: ", sentence_type)
+                Analyzer.LOG.debug("Error: {}".format(sentence_type))
 
     @property
     def chat(self):
@@ -116,36 +116,35 @@ class Analyzer(object):
 
     def fix_predicate(self, predicate):
 
-        #if predicate.endswith('-not'):
+        # if predicate.endswith('-not'):
         #    predicate = predicate[:-4]
 
         if not '-' in predicate:
-            predicate = lemmatize(predicate,'v')
+            predicate = lemmatize(predicate, 'v')
 
-            if get_node_label(self.chat.last_utterance.parser.forest[0],predicate) in ['IN', 'TO']:
-                predicate = 'be-'+predicate
+            if get_node_label(self.chat.last_utterance.parser.forest[0], predicate) in ['IN', 'TO']:
+                predicate = 'be-' + predicate
 
             elif predicate == '':
                 predicate = 'be'
 
-        if predicate == 'hat': #lemmatizer issue with verb 'hate'
-            predicate='hate'
+        if predicate == 'hat':  # lemmatizer issue with verb 'hate'
+            predicate = 'hate'
 
         elif predicate == 'bear':
-            predicate = 'born' #lemmatizer issue
+            predicate = 'born'  # lemmatizer issue
 
         return predicate
-
 
     def analyze_vp(self, rdf, utterance_info):
         pred = ''
         ind = 0
         structure_tree = self.chat.last_utterance.parser.forest[0]
 
-        if len(rdf['predicate'].split('-'))==1:
+        if len(rdf['predicate'].split('-')) == 1:
             rdf['predicate'] = lemmatize(rdf['predicate'], 'v')
 
-            if rdf['predicate'] == 'cannot': #special case with no space between not and verb
+            if rdf['predicate'] == 'cannot':  # special case with no space between not and verb
                 rdf['predicate'] = 'can'
                 utterance_info['neg'] = True
 
@@ -189,7 +188,7 @@ class Analyzer(object):
                     pred += '-' + lemmatize(el, 'v')
 
             else:
-                print('uncaught verb phrase element ', el, label)
+                Analyzer.LOG.debug('uncaught verb phrase element {}:{}'.format(el, label))
 
             ind += 1
 
@@ -199,6 +198,16 @@ class Analyzer(object):
         rdf['predicate'] = pred
         return rdf, utterance_info
 
+    def analyze_np(self, rdf):
+        # multi-word subject (posesive phrase)
+        if len(rdf['subject'].split('-')) > 1:
+            first_word = rdf['subject'].split('-')[0].lower()
+            if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
+                rdf = self.analyze_possessive(rdf, 'subject')
+        else:  # one word subject
+            rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
+        return rdf
+
     def analyze_possessive(self, rdf, element):
         first_word = rdf[element].split('-')[0]
         subject = fix_pronouns(first_word, self)
@@ -206,7 +215,7 @@ class Analyzer(object):
         for word in rdf[element].split('-')[1:]:
             # words that express people are grouped together in the subject
             if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'), 'kinship')) or word == 'best':
-                subject+='-'+word
+                subject += '-' + word
             else:
                 predicate += '-' + word
 
@@ -228,7 +237,7 @@ class Analyzer(object):
         rdf['object'] = rdf['object'].replace(rdf['object'].split('-')[0], '', 1)[1:]
         return rdf
 
-    def analyze_one_word_object(self,rdf):
+    def analyze_one_word_object(self, rdf):
         structure_tree = self.chat.last_utterance.parser.forest[0]
         if lexicon_lookup(rdf['object']) and 'person' in lexicon_lookup(rdf['object']):
             if rdf['predicate'] == 'be':
@@ -241,7 +250,8 @@ class Analyzer(object):
                 rdf['subject'] = subject
             else:
                 rdf['object'] = fix_pronouns(rdf['object'].lower(), self)
-        elif get_node_label(structure_tree, rdf['object']).startswith('V') and get_node_label(structure_tree, rdf['predicate']) == 'MD':
+        elif get_node_label(structure_tree, rdf['object']).startswith('V') and get_node_label(structure_tree,
+                                                                                              rdf['predicate']) == 'MD':
             rdf['predicate'] += '-' + rdf['object']
             rdf['object'] = ''
         return rdf
@@ -299,7 +309,6 @@ class StatementAnalyzer(Analyzer):
         raise NotImplementedError()
 
 
-
 class GeneralStatementAnalyzer(StatementAnalyzer):
     def extract_perspective(self, predicate, utterance_info=None):
         sentiment = 0
@@ -312,7 +321,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 utterance_info['neg'] = -1
             entry = lexicon_lookup(word, 'verb')
             if entry:
-                # print('LEXICON ',entry)
                 if 'sentiment' in entry:
                     sentiment = entry['sentiment']
                 if 'certainty' in entry:
@@ -366,7 +374,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
     def analyze_multiword_object(self, rdf):
         structure_tree = self.chat.last_utterance.parser.forest[0]
         first_word = rdf['object'].split('-')[0]
-        # print('OBJECT LABEL ',get_node_label( constituents[2]['structure'], rdf['object'].split('-')[0]), rdf['object'].split('-')[0], constituents[2]['structure'] )
 
         if get_node_label(structure_tree, first_word) in ['TO', 'IN']:
             rdf = self.analyze_object_with_preposition(rdf)
@@ -392,50 +399,40 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         """
 
         super(GeneralStatementAnalyzer, self).__init__(chat)
-        utterance_info = {'neg':False}
+        utterance_info = {'neg': False}
 
         rdf = self.initialize_rdf()
-        print('initial ', rdf)
-
+        Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
 
         entry = lexicon_lookup(lemmatize(rdf['predicate'], 'v'), 'lexical')
 
         # sentences such as "I think (that) ..."
         if entry and 'certainty' in entry:
-            if self.chat.last_utterance.parser.constituents[2]['label']=='S':
+            if self.chat.last_utterance.parser.constituents[2]['label'] == 'S':
                 utterance_info['certainty'] = entry['certainty']
                 rdf = self.analyze_certainty_statement(rdf)
 
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
+        Analyzer.LOG.debug('after VP: {}'.format(rdf))
 
-        print('after vp ', rdf)
+        rdf = self.analyze_np(rdf)
+        Analyzer.LOG.debug('after NP: {}'.format(rdf))
 
-        #multi-word subject (posesive phrase)
-        if len(rdf['subject'].split('-'))>1:
-            first_word = rdf['subject'].split('-')[0].lower()
-            if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-                rdf = self.analyze_possessive(rdf, 'subject')
-        else: # one word subject
-            rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
-
-        print('after NP', rdf)
-
-        if len(rdf['object'].split('-'))>1:
+        if len(rdf['object'].split('-')) > 1:  # multi-word object
             rdf = self.analyze_multiword_object(rdf)
 
-        rdf = self.analyze_one_word_object(rdf)
+        if len(rdf['object'].split('-')) == 1:
+            rdf = self.analyze_one_word_object(rdf)
 
+        rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
+        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
 
         self._perspective = self.extract_perspective(rdf['predicate'], utterance_info)
 
-        rdf = trim_dash(rdf)
-
-        print('RDF ', rdf)
-
         for el in rdf:
             text = rdf[el]
-            rdf[el] = {'text': text, 'type':''}
+            rdf[el] = {'text': text, 'type': ''}
             rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
 
         self._rdf = rdf
@@ -540,33 +537,33 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         '''
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         constituents = self.chat.last_utterance.parser.constituents
-        if len(constituents)==3:
+        if len(constituents) == 3:
             label = get_node_label(self.chat.last_utterance.parser.forest[0], constituents[2]['raw'])
-            if constituents[0]['raw']=='who':
+            if constituents[0]['raw'] == 'who':
                 rdf['predicate'] = constituents[1]['raw']
                 rdf['object'] = constituents[2]['raw']
-            elif label.startswith('V') or label=='MD': # rotation "(do you know) what a dog is?"s
+            elif label.startswith('V') or label == 'MD':  # rotation "(do you know) what a dog is?"s
                 rdf['subject'] = constituents[1]['raw']
                 rdf['predicate'] = constituents[2]['raw']
             else:
                 rdf['predicate'] = constituents[1]['raw']
                 rdf['subject'] = constituents[2]['raw']
 
-        elif len(constituents)==4:
+        elif len(constituents) == 4:
             label = get_node_label(self.chat.last_utterance.parser.forest[0], constituents[1]['raw'])
-            if not (label.startswith('V') or label=='MD'):
+            if not (label.startswith('V') or label == 'MD'):
                 rdf['subject'] = constituents[3]['raw']
                 rdf['predicate'] = constituents[2]['raw']
             else:
                 rdf['subject'] = constituents[2]['raw']
-                rdf['predicate'] = constituents[1]['raw']+'-'+constituents[3]['raw']
+                rdf['predicate'] = constituents[1]['raw'] + '-' + constituents[3]['raw']
 
         elif len(constituents) == 5:
-            rdf['predicate'] = constituents[1]['raw']+'-'+constituents[3]['raw']
+            rdf['predicate'] = constituents[1]['raw'] + '-' + constituents[3]['raw']
             rdf['subject'] = constituents[2]['raw']
             rdf['object'] = constituents[4]['raw']
         else:
-            print('MORE CONSTITUENTS ', len(constituents), constituents)
+            Analyzer.LOG.debug('MORE CONSTITUENTS %s %s'.format(len(constituents), constituents))
 
         return rdf
 
@@ -591,42 +588,28 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         """
 
         super(WhQuestionAnalyzer, self).__init__(chat)
-        utterance_info = {'neg': False, 'wh_word': lexicon_lookup(self.chat.last_utterance.parser.constituents[0]['raw'].lower())}
+        utterance_info = {'neg': False,
+                          'wh_word': lexicon_lookup(self.chat.last_utterance.parser.constituents[0]['raw'].lower())}
 
         rdf = self.initialize_rdf()
-
-        print('initial ', rdf)
+        Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
 
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
+        Analyzer.LOG.debug('after VP: {}'.format(rdf))
 
-        print('after vp ', rdf)
+        rdf = self.analyze_np(rdf)
+        Analyzer.LOG.debug('after NP: {}'.format(rdf))
 
-        #multi-word subject (posesive phrase)
-        if len(rdf['subject'].split('-'))>1:
-            first_word = rdf['subject'].split('-')[0].lower()
-            if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-                rdf = self.analyze_possessive(rdf, 'subject')
-
-        else: # one word subject
-            rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
-
-        #print('after np', rdf)
-
-        if len(rdf['object'].split('-'))>1: #multi-word object
+        if len(rdf['object'].split('-')) > 1:  # multi-word object
             rdf = self.analyze_multiword_object(rdf)
 
-        if len(rdf['object'].split('-'))==1:
+        if len(rdf['object'].split('-')) == 1:
             rdf = self.analyze_one_word_object(rdf)
 
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
 
-        print('final ', rdf)
-        print(utterance_info)
-        '''
-        for el in rdf:
-            get_type(rdf[el],structure_tree)
-        '''
+        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
 
         self._rdf = rdf
 
@@ -638,8 +621,6 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf: dict or None
         """
         return self._rdf
-
-
 
 
 # verb question rules:
@@ -654,7 +635,8 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         elif get_node_label(structure_tree, first_word) in ['IN', 'TO']:
             rdf = self.analyze_object_with_preposition(rdf)
 
-        elif get_node_label(structure_tree, first_word).startswith('V') and get_node_label(structure_tree, rdf['predicate']) == 'MD':
+        elif get_node_label(structure_tree, first_word).startswith('V') and get_node_label(structure_tree,
+                                                                                           rdf['predicate']) == 'MD':
             for word in rdf['object'].split('-'):
                 label = get_node_label(structure_tree, word)
                 if label in ['IN', 'TO', 'MD'] or label.startswith('V'):
@@ -674,14 +656,14 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         constituents = self.chat.last_utterance.parser.constituents
         rdf['subject'] = constituents[1]['raw']
-        if len(constituents)==4:
+        if len(constituents) == 4:
             rdf['predicate'] = constituents[0]['raw'] + '-' + constituents[2]['raw']
             rdf['object'] = constituents[3]['raw']
-        elif len(constituents)==3:
+        elif len(constituents) == 3:
             rdf['predicate'] = constituents[0]['raw']
             rdf['object'] = constituents[2]['raw']
         else:
-            print('MORE CONSTITUENTS ', len(constituents), constituents[4])
+            Analyzer.LOG.debug('MORE CONSTITUENTS %s %s'.format(len(constituents), constituents))
         return rdf
 
     def __init__(self, chat):
@@ -697,35 +679,34 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         utterance_info = {'neg': False}
         rdf = self.initialize_rdf()
 
-
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
-        print('after vp', rdf)
+        Analyzer.LOG.debug('after VP: {}'.format(rdf))
 
-        if len(rdf['subject'].split('-'))>1:
+        if len(rdf['subject'].split('-')) > 1:
             first_word = rdf['subject'].split('-')[0].lower()
             if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
                 rdf = self.analyze_possessive(rdf, 'subject')
 
-            if 'not-' in rdf['subject']: # for sentences that start with negation "haven't you been to London?"
-                rdf['subject'] = rdf['subject'].replace('not-','')
+            if 'not-' in rdf['subject']:  # for sentences that start with negation "haven't you been to London?"
+                rdf['subject'] = rdf['subject'].replace('not-', '')
 
         if len(rdf['subject'].split('-')) == 1:
             rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
 
-        print('after np', rdf)
+        Analyzer.LOG.debug('after NP: {}'.format(rdf))
 
-        if len(rdf['object'].split('-'))>1:
+        if len(rdf['object'].split('-')) > 1:  # multi-word object
             rdf = self.analyze_multiword_object(rdf)
 
-        rdf = self.analyze_one_word_object(rdf)
+        if len(rdf['object'].split('-')) == 1:
+            rdf = self.analyze_one_word_object(rdf)
 
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
 
-        print('final ', rdf, len(rdf), utterance_info)
+        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
 
         self._rdf = rdf
-
 
     @property
     def rdf(self):
