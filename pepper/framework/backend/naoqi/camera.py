@@ -154,7 +154,7 @@ class NAOqiCamera(AbstractCamera):
                 if image_rgb is not None and bounds is not None:
 
                     # Assert Head did not move too much (prevent blurry pictures)
-                    if head_delta < NAOqiCamera.HEAD_DELTA_THRESHOLD:
+                    # if head_delta < NAOqiCamera.HEAD_DELTA_THRESHOLD:
 
                         # Call On Image Callback
                         self.on_image(NAOqiImage(image_rgb, bounds, image_3D))

@@ -26,7 +26,7 @@ class AbstractImage(object):
 
         self._image = image
         self._bounds = bounds
-        self._depth = depth if depth else np.ones((100, 100), np.float32)
+        self._depth = np.ones((100, 100), np.float32) if depth is None else depth
 
         self._time = time()
 

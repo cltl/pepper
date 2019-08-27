@@ -1,0 +1,12 @@
+U -> S | Q
+Q -> W VP C| W NP C | W VP NP C | W VP NP VP C | W NP VP C | V NP C | V NP C C
+W -> WRB | WP | WDT
+S -> NP VP C | NP C | NP VP S
+C -> NP | VP | PREP
+NP -> N | JJ | J NP | D NP | N NP | RB NP | PREP NP
+VP -> V VP | V RB | RB VP | V | V PREP VP | V PREP
+PREP -> IN | TO
+V -> VBD | VBP | VBZ | VBN | VBG | VB | MD
+D -> DT | CD | PRPPOS
+N -> NN | NNS | NNP | NNPS | PRP | DT
+J -> JJ | JJR | JJS

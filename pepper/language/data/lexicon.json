@@ -325,15 +325,46 @@
           "tense": "past participle"
           }
         },
+      "have":{
+        "have":{
+          "tense": "present",
+          "person": [
+            "first",
+            "second",
+            "third"
+            ],
+          "number": [
+            "singular",
+            "plural"
+            ]
+        },
+        "has":{
+          "tense": "present",
+          "person": "third",
+          "number": "singular"
+        },
+        "had":
+        {
+          "tense": "past",
+          "person": [
+            "first",
+            "second",
+            "third"
+            ],
+          "number": [
+            "singular",
+            "plural"
+            ]
+
+        }
+      },
       "modals": {
         "can": {
           "past": "could",
           "root": [
-          "ability",
-          "permission"
-            ],
-          "certainty": "0.5"
-          },
+            "ability",
+            "permission"
+            ]},
         "may": {
           "root": [
           "permission",
@@ -727,9 +758,16 @@
       },
     "why": {
       "response": "reason"
+      },
+    "which": {
+      "response": "choice"
       }
     },
   "kinship": {
+    "friend":{
+      "gender": "neutral",
+      "distance": "0"
+    },
     "parent": {
       "gender": "neutral",
       "distance": "1"

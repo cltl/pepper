@@ -14,9 +14,9 @@ def get_synsets(word, tag):
         
     if tag.startswith('N'):
         POS = "n"
-    elif "VB" in tag:
+    elif tag.startswith('V'):
         POS = "v"
-    elif "JJ" in tag:
+    elif "J" in tag:
         POS = "a"
     elif "RB" in tag:
         POS = "r"
