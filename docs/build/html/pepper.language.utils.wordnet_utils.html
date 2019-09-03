@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.utils.wordnet_utils module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.language.analyzer module" href="pepper.language.analyzer.html" />
+    <link rel="prev" title="pepper.language.utils.helper_functions module" href="pepper.language.utils.helper_functions.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.analyzers_old.html">pepper.language.utils.analyzers_old module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.atoms.html">pepper.language.utils.atoms module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.helper_functions.html">pepper.language.utils.helper_functions module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.language.utils.wordnet_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzer.html">pepper.language.analyzer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.name.html">pepper.language.name module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.pos.html">pepper.language.pos module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.language.transitivity.html">pepper.language.transitivity module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
+        
+          <li><a href="pepper.language.utils.html">pepper.language.utils package</a> &raquo;</li>
+        
+      <li>pepper.language.utils.wordnet_utils module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.language.utils.wordnet_utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.language.utils.wordnet_utils">
+<span id="pepper-language-utils-wordnet-utils-module"></span><h1>pepper.language.utils.wordnet_utils module<a class="headerlink" href="#module-pepper.language.utils.wordnet_utils" title="Permalink to this headline">¶</a></h1>
+<p>Created on Fri Mar 22 09:37:31 2019</p>
+<p>&#64;author: andrasaponyi</p>
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_antonyms">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_antonyms</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_antonyms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_antonyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the antonyms of lemmas in a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_definition">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_definition</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the definition of a synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_entailments">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_entailments</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_entailments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_entailments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the entailments for a given verbal synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_holonyms">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_holonyms</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_holonyms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_holonyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the holonyms of a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_hypernyms">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_hypernyms</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_hypernyms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_hypernyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return higher-levels concepts for a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_hyponyms">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_hyponyms</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_hyponyms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_hyponyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return more specific synsets for a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_lemmas">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_lemmas</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_lemmas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_lemmas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return all lemmas of a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_lexname">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_lexname</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_lexname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_lexname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the lexname of a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_parts">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_parts</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the part meronyms of a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_root">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_root</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the most general hypernym of a given sysnet.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_substance">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_substance</code><span class="sig-paren">(</span><em>synset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_substance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_substance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return the substance meronyms of a given synset.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pepper.language.utils.wordnet_utils.get_synsets">
+<code class="descclassname">pepper.language.utils.wordnet_utils.</code><code class="descname">get_synsets</code><span class="sig-paren">(</span><em>word</em>, <em>tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/wordnet_utils.html#get_synsets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.wordnet_utils.get_synsets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up and return all possible synset of an input word.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.language.analyzer.html" class="btn btn-neutral float-right" title="pepper.language.analyzer module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.language.utils.helper_functions.html" class="btn btn-neutral" title="pepper.language.utils.helper_functions module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
