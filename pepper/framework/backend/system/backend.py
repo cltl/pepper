@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractBackend
-from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, SystemLed
+from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, SystemLed, SystemTablet
 from pepper import config
 
 
@@ -29,4 +29,4 @@ class SystemBackend(AbstractBackend):
                  language=config.APPLICATION_LANGUAGE):
         super(SystemBackend, self).__init__(SystemCamera(camera_resolution, camera_rate),
                                             SystemMicrophone(microphone_rate, microphone_channels),
-                                            SystemTextToSpeech(language), SystemLed)
+                                            SystemTextToSpeech(language), SystemLed(), SystemTablet())
