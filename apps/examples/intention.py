@@ -19,6 +19,9 @@ class MyApplication(AbstractApplication,            # Main Application, inherits
 # Inherits from AbstractIntention and MyApplication (specified above)
 class IdleIntention(AbstractIntention, MyApplication):
 
+    def on_face(self, faces):
+        print(faces)
+
     # Since MyApplication inherits from FaceRecognitionComponent, the on_face_known event, becomes available here
     def on_face_known(self, faces):
 

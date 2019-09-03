@@ -139,7 +139,7 @@ MICROPHONE_CHANNELS = 1
 
 # Camera resolution (in pixels) and frame rate (Hz)
 # NOTE: Both resolution and frame rate impact system performance...
-CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
+CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
 CAMERA_FRAME_RATE = 3
 
 # NAOqi Specific Overrides
