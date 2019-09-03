@@ -89,6 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.sensor package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sensor">Sensor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.asr.html">pepper.framework.sensor.asr module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.face.html">pepper.framework.sensor.face module</a></li>
@@ -107,11 +108,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -182,6 +178,17 @@
             
   <div class="section" id="module-pepper.framework.sensor">
 <span id="pepper-framework-sensor-package"></span><h1>pepper.framework.sensor package<a class="headerlink" href="#module-pepper.framework.sensor" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sensor">
+<h2>Sensor<a class="headerlink" href="#sensor" title="Permalink to this headline">¶</a></h2>
+<p>The framework.sensor package implements Face, Object and Speech Recognition:</p>
+<ul class="simple">
+<li><a class="reference internal" href="pepper.framework.sensor.vad.html#pepper.framework.sensor.vad.VAD" title="pepper.framework.sensor.vad.VAD"><code class="xref py py-class docutils literal notranslate"><span class="pre">VAD</span></code></a> implements Voice Activity Detection on Microphone input</li>
+<li><a class="reference internal" href="pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.StreamedGoogleASR" title="pepper.framework.sensor.asr.StreamedGoogleASR"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamedGoogleASR</span></code></a> implements Automated Speech Recognition through Google Speech API</li>
+<li><a class="reference internal" href="pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.ObjectDetectionClient" title="pepper.framework.sensor.obj.ObjectDetectionClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDetectionClient</span></code></a> connects to <a href="#id1"><span class="problematic" id="id2">pepper_tensorflow_</span></a> for Object Detection</li>
+<li><a class="reference internal" href="pepper.framework.sensor.face.html#pepper.framework.sensor.face.OpenFace" title="pepper.framework.sensor.face.OpenFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenFace</span></code></a> connects to the <cite>bamos/openface</cite> Docker container for Face Recognition</li>
+<li><a class="reference internal" href="pepper.framework.sensor.location.html#pepper.framework.sensor.location.Location" title="pepper.framework.sensor.location.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Location</span></code></a> gets the current geographical location (WIP)</li>
+</ul>
+</div>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>

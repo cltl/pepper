@@ -94,6 +94,7 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.tablet.html">pepper.framework.abstract.tablet module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
 </ul>
 </li>
@@ -110,22 +111,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.led.html">pepper.framework.abstract.led module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.motion.html">pepper.framework.abstract.motion module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -200,7 +185,7 @@
 <span id="pepper-framework-abstract-backend-module"></span><h1>pepper.framework.abstract.backend module<a class="headerlink" href="#module-pepper.framework.abstract.backend" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pepper.framework.abstract.backend.AbstractBackend">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.backend.</code><code class="descname">AbstractBackend</code><span class="sig-paren">(</span><em>camera</em>, <em>microphone</em>, <em>text_to_speech</em>, <em>motion</em>, <em>led</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/backend.html#AbstractBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.backend.</code><code class="descname">AbstractBackend</code><span class="sig-paren">(</span><em>camera</em>, <em>microphone</em>, <em>text_to_speech</em>, <em>motion</em>, <em>led</em>, <em>tablet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/backend.html#AbstractBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract Backend on which all Backends are based</p>
 <p>Exposes
@@ -225,6 +210,9 @@
 <dt><strong>led: AbstractLed</strong></dt>
 <dd><p class="first last">Backend <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a></p>
 </dd>
+<dt><strong>tablet: AbstractTablet</strong></dt>
+<dd><p class="first last">Backend <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTablet</span></code></a></p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -240,6 +228,9 @@
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.motion" title="pepper.framework.abstract.backend.AbstractBackend.motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">motion</span></code></a></dt>
 <dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMotion</span></code></a></p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.tablet" title="pepper.framework.abstract.backend.AbstractBackend.tablet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tablet</span></code></a></dt>
+<dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTablet</span></code></a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.backend.AbstractBackend.text_to_speech" title="pepper.framework.abstract.backend.AbstractBackend.text_to_speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_to_speech</span></code></a></dt>
 <dd><p class="first last">Reference to <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a></p>
@@ -313,6 +304,24 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>motion: AbstractMotion</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.backend.AbstractBackend.tablet">
+<code class="descname">tablet</code><a class="headerlink" href="#pepper.framework.abstract.backend.AbstractBackend.tablet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTablet</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>tablet: AbstractTablet</strong></dt>
 <dd></dd>
 </dl>
 </td>

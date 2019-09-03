@@ -144,7 +144,8 @@
             
   <h1>Source code for pepper.framework.backend.system.backend</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractBackend</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemCamera</span><span class="p">,</span> <span class="n">SystemMicrophone</span><span class="p">,</span> <span class="n">SystemTextToSpeech</span><span class="p">,</span> <span class="n">SystemMotion</span><span class="p">,</span> <span class="n">SystemLed</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemCamera</span><span class="p">,</span> <span class="n">SystemMicrophone</span><span class="p">,</span> <span class="n">SystemTextToSpeech</span><span class="p">,</span>\
+    <span class="n">SystemMotion</span><span class="p">,</span> <span class="n">SystemLed</span><span class="p">,</span> <span class="n">SystemTablet</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">CameraResolution</span>
 
 
@@ -176,7 +177,7 @@
 
         <span class="nb">super</span><span class="p">(</span><span class="n">SystemBackend</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">SystemCamera</span><span class="p">(</span><span class="n">camera_resolution</span><span class="p">,</span> <span class="n">camera_rate</span><span class="p">),</span>
                                             <span class="n">SystemMicrophone</span><span class="p">(</span><span class="n">microphone_rate</span><span class="p">,</span> <span class="n">microphone_channels</span><span class="p">),</span>
-                                            <span class="n">SystemTextToSpeech</span><span class="p">(</span><span class="n">language</span><span class="p">),</span> <span class="n">SystemMotion</span><span class="p">(),</span> <span class="n">SystemLed</span><span class="p">())</span></div>
+                                            <span class="n">SystemTextToSpeech</span><span class="p">(</span><span class="n">language</span><span class="p">),</span> <span class="n">SystemMotion</span><span class="p">(),</span> <span class="n">SystemLed</span><span class="p">(),</span> <span class="n">SystemTablet</span><span class="p">())</span></div>
 </pre></div>
 
            </div>

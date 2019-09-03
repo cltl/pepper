@@ -21,5 +21,4 @@ pepper.language package
    pepper.language.ner
    pepper.language.pos
    pepper.language.transitivity
-   pepper.language.wordnet_utils
 

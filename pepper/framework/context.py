@@ -1,3 +1,9 @@
+"""
+Context
+=======
+
+"""
+
 from pepper.language import Chat
 from pepper.framework import AbstractIntention, AbstractImage
 from pepper.framework.sensor.location import Location

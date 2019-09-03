@@ -12,4 +12,5 @@ pepper.language.utils package
    pepper.language.utils.analyzers_old
    pepper.language.utils.atoms
    pepper.language.utils.helper_functions
+   pepper.language.utils.wordnet_utils
 
