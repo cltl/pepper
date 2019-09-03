@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.config import  NAOQI_SPEECH_SPEED
 
 import qi
 
@@ -42,6 +43,6 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         text = text.replace('...', r'\\pau=1000\\')
 
         if animation:
-            self._service.say("^startTag({1}){0}^stopTag({1})".format(text, animation))
+            self._service.say(r"\\rspd={2}\\^startTag({1}){0}^stopTag({1})".format(text, animation, NAOQI_SPEECH_SPEED))
         else:
             self._service.say(text)

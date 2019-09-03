@@ -2,6 +2,8 @@
 
 This is the main repository for Pepper/Nao Applications created as part of the Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
 
+![Pepper Robot Leolani](https://github.com/cltl/pepper/blob/develop/docs/images/pepper.png)
+
 ## CLTL/Pepper Features
  - A Platform-Agnostic, Object-Oriented Framework for creating Robot Applications
  - The necessary Machine Learning for enabling Human-Robot conversation

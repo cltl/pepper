@@ -4,7 +4,7 @@ from typing import List, Tuple
 from threading import Thread
 
 
-class NaoqiLed(AbstractLed):
+class NAOqiLed(AbstractLed):
     def __init__(self, session):
         self._led = session.service("ALLeds")
 

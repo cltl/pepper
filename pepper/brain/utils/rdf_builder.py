@@ -4,8 +4,12 @@ from rdflib import Dataset, Namespace, OWL
 from rdflib import URIRef, Literal
 from iribaker import to_iri
 
+import os
+
 
 class RdfBuilder(object):
+
+    ONTOLOGY_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../ontologies'))
 
     def __init__(self):
         # type: () -> RdfBuilder
@@ -79,13 +83,13 @@ class RdfBuilder(object):
         Define ontology paths to key vocabularies
         :return:
         """
-        self.ontology_paths['n2mu'] = './../../ontologies/leolani.ttl'
-        self.ontology_paths['gaf'] = './../../ontologies/gaf.rdf'
-        self.ontology_paths['grasp'] = './../../ontologies/grasp.rdf'
-        self.ontology_paths['sem'] = './../../ontologies/sem.rdf'
+        self.ontology_paths['n2mu'] = os.path.join(self.ONTOLOGY_ROOT, 'leolani.ttl')
+        self.ontology_paths['gaf'] = os.path.join(self.ONTOLOGY_ROOT, 'gaf.rdf')
+        self.ontology_paths['grasp'] = os.path.join(self.ONTOLOGY_ROOT, 'grasp.rdf')
+        self.ontology_paths['sem'] = os.path.join(self.ONTOLOGY_ROOT, 'sem.rdf')
 
     def load_ontology_integration(self):
-        self.ontology_graph.parse(location="./../../ontologies/integration.ttl", format="turtle")
+        self.ontology_graph.parse(location=os.path.join(self.ONTOLOGY_ROOT, 'integration.ttl'), format="turtle")
 
     def _bind_namespaces(self):
         """

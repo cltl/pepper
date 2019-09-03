@@ -17,6 +17,7 @@ from .microphone import AbstractMicrophone
 from .text_to_speech import AbstractTextToSpeech
 from .motion import AbstractMotion
 from .led import AbstractLed, Led
+from .tablet import AbstractTablet
 
 from .backend import AbstractBackend
 from .component import AbstractComponent
