@@ -249,8 +249,57 @@ class Analyzer(object):
         # Get type
         for el in rdf:
             text = rdf[el]
+            final_type = []
             rdf[el] = {'text': text, 'type': ''}
+
+            # If no text was extracted we cannot get a type
+            if text == '':
+                continue
+
+            # First attempt at typing via forest
             rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
+
+            # Analyze types
+            if type(rdf[el]['type']) == dict:
+                # Loop through dictionary for multiword entities
+                for typ in rdf[el]['type']:
+                    # If type is None or empty, look it up
+                    if rdf[el]['type'][typ] in [None, '']:
+                        entry = lexicon_lookup(typ)
+
+                        if entry is None:
+                            if typ.lower() in ['leolani']:
+                                final_type.append('robot')
+                            elif typ.lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize() == typ:
+                                final_type.append('person')
+                            else:
+                                node = get_node_label(self.chat.last_utterance.parser.forest[0], typ)
+                                if node in ['IN', 'TO']:
+                                    final_type.append('preposition')
+                                elif node.startswith('V'):
+                                    final_type.append('verb')
+                                elif node.startswith('N'):
+                                    final_type.append('noun')
+
+                        elif 'proximity' in entry:
+                            final_type.append('deictic')
+                        elif 'person' in entry:
+                            final_type.append('pronoun')
+
+                    else:
+                        final_type.append(rdf[el]['type'][typ])
+                rdf[el]['type'] = final_type
+
+            # Patch special types
+            elif rdf[el]['type'] in [None, '']:
+                entry = lexicon_lookup(rdf[el]['text'])
+                if entry is None:
+                    if rdf[el]['text'].lower() in ['leolani']:
+                        rdf[el]['type'] = ['robot']
+                    if rdf[el]['text'].lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize() == typ:
+                        rdf[el]['type'] = ['person']
+                elif 'proximity' in entry:
+                    rdf[el]['type'] = ['deictic']
 
         return rdf
 

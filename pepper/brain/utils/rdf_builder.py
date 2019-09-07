@@ -112,6 +112,18 @@ class RdfBuilder(object):
         self.dataset.bind('owl', OWL)
 
     ########## basic constructors ##########
+    def _fix_nlp_types(self, types):
+        fixed_types = []
+        for el in types:
+            if type(el) in [str, unicode]:
+                fixed_types.append(el.split('.')[-1])
+            elif type(el) == list:
+                pass
+            else:
+                pass
+
+        return fixed_types
+
     def create_resource_uri(self, namespace, resource_name):
         """
         Create an URI for the given resource (entity, predicate, named graph, etc) in the given namespace
@@ -131,7 +143,7 @@ class RdfBuilder(object):
         if namespace in self.namespaces.keys():
             uri = URIRef(to_iri(self.namespaces[namespace] + resource_name))
         else:
-            uri = URIRef(to_iri(namespace + resource_name))
+            uri = URIRef(to_iri('{}:{}'.format(namespace,resource_name)))
 
         return uri
 
@@ -168,9 +180,13 @@ class RdfBuilder(object):
         -------
             Entity object with given label
         """
-        entity_id = self.create_resource_uri(namespace, label)
-
-        return Entity(entity_id, Literal(label), types)
+        if types in [None, ''] and label != '':
+            self._log.debug('unknown type: {}'.format(label))
+            return self.fill_entity_from_label(label, namespace)
+        else:
+            entity_id = self.create_resource_uri(namespace, label)
+            types = self._fix_nlp_types(types)
+            return Entity(entity_id, Literal(label), types)
 
     def fill_predicate(self, label, namespace='N2MU'):
         """

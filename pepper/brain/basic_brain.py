@@ -7,6 +7,15 @@ from datetime import datetime
 
 
 class BasicBrain(object):
+    _ONE_TO_ONE_PREDICATES = [
+        'be-from',
+        'born_in',
+        'favorite',
+        'live-in',
+        'work-at'
+    ]
+
+    _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
     def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
         """
@@ -52,7 +61,7 @@ class BasicBrain(object):
         ----------
         query: str
             SPARQL query to be posted
-        ask: str
+        ask: bool
             Whether the query is of type ask, in which case the structure of the response changes
 
         Returns
@@ -64,6 +73,21 @@ class BasicBrain(object):
         return self._connection.query(query, ask=ask, post=post)
 
     ########## brain structure exploration ##########
+    def _serialize(self, file_path):
+        """
+        Save graph to local file and return the serialized string
+        :param file_path: path to where data will be saved
+        :return: serialized data as string
+        """
+        # Save to file but return the python representation
+        with open(file_path + '.' + self._connection.format, 'w') as f:
+            self.dataset.serialize(f, format=self._connection.format)
+
+        data = self.dataset.serialize(format=self._connection.format)
+        self.clean_local_memory()
+
+        return data
+
     def upload_ontology(self):
         """
         Upload ontology
