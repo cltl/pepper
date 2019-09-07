@@ -18,6 +18,7 @@ from collections import Counter
 from random import getrandbits
 from datetime import datetime
 import enum
+import json
 import os
 
 from typing import List, Optional
@@ -395,14 +396,16 @@ class Utterance(object):
         if not analyzer:
             return "I cannot parse your input"
 
-        Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
+        for el in ["subject", "predicate", "object"]:
+            Analyzer.LOG.info(
+                "RDF {:>10}: {}".format(el, json.dumps(analyzer.rdf[el], sort_keys=True, separators=(', ', ': '))))
+
+        self.pack_triple(analyzer.rdf, analyzer.utterance_type)
 
         if analyzer.utterance_type == UtteranceType.STATEMENT:
             self.pack_perspective(analyzer.perspective)
 
-        self.write_template(analyzer.rdf, analyzer.utterance_type)
-
-    def write_template(self, rdf, utterance_type):
+    def pack_triple(self, rdf, utterance_type):
         """
         Sets utterance type, the extracted triple and (in future) the perspective
         Parameters
@@ -421,7 +424,7 @@ class Utterance(object):
         if not rdf:
             return 'error in the rdf'
 
-        builder = RdfBuilder()  # TODO PACKING PERSPECTIVE
+        builder = RdfBuilder()
 
         for el in rdf:
             final_type = []
@@ -462,11 +465,10 @@ class Utterance(object):
                 elif 'proximity' in entry:
                     rdf[el]['type'] = 'deictic'
 
+        # Report unknown types
         for el in rdf:
             if rdf[el]['type'] in [None, ''] and rdf[el]['text'] != '':
-                print('unknown type ', rdf[el])
-            else:
-                print(rdf[el])
+                self._log.debug('unknown type: {}'.format(rdf[el]))
 
         # Build subject
         subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'),
@@ -726,7 +728,7 @@ class Parser(object):
                         index += 1
 
             else:
-                self._log.info("no forest")
+                self._log.debug("no forest")
 
             for el in s_r:
                 if type(s_r[el]['raw']) == list:

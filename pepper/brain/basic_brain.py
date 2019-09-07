@@ -41,7 +41,7 @@ class BasicBrain(object):
         :param data: serialized data as string
         :return: response status
         """
-        self._log.debug("Posting triples")
+        self._log.info("Posting triples")
 
         return self._connection.upload(data)
 

@@ -8,7 +8,6 @@ import os
 
 
 class RdfBuilder(object):
-
     ONTOLOGY_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../ontologies'))
 
     def __init__(self):

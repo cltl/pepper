@@ -50,7 +50,7 @@ class Analyzer(object):
         forest = chat.last_utterance.parser.forest
 
         if not forest:
-            Analyzer.LOG.debug("Couldn't parse input")
+            Analyzer.LOG.warning("Couldn't parse input")
             return None
 
         for tree in forest:
@@ -61,7 +61,7 @@ class Analyzer(object):
             elif sentence_type == 'Q':
                 return QuestionAnalyzer.analyze(chat)
             else:
-                Analyzer.LOG.debug("Error: {}".format(sentence_type))
+                Analyzer.LOG.warning("Error: {}".format(sentence_type))
 
     @property
     def chat(self):
@@ -90,19 +90,7 @@ class Analyzer(object):
         -------
         rdf: dict or None
         """
-        raise NotImplementedError()
-
-    @property
-    def template(self):
-        """
-        Returns
-        -------
-        template: dict or None
-        """
-
-        # TODO: Implement here!
-
-        return None
+        return self._rdf
 
     @property
     def perspective(self):
@@ -119,7 +107,7 @@ class Analyzer(object):
         # if predicate.endswith('-not'):
         #    predicate = predicate[:-4]
 
-        if not '-' in predicate:
+        if '-' not in predicate:
             predicate = lemmatize(predicate, 'v')
 
             if get_node_label(self.chat.last_utterance.parser.forest[0], predicate) in ['IN', 'TO']:
@@ -160,19 +148,19 @@ class Analyzer(object):
             # verbs that carry sentiment or certainty are considered followed by their object
             elif lexicon_lookup(lemmatize(el, 'v'), 'lexical'):
                 pred += '-' + lemmatize(el, 'v')
-                for el in rdf['predicate'].split('-')[ind + 1:]:
-                    label = get_node_label(structure_tree, el)
+                for elem in rdf['predicate'].split('-')[ind + 1:]:
+                    label = get_node_label(structure_tree, elem)
                     if label in ['TO', 'IN']:
-                        pred += '-' + el
+                        pred += '-' + elem
                     else:
-                        rdf['object'] = el + '-' + rdf['object']
+                        rdf['object'] = elem + '-' + rdf['object']
                 rdf['predicate'] = pred
                 break
 
             elif label in ['IN', 'TO']:
                 pred += '-' + el
-                for el in rdf['predicate'].split('-')[ind + 1:]:
-                    rdf['object'] = el + '-' + rdf['object']
+                for elem in rdf['predicate'].split('-')[ind + 1:]:
+                    rdf['object'] = elem + '-' + rdf['object']
                 rdf['predicate'] = pred
                 break
 
@@ -229,7 +217,8 @@ class Analyzer(object):
 
         return rdf
 
-    def analyze_object_with_preposition(self, rdf):
+    @staticmethod
+    def analyze_object_with_preposition(rdf):
         if lexicon_lookup(rdf['predicate'], 'aux') or lexicon_lookup(rdf['predicate'], 'modal'):
             rdf['predicate'] += '-be-' + rdf['object'].split('-')[0]
         else:
@@ -254,6 +243,15 @@ class Analyzer(object):
                                                                                               rdf['predicate']) == 'MD':
             rdf['predicate'] += '-' + rdf['object']
             rdf['object'] = ''
+        return rdf
+
+    def get_types_in_rdf(self, rdf):
+        # Get type
+        for el in rdf:
+            text = rdf[el]
+            rdf[el] = {'text': text, 'type': ''}
+            rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
+
         return rdf
 
 
@@ -291,15 +289,6 @@ class StatementAnalyzer(Analyzer):
         return UtteranceType.STATEMENT
 
     @property
-    def rdf(self):
-        """
-        Returns
-        -------
-        rdf: dict or None
-        """
-        raise NotImplementedError()
-
-    @property
     def perspective(self):
         """
         Returns
@@ -310,7 +299,8 @@ class StatementAnalyzer(Analyzer):
 
 
 class GeneralStatementAnalyzer(StatementAnalyzer):
-    def extract_perspective(self, predicate, utterance_info=None):
+    @staticmethod
+    def extract_perspective(predicate, utterance_info=None):
         sentiment = 0
         certainty = 1
         polarity = 1
@@ -335,8 +325,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         perspective = {'sentiment': sentiment, 'certainty': certainty, 'polarity': polarity}
         return perspective
 
+    @staticmethod
     def check_rdf_completeness(rdf):
-        # TODO - PERSPECTIVE
         for el in ['predicate', 'subject', 'object']:
             if not rdf[el] or not len(rdf[el]):
                 LOG.warning("Cannot find {} in statement".format(el))
@@ -360,15 +350,15 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         return rdf
 
     def initialize_rdf(self):
-        '''
+        """
         assumed word order: NP VP C
         subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing
 
-        '''
-        rdf = {'subject': '', 'predicate': '', 'object': ''}
-        rdf['subject'] = self.chat.last_utterance.parser.constituents[0]['raw']
-        rdf['predicate'] = self.chat.last_utterance.parser.constituents[1]['raw']
-        rdf['object'] = self.chat.last_utterance.parser.constituents[2]['raw']
+        """
+        rdf = {'subject': self.chat.last_utterance.parser.constituents[0]['raw'],
+               'predicate': self.chat.last_utterance.parser.constituents[1]['raw'],
+               'object': self.chat.last_utterance.parser.constituents[2]['raw']}
+
         return rdf
 
     def analyze_multiword_object(self, rdf):
@@ -398,9 +388,9 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
             Chat to be analyzed
         """
 
+        # Initialize
         super(GeneralStatementAnalyzer, self).__init__(chat)
         utterance_info = {'neg': False}
-
         rdf = self.initialize_rdf()
         Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
 
@@ -424,27 +414,13 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         if len(rdf['object'].split('-')) == 1:
             rdf = self.analyze_one_word_object(rdf)
 
+        # Final fixes to RDF
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
-        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
-
         self._perspective = self.extract_perspective(rdf['predicate'], utterance_info)
-
-        for el in rdf:
-            text = rdf[el]
-            rdf[el] = {'text': text, 'type': ''}
-            rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
-
+        rdf = self.get_types_in_rdf(rdf)
+        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
         self._rdf = rdf
-
-    @property
-    def rdf(self):
-        """
-        Returns
-        -------
-        rdf: dict or None
-        """
-        return self._rdf
 
     @property
     def perspective(self):
@@ -471,15 +447,6 @@ class ObjectStatementAnalyzer(StatementAnalyzer):
         # TODO: Implement Chat -> RDF
 
         self._rdf = {}
-
-    @property
-    def rdf(self):
-        """
-        Returns
-        -------
-        rdf: dict or None
-        """
-        return self._rdf
 
 
 class QuestionAnalyzer(Analyzer):
@@ -518,15 +485,6 @@ class QuestionAnalyzer(Analyzer):
             Utterance Type (Question)
         """
         return UtteranceType.QUESTION
-
-    @property
-    def rdf(self):
-        """
-        Returns
-        -------
-        rdf: dict or None
-        """
-        raise NotImplementedError()
 
 
 class WhQuestionAnalyzer(QuestionAnalyzer):
@@ -606,21 +564,12 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         if len(rdf['object'].split('-')) == 1:
             rdf = self.analyze_one_word_object(rdf)
 
+        # Final fixes to RDF
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
-
+        rdf = self.get_types_in_rdf(rdf)
         Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
-
         self._rdf = rdf
-
-    @property
-    def rdf(self):
-        """
-        Returns
-        -------
-        rdf: dict or None
-        """
-        return self._rdf
 
 
 # verb question rules:
@@ -654,8 +603,10 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
     def initialize_rdf(self):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
+
         constituents = self.chat.last_utterance.parser.constituents
         rdf['subject'] = constituents[1]['raw']
+
         if len(constituents) == 4:
             rdf['predicate'] = constituents[0]['raw'] + '-' + constituents[2]['raw']
             rdf['object'] = constituents[3]['raw']
@@ -675,9 +626,11 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         chat: Chat
         """
 
+        # Initialize
         super(VerbQuestionAnalyzer, self).__init__(chat)
         utterance_info = {'neg': False}
         rdf = self.initialize_rdf()
+        Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
 
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
         Analyzer.LOG.debug('after VP: {}'.format(rdf))
@@ -701,18 +654,9 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         if len(rdf['object'].split('-')) == 1:
             rdf = self.analyze_one_word_object(rdf)
 
+        # Final fixes to RDF
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
-
+        rdf = self.get_types_in_rdf(rdf)
         Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
-
         self._rdf = rdf
-
-    @property
-    def rdf(self):
-        """
-        Returns
-        -------
-        rdf: dict or None
-        """
-        return self._rdf
