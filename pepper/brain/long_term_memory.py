@@ -2,6 +2,7 @@ from pepper.brain.utils.helper_functions import hash_claim_id, read_query, casef
     confidence_to_certainty_value, polarity_to_polarity_value, sentiment_to_sentiment_value, get_object_id
 from pepper.brain.utils.location_reasoner import LocationReasoner
 from pepper.brain.utils.though_generator import ThoughtGenerator
+from pepper.brain.utils.type_reasoner import TypeReasoner
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.utils.response import Thoughts
 from pepper.brain.basic_brain import BasicBrain
@@ -11,9 +12,6 @@ from pepper.language.utils.atoms import UtteranceType
 from pepper import config
 
 from rdflib import RDF, RDFS, OWL
-from fuzzywuzzy import process
-
-import requests
 
 
 class LongTermMemory(BasicBrain):
@@ -30,10 +28,11 @@ class LongTermMemory(BasicBrain):
 
         super(LongTermMemory, self).__init__(address, clear_all)
 
-        self.myself = None  # NOT USED, ONLY WHEN UPLOADING/EXPERIENCING
-        self.query_prefixes = read_query('prefixes')  # NOT USED, ONLY WHEN QUERYING
+        self.myself = None
+        self.query_prefixes = read_query('prefixes')  # USED ONLY WHEN QUERYING
         self.thought_generator = ThoughtGenerator()
         self.location_reasoner = LocationReasoner()
+        self.type_reasoner = TypeReasoner()
 
     #################################### Main functions to interact with the brain ####################################
 
@@ -62,11 +61,13 @@ class LongTermMemory(BasicBrain):
             if reason_types:
                 # Try to figure out what this entity is
                 if not utterance.triple.object.types:
-                    object_type, _ = self.reason_entity_type(str(utterance.triple.object_name), exact_only=True)
+                    object_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.object_name),
+                                                                           exact_only=True)
                     utterance.triple.object.add_types([object_type])
 
                 if not utterance.triple.subject.types:
-                    subject_type, _ = self.reason_entity_type(str(utterance.triple.subject_name), exact_only=True)
+                    subject_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.subject_name),
+                                                                            exact_only=True)
                     utterance.triple.object.add_types([subject_type])
 
             # Create graphs and triples
@@ -137,6 +138,7 @@ class LongTermMemory(BasicBrain):
 
         # Generate query
         query = self._create_query(utterance)
+        self._log.info("Triple: {}".format(utterance.triple))
 
         # Perform query
         response = self._submit_query(query)
@@ -146,147 +148,7 @@ class LongTermMemory(BasicBrain):
 
         return output
 
-    def reason_entity_type(self, item, exact_only=True):
-        """
-        Main function to determine if this item can be recognized by the brain, learned, or none
-        Parameters
-        ----------
-        item: str
-        exact_only: bool
-
-        Returns
-        -------
-
-        """
-
-        if casefold_text(item, format='triple') in self.get_classes():
-            # If this is in the ontology already as a class, create sensor triples directly
-            text = 'I know about %s. I will remember this object' % item
-            return item, text
-
-        temp = self.get_labels_and_classes()
-        if casefold_text(item, format='triple') in temp.keys():
-            # If this is in the ontology already as a label, create sensor triples directly
-            text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
-            return temp[item], text
-
-        # Query the display for information
-        class_type, description = self.exact_match_dbpedia(item)
-        if class_type is not None:
-            # Had to learn it, but I can create triples now
-            text = ' I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
-                   'I will remember this object' % (item, class_type)
-            return casefold_text(class_type, format='triple'), text
-
-        if not exact_only:
-            # Second go at dbpedia, relaxed approach
-            class_type, description = self.keyword_match_dbpedia(item)
-            if class_type is not None:
-                # Had to really search for it to learn it, but I can create triples now
-                text = ' I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
-                       'is a %s. I will remember this object' % (item, class_type)
-                return casefold_text(class_type, format='triple'), text
-
-        # Failure, nothing found
-        text = ' I am sorry, I could not learn anything on %s so I will not remember it' % item
-        return None, text
-
-    ########## semantic display ##########
-    def exact_match_dbpedia(self, item):
-        """
-        Query dbpedia for information on this item to get it's semantic type and description.
-        :param item:
-        :return:
-        """
-
-        # Gather combinations
-        combinations = [item, item.lower(), item.capitalize(), item.title()]
-
-        for comb in combinations:
-            # Try exact matching query
-            query = read_query('dbpedia_type_and_description') % comb
-            response = self._submit_query(query)
-
-            # break if we have a hit
-            if response:
-                break
-
-        class_type = response[0]['label_type']['value'] if response else None
-        description = response[0]['description']['value'].split('.')[0] if response else None
-
-        return class_type, description
-
-    @staticmethod
-    def keyword_match_dbpedia(item):
-        # Query API
-        r = requests.get('http://lookup.dbpedia.org/api/search.asmx/KeywordSearch',
-                         params={'QueryString': item, 'MaxHits': '10'},
-                         headers={'Accept': 'application/json'}).json()['results']
-
-        # Fuzzy match
-        choices = [e['label'] for e in r]
-        best_match = process.extractOne("item", choices)
-
-        # Get best match object
-        r = [{'label': e['label'], 'classes': e['classes'], 'description': e['description']} for e in r if
-             e['label'] == best_match[0]]
-
-        if r:
-            r = r[0]
-
-            if r['classes']:
-                # process dbpedia classes only
-                r['classes'] = [c['label'] for c in r['classes'] if 'dbpedia' in c['uri']]
-
-        else:
-            r = {'label': None, 'classes': None, 'description': None}
-
-        return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
-
     ######################################## Helpers for statement processing ########################################
-    @staticmethod
-    def _measure_detection_overlap(detections_1, detections_2):
-        if detections_1 == detections_2:
-            return 1.0
-        else:
-            try:
-                overlap = [value for value in detections_1 if value in detections_2]
-                overlap = float(2 * len(overlap)) / float(len(detections_1) + len(detections_2))
-                return float(overlap)
-            except:
-                return 0.0
-
-    def _fill_episodic_memory_(self, raw_episode):
-        """
-        Structure overlap to get the provenance and entity on which they overlap
-        Parameters
-        ----------
-        raw_episode: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            Overlap object containing an entity and the provenance of the mention causing the overlap
-        """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_episode['date']['value'], 'LC')
-        preprocessed_detections = self._rdf_builder.clean_aggregated_detections(raw_episode['detections']['value'])
-        preprocessed_geo = self._rdf_builder.clean_aggregated_detections(raw_episode['geo']['value'])
-
-        return {'context': raw_episode['cl']['value'], 'place': raw_episode['pl']['value'], 'date': preprocessed_date,
-                'detections': preprocessed_detections, 'geo': preprocessed_geo}
-
-    def get_episodic_memory(self):
-        # Role as subject
-        query = read_query('context/detections_per_context')
-        response = self._submit_query(query)
-
-        if response[0]['detections']['value'] != '':
-            episodic_memory = [self._fill_episodic_memory_(elem) for elem in response]
-        else:
-            episodic_memory = []
-
-        return episodic_memory
-
     def _link_leolani(self):
         if self.myself is None:
             # Create Leolani
@@ -591,6 +453,8 @@ class LongTermMemory(BasicBrain):
 
         # Leolani talk (includes interaction and perspective graphs)
         self._create_interaction_graph(utterance, claim)
+
+        self._log.info("Triple: {}".format(utterance.triple))
 
         return claim
 

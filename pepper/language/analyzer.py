@@ -250,7 +250,7 @@ class Analyzer(object):
         for el in rdf:
             text = rdf[el]
             final_type = []
-            rdf[el] = {'text': text, 'type': ''}
+            rdf[el] = {'text': text, 'type': []}
 
             # If no text was extracted we cannot get a type
             if text == '':

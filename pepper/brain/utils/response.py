@@ -291,14 +291,14 @@ class Triple(object):
         return self._object.label if self._object is not None else None
 
     @property
-    def subject_primary_type(self):
+    def subject_types(self):
         # type: () -> str
-        return self._subject.types[0] if self._subject is not None else None
+        return self._subject.types_names if self._subject is not None else None
 
     @property
-    def object_primary_type(self):
+    def object_types(self):
         # type: () -> str
-        return self._object.types[0] if self._object is not None else None
+        return self._object.types_names if self._object is not None else None
 
     # TODO not good practice and not used, might think of deleting three setters below
     def set_subject(self, subject):
@@ -342,11 +342,9 @@ class Triple(object):
                                                self.object_name
                                                if self.object_name is not None
                                                   and self.object_name not in ['', Literal('')] else '?']),
-                                hash_claim_id([self.subject_primary_type
-                                               if self.subject_primary_type is not None else '?',
+                                hash_claim_id([self.subject_types if self.subject_types is not None else '?',
                                                'predicate',
-                                               self.object_primary_type
-                                               if self.object_primary_type is not None else '?']))
+                                               self.object_types if self.object_types is not None else '?']))
 
 
 class Perspective(object):

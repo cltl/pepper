@@ -1,6 +1,7 @@
 from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps
 from pepper.brain.utils.helper_functions import read_query
+from pepper.brain.utils.rdf_builder import RdfBuilder
 from pepper.brain.basic_brain import BasicBrain
 
 from pepper import config
@@ -19,7 +20,8 @@ class ThoughtGenerator(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(ThoughtGenerator, self).__init__(address, clear_all)
+        super(ThoughtGenerator, self).__init__(address, clear_all, quiet=True)
+        self._rdf_builder = RdfBuilder()
 
     ########## novelty ##########
     def _fill_statement_novelty_(self, raw_conflict):

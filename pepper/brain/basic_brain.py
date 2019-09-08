@@ -17,7 +17,7 @@ class BasicBrain(object):
 
     _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
+    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, quiet=False):
         """
         Interact with Triple store
 
@@ -33,15 +33,16 @@ class BasicBrain(object):
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
 
-        # Possible clear all contents (testing purposes)
-        if clear_all:
-            self.clear_brain()
+        if not quiet:
+            # Possible clear all contents (testing purposes)
+            if clear_all:
+                self.clear_brain()
 
-        # Start with a clean local memory
-        self.clean_local_memory()
+            # Start with a clean local memory
+            self.clean_local_memory()
 
-        # Upload ontology here
-        self.upload_ontology()
+            # Upload ontology here
+            self.upload_ontology()
 
     ########## basic post get behaviour ##########
     def _upload_to_brain(self, data):
@@ -93,7 +94,7 @@ class BasicBrain(object):
         Upload ontology
         :return: response status
         """
-        self._log.debug("Uploading ontology to brain")
+        self._log.info("Uploading ontology to brain")
         data = self._serialize(self._brain_log)
 
         return self._connection.upload(data)

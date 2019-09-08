@@ -113,14 +113,17 @@ class RdfBuilder(object):
 
     ########## basic constructors ##########
     def _fix_nlp_types(self, types):
+        # TODO here we know if two types are different category (aka noun and verb) we might need to split the triple
         fixed_types = []
         for el in types:
-            if type(el) in [str, unicode]:
+            if len(el) == 1:
+                # this was just a char
+                fixed_types.append(types.split('.')[-1])
+                break
+            elif '.' in el:
                 fixed_types.append(el.split('.')[-1])
-            elif type(el) == list:
-                pass
             else:
-                pass
+                fixed_types.append(el)
 
         return fixed_types
 
@@ -181,12 +184,12 @@ class RdfBuilder(object):
             Entity object with given label
         """
         if types in [None, ''] and label != '':
-            self._log.debug('unknown type: {}'.format(label))
+            self._log.warning('Unknown type: {}'.format(label))
             return self.fill_entity_from_label(label, namespace)
         else:
             entity_id = self.create_resource_uri(namespace, label)
-            types = self._fix_nlp_types(types)
-            return Entity(entity_id, Literal(label), types)
+            fixed_types = self._fix_nlp_types(types)
+            return Entity(entity_id, Literal(label), fixed_types)
 
     def fill_predicate(self, label, namespace='N2MU'):
         """
