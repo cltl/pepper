@@ -7,8 +7,17 @@ from datetime import datetime
 
 
 class BasicBrain(object):
+    _ONE_TO_ONE_PREDICATES = [
+        'be-from',
+        'born_in',
+        'favorite',
+        'live-in',
+        'work-at'
+    ]
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
+    _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
+
+    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, quiet=False):
         """
         Interact with Triple store
 
@@ -24,15 +33,16 @@ class BasicBrain(object):
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
 
-        # Possible clear all contents (testing purposes)
-        if clear_all:
-            self.clear_brain()
+        if not quiet:
+            # Possible clear all contents (testing purposes)
+            if clear_all:
+                self.clear_brain()
 
-        # Start with a clean local memory
-        self.clean_local_memory()
+            # Start with a clean local memory
+            self.clean_local_memory()
 
-        # Upload ontology here
-        self.upload_ontology()
+            # Upload ontology here
+            self.upload_ontology()
 
     ########## basic post get behaviour ##########
     def _upload_to_brain(self, data):
@@ -41,7 +51,7 @@ class BasicBrain(object):
         :param data: serialized data as string
         :return: response status
         """
-        self._log.debug("Posting triples")
+        self._log.info("Posting triples")
 
         return self._connection.upload(data)
 
@@ -52,7 +62,7 @@ class BasicBrain(object):
         ----------
         query: str
             SPARQL query to be posted
-        ask: str
+        ask: bool
             Whether the query is of type ask, in which case the structure of the response changes
 
         Returns
@@ -64,12 +74,27 @@ class BasicBrain(object):
         return self._connection.query(query, ask=ask, post=post)
 
     ########## brain structure exploration ##########
+    def _serialize(self, file_path):
+        """
+        Save graph to local file and return the serialized string
+        :param file_path: path to where data will be saved
+        :return: serialized data as string
+        """
+        # Save to file but return the python representation
+        with open(file_path + '.' + self._connection.format, 'w') as f:
+            self.dataset.serialize(f, format=self._connection.format)
+
+        data = self.dataset.serialize(format=self._connection.format)
+        self.clean_local_memory()
+
+        return data
+
     def upload_ontology(self):
         """
         Upload ontology
         :return: response status
         """
-        self._log.debug("Uploading ontology to brain")
+        self._log.info("Uploading ontology to brain")
         data = self._serialize(self._brain_log)
 
         return self._connection.upload(data)

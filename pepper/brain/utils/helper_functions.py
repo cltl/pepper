@@ -1,5 +1,4 @@
 import os
-import re
 from datetime import date
 
 from pepper.brain.utils.constants import CAPITALIZED_TYPES
@@ -58,10 +57,28 @@ def confidence_to_certainty_value(confidence):
     if confidence is not None:
         if confidence > .90:
             return 'CERTAIN'
-        if confidence > .50:
+        elif confidence > .50:
             return 'PROBABLE'
-        if confidence > 0:
-            return 'POSIBLE'
+        elif confidence > 0:
+            return 'POSSIBLE'
+    return 'UNDERSPECIFIED'
+
+
+def polarity_to_polarity_value(polarity):
+    if polarity is not None:
+        if polarity > 0:
+            return 'POSITIVE'
+        elif polarity < 0:
+            return 'NEGATIVE'
+    return 'UNDERSPECIFIED'
+
+
+def sentiment_to_sentiment_value(sentiment):
+    if sentiment is not None:
+        if sentiment > 0:
+            return 'POSITIVE'
+        elif sentiment < 0:
+            return 'NEGATIVE'
     return 'UNDERSPECIFIED'
 
 

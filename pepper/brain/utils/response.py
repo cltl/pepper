@@ -186,7 +186,8 @@ class Predicate(RDFBase):
         if format == 'triple':
             # Label
             self._label = Literal(self.label.lower().replace(" ", "-"))
-            self._label = Literal(self._fix_predicate_morphology(subject_label, str(self.label), object_label, format=format))
+            self._label = Literal(
+                self._fix_predicate_morphology(subject_label, str(self.label), object_label, format=format))
 
         elif format == 'natural':
             # Label
@@ -289,6 +290,16 @@ class Triple(object):
         # type: () -> str
         return self._object.label if self._object is not None else None
 
+    @property
+    def subject_types(self):
+        # type: () -> str
+        return self._subject.types_names if self._subject is not None else None
+
+    @property
+    def object_types(self):
+        # type: () -> str
+        return self._object.types_names if self._object is not None else None
+
     # TODO not good practice and not used, might think of deleting three setters below
     def set_subject(self, subject):
         # type: (Entity) -> ()
@@ -322,15 +333,69 @@ class Triple(object):
         return iter([('subject', self.subject), ('predicate', self.predicate), ('object', self.object)])
 
     def __repr__(self):
-        return '{}'.format(hash_claim_id([self.subject_name
-                                          if self.subject_name is not None
-                                             and self.subject_name not in ['', Literal('')] else '?',
-                                          self.predicate_name
-                                          if self.predicate_name is not None
-                                             and self.predicate_name not in ['', Literal('')] else '?',
-                                          self.object_name
-                                          if self.object_name is not None
-                                             and self.object_name not in ['', Literal('')] else '?']))
+        return '{} ({})'.format(hash_claim_id([self.subject_name
+                                               if self.subject_name is not None
+                                                  and self.subject_name not in ['', Literal('')] else '?',
+                                               self.predicate_name
+                                               if self.predicate_name is not None
+                                                  and self.predicate_name not in ['', Literal('')] else '?',
+                                               self.object_name
+                                               if self.object_name is not None
+                                                  and self.object_name not in ['', Literal('')] else '?']),
+                                hash_claim_id([self.subject_types if self.subject_types is not None else '?',
+                                               'predicate',
+                                               self.object_types if self.object_types is not None else '?']))
+
+
+class Perspective(object):
+    def __init__(self, certainty, polarity, sentiment, time=None, emotion=None):
+        # type: (float, int, float, Time, Emotion) -> Perspective
+        """
+        Construct Perspective object
+        Parameters
+        ----------
+        certainty: float
+            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain
+        polarity: int
+            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment
+        sentiment: float
+            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent
+            positive sentiments.
+        time: Time
+            Enumerator representing time. This is extracted from the tense
+        emotion: Emotion
+            Enumerator representing one of the 6 universal emotions.
+        """
+        self._certainty = certainty
+        self._polarity = polarity
+        self._sentiment = sentiment
+        self._time = time
+        self._emotion = emotion
+
+    @property
+    def certainty(self):
+        # type: () -> float
+        return self._certainty
+
+    @property
+    def polarity(self):
+        # type: () -> int
+        return self._polarity
+
+    @property
+    def sentiment(self):
+        # type: () -> float
+        return self._sentiment
+
+    @property
+    def time(self):
+        # type: () -> Optional[Time]
+        return self._time
+
+    @property
+    def emotion(self):
+        # type: () -> Optional[Emotion]
+        return self._emotion
 
 
 class Provenance(object):

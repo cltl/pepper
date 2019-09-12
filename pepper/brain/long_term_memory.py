@@ -1,30 +1,22 @@
-from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
-    Gap, Gaps, Overlap, Overlaps, Thoughts
-from pepper.brain.utils.helper_functions import hash_claim_id, read_query, casefold_text, confidence_to_certainty_value, get_object_id
+from pepper.brain.utils.helper_functions import hash_claim_id, read_query, casefold_text, \
+    confidence_to_certainty_value, polarity_to_polarity_value, sentiment_to_sentiment_value, get_object_id
+from pepper.brain.utils.location_reasoner import LocationReasoner
+from pepper.brain.utils.though_generator import ThoughtGenerator
+from pepper.brain.utils.type_reasoner import TypeReasoner
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
+from pepper.brain.utils.response import Thoughts
 from pepper.brain.basic_brain import BasicBrain
+
 from pepper.language.utils.atoms import UtteranceType
 
 from pepper import config
 
 from rdflib import RDF, RDFS, OWL
-from fuzzywuzzy import process
-
-import requests
 
 
 class LongTermMemory(BasicBrain):
-    _ONE_TO_ONE_PREDICATES = [
-        'be-from',
-        'born_in',
-        'favorite',
-        'live-in',
-        'work-at'
-    ]
-
-    _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
-
     def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
+        # type: (str, bool) -> LongTermMemory
         """
         Interact with Triple store
 
@@ -36,8 +28,11 @@ class LongTermMemory(BasicBrain):
 
         super(LongTermMemory, self).__init__(address, clear_all)
 
-        self.myself = None  # NOT USED, ONLY WHEN UPLOADING/EXPERIENCING
-        self.query_prefixes = read_query('prefixes')  # NOT USED, ONLY WHEN QUERYING
+        self.myself = None
+        self.query_prefixes = read_query('prefixes')  # USED ONLY WHEN QUERYING
+        self.thought_generator = ThoughtGenerator()
+        self.location_reasoner = LocationReasoner()
+        self.type_reasoner = TypeReasoner()
 
     #################################### Main functions to interact with the brain ####################################
 
@@ -66,36 +61,41 @@ class LongTermMemory(BasicBrain):
             if reason_types:
                 # Try to figure out what this entity is
                 if not utterance.triple.object.types:
-                    object_type, _ = self.reason_entity_type(str(utterance.triple.object_name), exact_only=True)
+                    object_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.object_name),
+                                                                           exact_only=True)
                     utterance.triple.object.add_types([object_type])
 
                 if not utterance.triple.subject.types:
-                    subject_type, _ = self.reason_entity_type(str(utterance.triple.subject_name), exact_only=True)
+                    subject_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.subject_name),
+                                                                            exact_only=True)
                     utterance.triple.object.add_types([subject_type])
 
             # Create graphs and triples
             instance = self._model_graphs_(utterance)
 
             # Check if this knowledge already exists on the brain
-            statement_novelty = self.get_statement_novelty(instance.id)
+            statement_novelty = self.thought_generator.get_statement_novelty(instance.id)
 
             # Check how many items of the same type as subject and object we have
-            entity_novelty = self._fill_entity_novelty_(utterance.triple.subject.id, utterance.triple.object.id)
+            entity_novelty = self.thought_generator._fill_entity_novelty_(utterance.triple.subject.id,
+                                                                          utterance.triple.object.id)
 
             # Find any overlaps
-            overlaps = self.get_overlaps(utterance)
+            overlaps = self.thought_generator.get_overlaps(utterance)
 
             # Finish process of uploading new knowledge to the triple store
             data = self._serialize(self._brain_log)
             code = self._upload_to_brain(data)
 
             # Check for conflicts after adding the knowledge
-            negation_conflicts = self.get_negation_conflicts(utterance)
-            object_conflict = self.get_object_cardinality_conflicts(utterance)
+            negation_conflicts = self.thought_generator.get_negation_conflicts(utterance)
+            object_conflict = self.thought_generator.get_object_cardinality_conflicts(utterance)
 
             # Check for gaps, in case we want to be proactive
-            subject_gaps = self.get_entity_gaps(utterance.triple.subject, exclude=utterance.triple.object)
-            object_gaps = self.get_entity_gaps(utterance.triple.object, exclude=utterance.triple.subject)
+            subject_gaps = self.thought_generator.get_entity_gaps(utterance.triple.subject,
+                                                                  exclude=utterance.triple.object)
+            object_gaps = self.thought_generator.get_entity_gaps(utterance.triple.object,
+                                                                 exclude=utterance.triple.subject)
 
             # Report trust
             trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
@@ -119,7 +119,7 @@ class LongTermMemory(BasicBrain):
         :return: json response containing the status for posting the triples, and the original statement
         """
         # Create graphs and triples
-        instance = self._model_graphs_(utterance)
+        _ = self._model_graphs_(utterance)
         data = self._serialize(self._brain_log)
         code = self._upload_to_brain(data)
 
@@ -138,6 +138,7 @@ class LongTermMemory(BasicBrain):
 
         # Generate query
         query = self._create_query(utterance)
+        self._log.info("Triple: {}".format(utterance.triple))
 
         # Perform query
         response = self._submit_query(query)
@@ -147,508 +148,7 @@ class LongTermMemory(BasicBrain):
 
         return output
 
-    def reason_entity_type(self, item, exact_only=True):
-        """
-        Main function to determine if this item can be recognized by the brain, learned, or none
-        :param item:
-        :return:
-        """
-
-        if casefold_text(item, format='triple') in self.get_classes():
-            # If this is in the ontology already as a class, create sensor triples directly
-            text = 'I know about %s. I will remember this object' % item
-            return item, text
-
-        temp = self.get_labels_and_classes()
-        if casefold_text(item, format='triple') in temp.keys():
-            # If this is in the ontology already as a label, create sensor triples directly
-            text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
-            return temp[item], text
-
-        # Query the display for information
-        class_type, description = self.exact_match_dbpedia(item)
-        if class_type is not None:
-            # Had to learn it, but I can create triples now
-            text = ' I did not know what %s is, but I searched on the web and I found that it is a %s. ' \
-                   'I will remember this object' % (item, class_type)
-            return casefold_text(class_type, format='triple'), text
-
-        if not exact_only:
-            # Second go at dbpedia, relaxed approach
-            class_type, description = self.keyword_match_dbpedia(item)
-            if class_type is not None:
-                # Had to really search for it to learn it, but I can create triples now
-                text = ' I did not know what %s is, but I searched for fuzzy matches on the web and I found that it ' \
-                       'is a %s. I will remember this object' % (item, class_type)
-                return casefold_text(class_type, format='triple'), text
-
-        # Failure, nothing found
-        text = ' I am sorry, I could not learn anything on %s so I will not remember it' % item
-        return None, text
-
-    ########## conflicts ##########
-    def _fill_cardinality_conflict_(self, raw_conflict):
-        """
-        Structure cardinality conflict to pair provenance and object that creates the conflict
-        Parameters
-        ----------
-        raw_conflict: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            CardinalityConflict object containing provenance and entity
-        """
-        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
-                                                                 raw_conflict['date']['value'])
-        processed_type = self.get_type_of_instance(raw_conflict['objectlabel']['value'])
-        processed_entity = self._rdf_builder.fill_entity(raw_conflict['objectlabel']['value'], processed_type)
-
-        return CardinalityConflict(processed_provenance, processed_entity)
-
-    def _fill_negation_conflict_(self, raw_conflict):
-        """
-        Structure negation conflict to pair provenance and predicate that creates the conflict
-        Parameters
-        ----------
-        raw_conflict: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            NegationConflict object containing provenance and predicate
-        """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
-        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
-                                                                 preprocessed_date)
-        processed_predicate = self._rdf_builder.fill_predicate(raw_conflict['pred']['value'].split('/')[-1])
-
-        return NegationConflict(processed_provenance, processed_predicate)
-
-    def get_all_conflicts(self):
-        """
-        Aggregate all conflicts in brain
-        :return:
-        """
-        conflicts = []
-        for predicate in self._ONE_TO_ONE_PREDICATES:
-            conflicts.extend(self.get_conflicts_with_one_to_one_predicate(predicate))
-
-        return conflicts
-
-    def get_conflicts_with_one_to_one_predicate(self, one_to_one_predicate):
-        query = read_query('one_to_one_conflicts') % one_to_one_predicate
-
-        response = self._submit_query(query)
-        conflicts = []
-        for item in response:
-            conflict = {'subject': item['sname']['value'], 'predicate': one_to_one_predicate, 'objects': []}
-
-            for x in item['pairs']['value'].split(';'):
-                [val, auth] = x.split(',')
-                option = {'value': val, 'author': auth}
-                conflict['objects'].append(option)
-
-            conflicts.append(conflict)
-
-        return conflicts
-
-    def get_object_cardinality_conflicts(self, utterance):
-        """
-        Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
-        multiple object values
-        Parameters
-        ----------
-        utterance
-
-        Returns
-        -------
-        conflicts: List[CardinalityConflicts]
-            List of Conflicts containing the object which creates the conflict, and their provenance
-        """
-        if str(utterance.triple.predicate_name) not in self._ONE_TO_ONE_PREDICATES:
-            return []
-
-        query = read_query('thoughts/object_cardinality_conflicts') % (utterance.triple.predicate_name,
-                                                                       utterance.triple.subject_name,
-                                                                       utterance.triple.object_name)
-
-        response = self._submit_query(query)
-        if response[0] != {}:
-            conflicts = [self._fill_cardinality_conflict_(elem) for elem in response]
-        else:
-            conflicts = []
-
-        return conflicts
-
-    def get_negation_conflicts(self, utterance):
-        """
-        Query and build negation conflicts, meaning conflicts because predicates are directly negated
-        Parameters
-        ----------
-        utterance
-
-        Returns
-        -------
-        conflicts: List[NegationConflict]
-            List of Conflicts containing the predicate which creates the conflict, and their provenance
-        """
-        # Case fold
-        predicate = utterance.triple.predicate_name[:-4] if utterance.triple.predicate_name.endswith('-not') \
-            else utterance.triple.predicate_name
-
-        # TODO revise according to new representation
-        query = read_query('thoughts/negation_conflicts') % (
-            utterance.triple.subject_name, utterance.triple.object_name,
-            predicate, predicate)
-
-        response = self._submit_query(query)
-        if response[0] != {}:
-            conflicts = [self._fill_negation_conflict_(elem) for elem in response]
-        else:
-            conflicts = []
-
-        return conflicts
-
-    ########## novelty ##########
-    def _fill_statement_novelty_(self, raw_conflict):
-        """
-        Structure statement novelty to get provenance if this statement has been heard before
-        Parameters
-        ----------
-        raw_conflict: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            StatementNovelty object containing provenance
-        """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
-        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
-                                                                 preprocessed_date)
-
-        return StatementNovelty(processed_provenance)
-
-    def _fill_entity_novelty_(self, subject_url, object_url):
-        """
-        Structure entity novelty to signal if these entities have been heard before
-        Parameters
-        ----------
-        subject_url: str
-            URI of instance
-        object_url: str
-            URI of instance
-
-        Returns
-        -------
-            Entity object containing boolean values signaling if they are new
-        """
-        subject_novelty = self.check_instance_novelty(subject_url)
-        object_novelty = self.check_instance_novelty(object_url)
-
-        return EntityNovelty(subject_novelty, object_novelty)
-
-    def get_statement_novelty(self, statement_uri):
-        """
-        Query and build provenance if an instance (statement) has been learned before
-        Parameters
-        ----------
-        statement_uri: str
-            URI of instance
-
-        Returns
-        -------
-        response: List[StatementNovelty]
-            List of provenance for the instance
-        """
-        query = read_query('thoughts/statement_novelty') % statement_uri
-        response = self._submit_query(query)
-
-        if response[0] != {}:
-            response = [self._fill_statement_novelty_(elem) for elem in response]
-        else:
-            response = []
-
-        return response
-
-    def check_instance_novelty(self, instance_url):
-        """
-        Query if an instance (entity) has been heard about before
-        Parameters
-        ----------
-        instance_url: str
-            URI of instance
-
-        Returns
-        -------
-        conflicts: List[StatementNovelty]
-            List of provenance for the instance
-        """
-        query = read_query('thoughts/entity_novelty') % instance_url
-        response = self._submit_query(query, ask=True)
-
-        return response
-
-    ########## gaps ##########
-    def _fill_entity_gap_(self, raw_conflict):
-        """
-        Structure entity gap to get the predicate and range of what has been learned but not heard
-        Parameters
-        ----------
-        raw_conflict: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            Gap object containing a predicate and its range
-        """
-
-        processed_predicate = self._rdf_builder.fill_predicate(raw_conflict['p']['value'].split('/')[-1])
-        processed_range = self._rdf_builder.fill_entity('', namespace='N2MU',
-                                                        types=[raw_conflict['type2']['value'].split('/')[-1]])
-
-        return Gap(processed_predicate, processed_range)
-
-    def get_entity_gaps(self, entity, exclude=None):
-        """
-        Query and build gaps with regards to the range and domain of the given entity and its predicates
-        Parameters
-        ----------
-        entity: dict
-            Information regarding the entity
-
-        Returns
-        -------
-            Gaps object containing gaps related to range and domain information that could be learned
-        """
-        # Role as subject
-        query = read_query('thoughts/subject_gaps') % (entity.label, entity.label if exclude is None else exclude.label)
-        response = self._submit_query(query)
-
-        if response:
-            subject_gaps = [self._fill_entity_gap_(elem)
-                            for elem in response
-                            if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
-
-        else:
-            subject_gaps = []
-
-        # Role as object
-        query = read_query('thoughts/object_gaps') % (entity.label, entity.label if exclude is None else exclude.label)
-        response = self._submit_query(query)
-
-        if response:
-            object_gaps = [self._fill_entity_gap_(elem)
-                           for elem in response
-                           if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
-
-        else:
-            object_gaps = []
-
-        return Gaps(subject_gaps, object_gaps)
-
-    ########## overlaps ##########
-    def _fill_overlap_(self, raw_conflict):
-        """
-        Structure overlap to get the provenance and entity on which they overlap
-        Parameters
-        ----------
-        raw_conflict: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            Overlap object containing an entity and the provenance of the mention causing the overlap
-        """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
-        preprocessed_types = self._rdf_builder.clean_aggregated_types(raw_conflict['types']['value'])
-
-        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
-                                                                 preprocessed_date)
-        processed_entity = self._rdf_builder.fill_entity(raw_conflict['label']['value'], preprocessed_types, 'LW')
-
-        return Overlap(processed_provenance, processed_entity)
-
-    def get_overlaps(self, utterance):
-        """
-        Query and build overlaps with regards to the subject and object of the heard statement
-        Parameters
-        ----------
-        utterance
-
-        Returns
-        -------
-            Overlaps containing shared information with the heard statement
-        """
-        # Role as subject
-        query = read_query('thoughts/object_overlap') % (utterance.triple.predicate_name, utterance.triple.object_name,
-                                                         utterance.triple.subject_name)
-        response = self._submit_query(query)
-
-        if response[0]['types']['value'] != '':
-            object_overlap = [self._fill_overlap_(elem) for elem in response]
-        else:
-            object_overlap = []
-
-        # Role as object
-        query = read_query('thoughts/subject_overlap') % (
-            utterance.triple.predicate_name, utterance.triple.subject_name,
-            utterance.triple.object_name)
-        response = self._submit_query(query)
-
-        if response[0]['types']['value'] != '':
-            subject_overlap = [self._fill_overlap_(elem) for elem in response]
-        else:
-            subject_overlap = []
-
-        return Overlaps(subject_overlap, object_overlap)
-
-    ########## semantic display ##########
-    def exact_match_dbpedia(self, item):
-        """
-        Query dbpedia for information on this item to get it's semantic type and description.
-        :param item:
-        :return:
-        """
-
-        # Gather combinations
-        combinations = [item, item.lower(), item.capitalize(), item.title()]
-
-        for comb in combinations:
-            # Try exact matching query
-            query = read_query('dbpedia_type_and_description') % (comb)
-            response = self._submit_query(query)
-
-            # break if we have a hit
-            if response:
-                break
-
-        class_type = response[0]['label_type']['value'] if response else None
-        description = response[0]['description']['value'].split('.')[0] if response else None
-
-        return class_type, description
-
-    def keyword_match_dbpedia(self, item):
-        # Query API
-        r = requests.get('http://lookup.dbpedia.org/api/search.asmx/KeywordSearch',
-                         params={'QueryString': item, 'MaxHits': '10'},
-                         headers={'Accept': 'application/json'}).json()['results']
-
-        # Fuzzy match
-        choices = [e['label'] for e in r]
-        best_match = process.extractOne("item", choices)
-
-        # Get best match object
-        r = [{'label': e['label'], 'classes': e['classes'], 'description': e['description']} for e in r if
-             e['label'] == best_match[0]]
-
-        if r:
-            r = r[0]
-
-            if r['classes']:
-                # process dbpedia classes only
-                r['classes'] = [c['label'] for c in r['classes'] if 'dbpedia' in c['uri']]
-
-        else:
-            r = {'label': None, 'classes': None, 'description': None}
-
-        return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
-
     ######################################## Helpers for statement processing ########################################
-    def _measure_detection_overlap(self, detections_1, detections_2):
-        if detections_1 == detections_2:
-            return 1.0
-        else:
-            try:
-                overlap = [value for value in detections_1 if value in detections_2]
-                overlap = float(2 * len(overlap)) / float(len(detections_1) + len(detections_2))
-                return float(overlap)
-            except:
-                return 0.0
-
-    def _fill_episodic_memory_(self, raw_episode):
-        """
-        Structure overlap to get the provenance and entity on which they overlap
-        Parameters
-        ----------
-        raw_conflict: dict
-            standard row result from SPARQL
-
-        Returns
-        -------
-            Overlap object containing an entity and the provenance of the mention causing the overlap
-        """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_episode['date']['value'], 'LC')
-        preprocessed_detections = self._rdf_builder.clean_aggregated_detections(raw_episode['detections']['value'])
-        preprocessed_geo = self._rdf_builder.clean_aggregated_detections(raw_episode['geo']['value'])
-
-        return {'context': raw_episode['cl']['value'], 'place': raw_episode['pl']['value'], 'date': preprocessed_date,
-                'detections': preprocessed_detections, 'geo': preprocessed_geo}
-
-    def _fill_location_memory_(self, raw_objects_in_location):
-        """
-        Structure overlap to get the provenance and entity on which they overlap
-        Parameters
-        ----------
-        preprocessed_types: list
-            list of types for these ids
-        preprocessed_ids: list
-            list of ids for these types of objects
-
-        Returns
-        -------
-            Overlap object containing an entity and the provenance of the mention causing the overlap
-        """
-
-        preprocessed_types = self._rdf_builder.clean_aggregated_types(raw_objects_in_location['type']['value'])
-        preprocessed_ids = raw_objects_in_location['ids']['value'].split('|')
-
-        return preprocessed_types, preprocessed_ids
-
-    def get_episodic_memory(self):
-        # Role as subject
-        query = read_query('context/detections_per_context')
-        response = self._submit_query(query)
-
-        if response[0]['detections']['value'] != '':
-            episodic_memory = [self._fill_episodic_memory_(elem) for elem in response]
-        else:
-            episodic_memory = []
-
-        return episodic_memory
-
-    def get_location_memory(self, cntxt):
-        # brain object memories
-        query = read_query('context/ranked_object_ids_per_type') % 'cntxt.location.label'
-        response = self._submit_query(query)
-
-        location_memory = {}
-        if response[0]['type']['value'] != '':
-            for elem in response:
-                categories, ids = self._fill_location_memory_(elem)
-                # assign multiple categories (eg selene is person and agent)
-                for category in categories:
-                    temp = location_memory.get(casefold_text(category, format='triple'),
-                                               {'brain_ids': [], 'local_ids': []})
-                    temp['brain_ids'].extend(ids)
-                    location_memory[casefold_text(category, format='triple')] = temp
-
-        # Local object memories
-        for item in cntxt.objects: # Error, this skips the first element?
-            if item.name.lower() != 'person':
-                temp = location_memory.get(casefold_text(item.name, format='triple'),
-                                           {'brain_ids': [], 'local_ids': []})
-                temp['local_ids'].append(str(item.id))
-                location_memory[casefold_text(item.name, format='triple')] = temp
-
-        # Merge giving priority to brain elements
-        for cat, ids in location_memory.items():
-            all_ids = ids['brain_ids'][:]
-            all_ids.extend(ids['local_ids'])
-            ids['ids'] = all_ids
-
-        return location_memory
-
     def _link_leolani(self):
         if self.myself is None:
             # Create Leolani
@@ -673,56 +173,9 @@ class LongTermMemory(BasicBrain):
                 entity_type = self._rdf_builder.create_resource_uri(namespace_mapping.get(item, 'N2MU'), item)
                 graph.add((entity.id, RDF.type, entity_type))
 
-    def reason_location(self, cntxt):
-        if cntxt.location.label != cntxt.location.UNKNOWN:
-            return cntxt.location.label
-
-        # Query all locations and detections (through context)
-        memory = self.get_episodic_memory()
-
-        if memory:
-            # Generate set of current detections
-            observations = []
-            for item in cntxt.objects:
-                if item.name.lower() != 'person':
-                    observations.append(casefold_text(item.name, format='triple'))
-            for item in cntxt.people:
-                if item.name.lower() != item.UNKNOWN.lower():
-                    observations.append(casefold_text(item.name, format='triple'))
-            observations.append(cntxt.location.city)
-            observations.append(cntxt.location.country)
-            observations.append(cntxt.location.region)
-
-            # Compare one by one and determine most similar
-            for mem in memory:
-                all = mem['detections']
-                all.extend(mem['geo'])
-                mem['overlap'] = self._measure_detection_overlap(all, observations)
-
-            # Pick most similar and determine equality based on a threshold
-            memory.sort(key=lambda x: x['overlap'])
-            best_guess = memory[0]
-            return best_guess['place'] if best_guess['overlap'] > 0.5 \
-                                          and best_guess['place'] != cntxt.location.UNKNOWN else None
-
-        else:
-            return None
-
-    def set_location_label(self, label, default='Unknown'):
-        # https: // www.semanticarts.com / sparql - changing - instance - uris /
-        # Replace as subject, replace label, replace as object in the database (long term memory)
-
-        queries = read_query('context/rename_location') % (default, label,
-                                                           default, default, default, default, label,
-                                                           default, label)
-        for query in queries.split(';'):
-            response = self._submit_query(query, post=True)
-
-        return None
-
     def _create_detections(self, cntxt, context):
         # Get ids of existing objects in this location
-        memory = self.get_location_memory(cntxt)
+        memory = self.location_reasoner.get_location_memory(cntxt)
 
         # Detections: objects
         self._link_leolani()
@@ -803,9 +256,11 @@ class LongTermMemory(BasicBrain):
             location_id = self._rdf_builder.fill_literal(cntxt.location.id, datatype=self.namespaces['XML']['string'])
             location_city = self._rdf_builder.fill_entity(cntxt.location.city, ['location', 'city', 'Place'], 'LW')
             self._link_entity(location_city, self.interaction_graph)
-            location_country = self._rdf_builder.fill_entity(cntxt.location.country, ['location', 'country', 'Place'], 'LW')
+            location_country = self._rdf_builder.fill_entity(cntxt.location.country, ['location', 'country', 'Place'],
+                                                             'LW')
             self._link_entity(location_country, self.interaction_graph)
-            location_region = self._rdf_builder.fill_entity(cntxt.location.region, ['location', 'region', 'Place'], 'LW')
+            location_region = self._rdf_builder.fill_entity(cntxt.location.region, ['location', 'region', 'Place'],
+                                                            'LW')
             self._link_entity(location_region, self.interaction_graph)
             location = self._rdf_builder.fill_entity(cntxt.location.label, ['location', 'Place'], 'LC')
             self._link_entity(location, self.interaction_graph)
@@ -944,13 +399,18 @@ class LongTermMemory(BasicBrain):
 
     def _create_perspective_graph(self, utterance, subevent, claim_type, detection=None):
         if claim_type == UtteranceType.STATEMENT:
-            certainty_value = confidence_to_certainty_value(utterance.confidence)
+            certainty_value = confidence_to_certainty_value(utterance.perspective.certainty)
+            polarity_value = polarity_to_polarity_value(utterance.perspective.polarity)
+            sentiment_value = sentiment_to_sentiment_value(utterance.perspective.sentiment)
+            perspective_values = {'CertaintyValue': certainty_value, 'PolarityValue': polarity_value,
+                                  'SentimentValue': sentiment_value}
             mention_unit = 'char'
             mention_position = '0-%s' % len(utterance.transcript)
         else:
             scores = [x.confidence for x in utterance.context.objects] + [x.confidence for x in
-                                                                              utterance.context.people]
+                                                                          utterance.context.people]
             certainty_value = confidence_to_certainty_value(sum(scores) / float(len(scores)))
+            perspective_values = {'CertaintyValue': certainty_value}
             mention_unit = 'pixel'
             mention_position = '0-%s' % (len(scores))
 
@@ -961,10 +421,13 @@ class LongTermMemory(BasicBrain):
 
         # Attribution
         attribution_label = mention_label + '_%s' % certainty_value
-        attribution_value = self._rdf_builder.create_resource_uri('GRASP', '%s' % certainty_value)
         attribution = self._rdf_builder.fill_entity(attribution_label, ['Attribution'], 'LTa')
         self._link_entity(attribution, self.perspective_graph)
-        self.perspective_graph.add((attribution.id, RDF.value, attribution_value))
+
+        for typ, val in perspective_values.iteritems():
+            attribution_value = self._rdf_builder.fill_entity(val, ['AttributionValue', typ], 'GRASP')
+            self._link_entity(attribution_value, self.perspective_graph)
+            self.perspective_graph.add((attribution.id, RDF.value, attribution_value.id))
 
         # Bidirectional link between mention and attribution
         self.perspective_graph.add((mention.id, self.namespaces['GRASP']['hasAttribution'], attribution.id))
@@ -984,27 +447,14 @@ class LongTermMemory(BasicBrain):
 
         return mention, attribution
 
-    def _serialize(self, file_path):
-        """
-        Save graph to local file and return the serialized string
-        :param file_path: path to where data will be saved
-        :return: serialized data as string
-        """
-        # Save to file but return the python representation
-        with open(file_path + '.' + self._connection.format, 'w') as f:
-            self.dataset.serialize(f, format=self._connection.format)
-
-        data = self.dataset.serialize(format=self._connection.format)
-        self.clean_local_memory()
-
-        return data
-
     def _model_graphs_(self, utterance):
         # Leolani world (includes instance and claim graphs)
         claim = self._create_instance_graph(utterance)
 
         # Leolani talk (includes interaction and perspective graphs)
         self._create_interaction_graph(utterance, claim)
+
+        self._log.info("Triple: {}".format(utterance.triple))
 
         return claim
 
@@ -1067,6 +517,7 @@ class LongTermMemory(BasicBrain):
                                 ?author rdfs:label ?authorlabel .
                                 ?m grasp:hasAttribution ?att .
                                 ?att rdf:value ?v .
+                                ?v rdf:type grasp:CertaintyValue .
                             }
                     """ % (utterance.triple.predicate_name,
                            utterance.triple.subject_name,

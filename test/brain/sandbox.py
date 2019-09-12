@@ -71,8 +71,6 @@ def transform_capsule(capsule, empty=False, no_people=False, place=False):
 # Create brain connection
 brain = LongTermMemory(clear_all=True)
 
-conlficts = brain.get_all_conflicts()
-
 capsule_knows = {  # dimitris knows piek
     "subject": {
         "label": "karla",

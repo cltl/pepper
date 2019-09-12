@@ -3,10 +3,9 @@ from __future__ import unicode_literals
 from pepper.language.pos import POS
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
-from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
 from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.utils.rdf_builder import RdfBuilder
-from pepper.brain.utils.response import Triple
+from pepper.brain.utils.response import Triple, Perspective
 
 from pepper import logger, config
 from nltk import pos_tag
@@ -18,6 +17,7 @@ from collections import Counter
 from random import getrandbits
 from datetime import datetime
 import enum
+import json
 import os
 
 from typing import List, Optional
@@ -36,57 +36,6 @@ class Emotion(enum.Enum):  # Not used yet
     HAPPINESS = 3
     SADNESS = 4
     SURPRISE = 5
-
-
-class Perspective(object):
-    def __init__(self, certainty, polarity, sentiment, time=None, emotion=None):
-        # type: (float, int, float, Time, Emotion) -> Perspective
-        """
-        Construct Perspective object
-        Parameters
-        ----------
-        certainty: float
-            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain
-        polarity: int
-            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment
-        sentiment: float
-            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent
-            positive sentiments.
-        time: Time
-            Enumerator representing time. This is extracted from the tense
-        emotion: Emotion
-            Enumerator representing one of the 6 universal emotions.
-        """
-        self._certainty = certainty
-        self._polarity = polarity
-        self._sentiment = sentiment
-        self._time = time
-        self._emotion = emotion
-
-    @property
-    def certainty(self):
-        # type: () -> float
-        return self._certainty
-
-    @property
-    def polarity(self):
-        # type: () -> int
-        return self._polarity
-
-    @property
-    def sentiment(self):
-        # type: () -> float
-        return self._sentiment
-
-    @property
-    def time(self):
-        # type: () -> Optional[Time]
-        return self._time
-
-    @property
-    def emotion(self):
-        # type: () -> Optional[Emotion]
-        return self._emotion
 
 
 class Chat(object):
@@ -395,14 +344,16 @@ class Utterance(object):
         if not analyzer:
             return "I cannot parse your input"
 
-        Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
+        for el in ["subject", "predicate", "object"]:
+            Analyzer.LOG.info(
+                "RDF {:>10}: {}".format(el, json.dumps(analyzer.rdf[el], sort_keys=True, separators=(', ', ': '))))
+
+        self.pack_triple(analyzer.rdf, analyzer.utterance_type)
 
         if analyzer.utterance_type == UtteranceType.STATEMENT:
             self.pack_perspective(analyzer.perspective)
 
-        self.write_template(analyzer.rdf, analyzer.utterance_type)
-
-    def write_template(self, rdf, utterance_type):
+    def pack_triple(self, rdf, utterance_type):
         """
         Sets utterance type, the extracted triple and (in future) the perspective
         Parameters
@@ -421,60 +372,14 @@ class Utterance(object):
         if not rdf:
             return 'error in the rdf'
 
-        builder = RdfBuilder()  # TODO PACKING PERSPECTIVE
+        builder = RdfBuilder()
 
-        for el in rdf:
-            final_type = []
-            if rdf[el]['text'] == '':
-                continue
-            if type(rdf[el]['type']) == dict:
-                for typ in rdf[el]['type']:
-                    if rdf[el]['type'][typ] in [None, '']:
-                        entry = lexicon_lookup(typ)
-                        if entry is None:
-                            if typ.lower() in ['lenka', 'leolani', 'selene', 'suzana', 'bram',
-                                               'piek'] or typ.capitalize() == typ:
-                                final_type.append('person')
-                            else:
-                                node = get_node_label(self.parser.forest[0], typ)
-                                if node in ['IN', 'TO']:
-                                    final_type.append('preposition')
-                                elif node.startswith('V'):
-                                    final_type.append('verb')
-                                elif node.startswith('N'):
-                                    final_type.append('noun')
-
-                        elif 'proximity' in entry:
-                            final_type.append('deictic')
-                        elif 'person' in entry:
-                            final_type.append('pronoun')
-
-                    else:
-                        final_type.append(rdf[el]['type'][typ])
-                rdf[el]['type'] = final_type
-
-            elif rdf[el]['type'] in [None, '']:
-                entry = lexicon_lookup(rdf[el]['text'])
-                if entry is None:
-                    if rdf[el]['text'].lower() in ['lenka', 'leolani', 'selene', 'suzana', 'bram',
-                                                   'piek'] or typ.capitalize() == typ:
-                        rdf[el]['type'] = 'person'
-                elif 'proximity' in entry:
-                    rdf[el]['type'] = 'deictic'
-
-        for el in rdf:
-            if rdf[el]['type'] in [None, ''] and rdf[el]['text'] != '':
-                print('unknown type ', rdf[el])
-            else:
-                print(rdf[el])
-
-        # Build subject
+        # Build each element
         subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'),
-                                      ["person"])  # capitalization
-
+                                      rdf['subject']['type'])
         predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
-
-        object = builder.fill_entity_from_label(casefold_text(rdf['object']['text'], format='triple'))
+        object = builder.fill_entity(casefold_text(rdf['object']['text'], format='triple'),
+                                                rdf['object']['type'])
 
         self.set_triple(Triple(subject, predicate, object))
 
@@ -726,7 +631,7 @@ class Parser(object):
                         index += 1
 
             else:
-                self._log.info("no forest")
+                self._log.debug("no forest")
 
             for el in s_r:
                 if type(s_r[el]['raw']) == list:

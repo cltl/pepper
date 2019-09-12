@@ -197,8 +197,8 @@ def test_with_triples(path):
             reply = phrase_thoughts(brain_response, True, True)
             '''
 
-        print(chat.last_utterance)
-        print(chat.last_utterance.triple)
+        # print(chat.last_utterance)
+        # print(chat.last_utterance.triple)
         # print(reply)
         index += 1
 
