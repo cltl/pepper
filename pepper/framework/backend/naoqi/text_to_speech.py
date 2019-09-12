@@ -45,4 +45,4 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         if animation:
             self._service.say(r"\\rspd={2}\\^startTag({1}){0}^stopTag({1})".format(text, animation, NAOQI_SPEECH_SPEED))
         else:
-            self._service.say(text)
+            self._service.say(r"\\rspd={1}\\{0}".format(text, NAOQI_SPEECH_SPEED))
