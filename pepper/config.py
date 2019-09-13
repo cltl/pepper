@@ -1,14 +1,25 @@
-"""Pepper Configuration File"""
+"""
+Pepper Configuration File
+-------------------------
+
+Settings for:
+
+- Application Backend, Language, Paths & URLs
+- API Keys (Google Cloud Services & Wolfram Alpha)
+- Sensory Parameters (tweak for desired performance)
+
+(see source file for more information)
+
+"""
 
 import pepper
 import json
 import os
 
 
-# Application Configuration Settings
+# <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-# More Backends will be added in the future!
 APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
@@ -29,7 +40,7 @@ APPLICATION_LANGUAGE = 'en-GB'
 INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
 
 
-# Application Paths
+# <<< Application Paths >>>
 
 # pepper/                  PROJECT_ROOT
 #   people/                 PEOPLE_ROOT
@@ -106,8 +117,7 @@ LOG = pepper.LOGGING_FILE
 # Brain Logging
 BRAIN_LOG_ROOT = os.path.join(PACKAGE_ROOT, "../backups/brain/brain_log_{}")
 
-
-# Application URLs
+# <<< Application URLs >>>
 
 # Brain URL (Local GraphDB or Remote Database)
 BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
@@ -120,7 +130,7 @@ NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
-# Application Sensor Parameters
+# <<< Application Sensor Parameters >>>
 FACE_RECOGNITION_THRESHOLD = 0.5
 OBJECT_RECOGNITION_THRESHOLD = 0.5
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
@@ -142,12 +152,14 @@ MICROPHONE_CHANNELS = 1
 CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
 CAMERA_FRAME_RATE = 3
 
+# NAOqi Text to Speech Speed
+NAOQI_SPEECH_SPEED = 80
+
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
 NAOQI_USE_SYSTEM_MICROPHONE = False
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
 NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
-NAOQI_SPEECH_SPEED = 80
 
 
 # .json file with id tokens, with keys:

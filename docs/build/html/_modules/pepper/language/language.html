@@ -148,10 +148,9 @@
 <span class="kn">from</span> <span class="nn">pepper.language.pos</span> <span class="k">import</span> <span class="n">POS</span>
 <span class="kn">from</span> <span class="nn">pepper.language.analyzer</span> <span class="k">import</span> <span class="n">Analyzer</span>
 <span class="kn">from</span> <span class="nn">pepper.language.utils.atoms</span> <span class="k">import</span> <span class="n">UtteranceType</span>
-<span class="kn">from</span> <span class="nn">pepper.language.utils.helper_functions</span> <span class="k">import</span> <span class="n">lexicon_lookup</span><span class="p">,</span> <span class="n">get_node_label</span>
 <span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">casefold_text</span>
 <span class="kn">from</span> <span class="nn">pepper.brain.utils.rdf_builder</span> <span class="k">import</span> <span class="n">RdfBuilder</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.response</span> <span class="k">import</span> <span class="n">Triple</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.response</span> <span class="k">import</span> <span class="n">Triple</span><span class="p">,</span> <span class="n">Perspective</span>
 
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">pos_tag</span>
@@ -163,6 +162,7 @@
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
@@ -181,57 +181,6 @@
     <span class="n">HAPPINESS</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="n">SADNESS</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="n">SURPRISE</span> <span class="o">=</span> <span class="mi">5</span></div>
-
-
-<div class="viewcode-block" id="Perspective"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Perspective">[docs]</a><span class="k">class</span> <span class="nc">Perspective</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">certainty</span><span class="p">,</span> <span class="n">polarity</span><span class="p">,</span> <span class="n">sentiment</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">emotion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># type: (float, int, float, Time, Emotion) -&gt; Perspective</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct Perspective object</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        certainty: float</span>
-<span class="sd">            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain</span>
-<span class="sd">        polarity: int</span>
-<span class="sd">            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment</span>
-<span class="sd">        sentiment: float</span>
-<span class="sd">            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent</span>
-<span class="sd">            positive sentiments.</span>
-<span class="sd">        time: Time</span>
-<span class="sd">            Enumerator representing time. This is extracted from the tense</span>
-<span class="sd">        emotion: Emotion</span>
-<span class="sd">            Enumerator representing one of the 6 universal emotions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_certainty</span> <span class="o">=</span> <span class="n">certainty</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_polarity</span> <span class="o">=</span> <span class="n">polarity</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sentiment</span> <span class="o">=</span> <span class="n">sentiment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_emotion</span> <span class="o">=</span> <span class="n">emotion</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">certainty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># type: () -&gt; float</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_certainty</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">polarity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># type: () -&gt; int</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarity</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">sentiment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># type: () -&gt; float</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sentiment</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># type: () -&gt; Optional[Time]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">emotion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># type: () -&gt; Optional[Emotion]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_emotion</span></div>
 
 
 <div class="viewcode-block" id="Chat"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Chat">[docs]</a><span class="k">class</span> <span class="nc">Chat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -540,14 +489,16 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">analyzer</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;I cannot parse your input&quot;</span>
 
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;RDF </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;predicate&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">]:</span>
+            <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;RDF </span><span class="si">{:&gt;10}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">],</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">))))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pack_triple</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">,</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pack_perspective</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">perspective</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pack_perspective</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">perspective</span><span class="p">)</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">write_template</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">,</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Utterance.write_template"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.write_template">[docs]</a>    <span class="k">def</span> <span class="nf">write_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_type</span><span class="p">):</span>
+<div class="viewcode-block" id="Utterance.pack_triple"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.pack_triple">[docs]</a>    <span class="k">def</span> <span class="nf">pack_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets utterance type, the extracted triple and (in future) the perspective</span>
 <span class="sd">        Parameters</span>
@@ -566,60 +517,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">rdf</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;error in the rdf&#39;</span>
 
-        <span class="n">builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>  <span class="c1"># TODO PACKING PERSPECTIVE</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">:</span>
-            <span class="n">final_type</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]:</span>
-                    <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
-                        <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">typ</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span>
-                                               <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
-                                <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
-                            <span class="k">else</span><span class="p">:</span>
-                                <span class="n">node</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">typ</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">]:</span>
-                                    <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;preposition&#39;</span><span class="p">)</span>
-                                <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
-                                    <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;verb&#39;</span><span class="p">)</span>
-                                <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
-                                    <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;noun&#39;</span><span class="p">)</span>
-
-                        <span class="k">elif</span> <span class="s1">&#39;proximity&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
-                            <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;deictic&#39;</span><span class="p">)</span>
-                        <span class="k">elif</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
-                            <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;pronoun&#39;</span><span class="p">)</span>
-
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">])</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_type</span>
-
-            <span class="k">elif</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
-                <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span>
-                                                   <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
-                        <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;person&#39;</span>
-                <span class="k">elif</span> <span class="s1">&#39;proximity&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
-                    <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;deictic&#39;</span>
-
-        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unknown type &#39;</span><span class="p">,</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
-
-        <span class="c1"># Build subject</span>
+        <span class="c1"># Build each element</span>
         <span class="n">subject</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
-                                      <span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">])</span>  <span class="c1"># capitalization</span>
-
+                                      <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
         <span class="n">predicate</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
-
-        <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity_from_label</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
+        <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
+                                                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_triple</span><span class="p">(</span><span class="n">Triple</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="nb">object</span><span class="p">))</span></div>
 
@@ -871,7 +776,7 @@
                         <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;no forest&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;no forest&quot;</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">s_r</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">s_r</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>

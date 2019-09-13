@@ -174,35 +174,23 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.check_instance_novelty" title="pepper.brain.long_term_memory.LongTermMemory.check_instance_novelty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_instance_novelty</span></code></a>(instance_url)</td>
-<td>Query if an instance (entity) has been heard about before Parameters ———- instance_url: str     URI of instance</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_brain</span></code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_brain</span></code>()</td>
 <td>Clear all data from the brain :return: response status</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_friends</span></code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_friends</span></code>()</td>
 <td>Count number of people I have talked to :return:</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_statements</span></code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_statements</span></code>()</td>
 <td>Count statements or ‘facts’ in the brain :return:</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.exact_match_dbpedia" title="pepper.brain.long_term_memory.LongTermMemory.exact_match_dbpedia"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact_match_dbpedia</span></code></a>(item)</td>
-<td>Query dbpedia for information on this item to get it’s semantic type and description.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.experience" title="pepper.brain.long_term_memory.LongTermMemory.experience"><code class="xref py py-obj docutils literal notranslate"><span class="pre">experience</span></code></a>(utterance)</td>
 <td>Main function to interact with if an experience is coming into the brain.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts" title="pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_conflicts</span></code></a>()</td>
-<td>Aggregate all conflicts in brain :return:</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_best_friends</span></code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_best_friends</span></code>()</td>
 <td>Get names of the 5 people I have talked to the most :return:</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_classes</span></code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_classes</span></code>()</td>
 <td>Get classes or types in social ontology :return:</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_entity_gaps" title="pepper.brain.long_term_memory.LongTermMemory.get_entity_gaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_entity_gaps</span></code></a>(entity[,&nbsp;exclude])</td>
-<td>Query and build gaps with regards to the range and domain of the given entity and its predicates Parameters ———- entity: dict     Information regarding the entity</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instance_of_type</span></code>(instance_type)</td>
 <td>Get instances of a certain class type :param instance_type: name of class in ontology :return:</td>
@@ -213,20 +201,8 @@
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_my_friends</span></code>()</td>
 <td>Get names of people I have talked to :return:</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts" title="pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_negation_conflicts</span></code></a>(utterance)</td>
-<td>Query and build negation conflicts, meaning conflicts because predicates are directly negated Parameters ———- utterance</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_object_cardinality_conflicts" title="pepper.brain.long_term_memory.LongTermMemory.get_object_cardinality_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_cardinality_conflicts</span></code></a>(utterance)</td>
-<td>Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have multiple object values Parameters ———- utterance</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_overlaps" title="pepper.brain.long_term_memory.LongTermMemory.get_overlaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_overlaps</span></code></a>(utterance)</td>
-<td>Query and build overlaps with regards to the subject and object of the heard statement Parameters ———- utterance</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_predicates</span></code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_predicates</span></code>()</td>
 <td>Get predicates in social ontology :return:</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.get_statement_novelty" title="pepper.brain.long_term_memory.LongTermMemory.get_statement_novelty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_statement_novelty</span></code></a>(statement_uri)</td>
-<td>Query and build provenance if an instance (statement) has been learned before Parameters ———- statement_uri: str     URI of instance</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_triples_with_predicate</span></code>(predicate)</td>
 <td>Get triples that contain this predicate :param predicate: :return:</td>
@@ -237,24 +213,21 @@
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.query_brain" title="pepper.brain.long_term_memory.LongTermMemory.query_brain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_brain</span></code></a>(utterance)</td>
 <td>Main function to interact with if a question is coming into the brain.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.reason_entity_type" title="pepper.brain.long_term_memory.LongTermMemory.reason_entity_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reason_entity_type</span></code></a>(item[,&nbsp;exact_only])</td>
-<td>Main function to determine if this item can be recognized by the brain, learned, or none :param item: :return:</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.update" title="pepper.brain.long_term_memory.LongTermMemory.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(utterance[,&nbsp;reason_types])</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.update" title="pepper.brain.long_term_memory.LongTermMemory.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(utterance[,&nbsp;reason_types])</td>
 <td>Main function to interact with if a statement is coming into the brain.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_ontology</span></code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_ontology</span></code>()</td>
 <td>Upload ontology :return: response status</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">when_last_chat_with</span></code>(actor_label)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">when_last_chat_with</span></code>(actor_label)</td>
 <td>Get time value for the last time I chatted with this person :param actor_label: name of person :return:</td>
 </tr>
 </tbody>
 </table>
 <table border="1" class="docutils">
 <colgroup>
-<col width="81%" />
-<col width="19%" />
+<col width="69%" />
+<col width="31%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><strong>clean_local_memory</strong></td>
@@ -263,62 +236,12 @@
 <tr class="row-even"><td><strong>create_context</strong></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td><strong>get_conflicts_with_one_to_one_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>get_episodic_memory</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_location_memory</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>keyword_match_dbpedia</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>reason_location</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>set_location_label</strong></td>
-<td>&#160;</td>
-</tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.check_instance_novelty">
-<code class="descname">check_instance_novelty</code><span class="sig-paren">(</span><em>instance_url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.check_instance_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.check_instance_novelty" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query if an instance (entity) has been heard about before
-Parameters
-———-
-instance_url: str</p>
-<blockquote>
-<div>URI of instance</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>conflicts: List[StatementNovelty]</strong></dt>
-<dd><p class="first last">List of provenance for the instance</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.create_context">
 <code class="descname">create_context</code><span class="sig-paren">(</span><em>cntxt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.create_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.create_context" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.exact_match_dbpedia">
-<code class="descname">exact_match_dbpedia</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.exact_match_dbpedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.exact_match_dbpedia" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query dbpedia for information on this item to get it’s semantic type and description.
-:param item:
-:return:</p>
-</dd></dl>
 
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.experience">
@@ -330,146 +253,6 @@ containing parsed experience, transforms them to triples, and posts them to the 
 </dd></dl>
 
 <dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts">
-<code class="descname">get_all_conflicts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_all_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_all_conflicts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Aggregate all conflicts in brain
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_conflicts_with_one_to_one_predicate">
-<code class="descname">get_conflicts_with_one_to_one_predicate</code><span class="sig-paren">(</span><em>one_to_one_predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_conflicts_with_one_to_one_predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_conflicts_with_one_to_one_predicate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_entity_gaps">
-<code class="descname">get_entity_gaps</code><span class="sig-paren">(</span><em>entity</em>, <em>exclude=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_entity_gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_entity_gaps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build gaps with regards to the range and domain of the given entity and its predicates
-Parameters
-———-
-entity: dict</p>
-<blockquote>
-<div>Information regarding the entity</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Gaps object containing gaps related to range and domain information that could be learned</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_episodic_memory">
-<code class="descname">get_episodic_memory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_episodic_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_episodic_memory" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_location_memory">
-<code class="descname">get_location_memory</code><span class="sig-paren">(</span><em>cntxt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_location_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_location_memory" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts">
-<code class="descname">get_negation_conflicts</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_negation_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_negation_conflicts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build negation conflicts, meaning conflicts because predicates are directly negated
-Parameters
-———-
-utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>conflicts: List[NegationConflict]</strong></dt>
-<dd><p class="first last">List of Conflicts containing the predicate which creates the conflict, and their provenance</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_object_cardinality_conflicts">
-<code class="descname">get_object_cardinality_conflicts</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_object_cardinality_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_object_cardinality_conflicts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
-multiple object values
-Parameters
-———-
-utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>conflicts: List[CardinalityConflicts]</strong></dt>
-<dd><p class="first last">List of Conflicts containing the object which creates the conflict, and their provenance</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_overlaps">
-<code class="descname">get_overlaps</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_overlaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_overlaps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build overlaps with regards to the subject and object of the heard statement
-Parameters
-———-
-utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Overlaps containing shared information with the heard statement</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.get_statement_novelty">
-<code class="descname">get_statement_novelty</code><span class="sig-paren">(</span><em>statement_uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.get_statement_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.get_statement_novelty" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build provenance if an instance (statement) has been learned before
-Parameters
-———-
-statement_uri: str</p>
-<blockquote>
-<div>URI of instance</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: List[StatementNovelty]</strong></dt>
-<dd><p class="first last">List of provenance for the instance</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.keyword_match_dbpedia">
-<code class="descname">keyword_match_dbpedia</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.keyword_match_dbpedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.keyword_match_dbpedia" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.query_brain">
 <code class="descname">query_brain</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.query_brain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.query_brain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main function to interact with if a question is coming into the brain. Takes in a structured parsed question,
@@ -477,24 +260,6 @@ transforms it into a query, and queries the triple store for a response
 :param utterance: Structured data of a parsed question
 :return: json response containing the results of the query, and the original question</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.reason_entity_type">
-<code class="descname">reason_entity_type</code><span class="sig-paren">(</span><em>item</em>, <em>exact_only=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.reason_entity_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.reason_entity_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function to determine if this item can be recognized by the brain, learned, or none
-:param item:
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.reason_location">
-<code class="descname">reason_location</code><span class="sig-paren">(</span><em>cntxt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.reason_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.reason_location" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.set_location_label">
-<code class="descname">set_location_label</code><span class="sig-paren">(</span><em>label</em>, <em>default='Unknown'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.set_location_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.set_location_label" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.update">

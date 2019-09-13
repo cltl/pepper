@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.brain.utils.though_generator module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.base_cases.html">pepper.brain.utils.base_cases module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.constants.html">pepper.brain.utils.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.helper_functions.html">pepper.brain.utils.helper_functions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.location_reasoner.html">pepper.brain.utils.location_reasoner module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.rdf_builder.html">pepper.brain.utils.rdf_builder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.response.html">pepper.brain.utils.response module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.store_connector.html">pepper.brain.utils.store_connector module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.brain.utils.though_generator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.type_reasoner.html">pepper.brain.utils.type_reasoner module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.basic_brain.html">pepper.brain.basic_brain module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.long_term_memory.html">pepper.brain.long_term_memory module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.brain.html">pepper.brain package</a> &raquo;</li>
+        
+          <li><a href="pepper.brain.utils.html">pepper.brain.utils package</a> &raquo;</li>
+        
+      <li>pepper.brain.utils.though_generator module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.brain.utils.though_generator.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.brain.utils.though_generator">
+<span id="pepper-brain-utils-though-generator-module"></span><h1>pepper.brain.utils.though_generator module<a class="headerlink" href="#module-pepper.brain.utils.though_generator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.though_generator.</code><code class="descname">ThoughtGenerator</code><span class="sig-paren">(</span><em>address='http://localhost:7200/repositories/leolani'</em>, <em>clear_all=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain" title="pepper.brain.basic_brain.BasicBrain"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.basic_brain.BasicBrain</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.check_instance_novelty" title="pepper.brain.utils.though_generator.ThoughtGenerator.check_instance_novelty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_instance_novelty</span></code></a>(instance_url)</td>
+<td>Query if an instance (entity) has been heard about before Parameters ———- instance_url: str     URI of instance</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_brain</span></code>()</td>
+<td>Clear all data from the brain :return: response status</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_friends</span></code>()</td>
+<td>Count number of people I have talked to :return:</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_statements</span></code>()</td>
+<td>Count statements or ‘facts’ in the brain :return:</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_all_conflicts" title="pepper.brain.utils.though_generator.ThoughtGenerator.get_all_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_conflicts</span></code></a>()</td>
+<td>Aggregate all conflicts in brain :return:</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_best_friends</span></code>()</td>
+<td>Get names of the 5 people I have talked to the most :return:</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_classes</span></code>()</td>
+<td>Get classes or types in social ontology :return:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_entity_gaps" title="pepper.brain.utils.though_generator.ThoughtGenerator.get_entity_gaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_entity_gaps</span></code></a>(entity[,&nbsp;exclude])</td>
+<td>Query and build gaps with regards to the range and domain of the given entity and its predicates Parameters ———- entity: dict     Information regarding the entity</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instance_of_type</span></code>(instance_type)</td>
+<td>Get instances of a certain class type :param instance_type: name of class in ontology :return:</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_labels_and_classes</span></code>()</td>
+<td>Get classes in social ontology :return:</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_my_friends</span></code>()</td>
+<td>Get names of people I have talked to :return:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_negation_conflicts" title="pepper.brain.utils.though_generator.ThoughtGenerator.get_negation_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_negation_conflicts</span></code></a>(utterance)</td>
+<td>Query and build negation conflicts, meaning conflicts because predicates are directly negated Parameters ———- utterance</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_object_cardinality_conflicts" title="pepper.brain.utils.though_generator.ThoughtGenerator.get_object_cardinality_conflicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_cardinality_conflicts</span></code></a>(utterance)</td>
+<td>Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have multiple object values Parameters ———- utterance</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_overlaps" title="pepper.brain.utils.though_generator.ThoughtGenerator.get_overlaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_overlaps</span></code></a>(utterance)</td>
+<td>Query and build overlaps with regards to the subject and object of the heard statement Parameters ———- utterance</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_predicates</span></code>()</td>
+<td>Get predicates in social ontology :return:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_statement_novelty" title="pepper.brain.utils.though_generator.ThoughtGenerator.get_statement_novelty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_statement_novelty</span></code></a>(statement_uri)</td>
+<td>Query and build provenance if an instance (statement) has been learned before Parameters ———- statement_uri: str     URI of instance</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_triples_with_predicate</span></code>(predicate)</td>
+<td>Get triples that contain this predicate :param predicate: :return:</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_type_of_instance</span></code>(label)</td>
+<td>Get types of a certain instance identified by its label :param label: label of instance :return:</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_ontology</span></code>()</td>
+<td>Upload ontology :return: response status</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">when_last_chat_with</span></code>(actor_label)</td>
+<td>Get time value for the last time I chatted with this person :param actor_label: name of person :return:</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="81%" />
+<col width="19%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>clean_local_memory</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>get_conflicts_with_one_to_one_predicate</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.check_instance_novelty">
+<code class="descname">check_instance_novelty</code><span class="sig-paren">(</span><em>instance_url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.check_instance_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.check_instance_novelty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query if an instance (entity) has been heard about before
+Parameters
+———-
+instance_url: str</p>
+<blockquote>
+<div>URI of instance</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>conflicts: List[StatementNovelty]</strong></dt>
+<dd><p class="first last">List of provenance for the instance</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_all_conflicts">
+<code class="descname">get_all_conflicts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_all_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_all_conflicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregate all conflicts in brain
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_conflicts_with_one_to_one_predicate">
+<code class="descname">get_conflicts_with_one_to_one_predicate</code><span class="sig-paren">(</span><em>one_to_one_predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_conflicts_with_one_to_one_predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_conflicts_with_one_to_one_predicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_entity_gaps">
+<code class="descname">get_entity_gaps</code><span class="sig-paren">(</span><em>entity</em>, <em>exclude=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_entity_gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_entity_gaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query and build gaps with regards to the range and domain of the given entity and its predicates
+Parameters
+———-
+entity: dict</p>
+<blockquote>
+<div>Information regarding the entity</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Gaps object containing gaps related to range and domain information that could be learned</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_negation_conflicts">
+<code class="descname">get_negation_conflicts</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_negation_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_negation_conflicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query and build negation conflicts, meaning conflicts because predicates are directly negated
+Parameters
+———-
+utterance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>conflicts: List[NegationConflict]</strong></dt>
+<dd><p class="first last">List of Conflicts containing the predicate which creates the conflict, and their provenance</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_object_cardinality_conflicts">
+<code class="descname">get_object_cardinality_conflicts</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_object_cardinality_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_object_cardinality_conflicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
+multiple object values
+Parameters
+———-
+utterance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>conflicts: List[CardinalityConflicts]</strong></dt>
+<dd><p class="first last">List of Conflicts containing the object which creates the conflict, and their provenance</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_overlaps">
+<code class="descname">get_overlaps</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_overlaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_overlaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query and build overlaps with regards to the subject and object of the heard statement
+Parameters
+———-
+utterance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Overlaps containing shared information with the heard statement</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.though_generator.ThoughtGenerator.get_statement_novelty">
+<code class="descname">get_statement_novelty</code><span class="sig-paren">(</span><em>statement_uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/though_generator.html#ThoughtGenerator.get_statement_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.though_generator.ThoughtGenerator.get_statement_novelty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query and build provenance if an instance (statement) has been learned before
+Parameters
+———-
+statement_uri: str</p>
+<blockquote>
+<div>URI of instance</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>response: List[StatementNovelty]</strong></dt>
+<dd><p class="first last">List of provenance for the instance</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

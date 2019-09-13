@@ -153,7 +153,6 @@
 
 
 <div class="viewcode-block" id="RdfBuilder"><a class="viewcode-back" href="../../../../pepper.brain.utils.rdf_builder.html#pepper.brain.utils.rdf_builder.RdfBuilder">[docs]</a><span class="k">class</span> <span class="nc">RdfBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="n">ONTOLOGY_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;../../../ontologies&#39;</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -258,6 +257,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;owl&#39;</span><span class="p">,</span> <span class="n">OWL</span><span class="p">)</span>
 
     <span class="c1">########## basic constructors ##########</span>
+    <span class="k">def</span> <span class="nf">_fix_nlp_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+        <span class="c1"># TODO here we know if two types are different category (aka noun and verb) we might need to split the triple</span>
+        <span class="n">fixed_types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># this was just a char</span>
+                <span class="n">fixed_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">break</span>
+            <span class="k">elif</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">el</span><span class="p">:</span>
+                <span class="n">fixed_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fixed_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fixed_types</span>
+
 <div class="viewcode-block" id="RdfBuilder.create_resource_uri"><a class="viewcode-back" href="../../../../pepper.brain.utils.rdf_builder.html#pepper.brain.utils.rdf_builder.RdfBuilder.create_resource_uri">[docs]</a>    <span class="k">def</span> <span class="nf">create_resource_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create an URI for the given resource (entity, predicate, named graph, etc) in the given namespace</span>
@@ -277,7 +291,7 @@
         <span class="k">if</span> <span class="n">namespace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">uri</span> <span class="o">=</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">to_iri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="n">namespace</span><span class="p">]</span> <span class="o">+</span> <span class="n">resource_name</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">uri</span> <span class="o">=</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">to_iri</span><span class="p">(</span><span class="n">namespace</span> <span class="o">+</span> <span class="n">resource_name</span><span class="p">))</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="n">URIRef</span><span class="p">(</span><span class="n">to_iri</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span><span class="n">resource_name</span><span class="p">)))</span>
 
         <span class="k">return</span> <span class="n">uri</span></div>
 
@@ -314,9 +328,13 @@
 <span class="sd">        -------</span>
 <span class="sd">            Entity object with given label</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">entity_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">Entity</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">types</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">types</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">label</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Unknown type: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_entity_from_label</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">entity_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="n">fixed_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_nlp_types</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Entity</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">fixed_types</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RdfBuilder.fill_predicate"><a class="viewcode-back" href="../../../../pepper.brain.utils.rdf_builder.html#pepper.brain.utils.rdf_builder.RdfBuilder.fill_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">fill_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;N2MU&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

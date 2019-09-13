@@ -205,11 +205,11 @@
 
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">on_face</span><span class="p">:</span>
 
-                <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">FaceClassifier</span><span class="o">.</span><span class="n">NEW</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
                         <span class="n">on_face_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">face</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">FACE_RECOGNITION_THRESHOLD</span><span class="p">:</span>
-                    <span class="n">on_face_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+                    <span class="n">on_face_known</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">on_face</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_face_callbacks</span><span class="p">:</span>

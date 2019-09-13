@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.brain.utils.location_reasoner &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.brain.utils.location_reasoner</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.brain.utils.location_reasoner</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">read_query</span><span class="p">,</span> <span class="n">casefold_text</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.basic_brain</span> <span class="k">import</span> <span class="n">BasicBrain</span>
+
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+
+
+<div class="viewcode-block" id="LocationReasoner"><a class="viewcode-back" href="../../../../pepper.brain.utils.location_reasoner.html#pepper.brain.utils.location_reasoner.LocationReasoner">[docs]</a><span class="k">class</span> <span class="nc">LocationReasoner</span><span class="p">(</span><span class="n">BasicBrain</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; LocationReasoner</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Interact with Triple store</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        address: str</span>
+<span class="sd">            IP address and port of the Triple store</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">LocationReasoner</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">clear_all</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_measure_detection_overlap</span><span class="p">(</span><span class="n">detections_1</span><span class="p">,</span> <span class="n">detections_2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">detections_1</span> <span class="o">==</span> <span class="n">detections_2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">overlap</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">detections_1</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">detections_2</span><span class="p">]</span>
+                <span class="n">overlap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">overlap</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">detections_1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections_2</span><span class="p">))</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">overlap</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">def</span> <span class="nf">_fill_episodic_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_episode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure overlap to get the provenance and entity on which they overlap</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_episode: dict</span>
+<span class="sd">            standard row result from SPARQL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Overlap object containing an entity and the provenance of the mention causing the overlap</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">preprocessed_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">label_from_uri</span><span class="p">(</span><span class="n">raw_episode</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
+        <span class="n">preprocessed_detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">clean_aggregated_detections</span><span class="p">(</span><span class="n">raw_episode</span><span class="p">[</span><span class="s1">&#39;detections&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+        <span class="n">preprocessed_geo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">clean_aggregated_detections</span><span class="p">(</span><span class="n">raw_episode</span><span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;context&#39;</span><span class="p">:</span> <span class="n">raw_episode</span><span class="p">[</span><span class="s1">&#39;cl&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;place&#39;</span><span class="p">:</span> <span class="n">raw_episode</span><span class="p">[</span><span class="s1">&#39;pl&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">preprocessed_date</span><span class="p">,</span>
+                <span class="s1">&#39;detections&#39;</span><span class="p">:</span> <span class="n">preprocessed_detections</span><span class="p">,</span> <span class="s1">&#39;geo&#39;</span><span class="p">:</span> <span class="n">preprocessed_geo</span><span class="p">}</span>
+
+<div class="viewcode-block" id="LocationReasoner.get_episodic_memory"><a class="viewcode-back" href="../../../../pepper.brain.utils.location_reasoner.html#pepper.brain.utils.location_reasoner.LocationReasoner.get_episodic_memory">[docs]</a>    <span class="k">def</span> <span class="nf">get_episodic_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Role as subject</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;context/detections_per_context&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;detections&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">episodic_memory</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_episodic_memory_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">episodic_memory</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">episodic_memory</span></div>
+
+    <span class="k">def</span> <span class="nf">_fill_location_memory_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_objects_in_location</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure overlap to get the provenance and entity on which they overlap</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_objects_in_location: dict</span>
+<span class="sd">            list of ids and types for these ids</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Overlap object containing an entity and the provenance of the mention causing the overlap</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">preprocessed_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">clean_aggregated_types</span><span class="p">(</span><span class="n">raw_objects_in_location</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+        <span class="n">preprocessed_ids</span> <span class="o">=</span> <span class="n">raw_objects_in_location</span><span class="p">[</span><span class="s1">&#39;ids&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">preprocessed_types</span><span class="p">,</span> <span class="n">preprocessed_ids</span>
+
+<div class="viewcode-block" id="LocationReasoner.get_location_memory"><a class="viewcode-back" href="../../../../pepper.brain.utils.location_reasoner.html#pepper.brain.utils.location_reasoner.LocationReasoner.get_location_memory">[docs]</a>    <span class="k">def</span> <span class="nf">get_location_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cntxt</span><span class="p">):</span>
+        <span class="c1"># brain object memories</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;context/ranked_object_ids_per_type&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="s1">&#39;cntxt.location.label&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="n">location_memory</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">categories</span><span class="p">,</span> <span class="n">ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_location_memory_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="c1"># assign multiple categories (eg selene is person and agent)</span>
+                <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="n">location_memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
+                                               <span class="p">{</span><span class="s1">&#39;brain_ids&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;local_ids&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+                    <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;brain_ids&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+                    <span class="n">location_memory</span><span class="p">[</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="c1"># Local object memories</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span> <span class="c1"># Error, this skips the first element?</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;person&#39;</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">location_memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
+                                           <span class="p">{</span><span class="s1">&#39;brain_ids&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;local_ids&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+                <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;local_ids&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+                <span class="n">location_memory</span><span class="p">[</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="c1"># Merge giving priority to brain elements</span>
+        <span class="k">for</span> <span class="n">cat</span><span class="p">,</span> <span class="n">ids</span> <span class="ow">in</span> <span class="n">location_memory</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">all_ids</span> <span class="o">=</span> <span class="n">ids</span><span class="p">[</span><span class="s1">&#39;brain_ids&#39;</span><span class="p">][:]</span>
+            <span class="n">all_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="s1">&#39;local_ids&#39;</span><span class="p">])</span>
+            <span class="n">ids</span><span class="p">[</span><span class="s1">&#39;ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_ids</span>
+
+        <span class="k">return</span> <span class="n">location_memory</span></div>
+
+<div class="viewcode-block" id="LocationReasoner.reason_location"><a class="viewcode-back" href="../../../../pepper.brain.utils.location_reasoner.html#pepper.brain.utils.location_reasoner.LocationReasoner.reason_location">[docs]</a>    <span class="k">def</span> <span class="nf">reason_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cntxt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">label</span>
+
+        <span class="c1"># Query all locations and detections (through context)</span>
+        <span class="n">memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_episodic_memory</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">memory</span><span class="p">:</span>
+            <span class="c1"># Generate set of current detections</span>
+            <span class="n">observations</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;person&#39;</span><span class="p">:</span>
+                    <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">item</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
+            <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+            <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">country</span><span class="p">)</span>
+            <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">region</span><span class="p">)</span>
+
+            <span class="c1"># Compare one by one and determine most similar</span>
+            <span class="k">for</span> <span class="n">mem</span> <span class="ow">in</span> <span class="n">memory</span><span class="p">:</span>
+                <span class="nb">all</span> <span class="o">=</span> <span class="n">mem</span><span class="p">[</span><span class="s1">&#39;detections&#39;</span><span class="p">]</span>
+                <span class="nb">all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">mem</span><span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">])</span>
+                <span class="n">mem</span><span class="p">[</span><span class="s1">&#39;overlap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_measure_detection_overlap</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">observations</span><span class="p">)</span>
+
+            <span class="c1"># Pick most similar and determine equality based on a threshold</span>
+            <span class="n">memory</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;overlap&#39;</span><span class="p">])</span>
+            <span class="n">best_guess</span> <span class="o">=</span> <span class="n">memory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">best_guess</span><span class="p">[</span><span class="s1">&#39;place&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">best_guess</span><span class="p">[</span><span class="s1">&#39;overlap&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span> \
+                                          <span class="ow">and</span> <span class="n">best_guess</span><span class="p">[</span><span class="s1">&#39;place&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">UNKNOWN</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="LocationReasoner.set_location_label"><a class="viewcode-back" href="../../../../pepper.brain.utils.location_reasoner.html#pepper.brain.utils.location_reasoner.LocationReasoner.set_location_label">[docs]</a>    <span class="k">def</span> <span class="nf">set_location_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;Unknown&#39;</span><span class="p">):</span>
+        <span class="c1"># https: // www.semanticarts.com / sparql - changing - instance - uris /</span>
+        <span class="c1"># Replace as subject, replace label, replace as object in the database (long term memory)</span>
+
+        <span class="n">queries</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;context/rename_location&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span>
+                                                           <span class="n">default</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span>
+                                                           <span class="n">default</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

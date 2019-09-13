@@ -83,9 +83,12 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.base_cases.html">pepper.brain.utils.base_cases module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.constants.html">pepper.brain.utils.constants module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.helper_functions.html">pepper.brain.utils.helper_functions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.location_reasoner.html">pepper.brain.utils.location_reasoner module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.rdf_builder.html">pepper.brain.utils.rdf_builder module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.brain.utils.response module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.store_connector.html">pepper.brain.utils.store_connector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.though_generator.html">pepper.brain.utils.though_generator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.type_reasoner.html">pepper.brain.utils.type_reasoner module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.basic_brain.html">pepper.brain.basic_brain module</a></li>
@@ -674,6 +677,57 @@ format</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="pepper.brain.utils.response.Perspective">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Perspective</code><span class="sig-paren">(</span><em>certainty</em>, <em>polarity</em>, <em>sentiment</em>, <em>time=None</em>, <em>emotion=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>certainty</strong></dt>
+<dd></dd>
+<dt><strong>emotion</strong></dt>
+<dd></dd>
+<dt><strong>polarity</strong></dt>
+<dd></dd>
+<dt><strong>sentiment</strong></dt>
+<dd></dd>
+<dt><strong>time</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.certainty">
+<code class="descname">certainty</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.certainty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.emotion">
+<code class="descname">emotion</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.emotion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.polarity">
+<code class="descname">polarity</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.polarity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.sentiment">
+<code class="descname">sentiment</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.sentiment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.time">
+<code class="descname">time</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pepper.brain.utils.response.Predicate">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Predicate</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>offset=None</em>, <em>confidence=0.0</em>, <em>cardinality=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Predicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.RDFBase" title="pepper.brain.utils.response.RDFBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.utils.response.RDFBase</span></code></a></p>
@@ -1011,6 +1065,8 @@ format</p>
 <dd></dd>
 <dt><strong>object_name</strong></dt>
 <dd></dd>
+<dt><strong>object_types</strong></dt>
+<dd></dd>
 <dt><strong>predicate</strong></dt>
 <dd></dd>
 <dt><strong>predicate_name</strong></dt>
@@ -1018,6 +1074,8 @@ format</p>
 <dt><strong>subject</strong></dt>
 <dd></dd>
 <dt><strong>subject_name</strong></dt>
+<dd></dd>
+<dt><strong>subject_types</strong></dt>
 <dd></dd>
 </dl>
 </td>
@@ -1073,6 +1131,11 @@ format</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.object_types">
+<code class="descname">object_types</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.object_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pepper.brain.utils.response.Triple.predicate">
 <code class="descname">predicate</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.predicate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1105,6 +1168,11 @@ format</p>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.Triple.subject_name">
 <code class="descname">subject_name</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.subject_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.subject_types">
+<code class="descname">subject_types</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.subject_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

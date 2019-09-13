@@ -11,6 +11,7 @@ import os
 
 
 def add_friend_from_directory(directory, name, max_size=1024):
+    # type: (str, str, int) -> None
 
     openface = OpenFace()
     vectors = []
@@ -23,7 +24,7 @@ def add_friend_from_directory(directory, name, max_size=1024):
 
         # Try Loading Image, Resizing if necessary
         try: image = imread(os.path.join(directory, item))
-        except: continue
+        except: print("\rWarning: Couldn't read {}, skipping file...".format(item))
 
         image_size = max(image.shape[0], image.shape[1])
         if image_size > max_size:
@@ -43,5 +44,4 @@ def add_friend_from_directory(directory, name, max_size=1024):
 if __name__ == '__main__':
     pass
 
-    # Use:
-    # add_friend_from_directory('<directory>', '<name>')
+    # Use: add_friend_from_directory('<directory>', '<name>')

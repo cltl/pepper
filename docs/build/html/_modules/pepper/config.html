@@ -143,17 +143,26 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.config</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Pepper Configuration File&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Pepper Configuration File</span>
+<span class="sd">-------------------------</span>
+
+<span class="sd">Settings for:</span>
+
+<span class="sd">- Application Backend, Language, Paths &amp; URLs</span>
+<span class="sd">- API Keys (Google Cloud Services &amp; Wolfram Alpha)</span>
+<span class="sd">- Sensory Parameters (tweak for desired performance)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pepper</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<span class="c1"># Application Configuration Settings</span>
+<span class="c1"># &lt;&lt;&lt; Application Configuration Settings &gt;&gt;&gt;</span>
 
 <span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
-<span class="c1"># More Backends will be added in the future!</span>
 <span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span>
 
 <span class="c1"># Name of Robot</span>
@@ -174,7 +183,7 @@
 <span class="n">INTERNAL_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>  <span class="c1"># Must start with &#39;en-&#39; (Must by a dialect of English)</span>
 
 
-<span class="c1"># Application Paths</span>
+<span class="c1"># &lt;&lt;&lt; Application Paths &gt;&gt;&gt;</span>
 
 <span class="c1"># pepper/                  PROJECT_ROOT</span>
 <span class="c1">#   people/                 PEOPLE_ROOT</span>
@@ -251,8 +260,7 @@
 <span class="c1"># Brain Logging</span>
 <span class="n">BRAIN_LOG_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">,</span> <span class="s2">&quot;../backups/brain/brain_log_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-
-<span class="c1"># Application URLs</span>
+<span class="c1"># &lt;&lt;&lt; Application URLs &gt;&gt;&gt;</span>
 
 <span class="c1"># Brain URL (Local GraphDB or Remote Database)</span>
 <span class="n">BRAIN_URL_LOCAL</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:7200/repositories/leolani&quot;</span>
@@ -265,7 +273,7 @@
 <span class="n">NAOQI_URL</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span><span class="p">)</span>
 
 
-<span class="c1"># Application Sensor Parameters</span>
+<span class="c1"># &lt;&lt;&lt; Application Sensor Parameters &gt;&gt;&gt;</span>
 <span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
@@ -284,15 +292,17 @@
 
 <span class="c1"># Camera resolution (in pixels) and frame rate (Hz)</span>
 <span class="c1"># NOTE: Both resolution and frame rate impact system performance...</span>
-<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQVGA</span>
+<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span>
 <span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># NAOqi Text to Speech Speed</span>
+<span class="n">NAOQI_SPEECH_SPEED</span> <span class="o">=</span> <span class="mi">80</span>
 
 <span class="c1"># NAOqi Specific Overrides</span>
 <span class="n">NAOQI_USE_SYSTEM_CAMERA</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">NAOqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
-<span class="n">NAOQI_SPEECH_SPEED</span> <span class="o">=</span> <span class="mi">85</span>
 
 
 <span class="c1"># .json file with id tokens, with keys:</span>

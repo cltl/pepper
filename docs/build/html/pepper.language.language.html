@@ -404,57 +404,6 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="pepper.language.language.Perspective">
-<em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Perspective</code><span class="sig-paren">(</span><em>certainty</em>, <em>polarity</em>, <em>sentiment</em>, <em>time=None</em>, <em>emotion=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Perspective" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>certainty</strong></dt>
-<dd></dd>
-<dt><strong>emotion</strong></dt>
-<dd></dd>
-<dt><strong>polarity</strong></dt>
-<dd></dd>
-<dt><strong>sentiment</strong></dt>
-<dd></dd>
-<dt><strong>time</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.language.language.Perspective.certainty">
-<code class="descname">certainty</code><a class="headerlink" href="#pepper.language.language.Perspective.certainty" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.language.Perspective.emotion">
-<code class="descname">emotion</code><a class="headerlink" href="#pepper.language.language.Perspective.emotion" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.language.Perspective.polarity">
-<code class="descname">polarity</code><a class="headerlink" href="#pepper.language.language.Perspective.polarity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.language.Perspective.sentiment">
-<code class="descname">sentiment</code><a class="headerlink" href="#pepper.language.language.Perspective.sentiment" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.language.Perspective.time">
-<code class="descname">time</code><a class="headerlink" href="#pepper.language.language.Perspective.time" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="pepper.language.language.Time">
 <em class="property">class </em><code class="descclassname">pepper.language.language.</code><code class="descname">Time</code><a class="reference internal" href="_modules/pepper/language/language.html#Time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
@@ -543,7 +492,7 @@
 <tr class="row-even"><td><a class="reference internal" href="#pepper.language.language.Utterance.casefold" title="pepper.language.language.Utterance.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
 <td>Format the labels to match triples or natural language Parameters ———- format</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.Utterance.write_template" title="pepper.language.language.Utterance.write_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_template</span></code></a>(rdf,&nbsp;utterance_type)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.language.Utterance.pack_triple" title="pepper.language.language.Utterance.pack_triple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_triple</span></code></a>(rdf,&nbsp;utterance_type)</td>
 <td>Sets utterance type, the extracted triple and (in future) the perspective Parameters ———- rdf utterance_type</td>
 </tr>
 </tbody>
@@ -704,6 +653,16 @@ format</p>
 <code class="descname">pack_perspective</code><span class="sig-paren">(</span><em>persp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance.pack_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance.pack_perspective" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="pepper.language.language.Utterance.pack_triple">
+<code class="descname">pack_triple</code><span class="sig-paren">(</span><em>rdf</em>, <em>utterance_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance.pack_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance.pack_triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets utterance type, the extracted triple and (in future) the perspective
+Parameters
+———-
+rdf
+utterance_type</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pepper.language.language.Utterance.parser">
 <code class="descname">parser</code><a class="headerlink" href="#pepper.language.language.Utterance.parser" title="Permalink to this definition">¶</a></dt>
@@ -842,16 +801,6 @@ format</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.language.Utterance.write_template">
-<code class="descname">write_template</code><span class="sig-paren">(</span><em>rdf</em>, <em>utterance_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/language.html#Utterance.write_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.language.Utterance.write_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets utterance type, the extracted triple and (in future) the perspective
-Parameters
-———-
-rdf
-utterance_type</p>
 </dd></dl>
 
 </dd></dl>

@@ -1,3 +1,7 @@
+"""
+The Pepper Responder Package contains logic to determine the correct response to a given Natural Language query.
+"""
+
 from .responder import Responder, ResponsePicker, ResponderType
 from unknown import UnknownResponder
 from .conversational import GreetingResponder, GoodbyeResponder, ThanksResponder, AffirmationResponder, \

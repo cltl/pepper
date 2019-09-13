@@ -152,8 +152,17 @@
 
 
 <div class="viewcode-block" id="BasicBrain"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain">[docs]</a><span class="k">class</span> <span class="nc">BasicBrain</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">_ONE_TO_ONE_PREDICATES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;be-from&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;born_in&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;favorite&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;live-in&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;work-at&#39;</span>
+    <span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">_NOT_TO_ASK_PREDICATES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;faceID&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interact with Triple store</span>
 
@@ -169,15 +178,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">BRAIN_LOG_ROOT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">-%H-%M&#39;</span><span class="p">))</span>
 
-        <span class="c1"># Possible clear all contents (testing purposes)</span>
-        <span class="k">if</span> <span class="n">clear_all</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">clear_brain</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+            <span class="c1"># Possible clear all contents (testing purposes)</span>
+            <span class="k">if</span> <span class="n">clear_all</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_brain</span><span class="p">()</span>
 
-        <span class="c1"># Start with a clean local memory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clean_local_memory</span><span class="p">()</span>
+            <span class="c1"># Start with a clean local memory</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clean_local_memory</span><span class="p">()</span>
 
-        <span class="c1"># Upload ontology here</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">upload_ontology</span><span class="p">()</span>
+            <span class="c1"># Upload ontology here</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upload_ontology</span><span class="p">()</span>
 
     <span class="c1">########## basic post get behaviour ##########</span>
     <span class="k">def</span> <span class="nf">_upload_to_brain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -186,7 +196,7 @@
 <span class="sd">        :param data: serialized data as string</span>
 <span class="sd">        :return: response status</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Posting triples&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Posting triples&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -197,7 +207,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        query: str</span>
 <span class="sd">            SPARQL query to be posted</span>
-<span class="sd">        ask: str</span>
+<span class="sd">        ask: bool</span>
 <span class="sd">            Whether the query is of type ask, in which case the structure of the response changes</span>
 
 <span class="sd">        Returns</span>
@@ -209,12 +219,27 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="n">ask</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
 
     <span class="c1">########## brain structure exploration ##########</span>
+    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save graph to local file and return the serialized string</span>
+<span class="sd">        :param file_path: path to where data will be saved</span>
+<span class="sd">        :return: serialized data as string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Save to file but return the python representation</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clean_local_memory</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
 <div class="viewcode-block" id="BasicBrain.upload_ontology"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.upload_ontology">[docs]</a>    <span class="k">def</span> <span class="nf">upload_ontology</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upload ontology</span>
 <span class="sd">        :return: response status</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Uploading ontology to brain&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Uploading ontology to brain&quot;</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>

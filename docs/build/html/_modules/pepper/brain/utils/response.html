@@ -331,7 +331,8 @@
         <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
             <span class="c1"># Label</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fix_predicate_morphology</span><span class="p">(</span><span class="n">subject_label</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">),</span> <span class="n">object_label</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_predicate_morphology</span><span class="p">(</span><span class="n">subject_label</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">),</span> <span class="n">object_label</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">))</span>
 
         <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
             <span class="c1"># Label</span>
@@ -434,6 +435,16 @@
         <span class="c1"># type: () -&gt; str</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="o">.</span><span class="n">types_names</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">object_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span><span class="o">.</span><span class="n">types_names</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
     <span class="c1"># TODO not good practice and not used, might think of deleting three setters below</span>
 <div class="viewcode-block" id="Triple.set_subject"><a class="viewcode-back" href="../../../../pepper.brain.utils.response.html#pepper.brain.utils.response.Triple.set_subject">[docs]</a>    <span class="k">def</span> <span class="nf">set_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">):</span>
         <span class="c1"># type: (Entity) -&gt; ()</span>
@@ -467,15 +478,69 @@
         <span class="k">return</span> <span class="nb">iter</span><span class="p">([(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;predicate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)])</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hash_claim_id</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span>
-                                          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                                             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span>
-                                          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                                             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">object_name</span>
-                                          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                                             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hash_claim_id</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span>
+                                               <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                  <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span>
+                                               <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                  <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">object_name</span>
+                                               <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                  <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">]),</span>
+                                <span class="n">hash_claim_id</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_types</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                                               <span class="s1">&#39;predicate&#39;</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">object_types</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="Perspective"><a class="viewcode-back" href="../../../../pepper.brain.utils.response.html#pepper.brain.utils.response.Perspective">[docs]</a><span class="k">class</span> <span class="nc">Perspective</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">certainty</span><span class="p">,</span> <span class="n">polarity</span><span class="p">,</span> <span class="n">sentiment</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">emotion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (float, int, float, Time, Emotion) -&gt; Perspective</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Perspective object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        certainty: float</span>
+<span class="sd">            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain</span>
+<span class="sd">        polarity: int</span>
+<span class="sd">            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment</span>
+<span class="sd">        sentiment: float</span>
+<span class="sd">            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent</span>
+<span class="sd">            positive sentiments.</span>
+<span class="sd">        time: Time</span>
+<span class="sd">            Enumerator representing time. This is extracted from the tense</span>
+<span class="sd">        emotion: Emotion</span>
+<span class="sd">            Enumerator representing one of the 6 universal emotions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_certainty</span> <span class="o">=</span> <span class="n">certainty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_polarity</span> <span class="o">=</span> <span class="n">polarity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sentiment</span> <span class="o">=</span> <span class="n">sentiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_emotion</span> <span class="o">=</span> <span class="n">emotion</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">certainty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_certainty</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">polarity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sentiment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sentiment</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[Time]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">emotion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[Emotion]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_emotion</span></div>
 
 
 <div class="viewcode-block" id="Provenance"><a class="viewcode-back" href="../../../../pepper.brain.utils.response.html#pepper.brain.utils.response.Provenance">[docs]</a><span class="k">class</span> <span class="nc">Provenance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

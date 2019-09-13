@@ -197,7 +197,7 @@
                     <span class="k">return</span> <span class="mf">1.0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">app</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\s+_]&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">reply</span><span class="p">))</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

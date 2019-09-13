@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.brain.utils.though_generator &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.brain.utils.though_generator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.brain.utils.though_generator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.brain.utils.response</span> <span class="k">import</span> <span class="n">CardinalityConflict</span><span class="p">,</span> <span class="n">NegationConflict</span><span class="p">,</span> <span class="n">StatementNovelty</span><span class="p">,</span> <span class="n">EntityNovelty</span><span class="p">,</span> \
+    <span class="n">Gap</span><span class="p">,</span> <span class="n">Gaps</span><span class="p">,</span> <span class="n">Overlap</span><span class="p">,</span> <span class="n">Overlaps</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">read_query</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.rdf_builder</span> <span class="k">import</span> <span class="n">RdfBuilder</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.basic_brain</span> <span class="k">import</span> <span class="n">BasicBrain</span>
+
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+
+
+<div class="viewcode-block" id="ThoughtGenerator"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator">[docs]</a><span class="k">class</span> <span class="nc">ThoughtGenerator</span><span class="p">(</span><span class="n">BasicBrain</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (str, bool) -&gt; ThoughtGenerator</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Interact with Triple store</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        address: str</span>
+<span class="sd">            IP address and port of the Triple store</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">ThoughtGenerator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">clear_all</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>
+
+    <span class="c1">########## novelty ##########</span>
+    <span class="k">def</span> <span class="nf">_fill_statement_novelty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_conflict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure statement novelty to get provenance if this statement has been heard before</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_conflict: dict</span>
+<span class="sd">            standard row result from SPARQL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            StatementNovelty object containing provenance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">preprocessed_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">label_from_uri</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
+        <span class="n">processed_provenance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_provenance</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                                                                 <span class="n">preprocessed_date</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">StatementNovelty</span><span class="p">(</span><span class="n">processed_provenance</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fill_entity_novelty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_url</span><span class="p">,</span> <span class="n">object_url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure entity novelty to signal if these entities have been heard before</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subject_url: str</span>
+<span class="sd">            URI of instance</span>
+<span class="sd">        object_url: str</span>
+<span class="sd">            URI of instance</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Entity object containing boolean values signaling if they are new</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">subject_novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_instance_novelty</span><span class="p">(</span><span class="n">subject_url</span><span class="p">)</span>
+        <span class="n">object_novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_instance_novelty</span><span class="p">(</span><span class="n">object_url</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">EntityNovelty</span><span class="p">(</span><span class="n">subject_novelty</span><span class="p">,</span> <span class="n">object_novelty</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_statement_novelty"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_statement_novelty">[docs]</a>    <span class="k">def</span> <span class="nf">get_statement_novelty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement_uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query and build provenance if an instance (statement) has been learned before</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        statement_uri: str</span>
+<span class="sd">            URI of instance</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        response: List[StatementNovelty]</span>
+<span class="sd">            List of provenance for the instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/statement_novelty&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">statement_uri</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_statement_novelty_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="ThoughtGenerator.check_instance_novelty"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.check_instance_novelty">[docs]</a>    <span class="k">def</span> <span class="nf">check_instance_novelty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query if an instance (entity) has been heard about before</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        instance_url: str</span>
+<span class="sd">            URI of instance</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        conflicts: List[StatementNovelty]</span>
+<span class="sd">            List of provenance for the instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/entity_novelty&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">instance_url</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+    <span class="c1">########## gaps ##########</span>
+    <span class="k">def</span> <span class="nf">_fill_entity_gap_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_conflict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure entity gap to get the predicate and range of what has been learned but not heard</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_conflict: dict</span>
+<span class="sd">            standard row result from SPARQL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Gap object containing a predicate and its range</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">processed_predicate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">processed_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s1">&#39;N2MU&#39;</span><span class="p">,</span>
+                                                        <span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;type2&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+        <span class="k">return</span> <span class="n">Gap</span><span class="p">(</span><span class="n">processed_predicate</span><span class="p">,</span> <span class="n">processed_range</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_entity_gaps"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_entity_gaps">[docs]</a>    <span class="k">def</span> <span class="nf">get_entity_gaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query and build gaps with regards to the range and domain of the given entity and its predicates</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        entity: dict</span>
+<span class="sd">            Information regarding the entity</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Gaps object containing gaps related to range and domain information that could be learned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Role as subject</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/subject_gaps&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">exclude</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">subject_gaps</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_entity_gap_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span>
+                            <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NOT_TO_ASK_PREDICATES</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subject_gaps</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Role as object</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/object_gaps&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">exclude</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">object_gaps</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_entity_gap_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span>
+                           <span class="k">if</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NOT_TO_ASK_PREDICATES</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">object_gaps</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">Gaps</span><span class="p">(</span><span class="n">subject_gaps</span><span class="p">,</span> <span class="n">object_gaps</span><span class="p">)</span></div>
+
+    <span class="c1">########## overlaps ##########</span>
+    <span class="k">def</span> <span class="nf">_fill_overlap_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_conflict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure overlap to get the provenance and entity on which they overlap</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_conflict: dict</span>
+<span class="sd">            standard row result from SPARQL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Overlap object containing an entity and the provenance of the mention causing the overlap</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">preprocessed_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">label_from_uri</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
+        <span class="n">preprocessed_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">clean_aggregated_types</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;types&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+
+        <span class="n">processed_provenance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_provenance</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                                                                 <span class="n">preprocessed_date</span><span class="p">)</span>
+        <span class="n">processed_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="n">preprocessed_types</span><span class="p">,</span> <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Overlap</span><span class="p">(</span><span class="n">processed_provenance</span><span class="p">,</span> <span class="n">processed_entity</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_overlaps"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_overlaps">[docs]</a>    <span class="k">def</span> <span class="nf">get_overlaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query and build overlaps with regards to the subject and object of the heard statement</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        utterance</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Overlaps containing shared information with the heard statement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Role as subject</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/object_overlap&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">,</span>
+                                                         <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;types&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">object_overlap</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_overlap_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">object_overlap</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Role as object</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/subject_overlap&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">,</span>
+            <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;types&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">subject_overlap</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_overlap_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subject_overlap</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">Overlaps</span><span class="p">(</span><span class="n">subject_overlap</span><span class="p">,</span> <span class="n">object_overlap</span><span class="p">)</span></div>
+
+    <span class="c1">########## conflicts ##########</span>
+    <span class="k">def</span> <span class="nf">_fill_cardinality_conflict_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_conflict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure cardinality conflict to pair provenance and object that creates the conflict</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_conflict: dict</span>
+<span class="sd">            standard row result from SPARQL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            CardinalityConflict object containing provenance and entity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">processed_provenance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_provenance</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                                                                 <span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+        <span class="n">processed_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type_of_instance</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;objectlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+        <span class="n">processed_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;objectlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="n">processed_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">CardinalityConflict</span><span class="p">(</span><span class="n">processed_provenance</span><span class="p">,</span> <span class="n">processed_entity</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fill_negation_conflict_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_conflict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Structure negation conflict to pair provenance and predicate that creates the conflict</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        raw_conflict: dict</span>
+<span class="sd">            standard row result from SPARQL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            NegationConflict object containing provenance and predicate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">preprocessed_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">label_from_uri</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
+        <span class="n">processed_provenance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_provenance</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+                                                                 <span class="n">preprocessed_date</span><span class="p">)</span>
+        <span class="n">processed_predicate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="n">raw_conflict</span><span class="p">[</span><span class="s1">&#39;pred&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">NegationConflict</span><span class="p">(</span><span class="n">processed_provenance</span><span class="p">,</span> <span class="n">processed_predicate</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_all_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_all_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregate all conflicts in brain</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">predicate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ONE_TO_ONE_PREDICATES</span><span class="p">:</span>
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="n">predicate</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">conflicts</span></div>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_conflicts_with_one_to_one_predicate"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_conflicts_with_one_to_one_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">get_conflicts_with_one_to_one_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">one_to_one_predicate</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;one_to_one_conflicts&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">one_to_one_predicate</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">conflict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;sname&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="n">one_to_one_predicate</span><span class="p">,</span> <span class="s1">&#39;objects&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;pairs&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
+                <span class="p">[</span><span class="n">val</span><span class="p">,</span> <span class="n">auth</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">option</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">auth</span><span class="p">}</span>
+                <span class="n">conflict</span><span class="p">[</span><span class="s1">&#39;objects&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conflict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">conflicts</span></div>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_object_cardinality_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_object_cardinality_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_cardinality_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have</span>
+<span class="sd">        multiple object values</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        utterance</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        conflicts: List[CardinalityConflicts]</span>
+<span class="sd">            List of Conflicts containing the object which creates the conflict, and their provenance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ONE_TO_ONE_PREDICATES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/object_cardinality_conflicts&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span>
+                                                                       <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">,</span>
+                                                                       <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_cardinality_conflict_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">conflicts</span></div>
+
+<div class="viewcode-block" id="ThoughtGenerator.get_negation_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.utils.though_generator.html#pepper.brain.utils.though_generator.ThoughtGenerator.get_negation_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">get_negation_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query and build negation conflicts, meaning conflicts because predicates are directly negated</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        utterance</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        conflicts: List[NegationConflict]</span>
+<span class="sd">            List of Conflicts containing the predicate which creates the conflict, and their provenance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Case fold</span>
+        <span class="n">predicate</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;-not&#39;</span><span class="p">)</span> \
+            <span class="k">else</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span>
+
+        <span class="c1"># TODO revise according to new representation</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;thoughts/negation_conflicts&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">,</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">,</span>
+            <span class="n">predicate</span><span class="p">,</span> <span class="n">predicate</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+            <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_negation_conflict_</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">conflicts</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

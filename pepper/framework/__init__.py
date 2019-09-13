@@ -1,5 +1,5 @@
 """
-The Pepper Framework consists out of the basic building blocks to make robot applications.
+The Pepper Framework Package consists out of the basic building blocks to make robot applications.
 
 Abstract
 ========
