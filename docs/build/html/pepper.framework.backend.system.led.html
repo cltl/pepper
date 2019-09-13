@@ -27,8 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.framework.backend.system.microphone module" href="pepper.framework.backend.system.microphone.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -55,6 +54,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -182,30 +185,65 @@
 <dt id="pepper.framework.backend.system.led.SystemLed">
 <em class="property">class </em><code class="descclassname">pepper.framework.backend.system.led.</code><code class="descname">SystemLed</code><a class="reference internal" href="_modules/pepper/framework/backend/system/led.html#SystemLed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.led.SystemLed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.led.AbstractLed</span></code></a></p>
+<p>Control Robot LEDs</p>
 <p class="rubric">Methods</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="41%" />
-<col width="59%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><strong>off</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.backend.system.led.SystemLed.off" title="pepper.framework.backend.system.led.SystemLed.off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">off</span></code></a>(leds)</td>
+<td>Switch LEDs off</td>
 </tr>
-<tr class="row-even"><td><strong>set</strong></td>
-<td>&#160;</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.backend.system.led.SystemLed.set" title="pepper.framework.backend.system.led.SystemLed.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(leds,&nbsp;rgb,&nbsp;duration)</td>
+<td>Set LEDs to Particular color (interpolating from its current color in ‘duration’ time)</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="pepper.framework.backend.system.led.SystemLed.off">
 <code class="descname">off</code><span class="sig-paren">(</span><em>leds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/led.html#SystemLed.off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.led.SystemLed.off" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Switch LEDs off</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>leds: List[Led]</strong></dt>
+<dd><p class="first last">Which LEDs are affected</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.backend.system.led.SystemLed.set">
 <code class="descname">set</code><span class="sig-paren">(</span><em>leds</em>, <em>rgb</em>, <em>duration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/led.html#SystemLed.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.led.SystemLed.set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set LEDs to Particular color (interpolating from its current color in ‘duration’ time)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>leds: List[Led]</strong></dt>
+<dd><p class="first last">Which LEDs are affected</p>
+</dd>
+<dt><strong>rgb: Tuple[float, float, float]</strong></dt>
+<dd><p class="first last">Which color to turn</p>
+</dd>
+<dt><strong>duration: float</strong></dt>
+<dd><p class="first last">How long to take switching this color</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -216,13 +254,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pepper.framework.backend.system.microphone.html" class="btn btn-neutral float-right" title="pepper.framework.backend.system.microphone module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-    </div>
   
 
   <hr/>

@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -156,18 +160,21 @@
 
 
 <div class="viewcode-block" id="AbstractImage"><a class="viewcode-back" href="../../../../pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage">[docs]</a><span class="k">class</span> <span class="nc">AbstractImage</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Image Container</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image: np.ndarray</span>
+<span class="sd">        RGB Image (height, width, 3) as Numpy Array</span>
+<span class="sd">    bounds: Bounds</span>
+<span class="sd">        Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</span>
+<span class="sd">    depth: np.ndarray</span>
+<span class="sd">        Depth Image (height, width) as Numpy Array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># type: (np.ndarray, Bounds, Optional[np.ndarray]) -&gt; None</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Abstract Image Container</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        image: np.ndarray</span>
-<span class="sd">        bounds: Bounds</span>
-<span class="sd">        depth: np.ndarray</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_image</span> <span class="o">=</span> <span class="n">image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
@@ -179,26 +186,57 @@
     <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; np.ndarray</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Image Pixels as Numpy Array</span>
+<span class="sd">        RGB Image (height, width, 3) as Numpy Array</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        image: np.ndarray</span>
+<span class="sd">            RGB Image (height, width, 3) as Numpy Array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Optional[np.ndarray]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Depth Image (height, width) as Numpy Array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        depth: np.ndarray</span>
+<span class="sd">            Depth Image (height, width) as Numpy Array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Bounds</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span>
 
 <div class="viewcode-block" id="AbstractImage.get_image"><a class="viewcode-back" href="../../../../pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage.get_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
         <span class="c1"># type: (Bounds) -&gt; np.ndarray</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get pixels from Image at Bounds in Image Space</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Image Bounds (Image) in Image Space (y, x)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pixels: np.ndarray</span>
+<span class="sd">            Requested pixels within Bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">x0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bounds</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bounds</span><span class="o">.</span><span class="n">x1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">y0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bounds</span><span class="o">.</span><span class="n">y0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -208,6 +246,19 @@
 
 <div class="viewcode-block" id="AbstractImage.get_depth"><a class="viewcode-back" href="../../../../pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage.get_depth">[docs]</a>    <span class="k">def</span> <span class="nf">get_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
         <span class="c1"># type: (Bounds) -&gt; Optional[np.ndarray]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get depth from Image at Bounds in Image Space</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Image Bounds (Image) in Image Space (y, x)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        depth: np.ndarray</span>
+<span class="sd">            Requested depth within Bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -222,7 +273,7 @@
 <div class="viewcode-block" id="AbstractImage.get_direction"><a class="viewcode-back" href="../../../../pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage.get_direction">[docs]</a>    <span class="k">def</span> <span class="nf">get_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="c1"># type: (Tuple[float, float]) -&gt; Tuple[float, float]</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Convert 2D Relative Coordinates to 2D position in Spherical Coordinates</span>
+<span class="sd">        Convert 2D Image Coordinates [x, y] to 2D position in Spherical Coordinates [phi, theta]</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -230,7 +281,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        position_2D: Tuple[float, float]</span>
+<span class="sd">        direction: Tuple[float, float]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">x0</span> <span class="o">+</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">y0</span> <span class="o">+</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">height</span><span class="p">)</span></div>
@@ -238,16 +289,40 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get time image was captured and received by the application.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span>
 
 <div class="viewcode-block" id="AbstractImage.frustum"><a class="viewcode-back" href="../../../../pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage.frustum">[docs]</a>    <span class="k">def</span> <span class="nf">frustum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth_min</span><span class="p">,</span> <span class="n">depth_max</span><span class="p">):</span>
         <span class="c1"># type: (float, float) -&gt; List[float]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate `Frustum &lt;https://en.wikipedia.org/wiki/Viewing_frustum&gt;`_ of the camera at image time (visualisation)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        depth_min: float</span>
+<span class="sd">            Near Viewing Plane</span>
+<span class="sd">        depth_max: float</span>
+<span class="sd">            Far Viewing Place</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        frustum: List[float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
+
+            <span class="c1"># Near Viewing Plane</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">depth_min</span><span class="p">),</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">depth_min</span><span class="p">),</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">depth_min</span><span class="p">),</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">depth_min</span><span class="p">),</span>
 
+            <span class="c1"># Far Viewing Plane</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">depth_max</span><span class="p">),</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">depth_max</span><span class="p">),</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">depth_max</span><span class="p">),</span>
@@ -267,30 +342,39 @@
 <span class="sd">    resolution: CameraResolution</span>
 <span class="sd">        :class:`~pepper.config.CameraResolution`</span>
 <span class="sd">    rate: int</span>
-<span class="sd">    callbacks: list of callable</span>
+<span class="sd">        Camera Frames per Second</span>
+<span class="sd">    callbacks: List[Callable[[AbstractImage], None]]</span>
+<span class="sd">        Functions to call each time an AbstractImage is captured</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">callbacks</span><span class="p">):</span>
         <span class="c1"># type: (CameraResolution, int, List[Callable[[AbstractImage], None]]) -&gt; None</span>
 
+        <span class="c1"># Extract Image Dimensions from CameraResolution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span> <span class="o">=</span> <span class="n">resolution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">])</span>
 
+        <span class="c1"># Store Camera Rate and Callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">])</span>
-
+        <span class="c1"># Variables to do some performance statistics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dt_buffer</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_true_rate</span> <span class="o">=</span> <span class="n">rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
+        <span class="c1"># Create Mailbox and Image Processor:</span>
+        <span class="c1">#   Each time an image is captured it is put in the mailbox, overriding whatever there might currently be.</span>
+        <span class="c1">#   In a separate thread, the _processor worker takes an image and calls all registered callbacks.</span>
+        <span class="c1">#   This way the processing of images does not block the acquisition of new images,</span>
+        <span class="c1">#   while at the same new images don&#39;t build up a queue, but are discarded when the _processor is too busy.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mailbox</span> <span class="o">=</span> <span class="n">Mailbox</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_processor_scheduler</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_processor</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CameraThread&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_processor_scheduler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
+        <span class="c1"># Default behaviour is to not run by default. Calling AbstractApplication.run() will activate the camera</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
@@ -337,12 +421,12 @@
     <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; int</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Image (Color) Channels</span>
+<span class="sd">        Number of Image (Color) Channels</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        channels: int</span>
-<span class="sd">            Image (Color) channels</span>
+<span class="sd">            Number of Image (Color) channels</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">3</span>
 
@@ -350,12 +434,12 @@
     <span class="k">def</span> <span class="nf">rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; int</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Image Rate</span>
+<span class="sd">        Image Rate (Frames per Second)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rate: int</span>
-<span class="sd">            Image rate</span>
+<span class="sd">            Image rate (Frames per Second)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span>
 
@@ -363,14 +447,14 @@
     <span class="k">def</span> <span class="nf">true_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Actual Image Rate</span>
+<span class="sd">        Actual Image Rate (Frames per Second)</span>
 
 <span class="sd">        Image rate after accounting for latency &amp; performance realities</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        true_rate: float</span>
-<span class="sd">            Actual Image Rate</span>
+<span class="sd">            Actual Image Rate (Frames per Second)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_true_rate</span>
 
@@ -378,12 +462,12 @@
     <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; np.ndarray</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Image Shape</span>
+<span class="sd">        Image Shape (height, width, channels)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        shape: np.ndarray</span>
-<span class="sd">            Image Shape</span>
+<span class="sd">            Image Shape (height, width, channels)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>
 
@@ -429,7 +513,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        On Image Event, Called for every Image captured by Camera</span>
 
-<span class="sd">        Camera Modules should call this function for every frame acquired by the Camera</span>
+<span class="sd">        Custom Camera Backends should call this function for every frame acquired by the Camera</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -449,12 +533,18 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Image Processor</span>
 
-<span class="sd">        Calls each callback for each image, threaded, for higher image throughput</span>
+<span class="sd">        Calls each callback for each image, threaded, for higher image throughput and less image latency</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get latest image from Mailbox</span>
         <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mailbox</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="c1"># Call Every Registered Callback</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
                 <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="c1"># Update Statistics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_dt</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_update_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

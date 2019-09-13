@@ -23,18 +23,21 @@ def add_friend_from_directory(directory, name, max_size=1024):
         print("\rDetecting Face {}/{}".format(i, len(listdir)), end="")
 
         # Try Loading Image, Resizing if necessary
-        try: image = imread(os.path.join(directory, item))
-        except: print("\rWarning: Couldn't read {}, skipping file...".format(item))
+        try:
+            image = imread(os.path.join(directory, item))
 
-        image_size = max(image.shape[0], image.shape[1])
-        if image_size > max_size:
-            image = imresize(image, max_size/float(image_size))
+            image_size = max(image.shape[0], image.shape[1])
+            if image_size > max_size:
+                image = imresize(image, max_size/float(image_size))
 
-        # Represent Face as a 128-bit vector
-        representation = openface.represent(image)
-        if representation:
-            face, bounds = representation[0]
-            vectors.append(face)
+            # Represent Face as a 128-bit vector
+            representation = openface.represent(image)
+            if representation:
+                face, bounds = representation[0]
+                vectors.append(face)
+
+        except:
+            print("\rWarning: Couldn't read {}, skipping file...".format(item))
 
     # Write Data to .bin file
     with open(os.path.join(config.PEOPLE_FRIENDS_ROOT, "{}.bin".format(name)), 'wb') as bin:

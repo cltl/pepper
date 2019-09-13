@@ -15,6 +15,14 @@ from typing import Union, Optional
 
 
 class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
+    """
+    System Text to Speech
+
+    Parameters
+    ----------
+    language: str
+        `Language Code <https://cloud.google.com/speech/docs/languages>`_
+    """
 
     TMP = os.path.join(config.PROJECT_ROOT, 'tmp', 'speech')
     GENDER = 2  # "Female" or 1 "Male"
@@ -22,12 +30,6 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
 
     def __init__(self, language):
         # type: (str) -> None
-        """
-        Parameters
-        ----------
-        language: str
-            Language Code, See: https://cloud.google.com/speech/docs/languages
-        """
         AbstractTextToSpeech.__init__(self, language)
         GoogleTranslator.__init__(self, config.INTERNAL_LANGUAGE, language)
 

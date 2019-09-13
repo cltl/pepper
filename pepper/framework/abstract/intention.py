@@ -4,11 +4,12 @@ from pepper import logger
 
 from typing import Iterator, ClassVar
 
+
 class AbstractIntention(object):
     """
     The Intention class is at the base of more involved robot applications.
     They build on top of :class:`~pepper.framework.abstract.application.AbstractApplication`
-    instances and allow for switching of robot contexts.
+    instances and allow for switching between robot behaviours.
 
     Parameters
     ----------
@@ -24,20 +25,21 @@ class AbstractIntention(object):
         # This prevents events from previous Intention to still be called!
         self.application._reset_events()
 
-        # Subscribe to all Application Events
+        # Subscribe to all Application Events, while making sure all Dependencies are met.
         for dependency in self.dependencies:
             self.require_dependency(dependency)
 
-        # Subscribe to all Application Members
+        # Subscribe to all Application Members, essentially becoming the Application
         self.__dict__.update({k: v for k, v in self.application.__dict__.items() if k not in self.__dict__})
 
+        # Update User of Intention Switch
         self._log = logger.getChild(self.__class__.__name__)
         self.log.info("<- Switched Intention")
 
     @property
     def log(self):
         """
-        Intention Logger
+        Intention `Logger <https://docs.python.org/2/library/logging.html>`_
 
         Returns
         -------
@@ -49,7 +51,7 @@ class AbstractIntention(object):
     def application(self):
         # type: () -> AbstractApplication
         """
-        :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on
+        The :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on
 
         Returns
         -------
@@ -67,6 +69,10 @@ class AbstractIntention(object):
         ------
         components: iterable of AbstractComponent
         """
+
+        # Go Through Method Resolution Order, finding all strict subclasses of AbstractComponent,
+        #   excluding AbstractApplication or AbstractIntention.
+        # These are the components that the user requested and must be linked to this Intention
         for cls in self.__class__.mro():
             if issubclass(cls, AbstractComponent) and not cls == AbstractComponent and \
                     not issubclass(cls, AbstractApplication) and not issubclass(cls, AbstractIntention):
@@ -87,7 +93,7 @@ class AbstractIntention(object):
         Returns
         -------
         dependency: AbstractComponent
-            Requested Dependency
+            Requested Dependency (which is ensured to be included in this application, when no exception is thrown)
         """
 
         if not isinstance(self.application, dependency):

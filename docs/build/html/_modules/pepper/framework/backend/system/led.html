@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -148,12 +152,34 @@
 
 
 <div class="viewcode-block" id="SystemLed"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.led.html#pepper.framework.backend.system.led.SystemLed">[docs]</a><span class="k">class</span> <span class="nc">SystemLed</span><span class="p">(</span><span class="n">AbstractLed</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Control Robot LEDs&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="SystemLed.set"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.led.html#pepper.framework.backend.system.led.SystemLed.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leds</span><span class="p">,</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
         <span class="c1"># type: (List[Led], Tuple[float, float, float], float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set LEDs to Particular color (interpolating from its current color in &#39;duration&#39; time)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        leds: List[Led]</span>
+<span class="sd">            Which LEDs are affected</span>
+<span class="sd">        rgb: Tuple[float, float, float]</span>
+<span class="sd">            Which color to turn</span>
+<span class="sd">        duration: float</span>
+<span class="sd">            How long to take switching this color</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="SystemLed.off"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.led.html#pepper.framework.backend.system.led.SystemLed.off">[docs]</a>    <span class="k">def</span> <span class="nf">off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leds</span><span class="p">):</span>
         <span class="c1"># type: (List[Led]) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Switch LEDs off</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        leds: List[Led]</span>
+<span class="sd">            Which LEDs are affected</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
 </pre></div>
 

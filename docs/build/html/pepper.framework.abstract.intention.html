@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -189,7 +193,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>The Intention class is at the base of more involved robot applications.
 They build on top of <a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a>
-instances and allow for switching of robot contexts.</p>
+instances and allow for switching between robot behaviours.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -203,13 +207,13 @@ instances and allow for switching of robot contexts.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.application" title="pepper.framework.abstract.intention.AbstractIntention.application"><code class="xref py py-obj docutils literal notranslate"><span class="pre">application</span></code></a></dt>
-<dd><p class="first last"><a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> Intention is based on</p>
+<dd><p class="first last">The <a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> Intention is based on</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.dependencies" title="pepper.framework.abstract.intention.AbstractIntention.dependencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dependencies</span></code></a></dt>
 <dd><p class="first last">Intention Dependencies</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.intention.AbstractIntention.log" title="pepper.framework.abstract.intention.AbstractIntention.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
-<dd><p class="first last">Intention Logger</p>
+<dd><p class="first last">Intention <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 </dd>
 </dl>
 </td>
@@ -231,7 +235,7 @@ instances and allow for switching of robot contexts.</p>
 <dl class="attribute">
 <dt id="pepper.framework.abstract.intention.AbstractIntention.application">
 <code class="descname">application</code><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention.application" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> Intention is based on</p>
+<dd><p>The <a class="reference internal" href="pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication" title="pepper.framework.abstract.application.AbstractApplication"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractApplication</span></code></a> Intention is based on</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -267,7 +271,7 @@ instances and allow for switching of robot contexts.</p>
 <dl class="attribute">
 <dt id="pepper.framework.abstract.intention.AbstractIntention.log">
 <code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.intention.AbstractIntention.log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Intention Logger</p>
+<dd><p>Intention <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -300,7 +304,7 @@ instances and allow for switching of robot contexts.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>dependency: AbstractComponent</strong></dt>
-<dd><p class="first last">Requested Dependency</p>
+<dd><p class="first last">Requested Dependency (which is ensured to be included in this application, when no exception is thrown)</p>
 </dd>
 </dl>
 </td>

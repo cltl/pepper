@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -158,7 +162,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    language: str</span>
-<span class="sd">        Language Code, See: https://cloud.google.com/speech/docs/languages</span>
+<span class="sd">        `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
@@ -177,12 +181,12 @@
     <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Language Code, See: https://cloud.google.com/speech/docs/languages</span>
+<span class="sd">        `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        language: str</span>
-<span class="sd">            Language Code, See: https://cloud.google.com/speech/docs/languages</span>
+<span class="sd">            `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_language</span>
 
@@ -225,7 +229,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Say something through Text to Speech (Implementation)</span>
 
-<span class="sd">        Text To Speech Modules should implement this function</span>
+<span class="sd">        Text To Speech Backends should implement this function</span>
 <span class="sd">        This function should block while speech is being produced</span>
 
 <span class="sd">        Parameters</span>
@@ -233,7 +237,7 @@
 <span class="sd">        text: str</span>
 <span class="sd">        animation: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_text_to_speech</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>

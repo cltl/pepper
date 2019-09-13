@@ -1,3 +1,7 @@
+"""
+Sets of Semantically Similar Phrases to add variety (using the random.choice function)
+"""
+
 import random
 
 GREETING = [

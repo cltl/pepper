@@ -27,8 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pepper.framework.backend.system.tablet module" href="pepper.framework.backend.system.tablet.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -55,6 +54,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -182,13 +185,21 @@
 <dt id="pepper.framework.backend.system.text_to_speech.SystemTextToSpeech">
 <em class="property">class </em><code class="descclassname">pepper.framework.backend.system.text_to_speech.</code><code class="descname">SystemTextToSpeech</code><span class="sig-paren">(</span><em>language</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/text_to_speech.html#SystemTextToSpeech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.text_to_speech.AbstractTextToSpeech</span></code></a>, <a class="reference internal" href="pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.GoogleTranslator" title="pepper.framework.sensor.asr.GoogleTranslator"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.asr.GoogleTranslator</span></code></a></p>
+<p>System Text to Speech</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>language: str</strong></dt>
+<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></dt>
-<dd><p class="first last">Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
 </dd>
 <dt><strong>source</strong></dt>
 <dd></dd>
@@ -277,13 +288,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="pepper.framework.backend.system.tablet.html" class="btn btn-neutral" title="pepper.framework.backend.system.tablet module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

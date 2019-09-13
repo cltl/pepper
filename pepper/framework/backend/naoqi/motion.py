@@ -13,16 +13,18 @@ from typing import Tuple
 
 class NAOqiMotion(AbstractMotion):
     """
-    Connect with NAOqi Motion
+    Control Robot Motion (other than speech animation) through NAOqi Motion
 
     Parameters
     ----------
     session: qi.Session
+        The current session with the Robot
     """
 
     SERVICE_MOTION = "ALMotion"
     SERVICE_TRACKER = "ALTracker"
-    COMMAND_LIMIT = 1
+
+    COMMAND_LIMIT = 2  # The maximum number of commands in the queue to prevent blocking all access to robot motion
     FRAME = 0  # 0 = With Respect to Torso
 
     def __init__(self, session):
@@ -51,10 +53,12 @@ class NAOqiMotion(AbstractMotion):
 
         Parameters
         ----------
-        direction: float
+        direction: Tuple[float, float]
+            Direction to look at in View Space (Spherical Coordinates)
         speed: float
+            Movement Speed [0,1]
         """
-        if self._look_queue.qsize() <= NAOqiMotion.COMMAND_LIMIT:
+        if self._look_queue.qsize() < NAOqiMotion.COMMAND_LIMIT:
             self._look_queue.put((direction, speed))
 
     def point(self, direction, speed=1):
@@ -64,18 +68,22 @@ class NAOqiMotion(AbstractMotion):
 
         Parameters
         ----------
-        direction: float
+        direction: Tuple[float, float]
+            Direction to point at in View Space (Spherical Coordinates)
         speed: float
+            Movement Speed [0,1]
         """
-        if self._point_queue.qsize() <= NAOqiMotion.COMMAND_LIMIT:
+        if self._point_queue.qsize() < NAOqiMotion.COMMAND_LIMIT:
             self._point_queue.put((direction, speed))
 
     def _look(self, direction, speed=1):
+        # type: (Tuple[float, float], float) -> None
 
         # Translate direction to xyz and look at that xyz
         self._tracker.lookAt(self._dir2xyz(direction), NAOqiMotion.FRAME, float(np.clip(speed, 0, 1)), False)
 
     def _point(self, direction, speed=1):
+        # type: (Tuple[float, float], float) -> None
 
         # Translate direction to xyz
         coordinates = self._dir2xyz(direction)
@@ -96,13 +104,15 @@ class NAOqiMotion(AbstractMotion):
         self._tracker.pointAt("{}Arm".format(lr), coordinates, NAOqiMotion.FRAME, float(np.clip(speed, 0, 1)))
 
     def _dir2xyz(self, direction):
+
+        # Translate Direction to X,Y,Z coordinate (with arbitrary depth) to smooth NAOqi API interfacing
         x, z, y = spherical2cartesian(-direction[0], direction[1], 5)
         return [float(x), float(y), float(z)]
 
     def _look_worker(self):
-        while True:
-            self._look(*self._look_queue.get())
+        # Execute whatever is on the Look Queue
+        while True: self._look(*self._look_queue.get())
 
     def _point_worker(self):
-        while True:
-            self._point(*self._point_queue.get())
+        # Execute whatever is on the Point Queue
+        while True: self._point(*self._point_queue.get())

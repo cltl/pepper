@@ -7,17 +7,21 @@ from typing import List, Callable
 
 
 class SystemMicrophone(AbstractMicrophone):
+    """
+    System Microphone
+
+    Parameters
+    ----------
+    rate: int
+        Samples per Second
+    channels: int
+        Number of Channels
+    callbacks: list of callable
+        Functions to call each time some audio samples are captured
+    """
+
     def __init__(self, rate, channels, callbacks=[]):
         # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
-        """
-        System Microphone
-
-        Parameters
-        ----------
-        rate: int
-        channels: int
-        callbacks: list of callable
-        """
         super(SystemMicrophone, self).__init__(rate, channels, callbacks)
 
         # Open Microphone Stream
@@ -36,4 +40,4 @@ class SystemMicrophone(AbstractMicrophone):
         """
         audio = np.frombuffer(in_data, np.int16)
         self.on_audio(audio)
-        return (None, pyaudio.paContinue)
+        return None, pyaudio.paContinue

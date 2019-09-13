@@ -8,7 +8,6 @@ from naoqi import ALProxy
 import qi
 
 
-
 class NAOqiBackend(AbstractBackend):
     """
     Initialize NAOqi Backend

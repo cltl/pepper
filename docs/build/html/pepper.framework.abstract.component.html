@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -204,7 +208,7 @@
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.log" title="pepper.framework.abstract.component.AbstractComponent.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
-<dd><p class="first last">Component Logger</p>
+<dd><p class="first last">Returns Component <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 </dd>
 </dl>
 </td>
@@ -219,7 +223,7 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.component.AbstractComponent.require" title="pepper.framework.abstract.component.AbstractComponent.require"><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code></a>(cls,&nbsp;dependency)</td>
-<td>Enforce Component Dependency</td>
+<td>Enforce Component Dependency by throwing an Exception when a dependency is missing</td>
 </tr>
 </tbody>
 </table>
@@ -244,7 +248,7 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.component.AbstractComponent.log">
 <code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Component Logger</p>
+<dd><p>Returns Component <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -262,8 +266,8 @@
 <dl class="method">
 <dt id="pepper.framework.abstract.component.AbstractComponent.require">
 <code class="descname">require</code><span class="sig-paren">(</span><em>cls</em>, <em>dependency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#AbstractComponent.require"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.AbstractComponent.require" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enforce Component Dependency</p>
-<p>Checks whether Dependency Component is present Dependent Component in mro</p>
+<dd><p>Enforce Component Dependency by throwing an Exception when a dependency is missing</p>
+<p>Checks whether Dependency Component is present in the Method Resolution Order (mro)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -295,7 +299,7 @@
 <dt id="pepper.framework.abstract.component.ComponentDependencyError">
 <em class="property">exception </em><code class="descclassname">pepper.framework.abstract.component.</code><code class="descname">ComponentDependencyError</code><a class="reference internal" href="_modules/pepper/framework/abstract/component.html#ComponentDependencyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.component.ComponentDependencyError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
-<p>Raised when a Component Dependency is not met</p>
+<p>Raised when a Component Dependency hasn’t been met</p>
 </dd></dl>
 
 </div>

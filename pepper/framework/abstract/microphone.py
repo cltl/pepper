@@ -18,28 +18,37 @@ class AbstractMicrophone(object):
     Parameters
     ----------
     rate: int
+        Samples per Second
     channels: int
+        Number of Channels
     callbacks: list of callable
+        Functions to call each time some audio samples are captured
     """
 
     def __init__(self, rate, channels, callbacks):
         # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
+
         self._rate = rate
         self._channels = channels
         self._callbacks = callbacks
 
-        self._dt_threshold_multiplier = 1.5
+        # Variables to do some performance statistics
         self._dt_buffer = deque([], maxlen=32)
         self._true_rate = rate
         self._t0 = time()
 
+        # Create Queue and Sound Processor:
+        #   Each time audio samples are captured it is put in the audio processing queue
+        #   In a separate thread, the _processor worker takes these samples and calls all registered callbacks.
+        #   This way, samples are not accidentally skipped (NAOqi has some very strict timings)
         self._queue = Queue()
         self._processor_scheduler = Scheduler(self._processor, 0, name="MicrophoneThread")
         self._processor_scheduler.start()
 
-        self._log = logger.getChild(self.__class__.__name__)
-
+        # Default behaviour is to not run by default. Calling AbstractApplication.run() will activate the microphone
         self._running = False
+
+        self._log = logger.getChild(self.__class__.__name__)
 
     @property
     def rate(self):
@@ -145,10 +154,16 @@ class AbstractMicrophone(object):
 
         Calls each callback for each audio frame, threaded, for higher audio throughput
         """
+
+        # Get Audio Samples from Buffer
         audio = self._queue.get()
+
+        # Call each regisered Callback with Samples
         if self._running:
             for callback in self.callbacks:
                 callback(audio)
+
+        # Update Statistics
         self._update_dt(len(audio))
 
     def _update_dt(self, n_bytes):

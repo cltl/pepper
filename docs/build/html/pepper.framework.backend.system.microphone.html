@@ -27,8 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pepper.framework.backend.system.led module" href="pepper.framework.backend.system.led.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -55,6 +54,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -182,11 +185,25 @@
 <dt id="pepper.framework.backend.system.microphone.SystemMicrophone">
 <em class="property">class </em><code class="descclassname">pepper.framework.backend.system.microphone.</code><code class="descname">SystemMicrophone</code><span class="sig-paren">(</span><em>rate</em>, <em>channels</em>, <em>callbacks=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/microphone.html#SystemMicrophone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.microphone.SystemMicrophone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.microphone.AbstractMicrophone</span></code></a></p>
+<p>System Microphone</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>rate: int</strong></dt>
+<dd><p class="first last">Samples per Second</p>
+</dd>
+<dt><strong>channels: int</strong></dt>
+<dd><p class="first last">Number of Channels</p>
+</dd>
+<dt><strong>callbacks: list of callable</strong></dt>
+<dd><p class="first last">Functions to call each time some audio samples are captured</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></dt>
 <dd><p class="first last">Get/Set <code class="xref py py-func docutils literal notranslate"><span class="pre">on_audio()</span></code> Callbacks</p>
 </dd>
@@ -234,13 +251,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="pepper.framework.backend.system.led.html" class="btn btn-neutral" title="pepper.framework.backend.system.led module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

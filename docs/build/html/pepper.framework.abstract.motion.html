@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -187,6 +191,7 @@
 <dt id="pepper.framework.abstract.motion.AbstractMotion">
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.motion.</code><code class="descname">AbstractMotion</code><a class="reference internal" href="_modules/pepper/framework/abstract/motion.html#AbstractMotion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.motion.AbstractMotion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Control Robot Motion (other than speech animation)</p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -211,10 +216,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>direction: float</strong></dt>
-<dd></dd>
+<dt><strong>direction: Tuple[float, float]</strong></dt>
+<dd><p class="first last">Direction to look at in View Space (Spherical Coordinates)</p>
+</dd>
 <dt><strong>speed: float</strong></dt>
-<dd></dd>
+<dd><p class="first last">Movement Speed [0,1]</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -231,10 +238,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>direction: float</strong></dt>
-<dd></dd>
+<dt><strong>direction: Tuple[float, float]</strong></dt>
+<dd><p class="first last">Direction to point at in View Space (Spherical Coordinates)</p>
+</dd>
 <dt><strong>speed: float</strong></dt>
-<dd></dd>
+<dd><p class="first last">Movement Speed [0,1]</p>
+</dd>
 </dl>
 </td>
 </tr>

@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -144,10 +148,39 @@
             
   <h1>Source code for pepper.framework.backend.system.motion</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract.motion</span> <span class="k">import</span> <span class="n">AbstractMotion</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
 
 
 <div class="viewcode-block" id="SystemMotion"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.motion.html#pepper.framework.backend.system.motion.SystemMotion">[docs]</a><span class="k">class</span> <span class="nc">SystemMotion</span><span class="p">(</span><span class="n">AbstractMotion</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+    <span class="sd">&quot;&quot;&quot;Control Robot Motion (other than speech animation)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SystemMotion.look"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.motion.html#pepper.framework.backend.system.motion.SystemMotion.look">[docs]</a>    <span class="k">def</span> <span class="nf">look</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (Tuple[float, float], float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Look at particular direction</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        direction: Tuple[float, float]</span>
+<span class="sd">            Direction to look at in View Space (Spherical Coordinates)</span>
+<span class="sd">        speed: float</span>
+<span class="sd">            Movement Speed [0,1]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="SystemMotion.point"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.motion.html#pepper.framework.backend.system.motion.SystemMotion.point">[docs]</a>    <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (Tuple[float, float], float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Point at particular direction</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        direction: Tuple[float, float]</span>
+<span class="sd">            Direction to point at in View Space (Spherical Coordinates)</span>
+<span class="sd">        speed: float</span>
+<span class="sd">            Movement Speed [0,1]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
 </pre></div>
 
            </div>

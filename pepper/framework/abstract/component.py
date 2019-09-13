@@ -1,11 +1,12 @@
 from pepper.framework.abstract import AbstractBackend
 from pepper import logger
 
+from logging import Logger
 from typing import ClassVar
 
 
 class ComponentDependencyError(Exception):
-    """Raised when a Component Dependency is not met"""
+    """Raised when a Component Dependency hasn't been met"""
     pass
 
 
@@ -28,8 +29,9 @@ class AbstractComponent(object):
 
     @property
     def log(self):
+        # type: () -> Logger
         """
-        Component Logger
+        Returns Component `Logger <https://docs.python.org/2/library/logging.html>`_
 
         Returns
         -------
@@ -52,9 +54,9 @@ class AbstractComponent(object):
     def require(self, cls, dependency):
         # type: (ClassVar[AbstractComponent], ClassVar[AbstractComponent]) -> AbstractComponent
         """
-        Enforce Component Dependency
+        Enforce Component Dependency by throwing an Exception when a dependency is missing
 
-        Checks whether Dependency Component is present Dependent Component in mro
+        Checks whether Dependency Component is present in the Method Resolution Order (mro)
 
         Parameters
         ----------

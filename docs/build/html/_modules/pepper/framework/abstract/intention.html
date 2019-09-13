@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -149,11 +153,12 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">ClassVar</span>
 
+
 <div class="viewcode-block" id="AbstractIntention"><a class="viewcode-back" href="../../../../pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention">[docs]</a><span class="k">class</span> <span class="nc">AbstractIntention</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Intention class is at the base of more involved robot applications.</span>
 <span class="sd">    They build on top of :class:`~pepper.framework.abstract.application.AbstractApplication`</span>
-<span class="sd">    instances and allow for switching of robot contexts.</span>
+<span class="sd">    instances and allow for switching between robot behaviours.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -169,20 +174,21 @@
         <span class="c1"># This prevents events from previous Intention to still be called!</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">_reset_events</span><span class="p">()</span>
 
-        <span class="c1"># Subscribe to all Application Events</span>
+        <span class="c1"># Subscribe to all Application Events, while making sure all Dependencies are met.</span>
         <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">require_dependency</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
 
-        <span class="c1"># Subscribe to all Application Members</span>
+        <span class="c1"># Subscribe to all Application Members, essentially becoming the Application</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">})</span>
 
+        <span class="c1"># Update User of Intention Switch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;- Switched Intention&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Intention Logger</span>
+<span class="sd">        Intention `Logger &lt;https://docs.python.org/2/library/logging.html&gt;`_</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -194,7 +200,7 @@
     <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; AbstractApplication</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on</span>
+<span class="sd">        The :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -212,6 +218,10 @@
 <span class="sd">        ------</span>
 <span class="sd">        components: iterable of AbstractComponent</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Go Through Method Resolution Order, finding all strict subclasses of AbstractComponent,</span>
+        <span class="c1">#   excluding AbstractApplication or AbstractIntention.</span>
+        <span class="c1"># These are the components that the user requested and must be linked to this Intention</span>
         <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractComponent</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span> <span class="o">==</span> <span class="n">AbstractComponent</span> <span class="ow">and</span> \
                     <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractApplication</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">AbstractIntention</span><span class="p">):</span>
@@ -232,7 +242,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dependency: AbstractComponent</span>
-<span class="sd">            Requested Dependency</span>
+<span class="sd">            Requested Dependency (which is ensured to be included in this application, when no exception is thrown)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">dependency</span><span class="p">):</span>

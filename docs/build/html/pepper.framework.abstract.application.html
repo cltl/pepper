@@ -56,6 +56,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -189,8 +193,9 @@
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.application.</code><code class="descname">AbstractApplication</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#AbstractApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
 <p>The Application class is at the base of every robot application.
-It keeps track of events from different instances of <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractComponent</span></code></a>
-and allows for instances of <a class="reference internal" href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention" title="pepper.framework.abstract.intention.AbstractIntention"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractIntention</span></code></a> to be build in top of it.</p>
+It keeps track of events from different instances of <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractComponent</span></code></a>,
+allows extension by instances of <a class="reference internal" href="pepper.framework.abstract.intention.html#pepper.framework.abstract.intention.AbstractIntention" title="pepper.framework.abstract.intention.AbstractIntention"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractIntention</span></code></a> and
+exposes <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a> devices to the Application Layer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -206,19 +211,27 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
-<dt><strong>camera</strong></dt>
-<dd></dd>
-<dt><strong>led</strong></dt>
-<dd></dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.log" title="pepper.framework.abstract.application.AbstractApplication.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
-<dd><p class="first last">Application Logger</p>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.camera" title="pepper.framework.abstract.application.AbstractApplication.camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">camera</span></code></a></dt>
+<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a> associated with current Backend</p>
 </dd>
-<dt><strong>microphone</strong></dt>
-<dd></dd>
-<dt><strong>motion</strong></dt>
-<dd></dd>
-<dt><strong>text_to_speech</strong></dt>
-<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.led" title="pepper.framework.abstract.application.AbstractApplication.led"><code class="xref py py-obj docutils literal notranslate"><span class="pre">led</span></code></a></dt>
+<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a> associated with current Backend</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.log" title="pepper.framework.abstract.application.AbstractApplication.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
+<dd><p class="first last">Returns Application <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.microphone" title="pepper.framework.abstract.application.AbstractApplication.microphone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">microphone</span></code></a></dt>
+<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a> associated with current Backend</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.motion" title="pepper.framework.abstract.application.AbstractApplication.motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">motion</span></code></a></dt>
+<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMotion</span></code></a> associated with current Backend</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.tablet" title="pepper.framework.abstract.application.AbstractApplication.tablet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tablet</span></code></a></dt>
+<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTablet</span></code></a> associated with current Backend</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.text_to_speech" title="pepper.framework.abstract.application.AbstractApplication.text_to_speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_to_speech</span></code></a></dt>
+<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a> associated with current Backend</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -232,7 +245,7 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code>(cls,&nbsp;dependency)</td>
-<td>Enforce Component Dependency</td>
+<td>Enforce Component Dependency by throwing an Exception when a dependency is missing</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.run" title="pepper.framework.abstract.application.AbstractApplication.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>()</td>
 <td>Run Application</td>
@@ -242,17 +255,43 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.camera">
 <code class="descname">camera</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.camera" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a> associated with current Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>camera: AbstractCamera</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.led">
 <code class="descname">led</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.led" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a> associated with current Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>motion: AbstractMotion</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.log">
 <code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Application Logger</p>
+<dd><p>Returns Application <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -270,24 +309,81 @@ and allows for instances of <a class="reference internal" href="pepper.framework
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.microphone">
 <code class="descname">microphone</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.microphone" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a> associated with current Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>microphone: AbstractMicrophone</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.motion">
 <code class="descname">motion</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.motion" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns <a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMotion</span></code></a> associated with current Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>motion: AbstractMotion</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.abstract.application.AbstractApplication.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/application.html#AbstractApplication.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Application</p>
-<p>Starts Camera &amp; Microphone and Runs until KeyboardInterrupt</p>
+<p>Starts Camera &amp; Microphone and Blocks Current Thread until KeyboardInterrupt</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.abstract.application.AbstractApplication.tablet">
+<code class="descname">tablet</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.tablet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTablet</span></code></a> associated with current Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>tablet: AbstractTablet</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.text_to_speech">
 <code class="descname">text_to_speech</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.text_to_speech" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a> associated with current Backend</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>text_to_speech: AbstractTextToSpeech</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

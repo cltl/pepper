@@ -9,19 +9,19 @@ from typing import Union, Optional
 
 
 class NAOqiTextToSpeech(AbstractTextToSpeech):
+    """
+    NAOqi Text to Speech
+
+    Parameters
+    ----------
+    session: qi.Session
+        Qi Application Session
+    """
 
     SERVICE = "ALAnimatedSpeech"
 
     def __init__(self, session, language):
         # type: (qi.Session, str) -> None
-        """
-        NAOqi Text to Speech
-
-        Parameters
-        ----------
-        session: qi.Session
-            Qi Application Session
-        """
         super(NAOqiTextToSpeech, self).__init__(language)
 
         # Subscribe to NAOqi Text to Speech Service

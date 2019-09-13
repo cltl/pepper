@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -155,23 +159,37 @@
 
 
 <div class="viewcode-block" id="SystemImage"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.camera.html#pepper.framework.backend.system.camera.SystemImage">[docs]</a><span class="k">class</span> <span class="nc">SystemImage</span><span class="p">(</span><span class="n">AbstractImage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    System Image Container</span>
+
+<span class="sd">    Since Web Cams generally do not have depth sensors, we set every pixel at a depth of one meter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image: np.ndarray</span>
+<span class="sd">        RGB Image (height, width, 3) as Numpy Array</span>
+<span class="sd">    bounds: Bounds</span>
+<span class="sd">        Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SystemImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="SystemCamera"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.camera.html#pepper.framework.backend.system.camera.SystemCamera">[docs]</a><span class="k">class</span> <span class="nc">SystemCamera</span><span class="p">(</span><span class="n">AbstractCamera</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    System Camera</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    resolution: pepper.framework.CameraResolution</span>
+<span class="sd">    rate: int</span>
+<span class="sd">    callbacks: list of callable</span>
+<span class="sd">    index: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[],</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="c1"># type: (CameraResolution, int, List[Callable[[AbstractImage], None]], int) -&gt; None</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        System Camera</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        resolution: pepper.framework.CameraResolution</span>
-<span class="sd">        rate: int</span>
-<span class="sd">        callbacks: list of callable</span>
-<span class="sd">        index: int</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SystemCamera</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">resolution</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">callbacks</span><span class="p">)</span>
 
         <span class="c1"># Get Camera and request resolution</span>

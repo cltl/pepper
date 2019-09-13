@@ -2,6 +2,8 @@ from pepper.framework.abstract.microphone import AbstractMicrophone
 from pepper import NAOqiMicrophoneIndex
 import numpy as np
 
+import qi
+
 from typing import List, Callable, Tuple
 
 
@@ -16,7 +18,7 @@ class NAOqiMicrophone(AbstractMicrophone):
     index: NAOqiMicrophoneIndex or int
         Which Microphone to Use
     callbacks: list of callable
-        On Audio Callbacks
+        Functions to call each time some audio samples are captured
     """
 
     SERVICE = "ALAudioDevice"
@@ -40,7 +42,9 @@ class NAOqiMicrophone(AbstractMicrophone):
         """
         Process Audio Window from Pepper/Nao
 
-        This function must be called "processRemote", according to Naoqi specifications.
+        This function must be exactly called "processRemote", according to NAOqi specifications.
+
+        Make sure this thread is idle to receive calls from NAOqi to 'processRemote', otherwise frames will be dropped!
 
         Parameters
         ----------

@@ -2,6 +2,7 @@ from typing import Tuple
 
 
 class AbstractMotion(object):
+    """Control Robot Motion (other than speech animation)"""
 
     def look(self, direction, speed=1):
         # type: (Tuple[float, float], float) -> None
@@ -10,10 +11,12 @@ class AbstractMotion(object):
 
         Parameters
         ----------
-        direction: float
+        direction: Tuple[float, float]
+            Direction to look at in View Space (Spherical Coordinates)
         speed: float
+            Movement Speed [0,1]
         """
-        pass
+        raise NotImplementedError()
 
     def point(self, direction, speed=1):
         # type: (Tuple[float, float], float) -> None
@@ -22,7 +25,9 @@ class AbstractMotion(object):
 
         Parameters
         ----------
-        direction: float
+        direction: Tuple[float, float]
+            Direction to point at in View Space (Spherical Coordinates)
         speed: float
+            Movement Speed [0,1]
         """
-        pass
+        raise NotImplementedError()

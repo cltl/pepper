@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -144,11 +148,24 @@
             
   <h1>Source code for pepper.framework.abstract.tablet</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="AbstractTablet"><a class="viewcode-back" href="../../../../pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet">[docs]</a><span></span><span class="k">class</span> <span class="nc">AbstractTablet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Access Robot Tablet to show URLs&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="AbstractTablet.show"><a class="viewcode-back" href="../../../../pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+        <span class="c1"># type: (str) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show URL</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        url: str</span>
+<span class="sd">            WebPage/Image URL</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AbstractTablet.hide"><a class="viewcode-back" href="../../../../pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div></div>
+        <span class="c1"># type: () -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;Hide whatever is shown on tablet&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

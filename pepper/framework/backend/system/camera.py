@@ -10,23 +10,37 @@ from typing import List, Callable
 
 
 class SystemImage(AbstractImage):
+    """
+    System Image Container
+
+    Since Web Cams generally do not have depth sensors, we set every pixel at a depth of one meter.
+
+    Parameters
+    ----------
+    image: np.ndarray
+        RGB Image (height, width, 3) as Numpy Array
+    bounds: Bounds
+        Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)
+    """
+
     def __init__(self, image, bounds):
         super(SystemImage, self).__init__(image, bounds, np.ones(image.shape[:2], np.float32))
 
 
 class SystemCamera(AbstractCamera):
+    """
+    System Camera
+
+    Parameters
+    ----------
+    resolution: pepper.framework.CameraResolution
+    rate: int
+    callbacks: list of callable
+    index: int
+    """
+
     def __init__(self, resolution, rate, callbacks=[], index=0):
         # type: (CameraResolution, int, List[Callable[[AbstractImage], None]], int) -> None
-        """
-        System Camera
-
-        Parameters
-        ----------
-        resolution: pepper.framework.CameraResolution
-        rate: int
-        callbacks: list of callable
-        index: int
-        """
         super(SystemCamera, self).__init__(resolution, rate, callbacks)
 
         # Get Camera and request resolution

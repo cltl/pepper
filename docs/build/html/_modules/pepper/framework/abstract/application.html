@@ -55,6 +55,10 @@
           
             
             
+              <div class="version">
+                1.0
+              </div>
+            
           
 
           
@@ -146,14 +150,16 @@
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 
+<span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">Logger</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
 
 
 <div class="viewcode-block" id="AbstractApplication"><a class="viewcode-back" href="../../../../pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication">[docs]</a><span class="k">class</span> <span class="nc">AbstractApplication</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Application class is at the base of every robot application.</span>
-<span class="sd">    It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`</span>
-<span class="sd">    and allows for instances of :class:`~pepper.framework.abstract.intention.AbstractIntention` to be build in top of it.</span>
+<span class="sd">    It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,</span>
+<span class="sd">    allows extension by instances of :class:`~pepper.framework.abstract.intention.AbstractIntention` and</span>
+<span class="sd">    exposes :class:`~pepper.framework.abstract.backend.AbstractBackend` devices to the Application Layer.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -169,13 +175,15 @@
         <span class="c1"># Find Events associated with Application (inherited from Components)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_events</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_EVENT_TAG</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">)}</span>
 
+        <span class="c1"># Instantiate Logger for this Application</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Logger</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Application Logger</span>
+<span class="sd">        Returns Application `Logger &lt;https://docs.python.org/2/library/logging.html&gt;`_</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -186,33 +194,80 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">camera</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; AbstractCamera</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns :class:`~pepper.framework.abstract.camera.AbstractCamera` associated with current Backend</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        camera: AbstractCamera</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">microphone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; AbstractMicrophone</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` associated with current Backend</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        microphone: AbstractMicrophone</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">text_to_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; AbstractTextToSpeech</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech` associated with current Backend</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        text_to_speech: AbstractTextToSpeech</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">motion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; AbstractMotion</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns :class:`~pepper.framework.abstract.motion.AbstractMotion` associated with current Backend</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        motion: AbstractMotion</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">motion</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">led</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; AbstractLed</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns :class:`~pepper.framework.abstract.led.AbstractLed` associated with current Backend</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        motion: AbstractMotion</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">led</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tablet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; AbstractTablet</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns :class:`~pepper.framework.abstract.tablet.AbstractTablet` associated with current Backend</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tablet: AbstractTablet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">tablet</span>
 
 <div class="viewcode-block" id="AbstractApplication.run"><a class="viewcode-back" href="../../../../pepper.framework.abstract.application.html#pepper.framework.abstract.application.AbstractApplication.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run Application</span>
 
-<span class="sd">        Starts Camera &amp; Microphone and Runs until KeyboardInterrupt</span>
+<span class="sd">        Starts Camera &amp; Microphone and Blocks Current Thread until KeyboardInterrupt</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -224,7 +279,11 @@
             <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_reset_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reset Event Callbacks to their (unimplemented) defaults&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset Event Callbacks to their (unimplemented) defaults</span>
+
+<span class="sd">        Used when the Application Switches between AbstractIntention, to remove links to the old AbstractIntention</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_function</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="n">event_function</span><span class="p">)</span></div>
 </pre></div>

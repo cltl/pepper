@@ -1,8 +1,5 @@
 """
-Pepper Configuration File
--------------------------
-
-Settings for:
+The Pepper Configuration File contains Settings for:
 
 - Application Backend, Language, Paths & URLs
 - API Keys (Google Cloud Services & Wolfram Alpha)

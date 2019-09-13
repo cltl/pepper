@@ -11,18 +11,21 @@ from typing import Tuple, List, Optional, Callable
 
 
 class AbstractImage(object):
+    """
+    Abstract Image Container
+
+    Parameters
+    ----------
+    image: np.ndarray
+        RGB Image (height, width, 3) as Numpy Array
+    bounds: Bounds
+        Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)
+    depth: np.ndarray
+        Depth Image (height, width) as Numpy Array
+    """
 
     def __init__(self, image, bounds, depth=None):
         # type: (np.ndarray, Bounds, Optional[np.ndarray]) -> None
-        """
-        Abstract Image Container
-
-        Parameters
-        ----------
-        image: np.ndarray
-        bounds: Bounds
-        depth: np.ndarray
-        """
 
         self._image = image
         self._bounds = bounds
@@ -34,26 +37,57 @@ class AbstractImage(object):
     def image(self):
         # type: () -> np.ndarray
         """
-        Image Pixels as Numpy Array
+        RGB Image (height, width, 3) as Numpy Array
 
         Returns
         -------
         image: np.ndarray
+            RGB Image (height, width, 3) as Numpy Array
         """
         return self._image
 
     @property
     def depth(self):
         # type: () -> Optional[np.ndarray]
+        """
+        Depth Image (height, width) as Numpy Array
+
+        Returns
+        -------
+        depth: np.ndarray
+            Depth Image (height, width) as Numpy Array
+        """
         return self._depth
 
     @property
     def bounds(self):
         # type: () -> Bounds
+        """
+        Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)
+
+        Returns
+        -------
+        bounds: Bounds
+            Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)
+        """
         return self._bounds
 
     def get_image(self, bounds):
         # type: (Bounds) -> np.ndarray
+        """
+        Get pixels from Image at Bounds in Image Space
+
+        Parameters
+        ----------
+        bounds: Bounds
+            Image Bounds (Image) in Image Space (y, x)
+
+        Returns
+        -------
+        pixels: np.ndarray
+            Requested pixels within Bounds
+        """
+
         x0 = int(bounds.x0 * self._image.shape[1])
         x1 = int(bounds.x1 * self._image.shape[1])
         y0 = int(bounds.y0 * self._image.shape[0])
@@ -63,6 +97,19 @@ class AbstractImage(object):
 
     def get_depth(self, bounds):
         # type: (Bounds) -> Optional[np.ndarray]
+        """
+        Get depth from Image at Bounds in Image Space
+
+        Parameters
+        ----------
+        bounds: Bounds
+            Image Bounds (Image) in Image Space (y, x)
+
+        Returns
+        -------
+        depth: np.ndarray
+            Requested depth within Bounds
+        """
 
         if self._depth is None:
             return None
@@ -77,7 +124,7 @@ class AbstractImage(object):
     def get_direction(self, coordinates):
         # type: (Tuple[float, float]) -> Tuple[float, float]
         """
-        Convert 2D Relative Coordinates to 2D position in Spherical Coordinates
+        Convert 2D Image Coordinates [x, y] to 2D position in Spherical Coordinates [phi, theta]
 
         Parameters
         ----------
@@ -85,7 +132,7 @@ class AbstractImage(object):
 
         Returns
         -------
-        position_2D: Tuple[float, float]
+        direction: Tuple[float, float]
         """
         return (self.bounds.x0 + coordinates[0] * self.bounds.width,
                 self.bounds.y0 + coordinates[1] * self.bounds.height)
@@ -93,16 +140,40 @@ class AbstractImage(object):
     @property
     def time(self):
         # type: () -> float
+        """
+        Get time image was captured and received by the application.
+
+        Returns
+        -------
+        time: float
+        """
         return self._time
 
     def frustum(self, depth_min, depth_max):
         # type: (float, float) -> List[float]
+        """
+        Calculate `Frustum <https://en.wikipedia.org/wiki/Viewing_frustum>`_ of the camera at image time (visualisation)
+
+        Parameters
+        ----------
+        depth_min: float
+            Near Viewing Plane
+        depth_max: float
+            Far Viewing Place
+
+        Returns
+        -------
+        frustum: List[float]
+        """
         return [
+
+            # Near Viewing Plane
             spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_min),
             spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_min),
             spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_min),
             spherical2cartesian(self._bounds.x1, self._bounds.y0, depth_min),
 
+            # Far Viewing Plane
             spherical2cartesian(self._bounds.x0, self._bounds.y0, depth_max),
             spherical2cartesian(self._bounds.x0, self._bounds.y1, depth_max),
             spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_max),
@@ -122,30 +193,39 @@ class AbstractCamera(object):
     resolution: CameraResolution
         :class:`~pepper.config.CameraResolution`
     rate: int
-    callbacks: list of callable
+        Camera Frames per Second
+    callbacks: List[Callable[[AbstractImage], None]]
+        Functions to call each time an AbstractImage is captured
     """
 
     def __init__(self, resolution, rate, callbacks):
         # type: (CameraResolution, int, List[Callable[[AbstractImage], None]]) -> None
 
+        # Extract Image Dimensions from CameraResolution
         self._resolution = resolution
         self._width = self._resolution.value[1]
         self._height = self._resolution.value[0]
+        self._shape = np.array([self.height, self.width, self.channels])
 
+        # Store Camera Rate and Callbacks
         self._rate = rate
         self._callbacks = callbacks
 
-        self._shape = np.array([self.height, self.width, self.channels])
-
+        # Variables to do some performance statistics
         self._dt_buffer = deque([], maxlen=10)
         self._true_rate = rate
         self._t0 = time()
 
+        # Create Mailbox and Image Processor:
+        #   Each time an image is captured it is put in the mailbox, overriding whatever there might currently be.
+        #   In a separate thread, the _processor worker takes an image and calls all registered callbacks.
+        #   This way the processing of images does not block the acquisition of new images,
+        #   while at the same new images don't build up a queue, but are discarded when the _processor is too busy.
         self._mailbox = Mailbox()
-
         self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
         self._processor_scheduler.start()
 
+        # Default behaviour is to not run by default. Calling AbstractApplication.run() will activate the camera
         self._running = False
 
         self._log = logger.getChild(self.__class__.__name__)
@@ -192,12 +272,12 @@ class AbstractCamera(object):
     def channels(self):
         # type: () -> int
         """
-        Image (Color) Channels
+        Number of Image (Color) Channels
 
         Returns
         -------
         channels: int
-            Image (Color) channels
+            Number of Image (Color) channels
         """
         return 3
 
@@ -205,12 +285,12 @@ class AbstractCamera(object):
     def rate(self):
         # type: () -> int
         """
-        Image Rate
+        Image Rate (Frames per Second)
 
         Returns
         -------
         rate: int
-            Image rate
+            Image rate (Frames per Second)
         """
         return self._rate
 
@@ -218,14 +298,14 @@ class AbstractCamera(object):
     def true_rate(self):
         # type: () -> float
         """
-        Actual Image Rate
+        Actual Image Rate (Frames per Second)
 
         Image rate after accounting for latency & performance realities
 
         Returns
         -------
         true_rate: float
-            Actual Image Rate
+            Actual Image Rate (Frames per Second)
         """
         return self._true_rate
 
@@ -233,12 +313,12 @@ class AbstractCamera(object):
     def shape(self):
         # type: () -> np.ndarray
         """
-        Image Shape
+        Image Shape (height, width, channels)
 
         Returns
         -------
         shape: np.ndarray
-            Image Shape
+            Image Shape (height, width, channels)
         """
         return self._shape
 
@@ -284,7 +364,7 @@ class AbstractCamera(object):
         """
         On Image Event, Called for every Image captured by Camera
 
-        Camera Modules should call this function for every frame acquired by the Camera
+        Custom Camera Backends should call this function for every frame acquired by the Camera
 
         Parameters
         ----------
@@ -304,12 +384,18 @@ class AbstractCamera(object):
         """
         Image Processor
 
-        Calls each callback for each image, threaded, for higher image throughput
+        Calls each callback for each image, threaded, for higher image throughput and less image latency
         """
+
+        # Get latest image from Mailbox
         image = self._mailbox.get()
+
+        # Call Every Registered Callback
         if self._running:
             for callback in self.callbacks:
                 callback(image)
+
+        # Update Statistics
         self._update_dt()
 
     def _update_dt(self):

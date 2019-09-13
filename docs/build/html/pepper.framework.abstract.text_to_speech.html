@@ -27,8 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pepper.framework.abstract.tablet module" href="pepper.framework.abstract.tablet.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -55,6 +54,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -195,14 +198,14 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>language: str</strong></dt>
-<dd><p class="first last">Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language"><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></a></dt>
-<dd><p class="first last">Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.talking" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.talking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">talking</span></code></a></dt>
 <dd><p class="first last">Returns whether system is currently producing speech</p>
@@ -230,14 +233,14 @@
 <dl class="attribute">
 <dt id="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language">
 <code class="descname">language</code><a class="headerlink" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.language" title="Permalink to this definition">¶</a></dt>
-<dd><p>Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+<dd><p><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>language: str</strong></dt>
-<dd><p class="first last">Language Code, See: <a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
+<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
 </dd>
 </dl>
 </td>
@@ -250,7 +253,7 @@
 <dt id="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech">
 <code class="descname">on_text_to_speech</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/text_to_speech.html#AbstractTextToSpeech.on_text_to_speech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Say something through Text to Speech (Implementation)</p>
-<p>Text To Speech Modules should implement this function
+<p>Text To Speech Backends should implement this function
 This function should block while speech is being produced</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -321,13 +324,6 @@ This function should block while speech is being produced</p>
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="pepper.framework.abstract.tablet.html" class="btn btn-neutral" title="pepper.framework.abstract.tablet module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

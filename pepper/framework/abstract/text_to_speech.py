@@ -13,7 +13,7 @@ class AbstractTextToSpeech(object):
     Parameters
     ----------
     language: str
-        Language Code, See: https://cloud.google.com/speech/docs/languages
+        `Language Code <https://cloud.google.com/speech/docs/languages>`_
     """
 
     def __init__(self, language):
@@ -32,12 +32,12 @@ class AbstractTextToSpeech(object):
     def language(self):
         # type: () -> str
         """
-        Language Code, See: https://cloud.google.com/speech/docs/languages
+        `Language Code <https://cloud.google.com/speech/docs/languages>`_
 
         Returns
         -------
         language: str
-            Language Code, See: https://cloud.google.com/speech/docs/languages
+            `Language Code <https://cloud.google.com/speech/docs/languages>`_
         """
         return self._language
 
@@ -80,7 +80,7 @@ class AbstractTextToSpeech(object):
         """
         Say something through Text to Speech (Implementation)
 
-        Text To Speech Modules should implement this function
+        Text To Speech Backends should implement this function
         This function should block while speech is being produced
 
         Parameters
@@ -88,7 +88,7 @@ class AbstractTextToSpeech(object):
         text: str
         animation: str
         """
-        pass
+        raise NotImplementedError()
 
     def _worker(self):
         self.on_text_to_speech(*self._queue.get())

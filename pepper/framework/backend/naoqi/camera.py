@@ -14,6 +14,7 @@ from typing import List, Callable
 
 
 class NAOqiImage(AbstractImage):
+    """NAOqi Image (same as AbstractImage)"""
     pass
 
 
@@ -107,9 +108,6 @@ class NAOqiCamera(AbstractCamera):
         self._log.debug("Booted")
 
     def _run(self):
-
-        yaw_0, pitch_0 = 0, 0
-
         while True:
             if self._running:
 
@@ -119,13 +117,8 @@ class NAOqiCamera(AbstractCamera):
                 image_rgb, image_3D, bounds = None, None, None
 
                 # Get Yaw and Pitch from Head Sensors
-                # TODO: Make sure these are the Head Yaw and Pitch at image capture time!
+                # TODO: Make sure these are the Head Yaw and Pitch at image capture time!?
                 yaw, pitch = self._motion.getAngles("HeadYaw", False)[0], self._motion.getAngles("HeadPitch", False)[0]
-
-                # Calculate Yaw and Pitch & Head Deltas
-                yaw_delta, pitch_delta = yaw - yaw_0, pitch - pitch_0
-                head_delta = np.sqrt(yaw_delta**2 + pitch_delta**2)
-                yaw_0, pitch_0 = yaw, pitch
 
                 # Get Image from Robot
                 for image in self._service.getImagesRemote(self._client):
@@ -134,13 +127,11 @@ class NAOqiCamera(AbstractCamera):
                     width, height, _, _, _, _, data, camera, left, top, right, bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:
-
                         # Get Depth Image and Convert from Millimeters to Meters
+                        # TODO: Make sure Image Bounds are actually the same for RGB and Depth Camera!
                         image_3D = np.frombuffer(data, np.uint16).reshape(height, width).astype(np.float32) / 1000
-
                     else:
-
-                        # Get RGB Image and Convert from YUV422 to RGB
+                        # Get Image Data and Convert from YUV422 to RGB
                         image_rgb = self._yuv2rgb(width, height, data)
 
                         # Calculate Image Bounds in Radians
@@ -153,16 +144,30 @@ class NAOqiCamera(AbstractCamera):
                 # Assert we have at least a RGB image and Bounds
                 if image_rgb is not None and bounds is not None:
 
-                    # Assert Head did not move too much (prevent blurry pictures)
-                    # if head_delta < NAOqiCamera.HEAD_DELTA_THRESHOLD:
-
-                        # Call On Image Callback
-                        self.on_image(NAOqiImage(image_rgb, bounds, image_3D))
+                    # Call AbstractCamera.on_image Callback
+                    self.on_image(NAOqiImage(image_rgb, bounds, image_3D))
 
                 # Maintain frame rate
                 sleep(max(1.0E-4, 1.0 / self.rate - (time() - t0)))
 
     def _yuv2rgb(self, width, height, data):
+        # type: (int, int, bytes) -> np.ndarray
+        """
+        Convert from YUV422 to RGB Color Space
+
+        Parameters
+        ----------
+        width: int
+            Image Width
+        height: int
+            Image Height
+        data: bytes
+            Image Data
+
+        Returns
+        -------
+        image_rgb: np.ndarray
+        """
 
         X2 = width // 2
 
