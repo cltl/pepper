@@ -4,13 +4,13 @@ Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU)
 
 The pepper package is split in a number of subpackages:
 
-- pepper.brain is concerned with managing and querying pepper's triple store database
-- pepper.framework contains the backends and sensory processing needed to run robot apps
-- pepper.knowledge contains pepper's hardwired and internet knowledge
-- pepper.language contains the grammars and scripts to parse and generate natural language
-- pepper.responder contains scripts that reply to certain (natural language) queries
+- :mod:`~pepper.brain` is concerned with managing and querying pepper's triple store database
+- :mod:`~pepper.framework` contains the backends and sensory processing needed to run robot apps
+- :mod:`~pepper.knowledge` contains pepper's hardwired and internet knowledge
+- :mod:`~pepper.language` contains the grammars and scripts to parse and generate natural language
+- :mod:`~pepper.responder` contains scripts that reply to certain (natural language) queries
 
-pepper.config lists all application configuration options
+:mod:`~pepper.config` lists all application configuration options
 """
 
 import logging

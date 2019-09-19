@@ -7,3 +7,14 @@ To add documentation:
 3. Make sure to ```(source) activate``` the pepper environment
 4. Generate API documentation sources: ```make api```
 5. Generate HTML pages from API documentation sources: ```make html```
+
+
+Some Friendly Sphinx/ReStructuredText Reminders:
+
+- Cross-Reference all the things: 
+    - Classes: ``` :class:`~pepper.framework.abstract.camera.AbstractCamera` ```
+    - Packages & Modules: ``` :mod:`~pepper.framework.component` ```
+    - Functions ``` :func:`~pepper.config.get_backend` ```
+    - Methods ``` :meth:`~pepper.brain.basic_brain.BasicBrain.get_classes` ```
+    
+- Add Links to External Resources: ``` `Text to Show <https://www.verynice.url.com>`_ ```
