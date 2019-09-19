@@ -194,23 +194,28 @@
 <dt id="pepper.framework.component.scene.SceneComponent">
 <em class="property">class </em><code class="descclassname">pepper.framework.component.scene.</code><code class="descname">SceneComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/scene.html#SceneComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.scene.SceneComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
+<p>Construct 3D Scene Based on Camera Data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>backend: AbstractBackend</strong></dt>
+<dd><p class="first last">Application Backend</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
-<dt><strong>color_map</strong></dt>
-<dd></dd>
-<dt><strong>depth_map</strong></dt>
-<dd></dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
 <dd><p class="first last">Returns Component <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 </dd>
-<dt><strong>scatter_map</strong></dt>
-<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.component.scene.SceneComponent.scatter_map" title="pepper.framework.component.scene.SceneComponent.scatter_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter_map</span></code></a></dt>
+<dd><p class="first last">Create 3D Scatter Map of Scene</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -249,19 +254,23 @@
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pepper.framework.component.scene.SceneComponent.color_map">
-<code class="descname">color_map</code><a class="headerlink" href="#pepper.framework.component.scene.SceneComponent.color_map" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.component.scene.SceneComponent.depth_map">
-<code class="descname">depth_map</code><a class="headerlink" href="#pepper.framework.component.scene.SceneComponent.depth_map" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
 <dt id="pepper.framework.component.scene.SceneComponent.scatter_map">
 <code class="descname">scatter_map</code><a class="headerlink" href="#pepper.framework.component.scene.SceneComponent.scatter_map" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create 3D Scatter Map of Scene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>x, y, z, color: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]</strong></dt>
+<dd><p class="first last">Numpy Arrays of X, Y, Z and Color Data</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

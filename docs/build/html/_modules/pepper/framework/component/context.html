@@ -149,8 +149,8 @@
   <h1>Source code for pepper.framework.component.context</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">SpeechRecognitionComponent</span><span class="p">,</span> <span class="n">ObjectDetectionComponent</span><span class="p">,</span> <span class="n">FaceRecognitionComponent</span><span class="p">,</span> <span class="n">TextToSpeechComponent</span>
 <span class="kn">from</span> <span class="nn">..context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">..sensor</span> <span class="k">import</span> <span class="n">UtteranceHypothesis</span><span class="p">,</span> <span class="n">Face</span><span class="p">,</span> <span class="n">FaceClassifier</span>
-<span class="kn">from</span> <span class="nn">..abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">..sensor</span> <span class="k">import</span> <span class="n">UtteranceHypothesis</span><span class="p">,</span> <span class="n">Object</span><span class="p">,</span> <span class="n">Face</span><span class="p">,</span> <span class="n">FaceClassifier</span>
+<span class="kn">from</span> <span class="nn">..abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span><span class="p">,</span> <span class="n">AbstractBackend</span>
 
 <span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="n">Utterance</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
@@ -165,6 +165,16 @@
 
 
 <div class="viewcode-block" id="ContextComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.context.html#pepper.framework.component.context.ContextComponent">[docs]</a><span class="k">class</span> <span class="nc">ContextComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exposes Context to Applications and contains logic to determine whether conversation should start/end.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO: Split into two Components? ContextComponent &amp; ConversationComponent?</span>
 
     <span class="c1"># Minimum Distance of Person to Enter/Exit Conversation</span>
     <span class="n">PERSON_AREA_ENTER</span> <span class="o">=</span> <span class="mf">0.25</span>
@@ -174,28 +184,46 @@
     <span class="n">PERSON_DIFF_ENTER</span> <span class="o">=</span> <span class="mf">1.5</span>
     <span class="n">PERSON_DIFF_EXIT</span> <span class="o">=</span> <span class="mf">1.1</span>
 
+    <span class="c1"># TODO: Should this be a pepper.config variable?</span>
+    <span class="c1"># Number of seconds of inactivity before conversation times out</span>
     <span class="n">CONVERSATION_TIMEOUT</span> <span class="o">=</span> <span class="mi">15</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractBackend) -&gt; None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
+        <span class="c1"># The ContextComponent requires the following Components:</span>
         <span class="n">speech_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">SpeechRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: SpeechRecognitionComponent</span>
         <span class="n">object_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">ObjectDetectionComponent</span><span class="p">)</span>  <span class="c1"># type: ObjectDetectionComponent</span>
         <span class="n">face_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">FaceRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: FaceRecognitionComponent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">TextToSpeechComponent</span><span class="p">)</span>  <span class="c1"># type: TextToSpeechComponent</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-
-        <span class="n">context_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
-
+        <span class="c1"># Initialize the Context for this Application</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">Context</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+        <span class="c1"># To keep track of conversation duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
+        <span class="c1"># Store the last n faces, to possibly store as a &#39;known person&#39; later on</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors_max</span> <span class="o">=</span> <span class="mi">50</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors_max</span><span class="p">)</span>
+
+        <span class="c1"># Needed for the in/out conversation logic, to keep track of peoples bodies/faces as time moves on</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_people_info</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="c1"># Make sure to stay synchronized</span>
+        <span class="n">context_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+
+        <span class="c1"># &lt;&lt; Private (to this component) Functions declared within __init__ &gt;&gt;</span>
+        <span class="c1"># These functions are declared within the __init__ as to not clutter the Application with declarations.</span>
+        <span class="c1"># This is an artifact of having applications inherit from all Components:</span>
+        <span class="c1">#   All of the components public/private variables become available in the application.</span>
+        <span class="c1">#   The only way to hide variables/functions (and limit clutter) is to define these within __init__</span>
+        <span class="c1"># One could think of solutions without these artifacts that may be preferred to the chosen method!</span>
+
         <span class="k">def</span> <span class="nf">on_transcript</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+            <span class="c1"># type: (List[UtteranceHypothesis], np.ndarray) -&gt; None</span>
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Add Transcript to Chat (if a current Chat exists)</span>
 
@@ -208,9 +236,10 @@
             <span class="k">with</span> <span class="n">context_lock</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span> <span class="ow">and</span> <span class="n">hypotheses</span><span class="p">:</span>
 
+                    <span class="c1"># TODO: Tell user you are thinking about their utterance (useful if thinking takes a long time)</span>
                     <span class="c1"># self.say(choice(sentences.THINKING), block=False)</span>
 
-                    <span class="c1"># Add ASR Transcript to Chat as Utterance</span>
+                    <span class="c1"># Add ASR Hypotheses to Chat as Utterance</span>
                     <span class="n">utterance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">add_utterance</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
                     <span class="c1"># Call On Chat Turn Event</span>
@@ -218,19 +247,36 @@
 
         <span class="k">def</span> <span class="nf">get_closest_people</span><span class="p">(</span><span class="n">people</span><span class="p">):</span>
             <span class="c1"># type: (List[Face]) -&gt; List[Face]</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Get Person or People closest to Robot (as they may be subject to conversation)</span>
 
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            people: List[Face]</span>
+<span class="sd">                People, as represented by their face (id)</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            closest_people: List[Face]</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="c1"># To be considered &#39;closest&#39; people need to make up a predefined area of the camera view</span>
+            <span class="c1"># This area is defined differently when in conversation then when not in conversation,</span>
+            <span class="c1">#   this removes the problems one gets when one person is right on the threshold (&quot;hi&quot;, &quot;bye&quot;, &quot;hi&quot;, &quot;bye&quot;)</span>
             <span class="n">person_area_threshold</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PERSON_AREA_EXIT</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERSON_AREA_ENTER</span><span class="p">)</span>
-            <span class="n">person_diff_threshold</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PERSON_DIFF_EXIT</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERSON_DIFF_ENTER</span><span class="p">)</span>
-
             <span class="n">people_in_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">person</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">people</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">area</span> <span class="o">&gt;=</span> <span class="n">person_area_threshold</span><span class="p">]</span>
+
+            <span class="c1"># To be considered &#39;uniquely closest&#39; a person must be closer to the next closest person</span>
+            <span class="c1"># If this is not the case, and multiple people are close enough, a group conversation will start!</span>
+            <span class="n">person_diff_threshold</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PERSON_DIFF_EXIT</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERSON_DIFF_ENTER</span><span class="p">)</span>
 
             <span class="c1"># If only one person is in range</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">people_in_range</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 
-                <span class="c1"># Return that person</span>
+                <span class="c1"># Return that person (as a list of length 1, keeping return values consistent!)</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">people_in_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
-            <span class="c1"># If multiple people are in range</span>
+            <span class="c1"># Else If multiple people are in range</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">people_in_range</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
 
                 <span class="c1"># Sort them by proximity</span>
@@ -240,7 +286,7 @@
                 <span class="n">closest</span> <span class="o">=</span> <span class="n">people_in_range</span><span class="p">[</span><span class="n">people_sorted</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
                 <span class="n">next_closest</span> <span class="o">=</span> <span class="n">people_in_range</span><span class="p">[</span><span class="n">people_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
 
-                <span class="c1"># If the closest individual is significantly closer than the next one</span>
+                <span class="c1"># If the closest individual is significantly (by a predefined fraction) closer than the next one</span>
                 <span class="k">if</span> <span class="n">closest</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">area</span> <span class="o">&gt;=</span> <span class="n">person_diff_threshold</span> <span class="o">*</span> <span class="n">next_closest</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">area</span><span class="p">:</span>
 
                     <span class="c1"># Return Closest Individual</span>
@@ -251,18 +297,62 @@
 
                     <span class="c1"># Return all People</span>
                     <span class="k">return</span> <span class="n">people_in_range</span>
+
+            <span class="c1"># Else (No people are in range)</span>
             <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># Return empty list</span>
                 <span class="k">return</span> <span class="p">[]</span>
 
         <span class="k">def</span> <span class="nf">get_face_of_person</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+            <span class="c1"># type: (Object, List[Face]) -&gt; Face</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Get Face Corresponding with Person</span>
+
+<span class="sd">            Persons are identified by Objects (from COCO Object Detection), while Faces are identified by OpenFace.</span>
+<span class="sd">            This function looks at the bounding boxes of both and returns the face that corresponds with this person.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            person: Object</span>
+<span class="sd">            faces: List[Face]</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            face: Face</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+                <span class="c1"># TODO: Make sure face bounds are always a subset of &#39;person&#39; object bounds, else: trouble imminent!</span>
                 <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">is_subset_of</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">image_bounds</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">face</span>
+
+        <span class="k">def</span> <span class="nf">enter_chat</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="c1"># Call on Chat Enter Threaded (we are in the &#39;CameraThread&#39;, which we don&#39;t want to block)</span>
+            <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="c1"># Reset Conversation time to NOW</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+            <span class="c1"># Clear Face Vectors, since a new person (or persons) will be subject to conversation now</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">exit_chat</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_chat_exit</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
             <span class="c1"># type: (AbstractImage) -&gt; None</span>
             <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Private On Image Event</span>
+
 <span class="sd">            Figure out with who(m) a conversation is held and call on_chat_enter/exit appropriately</span>
+
+<span class="sd">            The Image parameter is not directly used, but the timing of the on_image event is perfect for this logic,</span>
+<span class="sd">                since conversation information can only be updated after a new image has been taken and is processed.</span>
+
+<span class="sd">            This function does require the image to be processed using (COCO) Object Detection and Face Recognition,</span>
+<span class="sd">                as such, these requirements are listed (and enforced) in __init__</span>
 
 <span class="sd">            Parameters</span>
 <span class="sd">            ----------</span>
@@ -272,98 +362,95 @@
             <span class="c1"># Get People within Conversation Bounds</span>
             <span class="n">closest_people</span> <span class="o">=</span> <span class="n">get_closest_people</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_people_info</span><span class="p">)</span>
 
+            <span class="c1"># If no current Conversation is happening</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span><span class="p">:</span>
 
-                <span class="c1"># If one person is closest and his/her face is identifiable -&gt; Start Personal Conversation</span>
+                <span class="c1"># If one person is closest and his/her face is identifiable -&gt; Start One-on-One Conversation</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">closest_person</span> <span class="o">=</span> <span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_person</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">closest_face</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-                        <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                        <span class="n">enter_chat</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
                 <span class="c1"># If multiple people are in range, with nobody seemingly closest -&gt; Start Group Conversation</span>
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-                    <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">HUMAN_CROWD</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                    <span class="n">enter_chat</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">HUMAN_CROWD</span><span class="p">)</span>
 
+            <span class="c1"># If a Conversation is currently happening</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span><span class="p">:</span>
 
-                <span class="c1"># When talking to a human crowd</span>
+                <span class="c1"># When talking to a Group</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_CROWD</span><span class="p">:</span>
 
-                    <span class="c1"># If still in conversation with Group, update conversation time</span>
+                    <span class="c1"># If still in conversation with Group, update conversation time (and thus continue conversation)</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
-                    <span class="c1"># Else, when conversation times out</span>
+                    <span class="c1"># Else, when Group Conversation times out</span>
                     <span class="k">elif</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONVERSATION_TIMEOUT</span><span class="p">:</span>
 
                         <span class="c1"># If a single Person enters conversation at this point -&gt; Start conversation with them</span>
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                            <span class="n">closest_person</span> <span class="o">=</span> <span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                            <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_person</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
+                            <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
 
                             <span class="k">if</span> <span class="n">closest_face</span><span class="p">:</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-                                <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                                <span class="n">enter_chat</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-                        <span class="c1"># Otherwise, Exit Chat</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">on_chat_exit</span><span class="p">()</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                        <span class="c1"># Otherwise, Exit Chat with Group</span>
+                        <span class="k">else</span><span class="p">:</span> <span class="n">exit_chat</span><span class="p">()</span>
 
-                <span class="k">else</span><span class="p">:</span>  <span class="c1"># When talking to a Specific Person</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># When talking to a specific Person</span>
 
-                    <span class="c1"># If still in conversation with Person, update conversation time</span>
+                    <span class="c1"># If still in conversation with Person, update conversation time (and thus continue conversation)</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="n">closest_person</span> <span class="o">=</span> <span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_person</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
+                        <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
 
                         <span class="k">if</span> <span class="n">closest_face</span><span class="p">:</span>
 
                             <span class="c1"># If Still Chatting with Same Person -&gt; Update Conversation Time &amp; Face Vectors</span>
+                            <span class="c1"># Also continue when person is &quot;NEW&quot;, to combat &quot;Hello Stranger&quot; mid conversation...</span>
                             <span class="k">if</span> <span class="n">closest_face</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span><span class="p">,</span> <span class="n">FaceClassifier</span><span class="o">.</span><span class="n">NEW</span><span class="p">]:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">representation</span><span class="p">)</span>
 
-                            <span class="c1"># If Chatting to Unknown Person and Known Person Appears -&gt; Switch Chat</span>
-                            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span> <span class="ow">and</span> <span class="n">closest_face</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span><span class="p">:</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-                                <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                            <span class="c1"># If Chatting to Unknown Person (Stranger) and Known Person Appears -&gt; Switch Chat to Known</span>
+                            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span> <span class="ow">and</span> \
+                                    <span class="n">closest_face</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">config</span><span class="o">.</span><span class="n">HUMAN_UNKNOWN</span><span class="p">:</span>
+                                <span class="n">enter_chat</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-                    <span class="c1"># Else, when conversation times out</span>
+                    <span class="c1"># Else, when conversation times out with specific Person</span>
                     <span class="k">elif</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONVERSATION_TIMEOUT</span><span class="p">:</span>
 
                         <span class="c1"># If another Person enters conversation at this point -&gt; Start Conversation with them</span>
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                            <span class="n">closest_person</span> <span class="o">=</span> <span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                            <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_person</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
+                            <span class="n">closest_face</span> <span class="o">=</span> <span class="n">get_face_of_person</span><span class="p">(</span><span class="n">closest_people</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span><span class="p">)</span>
 
                             <span class="k">if</span> <span class="n">closest_face</span><span class="p">:</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-                                <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                                <span class="n">enter_chat</span><span class="p">(</span><span class="n">closest_face</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
                         <span class="c1"># If Group enters conversation at this point -&gt; Start Conversation with them</span>
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest_people</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_conversation_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-                            <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_chat_enter</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">HUMAN_CROWD</span><span class="p">,))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">on_chat_exit</span><span class="p">()</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                            <span class="n">enter_chat</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">HUMAN_CROWD</span><span class="p">)</span>
+
+                        <span class="c1"># Otherwise, exit chat with specific Person</span>
+                        <span class="k">else</span><span class="p">:</span> <span class="n">exit_chat</span><span class="p">()</span>
 
                 <span class="c1"># Wipe face and people info after use</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_people_info</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
+            <span class="c1"># type: (List[Object]) -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Private On Object Event</span>
+
+<span class="sd">            Updates Objects known to Context and filters out people for Conversation Logic</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            objects: List[Object]</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="c1"># Update Context with Perceived Objects</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">add_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
 
@@ -371,24 +458,34 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_people_info</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;person&quot;</span><span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">on_face</span><span class="p">(</span><span class="n">people</span><span class="p">):</span>
+            <span class="c1"># type: (List[Face]) -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Private On Face Event</span>
+
+<span class="sd">            Updates People known to Context and adds people to Conversation Logic</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            people: List[Face]</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="c1"># Update Context with Perceived People</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">add_people</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
 
             <span class="c1"># Add Perceived Faces to Face Info</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_face_info</span> <span class="o">=</span> <span class="n">people</span>
 
-        <span class="c1"># Link Transcript, Object and Face Events to Context</span>
-        <span class="n">speech_comp</span><span class="o">.</span><span class="n">on_transcript_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_transcript</span><span class="p">)</span>
-        <span class="n">object_comp</span><span class="o">.</span><span class="n">on_object_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_object</span><span class="p">)</span>
-        <span class="n">face_comp</span><span class="o">.</span><span class="n">on_face_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_face</span><span class="p">)</span>
-
-        <span class="c1"># Add On Image Callback</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_image</span><span class="p">)</span>
+        <span class="c1"># Make sure Private Callback functions are actually called</span>
+        <span class="n">speech_comp</span><span class="o">.</span><span class="n">on_transcript_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_transcript</span><span class="p">)</span>  <span class="c1"># Link on_transcript event from SpeechComponent</span>
+        <span class="n">object_comp</span><span class="o">.</span><span class="n">on_object_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_object</span><span class="p">)</span>  <span class="c1"># Link on_object event from ObjectDetectionComponent</span>
+        <span class="n">face_comp</span><span class="o">.</span><span class="n">on_face_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_face</span><span class="p">)</span>  <span class="c1"># Link on_face event from FaceDetectionComponent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_image</span><span class="p">)</span>  <span class="c1"># Link on_image event from Backend Camera</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Context</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reference to Context</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        context: Context</span>
@@ -399,13 +496,37 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">face_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Deque[np.ndarray]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns Face Vectors obtained during one-on-one conversation. These may be used to store a known person</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        face_vectors: Deque[np.ndarray]</span>
+<span class="sd">            Face Representations as numpy.ndarrays</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_vectors</span>
 
 <div class="viewcode-block" id="ContextComponent.say"><a class="viewcode-back" href="../../../../pepper.framework.component.context.html#pepper.framework.component.context.ContextComponent.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="c1"># Call super (TextToSpeechComponent)</span>
+        <span class="c1"># type: (str, str, bool) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Say Text (with optional Animation) through Text-to-Speech</span>
+
+<span class="sd">        This overrides TextToSpeechComponent.say and adds the text to the current chat (if chatting)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text: str</span>
+<span class="sd">            Text to say through Text-to-Speech</span>
+<span class="sd">        animation: str or None</span>
+<span class="sd">            (Naoqi) Animation to play</span>
+<span class="sd">        block: bool</span>
+<span class="sd">            Whether this function should block or immediately return after calling</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Call super TextToSpeechComponent (this is why it is a dependency)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
 
-        <span class="c1"># Add Utterance to Chat</span>
+        <span class="c1"># Add Utterance to Chat as Robot Utterance (if chatting)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chatting</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">add_utterance</span><span class="p">([</span><span class="n">UtteranceHypothesis</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">me</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
@@ -422,9 +543,28 @@
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="ContextComponent.on_chat_enter"><a class="viewcode-back" href="../../../../pepper.framework.component.context.html#pepper.framework.component.context.ContextComponent.on_chat_enter">[docs]</a>    <span class="k">def</span> <span class="nf">on_chat_enter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        On Chat Enter Event. Called every time the conversation logic decides a conversation should start.</span>
+
+<span class="sd">        When called, this does not actually automatically start a conversation, this is up to the user to decide.</span>
+<span class="sd">        Conversations can be started anytime by calling ContextComponent.context.start_chat().</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        person: str</span>
+<span class="sd">            The person (or group of people: config.HUMAN_CROWD), the conversation should start with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="ContextComponent.on_chat_exit"><a class="viewcode-back" href="../../../../pepper.framework.component.context.html#pepper.framework.component.context.ContextComponent.on_chat_exit">[docs]</a>    <span class="k">def</span> <span class="nf">on_chat_exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        On Chat Exit Event. Called every time the conversation logic decides a conversation should stop.</span>
+
+<span class="sd">        When called, this does not actually automatically stop a conversation, this is up to the user to decide.</span>
+<span class="sd">        Conversations can be stopped anytime by calling ContextComponent.context.stop_chat().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
 </pre></div>
 

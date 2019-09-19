@@ -10,26 +10,41 @@ from typing import *
 
 
 class SpeechRecognitionComponent(AbstractComponent):
-    def __init__(self, backend):
-        """
-        Construct Speech Recognition Component
+    """
+    Speech Recognition Component. Exposes on_transcript Event to Applications.
 
-        Parameters
-        ----------
-        backend: Backend
-        """
+    Parameters
+    ----------
+    backend: AbstractBackend
+        Application Backend
+    """
+
+    def __init__(self, backend):
         super(SpeechRecognitionComponent, self).__init__(backend)
 
+        # Public List of On Transcript Callbacks:
+        # Allowing other Components to Subscribe to it
         self.on_transcript_callbacks = []
+
+        # Initialize Automatic Speech Recognition
         self._asr = StreamedGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
+        # Initialize Voice Activity Detection
         self._vad = VAD(self.backend.microphone)
 
         def worker():
+            # type: () -> None
+            """Speech Transcription Worker"""
+
+            # Every time a voice has been registered by the Voice Activity Detection (long running generator)
             for voice in self._vad:
+
+                # Transcribe this Voice and obtain a number of UtteranceHypotheses
                 hypotheses = self.asr.transcribe(voice)
 
                 if hypotheses:
+
+                    # Get Voice Audio Corresponding with Hypotheses
                     audio = voice.audio
 
                     # Call on_transcript Event Function
@@ -39,6 +54,7 @@ class SpeechRecognitionComponent(AbstractComponent):
                     for callback in self.on_transcript_callbacks:
                         callback(hypotheses, audio)
 
+        # TODO: Make into Schedule to give breathing room to other Threads? (Python GIL)
         thread = Thread(target=worker, name="StreamingSpeechRecognitionComponentWorker")
         thread.daemon = True
         thread.start()
@@ -46,6 +62,8 @@ class SpeechRecognitionComponent(AbstractComponent):
     @property
     def asr(self):
         """
+        Automatic Speech Recognition Object
+
         Returns
         -------
         asr: pepper.sensor.asr.SynchronousGoogleASR
@@ -55,6 +73,8 @@ class SpeechRecognitionComponent(AbstractComponent):
     @property
     def vad(self):
         """
+        Voice Activity Detection Object
+
         Returns
         -------
         vad: pepper.sensor.vad.VAD

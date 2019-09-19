@@ -24,7 +24,7 @@ Some Components are more complex and require other components to work. They will
 from .camera import CameraComponent
 from .microphone import MicrophoneComponent
 from .face_detection import FaceRecognitionComponent
-from .object_detection import ObjectDetectionComponent, ObjectDetectionTarget
+from .object_detection import ObjectDetectionComponent
 from .speech_recognition import SpeechRecognitionComponent
 from .text_to_speech import TextToSpeechComponent
 
