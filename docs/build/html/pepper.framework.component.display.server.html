@@ -93,7 +93,6 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.html#component">Component</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.naoqi.html">pepper.framework.component.naoqi package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.camera.html">pepper.framework.component.camera module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.context.html">pepper.framework.component.context module</a></li>
@@ -196,6 +195,7 @@
 <dt id="pepper.framework.component.display.server.DisplayServer">
 <em class="property">class </em><code class="descclassname">pepper.framework.component.display.server.</code><code class="descname">DisplayServer</code><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tornado.web.Application</span></code></p>
+<p>Display Server for <a class="reference internal" href="pepper.framework.component.display.display.html#pepper.framework.component.display.display.DisplayComponent" title="pepper.framework.component.display.display.DisplayComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplayComponent</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -221,6 +221,12 @@
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_url</span></code>(name,&nbsp;*args)</td>
 <td>Returns a URL path for handler named <code class="docutils literal notranslate"><span class="pre">name</span></code></td>
 </tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.display.server.DisplayServer.start" title="pepper.framework.component.display.server.DisplayServer.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
+<td>Start WebServer</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.display.server.DisplayServer.update" title="pepper.framework.component.display.server.DisplayServer.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(json)</td>
+<td>Update WebServer</td>
+</tr>
 </tbody>
 </table>
 <table border="1" class="docutils">
@@ -238,13 +244,7 @@
 <tr class="row-odd"><td><strong>find_handler</strong></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td><strong>start</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>start_request</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>update</strong></td>
+<tr class="row-even"><td><strong>start_request</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -267,12 +267,14 @@
 <dl class="method">
 <dt id="pepper.framework.component.display.server.DisplayServer.start">
 <code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.start" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Start WebServer</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.component.display.server.DisplayServer.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Update WebServer</p>
+</dd></dl>
 
 </dd></dl>
 

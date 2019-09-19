@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractComponent, AbstractImage
-from pepper.framework.sensor.obj import ObjectDetectionClient, Object
+from pepper.framework.sensor.obj import ObjectDetectionClient
 from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
 

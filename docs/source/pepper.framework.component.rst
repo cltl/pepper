@@ -10,7 +10,6 @@ pepper.framework.component package
 .. toctree::
 
     pepper.framework.component.display
-    pepper.framework.component.naoqi
 
 
 .. toctree::
