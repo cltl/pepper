@@ -44,6 +44,10 @@ class Object(object):
         self._position = spherical2cartesian(self._direction[0], self._direction[1], self._depth)
         self._bounds3D = self._calculate_bounds_3D()
 
+    @classmethod
+    def from_json(cls, data, image):
+        return cls(data["name"], data["confidence"], Bounds.from_json(data["bounds"]), image)
+
     @property
     def id(self):
         # type: () -> int
@@ -173,6 +177,17 @@ class Object(object):
             (self.position[1] - obj.position[1])**2 +
             (self.position[2] - obj.position[2])**2
         )
+
+    def dict(self):
+        return {
+            "name": self.name,
+            "confidence": self.confidence,
+            "bounds": self.image_bounds.dict(),
+            "image": self.image.hash
+        }
+
+    def json(self):
+        return json.dumps(self.dict())
 
     def _calculate_object_depth(self):
         """

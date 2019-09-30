@@ -2,10 +2,14 @@ from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesia
 from pepper import CameraResolution
 from pepper import logger
 
+from PIL import Image
 import numpy as np
 
 from collections import deque
-from time import time
+from time import time, strftime, localtime
+
+import json
+import os
 
 from typing import Tuple, List, Optional, Callable
 
@@ -24,14 +28,18 @@ class AbstractImage(object):
         Depth Image (height, width) as Numpy Array
     """
 
-    def __init__(self, image, bounds, depth=None):
+    def __init__(self, image, bounds, depth=None, image_time=None):
         # type: (np.ndarray, Bounds, Optional[np.ndarray]) -> None
 
         self._image = image
         self._bounds = bounds
         self._depth = np.ones((100, 100), np.float32) if depth is None else depth
 
-        self._time = time()
+        self._time = image_time if image_time else time()
+
+    @property
+    def hash(self):
+        return "{}_{}".format(strftime("%Y%m%d_%H%M%S", localtime(self.time)), str(self.time % 1)[2:4])
 
     @property
     def image(self):
@@ -179,6 +187,24 @@ class AbstractImage(object):
             spherical2cartesian(self._bounds.x1, self._bounds.y1, depth_max),
             spherical2cartesian(self._bounds.x1, self._bounds.y0, depth_max),
         ]
+
+    def to_file(self, root):
+
+        if not os.path.exists(os.path.dirname(root)):
+            os.makedirs(os.path.dirname(root))
+
+        # Save RGB Image
+        Image.fromarray(self.image).save(os.path.join(root, "{}_rgb.png".format(self.hash)))
+
+        # Save Depth Image
+        np.save(os.path.join(root, "{}_depth.npy".format(self.hash)), self.depth)
+
+        # Save Metadata
+        with open(os.path.join(root, "{}_meta.json".format(self.hash)), 'w') as json_file:
+            json.dump({
+                "time": self.time,
+                "bounds": self.bounds.dict()
+            },json_file)
 
     def __repr__(self):
         return "{}{}".format(self.__class__.__name__, self.image.shape)

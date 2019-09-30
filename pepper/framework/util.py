@@ -1,6 +1,7 @@
 from threading import Thread, Lock
 from Queue import Empty
 from time import sleep
+import json
 import numpy as np
 
 
@@ -104,6 +105,10 @@ class Bounds(object):
         self._y0 = y0
         self._x1 = x1
         self._y1 = y1
+
+    @classmethod
+    def from_json(cls, data):
+        return cls(data["x0"], data["y0"], data["x1"], data["y1"])
 
     @property
     def x0(self):
@@ -286,6 +291,17 @@ class Bounds(object):
 
     def to_list(self):
         return [self.x0, self.y0, self.x1, self.y1]
+
+    def dict(self):
+        return {
+            "x0": self.x0,
+            "y0": self.y0,
+            "x1": self.x1,
+            "y1": self.y1
+        }
+
+    def json(self):
+        return json.dumps(self.dict())
 
     def __repr__(self):
         return "Bounds[({:3f}, {:3f}), ({:3f}, {:3f})]".format(self.x0, self.y0, self.x1, self.y1)

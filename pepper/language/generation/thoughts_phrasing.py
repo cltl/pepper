@@ -238,9 +238,13 @@ def _phrase_overlaps(all_overlaps, utterance):
     elif entity_role == 'subject':
         say = random.choice(HAPPY)
         sample = random.sample(overlaps, 2)
+
+        entity_0 = filter(str.isalpha, str(sample[0].entity_name))
+        entity_1 = filter(str.isalpha, str(sample[1].entity_name))
+
         say += ' Now I know %s items that %s %s, like %s and %s' % (len(overlaps), utterance.triple.subject_name,
                                                                     utterance.triple.predicate_name,
-                                                                    sample[0].entity_name, sample[1].entity_name)
+                                                                    entity_0, entity_1)
 
     elif entity_role == 'object':
         say = random.choice(HAPPY)
