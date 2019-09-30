@@ -122,8 +122,6 @@ BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
 NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
-# NAOQI_IP, NAOQI_PORT = "10.10.60.150", 9559  # Future Lab
-# NAOQI_IP, NAOQI_PORT = "192.168.137.172", 9559  # Local?
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
@@ -146,11 +144,11 @@ MICROPHONE_CHANNELS = 1
 
 # Camera resolution (in pixels) and frame rate (Hz)
 # NOTE: Both resolution and frame rate impact system performance...
-CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
+CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
 CAMERA_FRAME_RATE = 3
 
 # NAOqi Text to Speech Speed
-NAOQI_SPEECH_SPEED = 80
+NAOQI_SPEECH_SPEED = 90
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
