@@ -147,12 +147,22 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.component.brain</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractBackend</span>
 <span class="kn">from</span> <span class="nn">pepper.brain</span> <span class="k">import</span> <span class="n">LongTermMemory</span>
 
 
 <div class="viewcode-block" id="BrainComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.brain.html#pepper.framework.component.brain.BrainComponent">[docs]</a><span class="k">class</span> <span class="nc">BrainComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exposes the Brain (LongTermMemory) to Applications</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractBackend) -&gt; None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BrainComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_brain</span> <span class="o">=</span> <span class="n">LongTermMemory</span><span class="p">()</span>
 

@@ -93,7 +93,6 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.html#component">Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.naoqi.html">pepper.framework.component.naoqi package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.camera.html">pepper.framework.component.camera module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.component.context module</a></li>
@@ -194,19 +193,28 @@
 <dt id="pepper.framework.component.context.ContextComponent">
 <em class="property">class </em><code class="descclassname">pepper.framework.component.context.</code><code class="descname">ContextComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/context.html#ContextComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.context.ContextComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
+<p>Exposes Context to Applications and contains logic to determine whether conversation should start/end.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>backend: AbstractBackend</strong></dt>
+<dd><p class="first last">Application Backend</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.component.context.ContextComponent.context" title="pepper.framework.component.context.ContextComponent.context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">context</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Reference to Context</p>
 </dd>
-<dt><strong>face_vectors</strong></dt>
-<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.component.context.ContextComponent.face_vectors" title="pepper.framework.component.context.ContextComponent.face_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vectors</span></code></a></dt>
+<dd><p class="first last">Returns Face Vectors obtained during one-on-one conversation.</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
 <dd><p class="first last">Returns Component <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
 </dd>
@@ -222,28 +230,20 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.context.ContextComponent.on_chat_enter" title="pepper.framework.component.context.ContextComponent.on_chat_enter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_chat_enter</span></code></a>(person)</td>
+<td>On Chat Enter Event.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.context.ContextComponent.on_chat_exit" title="pepper.framework.component.context.ContextComponent.on_chat_exit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_chat_exit</span></code></a>()</td>
+<td>On Chat Exit Event.</td>
+</tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.context.ContextComponent.on_chat_turn" title="pepper.framework.component.context.ContextComponent.on_chat_turn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_chat_turn</span></code></a>(utterance)</td>
 <td>On Chat Turn Callback, called every time the speaker utters some Utterance</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code>(cls,&nbsp;dependency)</td>
 <td>Enforce Component Dependency by throwing an Exception when a dependency is missing</td>
 </tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="63%" />
-<col width="37%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>on_chat_enter</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>on_chat_exit</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>say</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.context.ContextComponent.say" title="pepper.framework.component.context.ContextComponent.say"><code class="xref py py-obj docutils literal notranslate"><span class="pre">say</span></code></a>(text[,&nbsp;animation,&nbsp;block])</td>
+<td>Say Text (with optional Animation) through Text-to-Speech</td>
 </tr>
 </tbody>
 </table>
@@ -275,7 +275,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.component.context.ContextComponent.context">
 <code class="descname">context</code><a class="headerlink" href="#pepper.framework.component.context.ContextComponent.context" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Reference to Context</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -293,17 +294,50 @@
 <dl class="attribute">
 <dt id="pepper.framework.component.context.ContextComponent.face_vectors">
 <code class="descname">face_vectors</code><a class="headerlink" href="#pepper.framework.component.context.ContextComponent.face_vectors" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns Face Vectors obtained during one-on-one conversation. These may be used to store a known person</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>face_vectors: Deque[np.ndarray]</strong></dt>
+<dd><p class="first last">Face Representations as numpy.ndarrays</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.component.context.ContextComponent.on_chat_enter">
 <code class="descname">on_chat_enter</code><span class="sig-paren">(</span><em>person</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/context.html#ContextComponent.on_chat_enter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.context.ContextComponent.on_chat_enter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>On Chat Enter Event. Called every time the conversation logic decides a conversation should start.</p>
+<p>When called, this does not actually automatically start a conversation, this is up to the user to decide.
+Conversations can be started anytime by calling ContextComponent.context.start_chat().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>person: str</strong></dt>
+<dd><p class="first last">The person (or group of people: config.HUMAN_CROWD), the conversation should start with.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.component.context.ContextComponent.on_chat_exit">
 <code class="descname">on_chat_exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/context.html#ContextComponent.on_chat_exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.context.ContextComponent.on_chat_exit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>On Chat Exit Event. Called every time the conversation logic decides a conversation should stop.</p>
+<p>When called, this does not actually automatically stop a conversation, this is up to the user to decide.
+Conversations can be stopped anytime by calling ContextComponent.context.stop_chat().</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.component.context.ContextComponent.on_chat_turn">
@@ -327,7 +361,28 @@
 <dl class="method">
 <dt id="pepper.framework.component.context.ContextComponent.say">
 <code class="descname">say</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em>, <em>block=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/context.html#ContextComponent.say"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.context.ContextComponent.say" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Say Text (with optional Animation) through Text-to-Speech</p>
+<p>This overrides TextToSpeechComponent.say and adds the text to the current chat (if chatting)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>text: str</strong></dt>
+<dd><p class="first last">Text to say through Text-to-Speech</p>
+</dd>
+<dt><strong>animation: str or None</strong></dt>
+<dd><p class="first last">(Naoqi) Animation to play</p>
+</dd>
+<dt><strong>block: bool</strong></dt>
+<dd><p class="first last">Whether this function should block or immediately return after calling</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

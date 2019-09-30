@@ -93,7 +93,6 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.html#component">Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.naoqi.html">pepper.framework.component.naoqi package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.camera.html">pepper.framework.component.camera module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.context.html">pepper.framework.component.context module</a></li>
@@ -194,11 +193,19 @@
 <dt id="pepper.framework.component.text_to_speech.TextToSpeechComponent">
 <em class="property">class </em><code class="descclassname">pepper.framework.component.text_to_speech.</code><code class="descname">TextToSpeechComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/text_to_speech.html#TextToSpeechComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.text_to_speech.TextToSpeechComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
+<p>Text To Speech Component. Exposes the say() Method to Applications</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>backend: AbstractBackend</strong></dt>
+<dd><p class="first last">Application Backend</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
 <dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
 </dd>

@@ -147,13 +147,21 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.component.camera</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span><span class="p">,</span> <span class="n">AbstractBackend</span>
 
 
 <div class="viewcode-block" id="CameraComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.camera.html#pepper.framework.component.camera.CameraComponent">[docs]</a><span class="k">class</span> <span class="nc">CameraComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CameraComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exposes the on_image event to Applications</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractBackend) -&gt; None</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CameraComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">on_image</span><span class="p">]</span>
 
 <div class="viewcode-block" id="CameraComponent.on_image"><a class="viewcode-back" href="../../../../pepper.framework.component.camera.html#pepper.framework.component.camera.CameraComponent.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>

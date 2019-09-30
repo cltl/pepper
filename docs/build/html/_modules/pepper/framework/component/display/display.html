@@ -149,7 +149,6 @@
   <h1>Source code for pepper.framework.component.display.display</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.component</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Mailbox</span>
 <span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">DisplayServer</span>
 
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
@@ -159,30 +158,44 @@
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
 
 
 <div class="viewcode-block" id="DisplayComponent"><a class="viewcode-back" href="../../../../../pepper.framework.component.display.display.html#pepper.framework.component.display.display.DisplayComponent">[docs]</a><span class="k">class</span> <span class="nc">DisplayComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display Robot Camera and Scene View in Browser</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DisplayComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
-        <span class="n">server</span> <span class="o">=</span> <span class="n">DisplayServer</span><span class="p">()</span>
-        <span class="n">server_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DisplayServerThread&quot;</span><span class="p">)</span>
-        <span class="n">server_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">server_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
+        <span class="c1"># Get Required Components</span>
         <span class="n">face_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">DisplayComponent</span><span class="p">,</span> <span class="n">FaceRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: FaceRecognitionComponent</span>
         <span class="n">object_recognition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">DisplayComponent</span><span class="p">,</span> <span class="n">ObjectDetectionComponent</span><span class="p">)</span>  <span class="c1"># type: ObjectDetectionComponent</span>
         <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">DisplayComponent</span><span class="p">,</span> <span class="n">ContextComponent</span><span class="p">)</span>  <span class="c1"># type: ContextComponent</span>
         <span class="n">scene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">DisplayComponent</span><span class="p">,</span> <span class="n">SceneComponent</span><span class="p">)</span> <span class="c1"># type: SceneComponent</span>
 
+        <span class="c1"># Start Web Server</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">DisplayServer</span><span class="p">()</span>
+        <span class="n">server_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DisplayServerThread&quot;</span><span class="p">)</span>
+        <span class="n">server_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">server_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="c1"># Make sure to avoid Race Conditions</span>
         <span class="n">update_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_info</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">def</span> <span class="nf">encode_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+            <span class="c1"># type: (Image.Image) -&gt; str</span>
             <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Encode PIL Image as base64 PNG</span>
+
 <span class="sd">            Parameters</span>
 <span class="sd">            ----------</span>
 <span class="sd">            image: Image.Image</span>
@@ -199,6 +212,13 @@
 
         <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
             <span class="c1"># type: (AbstractImage) -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Private On Image Event</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            image: AbstractImage</span>
+<span class="sd">            &quot;&quot;&quot;</span>
 
             <span class="k">with</span> <span class="n">update_lock</span><span class="p">:</span>
 
@@ -229,8 +249,20 @@
                 <span class="p">}</span>
 
         <span class="k">def</span> <span class="nf">add_items</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+            <span class="c1"># type: (List[Object]) -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Add Items (Objects + Faces) to Display</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            items: List[Object]</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
             <span class="k">with</span> <span class="n">update_lock</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_info</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_info</span><span class="p">:</span>  <span class="c1"># If Ready to Populate</span>
+
+                    <span class="c1"># Add Items to Display Info</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_display_info</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span>
                         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                          <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
@@ -239,6 +271,8 @@
                          <span class="s2">&quot;bounds3D&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">bounds3D</span><span class="p">,</span>
                          <span class="p">}</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
 
+        <span class="c1"># Register Callbacks from On Image, Known Faces &amp; Object Detection</span>
+        <span class="c1"># TODO: Add All Faces to Display? Also Unknown ones?</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">on_image</span><span class="p">]</span>
         <span class="n">face_recognition</span><span class="o">.</span><span class="n">on_face_known_callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">add_items</span><span class="p">]</span>
         <span class="n">object_recognition</span><span class="o">.</span><span class="n">on_object_callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">add_items</span><span class="p">]</span></div>

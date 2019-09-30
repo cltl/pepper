@@ -155,14 +155,28 @@
 
 
 <div class="viewcode-block" id="TextToSpeechComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent">[docs]</a><span class="k">class</span> <span class="nc">TextToSpeechComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Text To Speech Component. Exposes the say() Method to Applications</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TextToSpeechComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
+        <span class="c1"># Prevent Racing Conditions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+            <span class="c1"># type: () -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;Make sure Microphone is not listening when Text to Speech is Live&quot;&quot;&quot;</span>
+
+            <span class="c1"># Acquire Microphone Lock</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span><span class="p">:</span>
-                <span class="c1"># If talking is over &amp; microphone is not yet running -&gt; Start Microphone</span>
+                <span class="c1"># If robot is not talking &amp; microphone is not yet running -&gt; Start Microphone</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">talking</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
@@ -186,6 +200,7 @@
 
         <span class="c1"># Acquire Microphone Lock</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span><span class="p">:</span>
+
             <span class="c1"># Stop Microphone if running</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>

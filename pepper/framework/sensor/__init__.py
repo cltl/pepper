@@ -12,6 +12,7 @@ The framework.sensor package implements Face, Object and Speech Recognition:
 """
 
 from .asr import AbstractASR, GoogleTranslator, UtteranceHypothesis, SynchronousGoogleASR, StreamedGoogleASR
+from .obj import Object, ObjectDetectionClient, ObjectDetectionTarget
 from .face import OpenFace, FaceStore, FaceClassifier, Face
 from .vad import VAD
 from .obj import Object

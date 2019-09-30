@@ -153,8 +153,18 @@
 <span class="kn">from</span> <span class="nn">cv2</span> <span class="k">import</span> <span class="n">resize</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
+
 
 <div class="viewcode-block" id="SceneComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.scene.html#pepper.framework.component.scene.SceneComponent">[docs]</a><span class="k">class</span> <span class="nc">SceneComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct 3D Scene Based on Camera Data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">RESOLUTION</span> <span class="o">=</span> <span class="mi">200</span>
     <span class="n">SAMPLES</span> <span class="o">=</span> <span class="mi">5</span>
@@ -164,14 +174,17 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SceneComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
+        <span class="c1"># Create Spherical Coordinate Map</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_theta_map</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phi_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-        <span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+        <span class="c1"># Create Depth, Color and Index Maps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_depth_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SAMPLES</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_color_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SAMPLES</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_index_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
+        <span class="c1"># Previous Camera Bounds (=View), to assess whether camera is stationary</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_bounds</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
@@ -185,10 +198,14 @@
 <span class="sd">                Camera Frame</span>
 <span class="sd">            &quot;&quot;&quot;</span>
 
+            <span class="c1"># If Camera is stationary (check to prevent blurry frames to enter data pool)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_bounds</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_bounds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+
+                <span class="c1"># Get Color and Depth information from Image</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">256</span>
                 <span class="n">depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
+                <span class="c1"># Get Image Orientation &amp; Spherical Pixel Coordinates</span>
                 <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
                                 <span class="n">image</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">x1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
@@ -197,33 +214,42 @@
                                 <span class="n">image</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">y1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESOLUTION</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
                                 <span class="n">depth</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
+                <span class="c1"># Discard Pixels that are too close to the camera</span>
                 <span class="n">depth_threshold</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">depth</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEPTH_THRESHOLD</span>
-
-                <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">depth_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
-                <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="n">depth_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+                <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">depth_threshold</span><span class="p">]</span>
+                <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="n">depth_threshold</span><span class="p">]</span>
                 <span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span><span class="p">[</span><span class="n">depth_threshold</span><span class="p">]</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">color</span><span class="p">[</span><span class="n">depth_threshold</span><span class="p">]</span>
 
-                <span class="n">sample_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_map</span><span class="p">[</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">]</span>
+                <span class="c1"># Convert phi, theta to integer indices</span>
+                <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">theta</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 
+                <span class="c1"># Add Current Sample to Depth/Color Maps</span>
+                <span class="n">sample_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_map</span><span class="p">[</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_depth_map</span><span class="p">[</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">sample_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">depth</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_color_map</span><span class="p">[</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">sample_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+
+                <span class="c1"># Update Index Map</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_index_map</span><span class="p">[</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_index_map</span><span class="p">[</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">SAMPLES</span>
 
+            <span class="c1"># Update Last Camera Bounds</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_last_bounds</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bounds</span>
 
+        <span class="c1"># Subscribe to On Image Event</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">on_image</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">depth_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth_map</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">color_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_map</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">scatter_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create 3D Scatter Map of Scene</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        x, y, z, color: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]</span>
+<span class="sd">            Numpy Arrays of X, Y, Z and Color Data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="c1"># Get Per Pixel Min and Max Depth</span>
         <span class="n">min_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_depth_map</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">max_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_depth_map</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -231,7 +257,7 @@
         <span class="c1"># Only draw pixels further than DEPTH_THRESHOLD, with less variance as VARIANCE_THRESHOLD</span>
         <span class="n">valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">min_depth</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEPTH_THRESHOLD</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">-</span> <span class="n">min_depth</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">VARIANCE_THRESHOLD</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid</span><span class="p">):</span>  <span class="c1"># If there is something to draw...</span>
 
             <span class="c1"># Get valid pixels to draw (and average depth and color samples)</span>
             <span class="n">depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_depth_map</span><span class="p">[</span><span class="n">valid</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
