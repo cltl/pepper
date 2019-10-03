@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 from pepper.language.pos import POS
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
+from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
 from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.utils.rdf_builder import RdfBuilder
-from pepper.brain.utils.response import Triple
+from pepper.brain.utils.response import Triple, Perspective
 
 from pepper import logger, config
 from nltk import pos_tag
@@ -17,12 +18,10 @@ from collections import Counter
 from random import getrandbits
 from datetime import datetime
 import enum
+import json
 import os
 
 from typing import List, Optional
-
-import spacy
-nlp = spacy.load('en_core_web_sm')
 
 
 class Time(enum.Enum):
@@ -38,57 +37,6 @@ class Emotion(enum.Enum):  # Not used yet
     HAPPINESS = 3
     SADNESS = 4
     SURPRISE = 5
-
-
-class Perspective(object):
-    def __init__(self, certainty, polarity, sentiment, time=None, emotion=None):
-        # type: (float, int, float, Time, Emotion) -> Perspective
-        """
-        Construct Perspective object
-        Parameters
-        ----------
-        certainty: float
-            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain
-        polarity: int
-            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment
-        sentiment: float
-            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent
-            positive sentiments.
-        time: Time
-            Enumerator representing time. This is extracted from the tense
-        emotion: Emotion
-            Enumerator representing one of the 6 universal emotions.
-        """
-        self._certainty = certainty
-        self._polarity = polarity
-        self._sentiment = sentiment
-        self._time = time
-        self._emotion = emotion
-
-    @property
-    def certainty(self):
-        # type: () -> float
-        return self._certainty
-
-    @property
-    def polarity(self):
-        # type: () -> int
-        return self._polarity
-
-    @property
-    def sentiment(self):
-        # type: () -> float
-        return self._sentiment
-
-    @property
-    def time(self):
-        # type: () -> Optional[Time]
-        return self._time
-
-    @property
-    def emotion(self):
-        # type: () -> Optional[Emotion]
-        return self._emotion
 
 
 class Chat(object):
@@ -397,14 +345,16 @@ class Utterance(object):
         if not analyzer:
             return "I cannot parse your input"
 
-        Analyzer.LOG.debug("RDF {}".format(analyzer.rdf))
+        for el in ["subject", "predicate", "object"]:
+            Analyzer.LOG.info(
+                "RDF {:>10}: {}".format(el, json.dumps(analyzer.rdf[el], sort_keys=True, separators=(', ', ': '))))
 
-        if analyzer.utterance_type==UtteranceType.STATEMENT:
+        self.pack_triple(analyzer.rdf, analyzer.utterance_type)
+
+        if analyzer.utterance_type == UtteranceType.STATEMENT:
             self.pack_perspective(analyzer.perspective)
 
-        self.write_template(analyzer.rdf, analyzer.utterance_type)
-
-    def write_template(self, rdf, utterance_type):
+    def pack_triple(self, rdf, utterance_type):
         """
         Sets utterance type, the extracted triple and (in future) the perspective
         Parameters
@@ -423,25 +373,16 @@ class Utterance(object):
         if not rdf:
             return 'error in the rdf'
 
-        builder = RdfBuilder() # TODO PACKING PERSPECTIVE
+        builder = RdfBuilder()
 
-        '''
-        for el in rdf:
-            if rdf[el]['type'] in [None, ''] and rdf[el]['text']!='':
-                print('unknown type ', rdf[el])
-            else:
-                print(rdf[el])
-        '''
-
-        # Build subject
-        subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'), str(rdf['subject']['type']))  # capitalization
-
+        # Build each element
+        subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'),
+                                      rdf['subject']['type'])
         predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
-
-        object = builder.fill_entity_from_label(casefold_text(rdf['object']['text'], format='triple'))
+        object = builder.fill_entity(casefold_text(rdf['object']['text'], format='triple'),
+                                                rdf['object']['type'])
 
         self.set_triple(Triple(subject, predicate, object))
-
 
     def pack_perspective(self, persp):
         self.set_perspective(Perspective(persp['certainty'], persp['polarity'], persp['sentiment']))
@@ -554,21 +495,22 @@ class Utterance(object):
         # separating typical contractions
         tokens_raw = transcript.replace("'", " ").split()
         dict = {'m': 'am', 're': 'are', 'll': 'will'}
-        dict_not = {'won': 'will', 'don': 'do', 'doesn': 'does', 'didn': 'did', 'haven':'have', 'wouldn': 'would', 'aren': 'are'}
+        dict_not = {'won': 'will', 'don': 'do', 'doesn': 'does', 'didn': 'did', 'haven': 'have', 'wouldn': 'would',
+                    'aren': 'are'}
 
         for key in dict:
-            tokens_raw = self.replace_token(tokens_raw,key,dict[key])
+            tokens_raw = self.replace_token(tokens_raw, key, dict[key])
 
         if 't' in tokens_raw:
             tokens_raw = self.replace_token(tokens_raw, 't', 'not')
             for key in dict_not:
-                tokens_raw = self.replace_token(tokens_raw,key,dict_not[key])
+                tokens_raw = self.replace_token(tokens_raw, key, dict_not[key])
 
         # in case of possessive genitive the 's' is just removed, while for the aux verb 'is' is inserted
         if 's' in tokens_raw:
             index = tokens_raw.index('s')
-            tag = pos_tag([tokens_raw[index+1]])
-            if tag[0][1] in ['DT','JJ','IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
+            tag = pos_tag([tokens_raw[index + 1]])
+            if tag[0][1] in ['DT', 'JJ', 'IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
                 tokens_raw.remove('s')
                 tokens_raw.insert(index, 'is')
             else:
@@ -608,9 +550,7 @@ class Utterance(object):
         return '{:>10s}: "{}"'.format(author, self.transcript)
 
 
-
 class Parser(object):
-
     POS_TAGGER = None  # Type: POS
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
@@ -643,36 +583,38 @@ class Parser(object):
         pos = self.POS_TAGGER.tag(tokenized_sentence)
         self._log.debug(pos)
 
-        doc = nlp(utterance.transcript)
-
-
-        # comparing differences between Spacy and NLTK pos-tagger
-        # for the moment automatically Spacy is chosen but there should be a third POS-tagger used
-        for token in doc:
-            ind = 0
-            for w in pos:
-                if w[0]==token.text and w[1]!=token.tag_:
-                    if (w[1]=='TO' and token.tag_=='IN') or w[1][:-1]==token.tag_ or w[1]==token.tag_[:-1]:
-                        continue
-                    else:
-                        pos[ind] = (w[0],token.tag_)
-                ind += 1
+        # # Fixing POS matching
+        # import spacy
+        # nlp = spacy.load('en_core_web_sm')
+        #
+        # doc = nlp(utterance.transcript)
+        # for token in doc:
+        #     #print(token.text, token.lemma_, token.pos_)
+        #     ind = 0
+        #     for w in pos:
+        #         if w[0]==token.text and w[1]!=token.tag_:
+        #             if (w[1]=='TO' and token.tag_=='IN') or w[1][:-1]==token.tag_ or w[1]==token.tag_[:-1]:
+        #                 continue
+        #             else:
+        #                 #print('pos_mismatch ',w[1],token.tag_)
+        #                 pos[ind] = (w[0],token.tag_)
+        #         ind += 1
 
         # fixing issues with POS tagger (Does and like)
         ind = 0
         for w in tokenized_sentence:
-            if w=='like':
+            if w == 'like':
                 pos[ind] = (w, 'VB')
-            ind+=1
+            ind += 1
 
-        if pos[0][0]=='Does':
+        if pos[0][0] == 'Does':
             pos[0] = ('Does', 'VBD')
 
         # the POS tagger returns one tag with a $ sign (POS$) and this needs to be fixed for the CFG parsing
         ind = 0
         for word, tag in pos:
             if '?' in word:
-                word=word[:-1]
+                word = word[:-1]
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
                 pos[ind] = (pos[ind][0], 'PRPPOS')
@@ -681,16 +623,16 @@ class Parser(object):
                 new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
-            ind+=1
+            ind += 1
 
         try:
             cfg_parser = CFG.fromstring(self._cfg)
             RD = RecursiveDescentParser(cfg_parser)
 
-            last_token = tokenized_sentence[len(tokenized_sentence)-1]
+            last_token = tokenized_sentence[len(tokenized_sentence) - 1]
 
             if '?' in last_token:
-                tokenized_sentence[len(tokenized_sentence)-1] = last_token[:-1]
+                tokenized_sentence[len(tokenized_sentence) - 1] = last_token[:-1]
 
             parsed = RD.parse(tokenized_sentence)
 
@@ -700,19 +642,20 @@ class Parser(object):
             forest = [tree for tree in parsed]
 
             if len(forest):
-                #if (len(forest))>1:
-                #    print('* Ambiguity in grammar *')
-                for tree in forest[0]: #alternative trees? f
+                if (len(forest)) > 1:
+                    self._log.debug('* Ambiguity in grammar *')
+                for tree in forest[0]:  # alternative trees? f
                     for branch in tree:
-                        s_r[index] = {'label': branch.label(), 'structure' : branch}
-                        raw=''
+                        s_r[index] = {'label': branch.label(), 'structure': branch}
+                        raw = ''
                         for node in branch:
                             for leaf in node.leaves():
-                                    raw+=leaf+'-'
+                                raw += leaf + '-'
+
                         s_r[index]['raw'] = raw[:-1]
                         index += 1
             else:
-                self._log.info("no forest")
+                self._log.debug("no forest")
 
             for el in s_r:
                 if type(s_r[el]['raw']) == list:

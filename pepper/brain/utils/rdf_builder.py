@@ -4,8 +4,11 @@ from rdflib import Dataset, Namespace, OWL
 from rdflib import URIRef, Literal
 from iribaker import to_iri
 
+import os
+
 
 class RdfBuilder(object):
+    ONTOLOGY_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../ontologies'))
 
     def __init__(self):
         # type: () -> RdfBuilder
@@ -79,13 +82,13 @@ class RdfBuilder(object):
         Define ontology paths to key vocabularies
         :return:
         """
-        self.ontology_paths['n2mu'] = './../../ontologies/leolani.ttl'
-        self.ontology_paths['gaf'] = './../../ontologies/gaf.rdf'
-        self.ontology_paths['grasp'] = './../../ontologies/grasp.rdf'
-        self.ontology_paths['sem'] = './../../ontologies/sem.rdf'
+        self.ontology_paths['n2mu'] = os.path.join(self.ONTOLOGY_ROOT, 'leolani.ttl')
+        self.ontology_paths['gaf'] = os.path.join(self.ONTOLOGY_ROOT, 'gaf.rdf')
+        self.ontology_paths['grasp'] = os.path.join(self.ONTOLOGY_ROOT, 'grasp.rdf')
+        self.ontology_paths['sem'] = os.path.join(self.ONTOLOGY_ROOT, 'sem.rdf')
 
     def load_ontology_integration(self):
-        self.ontology_graph.parse(location="./../../ontologies/integration.ttl", format="turtle")
+        self.ontology_graph.parse(location=os.path.join(self.ONTOLOGY_ROOT, 'integration.ttl'), format="turtle")
 
     def _bind_namespaces(self):
         """
@@ -109,6 +112,21 @@ class RdfBuilder(object):
         self.dataset.bind('owl', OWL)
 
     ########## basic constructors ##########
+    def _fix_nlp_types(self, types):
+        # TODO here we know if two types are different category (aka noun and verb) we might need to split the triple
+        fixed_types = []
+        for el in types:
+            if len(el) == 1:
+                # this was just a char
+                fixed_types.append(types.split('.')[-1])
+                break
+            elif '.' in el:
+                fixed_types.append(el.split('.')[-1])
+            else:
+                fixed_types.append(el)
+
+        return fixed_types
+
     def create_resource_uri(self, namespace, resource_name):
         """
         Create an URI for the given resource (entity, predicate, named graph, etc) in the given namespace
@@ -128,7 +146,7 @@ class RdfBuilder(object):
         if namespace in self.namespaces.keys():
             uri = URIRef(to_iri(self.namespaces[namespace] + resource_name))
         else:
-            uri = URIRef(to_iri(namespace + resource_name))
+            uri = URIRef(to_iri('{}:{}'.format(namespace,resource_name)))
 
         return uri
 
@@ -165,9 +183,13 @@ class RdfBuilder(object):
         -------
             Entity object with given label
         """
-        entity_id = self.create_resource_uri(namespace, label)
-
-        return Entity(entity_id, Literal(label), types)
+        if types in [None, ''] and label != '':
+            self._log.warning('Unknown type: {}'.format(label))
+            return self.fill_entity_from_label(label, namespace)
+        else:
+            entity_id = self.create_resource_uri(namespace, label)
+            fixed_types = self._fix_nlp_types(types)
+            return Entity(entity_id, Literal(label), fixed_types)
 
     def fill_predicate(self, label, namespace='N2MU'):
         """
