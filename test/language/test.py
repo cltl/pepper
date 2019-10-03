@@ -1,17 +1,25 @@
 from pepper.language import *
 from pepper.brain import LongTermMemory
-from pepper.framework import UtteranceHypothesis, Context, Object, Face
+from pepper.framework import UtteranceHypothesis, Context, Face, Object, Bounds, AbstractImage
 from pepper.language.generation import reply_to_question
+
+import numpy as np
 
 
 def fake_context():
-    objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
-               Object('cat', 0.51, None, None)}
-    faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
+
+    bounds = Bounds(0, 0, 1, 1)
+    image = AbstractImage(np.zeros((100, 100, 3), np.float32), bounds, np.ones((100, 100), np.float32))
+    representation = np.zeros(128, np.float32)
+
+    objects = [Object('person', 0.79, bounds, image),]
+               # Object('teddy bear', 0.88, None, None),
+               # Object('cat', 0.51, None, None)}
+    # faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
     context = Context()
     context.add_objects(objects)
-    context.add_people(faces)
+    # context.add_people(faces)
     return context
 
 def load_golden_triples(filename):
@@ -127,7 +135,7 @@ def test_scenario(statement, questions, gold):
 
 
 def test_scenarios():
-    scenarios = load_scenarios("/Users/lenka/Desktop/scenarios.txt")
+    scenarios = load_scenarios("test_files/scenarios.txt")
     correct = 0
     total = 0
     for sc in scenarios:
@@ -192,6 +200,7 @@ def test_with_triples(path):
 
         print(chat.last_utterance)
         print(chat.last_utterance.triple)
+
         #print(reply)
         index+=1
 
@@ -203,12 +212,10 @@ def test_with_triples(path):
 
 if __name__ == "__main__":
 
-    all_test_files = ["/Users/lenka/Desktop/wh-questions.txt", "/Users/lenka/Desktop/verb-questions.txt",
-                  "/Users/lenka/Desktop/statements.txt", "/Users/lenka/Desktop/perspective.txt"]
 
-    test_files = ["/Users/lenka/Desktop/statements.txt"]
+    test_files = ["test_files/statements.txt"]
 
     for test_file in test_files:
         test_with_triples(test_file)
 
-    test_scenarios()
+    #test_scenarios()

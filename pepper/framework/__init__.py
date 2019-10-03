@@ -11,4 +11,5 @@ from .abstract import *
 from .component import *
 from .sensor import *
 from .context import Context
+from .util import Bounds
 

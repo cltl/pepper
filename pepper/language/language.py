@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from pepper.language.pos import POS
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
-from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
 from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.utils.rdf_builder import RdfBuilder
 from pepper.brain.utils.response import Triple
@@ -21,6 +20,9 @@ import enum
 import os
 
 from typing import List, Optional
+
+import spacy
+nlp = spacy.load('en_core_web_sm')
 
 
 class Time(enum.Enum):
@@ -423,53 +425,16 @@ class Utterance(object):
 
         builder = RdfBuilder() # TODO PACKING PERSPECTIVE
 
+        '''
         for el in rdf:
-            final_type = []
-            if rdf[el]['text']=='':
-                continue
-            if type(rdf[el]['type'])==dict:
-                for typ in rdf[el]['type']:
-                    if rdf[el]['type'][typ] in [None, '']:
-                        entry = lexicon_lookup(typ)
-                        if entry is None:
-                            if typ.lower() in ['lenka','leolani','selene','suzana','bram','piek'] or typ.capitalize()==typ:
-                                final_type.append('person')
-                            else:
-                                node = get_node_label(self.parser.forest[0], typ)
-                                if node in ['IN','TO']:
-                                    final_type.append('preposition')
-                                elif node.startswith('V'):
-                                    final_type.append('verb')
-                                elif node.startswith('N'):
-                                    final_type.append('noun')
-
-                        elif 'proximity' in entry:
-                            final_type.append('deictic')
-                        elif 'person' in entry:
-                            final_type.append('pronoun')
-
-                    else:
-                        final_type.append(rdf[el]['type'][typ])
-                rdf[el]['type'] = final_type
-
-            elif rdf[el]['type'] in [None, '']:
-                entry = lexicon_lookup(rdf[el]['text'])
-                if entry is None:
-                    if rdf[el]['text'].lower() in ['lenka', 'leolani', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize()==typ:
-                        rdf[el]['type'] = 'person'
-                elif 'proximity' in entry:
-                    rdf[el]['type'] = 'deictic'
-
-        for el in rdf:
-            #print(rdf[el])
             if rdf[el]['type'] in [None, ''] and rdf[el]['text']!='':
                 print('unknown type ', rdf[el])
             else:
                 print(rdf[el])
-
+        '''
 
         # Build subject
-        subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'), ["person"])  # capitalization
+        subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'), str(rdf['subject']['type']))  # capitalization
 
         predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
 
@@ -559,17 +524,20 @@ class Utterance(object):
         Returns
         -------
         tokens: list of str
-            Tokenized transcript: list of cleaned tokens
-                - remove contractions
+            Tokenized transcript: list of cleaned tokens for POS tagging and syntactic parsing
+                - removes contractions and openers/introductions
         """
 
-
-        openers = ['leolani', 'sorry', 'excuse me', 'hey']
-        introductions = ['can you tell me', 'do you know', 'please tell me', 'do you maybe know']
+        # possible openers/greetings/introductions are removed from the beginning of the transcript
+        # it is done like this to avoid lowercasing the transcript as caps are useful and google puts them
+        openers = ['Leolani', 'Sorry', 'Excuse me', 'Hey','Hello','Hi']
+        introductions = ['Can you tell me', 'Do you know', 'Please tell me', 'Do you maybe know']
 
         for o in openers:
             if transcript.startswith(o):
                 transcript = transcript.replace(o, '')
+            if transcript.startswith(o.lower()):
+                transcript = transcript.replace(o.lower(), '')
 
         for i in introductions:
             if transcript.startswith(i):
@@ -577,8 +545,13 @@ class Utterance(object):
                 first_word = tmp.split()[0]
                 if first_word in ['what', 'that', 'who', 'when', 'where', 'which']:
                     transcript = transcript.replace(i, '')
+            if transcript.startswith(i.lower()):
+                tmp = transcript.replace(i.lower(), '')
+                first_word = tmp.split()[0]
+                if first_word.lower() in ['what', 'that', 'who', 'when', 'where', 'which']:
+                    transcript = transcript.replace(i.lower(), '')
 
-
+        # separating typical contractions
         tokens_raw = transcript.replace("'", " ").split()
         dict = {'m': 'am', 're': 'are', 'll': 'will'}
         dict_not = {'won': 'will', 'don': 'do', 'doesn': 'does', 'didn': 'did', 'haven':'have', 'wouldn': 'would', 'aren': 'are'}
@@ -591,6 +564,7 @@ class Utterance(object):
             for key in dict_not:
                 tokens_raw = self.replace_token(tokens_raw,key,dict_not[key])
 
+        # in case of possessive genitive the 's' is just removed, while for the aux verb 'is' is inserted
         if 's' in tokens_raw:
             index = tokens_raw.index('s')
             tag = pos_tag([tokens_raw[index+1]])
@@ -603,6 +577,12 @@ class Utterance(object):
         return tokens_raw
 
     def replace_token(self, tokens_raw, old, new):
+        '''
+        :param tokens_raw: list of tokens
+        :param old: token to replace
+        :param new: new token
+        :return: new list with the replaced token
+        '''
         if old in tokens_raw:
             index = tokens_raw.index(old)
             tokens_raw.remove(old)
@@ -655,28 +635,30 @@ class Parser(object):
         return self._constituents
 
     def _parse(self, utterance):
+        '''
+        :param utterance: an Utterance object, typically last one in the Chat
+        :return: parsed syntax tree and a dictionary of syntactic realizations
+        '''
         tokenized_sentence = utterance.tokens
-        #print(tokenized_sentence)
         pos = self.POS_TAGGER.tag(tokenized_sentence)
-        print(pos)
         self._log.debug(pos)
 
-        import spacy
-        nlp = spacy.load('en_core_web_sm')
-
         doc = nlp(utterance.transcript)
+
+
+        # comparing differences between Spacy and NLTK pos-tagger
+        # for the moment automatically Spacy is chosen but there should be a third POS-tagger used
         for token in doc:
-            #print(token.text, token.lemma_, token.pos_)
             ind = 0
             for w in pos:
                 if w[0]==token.text and w[1]!=token.tag_:
                     if (w[1]=='TO' and token.tag_=='IN') or w[1][:-1]==token.tag_ or w[1]==token.tag_[:-1]:
                         continue
                     else:
-                        #print('pos_mismatch ',w[1],token.tag_)
                         pos[ind] = (w[0],token.tag_)
                 ind += 1
 
+        # fixing issues with POS tagger (Does and like)
         ind = 0
         for w in tokenized_sentence:
             if w=='like':
@@ -686,6 +668,7 @@ class Parser(object):
         if pos[0][0]=='Does':
             pos[0] = ('Does', 'VBD')
 
+        # the POS tagger returns one tag with a $ sign (POS$) and this needs to be fixed for the CFG parsing
         ind = 0
         for word, tag in pos:
             if '?' in word:
@@ -693,15 +676,14 @@ class Parser(object):
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
                 pos[ind] = (pos[ind][0], 'PRPPOS')
-
             else:
+                # CFG grammar is created dynamically, with the terminals added each time from the specific utterance
                 new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
             ind+=1
 
         try:
-            #print(self._cfg)
             cfg_parser = CFG.fromstring(self._cfg)
             RD = RecursiveDescentParser(cfg_parser)
 
@@ -712,14 +694,14 @@ class Parser(object):
 
             parsed = RD.parse(tokenized_sentence)
 
-            s_r = {} #syntactic_realizations
+            s_r = {} #syntactic_realizations are the topmost branches, usually VP/NP
             index = 0
 
             forest = [tree for tree in parsed]
 
             if len(forest):
-                if (len(forest))>1:
-                    print('* Ambiguity in grammar *')
+                #if (len(forest))>1:
+                #    print('* Ambiguity in grammar *')
                 for tree in forest[0]: #alternative trees? f
                     for branch in tree:
                         s_r[index] = {'label': branch.label(), 'structure' : branch}
@@ -727,10 +709,8 @@ class Parser(object):
                         for node in branch:
                             for leaf in node.leaves():
                                     raw+=leaf+'-'
-
                         s_r[index]['raw'] = raw[:-1]
                         index += 1
-
             else:
                 self._log.info("no forest")
 

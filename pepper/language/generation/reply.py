@@ -15,7 +15,6 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
     -------
 
     """
-    # TODO revise by Lenka
     new_predicate = ''
     if format == 'triple':
         if len(predicate.split()) > 1:
@@ -134,6 +133,8 @@ def reply_to_question(brain_response):
             if predicate != previous_predicate:
                 say += ' that '
 
+
+
         if predicate.endswith('is'):
 
             say += object+' is'
@@ -146,7 +147,7 @@ def reply_to_question(brain_response):
             say += predicate[:-3]
 
             return say
-        else:
+        else: # TODO fix_predicate_morphology
             be = {'first': 'am', 'second': 'are', 'third': 'is'}
             if predicate=='be': # or third person singular
                 if subject_entry and 'number' in subject_entry:

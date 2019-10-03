@@ -12,6 +12,7 @@ class Analyzer(object):
     # Load Stanford Named Entity Recognition Server
     NER = None  # type: NER
 
+
     LOG = logger.getChild(__name__)
 
     def __init__(self, chat):
@@ -131,7 +132,7 @@ class Analyzer(object):
         if predicate == 'hat': #lemmatizer issue with verb 'hate'
             predicate='hate'
 
-        elif predicate == 'bear':
+        elif predicate == 'bear': # bear-in
             predicate = 'born' #lemmatizer issue
 
         return predicate
@@ -246,6 +247,26 @@ class Analyzer(object):
             rdf['object'] = ''
         return rdf
 
+    def get_types(self, rdf):
+        for el in rdf:
+            text = rdf[el]
+            rdf[el] = {'text': text, 'type':''}
+            typ = get_type(text, self.chat.last_utterance.parser.forest[0])
+
+            if typ=='person' and el=='predicate':
+                rdf[el]['type'] = 'verb'
+
+            elif type(typ) != dict and typ.endswith('-col') and el!='predicate':
+                rdf[el]['text'] = '\''+rdf[el]['text']+'\''
+                rdf[el]['type'] = typ[:-4]
+
+            else:
+                rdf[el]['type'] = typ
+
+            print(rdf[el])
+
+        return rdf
+
 
 class StatementAnalyzer(Analyzer):
     """Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function"""
@@ -312,7 +333,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 utterance_info['neg'] = -1
             entry = lexicon_lookup(word, 'verb')
             if entry:
-                # print('LEXICON ',entry)
                 if 'sentiment' in entry:
                     sentiment = entry['sentiment']
                 if 'certainty' in entry:
@@ -366,7 +386,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
     def analyze_multiword_object(self, rdf):
         structure_tree = self.chat.last_utterance.parser.forest[0]
         first_word = rdf['object'].split('-')[0]
-        # print('OBJECT LABEL ',get_node_label( constituents[2]['structure'], rdf['object'].split('-')[0]), rdf['object'].split('-')[0], constituents[2]['structure'] )
 
         if get_node_label(structure_tree, first_word) in ['TO', 'IN']:
             rdf = self.analyze_object_with_preposition(rdf)
@@ -395,9 +414,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         utterance_info = {'neg':False}
 
         rdf = self.initialize_rdf()
-        print('initial ', rdf)
-
-
         entry = lexicon_lookup(lemmatize(rdf['predicate'], 'v'), 'lexical')
 
         # sentences such as "I think (that) ..."
@@ -408,8 +424,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
 
-        print('after vp ', rdf)
-
         #multi-word subject (posesive phrase)
         if len(rdf['subject'].split('-'))>1:
             first_word = rdf['subject'].split('-')[0].lower()
@@ -417,8 +431,6 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 rdf = self.analyze_possessive(rdf, 'subject')
         else: # one word subject
             rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
-
-        print('after NP', rdf)
 
         if len(rdf['object'].split('-'))>1:
             rdf = self.analyze_multiword_object(rdf)
@@ -431,12 +443,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
         rdf = trim_dash(rdf)
 
-        print('RDF ', rdf)
-
-        for el in rdf:
-            text = rdf[el]
-            rdf[el] = {'text': text, 'type':''}
-            rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
+        rdf = self.get_types(rdf)
 
         self._rdf = rdf
 
@@ -594,12 +601,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         utterance_info = {'neg': False, 'wh_word': lexicon_lookup(self.chat.last_utterance.parser.constituents[0]['raw'].lower())}
 
         rdf = self.initialize_rdf()
-
-        print('initial ', rdf)
-
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
-
-        print('after vp ', rdf)
 
         #multi-word subject (posesive phrase)
         if len(rdf['subject'].split('-'))>1:
@@ -610,7 +612,6 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         else: # one word subject
             rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
 
-        #print('after np', rdf)
 
         if len(rdf['object'].split('-'))>1: #multi-word object
             rdf = self.analyze_multiword_object(rdf)
@@ -621,12 +622,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
 
-        print('final ', rdf)
-        print(utterance_info)
-        '''
-        for el in rdf:
-            get_type(rdf[el],structure_tree)
-        '''
+        rdf = self.get_types(rdf)
 
         self._rdf = rdf
 
@@ -674,6 +670,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         rdf = {'predicate': '', 'subject': '', 'object': ''}
         constituents = self.chat.last_utterance.parser.constituents
         rdf['subject'] = constituents[1]['raw']
+
         if len(constituents)==4:
             rdf['predicate'] = constituents[0]['raw'] + '-' + constituents[2]['raw']
             rdf['object'] = constituents[3]['raw']
@@ -696,10 +693,8 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         super(VerbQuestionAnalyzer, self).__init__(chat)
         utterance_info = {'neg': False}
         rdf = self.initialize_rdf()
-
-
         rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
-        print('after vp', rdf)
+
 
         if len(rdf['subject'].split('-'))>1:
             first_word = rdf['subject'].split('-')[0].lower()
@@ -712,8 +707,6 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         if len(rdf['subject'].split('-')) == 1:
             rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
 
-        print('after np', rdf)
-
         if len(rdf['object'].split('-'))>1:
             rdf = self.analyze_multiword_object(rdf)
 
@@ -722,7 +715,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
 
-        print('final ', rdf, len(rdf), utterance_info)
+        rdf = self.get_types(rdf)
 
         self._rdf = rdf
 
