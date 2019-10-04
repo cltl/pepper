@@ -83,120 +83,122 @@ def transform_capsule(capsule, empty=False, no_people=False, place=False):
     return utt
 
 
-# Create brain connection
-brain = LongTermMemory(clear_all=True)
+if __name__ == "__main__":
 
-conlficts = brain.get_all_conflicts()
+    # Create brain connection
+    brain = LongTermMemory(clear_all=True)
 
-capsule_knows = {  # dimitris knows piek
-    "subject": {
-        "label": "karla",
-        "type": "person"
-    },
-    "predicate": {
-        "type": "live-in"
-    },
-    "object": {
-        "label": "paris",
-        "type": "location"
-    },
-    "author": "tom",
-    "turn": 1,
-    "position": "0-25",
-    "date": date(2019, 1, 24)
-}
+    conlficts = brain.get_all_conflicts()
 
-capsule_is_from = {  # bram is from mongolia
-    "subject": {
-        "label": "bram",
-        "type": "person"
-    },
-    "predicate": {
-        "type": "be-from"
-    },
-    "object": {
-        "label": "netherlands",
-        "type": "location"
-    },
-    "author": "bram",
-    "chat": 1,
-    "turn": 1,
-    "position": "0-25",
-    "date": date(2018, 3, 19)
-}
+    capsule_knows = {  # dimitris knows piek
+        "subject": {
+            "label": "karla",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "live-in"
+        },
+        "object": {
+            "label": "paris",
+            "type": "location"
+        },
+        "author": "tom",
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2019, 1, 24)
+    }
 
-capsule_is_from_2 = {  # bram is from mongolia
-    "subject": {
-        "label": "bram",
-        "type": "person"
-    },
-    "predicate": {
-        "type": "be-from"
-    },
-    "object": {
-        "label": "mongolia",
-        "type": "location"
-    },
-    "author": "lenka",
-    "chat": 1,
-    "turn": 1,
-    "position": "0-25",
-    "date": date(2018, 3, 25)
-}
+    capsule_is_from = {  # bram is from mongolia
+        "subject": {
+            "label": "bram",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "be-from"
+        },
+        "object": {
+            "label": "netherlands",
+            "type": "location"
+        },
+        "author": "bram",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 19)
+    }
 
-capsule_is_from_3 = {  # bram is from mongolia
-    "subject": {
-        "label": "piek",
-        "type": "person"
-    },
-    "predicate": {
-        "type": "be-from"
-    },
-    "object": {
-        "label": "netherlands",
-        "type": "location"
-    },
-    "author": "bram",
-    "chat": 1,
-    "turn": 1,
-    "position": "0-25",
-    "date": date(2018, 3, 18)
-}
+    capsule_is_from_2 = {  # bram is from mongolia
+        "subject": {
+            "label": "bram",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "be-from"
+        },
+        "object": {
+            "label": "mongolia",
+            "type": "location"
+        },
+        "author": "lenka",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 25)
+    }
 
-capsule_likes = {  # human likes pizza
-    u'predicate': {u'type': u'like'},
-    u'chat': 490254330820530247757705225416035124L,
-    u'author': u'Human',
-    u'object': {u'type': u'', u'id': u'', u'label': u'pizza'},
-    u'turn': 6,
-    u'utterance_type': 'STATEMENT',
-    u'date': date(2019, 3, 29), u'position': u'',
-    u'response': {u'role': u'', u'format': u''},
-    u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
+    capsule_is_from_3 = {  # bram is from mongolia
+        "subject": {
+            "label": "piek",
+            "type": "person"
+        },
+        "predicate": {
+            "type": "be-from"
+        },
+        "object": {
+            "label": "netherlands",
+            "type": "location"
+        },
+        "author": "bram",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 18)
+    }
 
-capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows]
-bl = [True, False]
+    capsule_likes = {  # human likes pizza
+        u'predicate': {u'type': u'like'},
+        u'chat': 490254330820530247757705225416035124L,
+        u'author': u'Human',
+        u'object': {u'type': u'', u'id': u'', u'label': u'pizza'},
+        u'turn': 6,
+        u'utterance_type': 'STATEMENT',
+        u'date': date(2019, 3, 29), u'position': u'',
+        u'response': {u'role': u'', u'format': u''},
+        u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
 
-for capsule in capsules:
-    say = ''
-    em = choice(bl)
-    np = choice(bl)
-    p = choice(bl)
-    capsule = transform_capsule(capsule, empty=em, no_people=np, place=p)
-    x = brain.update(capsule, reason_types=True)
+    capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows]
+    bl = [True, False]
 
-    if capsule.context.location.label == capsule.context.location.UNKNOWN:
-        y = brain.reason_location(capsule.context)
-        if y is None:
-            z = choice(places)
-            brain.set_location_label(z)
-            capsule.context.location._label = z
-            say += 'Having a talk at what I will call %s' % capsule.context.location.label
+    for capsule in capsules:
+        say = ''
+        em = choice(bl)
+        np = choice(bl)
+        p = choice(bl)
+        capsule = transform_capsule(capsule, empty=em, no_people=np, place=p)
+        x = brain.update(capsule, reason_types=True)
+
+        if capsule.context.location.label == capsule.context.location.UNKNOWN:
+            y = brain.reason_location(capsule.context)
+            if y is None:
+                z = choice(places)
+                brain.set_location_label(z)
+                capsule.context.location._label = z
+                say += 'Having a talk at what I will call %s' % capsule.context.location.label
+            else:
+                brain.set_location_label(y)
+                capsule.context.location._label = y
+                say += 'Having a talk at what I figure out is %s' % capsule.context.location.label
+
         else:
-            brain.set_location_label(y)
-            capsule.context.location._label = y
-            say += 'Having a talk at what I figure out is %s' % capsule.context.location.label
-
-    else:
-        say += 'Having a talk at %s' % capsule.context.location.label
-    print(say)
+            say += 'Having a talk at %s' % capsule.context.location.label
+        print(say)

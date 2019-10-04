@@ -1,7 +1,7 @@
 from pepper.brain.utils.helper_functions import hash_claim_id, read_query, casefold_text, \
     confidence_to_certainty_value, polarity_to_polarity_value, sentiment_to_sentiment_value, get_object_id
 from pepper.brain.utils.location_reasoner import LocationReasoner
-from pepper.brain.utils.though_generator import ThoughtGenerator
+from pepper.brain.utils.thought_generator import ThoughtGenerator
 from pepper.brain.utils.type_reasoner import TypeReasoner
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.utils.response import Thoughts
@@ -35,6 +35,38 @@ class LongTermMemory(BasicBrain):
         self.type_reasoner = TypeReasoner()
 
     #################################### Main functions to interact with the brain ####################################
+    def get_thoughts_on_entity(self, entity_label, reason_types=False):
+        if entity_label is not None and entity_label != '':
+            # Casefold
+            entity_label = casefold_text(entity_label, format='triple')
+            entity_type = None
+
+            if reason_types:
+                # Try to figure out what this entity is
+                entity_type, _ = self.type_reasoner.reason_entity_type(entity_label, exact_only=True)
+
+            if entity_type is not None:
+                entity = self._rdf_builder.fill_entity(entity_label, entity_type, 'LW')
+            else:
+                entity = self._rdf_builder.fill_entity_from_label(entity_label, 'N2MU')
+
+            triple = self._rdf_builder.fill_triple_from_label('leolani', 'see', entity_label)
+
+            # Check how many items of the same type as subject and object we have
+            entity_novelty = self.thought_generator.fill_entity_novelty(entity.id, entity.id)
+
+            # Check for gaps, in case we want to be proactive
+            entity_gaps = self.thought_generator.get_entity_gaps(entity)
+
+            # Create JSON output
+            thoughts = Thoughts([], entity_novelty, [], [], entity_gaps, entity_gaps, [], None)
+            output = {'response': 200, 'entity': entity, 'thoughts': thoughts}
+
+        else:
+            # Create JSON output
+            output = {'response': None, 'entity': None, 'thoughts': None}
+
+        return output
 
     def update(self, utterance, reason_types=False):
         # type (Utterance) -> Thoughts
@@ -77,8 +109,8 @@ class LongTermMemory(BasicBrain):
             statement_novelty = self.thought_generator.get_statement_novelty(instance.id)
 
             # Check how many items of the same type as subject and object we have
-            entity_novelty = self.thought_generator._fill_entity_novelty_(utterance.triple.subject.id,
-                                                                          utterance.triple.object.id)
+            entity_novelty = self.thought_generator.fill_entity_novelty(utterance.triple.subject.id,
+                                                                        utterance.triple.object.id)
 
             # Find any overlaps
             overlaps = self.thought_generator.get_overlaps(utterance)

@@ -36,7 +36,7 @@ class TypeReasoner(BasicBrain):
         """
 
         # Clean label
-        articles = ['a-']
+        articles = ['a-', 'this-', 'the-']
         for a in articles:
             if item.startswith(a):
                 item = item.replace(a, '')

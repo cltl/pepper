@@ -1,32 +1,35 @@
 from pepper.brain.long_term_memory import LongTermMemory
 from pepper.brain.utils.base_cases import statements
 
-from pepper.brain.utils.helper_functions import phrase_update, phrase_cardinality_conflicts, phrase_negation_conflicts, \
-    phrase_statement_novelty, phrase_type_novelty, phrase_subject_gaps, phrase_object_gaps, phrase_overlaps, phrase_trust
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts, _phrase_cardinality_conflicts, \
+    _phrase_negation_conflicts, _phrase_statement_novelty, _phrase_type_novelty, _phrase_subject_gaps, \
+    _phrase_object_gaps, _phrase_overlaps, phrase_trust
 
+from test.brain.sandbox import transform_capsule
 
-# Create brain connection
-brain = LongTermMemory()
+from random import choice
 
-for elem in statements:
-    x = brain.update(elem)
+if __name__ == "__main__":
 
-    print(elem['subject']['label'], elem['predicate']['type'], elem['object']['label'])
-    print('\tcardinality conflicts: '+phrase_cardinality_conflicts(x['cardinality_conflicts'], elem))
-    print('\tnegation conflicts: '+phrase_negation_conflicts(x['negation_conflicts'], elem))
-    print('\tstatement novelty: '+phrase_statement_novelty(x['statement_novelty']))
-    print('\ttype novelty: '+phrase_type_novelty(x['entity_novelty'], elem))
-    print('\tsubject gaps: '+phrase_subject_gaps(x['subject_gaps'], elem))
-    print('\tobject gaps: '+phrase_object_gaps(x['object_gaps'], elem))
-    print('\toverlaps: '+phrase_overlaps(x['overlaps'], elem))
-    print('\ttrust: '+phrase_trust(x['trust']))
+    # Create brain connection
+    brain = LongTermMemory()
+    bl = [True, False]
 
-    print('\t\t\tFINAL SAY: '+phrase_update(x, proactive=True, persist=True))
+    for elem in statements:
+        em = choice(bl)
+        np = choice(bl)
+        p = choice(bl)
+        capsule = transform_capsule(elem, empty=em, no_people=np, place=p)
+        x = brain.update(capsule)
 
+        print(elem['subject']['label'], elem['predicate']['type'], elem['object']['label'])
+        print('\tcardinality conflicts: ' + _phrase_cardinality_conflicts(x['cardinality_conflicts'], elem))
+        print('\tnegation conflicts: ' + _phrase_negation_conflicts(x['negation_conflicts'], elem))
+        print('\tstatement novelty: ' + _phrase_statement_novelty(x['statement_novelty']))
+        print('\ttype novelty: ' + _phrase_type_novelty(x['entity_novelty'], elem))
+        print('\tsubject gaps: ' + _phrase_subject_gaps(x['subject_gaps'], elem))
+        print('\tobject gaps: ' + _phrase_object_gaps(x['object_gaps'], elem))
+        print('\toverlaps: ' + _phrase_overlaps(x['overlaps'], elem))
+        print('\ttrust: ' + phrase_trust(x['trust']))
 
-
-
-
-
-
-
+        print('\t\t\tFINAL SAY: ' + phrase_thoughts(x, proactive=True, persist=True))

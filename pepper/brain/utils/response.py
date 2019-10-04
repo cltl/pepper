@@ -333,18 +333,18 @@ class Triple(object):
         return iter([('subject', self.subject), ('predicate', self.predicate), ('object', self.object)])
 
     def __repr__(self):
-        return '{} ({})'.format(hash_claim_id([self.subject_name
-                                               if self.subject_name is not None
-                                                  and self.subject_name not in ['', Literal('')] else '?',
-                                               self.predicate_name
-                                               if self.predicate_name is not None
-                                                  and self.predicate_name not in ['', Literal('')] else '?',
-                                               self.object_name
-                                               if self.object_name is not None
-                                                  and self.object_name not in ['', Literal('')] else '?']),
-                                hash_claim_id([self.subject_types if self.subject_types is not None else '?',
-                                               'predicate',
-                                               self.object_types if self.object_types is not None else '?']))
+        return '{} [{}])'.format(hash_claim_id([self.subject_name
+                                                if self.subject_name is not None
+                                                   and self.subject_name not in ['', Literal('')] else '?',
+                                                self.predicate_name
+                                                if self.predicate_name is not None
+                                                   and self.predicate_name not in ['', Literal('')] else '?',
+                                                self.object_name
+                                                if self.object_name is not None
+                                                   and self.object_name not in ['', Literal('')] else '?']),
+                                 hash_claim_id([self.subject_types if self.subject_types is not None else '?',
+                                                '->',
+                                                self.object_types if self.object_types is not None else '?']))
 
 
 class Perspective(object):
@@ -508,19 +508,19 @@ class CardinalityConflict(object):
 
 
 class NegationConflict(object):
-    def __init__(self, provenance, predicate):
-        # type: (Provenance, Predicate) -> NegationConflict
+    def __init__(self, provenance, polarity_value):
+        # type: (Provenance, polarity_value) -> NegationConflict
         """
         Construct CardinalityConflict Object
         Parameters
         ----------
         provenance: Provenance
             Information about who said the conflicting information and when
-        predicate: Predicate
-            Information about what the conflicting information is about
+        polarity_value: str
+            Information about polarity of the statement
         """
         self._provenance = provenance
-        self._predicate = predicate
+        self._polarity_value = polarity_value
 
     @property
     def provenance(self):
@@ -528,9 +528,9 @@ class NegationConflict(object):
         return self._provenance
 
     @property
-    def predicate(self):
-        # type: () -> Predicate
-        return self._predicate
+    def polarity_value(self):
+        # type: () -> str
+        return self._polarity_value
 
     @property
     def author(self):
@@ -541,11 +541,6 @@ class NegationConflict(object):
     def date(self):
         # type: () -> date
         return self._provenance.date
-
-    @property
-    def predicate_name(self):
-        # type: () -> str
-        return self._predicate.label
 
     def casefold(self, format='triple'):
         # type (str) -> ()
@@ -560,10 +555,10 @@ class NegationConflict(object):
 
         """
         self._provenance.casefold(format)
-        self._predicate.casefold(format)
+        self._polarity_value.casefold(format)
 
     def __repr__(self):
-        return '{} about {}'.format(self._provenance.__repr__(), self.predicate_name)
+        return '{} about {}'.format(self._provenance.__repr__(), self.polarity_value)
 
 
 # TODO revise overlap with provenance

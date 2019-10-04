@@ -1,4 +1,5 @@
 from pepper.brain.utils.response import Predicate, Entity, Triple, Provenance
+from pepper import logger
 
 from rdflib import Dataset, Namespace, OWL
 from rdflib import URIRef, Literal
@@ -16,6 +17,9 @@ class RdfBuilder(object):
         self.ontology_paths = {}
         self.namespaces = {}
         self.dataset = Dataset()
+
+        self._log = logger.getChild(self.__class__.__name__)
+        self._log.debug("Booted")
 
         self._define_namespaces()
         self._bind_namespaces()
@@ -124,6 +128,10 @@ class RdfBuilder(object):
                 fixed_types.append(el.split('.')[-1])
             else:
                 fixed_types.append(el)
+
+        # Hand fixed mappings
+        if 'artifact' in fixed_types:
+            fixed_types.append('object')
 
         return fixed_types
 

@@ -8,9 +8,9 @@
 @prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix grasp: <http://groundedannotationframework.org/grasp#> .
-@base <http://cltl.nl/leolani/integration/> .
+@base <http://cltl.nl/leolani/n2mu/> .
 
-<http://cltl.nl/leolani/integration/> rdf:type owl:Ontology .
+<http://cltl.nl/leolani/n2mu/> rdf:type owl:Ontology .
 
 #################################################################
 #    Annotation properties
@@ -510,11 +510,6 @@ n2mu:weight rdf:type owl:DatatypeProperty ;
 eps:Context rdf:type owl:Class .
 
 
-###  http://cltl.nl/leolani/integration/chair
-:chair rdf:type owl:Class ;
-       rdfs:subClassOf n2mu:object .
-
-
 ###  http://cltl.nl/leolani/n2mu/agent
 n2mu:agent rdf:type owl:Class ;
            owl:equivalentClass <http://xmlns.com/foaf/0.1/Agent> .
@@ -533,6 +528,11 @@ n2mu:band rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/n2mu/book
 n2mu:book rdf:type owl:Class ;
           rdfs:subClassOf n2mu:interest-occurrence .
+
+
+###  http://cltl.nl/leolani/n2mu/chair
+n2mu:chair rdf:type owl:Class ;
+           rdfs:subClassOf n2mu:object .
 
 
 ###  http://cltl.nl/leolani/n2mu/city

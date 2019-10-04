@@ -42,7 +42,7 @@ class ThoughtGenerator(BasicBrain):
 
         return StatementNovelty(processed_provenance)
 
-    def _fill_entity_novelty_(self, subject_url, object_url):
+    def fill_entity_novelty(self, subject_url, object_url):
         """
         Structure entity novelty to signal if these entities have been heard before
         Parameters
@@ -56,8 +56,8 @@ class ThoughtGenerator(BasicBrain):
         -------
             Entity object containing boolean values signaling if they are new
         """
-        subject_novelty = self.check_instance_novelty(subject_url)
-        object_novelty = self.check_instance_novelty(object_url)
+        subject_novelty = self._check_instance_novelty_(subject_url)
+        object_novelty = self._check_instance_novelty_(object_url)
 
         return EntityNovelty(subject_novelty, object_novelty)
 
@@ -84,7 +84,7 @@ class ThoughtGenerator(BasicBrain):
 
         return response
 
-    def check_instance_novelty(self, instance_url):
+    def _check_instance_novelty_(self, instance_url):
         """
         Query if an instance (entity) has been heard about before
         Parameters
@@ -251,9 +251,9 @@ class ThoughtGenerator(BasicBrain):
         preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
         processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
                                                                  preprocessed_date)
-        processed_predicate = self._rdf_builder.fill_predicate(raw_conflict['pred']['value'].split('/')[-1])
+        processed_polarity = self._rdf_builder.label_from_uri(raw_conflict['val']['value'], 'GRASP')
 
-        return NegationConflict(processed_provenance, processed_predicate)
+        return NegationConflict(processed_provenance, processed_polarity)
 
     def get_all_conflicts(self):
         """
@@ -323,14 +323,9 @@ class ThoughtGenerator(BasicBrain):
         conflicts: List[NegationConflict]
             List of Conflicts containing the predicate which creates the conflict, and their provenance
         """
-        # Case fold
-        predicate = utterance.triple.predicate_name[:-4] if utterance.triple.predicate_name.endswith('-not') \
-            else utterance.triple.predicate_name
-
-        # TODO revise according to new representation
-        query = read_query('thoughts/negation_conflicts') % (
-            utterance.triple.subject_name, utterance.triple.object_name,
-            predicate, predicate)
+        query = read_query('thoughts/negation_conflicts') % (utterance.triple.predicate_name,
+                                                             utterance.triple.subject_name,
+                                                             utterance.triple.object_name)
 
         response = self._submit_query(query)
         if response[0] != {}:
