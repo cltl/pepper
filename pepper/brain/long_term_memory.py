@@ -34,6 +34,9 @@ class LongTermMemory(BasicBrain):
         self.location_reasoner = LocationReasoner()
         self.type_reasoner = TypeReasoner()
 
+        self.set_location_label = self.location_reasoner.set_location_label
+        self.reason_location = self.location_reasoner.reason_location
+
     #################################### Main functions to interact with the brain ####################################
     def get_thoughts_on_entity(self, entity_label, reason_types=False):
         if entity_label is not None and entity_label != '':

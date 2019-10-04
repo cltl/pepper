@@ -5,7 +5,7 @@ from pepper.language.generation.thoughts_phrasing import phrase_thoughts, _phras
     _phrase_negation_conflicts, _phrase_statement_novelty, _phrase_type_novelty, _phrase_subject_gaps, \
     _phrase_object_gaps, _phrase_overlaps, phrase_trust
 
-from test.brain.sandbox import transform_capsule
+from test.brain.utils import transform_capsule, bl
 
 from random import choice
 
@@ -13,7 +13,6 @@ if __name__ == "__main__":
 
     # Create brain connection
     brain = LongTermMemory()
-    bl = [True, False]
 
     for elem in statements:
         em = choice(bl)
