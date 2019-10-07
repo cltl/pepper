@@ -35,9 +35,9 @@ class ContextComponent(AbstractComponent):
     PERSON_DIFF_ENTER = 1.5
     PERSON_DIFF_EXIT = 1.1
 
-    # TODO: Should this be a pepper.config variable?
+    # TODO: Should this be a pepper.config variable? YES!
     # Number of seconds of inactivity before conversation times out
-    CONVERSATION_TIMEOUT = 15
+    CONVERSATION_TIMEOUT = 30
 
     def __init__(self, backend):
         # type: (AbstractBackend) -> None
