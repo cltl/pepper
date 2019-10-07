@@ -31,7 +31,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
     def __init__(self, language):
         # type: (str) -> None
         AbstractTextToSpeech.__init__(self, language)
-        GoogleTranslator.__init__(self, config.INTERNAL_LANGUAGE, language)
+        GoogleTranslator.__init__(self, config.INTERNAL_LANGUAGE[:2], language[:2])
 
         if not os.path.exists(self.TMP):
             os.makedirs(self.TMP)
