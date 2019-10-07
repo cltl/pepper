@@ -425,10 +425,27 @@ class StreamedGoogleASR(BaseGoogleASR):
 
 
 class SynchronousGoogleASR(BaseGoogleASR):
+    """
+    Synchronous Google Automatic Speech Recognition (ASR)
+
+    Recognises Speech 'live' as it is spoken. Should be faster than Synchronous ASR
+
+    Parameters
+    ----------
+    language: str
+        Language Code <LC> & Region Code <RC> -> "LC-RC"
+    sample_rate: int
+        Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)
+    hints: Tuple[str]
+        Words or Phrases that ASR should be extra sensitive to
+    """
+
     def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
+        # type: (str, int, Iterable[str]) -> None
         super(SynchronousGoogleASR, self).__init__(language, sample_rate, hints)
 
     def transcribe(self, audio):
+        # type: (np.ndarray) -> List[UtteranceHypothesis]
         """
         Transcribe Speech in Audio
 
@@ -448,4 +465,15 @@ class SynchronousGoogleASR(BaseGoogleASR):
 
     @staticmethod
     def _request(audio):
+        """
+        Wrap Audio in RecognitionAudio
+
+        Parameters
+        ----------
+        audio: np.ndarray
+
+        Returns
+        -------
+        request: speech.types.RecognitionAudio
+        """
         return speech.types.RecognitionAudio(content=audio.tobytes())

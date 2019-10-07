@@ -166,7 +166,7 @@
 <span class="c1"># &lt;&lt;&lt; Application Configuration Settings &gt;&gt;&gt;</span>
 
 <span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
-<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
+<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span>
 
 <span class="c1"># Name of Robot</span>
 <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;Leolani&quot;</span>
@@ -271,8 +271,6 @@
 
 <span class="c1"># NAOqi Robot URL</span>
 <span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span><span class="p">,</span> <span class="mi">9559</span>  <span class="c1"># Default</span>
-<span class="c1"># NAOQI_IP, NAOQI_PORT = &quot;10.10.60.150&quot;, 9559  # Future Lab</span>
-<span class="c1"># NAOQI_IP, NAOQI_PORT = &quot;192.168.137.172&quot;, 9559  # Local?</span>
 <span class="n">NAOQI_URL</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span><span class="p">)</span>
 
 
@@ -295,15 +293,15 @@
 
 <span class="c1"># Camera resolution (in pixels) and frame rate (Hz)</span>
 <span class="c1"># NOTE: Both resolution and frame rate impact system performance...</span>
-<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span>
+<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQVGA</span>
 <span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">3</span>
 
 <span class="c1"># NAOqi Text to Speech Speed</span>
-<span class="n">NAOQI_SPEECH_SPEED</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">NAOQI_SPEECH_SPEED</span> <span class="o">=</span> <span class="mi">90</span>
 
 <span class="c1"># NAOqi Specific Overrides</span>
 <span class="n">NAOQI_USE_SYSTEM_CAMERA</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">NAOqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
 
