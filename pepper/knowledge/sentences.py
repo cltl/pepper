@@ -130,7 +130,7 @@ DIFFERENT_FACE = [
 ]
 
 THINKING = [
-    "...Hmmm...",
+    "...Hm...",
     "...Well...",
     "...Right...",
     "...Okay...",
