@@ -21,7 +21,6 @@ class ThoughtGenerator(BasicBrain):
         """
 
         super(ThoughtGenerator, self).__init__(address, clear_all, quiet=True)
-        self._rdf_builder = RdfBuilder()
 
     ########## novelty ##########
     def _fill_statement_novelty_(self, raw_conflict):
