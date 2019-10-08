@@ -11,7 +11,8 @@ from typing import Optional, Union, Tuple, Callable
 class BrexitResponder(Responder):
 
     BREXIT_ELOQUENCE = [
-        "Brexit is indeed a complex topic."
+        "Brexit is indeed a complex topic.",
+        "We will have to see how Brexit turns out",
     ]
 
     @property
