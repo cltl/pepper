@@ -9,7 +9,7 @@ import re
 class NAOqiTablet(AbstractTablet):
     """Access Robot Tablet to show URLs"""
 
-    IMAGE_FORMATS = re.compile("\.(jpeg|jpg|png|gif|bmp)")
+    IMAGE_FORMATS = re.compile("\.(jpeg|jpg|png|gif|bmp|svg)")
 
     def __init__(self, session):
         # type: (qi.Session) -> None
