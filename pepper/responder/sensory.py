@@ -208,7 +208,7 @@ class LocationResponder(Responder):
             for cue in self.SET_LOCATION_CUE:
                 if utterance.transcript.lower().startswith(cue):
                     location = utterance.transcript.lower().replace(cue, "").strip().title()
-                    utterance.context.location.set_label(location)
+                    utterance.context.location.label = location
                     app.brain.set_location_label(location)
                     return 1, lambda: app.say("Aha, so {}".format(self._location_to_text(utterance.context.location)))
 

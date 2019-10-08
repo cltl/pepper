@@ -7,8 +7,11 @@ import re
 import reverse_geocoder
 from random import getrandbits
 
+from typing import Optional, Tuple
+
 
 class Location(object):
+    """Location on Earth"""
 
     UNKNOWN = "Unknown"
 
@@ -24,26 +27,87 @@ class Location(object):
 
     @property
     def id(self):
+        # type: () -> int
+        """
+        ID for this Location object
+
+        Returns
+        -------
+        id: int
+        """
         return self._id
 
     @property
     def country(self):
+        # type: () -> str
+        """
+        Country String
+
+        Returns
+        -------
+        country: str
+        """
         return self._country
 
     @property
     def region(self):
+        # type: () -> str
+        """
+        Region String
+
+        Returns
+        -------
+        region: str
+        """
         return self._region
 
     @property
     def city(self):
+        # type: () -> str
+        """
+        City String
+
+        Returns
+        -------
+        city: str
+        """
         return self._city
 
     @property
     def label(self):
+        # type: () -> str
+        """
+        Learned Location Label
+
+        Returns
+        -------
+        label: str
+        """
         return self._label
+
+    @label.setter
+    def label(self, value):
+        # type: (str) -> None
+        """
+        Learned Location Label
+
+        Parameters
+        ----------
+        value: str
+        """
+        self._label = value
 
     @staticmethod
     def _get_lat_lon():
+        # type: () -> Optional[Tuple[float, float]]
+        """
+        Get Latitude & Longitude from GPS
+
+        Returns
+        -------
+        latlon: Optional[Tuple[float, float]]
+            GPS Latitude & Longitude
+        """
         try:
             if platform.system() == "Darwin":
                 # Use WhereAmI tool by Rob Mathers -> https://github.com/robmathers/WhereAmI
@@ -52,12 +116,9 @@ class Location(object):
                 return tuple(float(coord) for coord in re.findall(regex, subprocess.check_output(whereami))[0])
             else:
                 raise Exception()
-        except:
+        except:  # TODO: Add Support for (at least) Windows
             print("Couldn't get GPS Coordinates")
             return None
-
-    def set_label(self, label):
-        self._label = label
 
     def __repr__(self):
         return "{}({}, {}, {})".format(self.__class__.__name__, self.city, self.region, self.country)
