@@ -74,7 +74,7 @@ class BinaryQuestionIntention(AbstractIntention, ResponderApp):
     AFFIRMATION = AffirmationResponder
 
     def __init__(self, application, question, callback, responders):
-        # type: (AbstractApplication, List[str], Callable[bool], List[Responder]) -> None
+        # type: (AbstractApplication, List[str], Callable[[bool], None], List[Responder]) -> None
         super(BinaryQuestionIntention, self).__init__(application)
 
         self.question = question

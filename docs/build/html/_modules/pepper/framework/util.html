@@ -150,6 +150,7 @@
 <span></span><span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Empty</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
@@ -253,6 +254,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span> <span class="o">=</span> <span class="n">y0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x1</span> <span class="o">=</span> <span class="n">x1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y1</span> <span class="o">=</span> <span class="n">y1</span>
+
+<div class="viewcode-block" id="Bounds.from_json"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">])</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -435,6 +440,17 @@
 
 <div class="viewcode-block" id="Bounds.to_list"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.to_list">[docs]</a>    <span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Bounds.dict"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.dict">[docs]</a>    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;x0&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span>
+            <span class="s2">&quot;y0&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span>
+            <span class="s2">&quot;x1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span>
+            <span class="s2">&quot;y1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Bounds.json"><a class="viewcode-back" href="../../../pepper.framework.util.html#pepper.framework.util.Bounds.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span></div>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;Bounds[(</span><span class="si">{:3f}</span><span class="s2">, </span><span class="si">{:3f}</span><span class="s2">), (</span><span class="si">{:3f}</span><span class="s2">, </span><span class="si">{:3f}</span><span class="s2">)]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span></div>

@@ -466,7 +466,7 @@
 
 <dl class="class">
 <dt id="pepper.framework.abstract.camera.AbstractImage">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractImage</code><span class="sig-paren">(</span><em>image</em>, <em>bounds</em>, <em>depth=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractImage</code><span class="sig-paren">(</span><em>image</em>, <em>bounds</em>, <em>depth=None</em>, <em>image_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract Image Container</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -493,6 +493,8 @@
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractImage.depth" title="pepper.framework.abstract.camera.AbstractImage.depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth</span></code></a></dt>
 <dd><p class="first last">Depth Image (height, width) as Numpy Array</p>
 </dd>
+<dt><strong>hash</strong></dt>
+<dd></dd>
 <dt><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractImage.image" title="pepper.framework.abstract.camera.AbstractImage.image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image</span></code></a></dt>
 <dd><p class="first last">RGB Image (height, width, 3) as Numpy Array</p>
 </dd>
@@ -522,6 +524,17 @@
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractImage.get_image" title="pepper.framework.abstract.camera.AbstractImage.get_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_image</span></code></a>(bounds)</td>
 <td>Get pixels from Image at Bounds in Image Space</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>to_file</strong></td>
+<td>&#160;</td>
 </tr>
 </tbody>
 </table>
@@ -668,6 +681,11 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pepper.framework.abstract.camera.AbstractImage.hash">
+<code class="descname">hash</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pepper.framework.abstract.camera.AbstractImage.image">
 <code class="descname">image</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.image" title="Permalink to this definition">¶</a></dt>
 <dd><p>RGB Image (height, width, 3) as Numpy Array</p>
@@ -703,6 +721,11 @@
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.abstract.camera.AbstractImage.to_file">
+<code class="descname">to_file</code><span class="sig-paren">(</span><em>root</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage.to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.to_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
