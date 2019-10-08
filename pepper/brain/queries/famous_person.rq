@@ -34,7 +34,7 @@ WHERE
         # Filters
      	FILTER (lang(?propLabel) = 'en' ) .
         FILTER  isliteral(?object) .
-        VALUES ?property { wd:P569 wd:P570 wd:P2048 wd:P2031}
+        VALUES ?property { wd:P569 wd:P570 wd:P2048 wd:P2031 wd:P571}
         # Bind missing variables
         BIND(?object AS ?objectLabel) .
         BIND("literal" AS ?objectTypeLabel) .
