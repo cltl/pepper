@@ -39,6 +39,7 @@ INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of Engli
 
 # Show Subtitles on Pepper's Tablet!
 SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
+SUBTITLES_TIMEOUT = 15
 SUBTITLES = True
 
 
