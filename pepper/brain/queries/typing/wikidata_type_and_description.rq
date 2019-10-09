@@ -6,4 +6,5 @@ WHERE {
   OPTIONAL {?itemtype rdfs:label ?itemtypeLabel . }
   FILTER(LANG(?itemtypeLabel) in ("en")) .
   OPTIONAL {?item schema:description ?itemDescription.}
+  FILTER(LANG(?itemDescription) in ("en")) .
 } limit 1

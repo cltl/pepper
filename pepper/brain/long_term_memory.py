@@ -390,7 +390,7 @@ class LongTermMemory(BasicBrain):
 
         return claim
 
-    def _create_claim_graph(self, subject, predicate, object, claim_type):
+    def _create_claim_graph(self, subject, predicate, object, claim_type=UtteranceType.STATEMENT):
         # Statement
         claim_label = hash_claim_id([subject.label, predicate.label, object.label])
 

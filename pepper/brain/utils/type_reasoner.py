@@ -140,7 +140,7 @@ class TypeReasoner(BasicBrain):
         url = 'https://query.wikidata.org/sparql'
 
         # Gather combinations
-        combinations = [item, item.capitalize(), item.lower(), item.title()]
+        combinations = [item.lower()]
 
         for comb in combinations:
             # Try exact matching query

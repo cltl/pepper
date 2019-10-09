@@ -294,9 +294,13 @@ class Analyzer(object):
             elif rdf[el]['type'] in [None, '']:
                 entry = lexicon_lookup(rdf[el]['text'])
                 if entry is None:
+
+                    # TODO: Remove Hardcoded Names
                     if rdf[el]['text'].lower() in ['leolani']:
                         rdf[el]['type'] = ['robot']
-                    if rdf[el]['text'].lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize() == typ:
+                    elif rdf[el]['text'].lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek']:
+                        rdf[el]['type'] = ['person']
+                    elif rdf[el]['text'].capitalize() == rdf[el]['text']:
                         rdf[el]['type'] = ['person']
                 elif 'proximity' in entry:
                     rdf[el]['type'] = ['deictic']

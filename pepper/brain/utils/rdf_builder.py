@@ -1,3 +1,4 @@
+from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.utils.response import Predicate, Entity, Triple, Provenance
 from pepper import logger
 
@@ -73,6 +74,15 @@ class RdfBuilder(object):
         xml = 'https://www.w3.org/TR/xmlschema-2/#'
         self.namespaces['XML'] = Namespace(xml)
 
+        wd = 'http://www.wikidata.org/entity/'
+        self.namespaces['WD'] = Namespace(wd)
+
+        wdt = 'http://www.wikidata.org/prop/direct/'
+        self.namespaces['WDT'] = Namespace(wdt)
+
+        wikibase = 'http://wikiba.se/ontology#'
+        self.namespaces['wikibase'] = Namespace(wikibase)
+
     def define_named_graphs(self):
         # Instance graph
         self.ontology_graph = self.dataset.graph(self.create_resource_uri('LW', 'Ontology'))
@@ -101,19 +111,27 @@ class RdfBuilder(object):
         """
         self.dataset.bind('n2mu', self.namespaces['N2MU'])
         self.dataset.bind('leolaniWorld', self.namespaces['LW'])
+
         self.dataset.bind('gaf', self.namespaces['GAF'])
         self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
+
         self.dataset.bind('grasp', self.namespaces['GRASP'])
         self.dataset.bind('leolaniFriends', self.namespaces['LF'])
         self.dataset.bind('leolaniInputs', self.namespaces['LI'])
+
         self.dataset.bind('time', self.namespaces['TIME'])
         self.dataset.bind('eps', self.namespaces['EPS'])
         self.dataset.bind('leolaniContext', self.namespaces['LC'])
+
         self.dataset.bind('skos', self.namespaces['SKOS'])
         self.dataset.bind('prov', self.namespaces['PROV'])
         self.dataset.bind('sem', self.namespaces['SEM'])
         self.dataset.bind('xml', self.namespaces['XML'])
         self.dataset.bind('owl', OWL)
+
+        self.dataset.bind('wd', self.namespaces['WD'])
+        self.dataset.bind('wdt', self.namespaces['WDT'])
+        self.dataset.bind('wikibase', self.namespaces['wikibase'])
 
     ########## basic constructors ##########
     def _fix_nlp_types(self, types):
@@ -154,7 +172,7 @@ class RdfBuilder(object):
         if namespace in self.namespaces.keys():
             uri = URIRef(to_iri(self.namespaces[namespace] + resource_name))
         else:
-            uri = URIRef(to_iri('{}:{}'.format(namespace,resource_name)))
+            uri = URIRef(to_iri('{}:{}'.format(namespace, resource_name)))
 
         return uri
 
@@ -175,7 +193,7 @@ class RdfBuilder(object):
 
         return Literal(value, datatype=datatype) if datatype is not None else Literal(value)
 
-    def fill_entity(self, label, types, namespace='LW'):
+    def fill_entity(self, label, types, namespace='LW', uri=None):
         """
         Create an RDF entity given its label, types and its namespace
         Parameters
@@ -184,6 +202,8 @@ class RdfBuilder(object):
             Label of entity
         types: List[str]
             List of types for this entity
+        uri: str
+            URI of the entity, is available (i.e. when extracting concepts from wikidata)
         namespace: str
             Namespace where entity belongs to
 
@@ -195,17 +215,19 @@ class RdfBuilder(object):
             self._log.warning('Unknown type: {}'.format(label))
             return self.fill_entity_from_label(label, namespace)
         else:
-            entity_id = self.create_resource_uri(namespace, label)
+            entity_id = self.create_resource_uri(namespace, label) if not uri else URIRef(to_iri(uri))
             fixed_types = self._fix_nlp_types(types)
             return Entity(entity_id, Literal(label), fixed_types)
 
-    def fill_predicate(self, label, namespace='N2MU'):
+    def fill_predicate(self, label, namespace='N2MU', uri=None):
         """
         Create an RDF predicate given its label and its namespace
         Parameters
         ----------
         label: str
             Label of predicate
+        uri: str
+            URI of the predicate, is available (i.e. when extracting concepts from wikidata)
         namespace:
             Namespace where predicate belongs to
 
@@ -213,17 +235,19 @@ class RdfBuilder(object):
         -------
             Predicate object with given label
         """
-        predicate_id = self.create_resource_uri(namespace, label)
+        predicate_id = self.create_resource_uri(namespace, label) if not uri else URIRef(to_iri(uri))
 
         return Predicate(predicate_id, Literal(label))
 
-    def fill_entity_from_label(self, label, namespace='LW'):
+    def fill_entity_from_label(self, label, namespace='LW', uri=None):
         """
         Create an RDF entity given its label and its namespace
         Parameters
         ----------
         label: str
             Label of entity
+        uri: str
+            URI of the entity, is available (i.e. when extracting concepts from wikidata)
         namespace: str
             Namespace where entity belongs to
 
@@ -231,7 +255,7 @@ class RdfBuilder(object):
         -------
             Entity object with given label and no type information
         """
-        entity_id = self.create_resource_uri(namespace, label)
+        entity_id = self.create_resource_uri(namespace, label) if not uri else URIRef(to_iri(uri))
 
         return Entity(entity_id, Literal(label), [''])
 
@@ -323,8 +347,12 @@ class RdfBuilder(object):
         for type_uri in split_types:
             if '#' in type_uri:
                 [prefix, bare_type] = type_uri.split('#', 1)
-            else:
+            elif '/' in type_uri:
                 [prefix, bare_type] = type_uri.rsplit('/', 1)
+            else:
+                bare_type = type_uri
+
+            bare_type = casefold_text(bare_type, format='triple')
             clean_types.append(bare_type)
 
         return clean_types

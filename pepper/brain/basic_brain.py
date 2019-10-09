@@ -27,6 +27,7 @@ class BasicBrain(object):
             IP address and port of the Triple store
         """
         self._connection = StoreConnector(address, format='trig')
+        self._rdf_builder = RdfBuilder()
 
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
@@ -223,8 +224,6 @@ class BasicBrain(object):
         _ = self._connection.query(query, post=True)
 
     def clean_local_memory(self):
-        self._rdf_builder = RdfBuilder()
-
         self.namespaces = self._rdf_builder.namespaces
         self.dataset = self._rdf_builder.dataset
         self.instance_graph = self._rdf_builder.instance_graph
