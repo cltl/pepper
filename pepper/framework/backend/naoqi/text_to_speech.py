@@ -50,6 +50,7 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
         text = text.replace('...', r'\\pau=1000\\')
 
         if SUBTITLES:
+            if self._tablet_timer: self._tablet_timer.cancel()
             url = SUBTITLES_URL.format(urllib.quote(self._make_ascii(re.sub(r'\\\\\S+\\\\', "", text))))
             self._tablet_service.showWebview(url)
 
@@ -59,7 +60,6 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
             self._service.say(r"\\rspd={1}\\{0}".format(text, NAOQI_SPEECH_SPEED))
 
         if SUBTITLES and SUBTITLES_TIMEOUT:
-            if self._tablet_timer: self._tablet_timer.cancel()
             self._tablet_timer = Timer(SUBTITLES_TIMEOUT, self._tablet_service.hide)
             self._tablet_timer.start()
 
