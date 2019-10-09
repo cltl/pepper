@@ -8,26 +8,27 @@ from socket import socket, error as socket_error
 from random import getrandbits
 import json
 
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 
 class Object(object):
+    """
+    'Object' object
+
+    Parameters
+    ----------
+    name: str
+        Name of Object
+    confidence: float
+        Object Name & Bounds Confidence
+    bounds: Bounds
+        Bounds in Image Space
+    image: AbstractImage
+        Image from which Object was Recognised
+    """
+
     def __init__(self, name, confidence, bounds, image):
-        """
-        Create Object Object
-
-        Parameters
-        ----------
-        name: str
-            Name of Object
-        confidence: float
-            Confidence of Object Name & Position
-        bounds: Bounds
-            Bounds in Image Space
-        image: AbstractImage
-            Image from which Object was Recognised
-        """
-
+        # type: (str, float, Bounds, AbstractImage) -> None
         self._id = getrandbits(128)
 
         self._name = name
@@ -46,17 +47,27 @@ class Object(object):
 
     @classmethod
     def from_json(cls, data, image):
+        # type: (Dict, AbstractImage) -> Object
         return cls(data["name"], data["confidence"], Bounds.from_json(data["bounds"]), image)
 
     @property
     def id(self):
         # type: () -> int
+        """
+        Object ID
+
+        Returns
+        -------
+        id: int
+        """
         return self._id
 
     @property
     def name(self):
         # type: () -> str
         """
+        Object Name
+
         Returns
         -------
         name: str
@@ -68,16 +79,25 @@ class Object(object):
     def confidence(self):
         # type: () -> float
         """
+        Object Confidence
+
         Returns
         -------
         confidence: float
-            Name Confidence
+            Object Name & Bounds Confidence
         """
         return self._confidence
 
     @property
     def time(self):
         # type: () -> float
+        """
+        Time of Observation
+
+        Returns
+        -------
+        time: float
+        """
         return self.image.time
 
     @property
@@ -97,12 +117,12 @@ class Object(object):
     def bounds(self):
         # type: () -> Bounds
         """
-        Object Bounds in Camera Space {phi: [0, pi], theta: [-pi, +pi]}
+        Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}
 
         Returns
         -------
         bounds: Bounds
-            Object Bounding Box in Camera Space
+            Object Bounding Box in View Space
         """
         return self._bounds
 
@@ -122,10 +142,12 @@ class Object(object):
     def direction(self):
         # type: () -> Tuple[float, float]
         """
+         Direction of Object in View Space (equivalent to self.bounds.center)
+
         Returns
         -------
         direction: float, float
-            Direction of Object in Camera Space (equivalent to self.bounds.center)
+            Direction of Object in View Space
         """
         return self._direction
 
@@ -133,6 +155,8 @@ class Object(object):
     def depth(self):
         # type: () -> float
         """
+        Distance from Camera to Object
+
         Returns
         -------
         depth: float
@@ -144,10 +168,12 @@ class Object(object):
     def position(self):
         # type: () -> Tuple[float, float, float]
         """
+        Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera
+
         Returns
         -------
         position: Tuple[float, float, float]
-            Position of Object in Cartesian Space (x,y,z), Relative to Camera
+            Position of Object in Cartesian Coordinates (x,y,z)
         """
         return self._position
 
@@ -155,15 +181,20 @@ class Object(object):
     def bounds3D(self):
         # type: () -> List[Tuple[float, float, float]]
         """
+        3D bounds (for visualisation) [x,y,z]*4
+
         Returns
         -------
-        bounds3D: List[Tuple[float, float]]
+        bounds3D: List[Tuple[float, float, float]]
             3D bounds (for visualisation) [x,y,z]*4
         """
         return self._bounds3D
 
     def distance_to(self, obj):
+        # type: (Object) -> float
         """
+        Distance from this Object to obj
+
         Parameters
         ----------
         obj: Object
@@ -179,6 +210,16 @@ class Object(object):
         )
 
     def dict(self):
+        # type: () -> Dict
+        """
+        Object to Dictionary
+
+        Returns
+        -------
+        dict: Dict
+            Dictionary representation of Object
+        """
+
         return {
             "name": self.name,
             "confidence": self.confidence,
@@ -187,14 +228,23 @@ class Object(object):
         }
 
     def json(self):
+        # type: () -> str
+        """
+        Object to JSON
+
+        Returns
+        -------
+        json: JSON representation of Object
+        """
         return json.dumps(self.dict())
 
     def _calculate_object_depth(self):
+        # type: () -> float
         """
-
-        # TODO: Improve Depth Calculation
         Calculate Distance of Object to Camera
         Take the median of all valid depth pixels...
+
+        # TODO: Improve Depth Calculation
 
         Returns
         -------
@@ -209,11 +259,28 @@ class Object(object):
             return 0.0
 
     def _calculate_bounds(self):
+        # type: () -> Bounds
+        """
+        Calculate View Space Bounds from Image Space Bounds
+
+        Returns
+        -------
+        bounds: Bounds
+            Bounds in View Space
+        """
         x0, y0 = self._image.get_direction((self._image_bounds.x0, self._image_bounds.y0))
         x1, y1 = self._image.get_direction((self._image_bounds.x1, self._image_bounds.y1))
         return Bounds(x0, y0, x1, y1)
 
     def _calculate_bounds_3D(self):
+        # type: () -> List[List[float]]
+        """
+        Calculate 3D Bounds (for visualisation)
+
+        Returns
+        -------
+        bounds_3D: List[List[float]]
+        """
         return [
             spherical2cartesian(self._bounds.x0, self._bounds.y0, self._depth),
             spherical2cartesian(self._bounds.x0, self._bounds.y1, self._depth),
