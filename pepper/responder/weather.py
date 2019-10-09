@@ -58,7 +58,7 @@ class WeatherResponder(Responder):
                 return 1, lambda: app.say("The weather in {} is {}, min temperature is {} and max temperature is {}".format(location,
                       weather['weather'][0]['description'],weather['main']['temp_max'],weather['main']['temp_min']))
 
-class WeatherMap():
+#class WeatherMap():
     #52.5630 and c with zoom lvl 7
     #key 4c7b59d98bcccad3ba39f5c73e28d009
 
