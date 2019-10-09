@@ -1,9 +1,12 @@
 from __future__ import unicode_literals
 
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
-from pepper.config import  NAOQI_SPEECH_SPEED
+from pepper.config import NAOQI_SPEECH_SPEED, SUBTITLES_URL, SUBTITLES
 
 import qi
+
+import urllib
+import re
 
 from typing import Union, Optional
 
@@ -26,6 +29,7 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
 
         # Subscribe to NAOqi Text to Speech Service
         self._service = session.service(NAOqiTextToSpeech.SERVICE)
+        self._tablet_service = session.service("ALTabletService")
 
         self._log.debug("Booted")
 
@@ -42,7 +46,15 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
 
         text = text.replace('...', r'\\pau=1000\\')
 
+        if SUBTITLES:
+            url = SUBTITLES_URL.format(
+                urllib.quote(self._make_ascii(re.sub(r'\\\\\S+\\\\', "", text))))
+            self._tablet_service.showWebview(url)
+
         if animation:
             self._service.say(r"\\rspd={2}\\^startTag({1}){0}^stopTag({1})".format(text, animation, NAOQI_SPEECH_SPEED))
         else:
             self._service.say(r"\\rspd={1}\\{0}".format(text, NAOQI_SPEECH_SPEED))
+
+    def _make_ascii(self, text):
+        return ''.join([i for i in text if ord(i) < 128])

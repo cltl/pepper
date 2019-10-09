@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
 NAME = "Leolani"
@@ -35,6 +35,11 @@ HUMAN_CROWD = "Humans"
 #   Translation can induce quite a bit of lag in the System
 APPLICATION_LANGUAGE = 'en-GB'
 INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
+
+
+# Show Subtitles on Pepper's Tablet!
+SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
+SUBTITLES = True
 
 
 # <<< Application Paths >>>
@@ -121,7 +126,9 @@ BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
-NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
+NAOQI_IP = "192.168.1.176"  # Default WiFi
+# NAOQI_IP = "192.168.1.149"  # Ethernet?
+NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
@@ -144,7 +151,7 @@ MICROPHONE_CHANNELS = 1
 
 # Camera resolution (in pixels) and frame rate (Hz)
 # NOTE: Both resolution and frame rate impact system performance...
-CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
+CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
 CAMERA_FRAME_RATE = 3
 
 # NAOqi Text to Speech Speed
@@ -152,7 +159,7 @@ NAOQI_SPEECH_SPEED = 90
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
-NAOQI_USE_SYSTEM_MICROPHONE = True
+NAOQI_USE_SYSTEM_MICROPHONE = False
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
 NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
 

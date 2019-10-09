@@ -9,12 +9,13 @@ import re
 class NAOqiTablet(AbstractTablet):
     """Access Robot Tablet to show URLs"""
 
-    IMAGE_FORMATS = re.compile("\.(jpeg|jpg|png|gif|bmp|svg)")
+    IMAGE_FORMATS = re.compile("\.(jpeg|jpg|png|gif|bmp)")
 
     def __init__(self, session):
         # type: (qi.Session) -> None
         self._session = session
         self._service = self._session.service("ALTabletService")
+        self._service.setOnTouchWebviewScaleFactor(1)
         self._log = logger.getChild(self.__class__.__name__)
 
     def show(self, url):

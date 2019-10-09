@@ -27,7 +27,7 @@ RESPONDERS = [
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
 
-                   DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
+                   # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
 
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):

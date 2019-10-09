@@ -4,8 +4,10 @@ from sys import stdout, stderr
 from pepper.framework.abstract import AbstractComponent
 from pepper.framework.util import Scheduler
 from pepper.framework.component import SpeechRecognitionComponent
+from pepper import config
 
 import threading
+import urllib
 from time import time
 
 
