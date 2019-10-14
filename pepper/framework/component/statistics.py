@@ -39,7 +39,7 @@ class StatisticsComponent(AbstractComponent):
             # Create Voice Activation Bar
             activation = int(vad.activation * 10)
             activation_print = "|" * activation + "." * (10 - activation)
-            voice_print = ("<{:10s}>" if vad._utterance else "[{:10s}]").format(activation_print)
+            voice_print = ("<{:10s}>" if vad._voice else "[{:10s}]").format(activation_print)
             empty_voice_print = "[          ]"
 
             # Get Microphone Related Information
