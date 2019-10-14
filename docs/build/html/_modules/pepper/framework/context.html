@@ -163,22 +163,24 @@
 
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">DBSCAN</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Deque</span>
-
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 
 <div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Context Object</span>
+
+<span class="sd">    Contains Awareness for People, Objects &amp; Conversations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">OBSERVATION_TIMEOUT</span> <span class="o">=</span> <span class="mi">60</span>
 
     <span class="n">_people</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Dict[str, Tuple[Face, float]]</span>
-    <span class="n">_objects</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># type: Observations</span>
+    <span class="n">_objects</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Observations</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -195,6 +197,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        id: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
     <span class="nd">@property</span>
@@ -210,17 +220,34 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chatting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True when a Chat is happening</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        chatting: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chatting</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Optional[Chat]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Current Chat, if any</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        chat: Optional[Chat]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chats</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chatting</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>     <span class="c1"># When</span>
         <span class="c1"># type: () -&gt; datetime</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Current Date &amp; Time</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        datetime: datetime</span>
@@ -232,6 +259,8 @@
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>     <span class="c1"># Where</span>
         <span class="c1"># type: () -&gt; Location</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Current Location</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        location: Location</span>
@@ -243,10 +272,12 @@
     <span class="k">def</span> <span class="nf">people</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="c1"># Who</span>
         <span class="c1"># type: () -&gt; List[Face]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        People seen within Observation Timeout</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        people: list of Face</span>
-<span class="sd">            List of People Seen within Observation Timeout</span>
+<span class="sd">            List of People seen within Observation Timeout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">person</span> <span class="k">for</span> <span class="n">person</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">Context</span><span class="o">.</span><span class="n">OBSERVATION_TIMEOUT</span><span class="p">]</span>
 
@@ -254,10 +285,12 @@
     <span class="k">def</span> <span class="nf">all_people</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; List[Face]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        People seen since beginning of Context</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        people: list of Face</span>
-<span class="sd">            List of All People Seen within Observation Timeout</span>
+<span class="sd">            List of all People seen since beginning of Context</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">person</span> <span class="k">for</span> <span class="n">person</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
 
@@ -265,10 +298,12 @@
     <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="c1"># What</span>
         <span class="c1"># type: () -&gt; List[Object]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Objects seen within Observation Timeout</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        objects: list of Object</span>
-<span class="sd">            List of Objects Seen within</span>
+<span class="sd">            List of Objects seen within Observation Timeout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="n">instances</span>
 
@@ -276,37 +311,20 @@
     <span class="k">def</span> <span class="nf">all_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; List[Object]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Objects seen since beginning of Context</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        objects: list of Object</span>
-<span class="sd">            List of All Objects Seen</span>
+<span class="sd">            List of all Objects since beginning of Context</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="n">instances</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">intention</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    <span class="c1"># Why</span>
-        <span class="c1"># type: () -&gt; Optional[AbstractIntention]</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        intention: AbstractIntention</span>
-<span class="sd">            Current Intention</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intention</span>
-
-    <span class="nd">@intention</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">intention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intention</span><span class="p">):</span>
-        <span class="c1"># type: (AbstractIntention) -&gt; None</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        intention: AbstractIntention</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_intention</span> <span class="o">=</span> <span class="n">intention</span>
 
 <div class="viewcode-block" id="Context.add_objects"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Context.add_objects">[docs]</a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
         <span class="c1"># type: (List[Object]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add Object Observations to Context</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        objects: list of Object</span>
@@ -318,6 +336,8 @@
 <div class="viewcode-block" id="Context.add_people"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Context.add_people">[docs]</a>    <span class="k">def</span> <span class="nf">add_people</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">people</span><span class="p">):</span>
         <span class="c1"># type: (Iterable[Face]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add People Observations to Context</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        people: list of Face</span>
@@ -327,19 +347,46 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_people</span><span class="p">[</span><span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">time</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Context.start_chat"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Context.start_chat">[docs]</a>    <span class="k">def</span> <span class="nf">start_chat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start Chat with Speaker</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        speaker: str</span>
+<span class="sd">            Name of Speaker</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chatting</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Chat</span><span class="p">(</span><span class="n">speaker</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Context.stop_chat"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Context.stop_chat">[docs]</a>    <span class="k">def</span> <span class="nf">stop_chat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;Stop Chat&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chatting</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 
 
 <div class="viewcode-block" id="Observations"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Observations">[docs]</a><span class="k">class</span> <span class="nc">Observations</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object Observations</span>
+
+<span class="sd">    Object to track of which objects have been seen and where. Groups Object Observations based on location,</span>
+<span class="sd">    to guess which observations are in fact of the same object. Each Object Class is handled in ObjectObservations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">instances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Object]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get individual object instances, based on observations</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        instances: List[Object]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">object_observations</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -348,6 +395,15 @@
         <span class="k">return</span> <span class="n">instances</span>
 
 <div class="viewcode-block" id="Observations.add_observations"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.Observations.add_observations">[docs]</a>    <span class="k">def</span> <span class="nf">add_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractImage, List[Object]) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add Object Observations and figure out with which Object Instance they correspond</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image: AbstractImage</span>
+<span class="sd">        objects: List[Object]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ObjectObservations</span><span class="p">()</span>
@@ -358,6 +414,9 @@
 
 
 <div class="viewcode-block" id="ObjectObservations"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.ObjectObservations">[docs]</a><span class="k">class</span> <span class="nc">ObjectObservations</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object Observations for a particular Object Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">0.2</span>
     <span class="n">MIN_SAMPLES</span> <span class="o">=</span> <span class="mi">5</span>
@@ -366,14 +425,33 @@
     <span class="n">INSTANCE_TIMEOUT</span> <span class="o">=</span> <span class="mi">120</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">instances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Object]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get individual object instances for this Object Class</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        instances: List[Object]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span>
 
 <div class="viewcode-block" id="ObjectObservations.update_view"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.ObjectObservations.update_view">[docs]</a>    <span class="k">def</span> <span class="nf">update_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractImage) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update Object Instances with Current Image</span>
+
+<span class="sd">        Remove Observations one by one, when they are not longer where expected</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image: AbstractImage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Limit observations &amp; Instances to be within INSTANCE TIMEOUT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs</span> <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">obs</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">INSTANCE_TIMEOUT</span><span class="p">]</span>
@@ -385,6 +463,7 @@
             <span class="c1"># If observation could be done with current view</span>
             <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">observation</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">center</span><span class="p">):</span>
 
+                <span class="c1"># Get Current Depth at Object Bounds to see if something might be occluding her view</span>
                 <span class="n">current_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="n">observation</span><span class="o">.</span><span class="n">image_bounds</span><span class="p">)</span>
                 <span class="n">current_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">current_depth</span><span class="p">[</span><span class="n">current_depth</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
 
@@ -407,6 +486,15 @@
                         <span class="k">break</span></div>
 
 <div class="viewcode-block" id="ObjectObservations.add_observation"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.ObjectObservations.add_observation">[docs]</a>    <span class="k">def</span> <span class="nf">add_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add Observation of object with this Object Class</span>
+
+<span class="sd">        Cluster Object Observations to figure out Object Instances</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
         <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>

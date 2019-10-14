@@ -157,26 +157,27 @@
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
 
 
 <div class="viewcode-block" id="Object"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object">[docs]</a><span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &#39;Object&#39; object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str</span>
+<span class="sd">        Name of Object</span>
+<span class="sd">    confidence: float</span>
+<span class="sd">        Object Name &amp; Bounds Confidence</span>
+<span class="sd">    bounds: Bounds</span>
+<span class="sd">        Bounds in Image Space</span>
+<span class="sd">    image: AbstractImage</span>
+<span class="sd">        Image from which Object was Recognised</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create Object Object</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        name: str</span>
-<span class="sd">            Name of Object</span>
-<span class="sd">        confidence: float</span>
-<span class="sd">            Confidence of Object Name &amp; Position</span>
-<span class="sd">        bounds: Bounds</span>
-<span class="sd">            Bounds in Image Space</span>
-<span class="sd">        image: AbstractImage</span>
-<span class="sd">            Image from which Object was Recognised</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
+        <span class="c1"># type: (str, float, Bounds, AbstractImage) -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
@@ -195,17 +196,27 @@
 
 <div class="viewcode-block" id="Object.from_json"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.from_json">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (Dict, AbstractImage) -&gt; Object</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">],</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]),</span> <span class="n">image</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; int</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object ID</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        id: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Name</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        name: str</span>
@@ -217,16 +228,25 @@
     <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Confidence</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        confidence: float</span>
-<span class="sd">            Name Confidence</span>
+<span class="sd">            Object Name &amp; Bounds Confidence</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Time of Observation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">time</span>
 
     <span class="nd">@property</span>
@@ -246,12 +266,12 @@
     <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Bounds</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Object Bounds in Camera Space {phi: [0, pi], theta: [-pi, +pi]}</span>
+<span class="sd">        Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bounds: Bounds</span>
-<span class="sd">            Object Bounding Box in Camera Space</span>
+<span class="sd">            Object Bounding Box in View Space</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span>
 
@@ -271,10 +291,12 @@
     <span class="k">def</span> <span class="nf">direction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Tuple[float, float]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Direction of Object in View Space (equivalent to self.bounds.center)</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        direction: float, float</span>
-<span class="sd">            Direction of Object in Camera Space (equivalent to self.bounds.center)</span>
+<span class="sd">            Direction of Object in View Space</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span>
 
@@ -282,6 +304,8 @@
     <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Distance from Camera to Object</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        depth: float</span>
@@ -293,10 +317,12 @@
     <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; Tuple[float, float, float]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        position: Tuple[float, float, float]</span>
-<span class="sd">            Position of Object in Cartesian Space (x,y,z), Relative to Camera</span>
+<span class="sd">            Position of Object in Cartesian Coordinates (x,y,z)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span>
 
@@ -304,15 +330,20 @@
     <span class="k">def</span> <span class="nf">bounds3D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; List[Tuple[float, float, float]]</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        3D bounds (for visualisation) [x,y,z]*4</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bounds3D: List[Tuple[float, float]]</span>
+<span class="sd">        bounds3D: List[Tuple[float, float, float]]</span>
 <span class="sd">            3D bounds (for visualisation) [x,y,z]*4</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds3D</span>
 
 <div class="viewcode-block" id="Object.distance_to"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.distance_to">[docs]</a>    <span class="k">def</span> <span class="nf">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="c1"># type: (Object) -&gt; float</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Distance from this Object to obj</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        obj: Object</span>
@@ -328,6 +359,16 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Object.dict"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.dict">[docs]</a>    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Dict</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object to Dictionary</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict: Dict</span>
+<span class="sd">            Dictionary representation of Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
@@ -336,14 +377,23 @@
         <span class="p">}</span></div>
 
 <div class="viewcode-block" id="Object.json"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object to JSON</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        json: JSON representation of Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span></div>
 
     <span class="k">def</span> <span class="nf">_calculate_object_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
         <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        # TODO: Improve Depth Calculation</span>
 <span class="sd">        Calculate Distance of Object to Camera</span>
 <span class="sd">        Take the median of all valid depth pixels...</span>
+
+<span class="sd">        # TODO: Improve Depth Calculation</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -358,11 +408,28 @@
             <span class="k">return</span> <span class="mf">0.0</span>
 
     <span class="k">def</span> <span class="nf">_calculate_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Bounds</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate View Space Bounds from Image Space Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Bounds in View Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">get_direction</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">))</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">get_direction</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_calculate_bounds_3D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[List[float]]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate 3D Bounds (for visualisation)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds_3D: List[List[float]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">),</span>
             <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">),</span>
@@ -375,17 +442,46 @@
 
 
 <div class="viewcode-block" id="ObjectDetectionClient"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.ObjectDetectionClient">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object Detection Client - Communicates with pepper_tensorflow Server</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target: ObjectDetectionTarget</span>
+<span class="sd">        Which Object Detection Server to target</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="c1"># type: (ObjectDetectionTarget) -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; ObjectDetectionTarget</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Detection Target</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        target: ObjectDetectionTarget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span>
 
 <div class="viewcode-block" id="ObjectDetectionClient.classify"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.ObjectDetectionClient.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="c1"># type: (AbstractImage) -&gt; List[Object]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Classify Objects in Image</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image: AbstractImage</span>
+<span class="sd">            Image (Containing Objects)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        objects: List[Object]</span>
+<span class="sd">            Classified Objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
             <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_address</span><span class="p">)</span>
@@ -403,11 +499,37 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_obj_from_dict</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (dict, AbstractImage) -&gt; Object</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Object from JSON</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        info: dict</span>
+<span class="sd">        image: AbstractImage</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object: Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">box</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Object</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">image</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_receive_all</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># type: (socket, int) -&gt; bytearray</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Receive Exactly n bytes</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sock: socket</span>
+<span class="sd">        n: int</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data: bytearray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">))</span>

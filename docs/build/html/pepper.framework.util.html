@@ -178,34 +178,50 @@
 <dt id="pepper.framework.util.Bounds">
 <em class="property">class </em><code class="descclassname">pepper.framework.util.</code><code class="descname">Bounds</code><span class="sig-paren">(</span><em>x0</em>, <em>y0</em>, <em>x1</em>, <em>y1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Rectangle Bounds Object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>x0: float</strong></dt>
+<dd></dd>
+<dt><strong>y0: float</strong></dt>
+<dd></dd>
+<dt><strong>x1: float</strong></dt>
+<dd></dd>
+<dt><strong>y1: float</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.area" title="pepper.framework.util.Bounds.area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Bounds Area</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.center" title="pepper.framework.util.Bounds.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Bounds Center</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.height" title="pepper.framework.util.Bounds.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Bounds Height</p>
+</dd>
+<dt><a class="reference internal" href="#pepper.framework.util.Bounds.json" title="pepper.framework.util.Bounds.json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json</span></code></a></dt>
+<dd><p class="first last">Export Bounds as JSON</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.width" title="pepper.framework.util.Bounds.width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Bounds Width</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.x0" title="pepper.framework.util.Bounds.x0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x0</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">X0</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.x1" title="pepper.framework.util.Bounds.x1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x1</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">X1</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.y0" title="pepper.framework.util.Bounds.y0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y0</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Y0</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.util.Bounds.y1" title="pepper.framework.util.Bounds.y1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y1</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Y1</p>
 </dd>
 </dl>
 </td>
@@ -220,92 +236,42 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.util.Bounds.contains" title="pepper.framework.util.Bounds.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a>(point)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+<td>Whether Point lies in Bounds</td>
 </tr>
-</tbody>
-</table>
-</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Bounds.dict" title="pepper.framework.util.Bounds.dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>()</td>
+<td>Export Bounds as Dict</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Bounds.equals" title="pepper.framework.util.Bounds.equals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equals</span></code></a>(other)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.util.Bounds.equals" title="pepper.framework.util.Bounds.equals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equals</span></code></a>(other)</td>
+<td>Whether ‘other’ bounds equals ‘this’ bounds</td>
 </tr>
-</tbody>
-</table>
-</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Bounds.from_json" title="pepper.framework.util.Bounds.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(data)</td>
+<td>Create Bounds Object from Dictionary</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.util.Bounds.intersection" title="pepper.framework.util.Bounds.intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection</span></code></a>(bounds)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Bounds Intersection with another Bounds</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Bounds.is_subset_of" title="pepper.framework.util.Bounds.is_subset_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_subset_of</span></code></a>(other)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Whether ‘other’ Bounds is subset of ‘this’ Bounds</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.util.Bounds.is_superset_of" title="pepper.framework.util.Bounds.is_superset_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_superset_of</span></code></a>(other)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Whether ‘other’ Bounds is superset of ‘this’ Bounds</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Bounds.overlap" title="pepper.framework.util.Bounds.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a>(other)</td>
-<td>Calculate Overlap Factor</td>
+<td>Bounds Overlap Ratio</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.util.Bounds.scaled" title="pepper.framework.util.Bounds.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a>(x_scale,&nbsp;y_scale)</td>
 <td>Return Scaled Bounds Object</td>
 </tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="57%" />
-<col width="43%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>dict</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>from_json</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>json</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>to_list</strong></td>
-<td>&#160;</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Bounds.to_list" title="pepper.framework.util.Bounds.to_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_list</span></code></a>()</td>
+<td>Export Bounds as List</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.area">
 <code class="descname">area</code><a class="headerlink" href="#pepper.framework.util.Bounds.area" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Bounds Area</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -322,7 +288,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.center">
 <code class="descname">center</code><a class="headerlink" href="#pepper.framework.util.Bounds.center" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Bounds Center</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -339,7 +306,8 @@
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.contains">
 <code class="descname">contains</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.contains" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Whether Point lies in Bounds</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -363,12 +331,26 @@
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.dict">
 <code class="descname">dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Export Bounds as Dict</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>dict: Dict[str, float]</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.equals">
 <code class="descname">equals</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.equals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.equals" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Whether ‘other’ bounds equals ‘this’ bounds</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -392,12 +374,33 @@
 <dl class="classmethod">
 <dt id="pepper.framework.util.Bounds.from_json">
 <em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.from_json" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create Bounds Object from Dictionary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>data: dict</strong></dt>
+<dd><p class="first last">Dictionary containing x0, y0, x1, y1 keys</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bounds: Bounds</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.height">
 <code class="descname">height</code><a class="headerlink" href="#pepper.framework.util.Bounds.height" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Bounds Height</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -414,7 +417,8 @@
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.intersection">
 <code class="descname">intersection</code><span class="sig-paren">(</span><em>bounds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.intersection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.intersection" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Bounds Intersection with another Bounds</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -437,7 +441,8 @@
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.is_subset_of">
 <code class="descname">is_subset_of</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.is_subset_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.is_subset_of" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Whether ‘other’ Bounds is subset of ‘this’ Bounds</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -461,7 +466,8 @@
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.is_superset_of">
 <code class="descname">is_superset_of</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.is_superset_of"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.is_superset_of" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Whether ‘other’ Bounds is superset of ‘this’ Bounds</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -482,15 +488,28 @@
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pepper.framework.util.Bounds.json">
-<code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.json" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">json</code><a class="headerlink" href="#pepper.framework.util.Bounds.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export Bounds as JSON</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>json: str</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.overlap">
 <code class="descname">overlap</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.overlap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate Overlap Factor</p>
+<dd><p>Bounds Overlap Ratio</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -541,12 +560,26 @@
 <dl class="method">
 <dt id="pepper.framework.util.Bounds.to_list">
 <code class="descname">to_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Bounds.to_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Bounds.to_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Export Bounds as List</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bounds: List[float]</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.width">
 <code class="descname">width</code><a class="headerlink" href="#pepper.framework.util.Bounds.width" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Bounds Width</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -563,7 +596,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.x0">
 <code class="descname">x0</code><a class="headerlink" href="#pepper.framework.util.Bounds.x0" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>X0</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -580,7 +614,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.x1">
 <code class="descname">x1</code><a class="headerlink" href="#pepper.framework.util.Bounds.x1" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>X1</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -597,7 +632,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.y0">
 <code class="descname">y0</code><a class="headerlink" href="#pepper.framework.util.Bounds.y0" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Y0</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -614,7 +650,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.util.Bounds.y1">
 <code class="descname">y1</code><a class="headerlink" href="#pepper.framework.util.Bounds.y1" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Y1</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -634,6 +671,7 @@
 <dt id="pepper.framework.util.Mailbox">
 <em class="property">class </em><code class="descclassname">pepper.framework.util.</code><code class="descname">Mailbox</code><a class="reference internal" href="_modules/pepper/framework/util.html#Mailbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Mailbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mailbox Object: Single-Item Queue with Override on ‘put’</p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -642,10 +680,10 @@
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.util.Mailbox.get" title="pepper.framework.util.Mailbox.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>([block])</td>
-<td>Get Mail from Mailbox</td>
+<td>Get latest Mail from Mailbox</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pepper.framework.util.Mailbox.put" title="pepper.framework.util.Mailbox.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a>(mail)</td>
-<td>Put new Mail in Mailbox</td>
+<td>Put new Mail in Mailbox, overriding any mail that might be there already</td>
 </tr>
 </tbody>
 </table>
@@ -657,7 +695,7 @@
 <dl class="method">
 <dt id="pepper.framework.util.Mailbox.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>block=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Mailbox.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Mailbox.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get Mail from Mailbox</p>
+<dd><p>Get latest Mail from Mailbox</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -683,7 +721,7 @@ If False: Return Empty Exception when Mailbox is Empty</p>
 <dl class="method">
 <dt id="pepper.framework.util.Mailbox.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>mail</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Mailbox.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Mailbox.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Put new Mail in Mailbox</p>
+<dd><p>Put new Mail in Mailbox, overriding any mail that might be there already</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -704,12 +742,37 @@ If False: Return Empty Exception when Mailbox is Empty</p>
 <dt id="pepper.framework.util.Scheduler">
 <em class="property">class </em><code class="descclassname">pepper.framework.util.</code><code class="descname">Scheduler</code><span class="sig-paren">(</span><em>target</em>, <em>interval=0.1</em>, <em>name=None</em>, <em>args=()</em>, <em>kwargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
-<p>Runs Task Continuously with certain interval</p>
+<p>Runs Threaded Task Continuously with certain interval</p>
+<dl class="docutils">
+<dt>This is useful for long running Real-Time tasks:</dt>
+<dd>When there are many of these tasks, they start to conflict with each other.
+By specifying an interval in which the CPU on this thread is told to sleep,
+breathing room is realized for the other threads to execute their commands.</dd>
+</dl>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>target: Callable</strong></dt>
+<dd><p class="first last">Function to Run</p>
+</dd>
+<dt><strong>interval: float</strong></dt>
+<dd><p class="first last">Interval between function calls</p>
+</dd>
+<dt><strong>name: str or None</strong></dt>
+<dd><p class="first last">Name of Thread (for identification in debug mode)</p>
+</dd>
+<dt><strong>args: tuple</strong></dt>
+<dd><p class="first last">Target Arguments</p>
+</dd>
+<dt><strong>kwargs: dict</strong></dt>
+<dd><p class="first last">Target Keyword Arguments</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">daemon</span></code></dt>
 <dd><p class="first last">A boolean value indicating whether this thread is a daemon thread (True) or not (False).</p>
 </dd>
@@ -804,7 +867,32 @@ from the args and kwargs arguments, respectively.</p>
 <dl class="function">
 <dt id="pepper.framework.util.spherical2cartesian">
 <code class="descclassname">pepper.framework.util.</code><code class="descname">spherical2cartesian</code><span class="sig-paren">(</span><em>phi</em>, <em>theta</em>, <em>depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/util.html#spherical2cartesian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.util.spherical2cartesian" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Spherical Coordinates to Cartesian Coordinates</p>
+<p>Phi: Left to Right, Theta: Down to Up, Depth: Distance
+x: Left to Right, y: down to up, z: close to far</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>phi: float</strong></dt>
+<dd></dd>
+<dt><strong>theta: float</strong></dt>
+<dd></dd>
+<dt><strong>depth: float</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>x,y,z: float, float, float</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 

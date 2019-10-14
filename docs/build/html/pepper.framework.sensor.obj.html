@@ -188,28 +188,46 @@
 <dt id="pepper.framework.sensor.obj.Object">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.obj.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>name</em>, <em>confidence</em>, <em>bounds</em>, <em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/obj.html#Object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.obj.Object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>‘Object’ object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>name: str</strong></dt>
+<dd><p class="first last">Name of Object</p>
+</dd>
+<dt><strong>confidence: float</strong></dt>
+<dd><p class="first last">Object Name &amp; Bounds Confidence</p>
+</dd>
+<dt><strong>bounds: Bounds</strong></dt>
+<dd><p class="first last">Bounds in Image Space</p>
+</dd>
+<dt><strong>image: AbstractImage</strong></dt>
+<dd><p class="first last">Image from which Object was Recognised</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.bounds" title="pepper.framework.sensor.obj.Object.bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds</span></code></a></dt>
-<dd><p class="first last">Object Bounds in Camera Space {phi: [0, pi], theta: [-pi, +pi]}</p>
+<dd><p class="first last">Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.bounds3D" title="pepper.framework.sensor.obj.Object.bounds3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds3D</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">3D bounds (for visualisation) [x,y,z]*4</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.confidence" title="pepper.framework.sensor.obj.Object.confidence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Object Confidence</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.depth" title="pepper.framework.sensor.obj.Object.depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Distance from Camera to Object</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.direction" title="pepper.framework.sensor.obj.Object.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Direction of Object in View Space (equivalent to self.bounds.center)</p>
 </dd>
-<dt><strong>id</strong></dt>
-<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.id" title="pepper.framework.sensor.obj.Object.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a></dt>
+<dd><p class="first last">Object ID</p>
+</dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.image" title="pepper.framework.sensor.obj.Object.image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image</span></code></a></dt>
 <dd><p class="first last">Image associated with the observation of this Object</p>
 </dd>
@@ -217,13 +235,14 @@
 <dd><p class="first last">Object Bounds in Image Space {x: [0, 1], y: [0, 1]}</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.name" title="pepper.framework.sensor.obj.Object.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Object Name</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.position" title="pepper.framework.sensor.obj.Object.position"><code class="xref py py-obj docutils literal notranslate"><span class="pre">position</span></code></a></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera</p>
 </dd>
-<dt><strong>time</strong></dt>
-<dd></dd>
+<dt><a class="reference internal" href="#pepper.framework.sensor.obj.Object.time" title="pepper.framework.sensor.obj.Object.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></dt>
+<dd><p class="first last">Time of Observation</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -236,16 +255,14 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.obj.Object.distance_to" title="pepper.framework.sensor.obj.Object.distance_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to</span></code></a>(obj)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.obj.Object.dict" title="pepper.framework.sensor.obj.Object.dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>()</td>
+<td>Object to Dictionary</td>
 </tr>
-</tbody>
-</table>
-</td>
+<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.sensor.obj.Object.distance_to" title="pepper.framework.sensor.obj.Object.distance_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to</span></code></a>(obj)</td>
+<td>Distance from this Object to obj</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.obj.Object.json" title="pepper.framework.sensor.obj.Object.json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json</span></code></a>()</td>
+<td>Object to JSON</td>
 </tr>
 </tbody>
 </table>
@@ -255,13 +272,7 @@
 <col width="43%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><strong>dict</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>from_json</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>json</strong></td>
+<tr class="row-odd"><td><strong>from_json</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -269,14 +280,14 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.bounds">
 <code class="descname">bounds</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.bounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object Bounds in Camera Space {phi: [0, pi], theta: [-pi, +pi]}</p>
+<dd><p>Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>bounds: Bounds</strong></dt>
-<dd><p class="first last">Object Bounding Box in Camera Space</p>
+<dd><p class="first last">Object Bounding Box in View Space</p>
 </dd>
 </dl>
 </td>
@@ -288,12 +299,13 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.bounds3D">
 <code class="descname">bounds3D</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.bounds3D" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>3D bounds (for visualisation) [x,y,z]*4</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>bounds3D: List[Tuple[float, float]]</strong></dt>
+<dt><strong>bounds3D: List[Tuple[float, float, float]]</strong></dt>
 <dd><p class="first last">3D bounds (for visualisation) [x,y,z]*4</p>
 </dd>
 </dl>
@@ -306,13 +318,14 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.confidence">
 <code class="descname">confidence</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.confidence" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Object Confidence</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>confidence: float</strong></dt>
-<dd><p class="first last">Name Confidence</p>
+<dd><p class="first last">Object Name &amp; Bounds Confidence</p>
 </dd>
 </dl>
 </td>
@@ -324,7 +337,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.depth">
 <code class="descname">depth</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.depth" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Distance from Camera to Object</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -342,18 +356,34 @@
 <dl class="method">
 <dt id="pepper.framework.sensor.obj.Object.dict">
 <code class="descname">dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/obj.html#Object.dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.obj.Object.dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Object to Dictionary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>dict: Dict</strong></dt>
+<dd><p class="first last">Dictionary representation of Object</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.direction">
 <code class="descname">direction</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.direction" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><blockquote>
+<div>Direction of Object in View Space (equivalent to self.bounds.center)</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>direction: float, float</strong></dt>
-<dd><p class="first last">Direction of Object in Camera Space (equivalent to self.bounds.center)</p>
+<dd><p class="first last">Direction of Object in View Space</p>
 </dd>
 </dl>
 </td>
@@ -365,7 +395,8 @@
 <dl class="method">
 <dt id="pepper.framework.sensor.obj.Object.distance_to">
 <code class="descname">distance_to</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/obj.html#Object.distance_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.obj.Object.distance_to" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Distance from this Object to obj</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -393,7 +424,20 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.id">
 <code class="descname">id</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Object ID</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>id: int</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.image">
@@ -435,12 +479,26 @@
 <dl class="method">
 <dt id="pepper.framework.sensor.obj.Object.json">
 <code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/obj.html#Object.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.obj.Object.json" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Object to JSON</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>json: JSON representation of Object</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.name">
 <code class="descname">name</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.name" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Object Name</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -458,13 +516,14 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.position">
 <code class="descname">position</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.position" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>position: Tuple[float, float, float]</strong></dt>
-<dd><p class="first last">Position of Object in Cartesian Space (x,y,z), Relative to Camera</p>
+<dd><p class="first last">Position of Object in Cartesian Coordinates (x,y,z)</p>
 </dd>
 </dl>
 </td>
@@ -476,7 +535,20 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.Object.time">
 <code class="descname">time</code><a class="headerlink" href="#pepper.framework.sensor.obj.Object.time" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Time of Observation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>time: float</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -484,39 +556,82 @@
 <dt id="pepper.framework.sensor.obj.ObjectDetectionClient">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.obj.</code><code class="descname">ObjectDetectionClient</code><span class="sig-paren">(</span><em>target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/obj.html#ObjectDetectionClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.obj.ObjectDetectionClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object Detection Client - Communicates with pepper_tensorflow Server</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>target</strong></dt>
-<dd></dd>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>target: ObjectDetectionTarget</strong></dt>
+<dd><p class="first last">Which Object Detection Server to target</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#pepper.framework.sensor.obj.ObjectDetectionClient.target" title="pepper.framework.sensor.obj.ObjectDetectionClient.target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code></a></dt>
+<dd><p class="first last">Object Detection Target</p>
+</dd>
 </dl>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="55%" />
-<col width="45%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><strong>classify</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.obj.ObjectDetectionClient.classify" title="pepper.framework.sensor.obj.ObjectDetectionClient.classify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">classify</span></code></a>(image)</td>
+<td>Classify Objects in Image</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="pepper.framework.sensor.obj.ObjectDetectionClient.classify">
 <code class="descname">classify</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/obj.html#ObjectDetectionClient.classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.obj.ObjectDetectionClient.classify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Classify Objects in Image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>image: AbstractImage</strong></dt>
+<dd><p class="first last">Image (Containing Objects)</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>objects: List[Object]</strong></dt>
+<dd><p class="first last">Classified Objects</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.obj.ObjectDetectionClient.target">
 <code class="descname">target</code><a class="headerlink" href="#pepper.framework.sensor.obj.ObjectDetectionClient.target" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Object Detection Target</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>target: ObjectDetectionTarget</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

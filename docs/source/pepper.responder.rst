@@ -16,5 +16,6 @@ pepper.responder package
    pepper.responder.personal
    pepper.responder.responder
    pepper.responder.sensory
+   pepper.responder.topic
    pepper.responder.unknown
 

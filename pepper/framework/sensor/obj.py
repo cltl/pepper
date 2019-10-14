@@ -293,17 +293,46 @@ class Object(object):
 
 
 class ObjectDetectionClient(object):
+    """
+    Object Detection Client - Communicates with pepper_tensorflow Server
+
+    Parameters
+    ----------
+    target: ObjectDetectionTarget
+        Which Object Detection Server to target
+    """
     def __init__(self, target):
+        # type: (ObjectDetectionTarget) -> None
         self._target = target
         self._address = target.value
 
     @property
     def target(self):
         # type: () -> ObjectDetectionTarget
+        """
+        Object Detection Target
+
+        Returns
+        -------
+        target: ObjectDetectionTarget
+        """
         return self._target
 
     def classify(self, image):
         # type: (AbstractImage) -> List[Object]
+        """
+        Classify Objects in Image
+
+        Parameters
+        ----------
+        image: AbstractImage
+            Image (Containing Objects)
+
+        Returns
+        -------
+        objects: List[Object]
+            Classified Objects
+        """
         try:
             sock = socket()
             sock.connect(self._address)
@@ -321,11 +350,37 @@ class ObjectDetectionClient(object):
 
     @staticmethod
     def _obj_from_dict(info, image):
+        # type: (dict, AbstractImage) -> Object
+        """
+        Construct Object from JSON
+
+        Parameters
+        ----------
+        info: dict
+        image: AbstractImage
+
+        Returns
+        -------
+        object: Object
+        """
         box = info['box']
         return Object(info['name'], info['score'], Bounds(box[1], box[0], box[3], box[2]), image)
 
     @staticmethod
     def _receive_all(sock, n):
+        # type: (socket, int) -> bytearray
+        """
+        Receive Exactly n bytes
+
+        Parameters
+        ----------
+        sock: socket
+        n: int
+
+        Returns
+        -------
+        data: bytearray
+        """
         buffer = bytearray()
         while len(buffer) < n:
             buffer.extend(sock.recv(4096))

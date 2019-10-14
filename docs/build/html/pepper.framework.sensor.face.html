@@ -213,22 +213,23 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds</span></code></dt>
-<dd><p class="first last">Object Bounds in Camera Space {phi: [0, pi], theta: [-pi, +pi]}</p>
+<dd><p class="first last">Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds3D</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">3D bounds (for visualisation) [x,y,z]*4</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Object Confidence</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Distance from Camera to Object</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Direction of Object in View Space (equivalent to self.bounds.center)</p>
 </dd>
-<dt><strong>id</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></dt>
+<dd><p class="first last">Object ID</p>
+</dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">image</span></code></dt>
 <dd><p class="first last">Image associated with the observation of this Object</p>
 </dd>
@@ -236,16 +237,17 @@
 <dd><p class="first last">Object Bounds in Image Space {x: [0, 1], y: [0, 1]}</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Object Name</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">position</span></code></dt>
-<dd><p class="first last">Returns</p>
+<dd><p class="first last">Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera</p>
 </dd>
 <dt><a class="reference internal" href="#pepper.framework.sensor.face.Face.representation" title="pepper.framework.sensor.face.Face.representation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">representation</span></code></a></dt>
 <dd><p class="first last">Face Representation</p>
 </dd>
-<dt><strong>time</strong></dt>
-<dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></dt>
+<dd><p class="first last">Time of Observation</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -258,16 +260,14 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to</span></code>(obj)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>()</td>
+<td>Object to Dictionary</td>
 </tr>
-</tbody>
-</table>
-</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_to</span></code>(obj)</td>
+<td>Distance from this Object to obj</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">json</span></code>()</td>
+<td>Object to JSON</td>
 </tr>
 </tbody>
 </table>
@@ -277,13 +277,7 @@
 <col width="43%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><strong>dict</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>from_json</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>json</strong></td>
+<tr class="row-odd"><td><strong>from_json</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
