@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.component package" href="pepper.framework.component.html" />
+    <link rel="prev" title="pepper.framework.backend.system.tablet module" href="pepper.framework.backend.system.tablet.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -190,46 +194,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>language: str</strong></dt>
-<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></dt>
-<dd><p class="first last"><a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">source</span></code></dt>
-<dd><p class="first last">Source Language</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">talking</span></code></dt>
-<dd><p class="first last">Returns whether system is currently producing speech</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code></dt>
-<dd><p class="first last">Target Language</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.on_text_to_speech" title="pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.on_text_to_speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_text_to_speech</span></code></a>(text[,&nbsp;animation])</td>
-<td>Say something through Text to Speech</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">say</span></code>(text[,&nbsp;animation,&nbsp;block])</td>
-<td>Say Text (with optional Animation) through Text-to-Speech</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code>(text)</td>
-<td>Translate Text from Source to Target Language</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>language</strong> (<em>str</em>) – <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Code</a></td>
 </tr>
 </tbody>
 </table>
@@ -240,7 +205,7 @@
 
 <dl class="attribute">
 <dt id="pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.TMP">
-<code class="descname">TMP</code><em class="property"> = u'/Users/bram/Documents/pepper/pepper/tmp/speech'</em><a class="headerlink" href="#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.TMP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">TMP</code><em class="property"> = u'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\tmp\\speech'</em><a class="headerlink" href="#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.TMP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -256,12 +221,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>text: str</strong></dt>
-<dd></dd>
-<dt><strong>animation: str</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<em>str</em>) – </li>
+<li><strong>animation</strong> (<em>str</em>) – </li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -282,6 +245,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.component.html" class="btn btn-neutral float-right" title="pepper.framework.component package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.backend.system.tablet.html" class="btn btn-neutral float-left" title="pepper.framework.backend.system.tablet module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -305,25 +277,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

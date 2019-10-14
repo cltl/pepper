@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.responder.topic module" href="pepper.responder.topic.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="next" title="pepper.responder.topic module" href="pepper.responder.topic.html" />
+    <link rel="prev" title="pepper.responder.responder module" href="pepper.responder.responder.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -176,32 +179,6 @@
 <dt id="pepper.responder.sensory.IdentityResponder">
 <em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">IdentityResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#IdentityResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>requirements</strong></dt>
-<dd></dd>
-<dt><strong>type</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>respond</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.sensory.IdentityResponder.ANSWER_ME">
 <code class="descname">ANSWER_ME</code><em class="property"> = ['My name is', &quot;I'm&quot;]</em><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.ANSWER_ME" title="Permalink to this definition">¶</a></dt>
@@ -236,21 +213,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>utterance: Utterance</strong></dt>
-<dd><p class="first last">Utterance to respond to</p>
-</dd>
-<dt><strong>app: Union[requirements]</strong></dt>
-<dd><p class="first last">Components to Interact with as Response</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
+<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: float, callable</strong></dt>
-<dd><p class="first last">response quality &amp; responder function</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
 </td>
 </tr>
 </tbody>
@@ -268,32 +240,6 @@
 <dt id="pepper.responder.sensory.LocationResponder">
 <em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">LocationResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#LocationResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.LocationResponder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>requirements</strong></dt>
-<dd></dd>
-<dt><strong>type</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>respond</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.sensory.LocationResponder.CUE_FULL">
 <code class="descname">CUE_FULL</code><em class="property"> = ['where are we', 'where are you', 'where we are', 'where you are', 'what is here']</em><a class="headerlink" href="#pepper.responder.sensory.LocationResponder.CUE_FULL" title="Permalink to this definition">¶</a></dt>
@@ -318,21 +264,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>utterance: Utterance</strong></dt>
-<dd><p class="first last">Utterance to respond to</p>
-</dd>
-<dt><strong>app: Union[requirements]</strong></dt>
-<dd><p class="first last">Components to Interact with as Response</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
+<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: float, callable</strong></dt>
-<dd><p class="first last">response quality &amp; responder function</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
 </td>
 </tr>
 </tbody>
@@ -350,32 +291,6 @@
 <dt id="pepper.responder.sensory.PreviousUtteranceResponder">
 <em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">PreviousUtteranceResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#PreviousUtteranceResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>requirements</strong></dt>
-<dd></dd>
-<dt><strong>type</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>respond</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.sensory.PreviousUtteranceResponder.CUE">
 <code class="descname">CUE</code><em class="property"> = ['what did you say', &quot;i didn't hear you&quot;, &quot;i can't hear you&quot;, 'come again', 'excuse me']</em><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder.CUE" title="Permalink to this definition">¶</a></dt>
@@ -400,21 +315,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>utterance: Utterance</strong></dt>
-<dd><p class="first last">Utterance to respond to</p>
-</dd>
-<dt><strong>app: Union[requirements]</strong></dt>
-<dd><p class="first last">Components to Interact with as Response</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
+<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: float, callable</strong></dt>
-<dd><p class="first last">response quality &amp; responder function</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
 </td>
 </tr>
 </tbody>
@@ -432,32 +342,6 @@
 <dt id="pepper.responder.sensory.TimeResponder">
 <em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">TimeResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#TimeResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.TimeResponder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>requirements</strong></dt>
-<dd></dd>
-<dt><strong>type</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>respond</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.sensory.TimeResponder.DATE">
 <code class="descname">DATE</code><em class="property"> = ['what day is it', 'which day is it', 'what is the date', 'today']</em><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.DATE" title="Permalink to this definition">¶</a></dt>
@@ -487,21 +371,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>utterance: Utterance</strong></dt>
-<dd><p class="first last">Utterance to respond to</p>
-</dd>
-<dt><strong>app: Union[requirements]</strong></dt>
-<dd><p class="first last">Components to Interact with as Response</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
+<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: float, callable</strong></dt>
-<dd><p class="first last">response quality &amp; responder function</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
 </td>
 </tr>
 </tbody>
@@ -519,32 +398,6 @@
 <dt id="pepper.responder.sensory.VisionResponder">
 <em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">VisionResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#VisionResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.VisionResponder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>requirements</strong></dt>
-<dd></dd>
-<dt><strong>type</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>respond</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.sensory.VisionResponder.I_SAW">
 <code class="descname">I_SAW</code><em class="property"> = ['I saw', 'I have seen', 'I think I observed']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.I_SAW" title="Permalink to this definition">¶</a></dt>
@@ -599,21 +452,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>utterance: Utterance</strong></dt>
-<dd><p class="first last">Utterance to respond to</p>
-</dd>
-<dt><strong>app: Union[requirements]</strong></dt>
-<dd><p class="first last">Components to Interact with as Response</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
+<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: float, callable</strong></dt>
-<dd><p class="first last">response quality &amp; responder function</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
 </td>
 </tr>
 </tbody>
@@ -640,6 +488,8 @@
         <a href="pepper.responder.topic.html" class="btn btn-neutral float-right" title="pepper.responder.topic module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
+        <a href="pepper.responder.responder.html" class="btn btn-neutral float-left" title="pepper.responder.responder module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
   
 
@@ -664,25 +514,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

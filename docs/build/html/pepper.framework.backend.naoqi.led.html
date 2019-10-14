@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.backend.naoqi.microphone module" href="pepper.framework.backend.naoqi.microphone.html" />
     <link rel="prev" title="pepper.framework.backend.naoqi.camera module" href="pepper.framework.backend.naoqi.camera.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -181,8 +183,56 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pepper-framework-backend-naoqi-led-module">
-<h1>pepper.framework.backend.naoqi.led module<a class="headerlink" href="#pepper-framework-backend-naoqi-led-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pepper.framework.backend.naoqi.led">
+<span id="pepper-framework-backend-naoqi-led-module"></span><h1>pepper.framework.backend.naoqi.led module<a class="headerlink" href="#module-pepper.framework.backend.naoqi.led" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.backend.naoqi.led.NAOqiLed">
+<em class="property">class </em><code class="descclassname">pepper.framework.backend.naoqi.led.</code><code class="descname">NAOqiLed</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/led.html#NAOqiLed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.led.NAOqiLed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.led.AbstractLed</span></code></a></p>
+<p>Control Robot LEDs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<em>qi.Session</em>) – </td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pepper.framework.backend.naoqi.led.NAOqiLed.off">
+<code class="descname">off</code><span class="sig-paren">(</span><em>leds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/led.html#NAOqiLed.off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.led.NAOqiLed.off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch LEDs off</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>leds</strong> (<em>List</em><em>[</em><a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.Led" title="pepper.framework.abstract.led.Led"><em>Led</em></a><em>]</em>) – Which LEDs are affected</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.backend.naoqi.led.NAOqiLed.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>leds</em>, <em>rgb</em>, <em>duration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/led.html#NAOqiLed.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.led.NAOqiLed.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set LEDs to Particular color (interpolating from its current color in ‘duration’ time)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>leds</strong> (<em>List</em><em>[</em><a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.Led" title="pepper.framework.abstract.led.Led"><em>Led</em></a><em>]</em>) – Which LEDs are affected</li>
+<li><strong>rgb</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em>) – Which color to turn</li>
+<li><strong>duration</strong> (<em>float</em>) – How long to take switching this color</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -196,7 +246,7 @@
         <a href="pepper.framework.backend.naoqi.microphone.html" class="btn btn-neutral float-right" title="pepper.framework.backend.naoqi.microphone module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.framework.backend.naoqi.camera.html" class="btn btn-neutral" title="pepper.framework.backend.naoqi.camera module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.framework.backend.naoqi.camera.html" class="btn btn-neutral float-left" title="pepper.framework.backend.naoqi.camera module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -222,25 +272,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

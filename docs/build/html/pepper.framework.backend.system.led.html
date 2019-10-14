@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.backend.system.microphone module" href="pepper.framework.backend.system.microphone.html" />
+    <link rel="prev" title="pepper.framework.backend.system.camera module" href="pepper.framework.backend.system.camera.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -186,21 +190,6 @@
 <em class="property">class </em><code class="descclassname">pepper.framework.backend.system.led.</code><code class="descname">SystemLed</code><a class="reference internal" href="_modules/pepper/framework/backend/system/led.html#SystemLed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.led.SystemLed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.led.AbstractLed</span></code></a></p>
 <p>Control Robot LEDs</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.backend.system.led.SystemLed.off" title="pepper.framework.backend.system.led.SystemLed.off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">off</span></code></a>(leds)</td>
-<td>Switch LEDs off</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.backend.system.led.SystemLed.set" title="pepper.framework.backend.system.led.SystemLed.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(leds,&nbsp;rgb,&nbsp;duration)</td>
-<td>Set LEDs to Particular color (interpolating from its current color in ‘duration’ time)</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.framework.backend.system.led.SystemLed.off">
 <code class="descname">off</code><span class="sig-paren">(</span><em>leds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/system/led.html#SystemLed.off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.system.led.SystemLed.off" title="Permalink to this definition">¶</a></dt>
@@ -209,12 +198,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>leds: List[Led]</strong></dt>
-<dd><p class="first last">Which LEDs are affected</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>leds</strong> (<em>List</em><em>[</em><a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.Led" title="pepper.framework.abstract.led.Led"><em>Led</em></a><em>]</em>) – Which LEDs are affected</td>
 </tr>
 </tbody>
 </table>
@@ -228,17 +212,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>leds: List[Led]</strong></dt>
-<dd><p class="first last">Which LEDs are affected</p>
-</dd>
-<dt><strong>rgb: Tuple[float, float, float]</strong></dt>
-<dd><p class="first last">Which color to turn</p>
-</dd>
-<dt><strong>duration: float</strong></dt>
-<dd><p class="first last">How long to take switching this color</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>leds</strong> (<em>List</em><em>[</em><a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.Led" title="pepper.framework.abstract.led.Led"><em>Led</em></a><em>]</em>) – Which LEDs are affected</li>
+<li><strong>rgb</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em>) – Which color to turn</li>
+<li><strong>duration</strong> (<em>float</em>) – How long to take switching this color</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -254,6 +232,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.backend.system.microphone.html" class="btn btn-neutral float-right" title="pepper.framework.backend.system.microphone module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.backend.system.camera.html" class="btn btn-neutral float-left" title="pepper.framework.backend.system.camera module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -277,25 +264,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

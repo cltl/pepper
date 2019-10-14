@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.responder.sensory module" href="pepper.responder.sensory.html" />
     <link rel="prev" title="pepper.responder.personal module" href="pepper.responder.personal.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -93,9 +96,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pepper.responder.intention.html">pepper.responder.intention module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.responder.internet.html">pepper.responder.internet module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.responder.personal.html">pepper.responder.personal module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.responder.responder module</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.responder.responder module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.responder.sensory.html">pepper.responder.sensory module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.responder.topic.html">pepper.responder.topic module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.responder.unknown.html">pepper.responder.unknown module</a></li>
@@ -178,33 +179,6 @@
 <dt id="pepper.responder.responder.Responder">
 <em class="property">class </em><code class="descclassname">pepper.responder.responder.</code><code class="descname">Responder</code><a class="reference internal" href="_modules/pepper/responder/responder.html#Responder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.Responder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.responder.responder.Responder.requirements" title="pepper.responder.responder.Responder.requirements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requirements</span></code></a></dt>
-<dd><p class="first last">Lists Component Requirement for this Responder Object</p>
-</dd>
-<dt><strong>type</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.responder.responder.Responder.respond" title="pepper.responder.responder.Responder.respond"><code class="xref py py-obj docutils literal notranslate"><span class="pre">respond</span></code></a>(utterance,&nbsp;app)</td>
-<td>Respond to Utterance</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.responder.Responder.requirements">
 <code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.responder.Responder.requirements" title="Permalink to this definition">¶</a></dt>
@@ -213,12 +187,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>requirements: list of AbstractComponent</strong></dt>
-<dd><p class="first last">List of required Components</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>requirements</strong> – List of required Components</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of AbstractComponent</td>
 </tr>
 </tbody>
 </table>
@@ -233,21 +204,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>utterance: Utterance</strong></dt>
-<dd><p class="first last">Utterance to respond to</p>
-</dd>
-<dt><strong>app: Union[requirements]</strong></dt>
-<dd><p class="first last">Components to Interact with as Response</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
+<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>response: float, callable</strong></dt>
-<dd><p class="first last">response quality &amp; responder function</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
 </td>
 </tr>
 </tbody>
@@ -322,34 +288,6 @@
 <dt id="pepper.responder.responder.ResponsePicker">
 <em class="property">class </em><code class="descclassname">pepper.responder.responder.</code><code class="descname">ResponsePicker</code><span class="sig-paren">(</span><em>app</em>, <em>responders</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/responder.html#ResponsePicker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.ResponsePicker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>app</strong></dt>
-<dd></dd>
-<dt><strong>groups</strong></dt>
-<dd></dd>
-<dt><strong>responders</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>respond</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.responder.responder.ResponsePicker.app">
 <code class="descname">app</code><a class="headerlink" href="#pepper.responder.responder.ResponsePicker.app" title="Permalink to this definition">¶</a></dt>
@@ -382,8 +320,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="pepper.responder.sensory.html" class="btn btn-neutral float-right" title="pepper.responder.sensory module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="pepper.responder.personal.html" class="btn btn-neutral" title="pepper.responder.personal module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="pepper.responder.personal.html" class="btn btn-neutral float-left" title="pepper.responder.personal module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -409,25 +349,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.brain.utils.store_connector module" href="pepper.brain.utils.store_connector.html" />
+    <link rel="prev" title="pepper.brain.utils.rdf_builder module" href="pepper.brain.utils.rdf_builder.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -182,38 +186,6 @@
 <dt id="pepper.brain.utils.response.CardinalityConflict">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">CardinalityConflict</code><span class="sig-paren">(</span><em>provenance</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#CardinalityConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.CardinalityConflict.object" title="pepper.brain.utils.response.CardinalityConflict.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>author</strong></dt>
-<dd></dd>
-<dt><strong>date</strong></dt>
-<dd></dd>
-<dt><strong>object</strong></dt>
-<dd></dd>
-<dt><strong>object_name</strong></dt>
-<dd></dd>
-<dt><strong>provenance</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.CardinalityConflict.casefold" title="pepper.brain.utils.response.CardinalityConflict.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.CardinalityConflict.author">
 <code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.author" title="Permalink to this definition">¶</a></dt>
@@ -223,9 +195,7 @@
 <dt id="pepper.brain.utils.response.CardinalityConflict.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#CardinalityConflict.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -254,51 +224,6 @@ format</p>
 <dt id="pepper.brain.utils.response.Entity">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>types</em>, <em>offset=None</em>, <em>confidence=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.RDFBase" title="pepper.brain.utils.response.RDFBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.utils.response.RDFBase</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>confidence</strong></dt>
-<dd></dd>
-<dt><strong>id</strong></dt>
-<dd></dd>
-<dt><strong>label</strong></dt>
-<dd></dd>
-<dt><strong>offset</strong></dt>
-<dd></dd>
-<dt><strong>types</strong></dt>
-<dd></dd>
-<dt><strong>types_names</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Entity.casefold" title="pepper.brain.utils.response.Entity.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="57%" />
-<col width="43%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>add_types</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.Entity.add_types">
 <code class="descname">add_types</code><span class="sig-paren">(</span><em>types</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Entity.add_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Entity.add_types" title="Permalink to this definition">¶</a></dt>
@@ -308,9 +233,7 @@ format</p>
 <dt id="pepper.brain.utils.response.Entity.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Entity.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Entity.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -329,20 +252,6 @@ format</p>
 <dt id="pepper.brain.utils.response.EntityNovelty">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">EntityNovelty</code><span class="sig-paren">(</span><em>existence_subject</em>, <em>existence_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#EntityNovelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.EntityNovelty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.EntityNovelty.object" title="pepper.brain.utils.response.EntityNovelty.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>object</strong></dt>
-<dd></dd>
-<dt><strong>subject</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.EntityNovelty.object">
 <code class="descname">object</code><a class="headerlink" href="#pepper.brain.utils.response.EntityNovelty.object" title="Permalink to this definition">¶</a></dt>
@@ -359,45 +268,11 @@ format</p>
 <dt id="pepper.brain.utils.response.Gap">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Gap</code><span class="sig-paren">(</span><em>predicate</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>entity</strong></dt>
-<dd></dd>
-<dt><strong>entity_range</strong></dt>
-<dd></dd>
-<dt><strong>entity_range_name</strong></dt>
-<dd></dd>
-<dt><strong>predicate</strong></dt>
-<dd></dd>
-<dt><strong>predicate_name</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Gap.casefold" title="pepper.brain.utils.response.Gap.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.Gap.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gap.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gap.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -431,39 +306,11 @@ format</p>
 <dt id="pepper.brain.utils.response.Gaps">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Gaps</code><span class="sig-paren">(</span><em>subject_gaps</em>, <em>object_gaps</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gaps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.Gaps.object" title="pepper.brain.utils.response.Gaps.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>object</strong></dt>
-<dd></dd>
-<dt><strong>subject</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Gaps.casefold" title="pepper.brain.utils.response.Gaps.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.Gaps.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gaps.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gaps.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -482,38 +329,6 @@ format</p>
 <dt id="pepper.brain.utils.response.NegationConflict">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">NegationConflict</code><span class="sig-paren">(</span><em>provenance</em>, <em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#NegationConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>author</strong></dt>
-<dd></dd>
-<dt><strong>date</strong></dt>
-<dd></dd>
-<dt><strong>predicate</strong></dt>
-<dd></dd>
-<dt><strong>predicate_name</strong></dt>
-<dd></dd>
-<dt><strong>provenance</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.NegationConflict.casefold" title="pepper.brain.utils.response.NegationConflict.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.NegationConflict.author">
 <code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.author" title="Permalink to this definition">¶</a></dt>
@@ -523,9 +338,7 @@ format</p>
 <dt id="pepper.brain.utils.response.NegationConflict.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#NegationConflict.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -554,40 +367,6 @@ format</p>
 <dt id="pepper.brain.utils.response.Overlap">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Overlap</code><span class="sig-paren">(</span><em>provenance</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>author</strong></dt>
-<dd></dd>
-<dt><strong>date</strong></dt>
-<dd></dd>
-<dt><strong>entity</strong></dt>
-<dd></dd>
-<dt><strong>entity_name</strong></dt>
-<dd></dd>
-<dt><strong>entity_types</strong></dt>
-<dd></dd>
-<dt><strong>provenance</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Overlap.casefold" title="pepper.brain.utils.response.Overlap.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.Overlap.author">
 <code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.author" title="Permalink to this definition">¶</a></dt>
@@ -597,9 +376,7 @@ format</p>
 <dt id="pepper.brain.utils.response.Overlap.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlap.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlap.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -633,39 +410,11 @@ format</p>
 <dt id="pepper.brain.utils.response.Overlaps">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Overlaps</code><span class="sig-paren">(</span><em>subject_overlaps</em>, <em>object_overlaps</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlaps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.Overlaps.object" title="pepper.brain.utils.response.Overlaps.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>object</strong></dt>
-<dd></dd>
-<dt><strong>subject</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Overlaps.casefold" title="pepper.brain.utils.response.Overlaps.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.Overlaps.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlaps.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlaps.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -684,26 +433,6 @@ format</p>
 <dt id="pepper.brain.utils.response.Perspective">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Perspective</code><span class="sig-paren">(</span><em>certainty</em>, <em>polarity</em>, <em>sentiment</em>, <em>time=None</em>, <em>emotion=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Perspective" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>certainty</strong></dt>
-<dd></dd>
-<dt><strong>emotion</strong></dt>
-<dd></dd>
-<dt><strong>polarity</strong></dt>
-<dd></dd>
-<dt><strong>sentiment</strong></dt>
-<dd></dd>
-<dt><strong>time</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.Perspective.certainty">
 <code class="descname">certainty</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.certainty" title="Permalink to this definition">¶</a></dt>
@@ -735,38 +464,6 @@ format</p>
 <dt id="pepper.brain.utils.response.Predicate">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Predicate</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>offset=None</em>, <em>confidence=0.0</em>, <em>cardinality=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Predicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.RDFBase" title="pepper.brain.utils.response.RDFBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.utils.response.RDFBase</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>cardinality</strong></dt>
-<dd></dd>
-<dt><strong>confidence</strong></dt>
-<dd></dd>
-<dt><strong>id</strong></dt>
-<dd></dd>
-<dt><strong>label</strong></dt>
-<dd></dd>
-<dt><strong>offset</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Predicate.casefold" title="pepper.brain.utils.response.Predicate.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>(subject,&nbsp;object[,&nbsp;format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.Predicate.cardinality">
 <code class="descname">cardinality</code><a class="headerlink" href="#pepper.brain.utils.response.Predicate.cardinality" title="Permalink to this definition">¶</a></dt>
@@ -776,9 +473,7 @@ format</p>
 <dt id="pepper.brain.utils.response.Predicate.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>subject</em>, <em>object</em>, <em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Predicate.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Predicate.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 </dd></dl>
@@ -787,32 +482,6 @@ format</p>
 <dt id="pepper.brain.utils.response.Provenance">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Provenance</code><span class="sig-paren">(</span><em>author</em>, <em>date</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Provenance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Provenance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>author</strong></dt>
-<dd></dd>
-<dt><strong>date</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Provenance.casefold" title="pepper.brain.utils.response.Provenance.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.Provenance.author">
 <code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.Provenance.author" title="Permalink to this definition">¶</a></dt>
@@ -822,9 +491,7 @@ format</p>
 <dt id="pepper.brain.utils.response.Provenance.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Provenance.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Provenance.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -838,43 +505,11 @@ format</p>
 <dt id="pepper.brain.utils.response.RDFBase">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">RDFBase</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>offset=None</em>, <em>confidence=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#RDFBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.RDFBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>confidence</strong></dt>
-<dd></dd>
-<dt><strong>id</strong></dt>
-<dd></dd>
-<dt><strong>label</strong></dt>
-<dd></dd>
-<dt><strong>offset</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.RDFBase.casefold" title="pepper.brain.utils.response.RDFBase.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.RDFBase.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#RDFBase.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.RDFBase.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -903,34 +538,6 @@ format</p>
 <dt id="pepper.brain.utils.response.StatementNovelty">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">StatementNovelty</code><span class="sig-paren">(</span><em>provenance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#StatementNovelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>author</strong></dt>
-<dd></dd>
-<dt><strong>date</strong></dt>
-<dd></dd>
-<dt><strong>provenance</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.StatementNovelty.casefold" title="pepper.brain.utils.response.StatementNovelty.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.brain.utils.response.StatementNovelty.author">
 <code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty.author" title="Permalink to this definition">¶</a></dt>
@@ -940,9 +547,7 @@ format</p>
 <dt id="pepper.brain.utils.response.StatementNovelty.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#StatementNovelty.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -961,57 +566,11 @@ format</p>
 <dt id="pepper.brain.utils.response.Thoughts">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Thoughts</code><span class="sig-paren">(</span><em>statement_novelty</em>, <em>entity_novelty</em>, <em>negation_conflicts</em>, <em>object_conflict</em>, <em>subject_gaps</em>, <em>object_gaps</em>, <em>overlaps</em>, <em>trust</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Thoughts.casefold" title="pepper.brain.utils.response.Thoughts.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="70%" />
-<col width="30%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>entity_novelty</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>negation_conflicts</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>object_conflict</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>object_gaps</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>overlaps</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>statement_novelties</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>subject_gaps</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>trust</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.Thoughts.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="method">
@@ -1060,68 +619,11 @@ format</p>
 <dt id="pepper.brain.utils.response.Triple">
 <em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Triple</code><span class="sig-paren">(</span><em>subject</em>, <em>predicate</em>, <em>object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.Triple.object" title="pepper.brain.utils.response.Triple.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>object</strong></dt>
-<dd></dd>
-<dt><strong>object_name</strong></dt>
-<dd></dd>
-<dt><strong>object_types</strong></dt>
-<dd></dd>
-<dt><strong>predicate</strong></dt>
-<dd></dd>
-<dt><strong>predicate_name</strong></dt>
-<dd></dd>
-<dt><strong>subject</strong></dt>
-<dd></dd>
-<dt><strong>subject_name</strong></dt>
-<dd></dd>
-<dt><strong>subject_types</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.utils.response.Triple.casefold" title="pepper.brain.utils.response.Triple.casefold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">casefold</span></code></a>([format])</td>
-<td>Format the labels to match triples or natural language Parameters ———- format</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.utils.response.Triple.set_subject" title="pepper.brain.utils.response.Triple.set_subject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_subject</span></code></a>(subject)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="63%" />
-<col width="37%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>set_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>set_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.utils.response.Triple.casefold">
 <code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple.casefold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the labels to match triples or natural language
-Parameters
-———-
-format</p>
+:param format:</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1189,6 +691,15 @@ format</p>
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.brain.utils.store_connector.html" class="btn btn-neutral float-right" title="pepper.brain.utils.store_connector module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.brain.utils.rdf_builder.html" class="btn btn-neutral float-left" title="pepper.brain.utils.rdf_builder module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
@@ -1211,25 +722,16 @@ format</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

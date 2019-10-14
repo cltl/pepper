@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.component.statistics module" href="pepper.framework.component.statistics.html" />
+    <link rel="prev" title="pepper.framework.component.scene module" href="pepper.framework.component.scene.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -198,43 +202,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>backend: AbstractBackend</strong></dt>
-<dd><p class="first last">Application Backend</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.asr" title="pepper.framework.component.speech_recognition.SpeechRecognitionComponent.asr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asr</span></code></a></dt>
-<dd><p class="first last">Automatic Speech Recognition Object</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns Component <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.vad" title="pepper.framework.component.speech_recognition.SpeechRecognitionComponent.vad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vad</span></code></a></dt>
-<dd><p class="first last">Voice Activity Detection Object</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript" title="pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_transcript</span></code></a>(hypotheses,&nbsp;audio)</td>
-<td>On Transcript Event.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code>(cls,&nbsp;dependency)</td>
-<td>Enforce Component Dependency by throwing an Exception when a dependency is missing</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>backend</strong> (<a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><em>AbstractBackend</em></a>) – Application Backend</td>
 </tr>
 </tbody>
 </table>
@@ -246,11 +214,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>asr: pepper.sensor.asr.SynchronousGoogleASR</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>asr</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pepper.sensor.asr.SynchronousGoogleASR</td>
 </tr>
 </tbody>
 </table>
@@ -264,14 +230,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>hypotheses: List[UtteranceHypothesis]</strong></dt>
-<dd><p class="first last">Hypotheses about the corresponding utterance</p>
-</dd>
-<dt><strong>audio: numpy.ndarray</strong></dt>
-<dd><p class="first last">Utterance audio</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hypotheses</strong> (<em>List</em><em>[</em><a class="reference internal" href="pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.UtteranceHypothesis" title="pepper.framework.sensor.asr.UtteranceHypothesis"><em>UtteranceHypothesis</em></a><em>]</em>) – Hypotheses about the corresponding utterance</li>
+<li><strong>audio</strong> (<em>numpy.ndarray</em>) – Utterance audio</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -286,11 +248,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>vad: pepper.sensor.vad.VAD</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>vad</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pepper.sensor.vad.VAD</td>
 </tr>
 </tbody>
 </table>
@@ -305,6 +265,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.component.statistics.html" class="btn btn-neutral float-right" title="pepper.framework.component.statistics module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.component.scene.html" class="btn btn-neutral float-left" title="pepper.framework.component.scene module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -328,25 +297,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

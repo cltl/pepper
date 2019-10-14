@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.backend.system.led module" href="pepper.framework.backend.system.led.html" />
     <link rel="prev" title="pepper.framework.backend.system.backend module" href="pepper.framework.backend.system.backend.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -191,66 +194,13 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>resolution: pepper.framework.CameraResolution</strong></dt>
-<dd></dd>
-<dt><strong>rate: int</strong></dt>
-<dd></dd>
-<dt><strong>callbacks: list of callable</strong></dt>
-<dd></dd>
-<dt><strong>index: int</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>resolution</strong> (<em>pepper.framework.CameraResolution</em>) – </li>
+<li><strong>rate</strong> (<em>int</em>) – </li>
+<li><strong>callbacks</strong> (<em>list of callable</em>) – </li>
+<li><strong>index</strong> (<em>int</em>) – </li>
+</ul>
 </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbacks</span></code></dt>
-<dd><p class="first last">Get/Set <code class="xref py py-func docutils literal notranslate"><span class="pre">on_image()</span></code> Callbacks</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></dt>
-<dd><p class="first last">Number of Image (Color) Channels</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></dt>
-<dd><p class="first last">Image Height</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rate</span></code></dt>
-<dd><p class="first last">Image Rate (Frames per Second)</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolution</span></code></dt>
-<dd><p class="first last">Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">running</span></code></dt>
-<dd><p class="first last">Returns whether Camera is Running</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></dt>
-<dd><p class="first last">Image Shape (height, width, channels)</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">true_rate</span></code></dt>
-<dd><p class="first last">Actual Image Rate (Frames per Second)</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></dt>
-<dd><p class="first last">Image Width</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_image</span></code>(image)</td>
-<td>On Image Event, Called for every Image captured by Camera</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code>()</td>
-<td>Start Streaming Images from Camera</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code>()</td>
-<td>Stop Streaming Images from Camera</td>
 </tr>
 </tbody>
 </table>
@@ -266,65 +216,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>image: np.ndarray</strong></dt>
-<dd><p class="first last">RGB Image (height, width, 3) as Numpy Array</p>
-</dd>
-<dt><strong>bounds: Bounds</strong></dt>
-<dd><p class="first last">Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image</strong> (<em>np.ndarray</em>) – RGB Image (height, width, 3) as Numpy Array</li>
+<li><strong>bounds</strong> (<a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds"><em>Bounds</em></a>) – Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</li>
+</ul>
 </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds</span></code></dt>
-<dd><p class="first last">Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth</span></code></dt>
-<dd><p class="first last">Depth Image (height, width) as Numpy Array</p>
-</dd>
-<dt><strong>hash</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">image</span></code></dt>
-<dd><p class="first last">RGB Image (height, width, 3) as Numpy Array</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></dt>
-<dd><p class="first last">Get time image was captured and received by the application.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">frustum</span></code>(depth_min,&nbsp;depth_max)</td>
-<td>Calculate <a class="reference external" href="https://en.wikipedia.org/wiki/Viewing_frustum">Frustum</a> of the camera at image time (visualisation)</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_depth</span></code>(bounds)</td>
-<td>Get depth from Image at Bounds in Image Space</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_direction</span></code>(coordinates)</td>
-<td>Convert 2D Image Coordinates [x, y] to 2D position in Spherical Coordinates [phi, theta]</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_image</span></code>(bounds)</td>
-<td>Get pixels from Image at Bounds in Image Space</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="52%" />
-<col width="48%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>to_file</strong></td>
-<td>&#160;</td>
 </tr>
 </tbody>
 </table>
@@ -340,8 +236,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="pepper.framework.backend.system.led.html" class="btn btn-neutral float-right" title="pepper.framework.backend.system.led module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="pepper.framework.backend.system.backend.html" class="btn btn-neutral" title="pepper.framework.backend.system.backend module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="pepper.framework.backend.system.backend.html" class="btn btn-neutral float-left" title="pepper.framework.backend.system.backend module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -367,25 +265,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

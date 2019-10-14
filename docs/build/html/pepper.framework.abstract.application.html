@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.abstract.backend module" href="pepper.framework.abstract.backend.html" />
     <link rel="prev" title="pepper.framework.abstract package" href="pepper.framework.abstract.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -200,55 +203,7 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>backend: AbstractBackend</strong></dt>
-<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.camera" title="pepper.framework.abstract.application.AbstractApplication.camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">camera</span></code></a></dt>
-<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractCamera</span></code></a> associated with current Backend</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.led" title="pepper.framework.abstract.application.AbstractApplication.led"><code class="xref py py-obj docutils literal notranslate"><span class="pre">led</span></code></a></dt>
-<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.led.html#pepper.framework.abstract.led.AbstractLed" title="pepper.framework.abstract.led.AbstractLed"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLed</span></code></a> associated with current Backend</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.log" title="pepper.framework.abstract.application.AbstractApplication.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></a></dt>
-<dd><p class="first last">Returns Application <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.microphone" title="pepper.framework.abstract.application.AbstractApplication.microphone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">microphone</span></code></a></dt>
-<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMicrophone</span></code></a> associated with current Backend</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.motion" title="pepper.framework.abstract.application.AbstractApplication.motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">motion</span></code></a></dt>
-<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMotion</span></code></a> associated with current Backend</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.tablet" title="pepper.framework.abstract.application.AbstractApplication.tablet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tablet</span></code></a></dt>
-<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTablet</span></code></a> associated with current Backend</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.text_to_speech" title="pepper.framework.abstract.application.AbstractApplication.text_to_speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_to_speech</span></code></a></dt>
-<dd><p class="first last">Returns <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTextToSpeech</span></code></a> associated with current Backend</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code>(cls,&nbsp;dependency)</td>
-<td>Enforce Component Dependency by throwing an Exception when a dependency is missing</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.application.AbstractApplication.run" title="pepper.framework.abstract.application.AbstractApplication.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>()</td>
-<td>Run Application</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>backend</strong> (<a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><em>AbstractBackend</em></a>) – Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -260,11 +215,9 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>camera: AbstractCamera</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>camera</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractCamera" title="pepper.framework.abstract.camera.AbstractCamera">AbstractCamera</a></td>
 </tr>
 </tbody>
 </table>
@@ -278,11 +231,9 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>motion: AbstractMotion</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>motion</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion">AbstractMotion</a></td>
 </tr>
 </tbody>
 </table>
@@ -291,16 +242,16 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <dl class="attribute">
 <dt id="pepper.framework.abstract.application.AbstractApplication.log">
 <code class="descname">log</code><a class="headerlink" href="#pepper.framework.abstract.application.AbstractApplication.log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns Application <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
+<dd><p>//docs.python.org/2/library/logging.html&gt;`_</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>log: logging.Logger</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>log</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">logging.Logger</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Returns Application <a href="#id1"><span class="problematic" id="id2">`</span></a>Logger &lt;https</td>
 </tr>
 </tbody>
 </table>
@@ -314,11 +265,9 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>microphone: AbstractMicrophone</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>microphone</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.microphone.html#pepper.framework.abstract.microphone.AbstractMicrophone" title="pepper.framework.abstract.microphone.AbstractMicrophone">AbstractMicrophone</a></td>
 </tr>
 </tbody>
 </table>
@@ -332,11 +281,9 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>motion: AbstractMotion</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>motion</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.motion.html#pepper.framework.abstract.motion.AbstractMotion" title="pepper.framework.abstract.motion.AbstractMotion">AbstractMotion</a></td>
 </tr>
 </tbody>
 </table>
@@ -357,11 +304,9 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>tablet: AbstractTablet</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>tablet</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet">AbstractTablet</a></td>
 </tr>
 </tbody>
 </table>
@@ -375,11 +320,9 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>text_to_speech: AbstractTextToSpeech</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>text_to_speech</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech">AbstractTextToSpeech</a></td>
 </tr>
 </tbody>
 </table>
@@ -397,8 +340,10 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="pepper.framework.abstract.backend.html" class="btn btn-neutral float-right" title="pepper.framework.abstract.backend module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="pepper.framework.abstract.html" class="btn btn-neutral" title="pepper.framework.abstract package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="pepper.framework.abstract.html" class="btn btn-neutral float-left" title="pepper.framework.abstract package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -424,25 +369,16 @@ exposes <a class="reference internal" href="pepper.framework.abstract.backend.ht
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

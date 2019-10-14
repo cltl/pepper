@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.backend.system package" href="pepper.framework.backend.system.html" />
     <link rel="prev" title="pepper.framework.backend.naoqi.tablet module" href="pepper.framework.backend.naoqi.tablet.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -181,8 +183,46 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pepper-framework-backend-naoqi-text-to-speech-module">
-<h1>pepper.framework.backend.naoqi.text_to_speech module<a class="headerlink" href="#pepper-framework-backend-naoqi-text-to-speech-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pepper.framework.backend.naoqi.text_to_speech">
+<span id="pepper-framework-backend-naoqi-text-to-speech-module"></span><h1>pepper.framework.backend.naoqi.text_to_speech module<a class="headerlink" href="#module-pepper.framework.backend.naoqi.text_to_speech" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.backend.naoqi.text_to_speech.NAOqiTextToSpeech">
+<em class="property">class </em><code class="descclassname">pepper.framework.backend.naoqi.text_to_speech.</code><code class="descname">NAOqiTextToSpeech</code><span class="sig-paren">(</span><em>session</em>, <em>language</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/text_to_speech.html#NAOqiTextToSpeech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.text_to_speech.NAOqiTextToSpeech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech" title="pepper.framework.abstract.text_to_speech.AbstractTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.text_to_speech.AbstractTextToSpeech</span></code></a></p>
+<p>NAOqi Text to Speech</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<em>qi.Session</em>) – Qi Application Session</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.backend.naoqi.text_to_speech.NAOqiTextToSpeech.SERVICE">
+<code class="descname">SERVICE</code><em class="property"> = u'ALAnimatedSpeech'</em><a class="headerlink" href="#pepper.framework.backend.naoqi.text_to_speech.NAOqiTextToSpeech.SERVICE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.backend.naoqi.text_to_speech.NAOqiTextToSpeech.on_text_to_speech">
+<code class="descname">on_text_to_speech</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/text_to_speech.html#NAOqiTextToSpeech.on_text_to_speech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.text_to_speech.NAOqiTextToSpeech.on_text_to_speech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Say something through Text to Speech</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<em>str</em>) – </li>
+<li><strong>animation</strong> (<em>str</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -196,7 +236,7 @@
         <a href="pepper.framework.backend.system.html" class="btn btn-neutral float-right" title="pepper.framework.backend.system package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.framework.backend.naoqi.tablet.html" class="btn btn-neutral" title="pepper.framework.backend.naoqi.tablet module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.framework.backend.naoqi.tablet.html" class="btn btn-neutral float-left" title="pepper.framework.backend.naoqi.tablet module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -222,25 +262,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

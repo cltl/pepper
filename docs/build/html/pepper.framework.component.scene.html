@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.component.speech_recognition module" href="pepper.framework.component.speech_recognition.html" />
+    <link rel="prev" title="pepper.framework.component.object_detection module" href="pepper.framework.component.object_detection.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -198,37 +202,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>backend: AbstractBackend</strong></dt>
-<dd><p class="first last">Application Backend</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code></dt>
-<dd><p class="first last">Application <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractBackend</span></code></a></p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></dt>
-<dd><p class="first last">Returns Component <a class="reference external" href="https://docs.python.org/2/library/logging.html">Logger</a></p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.component.scene.SceneComponent.scatter_map" title="pepper.framework.component.scene.SceneComponent.scatter_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter_map</span></code></a></dt>
-<dd><p class="first last">Create 3D Scatter Map of Scene</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">require</span></code>(cls,&nbsp;dependency)</td>
-<td>Enforce Component Dependency by throwing an Exception when a dependency is missing</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>backend</strong> (<a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><em>AbstractBackend</em></a>) – Application Backend</td>
 </tr>
 </tbody>
 </table>
@@ -260,12 +234,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>x, y, z, color: Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]</strong></dt>
-<dd><p class="first last">Numpy Arrays of X, Y, Z and Color Data</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>x, y, z, color</strong> – Numpy Arrays of X, Y, Z and Color Data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]</td>
 </tr>
 </tbody>
 </table>
@@ -277,7 +248,7 @@
 <dt id="pepper.framework.component.scene.resize">
 <code class="descclassname">pepper.framework.component.scene.</code><code class="descname">resize</code><span class="sig-paren">(</span><em>src</em>, <em>dsize</em><span class="optional">[</span>, <em>dst</em><span class="optional">[</span>, <em>fx</em><span class="optional">[</span>, <em>fy</em><span class="optional">[</span>, <em>interpolation</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; dst<a class="headerlink" href="#pepper.framework.component.scene.resize" title="Permalink to this definition">¶</a></dt>
 <dd><p>.   &#64;brief Resizes an image.
-.   
+.
 .   The function resize resizes the image src down to or up to the specified size. Note that the
 .   initial dst type or size are not taken into account. Instead, the size and type are derived from
 .   the <cite>src</cite>,`dsize`,`fx`, and <cite>fy</cite>. If you want to resize src so that it fits the pre-created dst,
@@ -295,7 +266,7 @@
 .   To shrink an image, it will generally look best with #INTER_AREA interpolation, whereas to
 .   enlarge an image, it will generally look best with c#INTER_CUBIC (slow) or #INTER_LINEAR
 .   (faster but still looks OK).
-.   
+.
 .   &#64;param src input image.
 .   &#64;param dst output image; it has the size dsize (when it is non-zero) or the size computed from
 .   src.size(), fx, and fy; the type of dst is the same as of src.
@@ -307,7 +278,7 @@
 .   &#64;param fy scale factor along the vertical axis; when it equals 0, it is computed as
 .   f[texttt{(double)dsize.height/src.rows}f]
 .   &#64;param interpolation interpolation method, see #InterpolationFlags
-.   
+.
 .   &#64;sa  warpAffine, warpPerspective, remap</p>
 </dd></dl>
 
@@ -318,6 +289,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.component.speech_recognition.html" class="btn btn-neutral float-right" title="pepper.framework.component.speech_recognition module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.component.object_detection.html" class="btn btn-neutral float-left" title="pepper.framework.component.object_detection module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -341,25 +321,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

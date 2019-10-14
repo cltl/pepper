@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.component.brain module" href="pepper.framework.component.brain.html" />
+    <link rel="prev" title="pepper.framework.component.display.display module" href="pepper.framework.component.display.display.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -196,59 +200,6 @@
 <em class="property">class </em><code class="descclassname">pepper.framework.component.display.server.</code><code class="descname">DisplayServer</code><a class="reference internal" href="_modules/pepper/framework/component/display/server.html#DisplayServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tornado.web.Application</span></code></p>
 <p>Display Server for <a class="reference internal" href="pepper.framework.component.display.display.html#pepper.framework.component.display.display.DisplayComponent" title="pepper.framework.component.display.display.DisplayComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplayComponent</span></code></a></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_handlers</span></code>(host_pattern,&nbsp;host_handlers)</td>
-<td>Appends the given handlers to our handler list.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_handler_delegate</span></code>(request,&nbsp;target_class)</td>
-<td>Returns <cite>~.httputil.HTTPMessageDelegate</cite> that can serve a request for application and <cite>RequestHandler</cite> subclass.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">listen</span></code>(port[,&nbsp;address])</td>
-<td>Starts an HTTP server for this application on the given port.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_request</span></code>(handler)</td>
-<td>Writes a completed HTTP request to the logs.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_close</span></code>(server_conn)</td>
-<td>This method is called when a connection has been closed.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_url</span></code>(name,&nbsp;*args)</td>
-<td>Returns a URL path for handler named <code class="docutils literal notranslate"><span class="pre">name</span></code></td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.component.display.server.DisplayServer.start" title="pepper.framework.component.display.server.DisplayServer.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>()</td>
-<td>Start WebServer</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.component.display.server.DisplayServer.update" title="pepper.framework.component.display.server.DisplayServer.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(json)</td>
-<td>Update WebServer</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="63%" />
-<col width="37%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>__call__</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>add_transform</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>find_handler</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>start_request</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.framework.component.display.server.DisplayServer.HANDLERS">
 <code class="descname">HANDLERS</code><em class="property"> = set([])</em><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.HANDLERS" title="Permalink to this definition">¶</a></dt>
@@ -261,7 +212,7 @@
 
 <dl class="attribute">
 <dt id="pepper.framework.component.display.server.DisplayServer.ROOT">
-<code class="descname">ROOT</code><em class="property"> = '/Users/bram/Documents/pepper/pepper/pepper/framework/component/display/web'</em><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.ROOT" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ROOT</code><em class="property"> = 'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\pepper\\framework\\component\\display\\web'</em><a class="headerlink" href="#pepper.framework.component.display.server.DisplayServer.ROOT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -286,6 +237,15 @@
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.component.brain.html" class="btn btn-neutral float-right" title="pepper.framework.component.brain module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.component.display.display.html" class="btn btn-neutral float-left" title="pepper.framework.component.display.display module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
@@ -308,25 +268,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

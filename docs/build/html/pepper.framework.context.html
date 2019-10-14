@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.util module" href="pepper.framework.util.html" />
+    <link rel="prev" title="pepper.framework.sensor.vad module" href="pepper.framework.sensor.vad.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -183,67 +187,6 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Context Object</p>
 <p>Contains Awareness for People, Objects &amp; Conversations</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.context.Context.all_objects" title="pepper.framework.context.Context.all_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_objects</span></code></a></dt>
-<dd><p class="first last">Objects seen since beginning of Context</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.all_people" title="pepper.framework.context.Context.all_people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_people</span></code></a></dt>
-<dd><p class="first last">People seen since beginning of Context</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.chat" title="pepper.framework.context.Context.chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></a></dt>
-<dd><p class="first last">The Current Chat, if any</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.chats" title="pepper.framework.context.Context.chats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chats</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.chatting" title="pepper.framework.context.Context.chatting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chatting</span></code></a></dt>
-<dd><p class="first last">Returns True when a Chat is happening</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.datetime" title="pepper.framework.context.Context.datetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a></dt>
-<dd><p class="first last">The Current Date &amp; Time</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.id" title="pepper.framework.context.Context.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a></dt>
-<dd><p class="first last">ID</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.location" title="pepper.framework.context.Context.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></dt>
-<dd><p class="first last">The Current Location</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.objects" title="pepper.framework.context.Context.objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">objects</span></code></a></dt>
-<dd><p class="first last">Objects seen within Observation Timeout</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.context.Context.people" title="pepper.framework.context.Context.people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">people</span></code></a></dt>
-<dd><p class="first last">People seen within Observation Timeout</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.context.Context.add_objects" title="pepper.framework.context.Context.add_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_objects</span></code></a>(objects)</td>
-<td>Add Object Observations to Context</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.context.Context.add_people" title="pepper.framework.context.Context.add_people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_people</span></code></a>(people)</td>
-<td>Add People Observations to Context</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.context.Context.start_chat" title="pepper.framework.context.Context.start_chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_chat</span></code></a>(speaker)</td>
-<td>Start Chat with Speaker</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.context.Context.stop_chat" title="pepper.framework.context.Context.stop_chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_chat</span></code></a>()</td>
-<td>Stop Chat</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.framework.context.Context.OBSERVATION_TIMEOUT">
 <code class="descname">OBSERVATION_TIMEOUT</code><em class="property"> = 60</em><a class="headerlink" href="#pepper.framework.context.Context.OBSERVATION_TIMEOUT" title="Permalink to this definition">¶</a></dt>
@@ -257,12 +200,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>objects: list of Object</strong></dt>
-<dd><p class="first last">List of Objects</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> (<em>list of Object</em>) – List of Objects</td>
 </tr>
 </tbody>
 </table>
@@ -276,12 +214,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>people: list of Face</strong></dt>
-<dd><p class="first last">List of People</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>people</strong> (<em>list of Face</em>) – List of People</td>
 </tr>
 </tbody>
 </table>
@@ -295,12 +228,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>objects: list of Object</strong></dt>
-<dd><p class="first last">List of all Objects since beginning of Context</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>objects</strong> – List of all Objects since beginning of Context</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of Object</td>
 </tr>
 </tbody>
 </table>
@@ -314,12 +244,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>people: list of Face</strong></dt>
-<dd><p class="first last">List of all People seen since beginning of Context</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>people</strong> – List of all People seen since beginning of Context</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of Face</td>
 </tr>
 </tbody>
 </table>
@@ -333,11 +260,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>chat: Optional[Chat]</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>chat</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Optional[<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat">Chat</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -346,19 +271,8 @@
 <dl class="attribute">
 <dt id="pepper.framework.context.Context.chats">
 <code class="descname">chats</code><a class="headerlink" href="#pepper.framework.context.Context.chats" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>chats: list of Chat</strong></dt>
-<dd><p class="first last">List of all Chats that were held during current session</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>chats</strong> – List of all Chats that were held during current session
+:rtype: list of Chat</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -369,11 +283,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>chatting: bool</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>chatting</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -387,12 +299,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>datetime: datetime</strong></dt>
-<dd><p class="first last">Current Date and Time</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>datetime</strong> – Current Date and Time</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">datetime</td>
 </tr>
 </tbody>
 </table>
@@ -406,11 +315,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>id: int</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>id</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -424,12 +331,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>location: Location</strong></dt>
-<dd><p class="first last">Current Location</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>location</strong> – Current Location</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.sensor.location.html#pepper.framework.sensor.location.Location" title="pepper.framework.sensor.location.Location">Location</a></td>
 </tr>
 </tbody>
 </table>
@@ -443,12 +347,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>objects: list of Object</strong></dt>
-<dd><p class="first last">List of Objects seen within Observation Timeout</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>objects</strong> – List of Objects seen within Observation Timeout</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of Object</td>
 </tr>
 </tbody>
 </table>
@@ -462,12 +363,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>people: list of Face</strong></dt>
-<dd><p class="first last">List of People seen within Observation Timeout</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>people</strong> – List of People seen within Observation Timeout</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of Face</td>
 </tr>
 </tbody>
 </table>
@@ -481,12 +379,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>speaker: str</strong></dt>
-<dd><p class="first last">Name of Speaker</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>speaker</strong> (<em>str</em>) – Name of Speaker</td>
 </tr>
 </tbody>
 </table>
@@ -504,34 +397,6 @@
 <dt id="pepper.framework.context.ObjectObservations">
 <em class="property">class </em><code class="descclassname">pepper.framework.context.</code><code class="descname">ObjectObservations</code><a class="reference internal" href="_modules/pepper/framework/context.html#ObjectObservations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.ObjectObservations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object Observations for a particular Object Class</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.context.ObjectObservations.instances" title="pepper.framework.context.ObjectObservations.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a></dt>
-<dd><p class="first last">Get individual object instances for this Object Class</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.context.ObjectObservations.add_observation" title="pepper.framework.context.ObjectObservations.add_observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_observation</span></code></a>(obj)</td>
-<td>Add Observation of object with this Object Class</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.context.ObjectObservations.update_view" title="pepper.framework.context.ObjectObservations.update_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_view</span></code></a>(image)</td>
-<td>Update Object Instances with Current Image</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.framework.context.ObjectObservations.EPSILON">
 <code class="descname">EPSILON</code><em class="property"> = 0.2</em><a class="headerlink" href="#pepper.framework.context.ObjectObservations.EPSILON" title="Permalink to this definition">¶</a></dt>
@@ -566,11 +431,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>obj: Object</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obj</strong> (<a class="reference internal" href="pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object" title="pepper.framework.sensor.obj.Object"><em>Object</em></a>) – </td>
 </tr>
 </tbody>
 </table>
@@ -584,11 +445,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>instances: List[Object]</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>instances</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object" title="pepper.framework.sensor.obj.Object">Object</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -603,11 +462,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>image: AbstractImage</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage" title="pepper.framework.abstract.camera.AbstractImage"><em>AbstractImage</em></a>) – </td>
 </tr>
 </tbody>
 </table>
@@ -621,31 +476,6 @@
 <dd><p>Object Observations</p>
 <p>Object to track of which objects have been seen and where. Groups Object Observations based on location,
 to guess which observations are in fact of the same object. Each Object Class is handled in ObjectObservations.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.context.Observations.instances" title="pepper.framework.context.Observations.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a></dt>
-<dd><p class="first last">Get individual object instances, based on observations</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.context.Observations.add_observations" title="pepper.framework.context.Observations.add_observations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_observations</span></code></a>(image,&nbsp;objects)</td>
-<td>Add Object Observations and figure out with which Object Instance they correspond</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.framework.context.Observations.add_observations">
 <code class="descname">add_observations</code><span class="sig-paren">(</span><em>image</em>, <em>objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/context.html#Observations.add_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.context.Observations.add_observations" title="Permalink to this definition">¶</a></dt>
@@ -654,12 +484,10 @@ to guess which observations are in fact of the same object. Each Object Class is
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>image: AbstractImage</strong></dt>
-<dd></dd>
-<dt><strong>objects: List[Object]</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image</strong> (<a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage" title="pepper.framework.abstract.camera.AbstractImage"><em>AbstractImage</em></a>) – </li>
+<li><strong>objects</strong> (<em>List</em><em>[</em><a class="reference internal" href="pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object" title="pepper.framework.sensor.obj.Object"><em>Object</em></a><em>]</em>) – </li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -674,11 +502,9 @@ to guess which observations are in fact of the same object. Each Object Class is
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>instances: List[Object]</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>instances</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object" title="pepper.framework.sensor.obj.Object">Object</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -699,6 +525,15 @@ to guess which observations are in fact of the same object. Each Object Class is
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.util.html" class="btn btn-neutral float-right" title="pepper.framework.util module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.sensor.vad.html" class="btn btn-neutral float-left" title="pepper.framework.sensor.vad module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -722,25 +557,16 @@ to guess which observations are in fact of the same object. Each Object Class is
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

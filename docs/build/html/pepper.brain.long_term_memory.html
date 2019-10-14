@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework package" href="pepper.framework.html" />
+    <link rel="prev" title="pepper.brain.basic_brain module" href="pepper.brain.basic_brain.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -85,9 +89,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.basic_brain.html">pepper.brain.basic_brain module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.brain.long_term_memory module</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.brain.long_term_memory module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
@@ -171,77 +173,6 @@
 <dt id="pepper.brain.long_term_memory.LongTermMemory">
 <em class="property">class </em><code class="descclassname">pepper.brain.long_term_memory.</code><code class="descname">LongTermMemory</code><span class="sig-paren">(</span><em>address='http://localhost:7200/repositories/leolani'</em>, <em>clear_all=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain" title="pepper.brain.basic_brain.BasicBrain"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.basic_brain.BasicBrain</span></code></a></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_brain</span></code>()</td>
-<td>Clear all data from the brain :return: response status</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_friends</span></code>()</td>
-<td>Count number of people I have talked to :return:</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_statements</span></code>()</td>
-<td>Count statements or ‘facts’ in the brain :return:</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.experience" title="pepper.brain.long_term_memory.LongTermMemory.experience"><code class="xref py py-obj docutils literal notranslate"><span class="pre">experience</span></code></a>(utterance)</td>
-<td>Main function to interact with if an experience is coming into the brain.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_best_friends</span></code>()</td>
-<td>Get names of the 5 people I have talked to the most :return:</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_classes</span></code>()</td>
-<td>Get classes or types in social ontology :return:</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instance_of_type</span></code>(instance_type)</td>
-<td>Get instances of a certain class type :param instance_type: name of class in ontology :return:</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_labels_and_classes</span></code>()</td>
-<td>Get classes in social ontology :return:</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_my_friends</span></code>()</td>
-<td>Get names of people I have talked to :return:</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_predicates</span></code>()</td>
-<td>Get predicates in social ontology :return:</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_triples_with_predicate</span></code>(predicate)</td>
-<td>Get triples that contain this predicate :param predicate: :return:</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_type_of_instance</span></code>(label)</td>
-<td>Get types of a certain instance identified by its label :param label: label of instance :return:</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.query_brain" title="pepper.brain.long_term_memory.LongTermMemory.query_brain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_brain</span></code></a>(utterance)</td>
-<td>Main function to interact with if a question is coming into the brain.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.brain.long_term_memory.LongTermMemory.update" title="pepper.brain.long_term_memory.LongTermMemory.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(utterance[,&nbsp;reason_types])</td>
-<td>Main function to interact with if a statement is coming into the brain.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_ontology</span></code>()</td>
-<td>Upload ontology :return: response status</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">when_last_chat_with</span></code>(actor_label)</td>
-<td>Get time value for the last time I chatted with this person :param actor_label: name of person :return:</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="69%" />
-<col width="31%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>clean_local_memory</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>create_context</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.brain.long_term_memory.LongTermMemory.create_context">
 <code class="descname">create_context</code><span class="sig-paren">(</span><em>cntxt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.create_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.create_context" title="Permalink to this definition">¶</a></dt>
@@ -270,22 +201,16 @@ transforms it into a query, and queries the triple store for a response
 <code class="descname">update</code><span class="sig-paren">(</span><em>utterance</em>, <em>reason_types=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main function to interact with if a statement is coming into the brain. Takes in an Utterance containing a
 parsed statement as a Triple, transforms them to linked data, and posts them to the triple store
-Parameters
-———-
-utterance: Utterance</p>
-<blockquote>
-<div>Contains all necessary information regarding a statement just made.</div></blockquote>
+:param utterance: Contains all necessary information regarding a statement just made.
+:type utterance: Utterance</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>thoughts: Thoughts</strong></dt>
-<dd><p class="first last">Contains information about conflicts, novelty, gaps and overlaps that the statement produces given the data
-in the triple store</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>thoughts</strong> – Contains information about conflicts, novelty, gaps and overlaps that the statement produces given the data
+in the triple store</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.brain.utils.response.html#pepper.brain.utils.response.Thoughts" title="pepper.brain.utils.response.Thoughts">Thoughts</a></td>
 </tr>
 </tbody>
 </table>
@@ -300,6 +225,15 @@ in the triple store</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.html" class="btn btn-neutral float-right" title="pepper.framework package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.brain.basic_brain.html" class="btn btn-neutral float-left" title="pepper.brain.basic_brain module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -323,25 +257,16 @@ in the triple store</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

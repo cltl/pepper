@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.abstract.tablet module" href="pepper.framework.abstract.tablet.html" />
+    <link rel="prev" title="pepper.framework.abstract.microphone module" href="pepper.framework.abstract.microphone.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -192,21 +196,6 @@
 <em class="property">class </em><code class="descclassname">pepper.framework.abstract.motion.</code><code class="descname">AbstractMotion</code><a class="reference internal" href="_modules/pepper/framework/abstract/motion.html#AbstractMotion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.motion.AbstractMotion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Control Robot Motion (other than speech animation)</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.abstract.motion.AbstractMotion.look" title="pepper.framework.abstract.motion.AbstractMotion.look"><code class="xref py py-obj docutils literal notranslate"><span class="pre">look</span></code></a>(direction[,&nbsp;speed])</td>
-<td>Look at particular direction</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.abstract.motion.AbstractMotion.point" title="pepper.framework.abstract.motion.AbstractMotion.point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point</span></code></a>(direction[,&nbsp;speed])</td>
-<td>Point at particular direction</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.framework.abstract.motion.AbstractMotion.look">
 <code class="descname">look</code><span class="sig-paren">(</span><em>direction</em>, <em>speed=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/motion.html#AbstractMotion.look"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.motion.AbstractMotion.look" title="Permalink to this definition">¶</a></dt>
@@ -215,14 +204,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>direction: Tuple[float, float]</strong></dt>
-<dd><p class="first last">Direction to look at in View Space (Spherical Coordinates)</p>
-</dd>
-<dt><strong>speed: float</strong></dt>
-<dd><p class="first last">Movement Speed [0,1]</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>direction</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Direction to look at in View Space (Spherical Coordinates)</li>
+<li><strong>speed</strong> (<em>float</em>) – Movement Speed [0,1]</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -237,14 +222,10 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>direction: Tuple[float, float]</strong></dt>
-<dd><p class="first last">Direction to point at in View Space (Spherical Coordinates)</p>
-</dd>
-<dt><strong>speed: float</strong></dt>
-<dd><p class="first last">Movement Speed [0,1]</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>direction</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Direction to point at in View Space (Spherical Coordinates)</li>
+<li><strong>speed</strong> (<em>float</em>) – Movement Speed [0,1]</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -260,6 +241,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.abstract.tablet.html" class="btn btn-neutral float-right" title="pepper.framework.abstract.tablet module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.abstract.microphone.html" class="btn btn-neutral float-left" title="pepper.framework.abstract.microphone module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -283,25 +273,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

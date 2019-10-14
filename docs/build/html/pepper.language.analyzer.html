@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.language.language module" href="pepper.language.language.html" />
     <link rel="prev" title="pepper.language.utils.wordnet_utils module" href="pepper.language.utils.wordnet_utils.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -89,9 +92,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.language.analyzer module</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.language.analyzer module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.name.html">pepper.language.name module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
@@ -177,74 +178,9 @@
 <dt id="pepper.language.analyzer.Analyzer">
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">Analyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.Analyzer.chat" title="pepper.language.analyzer.Analyzer.chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.Analyzer.perspective" title="pepper.language.analyzer.Analyzer.perspective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.Analyzer.rdf" title="pepper.language.analyzer.Analyzer.rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.Analyzer.utterance_type" title="pepper.language.analyzer.Analyzer.utterance_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.analyzer.Analyzer.analyze" title="pepper.language.analyzer.Analyzer.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>(chat)</td>
-<td>Analyzer factory function</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.GRAMMAR_JSON">
-<code class="descname">GRAMMAR_JSON</code><em class="property"> = '/Users/bram/Documents/pepper/pepper/pepper/language/data/lexicon.json'</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.GRAMMAR_JSON" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GRAMMAR_JSON</code><em class="property"> = 'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\pepper\\language\\data\\lexicon.json'</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.GRAMMAR_JSON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -271,19 +207,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>chat: Chat</strong></dt>
-<dd><p class="first last">Chat to be analyzed</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chat</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat"><em>Chat</em></a>) – Chat to be analyzed</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>analyzer: Analyzer</strong></dt>
-<dd><p class="first last">Appropriate Analyzer Subclass</p>
-</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>analyzer</strong> – Appropriate Analyzer Subclass</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.language.analyzer.Analyzer" title="pepper.language.analyzer.Analyzer">Analyzer</a></td>
 </tr>
 </tbody>
 </table>
@@ -317,19 +245,8 @@
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.chat">
 <code class="descname">chat</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.chat" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>chat: Chat</strong></dt>
-<dd><p class="first last">Chat to be analyzed</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>chat</strong> – Chat to be analyzed
+:rtype: Chat</p>
 </dd></dl>
 
 <dl class="method">
@@ -344,59 +261,28 @@
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.json_file">
-<code class="descname">json_file</code><em class="property"> = &lt;closed file '/Users/bram/Documents/pepper/pepper/pepper/language/data/lexicon.json', mode 'r'&gt;</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.json_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">json_file</code><em class="property"> = &lt;closed file 'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\pepper\\language\\data\\lexicon.json', mode 'r'&gt;</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.json_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.perspective">
 <code class="descname">perspective</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.perspective" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>perspective: dict or None</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>perspective</strong>
+:rtype: dict or None</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.rdf">
 <code class="descname">rdf</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.rdf" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>rdf: dict or None</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>rdf</strong>
+:rtype: dict or None</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.utterance_type">
 <code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>utterance_type: UtteranceType</strong></dt>
-<dd><p class="first last">Utterance Type</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>utterance_type</strong> – Utterance Type
+:rtype: UtteranceType</p>
 </dd></dl>
 
 </dd></dl>
@@ -405,86 +291,6 @@
 <dt id="pepper.language.analyzer.GeneralStatementAnalyzer">
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">GeneralStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.StatementAnalyzer</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.GeneralStatementAnalyzer.perspective" title="pepper.language.analyzer.GeneralStatementAnalyzer.perspective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
-<td>StatementAnalyzer factory function</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.language.analyzer.GeneralStatementAnalyzer.initialize_rdf" title="pepper.language.analyzer.GeneralStatementAnalyzer.initialize_rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_rdf</span></code></a>()</td>
-<td>assumed word order: NP VP C subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_certainty_statement</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_multiword_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>check_rdf_completeness</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>extract_perspective</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement">
 <code class="descname">analyze_certainty_statement</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_certainty_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement" title="Permalink to this definition">¶</a></dt>
@@ -515,18 +321,8 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <dl class="attribute">
 <dt id="pepper.language.analyzer.GeneralStatementAnalyzer.perspective">
 <code class="descname">perspective</code><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.perspective" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>perspective: dict or None</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>perspective</strong>
+:rtype: dict or None</p>
 </dd></dl>
 
 </dd></dl>
@@ -535,71 +331,6 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <dt id="pepper.language.analyzer.ObjectStatementAnalyzer">
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">ObjectStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#ObjectStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.ObjectStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.StatementAnalyzer</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
-<td>StatementAnalyzer factory function</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="class">
@@ -607,71 +338,6 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">QuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#QuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.Analyzer" title="pepper.language.analyzer.Analyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.Analyzer</span></code></a></p>
 <p>Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer.utterance_type" title="pepper.language.analyzer.QuestionAnalyzer.utterance_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer.analyze" title="pepper.language.analyzer.QuestionAnalyzer.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>(chat)</td>
-<td>QuestionAnalyzer factory function</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="staticmethod">
 <dt id="pepper.language.analyzer.QuestionAnalyzer.analyze">
 <em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#QuestionAnalyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer.analyze" title="Permalink to this definition">¶</a></dt>
@@ -681,19 +347,11 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>chat: Chat</strong></dt>
-<dd><p class="first last">Chat to be analyzed</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chat</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat"><em>Chat</em></a>) – Chat to be analyzed</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>analyzer: QuestionAnalyzer</strong></dt>
-<dd><p class="first last">Appropriate QuestionAnalyzer Subclass</p>
-</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>analyzer</strong> – Appropriate QuestionAnalyzer Subclass</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer">QuestionAnalyzer</a></td>
 </tr>
 </tbody>
 </table>
@@ -702,19 +360,8 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <dl class="attribute">
 <dt id="pepper.language.analyzer.QuestionAnalyzer.utterance_type">
 <code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>utterance_type: UtteranceType</strong></dt>
-<dd><p class="first last">Utterance Type (Question)</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>utterance_type</strong> – Utterance Type (Question)
+:rtype: UtteranceType</p>
 </dd></dl>
 
 </dd></dl>
@@ -724,71 +371,6 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">StatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#StatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.Analyzer" title="pepper.language.analyzer.Analyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.Analyzer</span></code></a></p>
 <p>Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer.perspective" title="pepper.language.analyzer.StatementAnalyzer.perspective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer.utterance_type" title="pepper.language.analyzer.StatementAnalyzer.utterance_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer.analyze" title="pepper.language.analyzer.StatementAnalyzer.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code></a>(chat)</td>
-<td>StatementAnalyzer factory function</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="staticmethod">
 <dt id="pepper.language.analyzer.StatementAnalyzer.analyze">
 <em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#StatementAnalyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.analyze" title="Permalink to this definition">¶</a></dt>
@@ -798,19 +380,11 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>chat: Chat</strong></dt>
-<dd><p class="first last">Chat to be analyzed</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chat</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat"><em>Chat</em></a>) – Chat to be analyzed</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>analyzer: StatementAnalyzer</strong></dt>
-<dd><p class="first last">Appropriate StatementAnalyzer Subclass</p>
-</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>analyzer</strong> – Appropriate StatementAnalyzer Subclass</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer">StatementAnalyzer</a></td>
 </tr>
 </tbody>
 </table>
@@ -819,36 +393,15 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <dl class="attribute">
 <dt id="pepper.language.analyzer.StatementAnalyzer.perspective">
 <code class="descname">perspective</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.perspective" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>perspective: dict or None</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>perspective</strong>
+:rtype: dict or None</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.StatementAnalyzer.utterance_type">
 <code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>utterance_type: UtteranceType</strong></dt>
-<dd><p class="first last">Utterance Type (Statement)</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>returns: <strong>utterance_type</strong> – Utterance Type (Statement)
+:rtype: UtteranceType</p>
 </dd></dl>
 
 </dd></dl>
@@ -857,77 +410,6 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <dt id="pepper.language.analyzer.VerbQuestionAnalyzer">
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">VerbQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.QuestionAnalyzer</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
-<td>QuestionAnalyzer factory function</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_multiword_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>initialize_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_object">
 <code class="descname">analyze_multiword_object</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.analyze_multiword_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_object" title="Permalink to this definition">¶</a></dt>
@@ -944,77 +426,6 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <dt id="pepper.language.analyzer.WhQuestionAnalyzer">
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">WhQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.QuestionAnalyzer</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>NER</strong></dt>
-<dd></dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">perspective</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">rdf</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">utterance_type</span></code></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze</span></code>(chat)</td>
-<td>QuestionAnalyzer factory function</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.language.analyzer.WhQuestionAnalyzer.initialize_rdf" title="pepper.language.analyzer.WhQuestionAnalyzer.initialize_rdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_rdf</span></code></a>()</td>
-<td>The assumed word order in wh-questions: aux before predicate, subject before object</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="78%" />
-<col width="22%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>analyze_multiword_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_np</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_object_with_preposition</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_one_word_object</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>analyze_possessive</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>analyze_vp</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td><strong>fix_predicate</strong></td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td><strong>get_types_in_rdf</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_object">
 <code class="descname">analyze_multiword_object</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.analyze_multiword_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_object" title="Permalink to this definition">¶</a></dt>
@@ -1038,8 +449,10 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="pepper.language.language.html" class="btn btn-neutral float-right" title="pepper.language.language module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="pepper.language.utils.wordnet_utils.html" class="btn btn-neutral" title="pepper.language.utils.wordnet_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="pepper.language.utils.wordnet_utils.html" class="btn btn-neutral float-left" title="pepper.language.utils.wordnet_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1065,25 +478,16 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.backend.naoqi.text_to_speech module" href="pepper.framework.backend.naoqi.text_to_speech.html" />
     <link rel="prev" title="pepper.framework.backend.naoqi.motion module" href="pepper.framework.backend.naoqi.motion.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -181,8 +183,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pepper-framework-backend-naoqi-tablet-module">
-<h1>pepper.framework.backend.naoqi.tablet module<a class="headerlink" href="#pepper-framework-backend-naoqi-tablet-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pepper.framework.backend.naoqi.tablet">
+<span id="pepper-framework-backend-naoqi-tablet-module"></span><h1>pepper.framework.backend.naoqi.tablet module<a class="headerlink" href="#module-pepper.framework.backend.naoqi.tablet" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet">
+<em class="property">class </em><code class="descclassname">pepper.framework.backend.naoqi.tablet.</code><code class="descname">NAOqiTablet</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/tablet.html#NAOqiTablet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.tablet.AbstractTablet</span></code></a></p>
+<p>Access Robot Tablet to show URLs</p>
+<dl class="attribute">
+<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet.IMAGE_FORMATS">
+<code class="descname">IMAGE_FORMATS</code><em class="property"> = &lt;_sre.SRE_Pattern object&gt;</em><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet.IMAGE_FORMATS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet.hide">
+<code class="descname">hide</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/tablet.html#NAOqiTablet.hide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet.hide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hide whatever is shown on tablet</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/tablet.html#NAOqiTablet.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show URL</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – WebPage/Image URL</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -196,7 +230,7 @@
         <a href="pepper.framework.backend.naoqi.text_to_speech.html" class="btn btn-neutral float-right" title="pepper.framework.backend.naoqi.text_to_speech module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.framework.backend.naoqi.motion.html" class="btn btn-neutral" title="pepper.framework.backend.naoqi.motion module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.framework.backend.naoqi.motion.html" class="btn btn-neutral float-left" title="pepper.framework.backend.naoqi.motion module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -222,25 +256,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

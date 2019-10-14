@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.framework.sensor.obj module" href="pepper.framework.sensor.obj.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="next" title="pepper.framework.sensor.obj module" href="pepper.framework.sensor.obj.html" />
+    <link rel="prev" title="pepper.framework.sensor.face module" href="pepper.framework.sensor.face.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -189,31 +192,6 @@
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.location.</code><code class="descname">Location</code><a class="reference internal" href="_modules/pepper/framework/sensor/location.html#Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.location.Location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Location on Earth</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.sensor.location.Location.city" title="pepper.framework.sensor.location.Location.city"><code class="xref py py-obj docutils literal notranslate"><span class="pre">city</span></code></a></dt>
-<dd><p class="first last">City String</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.location.Location.country" title="pepper.framework.sensor.location.Location.country"><code class="xref py py-obj docutils literal notranslate"><span class="pre">country</span></code></a></dt>
-<dd><p class="first last">Country String</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.location.Location.id" title="pepper.framework.sensor.location.Location.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a></dt>
-<dd><p class="first last">ID for this Location object</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.location.Location.label" title="pepper.framework.sensor.location.Location.label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label</span></code></a></dt>
-<dd><p class="first last">Learned Location Label</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.location.Location.region" title="pepper.framework.sensor.location.Location.region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">region</span></code></a></dt>
-<dd><p class="first last">Region String</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.framework.sensor.location.Location.UNKNOWN">
 <code class="descname">UNKNOWN</code><em class="property"> = 'Unknown'</em><a class="headerlink" href="#pepper.framework.sensor.location.Location.UNKNOWN" title="Permalink to this definition">¶</a></dt>
@@ -227,11 +205,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>city: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>city</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -245,11 +221,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>country: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>country</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -263,11 +237,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>id: int</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>id</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -281,11 +253,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>label: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>label</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -299,11 +269,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>region: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>region</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -329,6 +297,8 @@
         <a href="pepper.framework.sensor.obj.html" class="btn btn-neutral float-right" title="pepper.framework.sensor.obj module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
+        <a href="pepper.framework.sensor.face.html" class="btn btn-neutral float-left" title="pepper.framework.sensor.face module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
   
 
@@ -353,25 +323,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
