@@ -7,7 +7,7 @@ from pepper import config
 class LocationReasoner(BasicBrain):
 
     def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
-        # type: () -> LocationReasoner
+        # type: (str, bool) -> LocationReasoner
         """
         Interact with Triple store
 

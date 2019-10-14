@@ -48,8 +48,8 @@ def _phrase_negation_conflicts(conflicts, utterance):
 
     # There is conflict entries
     else:
-        affirmative_conflict = [item for item in conflicts if not item.predicate_name.endswith('-not')]
-        negative_conflict = [item for item in conflicts if item.predicate_name.endswith('-not')]
+        affirmative_conflict = [item for item in conflicts if item.polarity_value == 'POSITIVE']
+        negative_conflict = [item for item in conflicts if item.polarity_value == 'NEGATIVE']
 
         # There is a conflict, so we phrase it
         if affirmative_conflict and negative_conflict:
@@ -60,9 +60,9 @@ def _phrase_negation_conflicts(conflicts, utterance):
 
             say += ' %s told me in %s that %s %s %s, but in %s %s told me that %s did not %s %s' \
                    % (affirmative_conflict.author, affirmative_conflict.date.strftime("%B"),
-                      utterance.triple.subject_name, affirmative_conflict.predicate_name, utterance.triple.object_name,
+                      utterance.triple.subject_name, utterance.triple.predicate_name, utterance.triple.object_name,
                       negative_conflict.date.strftime("%B"), negative_conflict.author,
-                      utterance.triple.subject_name, affirmative_conflict.predicate_name, utterance.triple.object_name)
+                      utterance.triple.subject_name, utterance.triple.predicate_name, utterance.triple.object_name)
 
         # There is no conflict, so just be happy to learn
         else:
@@ -267,7 +267,7 @@ def phrase_trust(trust):
     return say
 
 
-def phrase_thoughts(update, proactive=True, persist=False):
+def phrase_thoughts(update, entity_only= False, proactive=True, persist=False):
     """
     Phrase a random thought
     Parameters
@@ -280,9 +280,10 @@ def phrase_thoughts(update, proactive=True, persist=False):
     -------
 
     """
-
-    # TODO conjugate through fix predicate
-    options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
+    if entity_only:
+        options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
+    else:
+        options = ['cardinality_conflicts', 'entity_novelty']
 
     if proactive:
         options.extend(['subject_gaps', 'object_gaps', 'overlaps'])
