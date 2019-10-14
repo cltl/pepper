@@ -1,6 +1,7 @@
 from pepper.framework.abstract import AbstractBackend
-from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, SystemLed, SystemTablet
-from pepper import config
+from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech,\
+    SystemMotion, SystemLed, SystemTablet
+from pepper import config, CameraResolution
 
 
 class SystemBackend(AbstractBackend):
@@ -27,6 +28,8 @@ class SystemBackend(AbstractBackend):
                  microphone_channels=config.MICROPHONE_CHANNELS,
                  microphone_rate=config.MICROPHONE_SAMPLE_RATE,
                  language=config.APPLICATION_LANGUAGE):
+        # type: (CameraResolution, int, int, int, str) -> None
+
         super(SystemBackend, self).__init__(SystemCamera(camera_resolution, camera_rate),
                                             SystemMicrophone(microphone_rate, microphone_channels),
-                                            SystemTextToSpeech(language), SystemLed(), SystemTablet())
+                                            SystemTextToSpeech(language), SystemMotion(), SystemLed(), SystemTablet())

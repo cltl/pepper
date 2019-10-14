@@ -51,7 +51,12 @@ class UnknownResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        if len(utterance.tokens) < 10 and random() > 0.8:
+        def respond_to_single_word():
+            app.say("MMMMMHHH")
+
+        if len(utterance.tokens) == 1:
+            return 1, respond_to_single_word
+        elif len(utterance.tokens) < 10 and random() > 0.8:
             return 1, lambda: app.say(choice(self.ELOQUENCE), animation=choice([animations.COOL, animations.COGITATE]))
         else:
             return 1, lambda: app.say(

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -152,28 +153,42 @@
 <span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">NoReturn</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="TextToSpeechComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent">[docs]</a><span class="k">class</span> <span class="nc">TextToSpeechComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Text To Speech Component. Exposes the say() Method to Applications</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TextToSpeechComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
+        <span class="c1"># Prevent Racing Conditions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+            <span class="c1"># type: () -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;Make sure Microphone is not listening when Text to Speech is Live&quot;&quot;&quot;</span>
+
+            <span class="c1"># Acquire Microphone Lock</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span><span class="p">:</span>
-                <span class="c1"># If talking is over &amp; microphone is not yet running -&gt; Start Microphone</span>
+                <span class="c1"># If robot is not talking &amp; microphone is not yet running -&gt; Start Microphone</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">talking</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
         <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TextToSpeechComponentThread&quot;</span><span class="p">)</span>
         <span class="n">schedule</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="TextToSpeechComponent.say"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># type: (str, Optional[str]) -&gt; NoReturn</span>
+<div class="viewcode-block" id="TextToSpeechComponent.say"><a class="viewcode-back" href="../../../../pepper.framework.component.text_to_speech.html#pepper.framework.component.text_to_speech.TextToSpeechComponent.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str], bool) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Say Text (with Animation) through Text-to-Speech</span>
+<span class="sd">        Say Text (with optional Animation) through Text-to-Speech</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -181,16 +196,19 @@
 <span class="sd">            Text to say through Text-to-Speech</span>
 <span class="sd">        animation: str or None</span>
 <span class="sd">            (Naoqi) Animation to play</span>
+<span class="sd">        block: bool</span>
+<span class="sd">            Whether this function should block or immediately return after calling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Acquire Microphone Lock</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_microphone_lock</span><span class="p">:</span>
+
             <span class="c1"># Stop Microphone if running</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">microphone</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
             <span class="c1"># Say Text through Text-to-Speech</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">text_to_speech</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -220,25 +238,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

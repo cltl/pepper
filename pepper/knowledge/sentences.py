@@ -1,3 +1,7 @@
+"""
+Sets of Semantically Similar Phrases to add variety (using the random.choice function)
+"""
+
 import random
 
 GREETING = [
@@ -126,7 +130,7 @@ DIFFERENT_FACE = [
 ]
 
 THINKING = [
-    "...Hmmm...",
+    "...Hm...",
     "...Well...",
     "...Right...",
     "...Okay...",

@@ -16,6 +16,7 @@ pepper.framework.sensor package
 
    pepper.framework.sensor.asr
    pepper.framework.sensor.face
+   pepper.framework.sensor.location
    pepper.framework.sensor.obj
    pepper.framework.sensor.vad
 

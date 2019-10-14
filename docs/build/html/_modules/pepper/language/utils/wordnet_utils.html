@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.utils.wordnet_utils &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.language.utils.wordnet_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.language.utils.wordnet_utils</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Fri Mar 22 09:37:31 2019</span>
+
+<span class="sd">@author: andrasaponyi</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">wordnet</span> <span class="k">as</span> <span class="n">wn</span>
+
+<span class="c1"># Synset types: n, v, a, r (adverb), s (adjective satellite).</span>
+<div class="viewcode-block" id="get_synsets"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_synsets">[docs]</a><span class="k">def</span> <span class="nf">get_synsets</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return all possible synset of an input word. &quot;&quot;&quot;</span>
+        
+    <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
+        <span class="n">POS</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span>
+    <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
+        <span class="n">POS</span> <span class="o">=</span> <span class="s2">&quot;v&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;J&quot;</span> <span class="ow">in</span> <span class="n">tag</span><span class="p">:</span>
+        <span class="n">POS</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;RB&quot;</span> <span class="ow">in</span> <span class="n">tag</span><span class="p">:</span>
+        <span class="n">POS</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">POS</span> <span class="o">=</span> <span class="kc">None</span>
+        
+    <span class="n">synsets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">s_sets</span> <span class="o">=</span> <span class="n">wn</span><span class="o">.</span><span class="n">synsets</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s_set</span> <span class="ow">in</span> <span class="n">s_sets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s_set</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span> <span class="o">==</span> <span class="n">POS</span><span class="p">:</span>
+            <span class="n">synsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_set</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">s_set</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span> <span class="ow">and</span> <span class="n">POS</span> <span class="o">==</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span>
+            <span class="n">synsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_set</span><span class="p">)</span>
+                        
+    <span class="k">return</span> <span class="n">synsets</span></div>
+
+<span class="c1"># Get a collection of synonymous words.</span>
+<div class="viewcode-block" id="get_lemmas"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_lemmas">[docs]</a><span class="k">def</span> <span class="nf">get_lemmas</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return all lemmas of a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">lemmas</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemma_names</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">lemmas</span></div>
+
+<span class="c1"># Can be used in disambiguation, e.g. Leolani can ask &quot;Do you mean [definition]?&quot;.</span>
+<div class="viewcode-block" id="get_definition"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_definition">[docs]</a><span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the definition of a synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">definition</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">definition</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">definition</span></div>
+
+<span class="c1"># Useful for finding out what kind of thing is being talked about.</span>
+<span class="c1"># Lexnames include: noun.animal, noun.person, noun.food, verb.emotion, verb.possession, etc.</span>
+<div class="viewcode-block" id="get_lexname"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_lexname">[docs]</a><span class="k">def</span> <span class="nf">get_lexname</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the lexname of a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">lexname</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">lexname</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">lexname</span></div>
+
+<span class="c1"># Can be used in disambiguation, e.g. Leolani can ask &quot;Do you mean a type of [hypernym]?&quot;.</span>
+<div class="viewcode-block" id="get_hypernyms"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_hypernyms">[docs]</a><span class="k">def</span> <span class="nf">get_hypernyms</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return higher-levels concepts for a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">hypernyms</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">hypernyms</span><span class="p">()</span>
+    <span class="n">hypernyms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">hypernyms</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">hypernyms</span></div>
+
+<div class="viewcode-block" id="get_root"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_root">[docs]</a><span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the most general hypernym of a given sysnet. &quot;&quot;&quot;</span>
+    
+    <span class="n">root</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">root_hypernyms</span><span class="p">()</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">root</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">root</span></div>
+
+<div class="viewcode-block" id="get_hyponyms"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_hyponyms">[docs]</a><span class="k">def</span> <span class="nf">get_hyponyms</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return more specific synsets for a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">hyponyms</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">hyponyms</span><span class="p">()</span>
+    <span class="n">hyponyms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">hyponyms</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">hyponyms</span></div>
+
+<div class="viewcode-block" id="get_parts"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_parts">[docs]</a><span class="k">def</span> <span class="nf">get_parts</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the part meronyms of a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">part_meronyms</span><span class="p">()</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">parts</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">parts</span></div>
+
+<div class="viewcode-block" id="get_substance"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_substance">[docs]</a><span class="k">def</span> <span class="nf">get_substance</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the substance meronyms of a given synset. &quot;&quot;&quot;</span>
+        
+    <span class="n">substance</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">substance_meronyms</span><span class="p">()</span>
+    <span class="n">substance</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">substance</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">substance</span></div>
+    
+<div class="viewcode-block" id="get_holonyms"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_holonyms">[docs]</a><span class="k">def</span> <span class="nf">get_holonyms</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the holonyms of a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">holonyms</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">member_holonyms</span><span class="p">()</span>
+    <span class="n">holonyms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">holonyms</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">holonyms</span></div>
+    
+<div class="viewcode-block" id="get_entailments"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_entailments">[docs]</a><span class="k">def</span> <span class="nf">get_entailments</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the entailments for a given verbal synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">entailments</span> <span class="o">=</span> <span class="n">synset</span><span class="o">.</span><span class="n">entailments</span><span class="p">()</span>
+    <span class="n">entailments</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lemma</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">synset</span> <span class="ow">in</span> <span class="n">entailments</span> <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">entailments</span></div>
+
+<div class="viewcode-block" id="get_antonyms"><a class="viewcode-back" href="../../../../pepper.language.utils.wordnet_utils.html#pepper.language.utils.wordnet_utils.get_antonyms">[docs]</a><span class="k">def</span> <span class="nf">get_antonyms</span><span class="p">(</span><span class="n">synset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return the antonyms of lemmas in a given synset. &quot;&quot;&quot;</span>
+    
+    <span class="n">antonyms_all</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">lemma</span> <span class="ow">in</span> <span class="n">synset</span><span class="o">.</span><span class="n">lemmas</span><span class="p">():</span>
+        <span class="n">antonyms</span> <span class="o">=</span> <span class="n">lemma</span><span class="o">.</span><span class="n">antonyms</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ant</span> <span class="ow">in</span> <span class="n">antonyms</span><span class="p">:</span>
+            <span class="n">antonyms_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ant</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+        
+    <span class="k">return</span> <span class="n">antonyms_all</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

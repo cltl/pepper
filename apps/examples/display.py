@@ -7,12 +7,12 @@ from pepper import config
 class DisplayApp(AbstractApplication,           # Each Application inherits from AbstractApplication
                  StatisticsComponent,           # Show Performance Statistics in Terminal
                  DisplayComponent,              # Display what Robot (or Computer) sees in browser
-                 SceneComponent,
-                 ContextComponent,
+                 SceneComponent,                # Scene (dependency of DisplayComponent)
+                 ContextComponent,              # Context (dependency of DisplayComponent)
                  ObjectDetectionComponent,      # Object Detection (dependency of DisplayComponent)
                  FaceRecognitionComponent,      # Face Recognition (dependency of DisplayComponent)
-                 TextToSpeechComponent,
-                 SpeechRecognitionComponent):   # Speech Recognition Component (dependency of StatisticsComponent)
+                 SpeechRecognitionComponent,    # Speech Recognition Component (dependency)
+                 TextToSpeechComponent):        # Text to Speech (dependency)
 
     pass  # Application does not need to react to events :)
 

@@ -1,3 +1,7 @@
+"""
+Answers to Simple Questions using Fuzzy Matching!
+"""
+
 from pepper.knowledge.sentences import *
 from pepper import config
 

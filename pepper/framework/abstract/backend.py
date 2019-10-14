@@ -1,4 +1,4 @@
-from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractLed, AbstractTablet
+from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet
 
 
 class AbstractBackend(object):
@@ -7,8 +7,10 @@ class AbstractBackend(object):
 
     Exposes
     :class:`~pepper.framework.abstract.camera.AbstractCamera`,
-    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` and
-    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`.
+    :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`,
+    :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`,
+    :class:`~pepper.framework.abstract.led.AbstractLed` and
+    :class:`~pepper.framework.abstract.tablet.AbstractTablet`.
 
     Parameters
     ----------
@@ -24,15 +26,17 @@ class AbstractBackend(object):
         Backend :class:`~pepper.framework.abstract.tablet.AbstractTablet`
     """
 
-    def __init__(self, camera, microphone, text_to_speech, led, tablet):
+    def __init__(self, camera, microphone, text_to_speech, motion, led, tablet):
         self._camera = camera
         self._microphone = microphone
         self._text_to_speech = text_to_speech
+        self._motion = motion
         self._led = led
         self._tablet = tablet
 
     @property
     def camera(self):
+        # type: () -> AbstractCamera
         """
         Reference to :class:`~pepper.framework.abstract.camera.AbstractCamera`
 
@@ -44,6 +48,7 @@ class AbstractBackend(object):
 
     @property
     def microphone(self):
+        # type: () -> AbstractMicrophone
         """
         Reference to :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`
 
@@ -55,6 +60,7 @@ class AbstractBackend(object):
 
     @property
     def text_to_speech(self):
+        # type: () -> AbstractTextToSpeech
         """
         Reference to :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech`
 
@@ -65,7 +71,20 @@ class AbstractBackend(object):
         return self._text_to_speech
 
     @property
+    def motion(self):
+        # type: () -> AbstractMotion
+        """
+        Reference to :class:`~pepper.framework.abstract.motion.AbstractMotion`
+
+        Returns
+        -------
+        motion: AbstractMotion
+        """
+        return self._motion
+
+    @property
     def led(self):
+        # type: () -> AbstractLed
         """
         Reference to :class:`~pepper.framework.abstract.led.AbstractLed`
 
@@ -77,6 +96,7 @@ class AbstractBackend(object):
 
     @property
     def tablet(self):
+        # type: () -> AbstractTablet
         """
         Reference to :class:`~pepper.framework.abstract.tablet.AbstractTablet`
 

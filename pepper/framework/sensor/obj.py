@@ -8,26 +8,27 @@ from socket import socket, error as socket_error
 from random import getrandbits
 import json
 
-from typing import List
+from typing import List, Tuple, Dict
 
 
 class Object(object):
+    """
+    'Object' object
+
+    Parameters
+    ----------
+    name: str
+        Name of Object
+    confidence: float
+        Object Name & Bounds Confidence
+    bounds: Bounds
+        Bounds in Image Space
+    image: AbstractImage
+        Image from which Object was Recognised
+    """
+
     def __init__(self, name, confidence, bounds, image):
-        """
-        Create Object Object
-
-        Parameters
-        ----------
-        name: str
-            Name of Object
-        confidence: float
-            Confidence of Object Name & Position
-        bounds: Bounds
-            Bounds in Image Space
-        image: AbstractImage
-            Image from which Object was Recognised
-        """
-
+        # type: (str, float, Bounds, AbstractImage) -> None
         self._id = getrandbits(128)
 
         self._name = name
@@ -44,13 +45,29 @@ class Object(object):
         self._position = spherical2cartesian(self._direction[0], self._direction[1], self._depth)
         self._bounds3D = self._calculate_bounds_3D()
 
+    @classmethod
+    def from_json(cls, data, image):
+        # type: (Dict, AbstractImage) -> Object
+        return cls(data["name"], data["confidence"], Bounds.from_json(data["bounds"]), image)
+
     @property
     def id(self):
+        # type: () -> int
+        """
+        Object ID
+
+        Returns
+        -------
+        id: int
+        """
         return self._id
 
     @property
     def name(self):
+        # type: () -> str
         """
+        Object Name
+
         Returns
         -------
         name: str
@@ -60,33 +77,61 @@ class Object(object):
 
     @property
     def confidence(self):
+        # type: () -> float
         """
+        Object Confidence
+
         Returns
         -------
         confidence: float
-            Name Confidence
+            Object Name & Bounds Confidence
         """
         return self._confidence
 
     @property
-    def image_bounds(self):
+    def time(self):
+        # type: () -> float
         """
-        Object Bounds (Relative to Image)
+        Time of Observation
+
+        Returns
+        -------
+        time: float
+        """
+        return self.image.time
+
+    @property
+    def image_bounds(self):
+        # type: () -> Bounds
+        """
+        Object Bounds in Image Space {x: [0, 1], y: [0, 1]}
 
         Returns
         -------
         bounds: Bounds
-            Object Bounding Box
+            Object Bounding Box in Image Space
         """
         return self._image_bounds
 
     @property
     def bounds(self):
+        # type: () -> Bounds
+        """
+        Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}
+
+        Returns
+        -------
+        bounds: Bounds
+            Object Bounding Box in View Space
+        """
         return self._bounds
 
     @property
     def image(self):
+        # type: () -> AbstractImage
         """
+        Image associated with the observation of this Object
+
         Returns
         -------
         image: AbstractImage
@@ -95,21 +140,116 @@ class Object(object):
 
     @property
     def direction(self):
+        # type: () -> Tuple[float, float]
+        """
+         Direction of Object in View Space (equivalent to self.bounds.center)
+
+        Returns
+        -------
+        direction: float, float
+            Direction of Object in View Space
+        """
         return self._direction
 
     @property
-    def position(self):
-        return self._position
-
-    @property
     def depth(self):
+        # type: () -> float
+        """
+        Distance from Camera to Object
+
+        Returns
+        -------
+        depth: float
+            Distance from Camera to Object
+        """
         return self._depth
 
     @property
+    def position(self):
+        # type: () -> Tuple[float, float, float]
+        """
+        Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera
+
+        Returns
+        -------
+        position: Tuple[float, float, float]
+            Position of Object in Cartesian Coordinates (x,y,z)
+        """
+        return self._position
+
+    @property
     def bounds3D(self):
+        # type: () -> List[Tuple[float, float, float]]
+        """
+        3D bounds (for visualisation) [x,y,z]*4
+
+        Returns
+        -------
+        bounds3D: List[Tuple[float, float, float]]
+            3D bounds (for visualisation) [x,y,z]*4
+        """
         return self._bounds3D
 
+    def distance_to(self, obj):
+        # type: (Object) -> float
+        """
+        Distance from this Object to obj
+
+        Parameters
+        ----------
+        obj: Object
+
+        Returns
+        -------
+        distance: float
+        """
+        return np.sqrt(
+            (self.position[0] - obj.position[0])**2 +
+            (self.position[1] - obj.position[1])**2 +
+            (self.position[2] - obj.position[2])**2
+        )
+
+    def dict(self):
+        # type: () -> Dict
+        """
+        Object to Dictionary
+
+        Returns
+        -------
+        dict: Dict
+            Dictionary representation of Object
+        """
+
+        return {
+            "name": self.name,
+            "confidence": self.confidence,
+            "bounds": self.image_bounds.dict(),
+            "image": self.image.hash
+        }
+
+    def json(self):
+        # type: () -> str
+        """
+        Object to JSON
+
+        Returns
+        -------
+        json: JSON representation of Object
+        """
+        return json.dumps(self.dict())
+
     def _calculate_object_depth(self):
+        # type: () -> float
+        """
+        Calculate Distance of Object to Camera
+        Take the median of all valid depth pixels...
+
+        # TODO: Improve Depth Calculation
+
+        Returns
+        -------
+        depth: float
+        """
         depth_map = self.image.get_depth(self._image_bounds)
         depth_map_valid = depth_map != 0
 
@@ -119,11 +259,28 @@ class Object(object):
             return 0.0
 
     def _calculate_bounds(self):
-        x0, y0 = self._image.direction((self._image_bounds.x0, self._image_bounds.y0))
-        x1, y1 = self._image.direction((self._image_bounds.x1, self._image_bounds.y1))
+        # type: () -> Bounds
+        """
+        Calculate View Space Bounds from Image Space Bounds
+
+        Returns
+        -------
+        bounds: Bounds
+            Bounds in View Space
+        """
+        x0, y0 = self._image.get_direction((self._image_bounds.x0, self._image_bounds.y0))
+        x1, y1 = self._image.get_direction((self._image_bounds.x1, self._image_bounds.y1))
         return Bounds(x0, y0, x1, y1)
 
     def _calculate_bounds_3D(self):
+        # type: () -> List[List[float]]
+        """
+        Calculate 3D Bounds (for visualisation)
+
+        Returns
+        -------
+        bounds_3D: List[List[float]]
+        """
         return [
             spherical2cartesian(self._bounds.x0, self._bounds.y0, self._depth),
             spherical2cartesian(self._bounds.x0, self._bounds.y1, self._depth),
@@ -136,17 +293,46 @@ class Object(object):
 
 
 class ObjectDetectionClient(object):
+    """
+    Object Detection Client - Communicates with pepper_tensorflow Server
+
+    Parameters
+    ----------
+    target: ObjectDetectionTarget
+        Which Object Detection Server to target
+    """
     def __init__(self, target):
+        # type: (ObjectDetectionTarget) -> None
         self._target = target
         self._address = target.value
 
     @property
     def target(self):
         # type: () -> ObjectDetectionTarget
+        """
+        Object Detection Target
+
+        Returns
+        -------
+        target: ObjectDetectionTarget
+        """
         return self._target
 
     def classify(self, image):
         # type: (AbstractImage) -> List[Object]
+        """
+        Classify Objects in Image
+
+        Parameters
+        ----------
+        image: AbstractImage
+            Image (Containing Objects)
+
+        Returns
+        -------
+        objects: List[Object]
+            Classified Objects
+        """
         try:
             sock = socket()
             sock.connect(self._address)
@@ -164,11 +350,37 @@ class ObjectDetectionClient(object):
 
     @staticmethod
     def _obj_from_dict(info, image):
+        # type: (dict, AbstractImage) -> Object
+        """
+        Construct Object from JSON
+
+        Parameters
+        ----------
+        info: dict
+        image: AbstractImage
+
+        Returns
+        -------
+        object: Object
+        """
         box = info['box']
         return Object(info['name'], info['score'], Bounds(box[1], box[0], box[3], box[2]), image)
 
     @staticmethod
     def _receive_all(sock, n):
+        # type: (socket, int) -> bytearray
+        """
+        Receive Exactly n bytes
+
+        Parameters
+        ----------
+        sock: socket
+        n: int
+
+        Returns
+        -------
+        data: bytearray
+        """
         buffer = bytearray()
         while len(buffer) < n:
             buffer.extend(sock.recv(4096))

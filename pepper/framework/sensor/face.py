@@ -12,26 +12,31 @@ import subprocess
 import socket
 import os
 
+from typing import Dict
+
 
 class Face(Object):
+    """
+    Face Object
+
+    Parameters
+    ----------
+    name: str
+        Name of Person
+    confidence: float
+        Name Confidence
+    representation: np.ndarray
+        Face Feature Vector
+    bounds: Bounds
+        Face Bounding Box
+    image: AbstractImage
+        Image Face was Found in
+    """
 
     UNKNOWN = config.HUMAN_UNKNOWN
 
     def __init__(self, name, confidence, representation, bounds, image):
-        """
-        Parameters
-        ----------
-        name: str
-            Name of Person
-        confidence: float
-            Name Confidence
-        representation: np.ndarray
-            Face Feature Vector
-        bounds: Bounds
-            Face Bounding Box
-        image: AbstractImage
-            Image Face was Found in
-        """
+        # type: (str, float, np.ndarray, Bounds, AbstractImage) -> None
         super(Face, self).__init__(config.HUMAN_UNKNOWN if name == FaceClassifier.NEW else name,
                                    confidence, bounds, image)
 
@@ -51,6 +56,19 @@ class Face(Object):
 
 
 class OpenFace(object):
+    """
+    Perform Face Recognition Using OpenFace
+
+    This requires a Docker Image of ```bamos/openface``` and Docker Running, see `The Installation Guide <https://github.com/cltl/pepper/wiki/Installation#3-openface--docker>`_
+
+    If not yet running, this class will:
+        1. run the bamos/openface container
+        2. copy /util/_openface.py to it
+        3. run the server included within the container
+
+    It will then connect a client to this server to request face representations via a socket connection.
+    """
+
     DOCKER_NAME = "openface"
     DOCKER_IMAGE = "bamos/openface"
     DOCKER_WORKING_DIRECTORY = "/root/openface"
@@ -63,7 +81,6 @@ class OpenFace(object):
     HOST, PORT = '127.0.0.1', 8989
 
     def __init__(self):
-        """Run OpenFace Client (& Server, if it is not yet running)"""
 
         self._log = logger.getChild(self.__class__.__name__)
 
@@ -150,6 +167,7 @@ class OpenFace(object):
             return False
 
 
+# TODO: class is not in use, improve it and use it?
 class FaceStore(object):
 
     EXTENSION = ".bin"
@@ -215,19 +233,20 @@ class FaceStore(object):
 
 
 class FaceClassifier:
+    """
+    Classify Faces of People
+
+    Parameters
+    ----------
+    people: Dict[str, np.ndarray]
+        Known People as <name, representations> dictionary
+    n_neighbors: int
+    """
 
     NEW = "NEW"
 
     def __init__(self, people, n_neighbors=20):
-        """
-        Classify Faces of Known People
-
-        Parameters
-        ----------
-        people: dict
-        new: dict
-        n_neighbors: int
-        """
+        # type: (Dict[str, np.ndarray], int) -> None
 
         self._people = people
         self._n_neighbors = n_neighbors
@@ -246,7 +265,10 @@ class FaceClassifier:
 
     @property
     def people(self):
+        # type: () -> Dict[str, np.ndarray]
         """
+        People Dictionary
+
         Returns
         -------
         people: dict
@@ -254,6 +276,16 @@ class FaceClassifier:
         return self._people
 
     def add(self, name, vector):
+        # type: (str, np.ndarray) -> None
+        """
+        Add Person to Face Classifier
+
+        Parameters
+        ----------
+        name: str
+        vector: np.ndarray
+            Concatenated Representations (float32 array of length 128n)
+        """
         people = self._people
         people[name] = vector
 
@@ -268,17 +300,21 @@ class FaceClassifier:
 
     def classify(self, representation, bounds, image):
         """
-        Classify Face as Person
+        Classify Face Observation as Particular Person
 
         Parameters
         ----------
         representation: np.ndarray
+            Observed Face Representation (from OpenFace.represent)
         bounds: Bounds
-        image: np.ndarray
+            Face Bounds (relative to Image)
+        image: AbstractImage
+            Image in which Face was Observed
 
         Returns
         -------
         person: Face
+            Classified Person
         """
 
         if not self.people:
@@ -326,7 +362,7 @@ class FaceClassifier:
     @staticmethod
     def load_directory(directory):
         """
-        Load Directory of <name>.bin files
+        Load People from directory of <name>.bin files
 
         Parameters
         ----------

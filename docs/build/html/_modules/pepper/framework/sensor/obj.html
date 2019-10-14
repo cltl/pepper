@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -148,362 +149,379 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.sensor.obj</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">socket</span> <span class="k">import</span> <span class="n">socket</span><span class="p">,</span> <span class="n">error</span> <span class="k">as</span> <span class="n">socket_error</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Bounds</span><span class="p">,</span> <span class="n">spherical2cartesian</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">ObjectDetectionTarget</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">socket</span> <span class="k">import</span> <span class="n">socket</span><span class="p">,</span> <span class="n">error</span> <span class="k">as</span> <span class="n">socket_error</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-
-<div class="viewcode-block" id="Bounds"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds">[docs]</a><span class="k">class</span> <span class="nc">Bounds</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        x0: float</span>
-<span class="sd">        y0: float</span>
-<span class="sd">        x1: float</span>
-<span class="sd">        y1: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">x0</span> <span class="o">&gt;=</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">y0</span> <span class="o">&gt;=</span> <span class="n">y1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Rectangle Error: Point (x1,y1) must be bigger than point (x0, y0)&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_x0</span> <span class="o">=</span> <span class="n">x0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span> <span class="o">=</span> <span class="n">y0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_x1</span> <span class="o">=</span> <span class="n">x1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_y1</span> <span class="o">=</span> <span class="n">y1</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">x0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        x0: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x0</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">y0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        y0: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">x1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        x1: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x1</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">y1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        y1: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y1</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        width: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        height: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        area: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span>
-
-<div class="viewcode-block" id="Bounds.intersection"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds.intersection">[docs]</a>    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        bounds: Bounds</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        intersection: Bounds or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">x0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span>
-        <span class="n">y0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span>
-        <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">)</span>
-        <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">x0</span> <span class="o">&gt;=</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">y0</span> <span class="o">&gt;=</span> <span class="n">y1</span> <span class="k">else</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Bounds.overlap"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds.overlap">[docs]</a>    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate Overlap Factor</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        other: Bounds</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        overlap: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">intersection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">intersection</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="n">intersection</span><span class="o">.</span><span class="n">area</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Bounds.is_subset_of"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds.is_subset_of">[docs]</a>    <span class="k">def</span> <span class="nf">is_subset_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        other: Bounds</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        is_subset_of: bool</span>
-<span class="sd">            Whether &#39;other&#39; Bounds is subset of &#39;this&#39; Bounds</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span></div>
-
-<div class="viewcode-block" id="Bounds.is_superset_of"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds.is_superset_of">[docs]</a>    <span class="k">def</span> <span class="nf">is_superset_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        other: Bounds</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        is_superset_of: bool</span>
-<span class="sd">            Whether &#39;other&#39; Bounds is superset of &#39;this&#39; Bounds</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span></div>
-
-<div class="viewcode-block" id="Bounds.equals"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds.equals">[docs]</a>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        other: Bounds</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        equals: bool</span>
-<span class="sd">         Whether &#39;other&#39; bounds equals &#39;this&#39; bounds</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y1</span></div>
-
-<div class="viewcode-block" id="Bounds.scaled"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Bounds.scaled">[docs]</a>    <span class="k">def</span> <span class="nf">scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_scale</span><span class="p">,</span> <span class="n">y_scale</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return Scaled Bounds Object</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        x_scale: float</span>
-<span class="sd">        y_scale: float</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bounds: Bounds</span>
-<span class="sd">            Scaled Bounds object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Bounds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">x_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span> <span class="o">*</span> <span class="n">y_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x_scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span> <span class="o">*</span> <span class="n">y_scale</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Bounds[(</span><span class="si">{:3f}</span><span class="s2">, </span><span class="si">{:3f}</span><span class="s2">), (</span><span class="si">{:3f}</span><span class="s2">, </span><span class="si">{:3f}</span><span class="s2">)]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span></div>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
 
 
-<div class="viewcode-block" id="CocoObject"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.CocoObject">[docs]</a><span class="k">class</span> <span class="nc">CocoObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">confidence</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        CoCo Object Information</span>
+<div class="viewcode-block" id="Object"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object">[docs]</a><span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &#39;Object&#39; object</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        id: int</span>
-<span class="sd">            Unique id for object of name &#39;name&#39;</span>
-<span class="sd">        name: str</span>
-<span class="sd">            Name of object</span>
-<span class="sd">        bounds: Bounds</span>
-<span class="sd">            Bounding Box of object in frame [0..1]</span>
-<span class="sd">        confidence: float</span>
-<span class="sd">            Confidence of Object Classification [0..1]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str</span>
+<span class="sd">        Name of Object</span>
+<span class="sd">    confidence: float</span>
+<span class="sd">        Object Name &amp; Bounds Confidence</span>
+<span class="sd">    bounds: Bounds</span>
+<span class="sd">        Bounds in Image Space</span>
+<span class="sd">    image: AbstractImage</span>
+<span class="sd">        Image from which Object was Recognised</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (str, float, Bounds, AbstractImage) -&gt; None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">confidence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span> <span class="o">=</span> <span class="n">image</span>
+
+        <span class="c1"># Calculate Position in 2D Angular Space (Phi, Theta)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_bounds</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">center</span>
+
+        <span class="c1"># Calculate Position in 3D Space (Relative to Robot)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_object_depth</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds3D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_bounds_3D</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Object.from_json"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.from_json">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (Dict, AbstractImage) -&gt; Object</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">],</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]),</span> <span class="n">image</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object ID</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        id: int</span>
-<span class="sd">            Unique id for object of name &#39;name&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Name</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        name: str</span>
-<span class="sd">            Name of object</span>
+<span class="sd">            Name of Person</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Confidence</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">            Object Name &amp; Bounds Confidence</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Time of Observation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">time</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">image_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Bounds</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Bounds in Image Space {x: [0, 1], y: [0, 1]}</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bounds: Bounds</span>
-<span class="sd">            Bounding Box of object in frame [0..1]</span>
+<span class="sd">            Object Bounding Box in Image Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Bounds</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Object Bounding Box in View Space</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; AbstractImage</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        confidence: float</span>
-<span class="sd">            Confidence of Object Classification [0..1]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span></div>
-
-
-<div class="viewcode-block" id="InceptionClassifyClient"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.InceptionClassifyClient">[docs]</a><span class="k">class</span> <span class="nc">InceptionClassifyClient</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Classify Images using Inception Model</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        address: (str, int)</span>
-<span class="sd">            Address of Inception Model Host</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
-
-<div class="viewcode-block" id="InceptionClassifyClient.classify"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.InceptionClassifyClient.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        image: np.ndarray</span>
+<span class="sd">        Image associated with the observation of this Object</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        classification: list of (float, list)</span>
-<span class="sd">            List of confidence-object pairs, where object is a list of object synonyms</span>
+<span class="sd">        image: AbstractImage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">direction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Tuple[float, float]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Direction of Object in View Space (equivalent to self.bounds.center)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        direction: float, float</span>
+<span class="sd">            Direction of Object in View Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Distance from Camera to Object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        depth: float</span>
+<span class="sd">            Distance from Camera to Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Tuple[float, float, float]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        position: Tuple[float, float, float]</span>
+<span class="sd">            Position of Object in Cartesian Coordinates (x,y,z)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bounds3D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Tuple[float, float, float]]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        3D bounds (for visualisation) [x,y,z]*4</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds3D: List[Tuple[float, float, float]]</span>
+<span class="sd">            3D bounds (for visualisation) [x,y,z]*4</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds3D</span>
+
+<div class="viewcode-block" id="Object.distance_to"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.distance_to">[docs]</a>    <span class="k">def</span> <span class="nf">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="c1"># type: (Object) -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Distance from this Object to obj</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: Object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        distance: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">obj</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">obj</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">obj</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Object.dict"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.dict">[docs]</a>    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Dict</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object to Dictionary</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict: Dict</span>
+<span class="sd">            Dictionary representation of Object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">jpeg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_jpeg</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-        <span class="n">jpeg_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">jpeg</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
+            <span class="s2">&quot;bounds&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">hash</span>
+        <span class="p">}</span></div>
 
+<div class="viewcode-block" id="Object.json"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object to JSON</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        json: JSON representation of Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_calculate_object_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate Distance of Object to Camera</span>
+<span class="sd">        Take the median of all valid depth pixels...</span>
+
+<span class="sd">        # TODO: Improve Depth Calculation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        depth: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">depth_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_depth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="p">)</span>
+        <span class="n">depth_map_valid</span> <span class="o">=</span> <span class="n">depth_map</span> <span class="o">!=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">depth_map_valid</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">depth_map</span><span class="p">[</span><span class="n">depth_map_valid</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Bounds</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate View Space Bounds from Image Space Bounds</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds: Bounds</span>
+<span class="sd">            Bounds in View Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">get_direction</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">))</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">.</span><span class="n">get_direction</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_calculate_bounds_3D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[List[float]]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate 3D Bounds (for visualisation)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bounds_3D: List[List[float]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">),</span>
+            <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">),</span>
+            <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">),</span>
+            <span class="n">spherical2cartesian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_depth</span><span class="p">),</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{:3.0%}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ObjectDetectionClient"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.ObjectDetectionClient">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object Detection Client - Communicates with pepper_tensorflow Server</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target: ObjectDetectionTarget</span>
+<span class="sd">        Which Object Detection Server to target</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="c1"># type: (ObjectDetectionTarget) -&gt; None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; ObjectDetectionTarget</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object Detection Target</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        target: ObjectDetectionTarget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span>
+
+<div class="viewcode-block" id="ObjectDetectionClient.classify"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.ObjectDetectionClient.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (AbstractImage) -&gt; List[Object]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Classify Objects in Image</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image: AbstractImage</span>
+<span class="sd">            Image (Containing Objects)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        objects: List[Object]</span>
+<span class="sd">            Classified Objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">jpeg_size</span><span class="p">)</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">jpeg</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+            <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
+            <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_address</span><span class="p">)</span>
+
+            <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">))</span>
+            <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+
+            <span class="n">response_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj_from_dict</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span> <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_receive_all</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">response_length</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())]</span>
+
             <span class="k">return</span> <span class="n">response</span>
-        <span class="k">except</span> <span class="n">socket_error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Can&#39;t connect to Inception Service at </span><span class="si">{}</span><span class="s2">. Are you sure the service is running?&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">))</span></div>
+        <span class="k">except</span> <span class="n">socket_error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t connect to Object Detection Service, &quot;</span>
+                               <span class="s2">&quot;are you sure you&#39;re running this pepper_tensorflow service?&quot;</span><span class="p">)</span></div>
 
-
-    <span class="k">def</span> <span class="nf">_convert_to_jpeg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_obj_from_dict</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (dict, AbstractImage) -&gt; Object</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Object from JSON</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        image: np.ndarray</span>
+<span class="sd">        info: dict</span>
+<span class="sd">        image: AbstractImage</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        encoded_image: bytes</span>
+<span class="sd">        object: Object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Object</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">image</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">BytesIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">jpeg_buffer</span><span class="p">:</span>
-            <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">save_person</span><span class="p">(</span><span class="n">jpeg_buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;JPEG&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">jpeg_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="CocoClassifyClient"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.CocoClassifyClient">[docs]</a><span class="k">class</span> <span class="nc">CocoClassifyClient</span><span class="p">:</span>
-
-    <span class="n">CLASSES</span> <span class="o">=</span> <span class="mi">90</span>
-    <span class="n">PORT</span> <span class="o">=</span> <span class="mi">35621</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">PORT</span><span class="p">)):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_receive_all</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># type: (socket, int) -&gt; bytearray</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        CoCo Service Interface</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        address</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
-
-<div class="viewcode-block" id="CocoClassifyClient.classify"><a class="viewcode-back" href="../../../../pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.CocoClassifyClient.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        image: np.ndarray</span>
-<span class="sd">            RGB image to classify</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        objects: list of CocoObject</span>
-<span class="sd">            Object classifications made from image</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">try</span><span class="p">:</span>
-
-            <span class="c1"># Connect to CoCo Service</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
-
-            <span class="c1"># Send Image to CoCo Service</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">))</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-
-            <span class="c1"># Receive Image Classification from Service</span>
-            <span class="n">response_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">classes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">boxes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recv_all</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">response_length</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
-
-            <span class="c1"># Wrap information into CocoObject instances</span>
-            <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">box</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">boxes</span><span class="p">):</span>
-                <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CocoObject</span><span class="p">(</span><span class="bp">cls</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="bp">cls</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">confidence</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">objects</span>
-
-        <span class="k">except</span> <span class="n">socket_error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Can&#39;t connect to Coco Service at </span><span class="si">{}</span><span class="s2">. Are you sure the service is running?&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">))</span></div>
-
-    <span class="k">def</span> <span class="nf">_recv_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Receive exactly n bytes from socket connection</span>
+<span class="sd">        Receive Exactly n bytes</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -512,9 +530,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bytes: bytearray</span>
+<span class="sd">        data: bytearray</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">))</span>
@@ -548,25 +565,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

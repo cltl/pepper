@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper package" href="pepper.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -55,6 +57,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -79,11 +85,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -152,16 +153,17 @@
 <h1>CLTL Pepper/Nao Framework - API Reference<a class="headerlink" href="#cltl-pepper-nao-framework-api-reference" title="Permalink to this headline">¶</a></h1>
 <p>This is the main repository for Pepper/Nao Applications created as part of the
 Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.</p>
+<img alt="../../images/pepper.png" src="../../images/pepper.png" />
 </div>
 <div class="section" id="cltl-pepper-features">
 <h1>CLTL/Pepper Features<a class="headerlink" href="#cltl-pepper-features" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><ul class="simple">
-<li>A Platform-Agnostic, Object-Oriented Framework for creating Robot Applications</li>
-<li>The necessary Machine Learning for enabling Human-Robot conversation</li>
+<li>A Platform-Agnostic, Object-Oriented Robot Application Framework in Python2</li>
+<li>Machine Learning necessary for enabling Human-Robot conversation</li>
 <li>Language Understanding through Grammars</li>
 <li>Knowledge Representation of Learned Facts through RDF Graph</li>
-<li>Realtime visualisation in web browser (WIP)</li>
+<li>Realtime visualisation in web browser</li>
 </ul>
 </div></blockquote>
 </div>
@@ -174,43 +176,8 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="highlighted-modules">
-<h1>Highlighted Modules<a class="headerlink" href="#highlighted-modules" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.component.html">pepper.framework.abstract.component module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.intention.html">pepper.framework.abstract.intention module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.microphone.html">pepper.framework.abstract.microphone module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.text_to_speech.html">pepper.framework.abstract.text_to_speech module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.file.html">pepper.framework.backend.file package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.face_detection.html">pepper.framework.component.face_detection module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.object_detection.html">pepper.framework.component.object_detection module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.speech_recognition.html">pepper.framework.component.speech_recognition module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.text_to_speech.html">pepper.framework.component.text_to_speech module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.video_display.html">pepper.framework.component.video_display module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.video_writer.html">pepper.framework.component.video_writer module</a></li>
 </ul>
 </li>
 </ul>
@@ -260,25 +227,16 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

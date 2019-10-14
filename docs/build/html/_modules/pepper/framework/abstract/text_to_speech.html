@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -151,6 +152,9 @@
 <span></span><span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="AbstractTextToSpeech"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech">[docs]</a><span class="k">class</span> <span class="nc">AbstractTextToSpeech</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -160,10 +164,11 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    language: str</span>
-<span class="sd">        Language Code, See: https://cloud.google.com/speech/docs/languages</span>
+<span class="sd">        `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_language</span> <span class="o">=</span> <span class="n">language</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
@@ -176,18 +181,20 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Language Code, See: https://cloud.google.com/speech/docs/languages</span>
+<span class="sd">        `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        language: str</span>
-<span class="sd">            Language Code, See: https://cloud.google.com/speech/docs/languages</span>
+<span class="sd">            `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_language</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">talking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether system is currently producing speech</span>
 
@@ -198,24 +205,33 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_talking_jobs</span> <span class="o">&gt;=</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="AbstractTextToSpeech.say"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractTextToSpeech.say"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.say">[docs]</a>    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str], bool) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Say something through Text to Speech (Interface)</span>
+<span class="sd">        Say Text (with optional Animation) through Text-to-Speech</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        text: str</span>
-<span class="sd">        animation: str</span>
+<span class="sd">            Text to say through Text-to-Speech</span>
+<span class="sd">        animation: str or None</span>
+<span class="sd">            (Naoqi) Animation to play</span>
+<span class="sd">        block: bool</span>
+<span class="sd">            Whether this function should block or immediately return after calling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span>
+        <span class="c1"># self._log.info(text.replace(&#39;\n&#39;, &#39; &#39;))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_talking_jobs</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="p">))</span>
+
+        <span class="k">while</span> <span class="n">block</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">talking</span><span class="p">:</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mf">1E-3</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AbstractTextToSpeech.on_text_to_speech"><a class="viewcode-back" href="../../../../pepper.framework.abstract.text_to_speech.html#pepper.framework.abstract.text_to_speech.AbstractTextToSpeech.on_text_to_speech">[docs]</a>    <span class="k">def</span> <span class="nf">on_text_to_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Say something through Text to Speech (Implementation)</span>
 
-<span class="sd">        Text To Speech Modules should implement this function</span>
+<span class="sd">        Text To Speech Backends should implement this function</span>
 <span class="sd">        This function should block while speech is being produced</span>
 
 <span class="sd">        Parameters</span>
@@ -223,7 +239,7 @@
 <span class="sd">        text: str</span>
 <span class="sd">        animation: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_text_to_speech</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
@@ -257,25 +273,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

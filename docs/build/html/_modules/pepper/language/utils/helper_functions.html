@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.utils.helper_functions &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.language.utils.helper_functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.language.utils.helper_functions</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">pos_tag</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">tree</span> <span class="k">as</span> <span class="n">ntree</span>
+<span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="k">import</span> <span class="n">WordNetLemmatizer</span>
+
+<span class="kn">import</span> <span class="nn">wordnet_utils</span> <span class="k">as</span> <span class="nn">wu</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">wnl</span> <span class="o">=</span> <span class="n">WordNetLemmatizer</span><span class="p">()</span>
+
+<span class="n">ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="n">lexicon</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ROOT</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;lexicon.json&#39;</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="trim_dash"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.trim_dash">[docs]</a><span class="k">def</span> <span class="nf">trim_dash</span><span class="p">(</span><span class="n">rdf</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+                <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+                <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">rdf</span></div>
+
+
+<div class="viewcode-block" id="get_type"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.get_type">[docs]</a><span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">forest</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+            <span class="nb">type</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_lexname</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">forest</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">[</span><span class="n">el</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;None&#39;</span><span class="p">:</span>
+                <span class="n">lexicon_category</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">el</span><span class="p">,</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+                <span class="nb">type</span><span class="p">[</span><span class="n">el</span><span class="p">]</span><span class="o">=</span><span class="n">lexicon_category</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">get_lexname</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">forest</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">lexicon_category</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s1">&#39;category&#39;</span><span class="p">)</span>
+            <span class="nb">type</span> <span class="o">=</span> <span class="n">lexicon_category</span>
+    <span class="k">return</span> <span class="nb">type</span></div>
+
+
+
+<div class="viewcode-block" id="get_lexname"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.get_lexname">[docs]</a><span class="k">def</span> <span class="nf">get_lexname</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">forest</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">element</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">element</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">label</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="c1">#print(element,&#39; has no label&#39;)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">([</span><span class="n">element</span><span class="p">])</span>
+        <span class="c1">#print(&#39;NEW LABEL &#39;, label)</span>
+        <span class="k">if</span> <span class="n">label</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1">#print(element,label)</span>
+    <span class="n">synset</span> <span class="o">=</span> <span class="n">wu</span><span class="o">.</span><span class="n">get_synsets</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">synset</span><span class="p">:</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">wu</span><span class="o">.</span><span class="n">get_lexname</span><span class="p">(</span><span class="n">synset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1">#print(&#39;TYPE OF &#39; + element + &#39; IS &#39; + type)</span>
+        <span class="k">return</span> <span class="nb">type</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1">#print(element + &#39; has no type!&#39;)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="fix_pronouns"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.fix_pronouns">[docs]</a><span class="k">def</span> <span class="nf">fix_pronouns</span><span class="p">(</span><span class="n">pronoun</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param pronoun:</span>
+<span class="sd">    :param self:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#print(&#39;fixing&#39;, dict)</span>
+    <span class="n">lexicon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEXICON</span>
+    <span class="n">speaker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span>
+
+    <span class="nb">dict</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">pronoun</span><span class="p">,</span> <span class="n">lexicon</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">dict</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;first&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">speaker</span>
+        <span class="k">elif</span> <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;leolani&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;disambiguate third person&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">pronoun</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pronoun</span></div>
+
+
+<div class="viewcode-block" id="lemmatize"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.lemmatize">[docs]</a><span class="k">def</span> <span class="nf">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param word:</span>
+<span class="sd">    :param tag:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">lem</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="n">lem</span> <span class="o">+=</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+        <span class="k">return</span> <span class="n">lem</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_node_label"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.get_node_label">[docs]</a><span class="k">def</span> <span class="nf">get_node_label</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param tree:</span>
+<span class="sd">    :param word:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">el</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">==</span><span class="n">ntree</span><span class="o">.</span><span class="n">Tree</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">subtree</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">subtrees</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">subtree</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="n">word</span><span class="p">:</span>
+                            <span class="n">label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">subtree</span><span class="o">.</span><span class="n">label</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">label</span></div>
+
+
+
+<div class="viewcode-block" id="lexicon_lookup"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.lexicon_lookup">[docs]</a><span class="k">def</span> <span class="nf">lexicon_lookup</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Look up and return features of a given word in the lexicon. &quot;&quot;&quot;</span>
+
+    <span class="c1"># Define pronoun categories.</span>
+    <span class="n">pronouns</span> <span class="o">=</span> <span class="n">lexicon</span><span class="p">[</span><span class="s2">&quot;pronouns&quot;</span><span class="p">]</span>
+    <span class="n">subject_pros</span> <span class="o">=</span> <span class="n">pronouns</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+    <span class="n">object_pros</span> <span class="o">=</span> <span class="n">pronouns</span><span class="p">[</span><span class="s2">&quot;object&quot;</span><span class="p">]</span>
+    <span class="n">possessive_pros</span> <span class="o">=</span> <span class="n">pronouns</span><span class="p">[</span><span class="s2">&quot;possessive&quot;</span><span class="p">]</span>
+    <span class="n">dep_possessives</span> <span class="o">=</span> <span class="n">possessive_pros</span><span class="p">[</span><span class="s2">&quot;dependent&quot;</span><span class="p">]</span>
+    <span class="n">indep_possessives</span> <span class="o">=</span> <span class="n">possessive_pros</span><span class="p">[</span><span class="s2">&quot;independent&quot;</span><span class="p">]</span>
+    <span class="n">reflexive_pros</span> <span class="o">=</span> <span class="n">pronouns</span><span class="p">[</span><span class="s2">&quot;reflexive&quot;</span><span class="p">]</span>
+    <span class="n">indefinite_pros</span> <span class="o">=</span> <span class="n">pronouns</span><span class="p">[</span><span class="s2">&quot;indefinite&quot;</span><span class="p">]</span>
+    <span class="n">indefinite_person</span> <span class="o">=</span> <span class="n">indefinite_pros</span><span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">]</span>
+    <span class="n">indefinite_place</span> <span class="o">=</span> <span class="n">indefinite_pros</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">]</span>
+    <span class="n">indefinite_thing</span> <span class="o">=</span> <span class="n">indefinite_pros</span><span class="p">[</span><span class="s2">&quot;thing&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define verbal categories.</span>
+    <span class="n">verbs</span> <span class="o">=</span> <span class="n">lexicon</span><span class="p">[</span><span class="s2">&quot;verbs&quot;</span><span class="p">]</span>
+    <span class="n">to_be</span> <span class="o">=</span> <span class="n">verbs</span><span class="p">[</span><span class="s2">&quot;to be&quot;</span><span class="p">]</span>
+    <span class="n">aux_verbs</span> <span class="o">=</span> <span class="n">verbs</span><span class="p">[</span><span class="s2">&quot;auxiliaries&quot;</span><span class="p">]</span>
+    <span class="n">have</span> <span class="o">=</span> <span class="n">aux_verbs</span><span class="p">[</span><span class="s1">&#39;have&#39;</span><span class="p">]</span>
+    <span class="n">to_do</span> <span class="o">=</span> <span class="n">aux_verbs</span><span class="p">[</span><span class="s2">&quot;to do&quot;</span><span class="p">]</span>
+    <span class="n">modals</span> <span class="o">=</span> <span class="n">aux_verbs</span><span class="p">[</span><span class="s2">&quot;modals&quot;</span><span class="p">]</span>
+    <span class="n">lexicals</span> <span class="o">=</span> <span class="n">verbs</span><span class="p">[</span><span class="s2">&quot;lexical verbs&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define determiner categories.</span>
+    <span class="n">determiners</span> <span class="o">=</span> <span class="n">lexicon</span><span class="p">[</span><span class="s2">&quot;determiners&quot;</span><span class="p">]</span>
+    <span class="n">articles</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">]</span>
+    <span class="n">demonstratives</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;demonstratives&quot;</span><span class="p">]</span>
+    <span class="n">possessive_dets</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;possessives&quot;</span><span class="p">]</span>
+    <span class="n">quantifiers</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;quantifiers&quot;</span><span class="p">]</span>
+    <span class="n">wh_dets</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;wh-determiners&quot;</span><span class="p">]</span>
+    <span class="n">numerals</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;numerals&quot;</span><span class="p">]</span>
+    <span class="n">cardinals</span> <span class="o">=</span> <span class="n">numerals</span><span class="p">[</span><span class="s2">&quot;cardinals&quot;</span><span class="p">]</span>
+    <span class="n">ordinals</span> <span class="o">=</span> <span class="n">numerals</span><span class="p">[</span><span class="s2">&quot;ordinals&quot;</span><span class="p">]</span>
+    <span class="n">s_genitive</span> <span class="o">=</span> <span class="n">determiners</span><span class="p">[</span><span class="s2">&quot;s-genitive&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define conjunction categories.</span>
+    <span class="n">conjunctions</span> <span class="o">=</span> <span class="n">lexicon</span><span class="p">[</span><span class="s2">&quot;conjunctions&quot;</span><span class="p">]</span>
+    <span class="n">coordinators</span> <span class="o">=</span> <span class="n">conjunctions</span><span class="p">[</span><span class="s2">&quot;coordinating&quot;</span><span class="p">]</span>
+    <span class="n">subordinators</span> <span class="o">=</span> <span class="n">conjunctions</span><span class="p">[</span><span class="s2">&quot;subordinating&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define a question word category.</span>
+    <span class="n">question_words</span> <span class="o">=</span> <span class="n">lexicon</span><span class="p">[</span><span class="s2">&quot;question words&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Define a kinship category.</span>
+    <span class="n">kinship</span> <span class="o">=</span> <span class="n">lexicon</span><span class="p">[</span><span class="s2">&quot;kinship&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;verb&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_be</span><span class="p">,</span>
+                      <span class="n">to_do</span><span class="p">,</span>
+                      <span class="n">have</span><span class="p">,</span>
+                      <span class="n">modals</span><span class="p">,</span>
+                      <span class="n">lexicals</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">dep_possessives</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;to_be&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_be</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;aux&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">to_do</span><span class="p">,</span> <span class="n">to_be</span><span class="p">,</span> <span class="n">have</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;modal&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">modals</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;pronouns&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">subject_pros</span><span class="p">,</span>
+                      <span class="n">object_pros</span><span class="p">,</span>
+                      <span class="n">dep_possessives</span><span class="p">,</span>
+                      <span class="n">indep_possessives</span><span class="p">,</span>
+                      <span class="n">reflexive_pros</span><span class="p">,</span>
+                      <span class="n">indefinite_person</span><span class="p">,</span>
+                      <span class="n">indefinite_place</span><span class="p">,</span>
+                      <span class="n">indefinite_thing</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;lexical&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">lexicals</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;kinship&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">kinship</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;det&#39;</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">articles</span><span class="p">,</span> <span class="n">demonstratives</span><span class="p">,</span> <span class="n">possessive_dets</span><span class="p">,</span> <span class="n">possessive_pros</span><span class="p">,</span> <span class="n">cardinals</span><span class="p">,</span> <span class="n">ordinals</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">subject_pros</span><span class="p">,</span>
+                      <span class="n">object_pros</span><span class="p">,</span>
+                      <span class="n">dep_possessives</span><span class="p">,</span>
+                      <span class="n">indep_possessives</span><span class="p">,</span>
+                      <span class="n">reflexive_pros</span><span class="p">,</span>
+                      <span class="n">indefinite_person</span><span class="p">,</span>
+                      <span class="n">indefinite_place</span><span class="p">,</span>
+                      <span class="n">indefinite_thing</span><span class="p">,</span>
+                      <span class="n">to_be</span><span class="p">,</span>
+                      <span class="n">to_do</span><span class="p">,</span>
+                      <span class="n">have</span><span class="p">,</span>
+                      <span class="n">modals</span><span class="p">,</span>
+                      <span class="n">lexicals</span><span class="p">,</span>
+                      <span class="n">articles</span><span class="p">,</span>
+                      <span class="n">demonstratives</span><span class="p">,</span>
+                      <span class="n">possessive_dets</span><span class="p">,</span>
+                      <span class="n">quantifiers</span><span class="p">,</span>
+                      <span class="n">wh_dets</span><span class="p">,</span>
+                      <span class="n">cardinals</span><span class="p">,</span>
+                      <span class="n">ordinals</span><span class="p">,</span>
+                      <span class="n">s_genitive</span><span class="p">,</span>
+                      <span class="n">coordinators</span><span class="p">,</span>
+                      <span class="n">subordinators</span><span class="p">,</span>
+                      <span class="n">question_words</span><span class="p">,</span>
+                      <span class="n">kinship</span><span class="p">]</span>
+
+    <span class="c1"># print(&quot;looking up: &quot;, word)</span>
+
+    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">category</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="n">item</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">typ</span><span class="o">==</span><span class="s1">&#39;category&#39;</span><span class="p">:</span>
+                    <span class="c1">#print(type(category), category)</span>
+                    <span class="k">return</span> <span class="n">category</span><span class="p">,</span> <span class="n">category</span> <span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">category</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="dbp_query"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.dbp_query">[docs]</a><span class="k">def</span> <span class="nf">dbp_query</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">epr</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s1">&#39;application/json&#39;</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPHandler</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">epr</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">get_method</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">&#39;GET&#39;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">url</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span></div>
+
+
+<div class="viewcode-block" id="get_uri"><a class="viewcode-back" href="../../../../pepper.language.utils.helper_functions.html#pepper.language.utils.helper_functions.get_uri">[docs]</a><span class="k">def</span> <span class="nf">get_uri</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\</span>
+<span class="s2">    PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; </span><span class="se">\</span>
+<span class="s2">    SELECT ?x </span><span class="se">\</span>
+<span class="s2">    WHERE { ?x rdfs:label ?string . </span><span class="se">\</span>
+<span class="s2">        FILTER ( ?string = </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">string</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> ) }</span><span class="se">\</span>
+<span class="s2">    LIMIT 200&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">dbp_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="s2">&quot;http://dbpedia.org/sparql&quot;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="n">uris</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="s1">&#39;bindings&#39;</span><span class="p">]:</span>
+        <span class="n">uris</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">uris</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">uris</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">def dbp_query(q, baseURL, format=&quot;application/json&quot;):</span>
+<span class="sd">    params = {</span>
+<span class="sd">        &quot;default-graph&quot;: &quot;&quot;,</span>
+<span class="sd">        &quot;should-sponge&quot;: &quot;soft&quot;,</span>
+<span class="sd">        &quot;query&quot;: q,</span>
+<span class="sd">        &quot;debug&quot;: &quot;on&quot;,</span>
+<span class="sd">        &quot;timeout&quot;: &quot;&quot;,</span>
+<span class="sd">        &quot;format&quot;: format,</span>
+<span class="sd">        &quot;save&quot;: &quot;display&quot;,</span>
+<span class="sd">        &quot;fname&quot;: &quot;&quot;</span>
+<span class="sd">    }</span>
+<span class="sd">    querypart = urllib.urlencode(params)</span>
+<span class="sd">    response = urllib.urlopen(baseURL, querypart).read()</span>
+<span class="sd">    return json.loads(response)</span>
+
+
+<span class="sd">def get_uri(string):</span>
+<span class="sd">    query = &quot;&quot;&quot;PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span>
+<span class="sd">SELECT ?pred WHERE {</span>
+<span class="sd">  ?pred rdfs:label &quot;&quot;&quot; + &quot;&#39;&quot; + string + &quot;&#39;&quot; + &quot;&quot;&quot;@en .</span>
+<span class="sd">}</span>
+<span class="sd">ORDER BY ?pred&quot;&quot;&quot;</span>
+<span class="sd">    results = dbp_query(query, &quot;http://dbpedia.org/sparql&quot;)</span>
+<span class="sd">    uris = []</span>
+<span class="sd">    for x in results[&#39;results&#39;][&#39;bindings&#39;]:</span>
+<span class="sd">        uris.append(x[&#39;pred&#39;][&#39;value&#39;])</span>
+<span class="sd">    return uris</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

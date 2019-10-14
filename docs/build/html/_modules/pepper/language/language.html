@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -148,27 +149,48 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.language.language</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.language.ner</span> <span class="k">import</span> <span class="n">NER</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
 <span class="kn">from</span> <span class="nn">pepper.language.pos</span> <span class="k">import</span> <span class="n">POS</span>
+<span class="kn">from</span> <span class="nn">pepper.language.analyzer</span> <span class="k">import</span> <span class="n">Analyzer</span>
+<span class="kn">from</span> <span class="nn">pepper.language.utils.atoms</span> <span class="k">import</span> <span class="n">UtteranceType</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">casefold_text</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.rdf_builder</span> <span class="k">import</span> <span class="n">RdfBuilder</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.response</span> <span class="k">import</span> <span class="n">Triple</span><span class="p">,</span> <span class="n">Perspective</span>
+
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">pos_tag</span>
+
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">CFG</span><span class="p">,</span> <span class="n">RecursiveDescentParser</span><span class="p">,</span> <span class="n">edit_distance</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
-<span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">CFG</span><span class="p">,</span> <span class="n">RecursiveDescentParser</span>
-
-
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
-<div class="viewcode-block" id="UtteranceType"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.UtteranceType">[docs]</a><span class="k">class</span> <span class="nc">UtteranceType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">STATEMENT</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">QUESTION</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Time"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Time">[docs]</a><span class="k">class</span> <span class="nc">Time</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PAST</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">PRESENT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">FUTURE</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="Emotion"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Emotion">[docs]</a><span class="k">class</span> <span class="nc">Emotion</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>  <span class="c1"># Not used yet</span>
+    <span class="n">ANGER</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">DISGUST</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">FEAR</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">HAPPINESS</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">SADNESS</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">SURPRISE</span> <span class="o">=</span> <span class="mi">5</span></div>
 
 
 <div class="viewcode-block" id="Chat"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Chat">[docs]</a><span class="k">class</span> <span class="nc">Chat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create Chat</span>
 
@@ -176,15 +198,46 @@
 <span class="sd">        ----------</span>
 <span class="sd">        speaker: str</span>
 <span class="sd">            Name of speaker (a.k.a. the person Pepper has a chat with)</span>
+<span class="sd">        context: Context</span>
+<span class="sd">            Context Chat is part of</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># TODO: Add contextual information (e.g. datetime, location, ...)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">context</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span> <span class="o">=</span> <span class="n">speaker</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_logger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;&lt; Start of Chat with </span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">speaker</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        context: Context</span>
+<span class="sd">            Context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        speaker: str</span>
+<span class="sd">            Name of speaker (a.k.a. the person Pepper has a chat with)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span>
+
+    <span class="nd">@speaker</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span> <span class="o">=</span> <span class="n">value</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -194,17 +247,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        speaker: str</span>
-<span class="sd">            Name of speaker (a.k.a. the person Pepper has a chat with)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">utterances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Utterance]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -215,6 +259,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">last_utterance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Utterance</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -223,61 +268,196 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Chat.add_utterance"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Chat.add_utterance">[docs]</a>    <span class="k">def</span> <span class="nf">add_utterance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="Chat.add_utterance"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Chat.add_utterance">[docs]</a>    <span class="k">def</span> <span class="nf">add_utterance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">me</span><span class="p">):</span>
+        <span class="c1"># type: (List[UtteranceHypothesis], bool) -&gt; Utterance</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add Utterance to Conversation</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        text: str</span>
-<span class="sd">            Utterance Text to add to conversation</span>
+<span class="sd">        hypotheses: list of UtteranceHypothesis</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        utterance: Utterance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">utterance</span> <span class="o">=</span> <span class="n">Utterance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">))</span>
+        <span class="n">utterance</span> <span class="o">=</span> <span class="n">Utterance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">me</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">utterance</span></div></div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_logger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">utterance</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;Chat </span><span class="si">{:19s}</span><span class="s2"> </span><span class="si">{:03d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span> <span class="k">for</span> <span class="n">utterance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_utterances</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Utterance"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance">[docs]</a><span class="k">class</span> <span class="nc">Utterance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">,</span> <span class="n">speaker</span><span class="p">,</span> <span class="n">chat_id</span><span class="p">,</span> <span class="n">chat_turn</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">,</span> <span class="n">me</span><span class="p">,</span> <span class="n">turn</span><span class="p">):</span>
+        <span class="c1"># type: (Chat, List[UtteranceHypothesis], bool, int) -&gt; Utterance</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct Utterance Object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        transcript: str</span>
-<span class="sd">            Uttered text (Natural Language)</span>
-<span class="sd">        speaker: str</span>
-<span class="sd">            Speaker name</span>
-<span class="sd">        chat_id: int</span>
-<span class="sd">            Unique chat identifier</span>
-<span class="sd">        chat_turn: int</span>
-<span class="sd">            Chat turn</span>
+<span class="sd">        chat: Chat</span>
+<span class="sd">            Reference to Chat Utterance is part of</span>
+<span class="sd">        hypotheses: List[UtteranceHypothesis]</span>
+<span class="sd">            Hypotheses on uttered text (transcript, confidence)</span>
+<span class="sd">        me: bool</span>
+<span class="sd">            True if Robot spoke, False if Person Spoke</span>
+<span class="sd">        turn: int</span>
+<span class="sd">            Utterance Turn</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># TODO: Add Viewed Objects!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span> <span class="o">=</span> <span class="n">chat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span><span class="o">.</span><span class="n">context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_speaker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span><span class="o">.</span><span class="n">speaker</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turn</span> <span class="o">=</span> <span class="n">turn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_me</span> <span class="o">=</span> <span class="n">me</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hypothesis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_hypothesis</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span> <span class="o">=</span> <span class="n">transcript</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tokenize</span><span class="p">(</span><span class="n">transcript</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_tree</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># self._parsed_tree = Parser().parse(self)  # TODO: Implement</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span> <span class="o">=</span> <span class="n">speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span> <span class="o">=</span> <span class="n">chat_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_turn</span> <span class="o">=</span> <span class="n">chat_turn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">))</span>
+
+        <span class="c1"># TODO: Optimize: takes 2.6 seconds now! Should be &lt; 1 second!?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">me</span> <span class="k">else</span> <span class="n">Parser</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># TODO analyze sets triple, perspective and type, but currently is not called on constructor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perspective</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Chat</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        chat: Chat</span>
+<span class="sd">            Utterance Chat</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Context</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        context: Context</span>
+<span class="sd">            Context (a.k.a. people, objects and other detections )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chat_speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        speaker: str</span>
+<span class="sd">            Name of speaker (a.k.a. the person Pepper has a chat with)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_speaker</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; UtteranceType</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type: UtteranceType</span>
+<span class="sd">            Whether the utterance was a statement, a question or an experience</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        transcript: str</span>
+<span class="sd">            Utterance Transcript</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hypothesis</span><span class="o">.</span><span class="n">transcript</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">            Utterance Confidence</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hypothesis</span><span class="o">.</span><span class="n">confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">me</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        me: bool</span>
+<span class="sd">            True if Robot spoke, False if Person Spoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_me</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        turn: int</span>
+<span class="sd">            Utterance Turn</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_turn</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Triple</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: Triple</span>
+<span class="sd">            Structured representation of the utterance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Perspective</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        perspective: Perspective</span>
+<span class="sd">            NLP features related to the utterance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perspective</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datetime</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        language: str</span>
+<span class="sd">            Original language of the Transcript</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -290,44 +470,140 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokens</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">parsed_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[Parser]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        parsed_tree: ntlk Tree generated by the CFG parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_tree</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
 
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Utterance.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.analyze">[docs]</a>    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines the type of utterance, extracts the RDF triple and perspective attaching them to the last utterance</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        chat</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        speaker: str</span>
-<span class="sd">            Speaker name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speaker</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">chat_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">analyzer</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chat</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">analyzer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;I cannot parse your input&quot;</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;predicate&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">]:</span>
+            <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;RDF </span><span class="si">{:&gt;10}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">],</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">))))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pack_triple</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">rdf</span><span class="p">,</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">utterance_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pack_perspective</span><span class="p">(</span><span class="n">analyzer</span><span class="o">.</span><span class="n">perspective</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Utterance.pack_triple"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.pack_triple">[docs]</a>    <span class="k">def</span> <span class="nf">pack_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets utterance type, the extracted triple and (in future) the perspective</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rdf</span>
+<span class="sd">        utterance_type</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        chat_id: int</span>
-<span class="sd">            Unique chat identifier</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_id</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">chat_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">utterance_type</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rdf</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rdf</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;error in the rdf&#39;</span>
+
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>
+
+        <span class="c1"># Build each element</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
+                                      <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+        <span class="n">predicate</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
+        <span class="nb">object</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
+                                                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_triple</span><span class="p">(</span><span class="n">Triple</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="nb">object</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Utterance.pack_perspective"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.pack_perspective">[docs]</a>    <span class="k">def</span> <span class="nf">pack_perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persp</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_perspective</span><span class="p">(</span><span class="n">Perspective</span><span class="p">(</span><span class="n">persp</span><span class="p">[</span><span class="s1">&#39;certainty&#39;</span><span class="p">],</span> <span class="n">persp</span><span class="p">[</span><span class="s1">&#39;polarity&#39;</span><span class="p">],</span> <span class="n">persp</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Utterance.set_triple"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.set_triple">[docs]</a>    <span class="k">def</span> <span class="nf">set_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="c1"># type: (Triple) -&gt; ()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="n">triple</span></div>
+
+<div class="viewcode-block" id="Utterance.set_perspective"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.set_perspective">[docs]</a>    <span class="k">def</span> <span class="nf">set_perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">perspective</span><span class="p">):</span>
+        <span class="c1"># type: (Perspective) -&gt; ()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perspective</span> <span class="o">=</span> <span class="n">perspective</span></div>
+
+<div class="viewcode-block" id="Utterance.casefold"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        chat_turn: int</span>
-<span class="sd">            Chat turn</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat_turn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chat_speaker</span> <span class="o">=</span> <span class="n">casefold_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_speaker</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_choose_hypothesis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_patch_names</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">hypothesis</span><span class="p">:</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_patch_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypotheses</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">me</span><span class="p">:</span>
+
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Patch Transcripts with Names</span>
+            <span class="k">for</span> <span class="n">hypothesis</span> <span class="ow">in</span> <span class="n">hypotheses</span><span class="p">:</span>
+
+                <span class="n">transcript</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">Utterance</span><span class="o">.</span><span class="n">_get_closest_name</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                        <span class="n">transcript</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">transcript</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+                <span class="n">hypothesis</span><span class="o">.</span><span class="n">transcript</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">transcript</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+                <span class="c1"># Count Name Frequency and Adjust Hypothesis Confidence</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+                <span class="n">max_freq</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">names</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+                <span class="k">for</span> <span class="n">hypothesis</span> <span class="ow">in</span> <span class="n">hypotheses</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">transcript</span><span class="p">:</span>
+                            <span class="n">hypothesis</span><span class="o">.</span><span class="n">confidence</span> <span class="o">*=</span> <span class="nb">float</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_freq</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">hypotheses</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_closest_name</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">PEOPLE_FRIENDS_NAMES</span><span class="p">,</span> <span class="n">max_name_distance</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="c1"># type: (str, List[str], int) -&gt; str</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">distance</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">name</span><span class="p">,</span> <span class="n">edit_distance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">max_name_distance</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -343,12 +619,50 @@
 <span class="sd">                - remove contractions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">tokens_raw</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
-            <span class="n">clean_word</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[?!]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
-            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clean_word</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tokens</span>
+        <span class="n">openers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;sorry&#39;</span><span class="p">,</span> <span class="s1">&#39;excuse me&#39;</span><span class="p">,</span> <span class="s1">&#39;hey&#39;</span><span class="p">]</span>
+        <span class="n">introductions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;can you tell me&#39;</span><span class="p">,</span> <span class="s1">&#39;do you know&#39;</span><span class="p">,</span> <span class="s1">&#39;please tell me&#39;</span><span class="p">,</span> <span class="s1">&#39;do you maybe know&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">openers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transcript</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+                <span class="n">transcript</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">introductions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transcript</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">first_word</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">first_word</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;what&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="s1">&#39;who&#39;</span><span class="p">,</span> <span class="s1">&#39;when&#39;</span><span class="p">,</span> <span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="s1">&#39;which&#39;</span><span class="p">]:</span>
+                    <span class="n">transcript</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">tokens_raw</span> <span class="o">=</span> <span class="n">transcript</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="s1">&#39;am&#39;</span><span class="p">,</span> <span class="s1">&#39;re&#39;</span><span class="p">:</span> <span class="s1">&#39;are&#39;</span><span class="p">,</span> <span class="s1">&#39;ll&#39;</span><span class="p">:</span> <span class="s1">&#39;will&#39;</span><span class="p">}</span>
+        <span class="n">dict_not</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;won&#39;</span><span class="p">:</span> <span class="s1">&#39;will&#39;</span><span class="p">,</span> <span class="s1">&#39;don&#39;</span><span class="p">:</span> <span class="s1">&#39;do&#39;</span><span class="p">,</span> <span class="s1">&#39;doesn&#39;</span><span class="p">:</span> <span class="s1">&#39;does&#39;</span><span class="p">,</span> <span class="s1">&#39;didn&#39;</span><span class="p">:</span> <span class="s1">&#39;did&#39;</span><span class="p">,</span> <span class="s1">&#39;haven&#39;</span><span class="p">:</span> <span class="s1">&#39;have&#39;</span><span class="p">,</span> <span class="s1">&#39;wouldn&#39;</span><span class="p">:</span> <span class="s1">&#39;would&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;aren&#39;</span><span class="p">:</span> <span class="s1">&#39;are&#39;</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">tokens_raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_token</span><span class="p">(</span><span class="n">tokens_raw</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="s1">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
+            <span class="n">tokens_raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_token</span><span class="p">(</span><span class="n">tokens_raw</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dict_not</span><span class="p">:</span>
+                <span class="n">tokens_raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_token</span><span class="p">(</span><span class="n">tokens_raw</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dict_not</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="s1">&#39;s&#39;</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">pos_tag</span><span class="p">([</span><span class="n">tokens_raw</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span>
+            <span class="k">if</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DT&#39;</span><span class="p">,</span> <span class="s1">&#39;JJ&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">tag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>  <span class="c1"># determiner, adjective, verb</span>
+                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tokens_raw</span>
+
+<div class="viewcode-block" id="Utterance.replace_token"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Utterance.replace_token">[docs]</a>    <span class="k">def</span> <span class="nf">replace_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens_raw</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">old</span> <span class="ow">in</span> <span class="n">tokens_raw</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">tokens_raw</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+            <span class="n">tokens_raw</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+            <span class="n">tokens_raw</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tokens_raw</span></div>
 
     <span class="k">def</span> <span class="nf">_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -362,391 +676,126 @@
 <span class="sd">        cleaned_tokens: list of str</span>
 <span class="sd">            Tokenized &amp; Cleaned transcript</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">tokens</span>
 
-        <span class="c1"># TODO: Remove Contractions</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">author</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">NAME</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">me</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">speaker</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{:&gt;10s}</span><span class="s1">: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">author</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span></div>
 
-        <span class="k">return</span> <span class="n">tokens</span></div>
 
 <div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="n">POS_TAGGER</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Type: POS</span>
-    <span class="n">CFG_GRAMMAR_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;cfg.txt&#39;</span><span class="p">)</span>
+    <span class="n">CFG_GRAMMAR_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;cfg_new.txt&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Parser</span><span class="o">.</span><span class="n">POS_TAGGER</span><span class="p">:</span>
             <span class="n">Parser</span><span class="o">.</span><span class="n">POS_TAGGER</span> <span class="o">=</span> <span class="n">POS</span><span class="p">()</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Parser</span><span class="o">.</span><span class="n">CFG_GRAMMAR_FILE</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfg_file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Parser.parse"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Parser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_forest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constituents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">forest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forest</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constituents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constituents</span>
+
+    <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
         <span class="n">tokenized_sentence</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">tokens</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">POS_TAGGER</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
-                <span class="n">new_rule</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;POS -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
+
+        <span class="c1"># # Fixing POS matching</span>
+        <span class="c1"># import spacy</span>
+        <span class="c1"># nlp = spacy.load(&#39;en_core_web_sm&#39;)</span>
+        <span class="c1">#</span>
+        <span class="c1"># doc = nlp(utterance.transcript)</span>
+        <span class="c1"># for token in doc:</span>
+        <span class="c1">#     #print(token.text, token.lemma_, token.pos_)</span>
+        <span class="c1">#     ind = 0</span>
+        <span class="c1">#     for w in pos:</span>
+        <span class="c1">#         if w[0]==token.text and w[1]!=token.tag_:</span>
+        <span class="c1">#             if (w[1]==&#39;TO&#39; and token.tag_==&#39;IN&#39;) or w[1][:-1]==token.tag_ or w[1]==token.tag_[:-1]:</span>
+        <span class="c1">#                 continue</span>
+        <span class="c1">#             else:</span>
+        <span class="c1">#                 #print(&#39;pos_mismatch &#39;,w[1],token.tag_)</span>
+        <span class="c1">#                 pos[ind] = (w[0],token.tag_)</span>
+        <span class="c1">#         ind += 1</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">tokenized_sentence</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="s1">&#39;like&#39;</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s1">&#39;VB&#39;</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Does&#39;</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Does&#39;</span><span class="p">,</span> <span class="s1">&#39;VBD&#39;</span><span class="p">)</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+                <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+                <span class="n">new_rule</span> <span class="o">=</span> <span class="n">tag</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;POS -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">word</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
+                <span class="n">pos</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;PRPPOS&#39;</span><span class="p">)</span>
+
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_rule</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
+                <span class="n">new_rule</span> <span class="o">=</span> <span class="n">tag</span> <span class="o">+</span> <span class="s1">&#39; -&gt; </span><span class="se">\&#39;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">word</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&#39;\n</span><span class="s1">&#39;</span>
             <span class="k">if</span> <span class="n">new_rule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">+=</span> <span class="n">new_rule</span>
+            <span class="n">ind</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="n">cfg_parser</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
-        <span class="n">RD</span> <span class="o">=</span> <span class="n">RecursiveDescentParser</span><span class="p">(</span><span class="n">cfg_parser</span><span class="p">)</span>
-        <span class="n">parsed</span> <span class="o">=</span> <span class="n">RD</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">tree</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span></div></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cfg_parser</span> <span class="o">=</span> <span class="n">CFG</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
+            <span class="n">RD</span> <span class="o">=</span> <span class="n">RecursiveDescentParser</span><span class="p">(</span><span class="n">cfg_parser</span><span class="p">)</span>
 
+            <span class="n">last_token</span> <span class="o">=</span> <span class="n">tokenized_sentence</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Analyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Analyzer">[docs]</a><span class="k">class</span> <span class="nc">Analyzer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">last_token</span><span class="p">:</span>
+                <span class="n">tokenized_sentence</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="c1"># Load Grammar Json</span>
-    <span class="n">GRAMMAR_JSON</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;grammar.json&#39;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">GRAMMAR_JSON</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
-        <span class="n">GRAMMAR</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)[</span><span class="s1">&#39;grammar&#39;</span><span class="p">]</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="n">RD</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">tokenized_sentence</span><span class="p">)</span>
 
-    <span class="c1"># Load Stanford Named Entity Recognition Server</span>
-    <span class="n">NER</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: NER</span>
+            <span class="n">s_r</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># syntactic_realizations</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Abstract Analyzer Object: call Analyzer.analyze(utterance) factory function</span>
+            <span class="n">forest</span> <span class="o">=</span> <span class="p">[</span><span class="n">tree</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">            Chat to be analyzed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">forest</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">forest</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;* Ambiguity in grammar *&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># alternative trees? f</span>
+                    <span class="k">for</span> <span class="n">branch</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+                        <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="o">.</span><span class="n">label</span><span class="p">(),</span> <span class="s1">&#39;structure&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="p">}</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">branch</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">():</span>
+                                <span class="n">raw</span> <span class="o">+=</span> <span class="n">leaf</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">NER</span><span class="p">:</span>
-            <span class="n">Analyzer</span><span class="o">.</span><span class="n">NER</span> <span class="o">=</span> <span class="n">NER</span><span class="p">(</span><span class="s1">&#39;english.muc.7class.distsim.crf.ser&#39;</span><span class="p">)</span>
+                        <span class="n">s_r</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span> <span class="o">=</span> <span class="n">chat</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Analyzer.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.Analyzer.analyze">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Analyzer factory function</span>
-
-<span class="sd">        Find appropriate Analyzer for this utterance</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">            Chat to be analyzed</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        analyzer: Analyzer</span>
-<span class="sd">            Appropriate Analyzer Subclass</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">forest</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parsed_tree</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">forest</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Ungrammatical Input&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">forest</span><span class="p">:</span>
-            <span class="n">sentence_type</span> <span class="o">=</span> <span class="n">tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">()</span>
-
-            <span class="k">if</span> <span class="n">sentence_type</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">StatementAnalyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">sentence_type</span> <span class="o">==</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">QuestionAnalyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: &quot;</span><span class="p">,</span> <span class="n">sentence_type</span><span class="p">)</span>
-
-
-
-
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        if chat.last_utterance.tokens:</span>
-<span class="sd">            first_token = chat.last_utterance.tokens[0]</span>
-
-<span class="sd">            question_words = Analyzer.GRAMMAR[&#39;question words&#39;].keys()</span>
-<span class="sd">            to_be = Analyzer.GRAMMAR[&#39;to be&#39;].keys()</span>
-<span class="sd">            modal_verbs = Analyzer.GRAMMAR[&#39;modal_verbs&#39;]</span>
-
-<span class="sd">            question_cues = question_words + to_be + modal_verbs</span>
-
-<span class="sd">            # Classify Utterance as Question / Statement</span>
-<span class="sd">            if first_token in question_cues:</span>
-<span class="sd">                return QuestionAnalyzer.analyze(chat)</span>
-<span class="sd">            else:</span>
-<span class="sd">                return StatementAnalyzer.analyze(chat)</span>
-<span class="sd">        else:</span>
-<span class="sd">            raise ValueError(&quot;Utterance should have at least one element&quot;)</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        log: logging.Logger</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">            Chat to be analyzed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chat</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">utterance_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        utterance_type: UtteranceType</span>
-<span class="sd">            Utterance Type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        template: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># TODO: Implement here!</span>
-
-        <span class="k">return</span> <span class="kc">None</span></div>
-
-
-<div class="viewcode-block" id="StatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.StatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">StatementAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="StatementAnalyzer.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.StatementAnalyzer.analyze">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        StatementAnalyzer factory function</span>
-
-<span class="sd">        Find appropriate StatementAnalyzer for this utterance</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">            Chat to be analyzed</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        analyzer: StatementAnalyzer</span>
-<span class="sd">            Appropriate StatementAnalyzer Subclass</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-
-        <span class="k">return</span> <span class="n">GeneralStatementAnalyzer</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">utterance_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        utterance_type: UtteranceType</span>
-<span class="sd">            Utterance Type (Statement)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="GeneralStatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.GeneralStatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">GeneralStatementAnalyzer</span><span class="p">(</span><span class="n">StatementAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        General Statement Analyzer</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">            Chat to be analyzed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">GeneralStatementAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
-
-
-<div class="viewcode-block" id="ObjectStatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.ObjectStatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">ObjectStatementAnalyzer</span><span class="p">(</span><span class="n">StatementAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Object Statement Analyzer</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">ObjectStatementAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
-
-
-<div class="viewcode-block" id="QuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.QuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">QuestionAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="QuestionAnalyzer.analyze"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.QuestionAnalyzer.analyze">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        QuestionAnalyzer factory function</span>
-
-<span class="sd">        Find appropriate QuestionAnalyzer for this utterance</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">            Chat to be analyzed</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        analyzer: QuestionAnalyzer</span>
-<span class="sd">            Appropriate QuestionAnalyzer Subclass</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
-            <span class="n">first_word</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">first_word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">GRAMMAR</span><span class="p">[</span><span class="s1">&#39;question words&#39;</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">WhQuestionAnalyzer</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">VerbQuestionAnalyzer</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">utterance_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        utterance_type: UtteranceType</span>
-<span class="sd">            Utterance Type (Question)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">QUESTION</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="WhQuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.WhQuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">WhQuestionAnalyzer</span><span class="p">(</span><span class="n">QuestionAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Wh-Question Analyzer</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">WhQuestionAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
-
-
-<div class="viewcode-block" id="VerbQuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.language.html#pepper.language.language.VerbQuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">VerbQuestionAnalyzer</span><span class="p">(</span><span class="n">QuestionAnalyzer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Verb Question Analyzer</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        chat: Chat</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">VerbQuestionAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-
-        <span class="n">rdf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
-
-        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parsed_tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="k">for</span> <span class="n">branch</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">branch</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">(),</span> <span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">label</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
-                        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">+=</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">node</span><span class="o">.</span><span class="n">leaves</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-
-
-
-
-
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="p">(</span><span class="s2">&quot;Bram&quot;</span><span class="p">)</span>
-    <span class="n">chat</span><span class="o">.</span><span class="n">add_utterance</span><span class="p">(</span><span class="s2">&quot;Do I like bananas&quot;</span><span class="p">)</span>
-    <span class="c1">#print(chat,type(chat))</span>
-    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">Analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
-    <span class="nb">print</span> <span class="n">analyzer</span>
-
-    <span class="c1">#print(analyzer.__class__.__name__)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;no forest&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">s_r</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">s_r</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">s_r</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]:</span>
+                        <span class="n">string</span> <span class="o">+=</span> <span class="n">e</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+                    <span class="n">s_r</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">string</span>
+                <span class="n">s_r</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_r</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">forest</span><span class="p">,</span> <span class="n">s_r</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="p">{}</span></div>
 </pre></div>
 
            </div>
@@ -776,25 +825,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

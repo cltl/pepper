@@ -1,17 +1,17 @@
 """
 This is the main repository for Pepper/Nao Applications created as part of the
 Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
-"""
 
-# TODO: Cluster (Sensory) Information in object, accessible in Applications
-#   Conversation, Utterance, Objects (COCO, OID, AVA), People, Location, Date, Time
-#   How long does this Information stay relevant? (Use Last Knowledge / Timeout?)
-#   Verify the here and now, by looking at the places where she's last seen things
-# TODO: Formalize 'Responder' Functions (Utterance, SensoryInformation) -> Response or None
-#   Performance, Multi-Threading, Priority
-# TODO: Conversation Focus:
-#   Face Tracking, Speech Identification, Continuous Face/Speech Learning
-# TODO: Add Leolani in Utterances
+The pepper package is split in a number of subpackages:
+
+- :mod:`~pepper.brain` is concerned with managing and querying pepper's triple store database
+- :mod:`~pepper.framework` contains the backends and sensory processing needed to run robot apps
+- :mod:`~pepper.knowledge` contains pepper's hardwired and internet knowledge
+- :mod:`~pepper.language` contains the grammars and scripts to parse and generate natural language
+- :mod:`~pepper.responder` contains scripts that reply to certain (natural language) queries
+
+:mod:`~pepper.config` lists all application configuration options
+"""
 
 import logging
 import enum
