@@ -1,5 +1,6 @@
 @prefix gaf: <http://groundedannotationframework.org/gaf#> .
 @prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
 @prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
 @prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
 @prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
@@ -25,15 +26,14 @@ leolaniTalk:Perspectives {
         grasp:denotes leolaniWorld:karla-livedin-paris ;
         grasp:hasAttribution leolaniTalk:chat4_utterance1_char0-25_CERTAIN ;
         grasp:wasAttributedTo leolaniFriends:tom ;
-        prov:wasDerivedFrom leolaniTalk:chat4,
-            leolaniTalk:chat4_utterance1 .
+        prov:wasDerivedFrom leolaniTalk:chat4_utterance1 .
 
     leolaniTalk:chat4_utterance1_char0-25_CERTAIN a grasp:Attribution ;
         grasp:isAttributionFor leolaniTalk:chat4_utterance1_char0-25 ;
         rdf:value grasp:CERTAIN .
 }
 
-leolaniWorld:leolani-knows-tom {
+leolaniTalk:leolani-knows-tom {
     leolaniWorld:leolani n2mu:knows leolaniFriends:tom .
 }
 
@@ -41,66 +41,86 @@ leolaniWorld:karla-livedin-paris {
     leolaniWorld:karla n2mu:livedIn leolaniWorld:paris .
 }
 
-leolaniWorld:Claims {
-    leolaniWorld:karla-livedin-paris a grasp:Instance,
-            grasp:Statement,
-            sem:Event .
+leolaniTalk:leolani-sense-front_camera {
+	leolaniWorld:leolani n2mu:sense leolaniInputs:front-camera .
+}
 
-    leolaniWorld:leolani-knows-tom a grasp:Instance,
-            grasp:Statement,
-            sem:Event .
+
+leolaniWorld:Claims {
+    leolaniWorld:karla-livedin-paris a grasp:Statement,
+            sem:Event ;
+        grasp:denotedBy leolaniTalk:chat4_utterance1_char0-25 .
+
+    leolaniWorld:leolani-knows-tom a grasp:Statement,
+            grasp:Experience ,
+                sem:Event ;
+        grasp:denotedBy leolaniTalk:chat4_utterance1_char0-25 ;
+        eps:hasContext leolaniContext:context1 .
+
+    leolaniWorld:leolani-sees-chair1 a grasp:Experience,
+            sem:Event ;
+        eps:hasContext leolaniContext:context1 .
+
+    leolaniWorld:leolani-sees-gabriela a grasp:Experience,
+            sem:Event ;
+        eps:hasContext leolaniContext:context1 .
 }
 
 leolaniWorld:Instances {
     leolaniWorld:karla a n2mu:Person,
             grasp:Instance ;
         rdfs:label "Karla" ;
-        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 ;
-        grasp:hasContext leolaniContext:context1 .
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 .
 
     leolaniWorld:paris a n2mu:Location,
             grasp:Instance ;
         rdfs:label "Paris" ;
-        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 ;
-        grasp:hasContext leolaniContext:context1 .
-
-    leolaniWorld:karla-livedIn-paris grasp:denotedBy leolaniTalk:chat4_utterance1_char0-25 ;
-        grasp:hasContext leolaniContext:context1 .
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 .
 
     leolaniWorld:leolani a n2mu:Robot,
             grasp:Instance ;
         rdfs:label "leolani" .
+
+    leolaniWorld:chair1 a n2mu:Chair,
+            n2mu:Object,
+              grasp:Detection ;
+        rdfs:label "Chair 1"
+        eps:hasContext leolaniContext:context1 .
+
+    leolaniWorld:gabriela a n2mu:Person,
+            grasp:Detection ;
+        rdfs:label "Gabriela"
+        eps:hasContext leolaniContext:context1 .
 }
 
 leolaniTalk:Interactions {
-    leolaniWorld:chair1 a n2mu:Chair,
-            n2mu:Object,
-            grasp:Instance,
-             grasp:Detection ;
-        rdfs:label "Chair 1" ;
-        grasp:hasContext leolaniContext:context1 .
-
-    leolaniFriends:tom a n2mu:Person,
-            grasp:Instance,
-             grasp:Detection,
+    leolaniInputs:front_camera a n2mu:Sensor,
             grasp:Source,
             sem:Actor ;
-        rdfs:label "Tom" .
+        rdfs:label "Front camera".
 
-    leolaniWorld:leolani n2mu:knows leolaniFriends:tom .
+    leolaniFriends:tom a n2mu:Person,
+            grasp:Detection,
+            grasp:Source,
+            sem:Actor ;
+        rdfs:label "Tom" ;
+        eps:hasContext leolaniContext:context1 .
 
     leolaniTalk:chat4 a grasp:Chat,
             sem:Event ;
         n2mu:id 4 ;
-        sem:hasActor leolaniFriends:tom ;
-        sem:hasSubEvent leolaniTalk:chat4_utterance1 ;
-        grasp:hasContext leolaniContext:context1 .
+        sem:hasSubEvent leolaniTalk:chat4_utterance1 ,
+         leolaniTalk:chat4_visual1 .
 
     leolaniTalk:chat4_utterance1 a grasp:Utterance,
             sem:Event ;
         n2mu:id 1 ;
-        sem:hasActor leolaniFriends:tom ;
-        grasp:hasContext leolaniContext:context1 .
+        sem:hasActor leolaniFriends:tom .
+
+    leolaniTalk:chat4_visual1 a grasp:Visual,
+            sem:Event ;
+        n2mu:id 1 ;
+        sem:hasActor leolaniInputs:front_camera .
 
     leolaniContext:2019-01-24 a sem:Time ,
         time:DateTimeDescription ;
@@ -110,15 +130,16 @@ leolaniTalk:Interactions {
         time:year "2019"^^xml1:gYear .
 
     leolaniContext:armandosOffice a n2mu:Location,
-            grasp:Instance,
             sem:Place ;
         rdfs:label "Armando's office" .
 
-    leolaniContext:context1 a grasp:Context ;
-        sem:hasTime leolaniContext:2019-01-24 ;
+    leolaniContext:context1 a eps:Context ;
+        sem:hasBeginTimeStamp leolaniContext:2019-01-24 ;
         sem:hasPlace leolaniContext:armandosOffice ;
-        grasp:hasDetection leolaniWorld:chair1 .
+        sem:hasEvent leolaniTalk:chat4 ;
+        eps:hasDetection leolaniWorld:chair1,
+            leolaniWorld:gabriela .
 }
 
-
+n2mu:Chair a n2mu:Object .
 

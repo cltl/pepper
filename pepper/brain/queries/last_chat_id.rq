@@ -1,8 +1,0 @@
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX grasp: <http://groundedannotationframework.org/grasp#>
-PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
-
-select ?chatid where {
-    ?chat rdf:type grasp:Chat .
-    ?chat n2mu:id ?chatid .
-} ORDER BY DESC (?chatid) LIMIT 1

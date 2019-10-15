@@ -1,67 +1,80 @@
-from pepper.brain.long_term_memory import LongTermMemory
-from pepper.language.generation.phrasing import phrase_all_conflicts, phrase_cardinality_conflicts, \
-    phrase_negation_conflicts, phrase_statement_novelty, phrase_type_novelty, phrase_update
+from pepper.brain import LongTermMemory
 
-import json
-from datetime import date
+from test.brain.utils import transform_capsule, places, bl, capsule_likes, capsule_is_from, capsule_is_from_2, \
+    capsule_is_from_3, capsule_knows
 
+from random import choice
 
-# Create brain connection
-brain = LongTermMemory()
+if __name__ == "__main__":
 
-conlficts = brain.get_all_conflicts()
-print(phrase_all_conflicts(conlficts))
+    # Create brain connection
+    brain = LongTermMemory(clear_all=True)
 
-# capsule_serbia = {  # lenka saw a dog
-#         "subject": {
-#             "label": "lenka",
-#             "type": ""
-#         },
-#         "predicate": {
-#             "type": "sees"
-#         },
-#         "object": {
-#             "label": "dog",
-#             "type": ""
-#         },
-#         "author": "selene",
-#         "chat": 1,
-#         "turn": 1,
-#         "position": "0-25",
-#         "date": date(2018, 3, 19)
-#     }
+    capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes,
+                capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes]
 
-capsule_serbia = {  # lenka is from Serbia
-        "subject": {
-            "label": "bram",
-            "type": "person"
-        },
-        "predicate": {
-            "type": "is_from"
-        },
-        "object": {
-            "label": "mongolia",
-            "type": "location"
-        },
-        "author": "selene",
-        "chat": 1,
-        "turn": 1,
-        "position": "0-25",
-        "date": date(2018, 3, 19)
-    }
+    for capsule in capsules:
+        say = ''
+        em = choice(bl)
+        np = choice(bl)
+        p = choice(bl)
+        capsule = transform_capsule(capsule, empty=em, no_people=np, place=p)
+        x = brain.update(capsule, reason_types=True)
 
-x = brain.update(capsule_serbia)
-print(json.dumps(x, indent=4, sort_keys=True))
-print(phrase_cardinality_conflicts(x['cardinality_conflicts'], capsule_serbia))
-print(phrase_negation_conflicts(x['negation_conflicts'], capsule_serbia))
-print(phrase_statement_novelty(x['statement_novelty']))
-print(phrase_type_novelty(x['entity_novelty'], capsule_serbia))
+        if capsule.context.location.label == capsule.context.location.UNKNOWN:
+            y = brain.reason_location(capsule.context)
+            if y is None:
+                z = choice(places)
+                brain.set_location_label(z)
+                capsule.context.location._label = z
+                say += 'Having a talk at what I will call %s' % capsule.context.location.label
+            else:
+                brain.set_location_label(y)
+                capsule.context.location._label = y
+                say += 'Having a talk at what I figure out is %s' % capsule.context.location.label
 
+        else:
+            say += 'Having a talk at %s' % capsule.context.location.label
+        print(say)
 
-print('\n\n')
-print(phrase_update(x))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
+        # print(phrase_thoughts(x, True, True))
 
-
-
-
-
+    # for x in range(10):
+    #     say = ''
+    #     emn = choice(bl)
+    #     npn = choice(bl)
+    #     context = fake_context(empty=emn, no_people=npn)
+    #     say += 'Compared with context b: %s,%s\n' % (emn, npn)
+    #
+    #     y = brain.reason_location(context)
+    #     if y is None:
+    #         z = choice(places)
+    #         # brain.set_location_label(z)
+    #         context.location._label = z
+    #         say += 'I did not know where I was, but I will call it %s' % context.location.label
+    #     else:
+    #         # brain.set_location_label(y)
+    #         context.location._label = y
+    #         say += 'I assume I am at %s' % context.location.label
+    #
+    #     print(say)

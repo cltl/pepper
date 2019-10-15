@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.knowledge.wolfram module" href="pepper.knowledge.wolfram.html" />
     <link rel="prev" title="pepper.knowledge.sentences module" href="pepper.knowledge.sentences.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -56,6 +58,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -91,16 +97,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -171,24 +171,13 @@
             
   <div class="section" id="module-pepper.knowledge.wikipedia">
 <span id="pepper-knowledge-wikipedia-module"></span><h1>pepper.knowledge.wikipedia module<a class="headerlink" href="#module-pepper.knowledge.wikipedia" title="Permalink to this headline">¶</a></h1>
+<p>Query the Wikipedia API using Natural Language.</p>
 <dl class="class">
 <dt id="pepper.knowledge.wikipedia.Wikipedia">
 <em class="property">class </em><code class="descclassname">pepper.knowledge.wikipedia.</code><code class="descname">Wikipedia</code><a class="reference internal" href="_modules/pepper/knowledge/wikipedia.html#Wikipedia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia" title="Permalink to this definition">¶</a></dt>
-<dd><p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="47%" />
-<col width="53%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>query</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+<dd><dl class="attribute">
 <dt id="pepper.knowledge.wikipedia.Wikipedia.DISAMBIGUATION">
-<code class="descname">DISAMBIGUATION</code><em class="property"> = u'may refer to:'</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.DISAMBIGUATION" title="Permalink to this definition">¶</a></dt>
+<code class="descname">DISAMBIGUATION</code><em class="property"> = [u'refer to:', u'refers to:']</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.DISAMBIGUATION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -216,10 +205,28 @@
 <code class="descname">SUMMARY</code><em class="property"> = u'https://en.wikipedia.org/w/api.php?format=json&amp;action=query&amp;prop=extracts&amp;exintro&amp;explaintext&amp;titles='</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.SUMMARY" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="pepper.knowledge.wikipedia.Wikipedia.THUMBNAIL">
+<code class="descname">THUMBNAIL</code><em class="property"> = u'http://en.wikipedia.org/w/api.php?action=query&amp;prop=pageimages&amp;format=json&amp;pithumbsize=1000&amp;titles='</em><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.THUMBNAIL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="staticmethod">
 <dt id="pepper.knowledge.wikipedia.Wikipedia.query">
 <em class="property">static </em><code class="descname">query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/knowledge/wikipedia.html#Wikipedia.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.knowledge.wikipedia.Wikipedia.query" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Query Wikipedia</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em><em> or </em><em>unicode</em>) – Simple Natural Language Query (about something Wikipedia would know)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>result</strong> – Wikipedia Answer and thumbnail image URL</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Optional[Tuple[unicode, str]]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -236,7 +243,7 @@
         <a href="pepper.knowledge.wolfram.html" class="btn btn-neutral float-right" title="pepper.knowledge.wolfram module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.knowledge.sentences.html" class="btn btn-neutral" title="pepper.knowledge.sentences module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.knowledge.sentences.html" class="btn btn-neutral float-left" title="pepper.knowledge.sentences module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -262,25 +269,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

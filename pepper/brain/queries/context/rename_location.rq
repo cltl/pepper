@@ -1,0 +1,39 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX leolaniTalk: <http://cltl.nl/leolani/talk/>
+
+DELETE {GRAPH leolaniTalk:Interactions {?s ?p ?oldURI}}
+INSERT {GRAPH leolaniTalk:Interactions {?s ?p ?newURI }}
+WHERE {?oldURI rdf:type n2mu:location .
+    ?oldURI rdf:type sem:Place .
+       ?s ?p ?oldURI.
+       BIND (URI(REPLACE(STR(?oldURI), "%s", "%s")) AS ?newURI) .
+       }
+;
+
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX leolaniContext: <http://cltl.nl/leolani/context/>
+PREFIX leolaniTalk: <http://cltl.nl/leolani/talk/>
+
+DELETE {GRAPH leolaniTalk:Interactions {leolaniContext:%s rdfs:label ?o.}}
+INSERT {GRAPH leolaniTalk:Interactions{leolaniContext:%s rdfs:label ?newo.}}
+WHERE {
+       	leolaniContext:%s rdfs:label ?o.
+    BIND(REPLACE(STR(?o), "%s", "%s") AS ?newo) .
+       }
+;
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX leolaniTalk: <http://cltl.nl/leolani/talk/>
+
+DELETE {GRAPH leolaniTalk:Interactions {?oldURI ?p ?o}}
+INSERT {GRAPH leolaniTalk:Interactions{?newURI ?p ?o}}
+WHERE {?oldURI rdf:type n2mu:location .
+    ?oldURI rdf:type sem:Place .
+       ?oldURI ?p ?o.
+       BIND (URI(REPLACE(STR(?oldURI), "%s", "%s")) AS ?newURI) .
+       }

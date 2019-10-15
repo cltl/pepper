@@ -1,3 +1,9 @@
+"""
+Sets of Semantically Similar Phrases to add variety (using the random.choice function)
+"""
+
+import random
+
 GREETING = [
     "Yo",
     "Hey!",
@@ -124,11 +130,18 @@ DIFFERENT_FACE = [
 ]
 
 THINKING = [
-    "Let me think.",
-    "Hmmm",
-    "Well",
-    "I'm thinking",
-    "I heard you"
+    "...Hm...",
+    "...Well...",
+    "...Right...",
+    "...Okay...",
+    "...You see...",
+    "...Sure...",
+
+    "...Let me think...",
+    "...I'm thinking...",
+    "...I heard you...",
+    "...Let me tell you...",
+    "...Give me a second...",
 ]
 
 UNDERSTAND = [
@@ -235,11 +248,18 @@ NEGATION = [
     "stupid"
 ]
 
+JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is really heavy and the other is a little lighter.",
+        "What's the difference between ignorance and apathy? I don't know and I don't care.",
+        "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
+        "Did you hear about the crook who stole a calendar? He got twelve months.",
+        "Why is an island like the letter T? They're both in the middle of water!",
+        "Did you hear the one about the little mountain? It's hilarious!"]
+
 ELOQUENCE = [
     "I see",
     "Interesting",
     "Good to know",
-    "I do not know, but I have a joke {insert joke}",
+    "I do not know, but I have a joke {}".format(random.choice(JOKE)),
     "As the prophecy foretold",
     "But at what cost?",
     "So let it be written, ... so let it be done",
@@ -256,13 +276,6 @@ ELOQUENCE = [
     "Many of us feel that way"
     ]
 
-JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is really heavy and the other is a little lighter.",
-        "What's the difference between ignorance and apathy? I don't know and I don't care.",
-        "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
-        "Did you hear about the crook who stole a calendar? He got twelve months.",
-        "Why is an island like the letter T? They're both in the middle of water!",
-        "Did you hear the one about the little mountain? It's hilarious!"]
-
 NEW_KNOWLEDGE = ["I did not know that!", "This is news to me.", "Interesting!", "Exciting news!",
                  "I just learned something,", "I am glad to have learned something new."]
 
@@ -271,8 +284,8 @@ EXISTING_KNOWLEDGE = ["This sounds familiar.", "That rings a bell.", "I have hea
 CONFLICTING_KNOWLEDGE = ["I am surprised.", "Really?", "This seems hard to believe.", "Odd!", "Are you sure?",
                          "I don't know what to make of this.", "Strange."]
 
-CURIOSITY = ["I am curious", "Let me ask you something.", "I would like to know.", "If you don't mind me asking."]
+CURIOSITY = ["I am curious.", "Let me ask you something.", "I would like to know.", "If you don't mind me asking."]
 
-TRUST = ["I think I trust you.", "I trust you", "I believe you", "You have my trust"]
+TRUST = ["I think I trust you.", "I trust you", "I believe you", "You have my trust."]
 
-NO_TRUST = ["I am not sure I trust you.", "I do not trust you", "I do not believe you"]
+NO_TRUST = ["I am not sure I trust you.", "I do not trust you.", "I do not believe you."]

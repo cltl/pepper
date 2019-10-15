@@ -9,6 +9,13 @@ import re
 from typing import Optional, Union, Tuple, Callable
 
 
+WEB_CUE = [
+    "can you search ",
+    "can you look up ",
+    "can you query ",
+]
+
+
 class WikipediaResponder(Responder):
     @property
     def type(self):
@@ -21,18 +28,23 @@ class WikipediaResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        result = Wikipedia.query(utterance.transcript)
+        for que in WEB_CUE:
+            if utterance.transcript.lower().startswith(que):
 
-        if result:
+                result = Wikipedia.query(utterance.transcript.lower().replace(que, ""))
 
-            # Get Answer and Image URL from Wikipedia Query
-            answer, url = result
+                if result:
 
-            # Take Summary (a.k.a. First Sentence) from Wikipedia Query
-            answer = re.split('[.\n]', answer)[0]
+                    # Get Answer and Image URL from Wikipedia Query
+                    answer, url = result
 
-            # Return Result
-            return 1.0, lambda: app.say(answer, animation=animations.EXPLAIN)
+                    # Take Summary (a.k.a. First Sentence) from Wikipedia Query
+                    answer = re.split('[.\n]', answer)[0]
+
+                    # Return Result
+                    return 1.0, lambda: app.say(answer, animation=animations.EXPLAIN)
+
+                break
 
 
 class WolframResponder(Responder):
@@ -50,8 +62,15 @@ class WolframResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        if self._wolfram.is_query(utterance.transcript):
-            result = self._wolfram.query(utterance.transcript)
+        for que in WEB_CUE:
+            if utterance.transcript.lower().startswith(que):
 
-            if result:
-                return 1.0, lambda: app.say(result, animations.EXPLAIN)
+                transcript = utterance.transcript.lower().replace(que, "")
+
+                if self._wolfram.is_query(transcript):
+                    result = self._wolfram.query(transcript)
+
+                    if result:
+                        return 1.0, lambda: app.say(result, animations.EXPLAIN)
+
+                break

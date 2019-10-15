@@ -1,17 +1,31 @@
-"""Pepper Configuration File"""
+"""
+The Pepper Configuration File contains Settings for:
+
+- Application Backend, Language, Paths & URLs
+- API Keys (Google Cloud Services & Wolfram Alpha)
+- Sensory Parameters (tweak for desired performance)
+
+(see source file for more information)
+
+"""
 
 import pepper
 import json
 import os
 
 
-# Application Settings
+# <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-# More Backends will be added in the future!
 APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
+# Name of Robot
 NAME = "Leolani"
+
+# Name of Unknown and Groups of Humans
+HUMAN_UNKNOWN = "Stranger"
+HUMAN_CROWD = "Humans"
+
 
 # Application Language to use
 # Full list of Languages and their formats can be found at
@@ -23,7 +37,13 @@ APPLICATION_LANGUAGE = 'en-GB'
 INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
 
 
-# Application Paths
+# Show Subtitles on Pepper's Tablet!
+SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
+SUBTITLES_TIMEOUT = 15
+SUBTITLES = True
+
+
+# <<< Application Paths >>>
 
 # pepper/                  PROJECT_ROOT
 #   people/                 PEOPLE_ROOT
@@ -100,38 +120,47 @@ LOG = pepper.LOGGING_FILE
 # Brain Logging
 BRAIN_LOG_ROOT = os.path.join(PACKAGE_ROOT, "../backups/brain/brain_log_{}")
 
-
-# Application URLs
+# <<< Application URLs >>>
 
 # Brain URL (Local GraphDB or Remote Database)
 BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
-NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
-# NAOQI_IP, NAOQI_PORT = "10.10.60.150", 9559  # Future Lab
-# NAOQI_IP, NAOQI_PORT = "192.168.137.172", 9559  # Local?
+NAOQI_IP = "192.168.1.176"  # Default WiFi
+# NAOQI_IP = "192.168.1.149"  # Ethernet?
+NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
-# Application Sensor Parameters
+# <<< Application Sensor Parameters >>>
 FACE_RECOGNITION_THRESHOLD = 0.5
 OBJECT_RECOGNITION_THRESHOLD = 0.5
+VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
+
+# Set which Object Recognition Backends to use
+# NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow
+# NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
     pepper.ObjectDetectionTarget.COCO
 ]
 
+# Microphone sample rate (Hz) and number of channels
+# NOTE: Fixed at 16000 Hz and 1 Channel (mono)
 MICROPHONE_SAMPLE_RATE = 16000
 MICROPHONE_CHANNELS = 1
 
-VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
+# Camera resolution (in pixels) and frame rate (Hz)
+# NOTE: Both resolution and frame rate impact system performance...
+CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
+CAMERA_FRAME_RATE = 3
 
-CAMERA_RESOLUTION = pepper.CameraResolution.QQVGA
-CAMERA_FRAME_RATE = 2
+# NAOqi Text to Speech Speed
+NAOQI_SPEECH_SPEED = 90
 
 # NAOqi Specific Overrides
 NAOQI_USE_SYSTEM_CAMERA = False
-NAOQI_USE_SYSTEM_MICROPHONE = True
+NAOQI_USE_SYSTEM_MICROPHONE = False
 NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
 NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
 
@@ -153,6 +182,9 @@ def get_backend():
     -------
     backend: AbstractBackend
     """
+
+    pepper.logger.info("Using {}".format(APPLICATION_BACKEND))
+
     backend = None
     if APPLICATION_BACKEND == pepper.ApplicationBackend.SYSTEM:
         from pepper.framework.backend.system import SystemBackend

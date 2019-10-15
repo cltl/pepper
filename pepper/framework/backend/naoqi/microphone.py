@@ -2,25 +2,30 @@ from pepper.framework.abstract.microphone import AbstractMicrophone
 from pepper import NAOqiMicrophoneIndex
 import numpy as np
 
+import qi
+
+from typing import List, Callable, Tuple
+
 
 class NAOqiMicrophone(AbstractMicrophone):
+    """
+    NAOqi Microphone
+
+    Parameters
+    ----------
+    session: qi.Session
+        Qi Application Session
+    index: NAOqiMicrophoneIndex or int
+        Which Microphone to Use
+    callbacks: list of callable
+        Functions to call each time some audio samples are captured
+    """
 
     SERVICE = "ALAudioDevice"
     RATE = 16000
 
     def __init__(self, session, index, callbacks=[]):
-        """
-        NAOqi Microphone
-
-        Parameters
-        ----------
-        session: qi.Session
-            Qi Application Session
-        index: NAOqiMicrophoneIndex or int
-            Which Microphone to Use
-        callbacks: list of callable
-            On Audio Callbacks
-        """
+        # type: (qi.Session, NAOqiMicrophoneIndex, List[Callable[[np.ndarray], None]]) -> None
         super(NAOqiMicrophone, self).__init__(
             NAOqiMicrophone.RATE, 4 if index == NAOqiMicrophoneIndex.ALL else 1, callbacks)
 
@@ -33,10 +38,13 @@ class NAOqiMicrophone(AbstractMicrophone):
         self._log.debug("Booted")
 
     def processRemote(self, channels, samples, timestamp, buffer):
+        # type: (int, int, Tuple[int, int], bytes) -> None
         """
         Process Audio Window from Pepper/Nao
 
-        This function must be called "processRemote", according to Naoqi specifications.
+        This function must be exactly called "processRemote", according to NAOqi specifications.
+
+        Make sure this thread is idle to receive calls from NAOqi to 'processRemote', otherwise frames will be dropped!
 
         Parameters
         ----------

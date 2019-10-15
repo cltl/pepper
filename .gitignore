@@ -2,7 +2,12 @@
 *.pyc
 
 people/friends/
+people/new/
+people/VU/
 tmp/
+
+test/news/tmp
+test/news/out
 
 google_cloud_key.json
 tokens.json

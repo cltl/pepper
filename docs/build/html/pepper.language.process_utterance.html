@@ -17,33 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.language.utils module" href="pepper.language.utils.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -55,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -77,31 +82,8 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.analyzers.html">pepper.language.analyzers module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.language.html">pepper.language.language module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.names.html">pepper.language.names module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.ner.html">pepper.language.ner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.pos.html">pepper.language.pos module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.language.process_utterance module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
 </ul>
 
             
@@ -147,10 +129,6 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
-          <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
-        
       <li>pepper.language.process_utterance module</li>
     
     
@@ -174,14 +152,14 @@
 <span id="pepper-language-process-utterance-module"></span><h1>pepper.language.process_utterance module<a class="headerlink" href="#module-pepper.language.process_utterance" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="pepper.language.process_utterance.analyze_statement">
-<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">analyze_statement</code><span class="sig-paren">(</span><em>speaker</em>, <em>words</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/process_utterance.html#analyze_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.analyze_statement" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">analyze_statement</code><span class="sig-paren">(</span><em>speaker</em>, <em>words</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.language.process_utterance.analyze_statement" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function analyzes statements, by extracting an rdf
 A complete rdf is stored in the brain, while an incomplete one should raise an error and trigger asking-for-clarification #TODO</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pepper.language.process_utterance.analyze_utterance">
-<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">analyze_utterance</code><span class="sig-paren">(</span><em>utterance</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>brain</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/process_utterance.html#analyze_utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.analyze_utterance" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">analyze_utterance</code><span class="sig-paren">(</span><em>utterance</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>brain</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.language.process_utterance.analyze_utterance" title="Permalink to this definition">¶</a></dt>
 <dd><p>When the microphone creates a transcript of text-to-speech, this function is the first to be called
 After the utterance is classified and processed, we get a json template to either query the brain or to store it
 The brain returns a response after querying/storing the template</p>
@@ -189,7 +167,7 @@ The brain returns a response after querying/storing the template</p>
 
 <dl class="function">
 <dt id="pepper.language.process_utterance.classify_and_analyze_question">
-<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">classify_and_analyze_question</code><span class="sig-paren">(</span><em>speaker</em>, <em>words</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/process_utterance.html#classify_and_analyze_question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.classify_and_analyze_question" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">classify_and_analyze_question</code><span class="sig-paren">(</span><em>speaker</em>, <em>words</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.language.process_utterance.classify_and_analyze_question" title="Permalink to this definition">¶</a></dt>
 <dd><p>If an utterance is classified as a question, this function is called to determine
 whether it is a <a href="#id1"><span class="problematic" id="id2">wh_</span></a> or a verb question (depending on the first word)
 Based on this, we extract an RDF triple of subject-predicate-object, and then pack it in the template
@@ -198,13 +176,13 @@ The template is a json formatted to query the brain</p>
 
 <dl class="function">
 <dt id="pepper.language.process_utterance.classify_and_process_utterance">
-<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">classify_and_process_utterance</code><span class="sig-paren">(</span><em>utterance</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/process_utterance.html#classify_and_process_utterance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.classify_and_process_utterance" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">classify_and_process_utterance</code><span class="sig-paren">(</span><em>utterance</em>, <em>speaker</em>, <em>chat_id</em>, <em>chat_turn</em>, <em>viewed_objects</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.language.process_utterance.classify_and_process_utterance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Depending on the first word, the utterance is classified as a question or a statement and then processed accordingly</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pepper.language.process_utterance.reply">
-<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">reply</code><span class="sig-paren">(</span><em>response</em>, <em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/process_utterance.html#reply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.process_utterance.reply" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pepper.language.process_utterance.</code><code class="descname">reply</code><span class="sig-paren">(</span><em>response</em>, <em>speaker</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.language.process_utterance.reply" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function is called to generate the response to be said aloud by Leolani
 It needs the response generated from the brain as input, and based on its type (response to question or a statement) it triggers different reply functions</p>
 </dd></dl>
@@ -216,13 +194,6 @@ It needs the response generated from the brain as input, and based on its type (
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pepper.language.utils.html" class="btn btn-neutral float-right" title="pepper.language.utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-    </div>
   
 
   <hr/>
@@ -246,25 +217,16 @@ It needs the response generated from the brain as input, and based on its type (
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

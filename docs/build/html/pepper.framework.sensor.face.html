@@ -17,32 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.sensor.location module" href="pepper.framework.sensor.location.html" />
+    <link rel="prev" title="pepper.framework.sensor.asr module" href="pepper.framework.sensor.asr.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +58,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -80,33 +88,33 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.html#sensor">Sensor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.asr.html">pepper.framework.sensor.asr module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.sensor.face module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.location.html">pepper.framework.sensor.location module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.obj.html">pepper.framework.sensor.obj module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.vad.html">pepper.framework.sensor.vad module</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -181,42 +189,28 @@
 <span id="pepper-framework-sensor-face-module"></span><h1>pepper.framework.sensor.face module<a class="headerlink" href="#module-pepper.framework.sensor.face" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pepper.framework.sensor.face.Face">
-<em class="property">class </em><code class="descclassname">pepper.framework.sensor.face.</code><code class="descname">Face</code><span class="sig-paren">(</span><em>representation</em>, <em>bounds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#Face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.Face" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">pepper.framework.sensor.face.</code><code class="descname">Face</code><span class="sig-paren">(</span><em>name</em>, <em>confidence</em>, <em>representation</em>, <em>bounds</em>, <em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#Face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.Face" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.sensor.obj.html#pepper.framework.sensor.obj.Object" title="pepper.framework.sensor.obj.Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.obj.Object</span></code></a></p>
+<p>Face Object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.sensor.face.Face.bounds" title="pepper.framework.sensor.face.Face.bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds</span></code></a></dt>
-<dd><p class="first last">Face Bounds (Relative to Image)</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.face.Face.representation" title="pepper.framework.sensor.face.Face.representation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">representation</span></code></a></dt>
-<dd><p class="first last">Face Representation</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – Name of Person</li>
+<li><strong>confidence</strong> (<em>float</em>) – Name Confidence</li>
+<li><strong>representation</strong> (<em>np.ndarray</em>) – Face Feature Vector</li>
+<li><strong>bounds</strong> (<a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds"><em>Bounds</em></a>) – Face Bounding Box</li>
+<li><strong>image</strong> (<a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage" title="pepper.framework.abstract.camera.AbstractImage"><em>AbstractImage</em></a>) – Image Face was Found in</li>
+</ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="pepper.framework.sensor.face.Face.bounds">
-<code class="descname">bounds</code><a class="headerlink" href="#pepper.framework.sensor.face.Face.bounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Face Bounds (Relative to Image)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>bounds: Bounds</strong></dt>
-<dd><p class="first last">Face Bounding Box</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dt id="pepper.framework.sensor.face.Face.UNKNOWN">
+<code class="descname">UNKNOWN</code><em class="property"> = 'Stranger'</em><a class="headerlink" href="#pepper.framework.sensor.face.Face.UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.face.Face.representation">
@@ -226,12 +220,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>representation: np.ndarray</strong></dt>
-<dd><p class="first last">Face Feature Vector</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>representation</strong> – Face Feature Vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
 </tr>
 </tbody>
 </table>
@@ -242,37 +233,16 @@
 <dl class="class">
 <dt id="pepper.framework.sensor.face.FaceClassifier">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.face.</code><code class="descname">FaceClassifier</code><span class="sig-paren">(</span><em>people</em>, <em>n_neighbors=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#FaceClassifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.FaceClassifier" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Classify Faces of People</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.sensor.face.FaceClassifier.people" title="pepper.framework.sensor.face.FaceClassifier.people"><code class="xref py py-obj docutils literal notranslate"><span class="pre">people</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>people</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>np.ndarray</em><em>]</em>) – Known People as &lt;name, representations&gt; dictionary</li>
+<li><strong>n_neighbors</strong> (<em>int</em>) – </li>
+</ul>
 </td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceClassifier.accuracy" title="pepper.framework.sensor.face.FaceClassifier.accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accuracy</span></code></a>()</td>
-<td>Calculate Classifier Cross Validation Accuracy</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceClassifier.classify" title="pepper.framework.sensor.face.FaceClassifier.classify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">classify</span></code></a>(face)</td>
-<td>Classify Face as Person</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceClassifier.from_directory" title="pepper.framework.sensor.face.FaceClassifier.from_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_directory</span></code></a>(directory)</td>
-<td>Construct FaceClassifier from directory of &lt;name&gt;.bin files</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceClassifier.load_directory" title="pepper.framework.sensor.face.FaceClassifier.load_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_directory</span></code></a>(directory)</td>
-<td>Load Directory of &lt;name&gt;.bin files</td>
 </tr>
 </tbody>
 </table>
@@ -289,10 +259,26 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>accuracy: float</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>accuracy</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.sensor.face.FaceClassifier.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>name</em>, <em>vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#FaceClassifier.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.FaceClassifier.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Person to Face Classifier</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – </li>
+<li><strong>vector</strong> (<em>np.ndarray</em>) – Concatenated Representations (float32 array of length 128n)</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -301,22 +287,23 @@
 
 <dl class="method">
 <dt id="pepper.framework.sensor.face.FaceClassifier.classify">
-<code class="descname">classify</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#FaceClassifier.classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.FaceClassifier.classify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Classify Face as Person</p>
+<code class="descname">classify</code><span class="sig-paren">(</span><em>representation</em>, <em>bounds</em>, <em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#FaceClassifier.classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.FaceClassifier.classify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify Face Observation as Particular Person</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>face: Face</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>representation</strong> (<em>np.ndarray</em>) – Observed Face Representation (from OpenFace.represent)</li>
+<li><strong>bounds</strong> (<a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds"><em>Bounds</em></a>) – Face Bounds (relative to Image)</li>
+<li><strong>image</strong> (<a class="reference internal" href="pepper.framework.abstract.camera.html#pepper.framework.abstract.camera.AbstractImage" title="pepper.framework.abstract.camera.AbstractImage"><em>AbstractImage</em></a>) – Image in which Face was Observed</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>person: Person</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>person</strong> – Classified Person</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pepper.framework.sensor.face.Face" title="pepper.framework.sensor.face.Face">Face</a></p>
 </td>
 </tr>
 </tbody>
@@ -331,17 +318,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>directory: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>face_classifier: FaceClassifier</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>face_classifier</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.framework.sensor.face.FaceClassifier" title="pepper.framework.sensor.face.FaceClassifier">FaceClassifier</a></td>
 </tr>
 </tbody>
 </table>
@@ -350,23 +331,16 @@
 <dl class="staticmethod">
 <dt id="pepper.framework.sensor.face.FaceClassifier.load_directory">
 <em class="property">static </em><code class="descname">load_directory</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#FaceClassifier.load_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.FaceClassifier.load_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load Directory of &lt;name&gt;.bin files</p>
+<dd><p>Load People from directory of &lt;name&gt;.bin files</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>directory: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>people: dict</strong></dt>
-<dd><p class="first last">Dictionary of &lt;name&gt;: &lt;representations&gt; pairs</p>
-</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>people</strong> – Dictionary of &lt;name&gt;: &lt;representations&gt; pairs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -375,15 +349,14 @@
 <dl class="attribute">
 <dt id="pepper.framework.sensor.face.FaceClassifier.people">
 <code class="descname">people</code><a class="headerlink" href="#pepper.framework.sensor.face.FaceClassifier.people" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>People Dictionary</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>people: dict</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>people</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
 </tbody>
 </table>
@@ -395,35 +368,6 @@
 <dt id="pepper.framework.sensor.face.FaceStore">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.face.</code><code class="descname">FaceStore</code><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#FaceStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.FaceStore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceStore.load_directory" title="pepper.framework.sensor.face.FaceStore.load_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_directory</span></code></a>(directory)</td>
-<td>Load all faces from directory with &lt;name&gt;.&lt;FaceStore.EXTENSION&gt; files</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceStore.load_face" title="pepper.framework.sensor.face.FaceStore.load_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_face</span></code></a>(path)</td>
-<td>Load Face in a &lt;name&gt;.&lt;FaceStore.EXTENSION&gt; file</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.face.FaceStore.save_face" title="pepper.framework.sensor.face.FaceStore.save_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_face</span></code></a>(directory,&nbsp;name,&nbsp;data)</td>
-<td>Save Face to directory in a &lt;name&gt;.&lt;FaceStore.EXTENSION&gt; file</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="67%" />
-<col width="33%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>load_directories</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="pepper.framework.sensor.face.FaceStore.EXTENSION">
 <code class="descname">EXTENSION</code><em class="property"> = '.bin'</em><a class="headerlink" href="#pepper.framework.sensor.face.FaceStore.EXTENSION" title="Permalink to this definition">¶</a></dt>
@@ -442,19 +386,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>directory: str</strong></dt>
-<dd><p class="first last">Directory containing Face Data</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> (<em>str</em>) – Directory containing Face Data</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>faces: Dict[str, np.ndarray]</strong></dt>
-<dd><p class="first last">Dictionary of {name: representation} pairs</p>
-</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>faces</strong> – Dictionary of {name: representation} pairs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Dict[str, np.ndarray]</td>
 </tr>
 </tbody>
 </table>
@@ -468,17 +404,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>path: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>name, representation: str, np.ndarray</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>name, representation</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str, np.ndarray</td>
 </tr>
 </tbody>
 </table>
@@ -492,17 +422,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>directory: str</strong></dt>
-<dd><p class="first last">Directory containing Face Data</p>
-</dd>
-<dt><strong>name: str</strong></dt>
-<dd><p class="first last">Name of Person</p>
-</dd>
-<dt><strong>data: List[np.ndarray]</strong></dt>
-<dd><p class="first last">List of Representations: See OpenFace.represent(image) -&gt; Face</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> (<em>str</em>) – Directory containing Face Data</li>
+<li><strong>name</strong> (<em>str</em>) – Name of Person</li>
+<li><strong>data</strong> (<em>List</em><em>[</em><em>np.ndarray</em><em>]</em>) – List of Representations: See OpenFace.represent(image) -&gt; Face</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -515,21 +439,18 @@
 <dt id="pepper.framework.sensor.face.OpenFace">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.face.</code><code class="descname">OpenFace</code><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#OpenFace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.OpenFace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.face.OpenFace.represent" title="pepper.framework.sensor.face.OpenFace.represent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">represent</span></code></a>(image)</td>
-<td>Represent Face in Image as 128-dimensional vector</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pepper.framework.sensor.face.OpenFace.stop" title="pepper.framework.sensor.face.OpenFace.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</td>
-<td>Stop OpenFace Image</td>
-</tr>
-</tbody>
-</table>
+<p>Perform Face Recognition Using OpenFace</p>
+<p>This requires a Docker Image of <code class="docutils literal notranslate"><span class="pre">`bamos/openface`</span></code> and Docker Running, see <a class="reference external" href="https://github.com/cltl/pepper/wiki/Installation#3-openface--docker">The Installation Guide</a></p>
+<dl class="docutils">
+<dt>If not yet running, this class will:</dt>
+<dd><ol class="first last arabic simple">
+<li>run the bamos/openface container</li>
+<li>copy /util/_openface.py to it</li>
+<li>run the server included within the container</li>
+</ol>
+</dd>
+</dl>
+<p>It will then connect a client to this server to request face representations via a socket connection.</p>
 <dl class="attribute">
 <dt id="pepper.framework.sensor.face.OpenFace.DOCKER_IMAGE">
 <code class="descname">DOCKER_IMAGE</code><em class="property"> = 'bamos/openface'</em><a class="headerlink" href="#pepper.framework.sensor.face.OpenFace.DOCKER_IMAGE" title="Permalink to this definition">¶</a></dt>
@@ -567,7 +488,7 @@
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.face.OpenFace.SCRIPT_PATH">
-<code class="descname">SCRIPT_PATH</code><em class="property"> = '/Users/bram/Documents/pepper/pepper/pepper/framework/sensor/util/_openface.py'</em><a class="headerlink" href="#pepper.framework.sensor.face.OpenFace.SCRIPT_PATH" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SCRIPT_PATH</code><em class="property"> = 'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\pepper\\framework\\sensor\\util\\_openface.py'</em><a class="headerlink" href="#pepper.framework.sensor.face.OpenFace.SCRIPT_PATH" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -578,19 +499,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>image: np.ndarray</strong></dt>
-<dd><p class="first last">Image (possibly containing a human face)</p>
-</dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<em>np.ndarray</em>) – Image (possibly containing a human face)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>result: list of Face</strong></dt>
-<dd><p class="first last">List of Face objects</p>
-</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>result</strong> – List of (representation, bounds)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of (np.ndarray, <a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds">Bounds</a>)</td>
 </tr>
 </tbody>
 </table>
@@ -604,70 +517,6 @@
 
 </dd></dl>
 
-<dl class="class">
-<dt id="pepper.framework.sensor.face.Person">
-<em class="property">class </em><code class="descclassname">pepper.framework.sensor.face.</code><code class="descname">Person</code><span class="sig-paren">(</span><em>face</em>, <em>name</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/face.html#Person"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.face.Person" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.framework.sensor.face.Face" title="pepper.framework.sensor.face.Face"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.face.Face</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds</span></code></dt>
-<dd><p class="first last">Face Bounds (Relative to Image)</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.face.Person.confidence" title="pepper.framework.sensor.face.Person.confidence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.face.Person.name" title="pepper.framework.sensor.face.Person.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></dt>
-<dd><p class="first last">Returns</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">representation</span></code></dt>
-<dd><p class="first last">Face Representation</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.framework.sensor.face.Person.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#pepper.framework.sensor.face.Person.confidence" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>confidence: float</strong></dt>
-<dd><p class="first last">Name Confidence</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.face.Person.name">
-<code class="descname">name</code><a class="headerlink" href="#pepper.framework.sensor.face.Person.name" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>name: str</strong></dt>
-<dd><p class="first last">Name of Person</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 
 
@@ -675,6 +524,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.sensor.location.html" class="btn btn-neutral float-right" title="pepper.framework.sensor.location module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.sensor.asr.html" class="btn btn-neutral float-left" title="pepper.framework.sensor.asr module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -698,25 +556,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

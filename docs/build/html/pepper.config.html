@@ -17,32 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pepper.responder.unknown module" href="pepper.responder.unknown.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +57,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -82,16 +89,10 @@
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -160,7 +161,13 @@
             
   <div class="section" id="module-pepper.config">
 <span id="pepper-config-module"></span><h1>pepper.config module<a class="headerlink" href="#module-pepper.config" title="Permalink to this headline">¶</a></h1>
-<p>Pepper Configuration File</p>
+<p>The Pepper Configuration File contains Settings for:</p>
+<ul class="simple">
+<li>Application Backend, Language, Paths &amp; URLs</li>
+<li>API Keys (Google Cloud Services &amp; Wolfram Alpha)</li>
+<li>Sensory Parameters (tweak for desired performance)</li>
+</ul>
+<p>(see source file for more information)</p>
 <dl class="function">
 <dt id="pepper.config.get_backend">
 <code class="descclassname">pepper.config.</code><code class="descname">get_backend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/config.html#get_backend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.config.get_backend" title="Permalink to this definition">¶</a></dt>
@@ -169,11 +176,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>backend: AbstractBackend</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>backend</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend">AbstractBackend</a></td>
 </tr>
 </tbody>
 </table>
@@ -186,6 +191,13 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="pepper.responder.unknown.html" class="btn btn-neutral float-left" title="pepper.responder.unknown module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -209,25 +221,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -9,7 +9,6 @@ pepper.framework.backend package
 
 .. toctree::
 
-    pepper.framework.backend.file
     pepper.framework.backend.naoqi
     pepper.framework.backend.system
 

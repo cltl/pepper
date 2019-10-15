@@ -15,9 +15,6 @@ class VisionResponder(Responder):
     SEE_OBJECT = [
         "what do you see",
         "what can you see",
-    ]
-
-    SEE_OBJECT_ALL = [
         "what did you see",
         "what have you seen"
     ]
@@ -33,8 +30,9 @@ class VisionResponder(Responder):
     ]
 
     SEE_SPECIFIC = [
-        "do you see",
-        "can you see"
+        "do you see ",
+        "can you see ",
+        "where is the "
     ]
 
     I_SEE = [
@@ -67,60 +65,53 @@ class VisionResponder(Responder):
 
     @property
     def requirements(self):
-        return [TextToSpeechComponent]
+        return [AbstractApplication, TextToSpeechComponent]
 
     def respond(self, utterance, app):
-        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        # type: (Utterance, Union[AbstractApplication, TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.objects]
+        objects = [obj.name for obj in utterance.chat.context.objects]
         people = [p.name for p in utterance.chat.context.people]
 
-        all_objects = [self._insert_a_an(obj.name) for obj in utterance.chat.context.all_objects]
         all_people = [p.name for p in utterance.chat.context.all_people]
 
         # Enumerate Currently Visible Objects
         if utterance.transcript.lower() in self.SEE_OBJECT:
             if objects:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(objects)))
-            else:
-                return 0.5, lambda: app.say(choice(self.NO_OBJECT))
-
-        # Enumerate All Observed Objects
-        elif utterance.transcript.lower() in self.SEE_OBJECT_ALL:
-            if all_objects:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._items_to_sentence(all_objects)))
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._objects_to_sequence(objects)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_OBJECT))
 
         # Enumerate Currently Visible People
         elif utterance.transcript.lower() in self.SEE_PERSON:
             if people:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._items_to_sentence(people)))
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._people_to_sentence(people)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
 
         # Enumerate All Observed People
         elif utterance.transcript.lower() in self.SEE_PERSON_ALL:
             if all_people:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._items_to_sentence(all_people)))
+                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._people_to_sentence(all_people)))
             else:
                 return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
 
-        # Respond to Individual Object/Person Queries
+        # Respond to Individual Object Queries
         else:
-
-            items = objects + people
-
-            response = []
-
             for cue in self.SEE_SPECIFIC:
                 if cue in utterance.transcript.lower():
-                    for item in items:
-                        if item.lower() in utterance.transcript.lower():
-                            response.append(item)
+                    for obj in utterance.context.objects:
+                        if obj.name.lower() in utterance.transcript.lower():
+                            return 1.0, lambda: self._point_to_objects(app, obj)
 
-            if response:
-                return 1.0, lambda: app.say("Yes, I can see " + self._items_to_sentence(response))
+                    return 1.0, lambda: app.say("I cannot see {}".format(self._insert_a_an(utterance.tokens[-1])))
+
+    def _point_to_objects(self, app, obj):
+        app.say("I can see {}".format(self._insert_a_an(obj.name)))
+        app.motion.point(obj.direction, speed=0.2)
+        app.motion.look(obj.direction, speed=0.1)
+        app.say("There it is!!")
+
 
     @staticmethod
     def _insert_a_an(word):
@@ -130,11 +121,30 @@ class VisionResponder(Responder):
             return "a {}".format(word)
 
     @staticmethod
-    def _items_to_sentence(items):
+    def _objects_to_sequence(objects):
+        object_count = {}
+
+        for obj in objects:
+            if not obj in object_count:
+                object_count[obj] = 0
+
+            object_count[obj] += 1
+
+        items = [(name + ("s" if count > 1 else ""), count) for name, count in object_count.items()]
+        if len(items) == 0:
+            return "I don't see any objects, yet!"
         if len(items) == 1:
-            return items[0]
+            return "{} {}".format(items[0][1], items[0][0])
         else:
-            return "{} and {}.".format(", ".join(items[:-1]), items[-1])
+            return "{} and {}.".format(", ".join("{} {}".format(i[1], i[0]) for i in items[:-1]),
+                                       "{} {}".format(items[-1][1], items[-1][0]))
+
+    @staticmethod
+    def _people_to_sentence(people):
+        if len(people) == 1:
+            return people[0]
+        else:
+            return "{} and {}.".format(", ".join(people[:-1]), people[-1])
 
 
 class PreviousUtteranceResponder(Responder):
@@ -178,32 +188,8 @@ class LocationResponder(Responder):
         "what is here",
     ]
 
-    @property
-    def type(self):
-        return ResponderType.Sensory
-
-    @property
-    def requirements(self):
-        return [TextToSpeechComponent]
-
-    def respond(self, utterance, app):
-        # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
-        if utterance.transcript.lower() in self.CUE_FULL:
-            return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
-
-    @staticmethod
-    def _location_to_text(location):
-        return "We're in {}, {}, {}.".format(location.city, location.region, location.country)
-
-
-class TimeResponder(Responder):
-
-    DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    MONTHS = ["January", "February", "March", "April", "May", "June", "July",
-              "August", "September", "October", "November", "December"]
-
-    DATE = [
-        "What day is it",
+    SET_LOCATION_CUE = [
+        "we are in ",
     ]
 
     @property
@@ -212,17 +198,54 @@ class TimeResponder(Responder):
 
     @property
     def requirements(self):
+        return [TextToSpeechComponent, BrainComponent]
+
+    def respond(self, utterance, app):
+        # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
+        if utterance.transcript.lower() in self.CUE_FULL:
+            return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
+        else:
+            for cue in self.SET_LOCATION_CUE:
+                if utterance.transcript.lower().startswith(cue):
+                    location = utterance.transcript.lower().replace(cue, "").strip().title()
+                    utterance.context.location.label = location
+                    app.brain.set_location_label(location)
+                    return 1, lambda: app.say("Aha, so {}".format(self._location_to_text(utterance.context.location)))
+
+    @staticmethod
+    def _location_to_text(location):
+        if location.label == location.UNKNOWN:
+            return "We're in {}, {}, {}.".format(location.city, location.region, location.country)
+        else:
+            return "We're in {}".format(location.label)
+
+
+class TimeResponder(Responder):
+
+    DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+
+    DATE = ["what day is it", "which day is it", "what is the date", "today"]
+
+    @property
+    def type(self):
+        return ResponderType.Sensory
+
+    @property
+    def requirements(self):
         return [TextToSpeechComponent]
 
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        if utterance.transcript.lower() in self.DATE:
-            dt = utterance.context.datetime
+        for date in self.DATE:
+            if date in utterance.transcript.lower():
+                dt = utterance.context.datetime
 
-            return 1, lambda: app.say("Today is {}, {} {}, {}!".format(
-                self.DAYS[dt.weekday()], self.MONTHS[dt.month-1], dt.day, dt.year
-            ))
+                return 1, lambda: app.say("Today is {}, {} {}, {}!".format(
+                    self.DAYS[dt.weekday()], self.MONTHS[dt.month-1], dt.day, dt.year
+                ))
 
 
 class IdentityResponder(Responder):
@@ -238,7 +261,7 @@ class IdentityResponder(Responder):
     ]
 
     CUE_YOU = [
-        "who am i ",
+        "who am i",
         "what is my name"
     ]
 

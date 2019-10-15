@@ -1,0 +1,25 @@
+who is your best friend: Leolani best-friend-is ?
+who likes talking to people: ? like talking-to-people
+who works at the university: ? work-at the-university
+who have you seen: Leolani see ?
+who is from Mexico: ? be-from Mexico
+who does Selene know: Selene know ?
+who do you like: Leolani like ?
+who lives in Amsterdam: ? live-in Amsterdam
+who can sing: ? can-sing
+who likes singing: ? like singing
+who likes watching movies: ? like watching-movies
+when is your birthday: Leolani birthday-is ?
+when did Selene come: Selene come ?
+when are you coming: Leolani come ?
+what can you see: Leolani can-see ?
+what is your favorite color: Leolani favorite-color-is ?
+what is my favorite food: Lenka favorite-food-is ?
+what do you enjoy: Leolani enjoy ?
+where is selene from: Selene be-from ?
+where is your friend : leolani friend-is ?
+where are you going: leolani go ?
+where is my friend: lenka friend-is ?
+where can I go: lenka can-go ?
+
+where did Bram come from: Bram come-from ?

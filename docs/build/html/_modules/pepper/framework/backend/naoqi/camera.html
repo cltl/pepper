@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.backend.naoqi.camera &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.framework.backend.naoqi.camera</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.framework.backend.naoqi.camera</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract.camera</span> <span class="k">import</span> <span class="n">AbstractCamera</span><span class="p">,</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Bounds</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">NAOqiCameraIndex</span><span class="p">,</span> <span class="n">CameraResolution</span>
+
+<span class="kn">import</span> <span class="nn">qi</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">getrandbits</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+
+
+<div class="viewcode-block" id="NAOqiImage"><a class="viewcode-back" href="../../../../../pepper.framework.backend.naoqi.camera.html#pepper.framework.backend.naoqi.camera.NAOqiImage">[docs]</a><span class="k">class</span> <span class="nc">NAOqiImage</span><span class="p">(</span><span class="n">AbstractImage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;NAOqi Image (same as AbstractImage)&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="NAOqiCamera"><a class="viewcode-back" href="../../../../../pepper.framework.backend.naoqi.camera.html#pepper.framework.backend.naoqi.camera.NAOqiCamera">[docs]</a><span class="k">class</span> <span class="nc">NAOqiCamera</span><span class="p">(</span><span class="n">AbstractCamera</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAOqi Camera</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    session: qi.Session</span>
+<span class="sd">        NAOqi Application Session</span>
+<span class="sd">    resolution: CameraResolution</span>
+<span class="sd">        NAOqi Camera Resolution</span>
+<span class="sd">    rate: int</span>
+<span class="sd">        NAOqi Camera Rate</span>
+<span class="sd">    callbacks: list of callable</span>
+<span class="sd">        On Image Event Callbacks</span>
+<span class="sd">    index: int</span>
+<span class="sd">        Which NAOqi Camera to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">RESOLUTION_CODE</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">NATIVE</span><span class="p">:</span>    <span class="mi">2</span><span class="p">,</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQQQVGA</span><span class="p">:</span>   <span class="mi">8</span><span class="p">,</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQQVGA</span><span class="p">:</span>    <span class="mi">7</span><span class="p">,</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QQVGA</span><span class="p">:</span>     <span class="mi">0</span><span class="p">,</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span><span class="p">:</span>      <span class="mi">1</span><span class="p">,</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">VGA</span><span class="p">:</span>       <span class="mi">2</span><span class="p">,</span>
+        <span class="n">CameraResolution</span><span class="o">.</span><span class="n">VGA4</span><span class="p">:</span>      <span class="mi">3</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">COLOR_SPACE</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;kYuv&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;kyUv&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;kyuV&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;Rgb&#39;</span><span class="p">:</span>  <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;rGb&#39;</span><span class="p">:</span>  <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;rgB&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">&#39;Hsy&#39;</span><span class="p">:</span>  <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;hSy&#39;</span><span class="p">:</span>  <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;hsY&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+
+        <span class="s1">&#39;YUV422&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>  <span class="c1"># (Native Color)</span>
+
+        <span class="s1">&#39;YUV&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;RGB&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;HSY&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s1">&#39;BGR&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;YYCbCr&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;H2RGB&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;HSMixed&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+
+        <span class="s1">&#39;Depth&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>        <span class="c1"># uint16    - corrected distance from image plan (mm)</span>
+        <span class="s1">&#39;XYZ&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>          <span class="c1"># 3float32  - voxel xyz</span>
+        <span class="s1">&#39;Distance&#39;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>     <span class="c1"># uint16    - distance from camera (mm)</span>
+        <span class="s1">&#39;RawDepth&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span>     <span class="c1"># uint16    - distance from image plan (mm)</span>
+    <span class="p">}</span>
+
+    <span class="n">SERVICE_VIDEO</span> <span class="o">=</span> <span class="s2">&quot;ALVideoDevice&quot;</span>
+    <span class="n">SERVICE_MOTION</span> <span class="o">=</span> <span class="s2">&quot;ALMotion&quot;</span>
+
+    <span class="c1"># Only take non-blurry pictures</span>
+    <span class="n">HEAD_DELTA_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[],</span> <span class="n">index</span><span class="o">=</span><span class="n">NAOqiCameraIndex</span><span class="o">.</span><span class="n">TOP</span><span class="p">):</span>
+        <span class="c1"># type: (qi.Session, CameraResolution, int, List[Callable[[AbstractImage], None]], NAOqiCameraIndex) -&gt; None</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NAOqiCamera</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">resolution</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">callbacks</span><span class="p">)</span>
+
+        <span class="c1"># Get random camera id, to prevent name collision</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COLOR_SPACE</span><span class="p">[</span><span class="s1">&#39;YUV422&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color_space_3D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COLOR_SPACE</span><span class="p">[</span><span class="s1">&#39;Distance&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span> <span class="o">=</span> <span class="n">resolution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolution_3D</span> <span class="o">=</span> <span class="n">resolution</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">index</span>
+
+        <span class="c1"># Connect to Camera Service and Subscribe with Settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">service</span><span class="p">(</span><span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">SERVICE_VIDEO</span><span class="p">)</span>
+
+        <span class="c1"># Subscribe to Robot Cameras</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">subscribeCameras</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)),</span>  <span class="c1"># Random Client ID&#39;s to prevent name collision</span>
+            <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">NAOqiCameraIndex</span><span class="o">.</span><span class="n">TOP</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">NAOqiCameraIndex</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">)],</span>
+            <span class="p">[</span><span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">RESOLUTION_CODE</span><span class="p">[</span><span class="n">resolution</span><span class="p">],</span> <span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">RESOLUTION_CODE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolution_3D</span><span class="p">]],</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_space</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_space_3D</span><span class="p">],</span>
+            <span class="n">rate</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Access Head Motion for Image Coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_motion</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">service</span><span class="p">(</span><span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">SERVICE_MOTION</span><span class="p">)</span>
+
+        <span class="c1"># Run image acquisition in Thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="p">:</span>
+
+                <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+                <span class="c1"># Initialize RGB, 3D and Image Bounds</span>
+                <span class="n">image_rgb</span><span class="p">,</span> <span class="n">image_3D</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+                <span class="c1"># Get Yaw and Pitch from Head Sensors</span>
+                <span class="c1"># TODO: Make sure these are the Head Yaw and Pitch at image capture time!?</span>
+                <span class="n">yaw</span><span class="p">,</span> <span class="n">pitch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_motion</span><span class="o">.</span><span class="n">getAngles</span><span class="p">(</span><span class="s2">&quot;HeadYaw&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_motion</span><span class="o">.</span><span class="n">getAngles</span><span class="p">(</span><span class="s2">&quot;HeadPitch&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="c1"># Get Image from Robot</span>
+                <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">getImagesRemote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">):</span>
+
+                    <span class="c1"># Get Image Data</span>
+                    <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">image</span>
+
+                    <span class="k">if</span> <span class="n">camera</span> <span class="o">==</span> <span class="n">NAOqiCameraIndex</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">:</span>
+                        <span class="c1"># Get Depth Image and Convert from Millimeters to Meters</span>
+                        <span class="c1"># TODO: Make sure Image Bounds are actually the same for RGB and Depth Camera!</span>
+                        <span class="n">image_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Get Image Data and Convert from YUV422 to RGB</span>
+                        <span class="n">image_rgb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yuv2rgb</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+                        <span class="c1"># Calculate Image Bounds in Radians</span>
+                        <span class="c1"># Apply Yaw and Pitch to Image Bounds</span>
+                        <span class="c1"># Bring Theta from [-PI/2,+PI/2] to [0, PI] Space</span>
+                        <span class="n">phi_min</span><span class="p">,</span> <span class="n">phi_max</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">yaw</span><span class="p">,</span> <span class="n">left</span> <span class="o">-</span> <span class="n">yaw</span>
+                        <span class="n">theta_min</span><span class="p">,</span> <span class="n">theta_max</span> <span class="o">=</span> <span class="n">bottom</span> <span class="o">+</span> <span class="n">pitch</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="n">pitch</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
+                        <span class="n">bounds</span> <span class="o">=</span> <span class="n">Bounds</span><span class="p">(</span><span class="n">phi_min</span><span class="p">,</span> <span class="n">theta_min</span><span class="p">,</span> <span class="n">phi_max</span><span class="p">,</span> <span class="n">theta_max</span><span class="p">)</span>
+
+                <span class="c1"># Assert we have at least a RGB image and Bounds</span>
+                <span class="k">if</span> <span class="n">image_rgb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+                    <span class="c1"># Call AbstractCamera.on_image Callback</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">on_image</span><span class="p">(</span><span class="n">NAOqiImage</span><span class="p">(</span><span class="n">image_rgb</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">image_3D</span><span class="p">))</span>
+
+                <span class="c1"># Maintain frame rate</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mf">1.0E-4</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">-</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">_yuv2rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="c1"># type: (int, int, bytes) -&gt; np.ndarray</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert from YUV422 to RGB Color Space</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width: int</span>
+<span class="sd">            Image Width</span>
+<span class="sd">        height: int</span>
+<span class="sd">            Image Height</span>
+<span class="sd">        data: bytes</span>
+<span class="sd">            Image Data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        image_rgb: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">X2</span> <span class="o">=</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="n">YUV442</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">RGB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">RGB</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">YUV442</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">RGB</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">YUV442</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">Cr</span> <span class="o">=</span> <span class="p">(</span><span class="n">YUV442</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-</span> <span class="mf">128.0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">Cb</span> <span class="o">=</span> <span class="p">(</span><span class="n">YUV442</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-</span> <span class="mf">128.0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">RGB</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">1.402</span><span class="p">)</span> <span class="o">*</span> <span class="n">Cb</span>
+        <span class="n">RGB</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">0.71414</span><span class="p">)</span> <span class="o">*</span> <span class="n">Cb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">0.34414</span><span class="p">)</span> <span class="o">*</span> <span class="n">Cr</span>
+        <span class="n">RGB</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">1.772</span><span class="p">)</span> <span class="o">*</span> <span class="n">Cr</span>
+
+        <span class="k">return</span> <span class="n">RGB</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

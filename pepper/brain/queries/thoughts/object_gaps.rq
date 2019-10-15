@@ -1,0 +1,15 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select distinct ?p ?type2
+where {
+	?s rdfs:label '%s' .
+    ?s rdf:type ?type .
+    ?p rdfs:range ?type .
+    ?p rdfs:domain ?type2 .
+    FILTER(regex(str(?type), "n2mu")) .
+    FILTER(regex(str(?type2), "n2mu")) .
+
+    MINUS { ?s2 rdfs:label '%s' .
+        ?s2 ?p ?o . }
+}

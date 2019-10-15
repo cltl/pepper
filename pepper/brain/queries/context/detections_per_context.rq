@@ -1,0 +1,19 @@
+PREFIX eps: <http://cltl.nl/episodicawareness/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+SELECT ?cl ?pl ?date (GROUP_CONCAT(DISTINCT ?sl;separator="|") as ?detections) (GROUP_CONCAT(DISTINCT ?el;separator="|") as ?geo)
+WHERE {
+    ?c eps:hasDetection ?s .
+    ?c rdfs:label ?cl .
+    ?s rdfs:label ?sl .
+    ?c sem:hasPlace ?p  .
+    ?p rdfs:label ?pl .
+    ?p n2mu:in ?e .
+    ?e rdfs:label ?el .
+    ?c sem:hasBeginTimeStamp ?t .
+    ?t rdfs:label ?date .
+} group by ?cl ?pl ?date
