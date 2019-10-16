@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -148,29 +149,52 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.config</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Pepper Configuration File&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The Pepper Configuration File contains Settings for:</span>
 
-<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">ApplicationBackend</span><span class="p">,</span> <span class="n">CameraResolution</span><span class="p">,</span> <span class="n">NaoqiMicrophoneIndex</span><span class="p">,</span> <span class="n">LOGGING_FILE</span>
+<span class="sd">- Application Backend, Language, Paths &amp; URLs</span>
+<span class="sd">- API Keys (Google Cloud Services &amp; Wolfram Alpha)</span>
+<span class="sd">- Sensory Parameters (tweak for desired performance)</span>
+
+<span class="sd">(see source file for more information)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pepper</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 
-<span class="c1"># Application Settings</span>
+<span class="c1"># &lt;&lt;&lt; Application Configuration Settings &gt;&gt;&gt;</span>
 
 <span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
-<span class="c1"># More Backends will be added in the future!</span>
-<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
+<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span>
+
+<span class="c1"># Name of Robot</span>
+<span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;Leolani&quot;</span>
+
+<span class="c1"># Name of Unknown and Groups of Humans</span>
+<span class="n">HUMAN_UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;Stranger&quot;</span>
+<span class="n">HUMAN_CROWD</span> <span class="o">=</span> <span class="s2">&quot;Humans&quot;</span>
+
 
 <span class="c1"># Application Language to use</span>
 <span class="c1"># Full list of Languages and their formats can be found at</span>
 <span class="c1">#   https://cloud.google.com/speech-to-text/docs/languages</span>
 <span class="c1"># Please keep in mind that the internal system is English (en) only</span>
 <span class="c1">#   Translation happens during Speech-to-Text &amp; Text-to-Speech steps</span>
+<span class="c1">#   Translation can induce quite a bit of lag in the System</span>
 <span class="n">APPLICATION_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
-<span class="n">INTERNAL_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
+<span class="n">INTERNAL_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>  <span class="c1"># Must start with &#39;en-&#39; (Must by a dialect of English)</span>
 
 
-<span class="c1"># Application Paths</span>
+<span class="c1"># Show Subtitles on Pepper&#39;s Tablet!</span>
+<span class="n">SUBTITLES_URL</span> <span class="o">=</span> <span class="s2">&quot;https://bramkraai.github.io/subtitle?text=</span><span class="si">{}</span><span class="s2">&quot;</span>
+<span class="n">SUBTITLES_TIMEOUT</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">SUBTITLES</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="c1"># &lt;&lt;&lt; Application Paths &gt;&gt;&gt;</span>
 
 <span class="c1"># pepper/                  PROJECT_ROOT</span>
 <span class="c1">#   people/                 PEOPLE_ROOT</span>
@@ -214,9 +238,18 @@
 <span class="c1"># Root of people Robot has &quot;just met&quot;</span>
 <span class="n">PEOPLE_NEW_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PEOPLE_ROOT</span><span class="p">,</span> <span class="s1">&#39;new&#39;</span><span class="p">)</span>
 
+<span class="c1"># Names of Friends</span>
+<span class="n">PEOPLE_FRIENDS_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">PEOPLE_FRIENDS_ROOT</span><span class="p">)]</span>
+
 <span class="c1"># Path to GOOGLE_APPLICATION_CREDENTIALS file (.json)</span>
 <span class="c1"># See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries</span>
 <span class="n">KEY_GOOGLE_CLOUD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../google_cloud_key.json&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">KEY_GOOGLE_CLOUD</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: </span><span class="si">{}</span><span class="s2"> does not exist, </span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         Google Cloud Services will not work.</span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         See https://github.com/cltl/pepper/wiki/Installation#2-google-cloud-services&quot;</span>
+          <span class="s2">&quot;for more information</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">KEY_GOOGLE_CLOUD</span><span class="p">))</span>
 
 <span class="c1"># Path to other tokens (currently just WolframAlpha)</span>
 <span class="c1"># See for more details: https://products.wolframalpha.com/spoken-results-api/documentation/</span>
@@ -226,41 +259,61 @@
 <span class="c1"># }</span>
 <span class="n">KEY_WOLFRAM</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;../tokens.json&#39;</span><span class="p">)</span>
 
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">KEY_WOLFRAM</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: </span><span class="si">{}</span><span class="s2"> does not exist, </span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         Wolfram Alpha will not work.</span><span class="se">\n</span><span class="s2">&quot;</span>
+          <span class="s2">&quot;         See https://github.com/cltl/pepper/wiki/Installation#7-wolfram-alpha&quot;</span>
+          <span class="s2">&quot;for more information</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">KEY_WOLFRAM</span><span class="p">))</span>
+
 <span class="c1"># General Logging</span>
-<span class="n">LOG</span> <span class="o">=</span> <span class="n">LOGGING_FILE</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">LOGGING_FILE</span>
 
 <span class="c1"># Brain Logging</span>
 <span class="n">BRAIN_LOG_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PACKAGE_ROOT</span><span class="p">,</span> <span class="s2">&quot;../backups/brain/brain_log_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-
-<span class="c1"># Application URLs</span>
+<span class="c1"># &lt;&lt;&lt; Application URLs &gt;&gt;&gt;</span>
 
 <span class="c1"># Brain URL (Local GraphDB or Remote Database)</span>
 <span class="n">BRAIN_URL_LOCAL</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:7200/repositories/leolani&quot;</span>
 <span class="n">BRAIN_URL_REMOTE</span> <span class="o">=</span> <span class="s2">&quot;http://145.100.58.167:50053/sparql&quot;</span>
 
 <span class="c1"># NAOqi Robot URL</span>
-<span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span><span class="p">,</span> <span class="mi">9559</span>
+<span class="n">NAOQI_IP</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span>  <span class="c1"># Default WiFi</span>
+<span class="c1"># NAOQI_IP = &quot;192.168.1.149&quot;  # Ethernet?</span>
+<span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="mi">9559</span>
 <span class="n">NAOQI_URL</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span><span class="p">)</span>
 
 
-<span class="c1"># Application Sensor Parameters</span>
-<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="c1"># &lt;&lt;&lt; Application Sensor Parameters &gt;&gt;&gt;</span>
 <span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
 
+<span class="c1"># Set which Object Recognition Backends to use</span>
+<span class="c1"># NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow</span>
+<span class="c1"># NOTE: running multiple targets at once</span>
+<span class="n">OBJECT_RECOGNITION_TARGETS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pepper</span><span class="o">.</span><span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span>
+<span class="p">]</span>
+
+<span class="c1"># Microphone sample rate (Hz) and number of channels</span>
+<span class="c1"># NOTE: Fixed at 16000 Hz and 1 Channel (mono)</span>
 <span class="n">MICROPHONE_SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">16000</span>
 <span class="n">MICROPHONE_CHANNELS</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="c1"># Camera resolution (in pixels) and frame rate (Hz)</span>
+<span class="c1"># NOTE: Both resolution and frame rate impact system performance...</span>
+<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span>
+<span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">3</span>
 
-<span class="n">CAMERA_RESOLUTION</span> <span class="o">=</span> <span class="n">CameraResolution</span><span class="o">.</span><span class="n">QVGA</span>
-<span class="n">CAMERA_FRAME_RATE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># NAOqi Text to Speech Speed</span>
+<span class="n">NAOQI_SPEECH_SPEED</span> <span class="o">=</span> <span class="mi">90</span>
 
 <span class="c1"># NAOqi Specific Overrides</span>
 <span class="n">NAOQI_USE_SYSTEM_CAMERA</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">NaoqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
+<span class="n">NAOQI_MICROPHONE_INDEX</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">NAOqiMicrophoneIndex</span><span class="o">.</span><span class="n">FRONT</span>
 
 
 <span class="c1"># .json file with id tokens, with keys:</span>
@@ -280,11 +333,14 @@
 <span class="sd">    -------</span>
 <span class="sd">    backend: AbstractBackend</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pepper</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">APPLICATION_BACKEND</span><span class="p">))</span>
+
     <span class="n">backend</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemBackend</span>
         <span class="n">backend</span> <span class="o">=</span> <span class="n">SystemBackend</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">APPLICATION_BACKEND</span> <span class="o">==</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pepper.framework.backend.naoqi</span> <span class="k">import</span> <span class="n">NAOqiBackend</span>
         <span class="n">backend</span> <span class="o">=</span> <span class="n">NAOqiBackend</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">backend</span></div>
@@ -317,25 +373,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

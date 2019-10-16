@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -148,95 +149,87 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.framework.component.object_detection</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.sensor.obj</span> <span class="k">import</span> <span class="n">CocoClassifyClient</span><span class="p">,</span> <span class="n">CocoObject</span>
-<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.sensor.obj</span> <span class="k">import</span> <span class="n">ObjectDetectionClient</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.util</span> <span class="k">import</span> <span class="n">Scheduler</span><span class="p">,</span> <span class="n">Mailbox</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">from</span> <span class="nn">Queue</span> <span class="k">import</span> <span class="n">Queue</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">NoReturn</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
 
 
 <div class="viewcode-block" id="ObjectDetectionComponent"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionComponent</span><span class="p">(</span><span class="n">AbstractComponent</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct Object Detection Component</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform Object Detection using `Pepper Tensorflow &lt;https://github.com/cltl/pepper_tensorflow&gt;`_</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        backend: AbstractBackend</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: AbstractBackend</span>
+<span class="sd">        Application Backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># The Object Detection Servers to Target (See pepper_tensorflow)</span>
+    <span class="n">TARGETS</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">OBJECT_RECOGNITION_TARGETS</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ObjectDetectionComponent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 
-        <span class="c1"># Callbacks</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">on_image_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Public List of On Object Callbacks:</span>
+        <span class="c1"># Allowing other Components to Subscribe to it</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_object_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="c1"># Initialize Object Classifier</span>
-        <span class="n">coco</span> <span class="o">=</span> <span class="n">CocoClassifyClient</span><span class="p">()</span>
-        <span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+        <span class="c1"># Create Object Detection Client and a Mailbox per Target</span>
+        <span class="c1"># Make sure the corresponding server @ pepper_tensorflow is actually running</span>
+        <span class="n">clients</span> <span class="o">=</span> <span class="p">[</span><span class="n">ObjectDetectionClient</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">ObjectDetectionComponent</span><span class="o">.</span><span class="n">TARGETS</span><span class="p">]</span>
+        <span class="n">mailboxes</span> <span class="o">=</span> <span class="p">{</span><span class="n">client</span><span class="p">:</span> <span class="n">Mailbox</span><span class="p">()</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">}</span>  <span class="c1"># type: Dict[ObjectDetectionClient, Mailbox]</span>
 
         <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+            <span class="c1"># type: (AbstractImage) -&gt; None</span>
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Raw On Image Event. Called every time the camera yields a frame.</span>
 
 <span class="sd">            Parameters</span>
 <span class="sd">            ----------</span>
-<span class="sd">            image: np.ndarray</span>
+<span class="sd">            image: AbstractImage</span>
 <span class="sd">            &quot;&quot;&quot;</span>
-            <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">coco</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">OBJECT_RECOGNITION_THRESHOLD</span><span class="p">]</span>
-            <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">:</span>
+                <span class="n">mailboxes</span><span class="p">[</span><span class="n">client</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
-            <span class="sd">&quot;&quot;&quot;Object Detection Event Worker&quot;&quot;&quot;</span>
-            <span class="n">image</span><span class="p">,</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+            <span class="c1"># type: (ObjectDetectionClient) -&gt; None</span>
+            <span class="sd">&quot;&quot;&quot;Object Detection Worker&quot;&quot;&quot;</span>
+
+            <span class="c1"># Get Image from Mailbox Corresponding with Client</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">mailboxes</span><span class="p">[</span><span class="n">client</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+            <span class="c1"># Classify Objects in this Image using Client</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">OBJECT_RECOGNITION_THRESHOLD</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
-                <span class="c1"># Call on_object Event Function</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">on_object</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
 
                 <span class="c1"># Call on_object Callback Functions</span>
                 <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_object_callbacks</span><span class="p">:</span>
-                    <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">)</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
 
-            <span class="c1"># Call on_image Event Function</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">on_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+                <span class="c1"># Call on_object Event Function</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_object</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
 
-            <span class="c1"># Call on_image Callback Functions</span>
-            <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_callbacks</span><span class="p">:</span>
-                <span class="n">callback</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-
-        <span class="c1"># Initialize Object Queue &amp; Worker</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ObjectDetectionComponentThread&quot;</span><span class="p">)</span>
-        <span class="n">schedule</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="c1"># Initialize &amp; Start Object Workers</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="p">[</span><span class="n">Scheduler</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">client</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">Thread&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">schedule</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
         <span class="c1"># Add on_image to Camera Callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">on_image</span><span class="p">]</span>
 
-<div class="viewcode-block" id="ObjectDetectionComponent.on_image"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_image">[docs]</a>    <span class="k">def</span> <span class="nf">on_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="c1"># type: (np.ndarray) -&gt; NoReturn</span>
+<div class="viewcode-block" id="ObjectDetectionComponent.on_object"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object">[docs]</a>    <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+        <span class="c1"># type: (List[Object]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        On Image Event. Called every time an image was taken by Backend</span>
+<span class="sd">        On Object Event. Called per ObjectDetectionTarget every time one or more objects are detected in a camera frame.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        image: np.ndarray</span>
-<span class="sd">            Camera Frame</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-
-<div class="viewcode-block" id="ObjectDetectionComponent.on_object"><a class="viewcode-back" href="../../../../pepper.framework.component.object_detection.html#pepper.framework.component.object_detection.ObjectDetectionComponent.on_object">[docs]</a>    <span class="k">def</span> <span class="nf">on_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
-        <span class="c1"># type: (np.ndarray, List[CocoObject]) -&gt; NoReturn</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        On Object Event. Called every time one or more objects are detected in a camera frame.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        image: np.ndarray</span>
-<span class="sd">            Camera Frame</span>
-<span class="sd">        objects: list of CocoObject</span>
-<span class="sd">            List of CocoObject instances</span>
+<span class="sd">        objects: list of Object</span>
+<span class="sd">            List of Object instances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
 </pre></div>
@@ -268,25 +261,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

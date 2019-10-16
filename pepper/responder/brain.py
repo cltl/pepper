@@ -52,4 +52,4 @@ class BrainResponder(Responder):
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
 
         except Exception as e:
-            raise
+            self._log.error(e)

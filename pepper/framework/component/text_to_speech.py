@@ -6,14 +6,28 @@ from typing import Optional, Union
 
 
 class TextToSpeechComponent(AbstractComponent):
+    """
+    Text To Speech Component. Exposes the say() Method to Applications
+
+    Parameters
+    ----------
+    backend: AbstractBackend
+        Application Backend
+    """
+
     def __init__(self, backend):
         super(TextToSpeechComponent, self).__init__(backend)
 
+        # Prevent Racing Conditions
         self._microphone_lock = Lock()
 
         def worker():
+            # type: () -> None
+            """Make sure Microphone is not listening when Text to Speech is Live"""
+
+            # Acquire Microphone Lock
             with self._microphone_lock:
-                # If talking is over & microphone is not yet running -> Start Microphone
+                # If robot is not talking & microphone is not yet running -> Start Microphone
                 if not self.backend.text_to_speech.talking and not self.backend.microphone.running:
                     self.backend.microphone.start()
 
@@ -37,6 +51,7 @@ class TextToSpeechComponent(AbstractComponent):
 
         # Acquire Microphone Lock
         with self._microphone_lock:
+
             # Stop Microphone if running
             if self.backend.microphone.running:
                 self.backend.microphone.stop()

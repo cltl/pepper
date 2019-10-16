@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
-
-  
-  <script src="../../../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -161,22 +162,27 @@
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+
 
 <div class="viewcode-block" id="SystemTextToSpeech"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech">[docs]</a><span class="k">class</span> <span class="nc">SystemTextToSpeech</span><span class="p">(</span><span class="n">AbstractTextToSpeech</span><span class="p">,</span> <span class="n">GoogleTranslator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    System Text to Speech</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    language: str</span>
+<span class="sd">        `Language Code &lt;https://cloud.google.com/speech/docs/languages&gt;`_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">TMP</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s1">&#39;tmp&#39;</span><span class="p">,</span> <span class="s1">&#39;speech&#39;</span><span class="p">)</span>
     <span class="n">GENDER</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># &quot;Female&quot; or 1 &quot;Male&quot;</span>
     <span class="n">TYPE</span> <span class="o">=</span> <span class="s2">&quot;Standard&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        language: str</span>
-<span class="sd">            Language Code, See: https://cloud.google.com/speech/docs/languages</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type: (str) -&gt; None</span>
         <span class="n">AbstractTextToSpeech</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
-        <span class="n">GoogleTranslator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">INTERNAL_LANGUAGE</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+        <span class="n">GoogleTranslator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">INTERNAL_LANGUAGE</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">language</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TMP</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TMP</span><span class="p">)</span>
@@ -190,6 +196,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted (</span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
 
 <div class="viewcode-block" id="SystemTextToSpeech.on_text_to_speech"><a class="viewcode-back" href="../../../../../pepper.framework.backend.system.text_to_speech.html#pepper.framework.backend.system.text_to_speech.SystemTextToSpeech.on_text_to_speech">[docs]</a>    <span class="k">def</span> <span class="nf">on_text_to_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">animation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, unicode], Optional[str]) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Say something through Text to Speech</span>
 
@@ -198,9 +205,15 @@
 <span class="sd">        text: str</span>
 <span class="sd">        animation: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">synthesis_input</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SynthesisInput</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="n">synthesis_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_config</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">audio_content</span><span class="p">)</span></div>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">synthesis_input</span> <span class="o">=</span> <span class="n">texttospeech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SynthesisInput</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="n">synthesis_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_config</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_play_sound</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">audio_content</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t Synthesize Speech (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_play_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mp3</span><span class="p">):</span>
         <span class="n">file_hash</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TMP</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.mp3&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">))))</span>
@@ -243,25 +256,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

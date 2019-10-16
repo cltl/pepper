@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -155,19 +156,23 @@
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">speech</span><span class="p">,</span> <span class="n">translate_v2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
 
 
-<div class="viewcode-block" id="ASRHypothesis"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.ASRHypothesis">[docs]</a><span class="k">class</span> <span class="nc">ASRHypothesis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="UtteranceHypothesis"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.UtteranceHypothesis">[docs]</a><span class="k">class</span> <span class="nc">UtteranceHypothesis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automatic Speech Recognition (ASR) Hypothesis</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    transcript: str</span>
+<span class="sd">        Utterance Hypothesis Transcript</span>
+<span class="sd">    confidence: float</span>
+<span class="sd">        Utterance Hypothesis Confidence</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">,</span> <span class="n">confidence</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Automatic Speech Recognition Hypothesis</span>
+        <span class="c1"># type: (str, float) -&gt; None</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        transcript: str</span>
-<span class="sd">        confidence: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span> <span class="o">=</span> <span class="n">transcript</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">confidence</span>
 
@@ -183,6 +188,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span>
 
+    <span class="nd">@transcript</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transcript</span> <span class="o">=</span> <span class="n">value</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; float</span>
@@ -195,122 +205,398 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
 
+    <span class="nd">@confidence</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># type: (float) -&gt; None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">value</span>
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&#39;</span><span class="si">{}</span><span class="s2">&#39; [</span><span class="si">{:3.2%}</span><span class="s2">]&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractTranslator"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.AbstractTranslator">[docs]</a><span class="k">class</span> <span class="nc">AbstractTranslator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Translator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source: str</span>
+<span class="sd">        Two Character Source Language Code</span>
+<span class="sd">    target: str</span>
+<span class="sd">        Two Character Target Language Code</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># type: (str, str) -&gt; None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">target</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Source Language</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        source: str</span>
+<span class="sd">            Two Character Source Language Code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Target Language</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        target: str</span>
+<span class="sd">            Two Character Target Language Code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span>
 
 <div class="viewcode-block" id="AbstractTranslator.translate"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.AbstractTranslator.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Translate Text from Source to Target Language</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text: str</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        translated_text: str</span>
+<span class="sd">            Translated Text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="GoogleTranslator"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.GoogleTranslator">[docs]</a><span class="k">class</span> <span class="nc">GoogleTranslator</span><span class="p">(</span><span class="n">AbstractTranslator</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GoogleTranslator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Google Translator</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">text</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source: str</span>
+<span class="sd">        Two Character Source Language Code</span>
+<span class="sd">    target: str</span>
+<span class="sd">        Two Character Target Language Code</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="c1"># type: (str, str) -&gt; None</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GoogleTranslator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">source</span> <span class="o">!=</span> <span class="n">target</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">translate_v2</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">target_language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
                 <span class="n">text</span><span class="p">,</span> <span class="n">source_language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)[</span><span class="s1">&#39;translatedText&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># String Identity Function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">text</span>
 
 <div class="viewcode-block" id="GoogleTranslator.translate"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.GoogleTranslator.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Translate Text from Source to Target Language</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text: str</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        translated_text: str</span>
+<span class="sd">            Translated Text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="AbstractASR"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.AbstractASR">[docs]</a><span class="k">class</span> <span class="nc">AbstractASR</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Automatic Speech Recognition (ASR)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    language: str</span>
+<span class="sd">        Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; &quot;LC-RC&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">MAX_ALTERNATIVES</span> <span class="o">=</span> <span class="mi">10</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Abstract Automatic Speech Recognition Class</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        language: str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type: (str) -&gt; None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_language</span> <span class="o">=</span> <span class="n">language</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">language</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Automatic Speech Recognition Language</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        language: str</span>
+<span class="sd">            Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; &quot;LC-RC&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_language</span>
 
 <div class="viewcode-block" id="AbstractASR.transcribe"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.AbstractASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="c1"># type: (np.ndarray) -&gt; List[UtteranceHypothesis]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transcribe Speech in Audio</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        audio: numpy.ndarray</span>
+<span class="sd">            Audio Samples (Containing Speech)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        transcript: list of ASRHypothesis</span>
+<span class="sd">        transcript: List[UtteranceHypothesis]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="BaseGoogleASR"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.BaseGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">BaseGoogleASR</span><span class="p">(</span><span class="n">AbstractASR</span><span class="p">,</span> <span class="n">GoogleTranslator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Google Automatic Speech Recognition (ASR)</span>
+
+<span class="sd">    Handles common parameters for SynchronousGoogleASR and StreamedGoogleASR</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    language: str</span>
+<span class="sd">        Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; &quot;LC-RC&quot;</span>
+<span class="sd">    sample_rate: int</span>
+<span class="sd">        Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)</span>
+<span class="sd">    hints: Tuple[str]</span>
+<span class="sd">        Words or Phrases that ASR should be extra sensitive to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
+        <span class="c1"># type: (str, int, Iterable[str]) -&gt; None</span>
         <span class="n">AbstractASR</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
-        <span class="n">GoogleTranslator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">INTERNAL_LANGUAGE</span><span class="p">)</span>
+        <span class="n">GoogleTranslator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">INTERNAL_LANGUAGE</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="p">(</span>
-            <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span> <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
-            <span class="n">language_code</span><span class="o">=</span><span class="n">language</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MAX_ALTERNATIVES</span><span class="p">,</span>
+
+            <span class="c1"># Each Sample is of dtype int16</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">enums</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+
+            <span class="c1"># The are &#39;sample_rate&#39; samples per second</span>
+            <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
+
+            <span class="c1"># The Language &amp; Region</span>
+            <span class="c1"># Tip: use en-GB for better understanding of &#39;academic English&#39;</span>
+            <span class="n">language_code</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+
+            <span class="c1"># The maximum number of hypotheses to generate per speech recognition</span>
+            <span class="n">max_alternatives</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MAX_ALTERNATIVES</span><span class="p">,</span>
+
+            <span class="c1"># Particular words or phrases the Speech Recognition should be extra sensitive to</span>
             <span class="n">speech_contexts</span><span class="o">=</span><span class="p">[</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">SpeechContext</span><span class="p">(</span><span class="n">phrases</span><span class="o">=</span><span class="n">hints</span><span class="p">)])</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted (</span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted (</span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
+
+<div class="viewcode-block" id="BaseGoogleASR.transcribe"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.BaseGoogleASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="c1"># type: (np.ndarray) -&gt; List[UtteranceHypothesis]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transcribe Speech in Audio</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: numpy.ndarray</span>
+<span class="sd">            Audio Samples (Containing Speech)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transcript: List[UtteranceHypothesis]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="StreamedGoogleASR"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.StreamedGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">StreamedGoogleASR</span><span class="p">(</span><span class="n">BaseGoogleASR</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Streamed Google Automatic Speech Recognition (ASR)</span>
+
+<span class="sd">    Recognises Speech &#39;live&#39; as it is spoken. Should be faster than Synchronous ASR</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    language: str</span>
+<span class="sd">        Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; &quot;LC-RC&quot;</span>
+<span class="sd">    sample_rate: int</span>
+<span class="sd">        Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)</span>
+<span class="sd">    hints: Tuple[str]</span>
+<span class="sd">        Words or Phrases that ASR should be extra sensitive to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
+        <span class="c1"># type: (str, int, Iterable[str]) -&gt; None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">StreamedGoogleASR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">hints</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">single_utterance</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># String Containing Live Hypothesis -&gt; used for debugging</span>
+        <span class="c1"># Don&#39;t use the contents of this string for any important logic, because:</span>
+        <span class="c1">#   - Contents change all the time as Utterances progress</span>
+        <span class="c1">#   - Contents get cleared as soon as a (possible) new Utterance starts</span>
+        <span class="c1">#   - The actual Hypotheses may differ from the live string due to Google Smarts...</span>
+        <span class="c1"># Use the transcribe method instead!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_live</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span>
+
+            <span class="c1"># The Config from BaseGoogleASR</span>
+            <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span>
+
+            <span class="c1"># Finalize Transcription after a single Utterance! (Keep it True)</span>
+            <span class="n">single_utterance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+
+            <span class="c1"># Provide &#39;live&#39; transcription: see self._live docs</span>
+            <span class="n">interim_results</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">live</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Union[str, unicode]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Live Speech Transcript String (Debug/Visual purposes only)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        live: str</span>
+<span class="sd">            Live Speech Transcript String</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_live</span>
 
 <div class="viewcode-block" id="StreamedGoogleASR.transcribe"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.StreamedGoogleASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
-        <span class="c1"># type: (Iterable[np.ndarray]) -&gt; List[ASRHypothesis]</span>
+        <span class="c1"># type: (Iterable[np.ndarray]) -&gt; List[UtteranceHypothesis]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transcribe Speech in Audio (Streamed)</span>
+
+<span class="sd">        Instead of a single Block of Audio, this function takes an Iterable of Audio frames.</span>
+<span class="sd">        One frame is processed at a time while the audio is being generated by the speaker.</span>
+<span class="sd">        This provides a faster ASR than the synchronous version, and a live representation of the utterance.</span>
+<span class="sd">        TODO: this breaks the abstract specification, is there a neater way to do this?</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: Iterable[numpy.ndarray]</span>
+<span class="sd">            Iterable of Audio Samples (Containing Speech)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transcript: List[UtteranceHypothesis]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: Sometimes this fails! (network issues?) Current Solution: Retry a few times!</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ASR Transcription Error (try </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># Return an empty list if ASR transcription fails</span></div>
+
+    <span class="k">def</span> <span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="c1"># type: (Iterable[np.ndarray]) -&gt; List[UtteranceHypothesis]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (Private) Transcribe Speech in Audio (Streamed)</span>
+
+<span class="sd">        Instead of a single Block of Audio, this function takes an Iterable of Audio frames.</span>
+<span class="sd">        One frame is processed at a time while the audio is being generated by the speaker.</span>
+<span class="sd">        This provides a faster ASR than the synchronous version, and a live representation of the utterance.</span>
+<span class="sd">        TODO: this breaks the abstract specification, is there a neater way to do this?</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: Iterable[numpy.ndarray]</span>
+<span class="sd">            Iterable of Audio Samples (Containing Speech)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        transcript: List[UtteranceHypothesis]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">hypotheses</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Iterate over API Responses generated by each chunk of speech</span>
         <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_streaming_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">)):</span>
+
+            <span class="n">live</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Reset Live Speech</span>
+
             <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+
+                <span class="c1"># If ASR is done processing a whole Utterance</span>
                 <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">is_final</span><span class="p">:</span>
+
+                    <span class="c1"># Iterate over alternatives (a.k.a. hypotheses)</span>
                     <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
-                        <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ASRHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">hypotheses</span></div>
+
+                        <span class="c1"># Add current alternative to hypotheses</span>
+                        <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UtteranceHypothesis</span><span class="p">(</span>
+
+                            <span class="c1"># (Possibly translate) Speech transcript</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span>
+
+                            <span class="c1"># Add Hypothesis Confidence</span>
+                            <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span>
+                        <span class="p">))</span>
+
+                <span class="c1"># If not Final (a.k.a. speech is still going on)</span>
+                <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+
+                    <span class="c1"># Add Transcript of first hypothesis to live string</span>
+                    <span class="n">live</span> <span class="o">+=</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span>
+
+            <span class="c1"># Update current live string (to be accessible through StreamedGoogleASR.live)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_live</span> <span class="o">=</span> <span class="n">live</span>
+
+        <span class="c1"># When a single utterance is done, return UtteranceHypotheses (sorted by confidence)</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">hypothesis</span><span class="p">:</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrap audio chunks into StreamingRecognizeRequest objects</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: Iterable[np.ndarray]</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        request: speech.types.StreamingRecognizeRequest</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">audio</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognizeRequest</span><span class="p">(</span><span class="n">audio_content</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="SynchronousGoogleASR"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.SynchronousGoogleASR">[docs]</a><span class="k">class</span> <span class="nc">SynchronousGoogleASR</span><span class="p">(</span><span class="n">BaseGoogleASR</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Synchronous Google Automatic Speech Recognition (ASR)</span>
+
+<span class="sd">    Recognises Speech &#39;live&#39; as it is spoken. Should be faster than Synchronous ASR</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    language: str</span>
+<span class="sd">        Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; &quot;LC-RC&quot;</span>
+<span class="sd">    sample_rate: int</span>
+<span class="sd">        Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)</span>
+<span class="sd">    hints: Tuple[str]</span>
+<span class="sd">        Words or Phrases that ASR should be extra sensitive to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">MICROPHONE_SAMPLE_RATE</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="p">()):</span>
+        <span class="c1"># type: (str, int, Iterable[str]) -&gt; None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SynchronousGoogleASR</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">language</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">hints</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SynchronousGoogleASR.transcribe"><a class="viewcode-back" href="../../../../pepper.framework.sensor.asr.html#pepper.framework.sensor.asr.SynchronousGoogleASR.transcribe">[docs]</a>    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">):</span>
+        <span class="c1"># type: (np.ndarray) -&gt; List[UtteranceHypothesis]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transcribe Speech in Audio</span>
 
@@ -320,16 +606,27 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        hypotheses: List[ASRHypothesis]</span>
+<span class="sd">        hypotheses: List[UtteranceHypothesis]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">hypotheses</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">))</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
-                <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ASRHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">hypotheses</span></div>
+                <span class="n">hypotheses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UtteranceHypothesis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">),</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hypotheses</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">hypothesis</span><span class="p">:</span> <span class="n">hypothesis</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrap Audio in RecognitionAudio</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        audio: np.ndarray</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        request: speech.types.RecognitionAudio</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">audio</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span></div>
 </pre></div>
 
@@ -360,25 +657,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

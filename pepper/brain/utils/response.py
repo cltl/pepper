@@ -11,7 +11,7 @@ from pepper.brain.utils.helper_functions import hash_claim_id, is_proper_noun
 
 class RDFBase(object):
     def __init__(self, id, label, offset=None, confidence=0.0):
-        # type: (str, str, Optional[slice], float) -> Entity
+        # type: (str, str, Optional[slice], float) -> None
         """
         Construct RDFBase Object
         Parameters
@@ -77,7 +77,7 @@ class RDFBase(object):
 
 class Entity(RDFBase):
     def __init__(self, id, label, types, offset=None, confidence=0.0):
-        # type: (str, str, List[str], Optional[slice], float) -> Entity
+        # type: (str, str, List[str], Optional[slice], float) -> None
         """
         Construct Entity Object
         Parameters
@@ -140,7 +140,7 @@ class Entity(RDFBase):
 
 class Predicate(RDFBase):
     def __init__(self, id, label, offset=None, confidence=0.0, cardinality=1):
-        # type: (str, str, Optional[slice], float, int) -> Predicate
+        # type: (str, str, Optional[slice], float, int) -> None
         """
         Construct Predicate Object
         Parameters
@@ -243,7 +243,7 @@ class Predicate(RDFBase):
 
 class Triple(object):
     def __init__(self, subject, predicate, object):
-        # type: (Entity, Predicate, Entity) -> Triple
+        # type: (Entity, Predicate, Entity) -> None
         """
         Construct Triple Object
         Parameters
@@ -333,23 +333,23 @@ class Triple(object):
         return iter([('subject', self.subject), ('predicate', self.predicate), ('object', self.object)])
 
     def __repr__(self):
-        return '{} ({})'.format(hash_claim_id([self.subject_name
-                                               if self.subject_name is not None
-                                                  and self.subject_name not in ['', Literal('')] else '?',
-                                               self.predicate_name
-                                               if self.predicate_name is not None
-                                                  and self.predicate_name not in ['', Literal('')] else '?',
-                                               self.object_name
-                                               if self.object_name is not None
-                                                  and self.object_name not in ['', Literal('')] else '?']),
-                                hash_claim_id([self.subject_types if self.subject_types is not None else '?',
-                                               'predicate',
-                                               self.object_types if self.object_types is not None else '?']))
+        return '{} [{}])'.format(hash_claim_id([self.subject_name
+                                                if self.subject_name is not None
+                                                   and self.subject_name not in ['', Literal('')] else '?',
+                                                self.predicate_name
+                                                if self.predicate_name is not None
+                                                   and self.predicate_name not in ['', Literal('')] else '?',
+                                                self.object_name
+                                                if self.object_name is not None
+                                                   and self.object_name not in ['', Literal('')] else '?']),
+                                 hash_claim_id([self.subject_types if self.subject_types is not None else '?',
+                                                '->',
+                                                self.object_types if self.object_types is not None else '?']))
 
 
 class Perspective(object):
     def __init__(self, certainty, polarity, sentiment, time=None, emotion=None):
-        # type: (float, int, float, Time, Emotion) -> Perspective
+        # type: (float, int, float, Time, Emotion) -> None
         """
         Construct Perspective object
         Parameters
@@ -400,7 +400,7 @@ class Perspective(object):
 
 class Provenance(object):
     def __init__(self, author, date):
-        # type: (str, date) -> Provenance
+        # type: (str, date) -> None
         """
         Construct Provenance Object
         Parameters
@@ -450,7 +450,7 @@ class Provenance(object):
 
 class CardinalityConflict(object):
     def __init__(self, provenance, entity):
-        # type: (Provenance, Entity) -> CardinalityConflict
+        # type: (Provenance, Entity) -> None
         """
         Construct CardinalityConflict Object
         Parameters
@@ -508,19 +508,19 @@ class CardinalityConflict(object):
 
 
 class NegationConflict(object):
-    def __init__(self, provenance, predicate):
-        # type: (Provenance, Predicate) -> NegationConflict
+    def __init__(self, provenance, polarity_value):
+        # type: (Provenance, polarity_value) -> None
         """
         Construct CardinalityConflict Object
         Parameters
         ----------
         provenance: Provenance
             Information about who said the conflicting information and when
-        predicate: Predicate
-            Information about what the conflicting information is about
+        polarity_value: str
+            Information about polarity of the statement
         """
         self._provenance = provenance
-        self._predicate = predicate
+        self._polarity_value = polarity_value
 
     @property
     def provenance(self):
@@ -528,9 +528,9 @@ class NegationConflict(object):
         return self._provenance
 
     @property
-    def predicate(self):
-        # type: () -> Predicate
-        return self._predicate
+    def polarity_value(self):
+        # type: () -> str
+        return self._polarity_value
 
     @property
     def author(self):
@@ -541,11 +541,6 @@ class NegationConflict(object):
     def date(self):
         # type: () -> date
         return self._provenance.date
-
-    @property
-    def predicate_name(self):
-        # type: () -> str
-        return self._predicate.label
 
     def casefold(self, format='triple'):
         # type (str) -> ()
@@ -560,16 +555,18 @@ class NegationConflict(object):
 
         """
         self._provenance.casefold(format)
-        self._predicate.casefold(format)
+
+        # TODO: Cannot Casefold String, uncommented for now?
+        # self._polarity_value.casefold(format)
 
     def __repr__(self):
-        return '{} about {}'.format(self._provenance.__repr__(), self.predicate_name)
+        return '{} about {}'.format(self._provenance.__repr__(), self.polarity_value)
 
 
 # TODO revise overlap with provenance
 class StatementNovelty(object):
     def __init__(self, provenance):
-        # type: (Provenance) -> StatementNovelty
+        # type: (Provenance) -> None
         """
         Construct StatementNovelty Object
         Parameters
@@ -614,7 +611,7 @@ class StatementNovelty(object):
 
 class EntityNovelty(object):
     def __init__(self, existence_subject, existence_object):
-        # type: (bool, bool) -> EntityNovelty
+        # type: (bool, bool) -> None
         """
         Construct EntityNovelty Object
         Parameters
@@ -643,7 +640,7 @@ class EntityNovelty(object):
 
 class Gap(object):
     def __init__(self, predicate, entity):
-        # type: (Predicate, Entity) -> Gap
+        # type: (Predicate, Entity) -> None
         """
         Construct Gap Object
         Parameters
@@ -702,7 +699,7 @@ class Gap(object):
 
 class Gaps(object):
     def __init__(self, subject_gaps, object_gaps):
-        # type: (List[Gap], List[Gap]) -> Gaps
+        # type: (List[Gap], List[Gap]) -> None
         """
         Construct Gap Object
         Parameters
@@ -750,7 +747,7 @@ class Gaps(object):
 
 class Overlap(object):
     def __init__(self, provenance, entity):
-        # type: (Provenance, Entity) -> Overlap
+        # type: (Provenance, Entity) -> None
         """
         Construct Overlap Object
         Parameters
@@ -812,7 +809,7 @@ class Overlap(object):
 
 class Overlaps(object):
     def __init__(self, subject_overlaps, object_overlaps):
-        # type: (List[Overlap], List[Overlap]) -> Overlaps
+        # type: (List[Overlap], List[Overlap]) -> None
         """
         Construct Overlap Object
         Parameters
@@ -861,7 +858,7 @@ class Overlaps(object):
 class Thoughts(object):
     def __init__(self, statement_novelty, entity_novelty, negation_conflicts, object_conflict,
                  subject_gaps, object_gaps, overlaps, trust):
-        # type: (List[StatementNovelty], EntityNovelty, List[NegationConflict], List[CardinalityConflict], Gaps, Gaps, Overlaps, float) -> Thoughts
+        # type: (List[StatementNovelty], EntityNovelty, List[NegationConflict], List[CardinalityConflict], Gaps, Gaps, Overlaps, float) -> None
         """
         Construct Thoughts object
         Parameters

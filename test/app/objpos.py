@@ -2,9 +2,13 @@ from pepper.framework import *
 from pepper import config
 
 
-class ObjPosApp(AbstractApplication, StatisticsComponent, DisplayComponent, ContextComponent, SceneComponent,
+class ObjPosApp(AbstractApplication,
+                DisplayComponent, SceneComponent,
+                ExploreComponent, ContextComponent,
                 ObjectDetectionComponent, SpeechRecognitionComponent, FaceRecognitionComponent, TextToSpeechComponent):
-    pass
+
+    def __init__(self, backend):
+        super(ObjPosApp, self).__init__(backend)
 
 
 if __name__ == '__main__':

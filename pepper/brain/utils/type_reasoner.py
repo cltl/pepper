@@ -36,7 +36,7 @@ class TypeReasoner(BasicBrain):
         """
 
         # Clean label
-        articles = ['a-']
+        articles = ['a-', 'this-', 'the-']
         for a in articles:
             if item.startswith(a):
                 item = item.replace(a, '')
@@ -140,7 +140,7 @@ class TypeReasoner(BasicBrain):
         url = 'https://query.wikidata.org/sparql'
 
         # Gather combinations
-        combinations = [item, item.capitalize(), item.lower(), item.title()]
+        combinations = [item.lower()]
 
         for comb in combinations:
             # Try exact matching query
