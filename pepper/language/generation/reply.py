@@ -48,6 +48,10 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
 
 
 def reply_to_question(brain_response):
+
+
+    print(brain_response)
+
     say = ''
     previous_author = ''
     previous_subject = ''
@@ -88,8 +92,17 @@ def reply_to_question(brain_response):
     response.sort(key=lambda x: x['authorlabel']['value'])
 
     for item in response:
-        # INITIALIZATION
 
+
+        # CERTAINTY
+        if 'v' in brain_response['response']:
+            print (brain_response['response']['v'])
+
+        else:
+            print (brain_response['response'])
+
+
+        # INITIALIZATION
         author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
         if utterance.triple.subject_name != '':
             subject = utterance.triple.subject_name

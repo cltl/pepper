@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from pepper.language.pos import POS
+from pepper.language.ner import NER
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
 from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
@@ -552,12 +553,16 @@ class Utterance(object):
 
 class Parser(object):
     POS_TAGGER = None  # Type: POS
+    NER_TAGGER = None
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
     def __init__(self, utterance):
 
         if not Parser.POS_TAGGER:
             Parser.POS_TAGGER = POS()
+
+        if not Parser.NER_TAGGER:
+            Parser.NER_TAGGER = NER()
 
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
             self._cfg = cfg_file.read()
@@ -580,8 +585,18 @@ class Parser(object):
         :return: parsed syntax tree and a dictionary of syntactic realizations
         '''
         tokenized_sentence = utterance.tokens
-        pos = self.POS_TAGGER.tag(tokenized_sentence)
+        pos = self.POS_TAGGER.tag(tokenized_sentence) #standford
+        alternative_pos = pos_tag(tokenized_sentence) #nltk
+
         self._log.debug(pos)
+        self._log.debug(alternative_pos)
+
+
+        if pos !=alternative_pos:
+            print (pos, alternative_pos)
+            print ('DIFFERENT')
+
+        print('NER ',self.NER_TAGGER.tag(utterance.transcript))
 
         # # Fixing POS matching
         # import spacy

@@ -259,6 +259,7 @@ class Analyzer(object):
             # First attempt at typing via forest
             rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
 
+
             # Analyze types
             if type(rdf[el]['type']) == dict:
                 # Loop through dictionary for multiword entities
@@ -285,6 +286,7 @@ class Analyzer(object):
                             final_type.append('deictic')
                         elif 'person' in entry:
                             final_type.append('pronoun')
+
 
                     else:
                         final_type.append(rdf[el]['type'][typ])
@@ -477,6 +479,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
         self._perspective = self.extract_perspective(rdf['predicate'], utterance_info)
+        print(self._perspective)
         rdf = self.get_types_in_rdf(rdf)
         Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
         self._rdf = rdf

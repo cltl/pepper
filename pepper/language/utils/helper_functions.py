@@ -9,6 +9,7 @@ from nltk import pos_tag
 from nltk import tree as ntree
 from nltk.stem import WordNetLemmatizer
 
+
 import wordnet_utils as wu
 from pepper import logger
 
@@ -18,6 +19,9 @@ wnl = WordNetLemmatizer()
 
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 lexicon = json.load(open(os.path.join(ROOT, 'data', 'lexicon.json')))
+
+
+
 
 def trim_dash(rdf):
     '''
@@ -40,15 +44,17 @@ def get_type(element, forest):
     :return: semantic type of the el.
     '''
     type = {}
-    #print(NER.tag(element))
+
     if '-' in element:
         text = ''
         for el in element.split('-'):
             text+=el+' '
 
+
         text = text.strip()
         uris = get_uri(text)
 
+        print('LOOKUP: ', text, len(uris))
 
         if len(uris)>0:
             print('URI ',text, len(uris))

@@ -1,3 +1,13 @@
+I have three white cats: lenka have three-white-cats
+
+I think Selene doesn't like cheese: selene like cheese
+I think Selene hates cheese: selene hate cheese
+selene might come today: selene might-come today
+
+
+I don't think selene likes cheese: selene like cheese
+
+
 lana can read a book: lana can-read a-book
 lana must read: lana must-read
 john will come to Amsterdam: john will-come-to Amsterdam
@@ -19,3 +29,5 @@ bram loves sport: bram love sport
 you come from france: leolani come-from france
 
 
+# dislikes?? verb lemmatization
+# I know selene might come today: selene might-come today
