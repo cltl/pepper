@@ -1,3 +1,7 @@
+"""
+Query the Wikipedia API using Natural Language.
+"""
+
 from __future__ import unicode_literals
 
 import nltk

@@ -2,34 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello Pepper</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+    <title>Pepper Web View</title>
 
-        canvas {
-            padding: 0;
-            margin: auto;
-            display: block;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
+    <script>function require(){ return THREE; }</script>
+    <script src="https://cdn.jsdelivr.net/npm/three-orbitcontrols@2.102.1/OrbitControls.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; overflow-x: hidden; }
+        canvas { padding: 0; margin: auto; display: block; position: relative; top: 0; bottom: 0; left: 0; right: 0; }
     </style>
 </head>
 <body>
-<canvas id="canvas" width="800" height="600"></canvas>
+
+<canvas id="camera_canvas" width="800" height="600"></canvas>
+<canvas id="scatter_canvas" width="800" height="600"></canvas>
 
 <script>
 
-WIDTH = 4;
-HEIGHT= 3;
+// Global Variables //
+WIDTH = 4; HEIGHT = 3;
 
+FONT_SIZE = 30;
+
+camera_canvas = $("#camera_canvas");
+scatter_canvas = $("#scatter_canvas");
+
+var renderer;
+
+// Utility Functions //
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   if (w < 2 * r) r = w / 2;
   if (h < 2 * r) r = h / 2;
@@ -43,83 +44,189 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   return this;
 }
 
-function scale_canvas(w, h) {
-    canvas = $('canvas');
-
+function scale_canvas(canvas, w, h) {
     if (window.innerWidth/w < window.innerHeight/h) {
         canvas.width(window.innerWidth);
         canvas.height(window.innerWidth/w*h);
+        if (renderer) renderer.setSize(window.innerWidth, window.innerWidth/w*h);
     }
     else {
         canvas.height(window.innerHeight);
         canvas.width(window.innerHeight/h*w);
+        if (renderer) renderer.setSize(window.innerHeight/h*w, window.innerHeight);
     }
 }
 
+// Main Logic //
+
 $(window).resize(function() {
-    scale_canvas(WIDTH, HEIGHT);
+    scale_canvas(camera_canvas, WIDTH, HEIGHT);
+    scale_canvas(scatter_canvas, WIDTH, HEIGHT);
 });
 
+
 $(function() {
-    var FONT_SIZE = 30;
+    // Scale Canvas on Start
+    scale_canvas(camera_canvas, WIDTH, HEIGHT);
+    scale_canvas(scatter_canvas, WIDTH, HEIGHT);
 
-    scale_canvas(WIDTH, HEIGHT);
-    var canvas = $('canvas');
-    var ctx = canvas[0].getContext('2d');
+    var width = camera_canvas[0].width;
+    var height = camera_canvas[0].height;
 
-    ctx.font = '25px Helvetica';
-    // ctx.imageSmoothingEnabled = false;  // Make Blocky
+    // -- Initialize Camera View Context -- //
+    var camera_ctx = camera_canvas[0].getContext('2d');
+    camera_ctx.font = '25px Helvetica';
 
-    var canvas_width = document.getElementById("canvas").width;
-    var canvas_height = document.getElementById("canvas").height;
+    // -- Initialize Scatter Plot Context -- //
 
+    // Create 3D Renderer
+    var renderer = new THREE.WebGLRenderer({canvas: scatter_canvas[0]});
+    renderer.setSize(width, height);
+
+    // Create Camera
+    var camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100);
+    camera.position.z = -5;
+    camera.position.y = 1;
+    camera.position.x = 0;
+    camera.lookAt(0, 1, 0);
+
+    // Create 3D Scene
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xaaaaaa );
+
+    // Create FLoor Grid
+    var grid = new THREE.GridHelper(20, 20);
+    grid.position.y = -1;
+    scene.add(grid);
+
+    var plot = new THREE.Object3D();
+    scene.add(plot);
+
+    // Define Materials for ScatterPlot and Object Boxing
+    var scatterMaterial = new THREE.PointsMaterial({size: 0.1, vertexColors: true});
+    var boxMaterial = new THREE.LineBasicMaterial({color: 0x000000});
+
+    // Create Orbit Controls
+    var controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+    // Animate Scene
+    function animate() {
+        requestAnimationFrame( animate );
+        controls.update();
+        renderer.render( scene, camera );
+    }
+    animate();
+
+
+    // -- Create WebSocket Connection with Host -- //
     var host = "ws://localhost:9090/ws";
     var socket = new WebSocket(host);
 
-    var img = new Image;
+    // Image for Camera View
+    var img = new Image();
+
+    // Scatter Object for Plot View
+    var scatter = null;
+    var objects = null;
+    var frustum = null;
 
     socket.onopen = function() { console.log("Connection Opened!"); }
-    socket.onmessage = function(msg){
-        data = JSON.parse(msg.data);
-        items = data['items'];
-
-        img.onload = function(){
-        ctx.clearRect(0, 0, canvas_width, canvas_height);
-        ctx.drawImage(img, 0, 0, img.width, img.height,
-                           0, 0, canvas_width, canvas_height);
-
-        for (i=0; i<items.length; i++) {
-            bounds = items[i]['bounds'];
-
-            ctx.beginPath();
-            ctx.lineWidth = "3";
-            ctx.strokeStyle = "black";
-            ctx.roundRect(bounds[0] * canvas_width,
-                     bounds[1] * canvas_height,
-                     (bounds[2]-bounds[0]) * canvas_width,
-                     (bounds[3]-bounds[1]) * canvas_height, 5);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.lineWidth = "3";
-            ctx.fillStyle = "black";
-            ctx.roundRect(bounds[0] * canvas_width,
-                     bounds[3] * canvas_height - FONT_SIZE,
-                     (bounds[2]-bounds[0]) * canvas_width,
-                     FONT_SIZE, 5);
-            ctx.fill();
-
-            ctx.fillStyle = 'white';
-            ctx.fillText(items[i]['name'],
-                         bounds[0] * canvas_width + 10,
-                         bounds[3] * canvas_height - FONT_SIZE/4);
-        }
-    };
-
-    img.src = 'data:image/png;base64,' + data['img'];
-
+    socket.onclose = function() {
+        console.log("Connection Closed!");
+        socket = new WebSocket(host);
     }
-    socket.onclose = function() { console.log("Connection Closed!"); }
+    
+    // Main Data Loop //
+    socket.onmessage = function(msg){
+
+        // -- Receive Data from Host -- //
+        data = JSON.parse(msg.data);
+
+        // -- Update Live View with Camera Image and Object Bounding Boxes -- //
+        items = data['items'];
+        img.onload = function(){
+
+            // Clear Image
+            camera_ctx.clearRect(0, 0, width, height);
+
+            // Draw Image
+            camera_ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
+
+            for (i=0; i<items.length; i++) {
+                bounds = items[i]['bounds'];
+
+                // Draw Bounding Box
+                camera_ctx.beginPath();
+                camera_ctx.lineWidth = "3";
+                camera_ctx.strokeStyle = "black";
+                camera_ctx.roundRect(bounds[0] * width, bounds[1] * height, (bounds[2]-bounds[0]) * width, (bounds[3]-bounds[1]) * height, 5);
+                camera_ctx.stroke();
+
+                // Draw Text Box
+                camera_ctx.beginPath();
+                camera_ctx.lineWidth = "3";
+                camera_ctx.fillStyle = "black";
+                camera_ctx.roundRect(bounds[0] * width, bounds[3] * height - FONT_SIZE, (bounds[2]-bounds[0]) * width, FONT_SIZE, 5);
+                camera_ctx.fill();
+
+                // Draw Text
+                camera_ctx.fillStyle = 'white';
+                camera_ctx.fillText(items[i]['name'], bounds[0] * width + 10, bounds[3] * height - FONT_SIZE/4);
+            }
+        };
+
+        // Set Image (Which will trigger image.onload)
+        img.src = 'data:image/png;base64,' + data['img'];
+
+
+        // -- Update 3D View with ScatterPoints and Object Bounding Boxes //
+        var x = data['x'], y = data['y'], z = data['z'], c = data['c'];
+
+        // Plot 3D ScatterPoints //
+        var points = new THREE.Geometry();
+        for (var i=0; i < x.length; i++) {
+            points.vertices.push(new THREE.Vector3(x[i], y[i], z[i]));
+            points.colors.push(new THREE.Color(c[i][0], c[i][1], c[i][2]));
+        }
+
+        // Update 3D Plot With New Scatter //
+        if (scatter != null){ scatter.geometry.dispose(); plot.remove(scatter); }
+        scatter = new THREE.Points(points, scatterMaterial);
+        plot.add(scatter);
+
+        // Update 3D Plot With New Objects //
+        if (objects != null) plot.remove(objects);
+        objects = new THREE.Object3D();
+        plot.add(objects);
+
+        var items3D = data['items3D'];
+        for (i=0; i<items3D.length; i++) {
+            var bounds3D = items3D[i]['bounds3D'];
+
+            var boxGeometry = new THREE.Geometry();
+
+            [0, 1, 2, 3, 0].forEach(function(i){
+                boxGeometry.vertices.push(new THREE.Vector3(bounds3D[i][0], bounds3D[i][1], bounds3D[i][2]));
+            });
+
+            var box = new THREE.Line(boxGeometry, boxMaterial);
+            objects.add(box);
+        }
+
+        // Update 3D Plot with Camera Frustum //
+
+        var frustumGeometry = new THREE.Geometry();
+
+        var frustumData = data['frustum'];
+
+        [0, 1, 2, 3, 0, 4, 5, 1, 5, 6, 2, 6, 7, 3, 7, 4].forEach(function(i){
+            frustumGeometry.vertices.push(new THREE.Vector3(frustumData[i][0], frustumData[i][1], frustumData[i][2]));
+        });
+
+        if (frustum != null) plot.remove(frustum);
+        frustum = new THREE.Line(frustumGeometry, boxMaterial);
+        plot.add(frustum);
+    }
 });
 
 

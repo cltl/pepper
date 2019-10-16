@@ -1,0 +1,17 @@
+do you like talking to people: leolani like talking-to-people
+does john enjoy watching movies: john enjoy watching-movies
+did lana read a book: lana read a-book
+do you like living in amsterdam: leolani like living-in-amsterdam
+can you sing: leolani can-sing
+can a bird sing a song: a-bird can-sing a-song
+can I call you: Lenka can-call Leolani
+can I make a cake: Lenka can-make a-cake
+will you go to Paris: leolani will-go-to paris
+must you go home: Leolani must-go home
+do you like amsterdam: leolani like amsterdam
+do you know me: leolani know lenka
+does selene know suzana: selene know suzana
+did you see a dog: leolani see a-dog
+did you meet john: leolani meet john
+does john live in the building: john live-in the-building
+do you like new york: leolani like new-york

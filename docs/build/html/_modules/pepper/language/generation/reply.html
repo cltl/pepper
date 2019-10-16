@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.language.generation.reply &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.language.generation.reply</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.language.generation.reply</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">pepper.language.generation.phrasing</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pepper.language.utils.helper_functions</span> <span class="k">import</span> <span class="n">wnl</span><span class="p">,</span> <span class="n">lexicon_lookup</span>
+
+<div class="viewcode-block" id="fix_predicate_morphology"><a class="viewcode-back" href="../../../../pepper.language.generation.reply.html#pepper.language.generation.reply.fix_predicate_morphology">[docs]</a><span class="k">def</span> <span class="nf">fix_predicate_morphology</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Conjugation</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subject</span>
+<span class="sd">    predicate</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO revise by Lenka</span>
+    <span class="n">new_predicate</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">el</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">:</span>
+                    <span class="n">new_predicate</span> <span class="o">+=</span> <span class="s1">&#39;be-&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_predicate</span> <span class="o">+=</span> <span class="n">el</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
+
+        <span class="k">elif</span> <span class="n">predicate</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
+            <span class="n">new_predicate</span> <span class="o">=</span> <span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">predicate</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+
+    <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">el</span> <span class="o">==</span> <span class="s1">&#39;be&#39;</span><span class="p">:</span>
+                    <span class="n">new_predicate</span> <span class="o">+=</span> <span class="s1">&#39;is &#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_predicate</span> <span class="o">+=</span> <span class="n">el</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+
+        <span class="c1">#elif predicate == wnl.lemmatize(predicate):</span>
+        <span class="c1">#    new_predicate = predicate + &#39;s&#39;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+
+    <span class="k">return</span> <span class="n">new_predicate</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reply_to_question"><a class="viewcode-back" href="../../../../pepper.language.generation.reply.html#pepper.language.generation.reply.reply_to_question">[docs]</a><span class="k">def</span> <span class="nf">reply_to_question</span><span class="p">(</span><span class="n">brain_response</span><span class="p">):</span>
+    <span class="n">say</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">previous_author</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">previous_subject</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">previous_predicate</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="n">utterance</span> <span class="o">=</span> <span class="n">brain_response</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">brain_response</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">]</span>
+
+    <span class="c1"># TODO revise by Lenka (we conjugate the predicate by doing this)</span>
+    <span class="n">utterance</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;natural&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">:</span>
+        <span class="c1"># TODO revise by lenka (we catch responses we could have known here)</span>
+        <span class="n">subject_type</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">types</span><span class="p">)</span> <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">types</span> <span class="k">else</span> <span class="s1">&#39;things&#39;</span>
+        <span class="n">object_type</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">types</span><span class="p">)</span> <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">types</span> <span class="k">else</span> <span class="s1">&#39;things&#39;</span>
+        <span class="n">predicate</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">)</span>
+        <span class="n">say</span> <span class="o">+=</span> <span class="s2">&quot;I know </span><span class="si">%s</span><span class="s2"> usually </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">, but I do not know this case&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subject_type</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">object_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">say</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    if utterance.triple.predicate_name == &#39;sees&#39; and utterance.triple.subject_name == &#39;leolani&#39;:</span>
+<span class="sd">        print(viewed_objects)</span>
+<span class="sd">        say = &#39;I see &#39;</span>
+<span class="sd">        for obj in viewed_objects:</span>
+<span class="sd">            if len(viewed_objects)&gt;1 and obj == viewed_objects[len(viewed_objects)-1]:</span>
+<span class="sd">                say += &#39;, and a &#39;+obj</span>
+<span class="sd">            else:</span>
+<span class="sd">                say+=&#39; a &#39;+obj+&#39;, &#39;</span>
+
+<span class="sd">        if utterance.triple.object_name:</span>
+<span class="sd">            if utterance.triple.object_name.lower() in viewed_objects:</span>
+<span class="sd">                say = &#39;yes, I can see a &#39; + utterance.triple.object_name</span>
+<span class="sd">            else:</span>
+<span class="sd">                say = &#39;no, I cannot see a &#39; + utterance.triple.object_name</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">response</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+        <span class="c1"># INITIALIZATION</span>
+
+        <span class="n">author</span> <span class="o">=</span> <span class="n">replace_pronouns</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;authorlabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;slabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="o">!=</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="nb">object</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span>
+        <span class="k">elif</span> <span class="s1">&#39;olabel&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="nb">object</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;olabel&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">object</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">predicate</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span>
+
+        <span class="n">subject</span> <span class="o">=</span> <span class="n">replace_pronouns</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="p">,</span> <span class="n">entity_label</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        new_sub = replace_pronouns(utterance.chat_speaker, entity_label=subject, role=&#39;subject&#39;)</span>
+
+<span class="sd">        if utterance.transcript.split()[0].lower()!=&#39;who&#39; or new_sub.lower() in [&#39;i&#39;,&#39;you&#39;]:</span>
+<span class="sd">            subject = new_sub</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">subject</span><span class="p">:</span>
+            <span class="n">new_sub</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">subject</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+                <span class="n">new_sub</span> <span class="o">+=</span> <span class="n">replace_pronouns</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="p">,</span> <span class="n">entity_label</span> <span class="o">=</span> <span class="n">word</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;pos&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; &#39;</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="n">new_sub</span>
+
+        <span class="n">subject_entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">subject</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">subject_entry</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">subject_entry</span><span class="p">:</span>
+            <span class="n">person</span> <span class="o">=</span> <span class="n">subject_entry</span><span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Deal with author</span>
+        <span class="k">if</span> <span class="n">author</span> <span class="o">!=</span> <span class="n">previous_author</span><span class="p">:</span>
+            <span class="n">say</span> <span class="o">+=</span> <span class="n">author</span> <span class="o">+</span> <span class="s1">&#39; told me &#39;</span>
+            <span class="n">previous_author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">predicate</span> <span class="o">!=</span> <span class="n">previous_predicate</span><span class="p">:</span>
+                <span class="n">say</span> <span class="o">+=</span> <span class="s1">&#39; that &#39;</span>
+
+        <span class="k">if</span> <span class="n">predicate</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">):</span>
+
+            <span class="n">say</span> <span class="o">+=</span> <span class="nb">object</span><span class="o">+</span><span class="s1">&#39; is&#39;</span>
+            <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> \
+                    <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">say</span> <span class="o">+=</span> <span class="s1">&#39; your &#39;</span>
+            <span class="k">elif</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;leolani&#39;</span> <span class="ow">or</span> \
+                    <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;leolani&#39;</span><span class="p">:</span>
+                <span class="n">say</span> <span class="o">+=</span> <span class="s1">&#39; my &#39;</span>
+            <span class="n">say</span> <span class="o">+=</span> <span class="n">predicate</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">say</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">be</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="s1">&#39;am&#39;</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span> <span class="s1">&#39;are&#39;</span><span class="p">,</span> <span class="s1">&#39;third&#39;</span><span class="p">:</span> <span class="s1">&#39;is&#39;</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">predicate</span><span class="o">==</span><span class="s1">&#39;be&#39;</span><span class="p">:</span> <span class="c1"># or third person singular</span>
+                <span class="k">if</span> <span class="n">subject_entry</span> <span class="ow">and</span> <span class="s1">&#39;number&#39;</span> <span class="ow">in</span> <span class="n">subject_entry</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">subject_entry</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;singular&#39;</span><span class="p">:</span>
+                        <span class="n">predicate</span> <span class="o">=</span> <span class="n">be</span><span class="p">[</span><span class="n">person</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">predicate</span> <span class="o">=</span> <span class="s1">&#39;are&#39;</span>
+            <span class="k">elif</span> <span class="n">person</span><span class="o">==</span><span class="s1">&#39;third&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">predicate</span><span class="p">:</span>
+                <span class="n">predicate</span><span class="o">+=</span><span class="s1">&#39;s&#39;</span>
+
+
+            <span class="n">say</span> <span class="o">+=</span> <span class="n">subject</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">+</span> <span class="n">predicate</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">object</span>
+
+
+        <span class="n">say</span> <span class="o">+=</span> <span class="s1">&#39; and &#39;</span>
+
+    <span class="k">return</span> <span class="n">say</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

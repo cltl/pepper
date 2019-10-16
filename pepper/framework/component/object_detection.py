@@ -1,82 +1,83 @@
-from pepper.framework.abstract import AbstractComponent
-from pepper.framework.sensor.obj import ObjectDetectionClient, ObjectDetectionTarget, Object
+from pepper.framework.abstract import AbstractComponent, AbstractImage
+from pepper.framework.sensor.obj import ObjectDetectionClient
 from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
-
-import numpy as np
 
 from typing import List, Dict
 
 
 class ObjectDetectionComponent(AbstractComponent):
+    """
+    Perform Object Detection using `Pepper Tensorflow <https://github.com/cltl/pepper_tensorflow>`_
 
+    Parameters
+    ----------
+    backend: AbstractBackend
+        Application Backend
+    """
+
+    # The Object Detection Servers to Target (See pepper_tensorflow)
     TARGETS = config.OBJECT_RECOGNITION_TARGETS
 
     def __init__(self, backend):
-        """
-        Construct Object Detection Component
-
-        Parameters
-        ----------
-        backend: AbstractBackend
-        target: ObjectDetectionTarget
-        """
         super(ObjectDetectionComponent, self).__init__(backend)
 
-        # Callbacks
+        # Public List of On Object Callbacks:
+        # Allowing other Components to Subscribe to it
         self.on_object_callbacks = []
 
+        # Create Object Detection Client and a Mailbox per Target
+        # Make sure the corresponding server @ pepper_tensorflow is actually running
         clients = [ObjectDetectionClient(target) for target in ObjectDetectionComponent.TARGETS]
         mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
-        def on_image(image, orientation):
+        def on_image(image):
+            # type: (AbstractImage) -> None
             """
             Raw On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
-            image: np.ndarray
-            orientation: tuple
+            image: AbstractImage
             """
             for client in clients:
                 mailboxes[client].put(image)
 
         def worker(client):
             # type: (ObjectDetectionClient) -> None
-            """Object Detection Event Worker"""
+            """Object Detection Worker"""
+
+            # Get Image from Mailbox Corresponding with Client
             image = mailboxes[client].get()
 
+            # Classify Objects in this Image using Client
             objects = [obj for obj in client.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
 
             if objects:
 
                 # Call on_object Callback Functions
                 for callback in self.on_object_callbacks:
-                    callback(image, objects)
+                    callback(objects)
 
                 # Call on_object Event Function
-                self.on_object(image, objects)
+                self.on_object(objects)
 
-        # Initialize Object Queue & Worker
+        # Initialize & Start Object Workers
         schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(client.target.name)) for client in clients]
-
         for s in schedule:
             s.start()
 
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]
 
-    def on_object(self, image, objects):
-        # type: (np.ndarray, List[Object]) -> None
+    def on_object(self, objects):
+        # type: (List[Object]) -> None
         """
-        On Object Event. Called every time one or more objects are detected in a camera frame.
+        On Object Event. Called per ObjectDetectionTarget every time one or more objects are detected in a camera frame.
 
         Parameters
         ----------
-        image: np.ndarray
-            Camera Frame
         objects: list of Object
             List of Object instances
         """
         pass
-

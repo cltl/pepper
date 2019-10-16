@@ -1,0 +1,8 @@
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?p where {
+            ?p rdf:type owl:ObjectProperty .
+            FILTER(regex(str(?p), "n2mu")) .
+        } ORDER BY str(?p)

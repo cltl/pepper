@@ -11,22 +11,27 @@ from random import getrandbits
 from time import sleep
 import os
 
+from typing import Union, Optional
+
 
 class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
+    """
+    System Text to Speech
+
+    Parameters
+    ----------
+    language: str
+        `Language Code <https://cloud.google.com/speech/docs/languages>`_
+    """
 
     TMP = os.path.join(config.PROJECT_ROOT, 'tmp', 'speech')
     GENDER = 2  # "Female" or 1 "Male"
     TYPE = "Standard"
 
     def __init__(self, language):
-        """
-        Parameters
-        ----------
-        language: str
-            Language Code, See: https://cloud.google.com/speech/docs/languages
-        """
+        # type: (str) -> None
         AbstractTextToSpeech.__init__(self, language)
-        GoogleTranslator.__init__(self, config.INTERNAL_LANGUAGE, language)
+        GoogleTranslator.__init__(self, config.INTERNAL_LANGUAGE[:2], language[:2])
 
         if not os.path.exists(self.TMP):
             os.makedirs(self.TMP)
@@ -40,6 +45,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
         self._log.debug("Booted ({} -> {})".format(self.source, self.target))
 
     def on_text_to_speech(self, text, animation=None):
+        # type: (Union[str, unicode], Optional[str]) -> None
         """
         Say something through Text to Speech
 

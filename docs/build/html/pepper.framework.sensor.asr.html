@@ -17,33 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.sensor.face module" href="pepper.framework.sensor.face.html" />
     <link rel="prev" title="pepper.framework.sensor.util package" href="pepper.framework.sensor.util.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -55,6 +58,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -81,33 +88,33 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#framework-for-creating-robot-applications">Framework for Creating Robot Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.html#sensor">Sensor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.sensor.asr module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.face.html">pepper.framework.sensor.face module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.location.html">pepper.framework.sensor.location module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.obj.html">pepper.framework.sensor.obj module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.vad.html">pepper.framework.sensor.vad module</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.util.html">pepper.util package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.web.html">pepper.web package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
 </ul>
 </li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -181,89 +188,15 @@
   <div class="section" id="module-pepper.framework.sensor.asr">
 <span id="pepper-framework-sensor-asr-module"></span><h1>pepper.framework.sensor.asr module<a class="headerlink" href="#module-pepper.framework.sensor.asr" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.framework.sensor.asr.ASRHypothesis">
-<em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">ASRHypothesis</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#ASRHypothesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.ASRHypothesis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.sensor.asr.ASRHypothesis.confidence" title="pepper.framework.sensor.asr.ASRHypothesis.confidence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confidence</span></code></a></dt>
-<dd><p class="first last">Automatic Speech Recognition Hypothesis Confidence</p>
-</dd>
-<dt><a class="reference internal" href="#pepper.framework.sensor.asr.ASRHypothesis.transcript" title="pepper.framework.sensor.asr.ASRHypothesis.transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcript</span></code></a></dt>
-<dd><p class="first last">Automatic Speech Recognition Hypothesis Transcript</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.framework.sensor.asr.ASRHypothesis.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#pepper.framework.sensor.asr.ASRHypothesis.confidence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Automatic Speech Recognition Hypothesis Confidence</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>confidence: float</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.asr.ASRHypothesis.transcript">
-<code class="descname">transcript</code><a class="headerlink" href="#pepper.framework.sensor.asr.ASRHypothesis.transcript" title="Permalink to this definition">¶</a></dt>
-<dd><p>Automatic Speech Recognition Hypothesis Transcript</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>transcript: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="pepper.framework.sensor.asr.AbstractASR">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">AbstractASR</code><span class="sig-paren">(</span><em>language='en-GB'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#AbstractASR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.AbstractASR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract Automatic Speech Recognition (ASR)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><a class="reference internal" href="#pepper.framework.sensor.asr.AbstractASR.language" title="pepper.framework.sensor.asr.AbstractASR.language"><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></a></dt>
-<dd><p class="first last">Automatic Speech Recognition Language</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.asr.AbstractASR.transcribe" title="pepper.framework.sensor.asr.AbstractASR.transcribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe</span></code></a>(audio)</td>
-<td>Transcribe Speech in Audio</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>language</strong> (<em>str</em>) – Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; “LC-RC”</td>
 </tr>
 </tbody>
 </table>
@@ -280,11 +213,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>language: str</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>language</strong> – Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; “LC-RC”</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -298,17 +229,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>audio: numpy.ndarray</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>audio</strong> (<em>numpy.ndarray</em>) – Audio Samples (Containing Speech)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>transcript: list of ASRHypothesis</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>transcript</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="#pepper.framework.sensor.asr.UtteranceHypothesis" title="pepper.framework.sensor.asr.UtteranceHypothesis">UtteranceHypothesis</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -320,46 +245,68 @@
 <dt id="pepper.framework.sensor.asr.AbstractTranslator">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">AbstractTranslator</code><span class="sig-paren">(</span><em>source</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#AbstractTranslator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.AbstractTranslator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract Translator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>source</strong></dt>
-<dd></dd>
-<dt><strong>target</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source</strong> (<em>str</em>) – Two Character Source Language Code</li>
+<li><strong>target</strong> (<em>str</em>) – Two Character Target Language Code</li>
+</ul>
 </td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="57%" />
-<col width="43%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>translate</strong></td>
-<td>&#160;</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="pepper.framework.sensor.asr.AbstractTranslator.source">
 <code class="descname">source</code><a class="headerlink" href="#pepper.framework.sensor.asr.AbstractTranslator.source" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Source Language</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>source</strong> – Two Character Source Language Code</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.framework.sensor.asr.AbstractTranslator.target">
 <code class="descname">target</code><a class="headerlink" href="#pepper.framework.sensor.asr.AbstractTranslator.target" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Target Language</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>target</strong> – Two Character Target Language Code</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.framework.sensor.asr.AbstractTranslator.translate">
 <code class="descname">translate</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#AbstractTranslator.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.AbstractTranslator.translate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Translate Text from Source to Target Language</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>translated_text</strong> – Translated Text</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -367,82 +314,75 @@
 <dt id="pepper.framework.sensor.asr.BaseGoogleASR">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">BaseGoogleASR</code><span class="sig-paren">(</span><em>language='en-GB'</em>, <em>sample_rate=16000</em>, <em>hints=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#BaseGoogleASR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.BaseGoogleASR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.framework.sensor.asr.AbstractASR" title="pepper.framework.sensor.asr.AbstractASR"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.asr.AbstractASR</span></code></a>, <a class="reference internal" href="#pepper.framework.sensor.asr.GoogleTranslator" title="pepper.framework.sensor.asr.GoogleTranslator"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.asr.GoogleTranslator</span></code></a></p>
+<p>Abstract Base Google Automatic Speech Recognition (ASR)</p>
+<p>Handles common parameters for SynchronousGoogleASR and StreamedGoogleASR</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></dt>
-<dd><p class="first last">Automatic Speech Recognition Language</p>
-</dd>
-<dt><strong>source</strong></dt>
-<dd></dd>
-<dt><strong>target</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>language</strong> (<em>str</em>) – Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; “LC-RC”</li>
+<li><strong>sample_rate</strong> (<em>int</em>) – Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)</li>
+<li><strong>hints</strong> (<em>Tuple</em><em>[</em><em>str</em><em>]</em>) – Words or Phrases that ASR should be extra sensitive to</li>
+</ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
+<dl class="method">
+<dt id="pepper.framework.sensor.asr.BaseGoogleASR.transcribe">
+<code class="descname">transcribe</code><span class="sig-paren">(</span><em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#BaseGoogleASR.transcribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.BaseGoogleASR.transcribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transcribe Speech in Audio</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe</span></code>(audio)</td>
-<td>Transcribe Speech in Audio</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>audio</strong> (<em>numpy.ndarray</em>) – Audio Samples (Containing Speech)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>transcript</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="#pepper.framework.sensor.asr.UtteranceHypothesis" title="pepper.framework.sensor.asr.UtteranceHypothesis">UtteranceHypothesis</a>]</td>
 </tr>
 </tbody>
 </table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="57%" />
-<col width="43%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>translate</strong></td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="pepper.framework.sensor.asr.GoogleTranslator">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">GoogleTranslator</code><span class="sig-paren">(</span><em>source</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#GoogleTranslator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.GoogleTranslator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.framework.sensor.asr.AbstractTranslator" title="pepper.framework.sensor.asr.AbstractTranslator"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.asr.AbstractTranslator</span></code></a></p>
+<p>Google Translator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>source</strong></dt>
-<dd></dd>
-<dt><strong>target</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source</strong> (<em>str</em>) – Two Character Source Language Code</li>
+<li><strong>target</strong> (<em>str</em>) – Two Character Target Language Code</li>
+</ul>
 </td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="57%" />
-<col width="43%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>translate</strong></td>
-<td>&#160;</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="pepper.framework.sensor.asr.GoogleTranslator.translate">
 <code class="descname">translate</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#GoogleTranslator.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.GoogleTranslator.translate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Translate Text from Source to Target Language</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>translated_text</strong> – Translated Text</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -450,42 +390,58 @@
 <dt id="pepper.framework.sensor.asr.StreamedGoogleASR">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">StreamedGoogleASR</code><span class="sig-paren">(</span><em>language='en-GB'</em>, <em>sample_rate=16000</em>, <em>hints=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#StreamedGoogleASR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.StreamedGoogleASR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.framework.sensor.asr.BaseGoogleASR" title="pepper.framework.sensor.asr.BaseGoogleASR"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.asr.BaseGoogleASR</span></code></a></p>
+<p>Streamed Google Automatic Speech Recognition (ASR)</p>
+<p>Recognises Speech ‘live’ as it is spoken. Should be faster than Synchronous ASR</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></dt>
-<dd><p class="first last">Automatic Speech Recognition Language</p>
-</dd>
-<dt><strong>source</strong></dt>
-<dd></dd>
-<dt><strong>target</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>language</strong> (<em>str</em>) – Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; “LC-RC”</li>
+<li><strong>sample_rate</strong> (<em>int</em>) – Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)</li>
+<li><strong>hints</strong> (<em>Tuple</em><em>[</em><em>str</em><em>]</em>) – Words or Phrases that ASR should be extra sensitive to</li>
+</ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Methods</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="58%" />
-<col width="42%" />
-</colgroup>
+<dl class="attribute">
+<dt id="pepper.framework.sensor.asr.StreamedGoogleASR.live">
+<code class="descname">live</code><a class="headerlink" href="#pepper.framework.sensor.asr.StreamedGoogleASR.live" title="Permalink to this definition">¶</a></dt>
+<dd><p>Live Speech Transcript String (Debug/Visual purposes only)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><strong>transcribe</strong></td>
-<td>&#160;</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>live</strong> – Live Speech Transcript String</td>
 </tr>
-<tr class="row-even"><td><strong>translate</strong></td>
-<td>&#160;</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pepper.framework.sensor.asr.StreamedGoogleASR.transcribe">
 <code class="descname">transcribe</code><span class="sig-paren">(</span><em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#StreamedGoogleASR.transcribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.StreamedGoogleASR.transcribe" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transcribe Speech in Audio (Streamed)</p>
+<p>Instead of a single Block of Audio, this function takes an Iterable of Audio frames.
+One frame is processed at a time while the audio is being generated by the speaker.
+This provides a faster ASR than the synchronous version, and a live representation of the utterance.
+TODO: this breaks the abstract specification, is there a neater way to do this?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>audio</strong> (<em>Iterable</em><em>[</em><em>numpy.ndarray</em><em>]</em>) – Iterable of Audio Samples (Containing Speech)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>transcript</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="#pepper.framework.sensor.asr.UtteranceHypothesis" title="pepper.framework.sensor.asr.UtteranceHypothesis">UtteranceHypothesis</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -493,43 +449,18 @@
 <dt id="pepper.framework.sensor.asr.SynchronousGoogleASR">
 <em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">SynchronousGoogleASR</code><span class="sig-paren">(</span><em>language='en-GB'</em>, <em>sample_rate=16000</em>, <em>hints=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#SynchronousGoogleASR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.SynchronousGoogleASR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.framework.sensor.asr.BaseGoogleASR" title="pepper.framework.sensor.asr.BaseGoogleASR"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.sensor.asr.BaseGoogleASR</span></code></a></p>
+<p>Synchronous Google Automatic Speech Recognition (ASR)</p>
+<p>Recognises Speech ‘live’ as it is spoken. Should be faster than Synchronous ASR</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">language</span></code></dt>
-<dd><p class="first last">Automatic Speech Recognition Language</p>
-</dd>
-<dt><strong>source</strong></dt>
-<dd></dd>
-<dt><strong>target</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>language</strong> (<em>str</em>) – Language Code &lt;LC&gt; &amp; Region Code &lt;RC&gt; -&gt; “LC-RC”</li>
+<li><strong>sample_rate</strong> (<em>int</em>) – Number of Audio Samples per second that will be handled to ASR transcription (16k is nice!)</li>
+<li><strong>hints</strong> (<em>Tuple</em><em>[</em><em>str</em><em>]</em>) – Words or Phrases that ASR should be extra sensitive to</li>
+</ul>
 </td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pepper.framework.sensor.asr.SynchronousGoogleASR.transcribe" title="pepper.framework.sensor.asr.SynchronousGoogleASR.transcribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe</span></code></a>(audio)</td>
-<td>Transcribe Speech in Audio</td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="57%" />
-<col width="43%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>translate</strong></td>
-<td>&#160;</td>
 </tr>
 </tbody>
 </table>
@@ -541,17 +472,62 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>audio: numpy.ndarray</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>audio</strong> (<em>numpy.ndarray</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>hypotheses</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="#pepper.framework.sensor.asr.UtteranceHypothesis" title="pepper.framework.sensor.asr.UtteranceHypothesis">UtteranceHypothesis</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.sensor.asr.UtteranceHypothesis">
+<em class="property">class </em><code class="descclassname">pepper.framework.sensor.asr.</code><code class="descname">UtteranceHypothesis</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/sensor/asr.html#UtteranceHypothesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.asr.UtteranceHypothesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Automatic Speech Recognition (ASR) Hypothesis</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>transcript</strong> (<em>str</em>) – Utterance Hypothesis Transcript</li>
+<li><strong>confidence</strong> (<em>float</em>) – Utterance Hypothesis Confidence</li>
+</ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>hypotheses: List[ASRHypothesis]</strong></dt>
-<dd></dd>
-</dl>
-</td>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pepper.framework.sensor.asr.UtteranceHypothesis.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#pepper.framework.sensor.asr.UtteranceHypothesis.confidence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatic Speech Recognition Hypothesis Confidence</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>confidence</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.sensor.asr.UtteranceHypothesis.transcript">
+<code class="descname">transcript</code><a class="headerlink" href="#pepper.framework.sensor.asr.UtteranceHypothesis.transcript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatic Speech Recognition Hypothesis Transcript</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>transcript</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -569,8 +545,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="pepper.framework.sensor.face.html" class="btn btn-neutral float-right" title="pepper.framework.sensor.face module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="pepper.framework.sensor.util.html" class="btn btn-neutral" title="pepper.framework.sensor.util package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="pepper.framework.sensor.util.html" class="btn btn-neutral float-left" title="pepper.framework.sensor.util package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -596,25 +574,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

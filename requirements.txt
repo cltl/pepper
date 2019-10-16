@@ -17,6 +17,7 @@ google-cloud-translate
 
 requests
 pycountry
+reverse_geocoder
 
 pillow
 opencv-python

@@ -37,729 +37,707 @@
         }
       },
     "object": {
-        "me": {
+      "me": {
+        "person": "first",
+        "number": "singular"
+        },
+      "you": {
+        "person": "second",
+        "number": [
+          "singular",
+          "plural"
+          ]
+        },
+      "him": {
+        "person": "third",
+        "number": "singular",
+        "gender": "masculine"
+        },
+      "her": {
+        "person": "third",
+        "number": "singular",
+        "gender": "feminine"
+        },
+      "it": {
+        "person": "third",
+        "number": "singular",
+        "gender": "neuter"
+        },
+      "us": {
+        "person": "first",
+        "number": "plural"
+      },
+      "them": {
+        "person": "third",
+        "number": "plural"
+        }
+      },
+    "possessive": {
+      "dependent": {
+        "my": {
           "person": "first",
           "number": "singular"
-        },
-        "you": {
+          },
+        "your": {
           "person": "second",
           "number": [
             "singular",
             "plural"
-          ]
-        },
-        "him": {
+            ]
+          },
+        "his": {
           "person": "third",
           "number": "singular",
           "gender": "masculine"
-        },
+          },
         "her": {
           "person": "third",
           "number": "singular",
           "gender": "feminine"
-        },
-        "it": {
+          },
+        "its": {
           "person": "third",
           "number": "singular",
           "gender": "neuter"
-        },
-        "us": {
+          },
+        "our": {
           "person": "first",
           "number": "plural"
-        },
-        "them": {
+          },
+        "their": {
           "person": "third",
           "number": "plural"
-        }
-      },
-    "possessive": {
-        "dependent": {
-          "my": {
-            "person": "first",
-            "number": "singular"
-          },
-          "your": {
-            "person": "second",
-            "number": [
-              "singular",
-              "plural"
-            ]
-          },
-          "his": {
-            "person": "third",
-            "number": "singular",
-            "gender": "masculine"
-          },
-          "her": {
-            "person": "third",
-            "number": "singular",
-            "gender": "feminine"
-          },
-          "its": {
-            "person": "third",
-            "number": "singular",
-            "gender": "neuter"
-          },
-          "our": {
-            "person": "first",
-            "number": "plural"
-          },
-          "their": {
-            "person": "third",
-            "number": "plural"
           }
         },
       "independent": {
-          "mine": {
-            "person": "first",
-            "number": "singular"
-          },
-          "yours": {
-            "person": "second",
-            "number": [
-              "singular",
-              "plural"
-            ]
-          },
-          "his": {
-            "person": "third",
-            "number": "singular",
-            "gender": "masculine"
-          },
-          "hers": {
-            "person": "third",
-            "number": "singular",
-            "gender": "feminine"
-          },
-          "ours": {
-            "person": "first",
-            "number": "plural"
-          },
-          "theirs": {
-            "person": "third",
-            "number": "plural"
-          }
-        }
-      },
-      "reflexive": {
-        "myself": {
+        "mine": {
           "person": "first",
           "number": "singular"
-        },
-        "yourself": {
+          },
+        "yours": {
           "person": "second",
-          "number": "singular"
-        },
-        "himself": {
+          "number": [
+            "singular",
+            "plural"
+            ]
+          },
+        "his": {
           "person": "third",
           "number": "singular",
           "gender": "masculine"
-        },
-        "herself": {
+          },
+        "hers": {
           "person": "third",
           "number": "singular",
           "gender": "feminine"
-        },
-        "itself": {
-          "person": "third",
-          "number": "singular",
-          "gender": "neuter"
-        },
-        "ourselves": {
+          },
+        "ours": {
           "person": "first",
           "number": "plural"
-        },
-        "yourselves": {
-          "person": "second",
-          "number": "plural"
-        },
-        "themselves": {
+          },
+        "theirs": {
           "person": "third",
           "number": "plural"
+          }
         }
-      }
-    },
+      },
+    "reflexive": {
+      "myself": {
+        "person": "first",
+        "number": "singular"
+        },
+      "yourself": {
+        "person": "second",
+        "number": "singular"
+        },
+      "himself": {
+        "person": "third",
+        "number": "singular",
+        "gender": "masculine"
+        },
+      "herself": {
+        "person": "third",
+        "number": "singular",
+        "gender": "feminine"
+        },
+      "itself": {
+        "person": "third",
+        "number": "singular",
+        "gender": "neuter"
+        },
+      "ourselves": {
+        "person": "first",
+        "number": "plural"
+        },
+      "yourselves": {
+        "person": "second",
+        "number": "plural"
+        },
+      "themselves": {
+        "person": "third",
+        "number": "plural"
+        }
+      },
+      "indefinite": {
+        "person": {
+          "everyone": {
+            "quantity": "all"
+            },
+          "everybody": {
+            "quantity": "all"
+            },
+          "someone": {
+            "quantity": "part",
+            "sentence type": "affirmative"
+            },
+          "somebody": {
+            "quantity": "part",
+            "sentence type": "affirmative"
+            },
+          "anyone": {
+            "quantity": "part",
+            "sentence type": "negative"
+            },
+          "anybody": {
+            "quantity": "part",
+            "sentence type": "negative"
+            },
+          "no one": {
+            "quantity": "none"
+            },
+          "nobody": {
+            "quantity": "none"
+            }
+          },
+        "place": {
+          "everywhere": {
+            "quantity": "all"
+            },
+          "somewhere": {
+            "quantity": "part",
+            "sentence type": "affirmative"
+            },
+          "anywhere": {
+            "quantity": "part",
+            "sentence type": "negative"
+            },
+          "nowhere": {
+            "quantity": "none"
+            }
+          },
+        "thing": {
+          "everything": {
+            "quantity": "all"
+            },
+          "something": {
+            "quantity": "part",
+            "sentence type": "affirmative"
+            },
+          "anything": {
+            "quantity": "part",
+            "sentence type": "negative"
+            },
+          "nothing": {
+            "quantity": "none"
+            }
+          }
+        }
+      },
   "verbs": {
     "to be": {
-        "am": {
-          "tense": "present",
-          "person": "first",
-          "number": "singular"
+      "am": {
+        "tense": "present",
+        "person": "first",
+        "number": "singular"
         },
-        "are": {
-          "tense": "present",
-          "person": [
-            "second",
-            "third"
+      "are": {
+        "tense": "present",
+        "person": [
+          "second",
+          "third"
           ],
-          "number": [
-            "singular",
-            "plural"
+        "number": [
+          "singular",
+          "plural"
           ]
         },
-        "is": {
-          "tense": "present",
-          "person": "third",
-          "number": "singular"
+      "is": {
+        "tense": "present",
+        "person": "third",
+        "number": "singular"
         },
-        "was": {
-          "tense": "simple past",
-          "person": [
-            "first",
-            "third"
+      "was": {
+        "tense": "simple past",
+        "person": [
+          "first",
+          "third"
           ],
-          "number": "singular"
+        "number": "singular"
         },
-        "were": {
-          "tense": "simple past",
-          "person": [
-            "first",
-            "second",
-            "third"
+      "were": {
+        "tense": "simple past",
+        "person": [
+          "first",
+          "second",
+          "third"
           ],
-          "number": [
-            "singular",
-            "plural"
+        "number": [
+          "singular",
+          "plural"
           ]
+        },
+        "been": {
+          "tense": "past participle"
         }
       },
     "auxiliaries": {
-        "to do": {
-          "do": {
-            "tense": "present",
-            "person": [
-              "first",
-              "second",
-              "third"
+      "to do": {
+        "do": {
+          "tense": "present",
+          "person": [
+            "first",
+            "second",
+            "third"
             ],
-            "number": [
-              "singular",
-              "plural"
+          "number": [
+            "singular",
+            "plural"
             ]
           },
-          "does": {
+        "does": {
           "tense": "present",
           "person": "third",
           "number": "singular"
           },
-          "did": {
-            "tense": "simple past",
-            "person": [
-              "first",
-              "second",
-              "third"
+        "did": {
+          "tense": "simple past",
+          "person": [
+            "first",
+            "second",
+            "third"
             ],
-            "number": [
-              "singular",
-              "plural"
+          "number": [
+            "singular",
+            "plural"
             ]
           },
-          "done": {
-            "tense": "past participle"
+        "done": {
+          "tense": "past participle"
           }
         },
-      "modals": {
-          "can": {
-            "past": "could",
-            "root": [
-           "ability",
-           "permission"
+      "have":{
+        "have":{
+          "tense": "present",
+          "person": [
+            "first",
+            "second",
+            "third"
             ],
-            "certainty": "medium"
-          },
-          "may": {
-            "root": [
-            "permission",
-            "possibility"
+          "number": [
+            "singular",
+            "plural"
+            ]
+        },
+        "has":{
+          "tense": "present",
+          "person": "third",
+          "number": "singular"
+        },
+        "had":
+        {
+          "tense": "past",
+          "person": [
+            "first",
+            "second",
+            "third"
             ],
-            "certainty": "weak"
-          },
-          "might": {
-            "root": [
-              "permission",
-              "possibility"
-              ],
-            "certainty": "weaker"
-          },
-          "must": {
-            "root": "obligation",
-            "certainty": "stronger"
-          },
-          "shall": {
-            "root": [
-              "obligation",
-              "prediction"
+          "number": [
+            "singular",
+            "plural"
             ]
-          },
-          "should": {
-            "root": "obligation",
-            "certainty": "strong"
-          },
-          "will": {
-            "past": "would",
-            "root": [
-              "volition",
-              "prediction"
-            ]
-          }
+
         }
       },
-      "lexical": {
-        "like": {
-          "sentiment": "positive",
-          "simple past": "liked",
-          "past participle": "liked",
-          "antonym": "dislike"
-        },
-        "dislike": {
-          "sentiment": "negative",
-          "simple past": "disliked",
-          "past participle": "disliked",
-          "antonym": "like"
-        },
-        "love": {
-          "sentiment": "positive",
-          "simple past": "loved",
-          "past participle": "loved",
-          "antonym": "hate"
-        },
-        "hate": {
-          "sentiment": "negative",
-          "simple past": "hated",
-          "past participle": "hated",
-          "antonym": "love"
-        },
-        "enjoy": {
-          "sentiment": "positive",
-          "simple past": "enjoyed",     
-          "past participle": "enjoyed"
-        },
-        "appreciate": {
-          "sentiment": "positive",
-          "simple past": "appreciated",
-          "past participle": "appreciated"
-        },
-        "adore": {
-          "sentiment": "positive",
-          "simple past": "adored",
-          "past participle": "adored",
-          "antonym": [
-            "despise",
-            "hate"
-          ]
-        },
-        "despise": {
-          "sentiment": "negative",
-          "simple past": "despised",
-          "past participle": "detested",
-          "antonym": [
-            "adore",
-            "love"
-          ]
-        },
-        "detest": {
-          "sentiment": "negative",
-          "simple past": "detested",
-          "past participle": "detested",
-          "antonym": [
-            "love",
-            "adore"
-          ]
-        },
-        "know": {
-          "certainty": "high",
-          "simple past": "knew",
-          "past participle": "known"
-        },
-        "think": {
-          "certainty": "medium",
-          "simple past": "thought",
-          "past participle": "tought"
-        },
-        "believe": {
-          "certainty":"medium",
-          "simple past": "believed",
-          "past participle": "believed"
-        },
-        "guess": {
-          "certainty": "low",
-          "simple past": "guessed",
-          "past participle": "guessed"
-        },
-        "suppose": {
-          "certainty": "low",
-          "simple past": "supposed",
-          "past participle": "supposed"
-        },
-        "meet": {
-          "simple past": "met",
-          "past participle": "met"
-        },
-        "live": {
-          "simple past": "lived",
-          "past participle": "live"
-        },
-        "see": {
-          "simple past": "saw",
-          "past participle": "seen"
-        },
-        "own": {
-          "simple past": "owned",
-          "past participle": "owned"
-        },
-        "say": {
-          "simple past": "said",
-          "past participle": "said"
-        },
-        "go": {
-          "simple past": "went",
-          "past participle": "gone"
-        },
-        "get": {
-          "simple past": "got",
-          "past participle": [
-            "got",
-            "gotten"
-          ]
-        },
-        "make": {
-          "simple past": "made",
-          "past participle": "made"
-        },
-        "take": {
-          "simple past": "took",
-          "past participle": "taken"
-        },
-        "come": {
-          "simple past": "came",
-          "past participle": "come"
-        },
-        "want": {
-          "simple past": "wanted",
-          "past participle": "wanted"
-        },
-        "look": {
-          "simple past": "looked",
-          "past participle": "looked"
-        },
-        "use": {
-          "simple past": "used",
-          "past participle": "used"
-        },
-        "find": {
-          "simple past": "found",
-          "past participle": "found"
-        },
-        "give": {
-          "simple past": "gave",
-          "past participle": "given"
-        },
-        "tell": {
-          "simple past": "told",
-          "past participle": "told"
-        },
-        "work": {
-          "simple past": "worked",
-          "past participle": "worked"
-        },
-        "call": {
-          "simple past": "called",
-          "past participle": "called"
-        },
-        "try": {
-          "simple past": "tried",
-          "past participle": "tried"
-        },
-        "ask": {
-          "simple past": "asked",
-          "past participle": "asked"
-        },
-        "need": {
-          "simple past": "needed",
-          "past participle": "needed"
-        },
-        "feel": {
-          "simple past": "felt",
-          "past participle": "felt"
-        },
-        "become": {
-          "simple past": "became",
-          "past participle": "become"
-        },
-        "leave": {
-          "simple past": "left",
-          "past participle": "left"
-        },
-        "put": {
-          "simple past": "put",
-          "past participle": "put"
-        },
-        "mean": {
-          "simple past": "meant",
-          "past participle": "meant"
-        },
-        "keep": {
-          "simple past": "kept",
-          "past participle": "kept"
-        },
-        "let": {
-          "simple past": "let",
-          "past participle": "let"
-        },
-        "begin": {
-          "simple past": "began",
-          "past participle": "begun"
-        },
-        "seem": {
-          "simple past": "seemed",
-          "past participle": "seemed"
-        },
-        "help": {
-          "simple past": "helped",
-          "past participle": "helped"
-        },
-        "talk": {
-          "simple past": "talked",
-          "past participle": "talked"
-        },
-        "turn": {
-          "simple past": "turned",
-          "past participle": "turned"
-        },
-        "start": {
-          "simple past": "started",
-          "past participle": "started"
-        },
-        "show": {
-          "simple past": "showed",
-          "past participle": "shown"
-        },
-        "hear": {
-          "simple past": "heard",
-          "past participle": "heard"
-        },
-        "play": {
-          "simple past": "played",
-          "past participle": "played"
-        },
-        "run": {
-          "simple past": "ran",
-          "past participle": "run"
-        },
-        "move": {
-          "simple past": "moved",
-          "past participle": "moved"
-        },
-        "hold": {
-          "simple past": "held",
-          "past participle": "held"
-        },
-        "bring": {
-          "simple past": "brought",
-          "past participle": "brought"
-        },
-        "happen": {
-          "simple past": "happened",
-          "past participle": "happened"
-        },
-        "write": {
-          "simple past": "wrote",
-          "past participle": "written"
-        },
-        "provide": {
-          "simple past": "provided",
-          "past participle": "provided"
-        },
-        "sit": {
-          "simple past": "sat",
-          "past participle": "sat"
-        },
-        "stand": {
-          "simple past": "stood",
-          "past participle": "stood"
-        },
-        "lose": {
-          "simple past": "lost",
-          "past participle": "lost"
-        },
-        "pay": {
-          "simple past": "paid",
-          "past participle": "paid"
-        },
-        "include": {
-          "simple past": "included",
-          "past participle": "included"
-        },
-        "continue": {
-          "simple past": "continue",
-          "past participle": "continued"
-        },
-        "set": {
-          "simple past": "set",
-          "past participle": "set"
-        },
-        "learn": {
-          "simple past": [
-            "learnt",
-            "learned"
-          ],
-          "past participle": [
-            "learnt",
-            "learned"
-          ]
-        },
-        "understand": {
-          "simple past": "understood",
-          "past participle": "understood"
-        },
-        "watch": {
-          "simple past": "watched",
-          "past participle": "watched"
-        },
-        "follow": {
-          "simple past": "followed",
-          "past participle": "followed"
-        },
-        "stop": {
-          "simple past": "stopped",
-          "past participle": "stopped"
-        },
-        "create": {
-          "simple past": "created",
-          "past participle": "created"
-        },
-        "speak": {
-          "simple past": "spoke",
-          "past participle": "spoken"
-        },
-        "read": {
-          "simple past": "read",
-          "past participle": "read"
-        },
-        "allowed": {
-          "simple past": "allowed",
-          "past participle": "allowed"
-        },
-        "spend": {
-          "simple past": "spent",
-          "past participle": "spent"
-        },
-        "grow": {
-          "simple past": "grew",
-          "past participle": "grown"
-        },
-        "open": {
-          "simple past": "opened",
-          "past participle": "opened"
-        },
-        "walk": {
-          "simple past": "walked",
-          "past participle": "walked"
-        },
-        "win": {
-          "simple past": "won",
-          "past participle": "won"
-        },
-        "offer": {
-          "simple past": "offered",
-          "past participle": "offered"
-        },
-        "remember": {
-          "simple past": "remembered",
-          "past participle": "remembered"
-        },
-        "consider": {
-          "simple past": "considered",
-          "past participle": "considered"
-        },
-        "appear": {
-          "simple past": "appeared",
-          "past participle": "appeared"
-        },
-        "vuy": {
-          "simple past": "bought",
-          "past participle": "bought"
-        },
-        "wait": {
-          "simple past": "waited",
-          "past participle": "waited"
-        },
-        "serve": {
-          "simple past": "served",
-          "past participle": "served"
-        },
-        "die": {
-          "simple past": "died",
-          "past participle": "died"
-        },
-        "send": {
-          "simple past": "sent",
-          "past participle": "sent"
-        },
-        "expect": {
-          "simple past": "expected",
-          "past participle": "expected"
-        },
-        "build": {
-          "simple past": "built",
-          "past participle": "built"
-        },
-        "stay": {
-          "simple past": "stayed",
-          "past participle": "stayed"
-        },
-        "fall": {
-          "simple past": "fell",
-          "past participle": "fallen"
-        },
-        "cut": {
-          "simple past": "cut",
-          "past participle": "cut"
-        },
-        "reach": {
-          "simple past": "reached",
-          "past participle": "reached"
-        },
-        "kill": {
-          "simple past": "killed",
-          "past participle": "killed"
-        },
-        "remain": {
-          "simple past": "remained",
-          "past participle": "remained"
-        },
-        "suggest": {
-          "simple past": "suggested",
-          "past participle": "suggested"
-        },
-        "raise": {
-          "simple past": "raised",
-          "past participle": "raised"
-        },
-        "pass": {
-          "simple past": "passed",
-          "past participle": "passed"
-        },
-        "sell": {
-          "simple past": "sold",
-          "past participle": "sold"
-        },
-        "require": {
-          "simple past": "required",
-          "past participle": "required"
-        },
-        "report": {
-          "simple past": "reported",
-          "past participle": "reported"
-        },
-        "decide": {
-          "simple past": "decided",
-          "past participle": "decided"
-        },
-        "pull": {
-          "simple past": "pulled",
-          "past participle": "pulled"
+      "modals": {
+        "can": {
+          "past": "could",
+          "root": [
+            "ability",
+            "permission"
+            ]},
+        "may": {
+          "root": [
+          "permission",
+          "possibility"
+            ],
+          "certainty": "0.5"
+          },
+        "might": {
+          "root": [
+            "permission",
+            "possibility"
+              ],
+          "certainty": "0.5"
+          },
+        "must": {
+          "root": "obligation",
+          "certainty": "1"
+          },
+        "shall": {
+          "root": [
+            "obligation",
+            "prediction"
+            ],
+          "certainty": "1"
+          },
+        "should": {
+          "root": "obligation",
+          "certainty": "0.75"
+          },
+        "will": {
+          "past": "would",
+          "root": [
+            "volition",
+            "prediction"
+              ],
+          "certainty": "1"
+            }
+          }
+        },
+    "lexical verbs": {
+      "like": {
+        "sentiment": "0.75",
+        "simple past": "liked",
+        "past participle": "liked",
+        "antonym": "dislike"
+        },
+      "dislike": {
+        "sentiment": "-0.75",
+        "simple past": "disliked",
+        "past participle": "disliked",
+        "antonym": "like"
+        },
+      "love": {
+        "sentiment": "1",
+        "simple past": "loved",
+        "past participle": "loved",
+        "antonym": "hate"
+        },
+      "hate": {
+        "sentiment": "-1",
+        "simple past": "hated",
+        "past participle": "hated",
+        "antonym": "love"
+        },
+      "enjoy": {
+        "sentiment": "1",
+        "simple past": "enjoyed",
+        "past participle": "enjoyed"
+        },
+      "appreciate": {
+        "sentiment": "0.75",
+        "simple past": "appreciated",
+        "past participle": "appreciated"
+        },
+      "know": {
+        "certainty": "1",
+        "simple past": "knew",
+        "past participle": "known"
+        },
+      "think": {
+        "certainty": "0.75",
+        "simple past": "thought",
+        "past participle": "tought"
+        },
+      "believe": {
+        "certainty":"0.75",
+        "simple past": "believed",
+        "past participle": "believed"
+        },
+      "guess": {
+        "certainty": "0.5",
+        "simple past": "guessed",
+        "past participle": "guessed"
+        },
+      "suppose": {
+        "certainty": "0.5",
+        "simple past": "supposed",
+        "past participle": "supposed"
         }
+      }
+    },
+  "determiners": {
+    "articles": {
+      "the": "definite",
+      "a": "indefinite",
+      "an": "indefinite"
+    },
+    "demonstratives": {
+      "this": {
+        "proximity": "proximal",
+        "number": "singular"
+      },
+      "that": {
+        "proximity": "distal",
+        "number": "singular"
+      },
+      "these": {
+        "proximity": "proximal",
+        "number": "plural"
+      },
+      "those": {
+        "proximity": "distal",
+        "number": "plural"
+      }
+    },
+    "possessives": {
+      "my": {
+        "person": "first",
+        "number": "singular"
+        },
+      "your": {
+        "person": "second",
+        "number": [
+          "singular",
+          "plural"
+          ]
+        },
+      "his": {
+        "person": "third",
+        "number": "singular",
+        "gender": "masculine"
+        },
+      "her": {
+        "person": "third",
+        "number": "singular",
+        "gender": "feminine"
+        },
+      "its": {
+        "person": "third",
+        "number": "singular",
+        "gender": "neuter"
+        },
+      "our": {
+        "person": "first",
+        "number": "plural"
+        },
+      "their": {
+        "person": "third",
+        "number": "plural"
+        }
+    },
+    "quantifiers": {
+        "few" :{
+          "quantity": "small"
+        },
+        "a few" :{
+          "quantity": "small"
+        },
+        "little" :{
+          "quantity": "small"
+        },
+        "a little" :{
+          "quantity": "small"
+        },
+        "a couple" :{
+          "quantity": "small"
+        },
+        "many": {
+          "quantity": "large"
+        },
+        "much": {
+          "quantity": "large"
+        },
+        "a lot of": {
+          "quantity": "large"
+        },
+        "lots of": {
+          "quantity": "large"
+        },
+        "several": {
+          "quantity": "large"
+        },
+        "some": {
+          "quantity": "relative"
+        },
+        "any": {
+          "quantity": "relative"
+        },
+        "each": {
+          "quantity": "relative"
+        },
+        "every": {
+          "quantity": "relative"
+        },
+        "all": {
+          "quantity": "relative"
+        },
+        "whole": {
+          "quantity": "relative"
+        },
+        "either": {
+          "quantity": "relative"
+        },
+        "neither": {
+          "quantity": "relative"
+        },
+        "no": {
+          "quantity": "zero"
+        },
+        "another": {
+          "quantity": "relative"
+        },
+        "most": {
+          "quantity": "relative"
+        },
+        "most of": {
+          "quantity": "relative"
+        }
+      },
+    "wh-determiners": {
+      "what": {
+        "response": "object"
+        },
+      "which": {
+        "response": "object"
+        },
+      "whose": {
+        "response": "person"
+        }
+      },
+    "numerals": {
+      "cardinals": {
+        "zero": {
+          "integer": "0"
+        },
+        "one": {
+
+          "integer": "1"
+        },
+        "two": {
+          "integer": "2"
+        },
+        "three": {
+          "integer": "3"
+        },
+        "four": {
+          "integer": "4"
+        },
+        "five": {
+          "integer": "5"
+        },
+        "six": {
+          "integer": "6"
+        },
+        "seven": {
+          "integer": "7"
+        },
+        "eight": {
+          "integer": "8"
+        },
+        "nine": {
+          "integer": "9"
+        },
+        "ten": {
+          "integer": "10"
+        },
+        "eleven": {
+          "integer": "11"
+        },
+        "twelve": {
+          "integer": "12"
+        },
+        "twenty": {
+          "integer": "20"
+        },
+        "thirty": {
+          "integer": "30"
+        },
+        "forty": {
+          "integer": "40"
+        },
+        "fifty": {
+          "integer": "50"
+        },
+        "sixty": {
+          "integer": "60"
+        },
+        "seventy": {
+          "integer": "70"
+        },
+        "eighty": {
+          "integer": "80"
+        },
+        "ninety": {
+          "integer": "90"
+        },
+        "one hundred": {
+          "integer": "100"
+        }
+      },
+      "ordinals": {
+        "first": {},
+        "second": {},
+        "third": {},
+        "fourth": {},
+        "fifth": {},
+        "sixth": {},
+        "seventh": {},
+        "eighth": {},
+        "ninth": {},
+        "tenth": {},
+        "eleventh": {},
+        "twelfth": {}
+        }
+      },
+    "s-genitive": "'s"
+    },
+  "conjunctions": {
+    "coordinating": {
+      "for": {
+        "connection": "rationale"
+        },
+      "and": {
+        "connection": "non-contrast"
+        },
+      "nor": {
+        "connection": "negative non-contrast"
+        },
+      "but": {
+        "connection": [
+          "contrast",
+          "exception"
+          ]
+        },
+      "or": {
+        "connection": "alternative"
+        },
+      "yet": {
+        "connection": [
+          "contrast",
+          "exception"
+          ]
+        },
+      "so": {
+        "connection": "consequence"
+        }
+      },
+    "subordinating": {
+      "after": {},
+      "although": {},
+      "because": {},
+      "before": {},
+      "if": {},
+      "since": {},
+      "so that": {},
+      "than": {},
+      "that": {},
+      "though": {},
+      "unless": {},
+      "until": {},
+      "whenever": {},
+      "wherever": {},
+      "while": {}
       }
     },
   "question words": {
@@ -780,6 +758,113 @@
       },
     "why": {
       "response": "reason"
+      },
+    "which": {
+      "response": "choice"
       }
+    },
+  "kinship": {
+    "friend":{
+      "gender": "neutral",
+      "distance": "0"
+    },
+    "parent": {
+      "gender": "neutral",
+      "distance": "1"
+    },
+    "child": {
+      "gender": "neutral",
+      "distance": "1"
+    },
+    "sibling": {
+      "gender": "neutral",
+      "distance": "1"
+    },
+    "grandparent": {
+      "gender": "neutral",
+      "distance": "2"
+    },
+    "grandchild": {
+      "gender": "neutral",
+      "distance": "2"
+    },
+    "mother": {
+      "gender": "female",
+      "distance": "1"
+    },
+    "father": {
+      "gender": "male",
+      "distance": "1"
+    },
+    "brother": {
+      "gender": "male",
+      "distance": "1"
+    },
+    "sister": {
+      "gender": "female",
+      "distance": "1"
+    },
+    "daughter": {
+      "gender": "female",
+      "distance": "1"
+    },
+    "son": {
+      "gender": "male",
+      "distance": "1"
+    },
+    "uncle": {
+      "gender": "male",
+      "distance": "2"
+    },
+    "aunt": {
+      "gender": "female",
+      "distance": "2"
+    },
+    "nephew": {
+      "gender": "male",
+      "distance": "2"
+    },
+    "niece": {
+      "gender": "female",
+      "distance": "2"
+    },
+    "cousin": {
+      "gender": "neutral",
+      "distance": "2"
+    },
+    "grandmother": {
+      "gender": "female",
+      "distance": "2"
+    },
+    "grandfather": {
+      "gender": "male",
+      "distance": "2"
+    },
+    "grandson": {
+      "gender": "male",
+      "distance": "2"
+    },
+    "granddaughter": {
+      "gender": "female",
+      "distance": "2"
     }
+  },
+  "predicates": [
+      "likes",
+      "knows",
+      "is_from",
+      "lives",
+      "loves",
+      "enjoys",
+      "sees",
+      "owns",
+      "can"
+    ],
+  "categories": [
+      "book",
+      "movie",
+      "friend",
+      "food",
+      "laptop"
+    ]
   }

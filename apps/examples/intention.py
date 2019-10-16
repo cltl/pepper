@@ -19,6 +19,9 @@ class MyApplication(AbstractApplication,            # Main Application, inherits
 # Inherits from AbstractIntention and MyApplication (specified above)
 class IdleIntention(AbstractIntention, MyApplication):
 
+    def on_face(self, faces):
+        self.log.info(faces)
+
     # Since MyApplication inherits from FaceRecognitionComponent, the on_face_known event, becomes available here
     def on_face_known(self, faces):
 
@@ -43,20 +46,22 @@ class TalkIntention(AbstractIntention, MyApplication):
     # Called when Human has uttered some sentence
     def on_transcript(self, hypotheses, audio):
 
-        # Just grab the first hypothesis that came to (Google's) mind
-        utterance = hypotheses[0].transcript
-
         # If Human ends conversation, switch back to Idle Intention
-        if utterance.lower() in ["bye bye", "bye", "goodbye", "see you"]:
+        for hypothesis in hypotheses:
 
-            # Respond Goodbye, <speaker>!
-            self.say("Goodbye, {}!".format(self._speaker))
+            self.log.debug(hypothesis)
 
-            # Sleep 5 seconds (else human would be instantly greeted again)
-            sleep(5)
+            if hypothesis.transcript.lower() in ["bye bye", "bye", "goodbye", "see you"]:
+                # Respond Goodbye, <speaker>!
+                self.say("Goodbye, {}!".format(self._speaker))
 
-            # Switch Back to Idle Intention
-            IdleIntention(self.application)
+                # Sleep 5 seconds (else human would be instantly greeted again)
+                sleep(5)
+
+                # Switch Back to Idle Intention
+                IdleIntention(self.application)
+
+                return
 
         else:
 

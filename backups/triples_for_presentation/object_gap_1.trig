@@ -1,0 +1,53 @@
+@prefix : <http://cltl.nl/leolani/integration/> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix leolaniContext: <http://cltl.nl/leolani/context/> .
+@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
+@prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+@prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
+@prefix ns1: <urn:x-rdflib:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/TR/owl-time/#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+
+
+leolaniTalk:karla_born-in_france {
+    leolaniWorld:karla n2mu:born-in leolaniWorld:france .
+}
+
+leolaniTalk:france_capital-is_unknown {
+    leolaniWorld:france n2mu:capital-is leolaniWorld:unknown .
+}
+
+leolaniWorld:Instances {
+    leolaniWorld:karla a n2mu:person,
+            grasp:Instance ;
+        rdfs:label "Karla"  .
+
+    leolaniWorld:france a n2mu:country,
+            grasp:Instance ;
+        rdfs:label "France"  .
+
+    leolaniWorld:unknown a n2mu:city,
+            grasp:Instance ;
+        rdfs:label "Unknown"  .
+}
+
+
+leolaniWorld:Ontology {
+    n2mu:country n2mu:capital-is n2mu:city.
+    n2mu:city n2mu:be-in n2mu:country.
+    leolaniWorld:unknown n2mu:be-in n2mu:country.
+}

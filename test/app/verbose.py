@@ -2,12 +2,14 @@ from pepper.framework import *
 from pepper import config
 
 
-class VerboseApp(AbstractApplication, StatisticsComponent, SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent):
-    def on_image(self, image, orientation):
-        self.log.info("on_image: {} {}".format(image.shape, orientation))
+class VerboseApp(AbstractApplication, DisplayComponent, StatisticsComponent, CameraComponent,
+                 SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent):
 
-    def on_object(self, image, objects):
-        self.log.info("on_object: {} {}".format(image.shape, objects))
+    def on_image(self, image):
+        self.log.info("on_image: {}".format(image))
+
+    def on_object(self, objects):
+        self.log.info("on_object: {}".format(objects))
 
     def on_face_known(self, faces):
         self.log.info("on_face: {}".format(faces))

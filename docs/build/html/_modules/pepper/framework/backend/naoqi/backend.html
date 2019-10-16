@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.backend.naoqi.backend &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.framework.backend.naoqi.backend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.framework.backend.naoqi.backend</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.framework.abstract</span> <span class="k">import</span> <span class="n">AbstractBackend</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.backend.system</span> <span class="k">import</span> <span class="n">SystemCamera</span><span class="p">,</span> <span class="n">SystemMicrophone</span><span class="p">,</span> <span class="n">SystemTextToSpeech</span>
+<span class="kn">from</span> <span class="nn">pepper.framework.backend.naoqi</span> <span class="k">import</span> <span class="n">NAOqiCamera</span><span class="p">,</span> <span class="n">NAOqiMicrophone</span><span class="p">,</span> <span class="n">NAOqiTextToSpeech</span><span class="p">,</span>\
+    <span class="n">NAOqiMotion</span><span class="p">,</span> <span class="n">NAOqiLed</span><span class="p">,</span> <span class="n">NAOqiTablet</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">CameraResolution</span>
+
+<span class="kn">from</span> <span class="nn">naoqi</span> <span class="k">import</span> <span class="n">ALProxy</span>
+<span class="kn">import</span> <span class="nn">qi</span>
+
+
+<div class="viewcode-block" id="NAOqiBackend"><a class="viewcode-back" href="../../../../../pepper.framework.backend.naoqi.backend.html#pepper.framework.backend.naoqi.backend.NAOqiBackend">[docs]</a><span class="k">class</span> <span class="nc">NAOqiBackend</span><span class="p">(</span><span class="n">AbstractBackend</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize NAOqi Backend</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url: str</span>
+<span class="sd">        NAOqi Robot URL</span>
+<span class="sd">    camera_resolution: CameraResolution</span>
+<span class="sd">        NAOqi Camera Resolution</span>
+<span class="sd">    camera_rate: int</span>
+<span class="sd">        NAOqi Camera Rate</span>
+<span class="sd">    microphone_index: int</span>
+<span class="sd">        NAOqi Microphone Index</span>
+<span class="sd">    language: str</span>
+<span class="sd">        NAOqi Language</span>
+<span class="sd">    use_system_camera: bool</span>
+<span class="sd">        Use System Camera instead of NAOqi Camera</span>
+<span class="sd">    use_system_microphone: bool</span>
+<span class="sd">        Use System Microphone instead of NAOqi Microphone</span>
+<span class="sd">    use_system_text_to_speech: bool</span>
+<span class="sd">        Use System TextToSpeech instead of NAOqi TextToSpeech</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    http://doc.aldebaran.com/2-5/index_dev_guide.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">NAOQI_URL</span><span class="p">,</span>
+                 <span class="n">camera_resolution</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">CAMERA_RESOLUTION</span><span class="p">,</span> <span class="n">camera_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">CAMERA_FRAME_RATE</span><span class="p">,</span>
+                 <span class="n">microphone_index</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">NAOQI_MICROPHONE_INDEX</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">APPLICATION_LANGUAGE</span><span class="p">,</span>
+                 <span class="n">use_system_camera</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">NAOQI_USE_SYSTEM_CAMERA</span><span class="p">,</span>
+                 <span class="n">use_system_microphone</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">NAOQI_USE_SYSTEM_MICROPHONE</span><span class="p">,</span>
+                 <span class="n">use_system_text_to_speech</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">NAOQI_USE_SYSTEM_TEXT_TO_SPEECH</span><span class="p">):</span>
+        <span class="c1"># type: (str, CameraResolution, int, int, str, bool, bool, bool) -&gt; None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
+
+        <span class="c1"># Create Session with NAOqi Robot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">)</span>
+
+        <span class="c1"># System Camera Override</span>
+        <span class="k">if</span> <span class="n">use_system_camera</span><span class="p">:</span> <span class="n">camera</span> <span class="o">=</span> <span class="n">SystemCamera</span><span class="p">(</span><span class="n">camera_resolution</span><span class="p">,</span> <span class="n">camera_rate</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">camera</span> <span class="o">=</span> <span class="n">NAOqiCamera</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">camera_resolution</span><span class="p">,</span> <span class="n">camera_rate</span><span class="p">)</span>
+
+        <span class="c1"># System Microphone Override</span>
+        <span class="k">if</span> <span class="n">use_system_microphone</span><span class="p">:</span> <span class="n">microphone</span> <span class="o">=</span> <span class="n">SystemMicrophone</span><span class="p">(</span><span class="mi">16000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">microphone</span> <span class="o">=</span> <span class="n">NAOqiMicrophone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">microphone_index</span><span class="p">)</span>
+
+        <span class="c1"># System Text To Speech Override</span>
+        <span class="k">if</span> <span class="n">use_system_text_to_speech</span><span class="p">:</span> <span class="n">text_to_speech</span> <span class="o">=</span> <span class="n">SystemTextToSpeech</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">text_to_speech</span> <span class="o">=</span> <span class="n">NAOqiTextToSpeech</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+
+        <span class="c1"># Set Default Awareness Behaviour</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_awareness</span> <span class="o">=</span> <span class="n">ALProxy</span><span class="p">(</span><span class="s2">&quot;ALBasicAwareness&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">NAOQI_PORT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_awareness</span><span class="o">.</span><span class="n">setEngagementMode</span><span class="p">(</span><span class="s2">&quot;SemiEngaged&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_awareness</span><span class="o">.</span><span class="n">setStimulusDetectionEnabled</span><span class="p">(</span><span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_awareness</span><span class="o">.</span><span class="n">setStimulusDetectionEnabled</span><span class="p">(</span><span class="s2">&quot;Movement&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_awareness</span><span class="o">.</span><span class="n">setStimulusDetectionEnabled</span><span class="p">(</span><span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_awareness</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">NAOqiBackend</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">microphone</span><span class="p">,</span> <span class="n">text_to_speech</span><span class="p">,</span>
+                                           <span class="n">NAOqiMotion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">),</span> <span class="n">NAOqiLed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">),</span> <span class="n">NAOqiTablet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pepper/Nao Robot URL</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        url: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_url</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; qi.Session</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pepper/Nao Robot Session</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        session: qi.Session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span>
+
+<div class="viewcode-block" id="NAOqiBackend.create_session"><a class="viewcode-back" href="../../../../../pepper.framework.backend.naoqi.backend.html#pepper.framework.backend.naoqi.backend.NAOqiBackend.create_session">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create_session</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; qi.Session</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create Qi Session with Pepper/Nao Robot</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        url: str</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        session: qi.Session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">application</span> <span class="o">=</span> <span class="n">qi</span><span class="o">.</span><span class="n">Application</span><span class="p">([</span><span class="n">NAOqiBackend</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s2">&quot;--qi-url=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">)])</span>
+        <span class="k">try</span><span class="p">:</span> <span class="n">application</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t connect to robot @ </span><span class="si">{}</span><span class="se">\n\t</span><span class="s2">Original Error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">application</span><span class="o">.</span><span class="n">session</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

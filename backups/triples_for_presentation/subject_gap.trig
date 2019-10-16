@@ -1,0 +1,50 @@
+@prefix : <http://cltl.nl/leolani/integration/> .
+@prefix eps: <http://cltl.nl/episodicawareness/> .
+@prefix gaf: <http://groundedannotationframework.org/gaf#> .
+@prefix grasp: <http://groundedannotationframework.org/grasp#> .
+@prefix leolaniContext: <http://cltl.nl/leolani/context/> .
+@prefix leolaniFriends: <http://cltl.nl/leolani/friends/> .
+@prefix leolaniInputs: <http://cltl.nl/leolani/inputs/> .
+@prefix leolaniTalk: <http://cltl.nl/leolani/talk/> .
+@prefix leolaniWorld: <http://cltl.nl/leolani/world/> .
+@prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
+@prefix ns1: <urn:x-rdflib:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sem: <http://semanticweb.cs.vu.nl/2009/11/sem/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/TR/owl-time/#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xml1: <https://www.w3.org/TR/xmlschema-2/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+leolaniWorld:Instances {
+    leolaniWorld:karla a n2mu:person,
+            grasp:Instance ;
+        rdfs:label "Karla" ;
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 .
+
+    leolaniWorld:paris a n2mu:location,
+            grasp:Instance ;
+        rdfs:label "Paris" ;
+        grasp:denotedIn leolaniTalk:chat4_utterance1_char0-25 .
+
+    leolaniWorld:leolani a n2mu:robot,
+            grasp:Instance ;
+        rdfs:label "leolani" .
+}
+
+
+
+leolaniWorld:Ontology {
+    n2mu:live-in a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:city .
+
+
+    n2mu:favorite a owl:ObjectProperty ;
+        rdfs:domain n2mu:person ;
+        rdfs:range n2mu:interest .
+}

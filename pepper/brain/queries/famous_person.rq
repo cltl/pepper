@@ -1,0 +1,74 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX hint: <http://www.bigdata.com/queryHints#>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
+SELECT ?propNumber
+?subject ?subjectLabel (GROUP_CONCAT(DISTINCT ?subjectTypeLabel;separator="|") as ?subjectTypesLabel)
+?property ?propLabel
+?object ?objectLabel (GROUP_CONCAT(DISTINCT ?objectTypeLabel;separator="|") as ?objectTypesLabel)
+WHERE
+{
+	hint:Query hint:optimizer 'None' .
+    # Get alternative labels
+    {   ?subject rdfs:label "%s"@en .
+        optional{?subject skos:altLabel ?object}.
+        # Filters
+        FILTER (LANG(?objectLabel) = "en") .
+        # Bind missing variables
+        BIND(skos:altLabel AS ?property) .
+        BIND("AltLabel"@en AS ?propLabel ) .
+        BIND(?object AS ?objectLabel) .
+        BIND("literal" AS ?objectTypeLabel) .
+    }
+   	UNION
+    # Get data properties
+	{	?subject rdfs:label "%s"@en .
+        ?subject ?propUrl ?object .
+		?property ?ref ?propUrl .
+		?property rdf:type wikibase:Property .
+		?property rdfs:label ?propLabel.
+        # Filters
+     	FILTER (lang(?propLabel) = 'en' ) .
+        FILTER  isliteral(?object) .
+        VALUES ?property { wd:P569 wd:P570 wd:P2048 wd:P2031 wd:P571}
+        # Bind missing variables
+        BIND(?object AS ?objectLabel) .
+        BIND("literal" AS ?objectTypeLabel) .
+	}
+	UNION
+    # Get object properties
+	{	?subject rdfs:label "%s"@en .
+        ?subject ?propUrl ?object .
+		?property ?ref ?propUrl .
+		?property rdf:type wikibase:Property .
+		?property rdfs:label ?propLabel.
+        ?object rdfs:label ?objectLabel .
+        OPTIONAL{?object wdt:P31 ?objectType . }
+        ?objectType rdfs:label ?objectTypeLabel .
+        # Filters
+     	FILTER (lang(?propLabel) = 'en' ) .
+        FILTER  isIRI(?object) .
+		FILTER (LANG(?objectLabel) = "en") .
+        FILTER (LANG(?objectTypeLabel) = "en") .
+        FILTER (?property != wd:P31)
+	}
+    # Get extra information on common subject
+    ?subject rdfs:label ?subjectLabel .
+    OPTIONAL{?subject wdt:P31 ?subjectType . } .
+    ?subjectType rdfs:label ?subjectTypeLabel .
+    # Filters
+    FILTER (LANG(?subjectLabel) = "en") .
+    FILTER (LANG(?subjectTypeLabel) = "en") .
+
+    # Bind variables for prioritazation
+    BIND( SUBSTR(str(?subjectType),38, 250) AS ?subjectTypeNumber) .
+    BIND( SUBSTR(str(?propUrl),38, 250) AS ?propNumber) .
+    BIND( SUBSTR(str(?objectType),38, 250) AS ?objectTypeNumber) .
+}
+GROUP BY ?propNumber ?subject ?subjectLabel ?property ?propLabel ?object ?objectLabel
+ORDER BY xsd:integer(?propNumber) xsd:integer(?subjectTypeNumber) xsd:integer(?objectTypeNumber)
+LIMIT 100

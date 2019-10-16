@@ -1,0 +1,31 @@
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+select ?val ?authorlabel ?date
+where {
+    GRAPH ?g {
+        ?s n2mu:%s ?o .
+    } .
+
+    ?s rdfs:label '%s' .
+    ?o rdfs:label '%s' .
+
+    ?g grasp:denotedBy ?m .
+    ?m grasp:hasAttribution ?att .
+    ?att rdf:value ?val .
+    ?val rdf:type grasp:PolarityValue .
+
+    ?m prov:wasDerivedFrom ?utt .
+    ?utt rdf:type grasp:Utterance .
+    ?chat sem:hasSubEvent ?utt .
+    ?cont sem:hasEvent ?chat .
+    ?cont ?time_pred ?date .
+    VALUES (?time_pred) { (sem:hasTime) (sem:hasBeginTimeStamp) } .
+
+    ?m grasp:wasAttributedTo ?author .
+    ?author rdfs:label ?authorlabel .
+} GROUP BY ?val ?authorlabel ?date

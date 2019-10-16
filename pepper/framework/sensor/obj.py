@@ -1,251 +1,347 @@
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.util import Bounds, spherical2cartesian
 from pepper import ObjectDetectionTarget
-from socket import socket, error as socket_error
+
 import numpy as np
+
+from socket import socket, error as socket_error
+from random import getrandbits
 import json
 
-
-class Bounds(object):
-    def __init__(self, x0, y0, x1, y1):
-        """
-        Parameters
-        ----------
-        x0: float
-        y0: float
-        x1: float
-        y1: float
-        """
-
-        if x0 > x1 or y0 > y1:
-            raise ValueError("Rectangle Error: Point (x1,y1) must be bigger than point (x0, y0)")
-
-        self._x0 = x0
-        self._y0 = y0
-        self._x1 = x1
-        self._y1 = y1
-
-    @property
-    def x0(self):
-        """
-        Returns
-        -------
-        x0: float
-        """
-        return self._x0
-
-    @property
-    def y0(self):
-        """
-        Returns
-        -------
-        y0: float
-        """
-        return self._y0
-
-    @property
-    def x1(self):
-        """
-        Returns
-        -------
-        x1: float
-        """
-        return self._x1
-
-    @property
-    def y1(self):
-        """
-        Returns
-        -------
-        y1: float
-        """
-        return self._y1
-
-    @property
-    def width(self):
-        """
-        Returns
-        -------
-        width: float
-        """
-        return self.x1 - self.x0
-
-    @property
-    def height(self):
-        """
-        Returns
-        -------
-        height: float
-        """
-        return self.y1 - self.y0
-
-    @property
-    def center(self):
-        """
-        Returns
-        -------
-        center: tuple
-        """
-        return (self.x0 + self.width / 2, self.y0 + self.height / 2)
-
-    @property
-    def area(self):
-        """
-        Returns
-        -------
-        area: float
-        """
-        return self.width * self.height
-
-    def intersection(self, bounds):
-        """
-        Parameters
-        ----------
-        bounds: Bounds
-
-        Returns
-        -------
-        intersection: Bounds or None
-        """
-
-        x0 = max(self.x0, bounds.x0)
-        y0 = max(self.y0, bounds.y0)
-        x1 = min(self.x1, bounds.x1)
-        y1 = min(self.y1, bounds.y1)
-
-        return None if x0 >= x1 or y0 >= y1 else Bounds(x0, y0, x1, y1)
-
-    def overlap(self, other):
-        """
-        Calculate Overlap Factor
-
-        Parameters
-        ----------
-        other: Bounds
-
-        Returns
-        -------
-        overlap: float
-        """
-
-        intersection = self.intersection(other)
-
-        return min(intersection.area / self.area, self.area / intersection.area)
-
-    def is_subset_of(self, other):
-        """
-        Parameters
-        ----------
-        other: Bounds
-
-        Returns
-        -------
-        is_subset_of: bool
-            Whether 'other' Bounds is subset of 'this' Bounds
-        """
-        return self.x0 >= other.x0 and self.y0 >= other.y0 and self.x1 <= other.x1 and self.y1 <= other.y1
-
-    def is_superset_of(self, other):
-        """
-        Parameters
-        ----------
-        other: Bounds
-
-        Returns
-        -------
-        is_superset_of: bool
-            Whether 'other' Bounds is superset of 'this' Bounds
-        """
-        return self.x0 <= other.x0 and self.y0 <= other.y0 and self.x1 >= other.x1 and self.y1 >= other.y1
-
-    def equals(self, other):
-        """
-        Parameters
-        ----------
-        other: Bounds
-
-        Returns
-        -------
-        equals: bool
-         Whether 'other' bounds equals 'this' bounds
-        """
-        return self.x0 == other.x0 and self.y0 == other.y0 and self.x1 == other.x1 and self.y1 == other.y1
-
-    def scaled(self, x_scale, y_scale):
-        """
-        Return Scaled Bounds Object
-
-        Parameters
-        ----------
-        x_scale: float
-        y_scale: float
-
-        Returns
-        -------
-        bounds: Bounds
-            Scaled Bounds object
-        """
-        return Bounds(self.x0 * x_scale, self.y0 * y_scale, self.x1 * x_scale, self.y1 * y_scale)
-
-    def to_list(self):
-        return [self.x0, self.y0, self.x1, self.y1]
-
-    def __repr__(self):
-        return "Bounds[({:3f}, {:3f}), ({:3f}, {:3f})]".format(self.x0, self.y0, self.x1, self.y1)
+from typing import List, Tuple, Dict
 
 
-class Object:
+class Object(object):
+    """
+    'Object' object
+
+    Parameters
+    ----------
+    name: str
+        Name of Object
+    confidence: float
+        Object Name & Bounds Confidence
+    bounds: Bounds
+        Bounds in Image Space
+    image: AbstractImage
+        Image from which Object was Recognised
+    """
+
     def __init__(self, name, confidence, bounds, image):
+        # type: (str, float, Bounds, AbstractImage) -> None
+        self._id = getrandbits(128)
+
         self._name = name
         self._confidence = confidence
-        self._bounds = bounds
+        self._image_bounds = bounds
         self._image = image
+
+        # Calculate Position in 2D Angular Space (Phi, Theta)
+        self._bounds = self._calculate_bounds()
+        self._direction = self.bounds.center
+
+        # Calculate Position in 3D Space (Relative to Robot)
+        self._depth = self._calculate_object_depth()
+        self._position = spherical2cartesian(self._direction[0], self._direction[1], self._depth)
+        self._bounds3D = self._calculate_bounds_3D()
+
+    @classmethod
+    def from_json(cls, data, image):
+        # type: (Dict, AbstractImage) -> Object
+        return cls(data["name"], data["confidence"], Bounds.from_json(data["bounds"]), image)
+
+    @property
+    def id(self):
+        # type: () -> int
+        """
+        Object ID
+
+        Returns
+        -------
+        id: int
+        """
+        return self._id
 
     @property
     def name(self):
+        # type: () -> str
+        """
+        Object Name
+
+        Returns
+        -------
+        name: str
+            Name of Person
+        """
         return self._name
 
     @property
     def confidence(self):
+        # type: () -> float
+        """
+        Object Confidence
+
+        Returns
+        -------
+        confidence: float
+            Object Name & Bounds Confidence
+        """
         return self._confidence
 
     @property
+    def time(self):
+        # type: () -> float
+        """
+        Time of Observation
+
+        Returns
+        -------
+        time: float
+        """
+        return self.image.time
+
+    @property
+    def image_bounds(self):
+        # type: () -> Bounds
+        """
+        Object Bounds in Image Space {x: [0, 1], y: [0, 1]}
+
+        Returns
+        -------
+        bounds: Bounds
+            Object Bounding Box in Image Space
+        """
+        return self._image_bounds
+
+    @property
     def bounds(self):
+        # type: () -> Bounds
+        """
+        Object Bounds in View Space {x: [-pi, +pi], y: [0, pi]}
+
+        Returns
+        -------
+        bounds: Bounds
+            Object Bounding Box in View Space
+        """
         return self._bounds
 
     @property
     def image(self):
+        # type: () -> AbstractImage
+        """
+        Image associated with the observation of this Object
+
+        Returns
+        -------
+        image: AbstractImage
+        """
         return self._image
 
-    @classmethod
-    def from_dict(cls, dictionary, image):
-        box = dictionary['box']
-        bounds = Bounds(box[1], box[0], box[3], box[2])
-        return cls(dictionary['name'], dictionary['score'], bounds, image)
+    @property
+    def direction(self):
+        # type: () -> Tuple[float, float]
+        """
+         Direction of Object in View Space (equivalent to self.bounds.center)
+
+        Returns
+        -------
+        direction: float, float
+            Direction of Object in View Space
+        """
+        return self._direction
+
+    @property
+    def depth(self):
+        # type: () -> float
+        """
+        Distance from Camera to Object
+
+        Returns
+        -------
+        depth: float
+            Distance from Camera to Object
+        """
+        return self._depth
+
+    @property
+    def position(self):
+        # type: () -> Tuple[float, float, float]
+        """
+        Position of Object in Cartesian Coordinates (x,y,z), Relative to Camera
+
+        Returns
+        -------
+        position: Tuple[float, float, float]
+            Position of Object in Cartesian Coordinates (x,y,z)
+        """
+        return self._position
+
+    @property
+    def bounds3D(self):
+        # type: () -> List[Tuple[float, float, float]]
+        """
+        3D bounds (for visualisation) [x,y,z]*4
+
+        Returns
+        -------
+        bounds3D: List[Tuple[float, float, float]]
+            3D bounds (for visualisation) [x,y,z]*4
+        """
+        return self._bounds3D
+
+    def distance_to(self, obj):
+        # type: (Object) -> float
+        """
+        Distance from this Object to obj
+
+        Parameters
+        ----------
+        obj: Object
+
+        Returns
+        -------
+        distance: float
+        """
+        return np.sqrt(
+            (self.position[0] - obj.position[0])**2 +
+            (self.position[1] - obj.position[1])**2 +
+            (self.position[2] - obj.position[2])**2
+        )
+
+    def dict(self):
+        # type: () -> Dict
+        """
+        Object to Dictionary
+
+        Returns
+        -------
+        dict: Dict
+            Dictionary representation of Object
+        """
+
+        return {
+            "name": self.name,
+            "confidence": self.confidence,
+            "bounds": self.image_bounds.dict(),
+            "image": self.image.hash
+        }
+
+    def json(self):
+        # type: () -> str
+        """
+        Object to JSON
+
+        Returns
+        -------
+        json: JSON representation of Object
+        """
+        return json.dumps(self.dict())
+
+    def _calculate_object_depth(self):
+        # type: () -> float
+        """
+        Calculate Distance of Object to Camera
+        Take the median of all valid depth pixels...
+
+        # TODO: Improve Depth Calculation
+
+        Returns
+        -------
+        depth: float
+        """
+        depth_map = self.image.get_depth(self._image_bounds)
+        depth_map_valid = depth_map != 0
+
+        if np.sum(depth_map_valid):
+            return np.median(depth_map[depth_map_valid])
+        else:
+            return 0.0
+
+    def _calculate_bounds(self):
+        # type: () -> Bounds
+        """
+        Calculate View Space Bounds from Image Space Bounds
+
+        Returns
+        -------
+        bounds: Bounds
+            Bounds in View Space
+        """
+        x0, y0 = self._image.get_direction((self._image_bounds.x0, self._image_bounds.y0))
+        x1, y1 = self._image.get_direction((self._image_bounds.x1, self._image_bounds.y1))
+        return Bounds(x0, y0, x1, y1)
+
+    def _calculate_bounds_3D(self):
+        # type: () -> List[List[float]]
+        """
+        Calculate 3D Bounds (for visualisation)
+
+        Returns
+        -------
+        bounds_3D: List[List[float]]
+        """
+        return [
+            spherical2cartesian(self._bounds.x0, self._bounds.y0, self._depth),
+            spherical2cartesian(self._bounds.x0, self._bounds.y1, self._depth),
+            spherical2cartesian(self._bounds.x1, self._bounds.y1, self._depth),
+            spherical2cartesian(self._bounds.x1, self._bounds.y0, self._depth),
+        ]
 
     def __repr__(self):
-        return "Object[{:4.0%}] '{}'".format(self.confidence, self.name)
+        return "{}({}, {:3.0%})".format(self.__class__.__name__, self.name, self.confidence)
 
 
 class ObjectDetectionClient(object):
+    """
+    Object Detection Client - Communicates with pepper_tensorflow Server
+
+    Parameters
+    ----------
+    target: ObjectDetectionTarget
+        Which Object Detection Server to target
+    """
     def __init__(self, target):
-        # type: (ObjectDetectionTarget) -> ObjectDetectionClient
+        # type: (ObjectDetectionTarget) -> None
         self._target = target
         self._address = target.value
 
     @property
     def target(self):
         # type: () -> ObjectDetectionTarget
+        """
+        Object Detection Target
+
+        Returns
+        -------
+        target: ObjectDetectionTarget
+        """
         return self._target
 
     def classify(self, image):
+        # type: (AbstractImage) -> List[Object]
+        """
+        Classify Objects in Image
+
+        Parameters
+        ----------
+        image: AbstractImage
+            Image (Containing Objects)
+
+        Returns
+        -------
+        objects: List[Object]
+            Classified Objects
+        """
         try:
             sock = socket()
             sock.connect(self._address)
 
-            sock.sendall(np.array(image.shape, np.uint32))
-            sock.sendall(image)
+            sock.sendall(np.array(image.image.shape, np.uint32))
+            sock.sendall(image.image)
 
             response_length = np.frombuffer(sock.recv(4), np.uint32)[0]
-            response = [Object.from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
+            response = [self._obj_from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
 
             return response
         except socket_error:
@@ -253,7 +349,38 @@ class ObjectDetectionClient(object):
                                "are you sure you're running this pepper_tensorflow service?")
 
     @staticmethod
+    def _obj_from_dict(info, image):
+        # type: (dict, AbstractImage) -> Object
+        """
+        Construct Object from JSON
+
+        Parameters
+        ----------
+        info: dict
+        image: AbstractImage
+
+        Returns
+        -------
+        object: Object
+        """
+        box = info['box']
+        return Object(info['name'], info['score'], Bounds(box[1], box[0], box[3], box[2]), image)
+
+    @staticmethod
     def _receive_all(sock, n):
+        # type: (socket, int) -> bytearray
+        """
+        Receive Exactly n bytes
+
+        Parameters
+        ----------
+        sock: socket
+        n: int
+
+        Returns
+        -------
+        data: bytearray
+        """
         buffer = bytearray()
         while len(buffer) < n:
             buffer.extend(sock.recv(4096))

@@ -9,7 +9,7 @@ PROJECTDIR          = ../pepper
 SOURCEDIR           = source
 BUILDDIR            = build
 
-SPHINXAPIOPTS       = -e -M -f -d 2
+SPHINXAPIOPTS       = -e -M -f -d 1
 SPHINXBUILDOPTS     =
 
 # Put it first so that "make" without argument is like "make help".

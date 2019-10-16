@@ -3,6 +3,15 @@ import numpy as np
 
 
 class MicrophoneComponent(AbstractComponent):
+    """
+    Exposes the on_audio event to Applications
+
+    Parameters
+    ----------
+    backend: AbstractBackend
+        Application Backend
+    """
+
     def __init__(self, backend):
         super(MicrophoneComponent, self).__init__(backend)
         self.backend.microphone.callbacks += [self.on_audio]
@@ -14,7 +23,7 @@ class MicrophoneComponent(AbstractComponent):
 
         Parameters
         ----------
-        image: np.ndarray
-            Camera Frame
+        audio: np.ndarray
+            Audio Samples
         """
         pass
