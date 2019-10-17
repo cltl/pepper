@@ -2,7 +2,6 @@ from .ner import NER
 from .utils.helper_functions import *
 from pepper.language.utils.atoms import UtteranceType
 
-
 class Analyzer(object):
     # Load Grammar Json
     GRAMMAR_JSON = os.path.join(os.path.dirname(__file__), 'data', 'lexicon.json')
@@ -11,6 +10,7 @@ class Analyzer(object):
 
     # Load Stanford Named Entity Recognition Server
     NER = None  # type: NER
+
 
     LOG = logger.getChild(__name__)
 
@@ -119,8 +119,8 @@ class Analyzer(object):
         if predicate == 'hat':  # lemmatizer issue with verb 'hate'
             predicate = 'hate'
 
-        elif predicate == 'bear':
-            predicate = 'born'  # lemmatizer issue
+        elif predicate == 'bear': # bear-in
+            predicate = 'born' #lemmatizer issue
 
         return predicate
 
@@ -259,6 +259,7 @@ class Analyzer(object):
             # First attempt at typing via forest
             rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
 
+
             # Analyze types
             if type(rdf[el]['type']) == dict:
                 # Loop through dictionary for multiword entities
@@ -285,6 +286,7 @@ class Analyzer(object):
                             final_type.append('deictic')
                         elif 'person' in entry:
                             final_type.append('pronoun')
+
 
                     else:
                         final_type.append(rdf[el]['type'][typ])
@@ -342,6 +344,15 @@ class StatementAnalyzer(Analyzer):
         return UtteranceType.STATEMENT
 
     @property
+    def rdf(self):
+        """
+        Returns
+        -------
+        rdf: dict or None
+        """
+        raise NotImplementedError()
+
+    @property
     def perspective(self):
         """
         Returns
@@ -380,6 +391,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
 
     @staticmethod
     def check_rdf_completeness(rdf):
+        # TODO - PERSPECTIVE
         for el in ['predicate', 'subject', 'object']:
             if not rdf[el] or not len(rdf[el]):
                 LOG.warning("Cannot find {} in statement".format(el))
@@ -471,9 +483,19 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         rdf = trim_dash(rdf)
         rdf['predicate'] = self.fix_predicate(rdf['predicate'])
         self._perspective = self.extract_perspective(rdf['predicate'], utterance_info)
+        print(self._perspective)
         rdf = self.get_types_in_rdf(rdf)
         Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
         self._rdf = rdf
+
+    @property
+    def rdf(self):
+        """
+        Returns
+        -------
+        rdf: dict or None
+        """
+        return self._rdf
 
     @property
     def perspective(self):
@@ -500,6 +522,15 @@ class ObjectStatementAnalyzer(StatementAnalyzer):
         # TODO: Implement Chat -> RDF
 
         self._rdf = {}
+
+    @property
+    def rdf(self):
+        """
+        Returns
+        -------
+        rdf: dict or None
+        """
+        return self._rdf
 
 
 class QuestionAnalyzer(Analyzer):
@@ -538,6 +569,15 @@ class QuestionAnalyzer(Analyzer):
             Utterance Type (Question)
         """
         return UtteranceType.QUESTION
+
+    @property
+    def rdf(self):
+        """
+        Returns
+        -------
+        rdf: dict or None
+        """
+        raise NotImplementedError()
 
 
 class WhQuestionAnalyzer(QuestionAnalyzer):
@@ -623,6 +663,17 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         rdf = self.get_types_in_rdf(rdf)
         Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
         self._rdf = rdf
+
+    @property
+    def rdf(self):
+        """
+        Returns
+        -------
+        rdf: dict or None
+        """
+        return self._rdf
+
+
 
 
 # verb question rules:
@@ -713,3 +764,13 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         rdf = self.get_types_in_rdf(rdf)
         Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
         self._rdf = rdf
+
+
+    @property
+    def rdf(self):
+        """
+        Returns
+        -------
+        rdf: dict or None
+        """
+        return self._rdf

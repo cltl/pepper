@@ -1,0 +1,44 @@
+when did you go to school: leolani go-to school
+who will come to school: ? will-come-to school
+where did you go yesterday: leolani go yesterday
+where did Bram come from: Bram come-from ?
+what day is your birthday: leolani birthday-is ?
+when are you going to Mexico: leolani go-to mexico
+where is my friend: lenka-friend be ?
+which is your favorite color: leolani favorite-color-is ?
+where is your best friend : leolani-best-friend be ?
+when is your birthday: Leolani birthday-is ?
+what is your brother's name: leolani-brother name-is ?
+when is your father's birthday: leolani-father birthday-is ?
+what is your dog's name: leolani dog-name-is ?
+who is your best friend: Leolani-best-friend be ?
+what can you see: Leolani can-see ?
+where is Selene from: Selene be-from ?
+where can I go: lenka can-go ?
+where was Selene born: selene born ?
+where were you born: leolani born ?
+where are you going: leolani go ?
+who does Selene know: Selene know ?
+when did Selene come: Selene come ?
+who lives in New York: ? live-in new-york
+who hates cleaning: ? hate cleaning
+what do you hate: leolani hate ?
+who likes watching movies: ? like watching-movies
+where is your office: leolani office-is ?
+what is my favorite TV show: lenka favorite-tv-show-is ?
+who are your colleagues: leolani colleagues-is ?
+what is your biggest fear: leolani biggest-fear-is ?
+who likes talking to people: ? like talking-to-people
+who works at the university: ? work-at the-university
+who have you seen: Leolani see ?
+who is from Mexico: ? be-from Mexico
+who do you like: Leolani like ?
+who lives in Amsterdam: ? live-in Amsterdam
+who can sing: ? can-sing ?
+who likes singing: ? like singing
+when are you coming: Leolani come ?
+what is your favorite color: Leolani favorite-color-is ?
+what is my favorite food: Lenka favorite-food-is ?
+what do you enjoy: Leolani enjoy ?
+
+

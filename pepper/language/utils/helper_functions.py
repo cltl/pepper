@@ -2,14 +2,13 @@ from __future__ import unicode_literals
 
 import json
 import os
-import sys
-import traceback
 import urllib
-import urllib2
+
 
 from nltk import pos_tag
 from nltk import tree as ntree
 from nltk.stem import WordNetLemmatizer
+
 
 import wordnet_utils as wu
 from pepper import logger
@@ -21,7 +20,14 @@ wnl = WordNetLemmatizer()
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 lexicon = json.load(open(os.path.join(ROOT, 'data', 'lexicon.json')))
 
+
+
+
 def trim_dash(rdf):
+    '''
+    :param rdf:
+    :return: clean rdf-triple with extra dashes removed
+    '''
     for el in rdf:
         if rdf[el]:
             if rdf[el].startswith('-'):
@@ -32,48 +38,113 @@ def trim_dash(rdf):
 
 
 def get_type(element, forest):
+    '''
+    :param element: text of rdf element
+    :param forest: parsed tree
+    :return: semantic type of the el.
+    '''
+    type = {}
+
     if '-' in element:
-        type = {}
+        text = ''
         for el in element.split('-'):
-            type[el] = get_lexname(el, forest)
-            if type[el]=='None':
-                lexicon_category = lexicon_lookup(el,'category')
-                type[el]=lexicon_category
+            text+=el+' '
+
+
+        text = text.strip()
+        uris = get_uri(text)
+
+        print('LOOKUP: ', text, len(uris))
+
+        if len(uris)>0:
+            print('URI ',text, len(uris))
+
+        # entities with more than 1 uri from DBpedia are NE and collocations
+        if len(uris)>1:
+            return 'NE-col'
+
+        # collocations which exist in WordNet
+        syns = wu.get_synsets(text, get_node_label(forest, text))
+        if len(syns):
+            typ = wu.get_lexname(syns)
+            return typ+'-col'
+
+        # if entity does not exist in DBP or WN it is considered composite
+        for el in element.split('-'):
+            type[el] = get_word_type(el, forest)
     else:
-        type = get_lexname(element, forest)
-        if type == 'None':
-            lexicon_category = lexicon_lookup(element, 'category')
-            type = lexicon_category
+        type[element] = get_word_type(element, forest)
     return type
 
 
+def get_word_type(word, forest):
+    '''
+    :param word: one word from rdf element
+    :param forest: parsed syntax tree
+    :return: semantic type of word
+    '''
 
-def get_lexname(element, forest):
-    if element=='':
+    if word== '':
+        return ''
+
+    type = get_lexname(word, forest)
+
+    if type is not None:
+        return type
+
+    # words which don't have a lexname are looked up in the lexicon
+    entry = lexicon_lookup(word)
+    if entry is not None:
+        #print(element, entry)
+        if 'proximity' in entry:
+             return 'deictic:'+entry['proximity']+','+entry['number']
+        if 'person' in entry:
+            return 'pronoun:' +entry['person']
+        if 'root' in entry:
+            return 'modal:'+str(entry['root'])
+        if 'definite' in entry:
+            return 'article:'+entry
+        if 'integer' in entry:
+            return 'numeral:'+entry['integer']
+
+    types = {'NN': 'person', 'V': 'verb', 'IN': 'prep', 'TO': 'prep', 'MD': 'modal'}
+    # for words which are not in the lexicon nor have a lexname, the sem.type is derived from the POS tag
+    pos = pos_tag([word])[0][1]
+    if pos in types:
+        return types[pos]
+
+    node = get_node_label(forest, word)
+    if node in types:
+        return types[node]
+
+
+def get_lexname(word, forest):
+    '''
+    :param word:
+    :param forest:
+    :return: lexname of the word
+    https://wordnet.princeton.edu/documentation/lexnames5wn
+    '''
+    if word== '':
         return
-    label = get_node_label(forest[0], element)
+    label = get_node_label(forest[0], word)
     if label=='':
-        #print(element,' has no label')
-        label = pos_tag([element])
-        #print('NEW LABEL ', label)
+        label = pos_tag([word])
         if label=='':
             return None
         label = label[0][1]
-    #print(element,label)
-    synset = wu.get_synsets(element, label)
+
+    synset = wu.get_synsets(word, label)
     if synset:
         type = wu.get_lexname(synset[0])
-        #print('TYPE OF ' + element + ' IS ' + type)
         return type
 
     else:
-        #print(element + ' has no type!')
         return None
 
 
 def fix_pronouns(pronoun, self):
     """
-
     :param pronoun:
     :param self:
     :return:
@@ -90,7 +161,7 @@ def fix_pronouns(pronoun, self):
         elif dict['person'] == 'second':
             return 'leolani'
         else:
-            print('disambiguate third person')
+            #print('disambiguate third person')
             return pronoun
     else:
         return pronoun
@@ -98,9 +169,10 @@ def fix_pronouns(pronoun, self):
 
 def lemmatize(word, tag=''):
     '''
+    This function uses the WordNet lemmatizer
     :param word:
-    :param tag:
-    :return:
+    :param tag: POS tag of word
+    :return: word lemma
     '''
     lem = ''
     if len(word.split()) > 1:
@@ -114,13 +186,15 @@ def lemmatize(word, tag=''):
 
 def get_node_label(tree, word):
     '''
-    :param tree:
-    :param word:
-    :return:
+    :param tree: syntax tree gotten from initial CFG parsing
+    :param word: word whose POS tag we want
+    :return: POS tag of the word
     '''
+
+    #if '-' in word:
+    #    word = word.replace('-',' ')
+
     label = ''
-    if '-' in word:
-        word = word.replace('-','')
     for el in tree:
         for node in el:
             if type(node)==ntree.Tree:
@@ -252,39 +326,7 @@ def lexicon_lookup(word, typ=None):
                 return category[item]
     return None
 
-def dbp_query(q, epr, f='application/json'):
-    try:
-        params = {'query': q}
-        params = urllib.urlencode(params)
-        opener = urllib2.build_opener(urllib2.HTTPHandler)
-        request = urllib2.Request(epr + '?' + params)
-        request.add_header('Accept', f)
-        request.get_method = lambda: 'GET'
-        url = opener.open(request)
-        return url.read()
-    except Exception as e:
-        traceback.print_exc(file=sys.stdout)
-        raise e
 
-
-def get_uri(string):
-    query = "\
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
-    SELECT ?x \
-    WHERE { ?x rdfs:label ?string . \
-        FILTER ( ?string = \"" + string + "\" ) }\
-    LIMIT 200"
-    results = dbp_query(query, "http://dbpedia.org/sparql")
-    results = json.loads(results)
-    uris = []
-    for x in results['results']['bindings']:
-        uris.append(x['x']['value'])
-    if uris:
-        return uris[0]
-    else:
-        return None
-
-'''
 def dbp_query(q, baseURL, format="application/json"):
     params = {
         "default-graph": "",
@@ -312,4 +354,3 @@ ORDER BY ?pred"""
     for x in results['results']['bindings']:
         uris.append(x['pred']['value'])
     return uris
-'''

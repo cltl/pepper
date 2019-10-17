@@ -4,25 +4,27 @@ from pepper.framework import UtteranceHypothesis, Context, Face
 from pepper.framework.sensor.obj import Object, Bounds
 from pepper.language.generation import reply_to_question
 
+import numpy as np
+
 
 def fake_context():
-    # objects = [
-    #     Object('person', 0.79,
-    #            Bounds(0.28307148814201355, 0.17469951510429382, 0.9940123558044434, 0.9931463003158569), None),
-    #     Object('teddy bear', 0.88,
-    #            Bounds(0.6867070198059082, 0.8278850317001343, 0.7545689344406128, 0.8985785245895386), None),
-    #     Object('cat', 0.51,
-    #            Bounds(0.6174041032791138, 0.5926545262336731, 0.8797773122787476, 0.7594344019889832), None)]
-    # faces = [Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)]
+
+    #objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
+    #           Object('cat', 0.51, None, None)}
+    #faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
     context = Context()
-    # context.add_objects(objects)
-    # context.add_people(faces)
+    #context.add_objects(objects)
+    #context.add_people(faces)
     return context
 
 
-def load_golden_triples(filename):
-    file = open(filename, "r")
+def load_golden_triples(filepath):
+    '''
+    :param filepath: path to the test file with gold standard
+    :return: set with test suite and a set with golden standard
+    '''
+    file = open(filepath, "r")
 
     test = file.readlines()
     test_suite = []
@@ -59,6 +61,10 @@ def load_golden_triples(filename):
 
 
 def load_scenarios(filepath):
+    '''
+    :param filepath: path to the test file
+    :return: dictionary which contains the initial statement, a set of questions, and the golden standard reply
+    '''
     file = open(filepath, "r")
     test = file.readlines()
     scenarios = []
@@ -68,9 +74,9 @@ def load_scenarios(filepath):
         if sample == '\n':
             break
         scenario = {'statement': '', 'questions': [], 'reply': ''}
-        scenario['statement'] = sample.split('-')[0]
-        scenario['reply'] = sample.split('-')[2]
-        for el in sample.split('-')[1].split(','):
+        scenario['statement'] = sample.split(' - ')[0]
+        scenario['reply'] = sample.split(' - ')[2]
+        for el in sample.split(' - ')[1].split(','):
             scenario['questions'].append(el)
 
         scenarios.append(scenario)
@@ -79,6 +85,11 @@ def load_scenarios(filepath):
 
 
 def compare_triples(triple, gold):
+    '''
+    :param triple: triple extracted by the system
+    :param gold: golden triple to compare with
+    :return: number of correct elements in a triple
+    '''
     correct = 0
 
     if str(triple.predicate) == gold['predicate']:
@@ -100,22 +111,29 @@ def compare_triples(triple, gold):
 
 
 def test_scenario(statement, questions, gold):
+    '''
+    :param statement: one or several statements separated by a comma, to be stored in the brain
+    :param questions: set of questions regarding the stored statement
+    :param gold: gold standard reply
+    :return: number of correct replies
+    '''
     correct = 0
     chat = Chat("Lenka", fake_context())
     brain = LongTermMemory(
         clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
+    # one or several statements are added to the brain
     if ',' in statement:
         for stat in statement.split(','):
             chat.add_utterance([UtteranceHypothesis(stat, 1.0)], False)
             chat.last_utterance.analyze()
             brain.update(chat.last_utterance, reason_types=True)
-
     else:
         chat.add_utterance([UtteranceHypothesis(statement, 1.0)], False)
         chat.last_utterance.analyze()
         brain.update(chat.last_utterance, reason_types=True)
 
+    # brain is queried and a reply is generated and compared with golden standard
     for question in questions:
         chat.add_utterance([UtteranceHypothesis(question, 1.0)], False)
         chat.last_utterance.analyze()
@@ -133,6 +151,10 @@ def test_scenario(statement, questions, gold):
 
 
 def test_scenarios():
+    '''
+    This functions opens the scenarios test file and runs the test for all the scenarios
+    :return: number of correct and number of incorrect replies
+    '''
     scenarios = load_scenarios("./data/scenarios.txt")
     correct = 0
     total = 0
@@ -143,6 +165,11 @@ def test_scenarios():
 
 
 def test_with_triples(path):
+    '''
+    This function loads the test suite and gold standard and prints the mismatches between the system analysis of the test suite,
+    including perspective if it is added, as well as the number of correctly and incorrectly extracted triple elements
+    :param path: filepath of test file
+    '''
     chat = Chat("Lenka", fake_context())
     brain = LongTermMemory(
         clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
@@ -210,6 +237,12 @@ def test_with_triples(path):
 
 if __name__ == "__main__":
 
+    '''
+    test files with triples are formatted like so "test sentence : subject predicate complement" 
+    multi-word-expressions have dashes separating their elements, and are marked with apostrophes if they are a collocation
+    test files with scenarios are formatted like so "statement - question1, question2, etc - reply"
+    '''
+
     all_test_files = ["./data/wh-questions.txt", "./data/verb-questions.txt",
                       "./data/statements.txt", "./data/perspective.txt"]
 
@@ -218,4 +251,4 @@ if __name__ == "__main__":
     for test_file in test_files:
         test_with_triples(test_file)
 
-    test_scenarios()
+    #test_scenarios()
