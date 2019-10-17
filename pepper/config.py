@@ -133,15 +133,16 @@ NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
 # <<< Application Sensor Parameters >>>
-FACE_RECOGNITION_THRESHOLD = 0.5
-OBJECT_RECOGNITION_THRESHOLD = 0.5
-VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
+FACE_RECOGNITION_THRESHOLD = 0.3
+OBJECT_RECOGNITION_THRESHOLD = 0.3
+VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 
 # Set which Object Recognition Backends to use
 # NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow
 # NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
-    pepper.ObjectDetectionTarget.COCO
+    pepper.ObjectDetectionTarget.COCO,
+    pepper.ObjectDetectionTarget.OID
 ]
 
 # Microphone sample rate (Hz) and number of channels

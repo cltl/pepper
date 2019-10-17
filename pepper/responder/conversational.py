@@ -144,8 +144,11 @@ class AffirmationResponder(Responder):
         "Amazing!",
         "I like it!",
         "That makes my day!",
-        "Incredible",
-        "Mesmerizing"
+        "Incredible!",
+        "Lekker!",
+        "Fantastic!",
+        "Awesome!",
+        "Splendid",
     ]
 
     @property
