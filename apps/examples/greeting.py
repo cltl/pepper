@@ -8,6 +8,8 @@ from time import time
 
 class GreetingApplication(AbstractApplication,          # All Applications inherit from AbstractApplication
                           FaceRecognitionComponent,     # We need Face Recognition to Greet People by Name
+                          StatisticsComponent,
+                          SpeechRecognitionComponent,
                           TextToSpeechComponent):       # We need Text to Speech to actually greet people
 
     GREET_TIMEOUT = 15  # Only Greet people once every X seconds

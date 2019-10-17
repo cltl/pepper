@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
+APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 # Name of Robot
 NAME = "Leolani"
@@ -128,7 +128,6 @@ BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
 NAOQI_IP = "192.168.1.176"  # Default WiFi
-# NAOQI_IP = "192.168.1.149"  # Ethernet?
 NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
