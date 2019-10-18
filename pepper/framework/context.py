@@ -5,10 +5,12 @@ Context
 """
 
 from pepper.language import Chat
-from pepper.framework import AbstractIntention, AbstractImage
+from pepper.framework import AbstractImage
 from pepper.framework.sensor.location import Location
 from pepper.framework.sensor.face import Face
 from pepper.framework.sensor.obj import Object
+
+from pepper.knowledge.objects import OBJECT_INFO
 
 import numpy as np
 
@@ -257,7 +259,7 @@ class Observations:
         """
         for obj in objects:
             if obj.name not in self._object_observations:
-                self._object_observations[obj.name] = ObjectObservations()
+                self._object_observations[obj.name] = ObjectObservations(obj.name)
             self._object_observations[obj.name].add_observation(obj)
 
         for object_observations in self._object_observations.values():
@@ -270,14 +272,27 @@ class ObjectObservations:
     """
 
     EPSILON = 0.2  # Distance in Metres within which observations are considered one single instance
+
     MIN_SAMPLES = 5  # Minimum number of observations for an instance
     MAX_SAMPLES = 50  # Maximum number of observations for an instance
-    OBSERVATION_BOUNDS_AREA_THRESHOLD = 0.9  # If exceeded, observation is treated as a label for the scene instead
-    OBSERVATION_TIMEOUT = 2  # Time in seconds for an observation to be considered 'recent'
     INSTANCE_TIMEOUT = 120  # Time in seconds without observation after which an instance no longer exists
 
-    def __init__(self):
+    MIN_SAMPLES_MOVING = 3
+    MAX_SAMPLES_MOVING = 8
+    INSTANCE_TIMEOUT_MOVING = 30
+
+    OBSERVATION_BOUNDS_AREA_THRESHOLD = 0.9  # If exceeded, observation is treated as a label for the scene instead
+    OBSERVATION_TIMEOUT = 2  # Time in seconds for an observation to be considered 'recent'
+
+    def __init__(self, name):
         # type: () -> None
+        self._name = name
+        self._moving = OBJECT_INFO[name]['moving'] if name in OBJECT_INFO else False
+
+        self._min_samples = self.MIN_SAMPLES_MOVING if self._moving else self.MIN_SAMPLES
+        self._max_samples = self.MAX_SAMPLES_MOVING if self._moving else self.MAX_SAMPLES
+        self._instance_timeout = self.INSTANCE_TIMEOUT_MOVING if self._moving else self.INSTANCE_TIMEOUT
+
         self._observations = []
         self._instances = []
 
@@ -310,8 +325,8 @@ class ObjectObservations:
             return
 
         # Limit observations & Instances to be within INSTANCE TIMEOUT
-        self._observations = [obs for obs in self._observations if time() - obs.time < self.INSTANCE_TIMEOUT]
-        self._instances = [ins for ins in self._instances if time() - ins.time < self.INSTANCE_TIMEOUT]
+        self._observations = [obs for obs in self._observations if time() - obs.time < self._instance_timeout]
+        self._instances = [ins for ins in self._instances if time() - ins.time < self._instance_timeout]
 
         # Go through observations oldest to newest
         for observation in self._observations[::-1]:
@@ -367,7 +382,7 @@ class ObjectObservations:
         removal = []
 
         # Cluster to find Object Instances
-        cluster = DBSCAN(eps=self.EPSILON, min_samples=self.MIN_SAMPLES)
+        cluster = DBSCAN(eps=self.EPSILON, min_samples=self._min_samples)
         cluster.fit(positions)
 
         unique_labels = np.unique(cluster.labels_)
@@ -381,7 +396,7 @@ class ObjectObservations:
                 newest_instance = self._observations[group_indices[-1]]
                 instances.append(newest_instance)
 
-            removal.extend(group_indices[:-self.MAX_SAMPLES])
+            removal.extend(group_indices[:-self._max_samples])
 
         self._instances = instances
 
