@@ -269,11 +269,12 @@ class ObjectObservations:
     Object Observations for a particular Object Class
     """
 
-    EPSILON = 0.2
-    MIN_SAMPLES = 5
-    MAX_SAMPLES = 50
-    OBSERVATION_TIMEOUT = 2
-    INSTANCE_TIMEOUT = 120
+    EPSILON = 0.2  # Distance in Metres within which observations are considered one single instance
+    MIN_SAMPLES = 5  # Minimum number of observations for an instance
+    MAX_SAMPLES = 50  # Maximum number of observations for an instance
+    OBSERVATION_BOUNDS_AREA_THRESHOLD = 0.9  # If exceeded, observation is treated as a label for the scene instead
+    OBSERVATION_TIMEOUT = 2  # Time in seconds for an observation to be considered 'recent'
+    INSTANCE_TIMEOUT = 120  # Time in seconds without observation after which an instance no longer exists
 
     def __init__(self):
         # type: () -> None
@@ -303,6 +304,10 @@ class ObjectObservations:
         ----------
         image: AbstractImage
         """
+
+        # If observation is a scene descriptor instead of an actual object, override clustering and use single instance
+        if len(self._instances) == 1 and self._instances[0].image_bounds.area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
+            return
 
         # Limit observations & Instances to be within INSTANCE TIMEOUT
         self._observations = [obs for obs in self._observations if time() - obs.time < self.INSTANCE_TIMEOUT]
@@ -336,7 +341,7 @@ class ObjectObservations:
                         self._observations.remove(observation)
                         break
 
-    def add_observation(self, obj):
+    def add_observation(self, observation):
         """
         Add Observation of object with this Object Class
 
@@ -344,16 +349,26 @@ class ObjectObservations:
 
         Parameters
         ----------
-        obj: Object
+        observation: Object
         """
-        self._observations.append(obj)
+
+        # If observation is a scene descriptor instead of an actual object, override clustering and use single instance
+        if observation.image_bounds.area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
+            self._instances = [observation]
+            return
+
+        # Append Object Observation to all Observations
+        self._observations.append(observation)
+
+        # Get Positions of all Observations
+        positions = [observation.position for observation in self._observations]
 
         instances = []
         removal = []
 
         # Cluster to find Object Instances
         cluster = DBSCAN(eps=self.EPSILON, min_samples=self.MIN_SAMPLES)
-        cluster.fit([obj.position for obj in self._observations])
+        cluster.fit(positions)
 
         unique_labels = np.unique(cluster.labels_)
 

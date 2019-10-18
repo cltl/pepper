@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
 NAME = "Leolani"
@@ -134,7 +134,7 @@ NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 # <<< Application Sensor Parameters >>>
 FACE_RECOGNITION_THRESHOLD = 0.3
-OBJECT_RECOGNITION_THRESHOLD = 0.3
+OBJECT_RECOGNITION_THRESHOLD = 0.25
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 
 # Set which Object Recognition Backends to use
