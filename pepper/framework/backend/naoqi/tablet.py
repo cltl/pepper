@@ -18,6 +18,8 @@ class NAOqiTablet(AbstractTablet):
         self._service.setOnTouchWebviewScaleFactor(1)
         self._log = logger.getChild(self.__class__.__name__)
 
+        self.hide()
+
     def show(self, url):
         # type: (str) -> None
         """
@@ -36,7 +38,7 @@ class NAOqiTablet(AbstractTablet):
                 else:
                     self._service.showWebview(url)
 
-                self._log.info("Show {}".format(url))
+                self._log.debug("Show {}".format(url))
             except:
                 self._log.warning("Couldn't Show {}".format(url))
 

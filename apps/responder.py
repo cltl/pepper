@@ -2,6 +2,9 @@ from __future__ import unicode_literals
 
 from pepper.framework import *
 from pepper.responder import *
+
+from pepper.framework.component.subtitles import SubtitlesComponent
+
 from pepper import config
 
 from pepper.knowledge import sentences
@@ -26,6 +29,8 @@ RESPONDERS = [
 
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
+
+                   SubtitlesComponent,
 
                    DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
 
@@ -57,6 +62,8 @@ class DefaultIntention(AbstractIntention, ResponderApp):
         self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
+        super(DefaultIntention, self).on_chat_turn(utterance)
+
         responder = self.response_picker.respond(utterance)
 
         if isinstance(responder, MeetIntentionResponder):
