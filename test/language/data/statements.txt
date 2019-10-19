@@ -1,13 +1,12 @@
-I have three white cats: lenka have three-white-cats
+where is she: she be ?
+I know you: lenka know leolani
+my best friend is he: lenka best-friend-is he
 
+I have three white cats: lenka have three-white-cats
 I think Selene doesn't like cheese: selene like cheese
 I think Selene hates cheese: selene hate cheese
 selene might come today: selene might-come today
-
-
 I don't think selene likes cheese: selene like cheese
-
-
 lana can read a book: lana can-read a-book
 lana must read: lana must-read
 john will come to Amsterdam: john will-come-to Amsterdam

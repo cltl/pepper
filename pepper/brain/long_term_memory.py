@@ -55,7 +55,7 @@ class LongTermMemory(BasicBrain):
 
             triple = self._rdf_builder.fill_triple_from_label('leolani', 'see', entity_label)
 
-            # Check how many items of the same type as subject and object we have
+            # Check how many items of the same type as subject and complement we have
             entity_novelty = self.thought_generator.fill_entity_novelty(entity.id, entity.id)
 
             # Check for gaps, in case we want to be proactive
@@ -95,15 +95,15 @@ class LongTermMemory(BasicBrain):
 
             if reason_types:
                 # Try to figure out what this entity is
-                if not utterance.triple.object.types:
-                    object_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.object_name),
+                if not utterance.triple.complement.types:
+                    complement_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.complement_name),
                                                                            exact_only=True)
-                    utterance.triple.object.add_types([object_type])
+                    utterance.triple.complement.add_types([complement_type])
 
                 if not utterance.triple.subject.types:
                     subject_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.subject_name),
                                                                             exact_only=True)
-                    utterance.triple.object.add_types([subject_type])
+                    utterance.triple.complement.add_types([subject_type])
 
             # Create graphs and triples
             instance = self._model_graphs_(utterance)
@@ -111,9 +111,9 @@ class LongTermMemory(BasicBrain):
             # Check if this knowledge already exists on the brain
             statement_novelty = self.thought_generator.get_statement_novelty(instance.id)
 
-            # Check how many items of the same type as subject and object we have
+            # Check how many items of the same type as subject and complement we have
             entity_novelty = self.thought_generator.fill_entity_novelty(utterance.triple.subject.id,
-                                                                        utterance.triple.object.id)
+                                                                        utterance.triple.complement.id)
 
             # Find any overlaps
             overlaps = self.thought_generator.get_overlaps(utterance)
@@ -124,20 +124,20 @@ class LongTermMemory(BasicBrain):
 
             # Check for conflicts after adding the knowledge
             negation_conflicts = self.thought_generator.get_negation_conflicts(utterance)
-            object_conflict = self.thought_generator.get_object_cardinality_conflicts(utterance)
+            complement_conflict = self.thought_generator.get_complement_cardinality_conflicts(utterance)
 
             # Check for gaps, in case we want to be proactive
             subject_gaps = self.thought_generator.get_entity_gaps(utterance.triple.subject,
-                                                                  exclude=utterance.triple.object)
-            object_gaps = self.thought_generator.get_entity_gaps(utterance.triple.object,
+                                                                  exclude=utterance.triple.complement)
+            complement_gaps = self.thought_generator.get_entity_gaps(utterance.triple.complement,
                                                                  exclude=utterance.triple.subject)
 
             # Report trust
             trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
 
             # Create JSON output
-            thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, object_conflict,
-                                subject_gaps, object_gaps, overlaps, trust)
+            thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, complement_conflict,
+                                subject_gaps, complement_gaps, overlaps, trust)
             output = {'response': code, 'statement': utterance, 'thoughts': thoughts}
 
         else:
@@ -377,29 +377,29 @@ class LongTermMemory(BasicBrain):
         elif utterance.type == UtteranceType.EXPERIENCE:
             self._link_leolani()
 
-        # Object
-        utterance.triple.object.add_types(['Instance'])
-        self._link_entity(utterance.triple.object, self.instance_graph)
+        # Complement
+        utterance.triple.complement.add_types(['Instance'])
+        self._link_entity(utterance.triple.complement, self.instance_graph)
 
         # Claim graph
         predicate = utterance.triple.predicate if utterance.type == UtteranceType.STATEMENT \
             else self._rdf_builder.fill_predicate('see')
 
-        claim = self._create_claim_graph(utterance.triple.subject, predicate, utterance.triple.object,
+        claim = self._create_claim_graph(utterance.triple.subject, predicate, utterance.triple.complement,
                                          utterance.type)
 
         return claim
 
-    def _create_claim_graph(self, subject, predicate, object, claim_type=UtteranceType.STATEMENT):
+    def _create_claim_graph(self, subject, predicate, complement, claim_type=UtteranceType.STATEMENT):
         # Statement
-        claim_label = hash_claim_id([subject.label, predicate.label, object.label])
+        claim_label = hash_claim_id([subject.label, predicate.label, complement.label])
 
         claim = self._rdf_builder.fill_entity(claim_label, ['Event', 'Instance', claim_type.name.title()], 'LW')
         self._link_entity(claim, self.claim_graph)
 
         # Create graph and add triple
         graph = self.dataset.graph(claim.id)
-        graph.add((subject.id, predicate.id, object.id))
+        graph.add((subject.id, predicate.id, complement.id))
 
         return claim
 
@@ -471,11 +471,11 @@ class LongTermMemory(BasicBrain):
         # Bidirectional link between mention and individual instances
         if claim_type == UtteranceType.STATEMENT:
             self.instance_graph.add((utterance.triple.subject.id, self.namespaces['GRASP']['denotedIn'], mention.id))
-            self.instance_graph.add((utterance.triple.object.id, self.namespaces['GRASP']['denotedIn'], mention.id))
+            self.instance_graph.add((utterance.triple.complement.id, self.namespaces['GRASP']['denotedIn'], mention.id))
             self.perspective_graph.add(
                 (mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.subject.id))
             self.perspective_graph.add(
-                (mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.object.id))
+                (mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.complement.id))
         else:
             self.instance_graph.add((detection.id, self.namespaces['GRASP']['denotedIn'], mention.id))
             self.perspective_graph.add((mention.id, self.namespaces['GRASP']['containsDenotation'], detection.id))
@@ -514,11 +514,11 @@ class LongTermMemory(BasicBrain):
                                 ?author rdfs:label ?authorlabel .
                             }
                     """ % (utterance.triple.predicate_name,
-                           utterance.triple.object_name,
+                           utterance.triple.complement_name,
                            utterance.triple.predicate_name)
 
-        # Query object
-        elif utterance.triple.object_name == empty:
+        # Query complement
+        elif utterance.triple.complement_name == empty:
             query = """
                     SELECT distinct ?olabel ?authorlabel
                             WHERE { 
@@ -556,7 +556,7 @@ class LongTermMemory(BasicBrain):
                             }
                     """ % (utterance.triple.predicate_name,
                            utterance.triple.subject_name,
-                           utterance.triple.object_name,
+                           utterance.triple.complement_name,
                            utterance.triple.predicate_name)
 
         query = self.query_prefixes + query
