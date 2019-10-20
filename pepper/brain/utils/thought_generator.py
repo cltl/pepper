@@ -1,7 +1,6 @@
 from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps
 from pepper.brain.utils.helper_functions import read_query
-from pepper.brain.utils.rdf_builder import RdfBuilder
 from pepper.brain.basic_brain import BasicBrain
 
 from pepper import config
@@ -193,7 +192,7 @@ class ThoughtGenerator(BasicBrain):
             Overlaps containing shared information with the heard statement
         """
         # Role as subject
-        query = read_query('thoughts/object_overlap') % (utterance.triple.predicate_name, utterance.triple.object_name,
+        query = read_query('thoughts/object_overlap') % (utterance.triple.predicate_name, utterance.triple.complement_name,
                                                          utterance.triple.subject_name)
         response = self._submit_query(query)
 
@@ -205,7 +204,7 @@ class ThoughtGenerator(BasicBrain):
         # Role as object
         query = read_query('thoughts/subject_overlap') % (
             utterance.triple.predicate_name, utterance.triple.subject_name,
-            utterance.triple.object_name)
+            utterance.triple.complement_name)
         response = self._submit_query(query)
 
         if response[0]['types']['value'] != '':
@@ -300,7 +299,7 @@ class ThoughtGenerator(BasicBrain):
 
         query = read_query('thoughts/object_cardinality_conflicts') % (utterance.triple.predicate_name,
                                                                        utterance.triple.subject_name,
-                                                                       utterance.triple.object_name)
+                                                                       utterance.triple.complement_name)
 
         response = self._submit_query(query)
         if response[0] != {}:
@@ -324,7 +323,7 @@ class ThoughtGenerator(BasicBrain):
         """
         query = read_query('thoughts/negation_conflicts') % (utterance.triple.predicate_name,
                                                              utterance.triple.subject_name,
-                                                             utterance.triple.object_name)
+                                                             utterance.triple.complement_name)
 
         response = self._submit_query(query)
         if response[0] != {}:

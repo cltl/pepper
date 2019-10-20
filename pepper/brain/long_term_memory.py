@@ -124,7 +124,7 @@ class LongTermMemory(BasicBrain):
 
             # Check for conflicts after adding the knowledge
             negation_conflicts = self.thought_generator.get_negation_conflicts(utterance)
-            complement_conflict = self.thought_generator.get_complement_cardinality_conflicts(utterance)
+            complement_conflict = self.thought_generator.get_object_cardinality_conflicts(utterance)
 
             # Check for gaps, in case we want to be proactive
             subject_gaps = self.thought_generator.get_entity_gaps(utterance.triple.subject,
@@ -501,7 +501,7 @@ class LongTermMemory(BasicBrain):
         # Query subject
         if utterance.triple.subject_name == empty:
             query = """
-                    SELECT distinct ?slabel ?authorlabel
+                    SELECT distinct ?slabel ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue
                             WHERE { 
                                 ?s n2mu:%s ?o . 
                                 ?s rdfs:label ?slabel . 
@@ -512,6 +512,19 @@ class LongTermMemory(BasicBrain):
                                 ?g grasp:denotedBy ?m . 
                                 ?m grasp:wasAttributedTo ?author . 
                                 ?author rdfs:label ?authorlabel .
+    
+                                ?m grasp:hasAttribution ?att .
+                                ?att rdf:value ?certainty .
+                                ?certainty rdf:type grasp:CertaintyValue .
+                                ?certainty rdfs:label ?certaintyValue .
+                                
+                                ?att rdf:value ?polarity .
+                                ?polarity rdf:type grasp:PolarityValue .
+                                ?polarity rdfs:label ?polarityValue .
+                                
+                                ?att rdf:value ?sentiment .
+                                ?sentiment rdf:type grasp:SentimentValue .
+                                ?sentiment rdfs:label ?sentimentValue .
                             }
                     """ % (utterance.triple.predicate_name,
                            utterance.triple.complement_name,
@@ -520,7 +533,7 @@ class LongTermMemory(BasicBrain):
         # Query complement
         elif utterance.triple.complement_name == empty:
             query = """
-                    SELECT distinct ?olabel ?authorlabel
+                    SELECT distinct ?olabel ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue
                             WHERE { 
                                 ?s n2mu:%s ?o .   
                                 ?s rdfs:label '%s' .  
@@ -531,6 +544,19 @@ class LongTermMemory(BasicBrain):
                                 ?g grasp:denotedBy ?m . 
                                 ?m grasp:wasAttributedTo ?author . 
                                 ?author rdfs:label ?authorlabel .
+    
+                                ?m grasp:hasAttribution ?att .
+                                ?att rdf:value ?certainty .
+                                ?certainty rdf:type grasp:CertaintyValue .
+                                ?certainty rdfs:label ?certaintyValue .
+                                
+                                ?att rdf:value ?polarity .
+                                ?polarity rdf:type grasp:PolarityValue .
+                                ?polarity rdfs:label ?polarityValue .
+                                
+                                ?att rdf:value ?sentiment .
+                                ?sentiment rdf:type grasp:SentimentValue .
+                                ?sentiment rdfs:label ?sentimentValue .
                             }
                     """ % (utterance.triple.predicate_name,
                            utterance.triple.subject_name,
@@ -539,7 +565,7 @@ class LongTermMemory(BasicBrain):
         # Query existence
         else:
             query = """
-                    SELECT distinct ?authorlabel ?v
+                    SELECT distinct ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue
                             WHERE { 
                                 ?s n2mu:%s ?o .   
                                 ?s rdfs:label '%s' .  
@@ -550,9 +576,19 @@ class LongTermMemory(BasicBrain):
                                 ?g grasp:denotedBy ?m . 
                                 ?m grasp:wasAttributedTo ?author . 
                                 ?author rdfs:label ?authorlabel .
+    
                                 ?m grasp:hasAttribution ?att .
-                                ?att rdf:value ?v .
-                                ?v rdf:type grasp:CertaintyValue .
+                                ?att rdf:value ?certainty .
+                                ?certainty rdf:type grasp:CertaintyValue .
+                                ?certainty rdfs:label ?certaintyValue .
+                                
+                                ?att rdf:value ?polarity .
+                                ?polarity rdf:type grasp:PolarityValue .
+                                ?polarity rdfs:label ?polarityValue .
+                                
+                                ?att rdf:value ?sentiment .
+                                ?sentiment rdf:type grasp:SentimentValue .
+                                ?sentiment rdfs:label ?sentimentValue .
                             }
                     """ % (utterance.triple.predicate_name,
                            utterance.triple.subject_name,
