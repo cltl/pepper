@@ -31,31 +31,31 @@ def load_golden_triples(filepath):
     gold = []
 
     for sample in test:
-        rdf = {}
+        triple = {}
         if sample == '\n':
             break
 
         # print(sample.split(':')[0],sample.split(':')[1])
         test_suite.append(sample.split(':')[0])
-        rdf['subject'] = sample.split(':')[1].split()[0].lower()
-        rdf['predicate'] = sample.split(':')[1].split()[1].lower()
+        triple['subject'] = sample.split(':')[1].split()[0].lower()
+        triple['predicate'] = sample.split(':')[1].split()[1].lower()
         if len(sample.split(':')[1].split()) > 2:
-            rdf['object'] = sample.split(':')[1].split()[2].lower()
+            triple['complement'] = sample.split(':')[1].split()[2].lower()
         else:
-            rdf['object'] = ''
+            triple['complement'] = ''
 
         if len(sample.split(':')) > 2:
-            rdf['perspective'] = {}
-            rdf['perspective']['certainty'] = float(sample.split(':')[2].split()[0])
-            rdf['perspective']['polarity'] = float(sample.split(':')[2].split()[1])
-            rdf['perspective']['sentiment'] = float(sample.split(':')[2].split()[2])
-            # print('stored perspective ', rdf['perspective'])
+            triple['perspective'] = {}
+            triple['perspective']['certainty'] = float(sample.split(':')[2].split()[0])
+            triple['perspective']['polarity'] = float(sample.split(':')[2].split()[1])
+            triple['perspective']['sentiment'] = float(sample.split(':')[2].split()[2])
+            # print('stored perspective ', triple['perspective'])
 
-        for el in rdf:
-            if rdf[el] == '?':
-                rdf[el] = ''
+        for el in triple:
+            if triple[el] == '?':
+                triple[el] = ''
 
-        gold.append(rdf)
+        gold.append(triple)
 
     return test_suite, gold
 
@@ -102,10 +102,10 @@ def compare_triples(triple, gold):
     else:
         print('MISMATCH: ', triple.subject, gold['subject'])
 
-    if str(triple.object) == gold['object']:
+    if str(triple.complement) == gold['complement']:
         correct += 1
     else:
-        print('MISMATCH: ', triple.object, gold['object'])
+        print('MISMATCH: ', triple.complement, gold['complement'])
 
     return correct
 
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
     test_files = ["./data/statements.txt"]
 
-    for test_file in test_files:
-        test_with_triples(test_file)
+    # for test_file in test_files:
+    #     test_with_triples(test_file)
 
-    #test_scenarios()
+    test_scenarios()

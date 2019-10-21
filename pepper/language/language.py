@@ -26,12 +26,18 @@ from typing import List, Optional
 
 
 class Time(enum.Enum):
+    """
+    This will be used in the future to represent tense
+    """
     PAST = -1
     PRESENT = 0
     FUTURE = 1
 
 
-class Emotion(enum.Enum):  # Not used yet
+class Emotion(enum.Enum):
+    """
+    This will be used in the future to represent emotion
+    """
     ANGER = 0
     DISGUST = 1
     FEAR = 2
@@ -346,11 +352,11 @@ class Utterance(object):
         if not analyzer:
             return "I cannot parse your input"
 
-        for el in ["subject", "predicate", "object"]:
+        for el in ["subject", "predicate", "complement"]:
             Analyzer.LOG.info(
-                "RDF {:>10}: {}".format(el, json.dumps(analyzer.rdf[el], sort_keys=True, separators=(', ', ': '))))
+                "RDF {:>10}: {}".format(el, json.dumps(analyzer.triple[el], sort_keys=True, separators=(', ', ': '))))
 
-        self.pack_triple(analyzer.rdf, analyzer.utterance_type)
+        self.pack_triple(analyzer.triple, analyzer.utterance_type)
 
         if analyzer.utterance_type == UtteranceType.STATEMENT:
             self.pack_perspective(analyzer.perspective)
@@ -380,10 +386,10 @@ class Utterance(object):
         subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'),
                                       rdf['subject']['type'])
         predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
-        object = builder.fill_entity(casefold_text(rdf['object']['text'], format='triple'),
-                                                rdf['object']['type'])
+        complement = builder.fill_entity(casefold_text(rdf['complement']['text'], format='triple'),
+                                                rdf['complement']['type'])
 
-        self.set_triple(Triple(subject, predicate, object))
+        self.set_triple(Triple(subject, predicate, complement))
 
     def pack_perspective(self, persp):
         self.set_perspective(Perspective(persp['certainty'], persp['polarity'], persp['sentiment']))

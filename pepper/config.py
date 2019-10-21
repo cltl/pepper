@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
 NAME = "Leolani"
@@ -35,12 +35,6 @@ HUMAN_CROWD = "Humans"
 #   Translation can induce quite a bit of lag in the System
 APPLICATION_LANGUAGE = 'en-GB'
 INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
-
-
-# Show Subtitles on Pepper's Tablet!
-SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
-SUBTITLES_TIMEOUT = 15
-SUBTITLES = True
 
 
 # <<< Application Paths >>>
@@ -134,7 +128,7 @@ NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 # <<< Application Sensor Parameters >>>
 FACE_RECOGNITION_THRESHOLD = 0.3
-OBJECT_RECOGNITION_THRESHOLD = 0.3
+OBJECT_RECOGNITION_THRESHOLD = 0.25
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 
 # Set which Object Recognition Backends to use
