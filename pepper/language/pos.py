@@ -26,5 +26,6 @@ class POS(object):
         POS: list of tuples of strings
         """
 
-        try: return self._tagger.tag(tokens)
-        except: return [(token, 'ERROR') for token in tokens]
+        # try:
+        return self._tagger.tag(tokens)
+        # except: return [(token, 'ERROR') for token in tokens]

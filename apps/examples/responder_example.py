@@ -6,7 +6,7 @@ from pepper import config
 
 
 RESPONDERS = [
-    GoodbyeResponder(), GreetingResponder(), WeatherResponder()
+    GoodbyeResponder(), GreetingResponder(),  WeatherElserwhere(), WeatherResponder()
 ]
 
 

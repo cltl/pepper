@@ -41,7 +41,7 @@ class NAOqiCamera(AbstractCamera):
     SERVICE = "ALVideoDevice"
     COLOR_SPACE_YUV = 9  # YUV442
     COLOR_SPACE_3D = 17  # Distance from Camera in mm
-    RESOLUTION_3D =  RESOLUTION_CODE_3D['kQQ720p']
+    RESOLUTION_3D = RESOLUTION_CODE_3D['kQQ720p']
 
     RESOLUTION_CODE = {
         CameraResolution.NATIVE: 2,
@@ -77,8 +77,6 @@ class NAOqiCamera(AbstractCamera):
         # Access Head Motion for Image Coordinates
         self._motion = session.service("ALMotion")
 
-        self._aov = tuple(abs(a) for a in self._service.getAngularPositionFromImagePosition(int(index), [1, 1]))
-
         # Run image acquisition in Thread
         self._thread = Thread(target=self._run)
         self._thread.setDaemon(True)
@@ -106,8 +104,12 @@ class NAOqiCamera(AbstractCamera):
                     angle_left, angle_top, angle_right, angle_bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:
+
+                        # Load unit16 3D Camera data, convert to float32 and metres
                         image_3D = np.frombuffer(data, np.uint16).reshape(height, width).astype(np.float32) / 1000
+
                     else:
+
                         image_rgb = self._yuv2rgb(width, height, data)
                         image_bounds = Bounds(angle_right - yaw,
                                               angle_bottom + pitch + np.pi/2,

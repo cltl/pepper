@@ -56,7 +56,7 @@ class QnA:
         "What do you do?": "I'm learning about the world through conversations with humans. With this I aid research!",
         "Are you married?": "Although I've met other Pepper robots, I'm a single lady!",
         "What do you do in your free time": "For me it's only small talk that counts!",
-        "What's the weather like?": "Perfect! It's always nicely air conditioned in the office!",
+        #"What's the weather like?": "Perfect! It's always nicely air conditioned in the office!",
 
         "How are you": "I'm fine, thanks! What about you?",
         "How is it going?": "Great, as always, how are things with you, my dear human?",
