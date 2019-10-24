@@ -13,8 +13,7 @@ pepper package
     pepper.framework
     pepper.knowledge
     pepper.language
-    pepper.util
-    pepper.web
+    pepper.responder
 
 
 .. toctree::

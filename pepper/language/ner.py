@@ -68,7 +68,8 @@ class NER(object):
             try:
                 sock.shutdown(socket.SHUT_RDWR)
             except Exception as e:
-                pass
+                self._log.error("Couldn't connect to Java NER Server. Do you have Java installed?")
+                self._log.error(e)
             finally:
                 sock.close()
 

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -149,6 +150,98 @@
             
   <div class="section" id="module-pepper.framework.application">
 <span id="pepper-framework-application-module"></span><h1>pepper.framework.application module<a class="headerlink" href="#module-pepper.framework.application" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.application.Application">
+<em class="property">class </em><code class="descclassname">pepper.framework.application.</code><code class="descname">Application</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.framework.application.Application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
+<dl class="attribute">
+<dt id="pepper.framework.application.Application.EVENT_TAG">
+<code class="descname">EVENT_TAG</code><em class="property"> = 'on_'</em><a class="headerlink" href="#pepper.framework.application.Application.EVENT_TAG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.application.Application.brain">
+<code class="descname">brain</code><a class="headerlink" href="#pepper.framework.application.Application.brain" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>brain</strong>
+:rtype: LongTermMemory</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.application.Application.dependencies">
+<code class="descname">dependencies</code><a class="headerlink" href="#pepper.framework.application.Application.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.application.Application.log">
+<code class="descname">log</code><a class="headerlink" href="#pepper.framework.application.Application.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>log</strong>
+:rtype: logging.Logger</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.application.Application.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pepper.framework.application.Application.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.application.Application.say">
+<code class="descname">say</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.framework.application.Application.say" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.application.Intention">
+<em class="property">class </em><code class="descclassname">pepper.framework.application.</code><code class="descname">Intention</code><span class="sig-paren">(</span><em>application</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.framework.application.Intention" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pepper.framework.application.Intention.application">
+<code class="descname">application</code><a class="headerlink" href="#pepper.framework.application.Intention.application" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.application.Intention.dependencies">
+<code class="descname">dependencies</code><a class="headerlink" href="#pepper.framework.application.Intention.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.framework.application.Intention.log">
+<code class="descname">log</code><a class="headerlink" href="#pepper.framework.application.Intention.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>log</strong>
+:rtype: logging.Logger</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.application.Intention.require_dependency">
+<code class="descname">require_dependency</code><span class="sig-paren">(</span><em>dependency</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.framework.application.Intention.require_dependency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Require Component Dependency</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dependency</strong> (<em>type</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>dependency</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent">AbstractComponent</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.application.Intention.say">
+<code class="descname">say</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pepper.framework.application.Intention.say" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pepper.framework.application.IntentionDependencyError">
+<em class="property">exception </em><code class="descclassname">pepper.framework.application.</code><code class="descname">IntentionDependencyError</code><a class="headerlink" href="#pepper.framework.application.IntentionDependencyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+</dd></dl>
+
 </div>
 
 
@@ -179,25 +272,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

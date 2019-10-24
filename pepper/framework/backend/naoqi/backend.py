@@ -1,11 +1,11 @@
 from pepper.framework.abstract import AbstractBackend
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
-from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, NAOqiLed, NAOqiTablet
-from pepper import config
+from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech,\
+    NAOqiMotion, NAOqiLed, NAOqiTablet
+from pepper import config, CameraResolution
 
 from naoqi import ALProxy
 import qi
-
 
 
 class NAOqiBackend(AbstractBackend):
@@ -41,16 +41,22 @@ class NAOqiBackend(AbstractBackend):
                  use_system_camera=config.NAOQI_USE_SYSTEM_CAMERA,
                  use_system_microphone=config.NAOQI_USE_SYSTEM_MICROPHONE,
                  use_system_text_to_speech=config.NAOQI_USE_SYSTEM_TEXT_TO_SPEECH):
+        # type: (str, CameraResolution, int, int, str, bool, bool, bool) -> None
 
         self._url = url
+
+        # Create Session with NAOqi Robot
         self._session = self.create_session(self._url)
 
+        # System Camera Override
         if use_system_camera: camera = SystemCamera(camera_resolution, camera_rate)
         else: camera = NAOqiCamera(self.session, camera_resolution, camera_rate)
 
+        # System Microphone Override
         if use_system_microphone: microphone = SystemMicrophone(16000, 1)
         else: microphone = NAOqiMicrophone(self.session, microphone_index)
 
+        # System Text To Speech Override
         if use_system_text_to_speech: text_to_speech = SystemTextToSpeech(language)
         else: text_to_speech = NAOqiTextToSpeech(self.session, language)
 
@@ -59,13 +65,15 @@ class NAOqiBackend(AbstractBackend):
         self._awareness.setEngagementMode("SemiEngaged")
         self._awareness.setStimulusDetectionEnabled("People", True)
         self._awareness.setStimulusDetectionEnabled("Movement", True)
+        self._awareness.setStimulusDetectionEnabled("Sound", True)
         self._awareness.setEnabled(True)
 
         super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech,
-                                           NAOqiLed(self.session), NAOqiTablet(self.session))
+                                           NAOqiMotion(self.session), NAOqiLed(self.session), NAOqiTablet(self.session))
 
     @property
     def url(self):
+        # type: () -> str
         """
         Pepper/Nao Robot URL
 
@@ -77,6 +85,7 @@ class NAOqiBackend(AbstractBackend):
 
     @property
     def session(self):
+        # type: () -> qi.Session
         """
         Pepper/Nao Robot Session
 
@@ -88,6 +97,7 @@ class NAOqiBackend(AbstractBackend):
 
     @staticmethod
     def create_session(url):
+        # type: (str) -> qi.Session
         """
         Create Qi Session with Pepper/Nao Robot
 

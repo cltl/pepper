@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.brain.utils.type_reasoner &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.brain.utils.type_reasoner</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.brain.utils.type_reasoner</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">read_query</span><span class="p">,</span> <span class="n">casefold_text</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.basic_brain</span> <span class="k">import</span> <span class="n">BasicBrain</span>
+
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+
+<span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">process</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<div class="viewcode-block" id="TypeReasoner"><a class="viewcode-back" href="../../../../pepper.brain.utils.type_reasoner.html#pepper.brain.utils.type_reasoner.TypeReasoner">[docs]</a><span class="k">class</span> <span class="nc">TypeReasoner</span><span class="p">(</span><span class="n">BasicBrain</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; TypeReasoner</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Interact with Triple store</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        address: str</span>
+<span class="sd">            IP address and port of the Triple store</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TypeReasoner</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">clear_all</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TypeReasoner.reason_entity_type"><a class="viewcode-back" href="../../../../pepper.brain.utils.type_reasoner.html#pepper.brain.utils.type_reasoner.TypeReasoner.reason_entity_type">[docs]</a>    <span class="k">def</span> <span class="nf">reason_entity_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">exact_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main function to determine if this item can be recognized by the brain, learned, or none</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item: str</span>
+<span class="sd">        exact_only: bool</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Clean label</span>
+        <span class="n">articles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a-&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">articles</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classes</span><span class="p">():</span>
+            <span class="c1"># If this is in the ontology already as a class, create sensor triples directly</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;I know about </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="n">item</span>
+            <span class="k">return</span> <span class="n">item</span><span class="p">,</span> <span class="n">text</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_labels_and_classes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">temp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># If this is in the ontology already as a label, create sensor triples directly</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I know about </span><span class="si">%s</span><span class="s1">. It is of type </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">temp</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">temp</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">text</span>
+
+        <span class="c1"># Query the display for information</span>
+        <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact_match_wikidata</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">class_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Had to learn it, but I can create triples now</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched on Wikidata and I found that it is a </span><span class="si">%s</span><span class="s1">. &#39;</span> \
+                   <span class="s1">&#39;I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">class_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">casefold_text</span><span class="p">(</span><span class="n">class_type</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="n">text</span>
+
+        <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exact_match_dbpedia</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">class_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Had to learn it, but I can create triples now</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched on Dbpedia and I found that it is a </span><span class="si">%s</span><span class="s1">. &#39;</span> \
+                   <span class="s1">&#39;I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">class_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">casefold_text</span><span class="p">(</span><span class="n">class_type</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="n">text</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">exact_only</span><span class="p">:</span>
+            <span class="c1"># Second go at dbpedia, relaxed approach</span>
+            <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keyword_match_dbpedia</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">class_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Had to really search for it to learn it, but I can create triples now</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I did not know what </span><span class="si">%s</span><span class="s1"> is, but I searched for fuzzy matches on the web and I found that it &#39;</span> \
+                       <span class="s1">&#39;is a </span><span class="si">%s</span><span class="s1">. I will remember this object&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">class_type</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">casefold_text</span><span class="p">(</span><span class="n">class_type</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="n">text</span>
+
+        <span class="c1"># Failure, nothing found</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; I am sorry, I could not learn anything on </span><span class="si">%s</span><span class="s1"> so I will not remember it&#39;</span> <span class="o">%</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span></div>
+
+    <span class="k">def</span> <span class="nf">_exact_match_dbpedia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query dbpedia for information on this item to get it&#39;s semantic type and description.</span>
+<span class="sd">        :param item:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Gather combinations</span>
+        <span class="n">combinations</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span> <span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">()]</span>
+
+        <span class="k">for</span> <span class="n">comb</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">:</span>
+            <span class="c1"># Try exact matching query</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;typing/dbpedia_type_and_description&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">comb</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+            <span class="c1"># break if we have a hit</span>
+            <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="n">class_type</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;label_type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_keyword_match_dbpedia</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="c1"># Query API</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://lookup.dbpedia.org/api/search.asmx/KeywordSearch&#39;</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;QueryString&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span> <span class="s1">&#39;MaxHits&#39;</span><span class="p">:</span> <span class="s1">&#39;10&#39;</span><span class="p">},</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Fuzzy match</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+        <span class="n">best_match</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">extractOne</span><span class="p">(</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="p">)</span>
+
+        <span class="c1"># Get best match object</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="s1">&#39;classes&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">],</span> <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">r</span> <span class="k">if</span>
+             <span class="n">e</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">best_match</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="n">r</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">]:</span>
+                <span class="c1"># process dbpedia classes only</span>
+                <span class="n">r</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;dbpedia&#39;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;classes&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;classes&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_exact_match_wikidata</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query wikidata for information on this item to get it&#39;s semantic type and description.</span>
+<span class="sd">        :param item:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://query.wikidata.org/sparql&#39;</span>
+
+        <span class="c1"># Gather combinations</span>
+        <span class="n">combinations</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span> <span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">()]</span>
+
+        <span class="k">for</span> <span class="n">comb</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">:</span>
+            <span class="c1"># Try exact matching query</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;typing/wikidata_type_and_description&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">comb</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span> <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">500</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># break if we have a hit</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">class_type</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;bindings&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;itemtypeLabel&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> \
+                <span class="k">if</span> <span class="s1">&#39;itemtypeLabel&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;bindings&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;bindings&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;itemDescription&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> \
+                <span class="k">if</span> <span class="s1">&#39;itemDescription&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;bindings&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">class_type</span><span class="p">,</span> <span class="n">description</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

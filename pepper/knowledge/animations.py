@@ -1,3 +1,7 @@
+"""
+NAOqi Animations categories, executed by the Pepper robot.
+"""
+
 ABOVE = "above"
 AFFIRMATIVE = "affirmative"
 AFFORD = "afford"

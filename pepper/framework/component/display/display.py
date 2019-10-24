@@ -1,6 +1,5 @@
 from pepper.framework import AbstractComponent, AbstractImage
 from pepper.framework.component import *
-from pepper.framework.util import Mailbox
 from .server import DisplayServer
 
 from threading import Thread, Lock
@@ -10,30 +9,44 @@ from io import BytesIO
 import base64
 import json
 
-from time import time
+from typing import List
 
 
 class DisplayComponent(AbstractComponent):
+    """
+    Display Robot Camera and Scene View in Browser
+
+    Parameters
+    ----------
+    backend: AbstractBackend
+        Application Backend
+    """
 
     def __init__(self, backend):
         super(DisplayComponent, self).__init__(backend)
 
-        server = DisplayServer()
-        server_thread = Thread(target=server.start, name="DisplayServerThread")
-        server_thread.daemon = True
-        server_thread.start()
-
+        # Get Required Components
         face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
         context = self.require(DisplayComponent, ContextComponent)  # type: ContextComponent
         scene = self.require(DisplayComponent, SceneComponent) # type: SceneComponent
 
+        # Start Web Server
+        server = DisplayServer()
+        server_thread = Thread(target=server.start, name="DisplayServerThread")
+        server_thread.daemon = True
+        server_thread.start()
+
+        # Make sure to avoid Race Conditions
         update_lock = Lock()
 
         self._display_info = {}
 
         def encode_image(image):
+            # type: (Image.Image) -> str
             """
+            Encode PIL Image as base64 PNG
+
             Parameters
             ----------
             image: Image.Image
@@ -50,6 +63,13 @@ class DisplayComponent(AbstractComponent):
 
         def on_image(image):
             # type: (AbstractImage) -> None
+            """
+            Private On Image Event
+
+            Parameters
+            ----------
+            image: AbstractImage
+            """
 
             with update_lock:
 
@@ -80,8 +100,20 @@ class DisplayComponent(AbstractComponent):
                 }
 
         def add_items(items):
+            # type: (List[Object]) -> None
+            """
+            Add Items (Objects + Faces) to Display
+
+            Parameters
+            ----------
+            items: List[Object]
+            """
+
             with update_lock:
-                if self._display_info:
+
+                if self._display_info:  # If Ready to Populate
+
+                    # Add Items to Display Info
                     self._display_info["items"] += [
                         {"name": item.name,
                          "confidence": item.confidence,
@@ -90,6 +122,8 @@ class DisplayComponent(AbstractComponent):
                          "bounds3D": item.bounds3D,
                          } for item in items]
 
+        # Register Callbacks from On Image, Known Faces & Object Detection
+        # TODO: Add All Faces to Display? Also Unknown ones?
         self.backend.camera.callbacks += [on_image]
         face_recognition.on_face_known_callbacks += [add_items]
         object_recognition.on_object_callbacks += [add_items]

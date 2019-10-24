@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
 NAME = "Leolani"
@@ -121,20 +121,22 @@ BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
-NAOQI_IP, NAOQI_PORT = "192.168.1.176", 9559  # Default
+NAOQI_IP = "192.168.1.176"  # Default WiFi
+NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
 # <<< Application Sensor Parameters >>>
-FACE_RECOGNITION_THRESHOLD = 0.5
-OBJECT_RECOGNITION_THRESHOLD = 0.5
-VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
+FACE_RECOGNITION_THRESHOLD = 0.3
+OBJECT_RECOGNITION_THRESHOLD = 0.25
+VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 
 # Set which Object Recognition Backends to use
 # NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow
 # NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
-    pepper.ObjectDetectionTarget.COCO
+    pepper.ObjectDetectionTarget.COCO,
+    pepper.ObjectDetectionTarget.OID
 ]
 
 # Microphone sample rate (Hz) and number of channels
@@ -144,8 +146,8 @@ MICROPHONE_CHANNELS = 1
 
 # Camera resolution (in pixels) and frame rate (Hz)
 # NOTE: Both resolution and frame rate impact system performance...
-CAMERA_RESOLUTION = pepper.CameraResolution.VGA
-CAMERA_FRAME_RATE = 1
+CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
+CAMERA_FRAME_RATE = 3
 
 # NAOqi Text to Speech Speed
 NAOQI_SPEECH_SPEED = 90
@@ -174,6 +176,9 @@ def get_backend():
     -------
     backend: AbstractBackend
     """
+
+    pepper.logger.info("Using {}".format(APPLICATION_BACKEND))
+
     backend = None
     if APPLICATION_BACKEND == pepper.ApplicationBackend.SYSTEM:
         from pepper.framework.backend.system import SystemBackend

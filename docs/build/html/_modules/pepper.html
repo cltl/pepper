@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -54,6 +56,10 @@
 
           
             
+            
+              <div class="version">
+                1.0
+              </div>
             
           
 
@@ -78,11 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../pepper.html">pepper package</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pepper.framework.backend.html">pepper.framework.backend package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pepper.framework.component.html">pepper.framework.component package</a></li>
 </ul>
 
             
@@ -149,6 +150,16 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This is the main repository for Pepper/Nao Applications created as part of the</span>
 <span class="sd">Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.</span>
+
+<span class="sd">The pepper package is split in a number of subpackages:</span>
+
+<span class="sd">- :mod:`~pepper.brain` is concerned with managing and querying pepper&#39;s triple store database</span>
+<span class="sd">- :mod:`~pepper.framework` contains the backends and sensory processing needed to run robot apps</span>
+<span class="sd">- :mod:`~pepper.knowledge` contains pepper&#39;s hardwired and internet knowledge</span>
+<span class="sd">- :mod:`~pepper.language` contains the grammars and scripts to parse and generate natural language</span>
+<span class="sd">- :mod:`~pepper.responder` contains scripts that reply to certain (natural language) queries</span>
+
+<span class="sd">:mod:`~pepper.config` lists all application configuration options</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -157,7 +168,7 @@
 
 
 <span class="c1"># Global Logging Setup</span>
-<span class="n">LOGGING_LEVEL</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+<span class="n">LOGGING_LEVEL</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
 <span class="n">LOGGING_FILE</span> <span class="o">=</span> <span class="s1">&#39;log.txt&#39;</span>
 <span class="n">LOGGING_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(name)-35s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
 <span class="n">LOGGING_DATE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%x</span><span class="s1"> </span><span class="si">%X</span><span class="s1">&#39;</span>
@@ -182,6 +193,12 @@
     <span class="n">NAOQI</span> <span class="o">=</span> <span class="mi">1</span></div>
 
 
+<div class="viewcode-block" id="ObjectDetectionTarget"><a class="viewcode-back" href="../pepper.html#pepper.ObjectDetectionTarget">[docs]</a><span class="k">class</span> <span class="nc">ObjectDetectionTarget</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">AVA</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27001</span><span class="p">)</span>
+    <span class="n">COCO</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27002</span><span class="p">)</span>
+    <span class="n">OID</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27003</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="CameraResolution"><a class="viewcode-back" href="../pepper.html#pepper.CameraResolution">[docs]</a><span class="k">class</span> <span class="nc">CameraResolution</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">NATIVE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">QQQQVGA</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span>
@@ -192,13 +209,13 @@
     <span class="n">VGA4</span> <span class="o">=</span> <span class="mi">960</span><span class="p">,</span> <span class="mi">1280</span></div>
 
 
-<div class="viewcode-block" id="NaoqiCameraIndex"><a class="viewcode-back" href="../pepper.html#pepper.NaoqiCameraIndex">[docs]</a><span class="k">class</span> <span class="nc">NaoqiCameraIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="NAOqiCameraIndex"><a class="viewcode-back" href="../pepper.html#pepper.NAOqiCameraIndex">[docs]</a><span class="k">class</span> <span class="nc">NAOqiCameraIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">TOP</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">BOTTOM</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">DEPTH</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="NaoqiMicrophoneIndex"><a class="viewcode-back" href="../pepper.html#pepper.NaoqiMicrophoneIndex">[docs]</a><span class="k">class</span> <span class="nc">NaoqiMicrophoneIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="NAOqiMicrophoneIndex"><a class="viewcode-back" href="../pepper.html#pepper.NAOqiMicrophoneIndex">[docs]</a><span class="k">class</span> <span class="nc">NAOqiMicrophoneIndex</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">ALL</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">LEFT</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">RIGHT</span> <span class="o">=</span> <span class="mi">2</span>
@@ -233,25 +250,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

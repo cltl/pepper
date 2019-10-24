@@ -14,7 +14,6 @@ pepper.brain package
 
 .. toctree::
 
+   pepper.brain.basic_brain
    pepper.brain.long_term_memory
-   pepper.brain.response
-   pepper.brain.short_term_memory
 

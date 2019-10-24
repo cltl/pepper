@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.brain.utils.response module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.brain.utils.store_connector module" href="pepper.brain.utils.store_connector.html" />
+    <link rel="prev" title="pepper.brain.utils.rdf_builder module" href="pepper.brain.utils.rdf_builder.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.base_cases.html">pepper.brain.utils.base_cases module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.constants.html">pepper.brain.utils.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.helper_functions.html">pepper.brain.utils.helper_functions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.location_reasoner.html">pepper.brain.utils.location_reasoner module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.rdf_builder.html">pepper.brain.utils.rdf_builder module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.brain.utils.response module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.store_connector.html">pepper.brain.utils.store_connector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.though_generator.html">pepper.brain.utils.though_generator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.utils.type_reasoner.html">pepper.brain.utils.type_reasoner module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.basic_brain.html">pepper.brain.basic_brain module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.long_term_memory.html">pepper.brain.long_term_memory module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.brain.html">pepper.brain package</a> &raquo;</li>
+        
+          <li><a href="pepper.brain.utils.html">pepper.brain.utils package</a> &raquo;</li>
+        
+      <li>pepper.brain.utils.response module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.brain.utils.response.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.brain.utils.response">
+<span id="pepper-brain-utils-response-module"></span><h1>pepper.brain.utils.response module<a class="headerlink" href="#module-pepper.brain.utils.response" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.brain.utils.response.CardinalityConflict">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">CardinalityConflict</code><span class="sig-paren">(</span><em>provenance</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#CardinalityConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.CardinalityConflict.object" title="pepper.brain.utils.response.CardinalityConflict.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.CardinalityConflict.author">
+<code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.CardinalityConflict.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#CardinalityConflict.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.CardinalityConflict.date">
+<code class="descname">date</code><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.CardinalityConflict.object">
+<code class="descname">object</code><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.CardinalityConflict.object_name">
+<code class="descname">object_name</code><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.object_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.CardinalityConflict.provenance">
+<code class="descname">provenance</code><a class="headerlink" href="#pepper.brain.utils.response.CardinalityConflict.provenance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Entity">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>types</em>, <em>offset=None</em>, <em>confidence=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.RDFBase" title="pepper.brain.utils.response.RDFBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.utils.response.RDFBase</span></code></a></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.Entity.add_types">
+<code class="descname">add_types</code><span class="sig-paren">(</span><em>types</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Entity.add_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Entity.add_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Entity.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Entity.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Entity.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Entity.types">
+<code class="descname">types</code><a class="headerlink" href="#pepper.brain.utils.response.Entity.types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Entity.types_names">
+<code class="descname">types_names</code><a class="headerlink" href="#pepper.brain.utils.response.Entity.types_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.EntityNovelty">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">EntityNovelty</code><span class="sig-paren">(</span><em>existence_subject</em>, <em>existence_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#EntityNovelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.EntityNovelty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.EntityNovelty.object" title="pepper.brain.utils.response.EntityNovelty.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.EntityNovelty.object">
+<code class="descname">object</code><a class="headerlink" href="#pepper.brain.utils.response.EntityNovelty.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.EntityNovelty.subject">
+<code class="descname">subject</code><a class="headerlink" href="#pepper.brain.utils.response.EntityNovelty.subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Gap">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Gap</code><span class="sig-paren">(</span><em>predicate</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.Gap.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gap.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gap.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gap.entity">
+<code class="descname">entity</code><a class="headerlink" href="#pepper.brain.utils.response.Gap.entity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gap.entity_range">
+<code class="descname">entity_range</code><a class="headerlink" href="#pepper.brain.utils.response.Gap.entity_range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gap.entity_range_name">
+<code class="descname">entity_range_name</code><a class="headerlink" href="#pepper.brain.utils.response.Gap.entity_range_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gap.predicate">
+<code class="descname">predicate</code><a class="headerlink" href="#pepper.brain.utils.response.Gap.predicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gap.predicate_name">
+<code class="descname">predicate_name</code><a class="headerlink" href="#pepper.brain.utils.response.Gap.predicate_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Gaps">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Gaps</code><span class="sig-paren">(</span><em>subject_gaps</em>, <em>object_gaps</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.Gaps.object" title="pepper.brain.utils.response.Gaps.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.Gaps.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Gaps.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Gaps.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gaps.object">
+<code class="descname">object</code><a class="headerlink" href="#pepper.brain.utils.response.Gaps.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Gaps.subject">
+<code class="descname">subject</code><a class="headerlink" href="#pepper.brain.utils.response.Gaps.subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.NegationConflict">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">NegationConflict</code><span class="sig-paren">(</span><em>provenance</em>, <em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#NegationConflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.NegationConflict.author">
+<code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.NegationConflict.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#NegationConflict.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.NegationConflict.date">
+<code class="descname">date</code><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.NegationConflict.predicate">
+<code class="descname">predicate</code><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.predicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.NegationConflict.predicate_name">
+<code class="descname">predicate_name</code><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.predicate_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.NegationConflict.provenance">
+<code class="descname">provenance</code><a class="headerlink" href="#pepper.brain.utils.response.NegationConflict.provenance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Overlap">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Overlap</code><span class="sig-paren">(</span><em>provenance</em>, <em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlap.author">
+<code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Overlap.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlap.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlap.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlap.date">
+<code class="descname">date</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlap.entity">
+<code class="descname">entity</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.entity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlap.entity_name">
+<code class="descname">entity_name</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.entity_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlap.entity_types">
+<code class="descname">entity_types</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.entity_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlap.provenance">
+<code class="descname">provenance</code><a class="headerlink" href="#pepper.brain.utils.response.Overlap.provenance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Overlaps">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Overlaps</code><span class="sig-paren">(</span><em>subject_overlaps</em>, <em>object_overlaps</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.Overlaps.object" title="pepper.brain.utils.response.Overlaps.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.Overlaps.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Overlaps.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Overlaps.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlaps.object">
+<code class="descname">object</code><a class="headerlink" href="#pepper.brain.utils.response.Overlaps.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Overlaps.subject">
+<code class="descname">subject</code><a class="headerlink" href="#pepper.brain.utils.response.Overlaps.subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Perspective">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Perspective</code><span class="sig-paren">(</span><em>certainty</em>, <em>polarity</em>, <em>sentiment</em>, <em>time=None</em>, <em>emotion=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Perspective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.certainty">
+<code class="descname">certainty</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.certainty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.emotion">
+<code class="descname">emotion</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.emotion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.polarity">
+<code class="descname">polarity</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.polarity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.sentiment">
+<code class="descname">sentiment</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.sentiment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Perspective.time">
+<code class="descname">time</code><a class="headerlink" href="#pepper.brain.utils.response.Perspective.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Predicate">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Predicate</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>offset=None</em>, <em>confidence=0.0</em>, <em>cardinality=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Predicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.RDFBase" title="pepper.brain.utils.response.RDFBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.utils.response.RDFBase</span></code></a></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Predicate.cardinality">
+<code class="descname">cardinality</code><a class="headerlink" href="#pepper.brain.utils.response.Predicate.cardinality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Predicate.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>subject</em>, <em>object</em>, <em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Predicate.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Predicate.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Provenance">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Provenance</code><span class="sig-paren">(</span><em>author</em>, <em>date</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Provenance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Provenance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Provenance.author">
+<code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.Provenance.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Provenance.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Provenance.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Provenance.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Provenance.date">
+<code class="descname">date</code><a class="headerlink" href="#pepper.brain.utils.response.Provenance.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.RDFBase">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">RDFBase</code><span class="sig-paren">(</span><em>id</em>, <em>label</em>, <em>offset=None</em>, <em>confidence=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#RDFBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.RDFBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.RDFBase.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#RDFBase.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.RDFBase.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.RDFBase.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#pepper.brain.utils.response.RDFBase.confidence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.RDFBase.id">
+<code class="descname">id</code><a class="headerlink" href="#pepper.brain.utils.response.RDFBase.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.RDFBase.label">
+<code class="descname">label</code><a class="headerlink" href="#pepper.brain.utils.response.RDFBase.label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.RDFBase.offset">
+<code class="descname">offset</code><a class="headerlink" href="#pepper.brain.utils.response.RDFBase.offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.StatementNovelty">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">StatementNovelty</code><span class="sig-paren">(</span><em>provenance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#StatementNovelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.StatementNovelty.author">
+<code class="descname">author</code><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.StatementNovelty.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#StatementNovelty.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.StatementNovelty.date">
+<code class="descname">date</code><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.StatementNovelty.provenance">
+<code class="descname">provenance</code><a class="headerlink" href="#pepper.brain.utils.response.StatementNovelty.provenance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Thoughts">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Thoughts</code><span class="sig-paren">(</span><em>statement_novelty</em>, <em>entity_novelty</em>, <em>negation_conflicts</em>, <em>object_conflict</em>, <em>subject_gaps</em>, <em>object_gaps</em>, <em>overlaps</em>, <em>trust</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.entity_novelty">
+<code class="descname">entity_novelty</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.entity_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.entity_novelty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.negation_conflicts">
+<code class="descname">negation_conflicts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.negation_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.negation_conflicts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.object_conflict">
+<code class="descname">object_conflict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.object_conflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.object_conflict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.object_gaps">
+<code class="descname">object_gaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.object_gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.object_gaps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.overlaps">
+<code class="descname">overlaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.overlaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.overlaps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.statement_novelties">
+<code class="descname">statement_novelties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.statement_novelties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.statement_novelties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.subject_gaps">
+<code class="descname">subject_gaps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.subject_gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.subject_gaps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Thoughts.trust">
+<code class="descname">trust</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Thoughts.trust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Thoughts.trust" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.brain.utils.response.Triple">
+<em class="property">class </em><code class="descclassname">pepper.brain.utils.response.</code><code class="descname">Triple</code><span class="sig-paren">(</span><em>subject</em>, <em>predicate</em>, <em>object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pepper.brain.utils.response.Triple.object" title="pepper.brain.utils.response.Triple.object"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pepper.brain.utils.response.Triple.casefold">
+<code class="descname">casefold</code><span class="sig-paren">(</span><em>format='triple'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple.casefold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple.casefold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the labels to match triples or natural language
+:param format:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.object">
+<code class="descname">object</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.object_name">
+<code class="descname">object_name</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.object_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.object_types">
+<code class="descname">object_types</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.object_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.predicate">
+<code class="descname">predicate</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.predicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.predicate_name">
+<code class="descname">predicate_name</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.predicate_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Triple.set_object">
+<code class="descname">set_object</code><span class="sig-paren">(</span><em>object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple.set_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple.set_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Triple.set_predicate">
+<code class="descname">set_predicate</code><span class="sig-paren">(</span><em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple.set_predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple.set_predicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.utils.response.Triple.set_subject">
+<code class="descname">set_subject</code><span class="sig-paren">(</span><em>subject</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/utils/response.html#Triple.set_subject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.utils.response.Triple.set_subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.subject">
+<code class="descname">subject</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.subject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.subject_name">
+<code class="descname">subject_name</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.subject_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.brain.utils.response.Triple.subject_types">
+<code class="descname">subject_types</code><a class="headerlink" href="#pepper.brain.utils.response.Triple.subject_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.brain.utils.store_connector.html" class="btn btn-neutral float-right" title="pepper.brain.utils.store_connector module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.brain.utils.rdf_builder.html" class="btn btn-neutral float-left" title="pepper.brain.utils.rdf_builder module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

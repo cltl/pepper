@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 
 from pepper.language.pos import POS
+from pepper.language.ner import NER
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
+from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
 from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.utils.rdf_builder import RdfBuilder
 from pepper.brain.utils.response import Triple, Perspective
@@ -24,12 +26,18 @@ from typing import List, Optional
 
 
 class Time(enum.Enum):
+    """
+    This will be used in the future to represent tense
+    """
     PAST = -1
     PRESENT = 0
     FUTURE = 1
 
 
-class Emotion(enum.Enum):  # Not used yet
+class Emotion(enum.Enum):
+    """
+    This will be used in the future to represent emotion
+    """
     ANGER = 0
     DISGUST = 1
     FEAR = 2
@@ -344,11 +352,11 @@ class Utterance(object):
         if not analyzer:
             return "I cannot parse your input"
 
-        for el in ["subject", "predicate", "object"]:
+        for el in ["subject", "predicate", "complement"]:
             Analyzer.LOG.info(
-                "RDF {:>10}: {}".format(el, json.dumps(analyzer.rdf[el], sort_keys=True, separators=(', ', ': '))))
+                "RDF {:>10}: {}".format(el, json.dumps(analyzer.triple[el], sort_keys=True, separators=(', ', ': '))))
 
-        self.pack_triple(analyzer.rdf, analyzer.utterance_type)
+        self.pack_triple(analyzer.triple, analyzer.utterance_type)
 
         if analyzer.utterance_type == UtteranceType.STATEMENT:
             self.pack_perspective(analyzer.perspective)
@@ -378,10 +386,10 @@ class Utterance(object):
         subject = builder.fill_entity(casefold_text(rdf['subject']['text'], format='triple'),
                                       rdf['subject']['type'])
         predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
-        object = builder.fill_entity(casefold_text(rdf['object']['text'], format='triple'),
-                                                rdf['object']['type'])
+        complement = builder.fill_entity(casefold_text(rdf['complement']['text'], format='triple'),
+                                                rdf['complement']['type'])
 
-        self.set_triple(Triple(subject, predicate, object))
+        self.set_triple(Triple(subject, predicate, complement))
 
     def pack_perspective(self, persp):
         self.set_perspective(Perspective(persp['certainty'], persp['polarity'], persp['sentiment']))
@@ -464,16 +472,20 @@ class Utterance(object):
         Returns
         -------
         tokens: list of str
-            Tokenized transcript: list of cleaned tokens
-                - remove contractions
+            Tokenized transcript: list of cleaned tokens for POS tagging and syntactic parsing
+                - removes contractions and openers/introductions
         """
 
-        openers = ['leolani', 'sorry', 'excuse me', 'hey']
-        introductions = ['can you tell me', 'do you know', 'please tell me', 'do you maybe know']
+        # possible openers/greetings/introductions are removed from the beginning of the transcript
+        # it is done like this to avoid lowercasing the transcript as caps are useful and google puts them
+        openers = ['Leolani', 'Sorry', 'Excuse me', 'Hey','Hello','Hi']
+        introductions = ['Can you tell me', 'Do you know', 'Please tell me', 'Do you maybe know']
 
         for o in openers:
             if transcript.startswith(o):
                 transcript = transcript.replace(o, '')
+            if transcript.startswith(o.lower()):
+                transcript = transcript.replace(o.lower(), '')
 
         for i in introductions:
             if transcript.startswith(i):
@@ -481,7 +493,13 @@ class Utterance(object):
                 first_word = tmp.split()[0]
                 if first_word in ['what', 'that', 'who', 'when', 'where', 'which']:
                     transcript = transcript.replace(i, '')
+            if transcript.startswith(i.lower()):
+                tmp = transcript.replace(i.lower(), '')
+                first_word = tmp.split()[0]
+                if first_word.lower() in ['what', 'that', 'who', 'when', 'where', 'which']:
+                    transcript = transcript.replace(i.lower(), '')
 
+        # separating typical contractions
         tokens_raw = transcript.replace("'", " ").split()
         dict = {'m': 'am', 're': 'are', 'll': 'will'}
         dict_not = {'won': 'will', 'don': 'do', 'doesn': 'does', 'didn': 'did', 'haven': 'have', 'wouldn': 'would',
@@ -495,6 +513,7 @@ class Utterance(object):
             for key in dict_not:
                 tokens_raw = self.replace_token(tokens_raw, key, dict_not[key])
 
+        # in case of possessive genitive the 's' is just removed, while for the aux verb 'is' is inserted
         if 's' in tokens_raw:
             index = tokens_raw.index('s')
             tag = pos_tag([tokens_raw[index + 1]])
@@ -507,6 +526,12 @@ class Utterance(object):
         return tokens_raw
 
     def replace_token(self, tokens_raw, old, new):
+        '''
+        :param tokens_raw: list of tokens
+        :param old: token to replace
+        :param new: new token
+        :return: new list with the replaced token
+        '''
         if old in tokens_raw:
             index = tokens_raw.index(old)
             tokens_raw.remove(old)
@@ -534,12 +559,16 @@ class Utterance(object):
 
 class Parser(object):
     POS_TAGGER = None  # Type: POS
+    NER_TAGGER = None
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
     def __init__(self, utterance):
 
         if not Parser.POS_TAGGER:
             Parser.POS_TAGGER = POS()
+
+        if not Parser.NER_TAGGER:
+            Parser.NER_TAGGER = NER()
 
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
             self._cfg = cfg_file.read()
@@ -557,8 +586,23 @@ class Parser(object):
         return self._constituents
 
     def _parse(self, utterance):
+        '''
+        :param utterance: an Utterance object, typically last one in the Chat
+        :return: parsed syntax tree and a dictionary of syntactic realizations
+        '''
         tokenized_sentence = utterance.tokens
-        pos = self.POS_TAGGER.tag(tokenized_sentence)
+        pos = self.POS_TAGGER.tag(tokenized_sentence) #standford
+        alternative_pos = pos_tag(tokenized_sentence) #nltk
+
+        self._log.debug(pos)
+        self._log.debug(alternative_pos)
+
+
+        if pos !=alternative_pos:
+            print (pos, alternative_pos)
+            print ('DIFFERENT')
+
+        print('NER ',self.NER_TAGGER.tag(utterance.transcript))
 
         # # Fixing POS matching
         # import spacy
@@ -577,6 +621,7 @@ class Parser(object):
         #                 pos[ind] = (w[0],token.tag_)
         #         ind += 1
 
+        # fixing issues with POS tagger (Does and like)
         ind = 0
         for w in tokenized_sentence:
             if w == 'like':
@@ -586,6 +631,7 @@ class Parser(object):
         if pos[0][0] == 'Does':
             pos[0] = ('Does', 'VBD')
 
+        # the POS tagger returns one tag with a $ sign (POS$) and this needs to be fixed for the CFG parsing
         ind = 0
         for word, tag in pos:
             if '?' in word:
@@ -593,8 +639,8 @@ class Parser(object):
             if tag.endswith('$'):
                 new_rule = tag[:-1] + 'POS -> \'' + word + '\'\n'
                 pos[ind] = (pos[ind][0], 'PRPPOS')
-
             else:
+                # CFG grammar is created dynamically, with the terminals added each time from the specific utterance
                 new_rule = tag + ' -> \'' + word + '\'\n'
             if new_rule not in self._cfg:
                 self._cfg += new_rule
@@ -611,7 +657,7 @@ class Parser(object):
 
             parsed = RD.parse(tokenized_sentence)
 
-            s_r = {}  # syntactic_realizations
+            s_r = {} #syntactic_realizations are the topmost branches, usually VP/NP
             index = 0
 
             forest = [tree for tree in parsed]
@@ -629,7 +675,6 @@ class Parser(object):
 
                         s_r[index]['raw'] = raw[:-1]
                         index += 1
-
             else:
                 self._log.debug("no forest")
 
