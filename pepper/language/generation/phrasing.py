@@ -30,7 +30,7 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
         return speaker
 
     if role == 'pos':
-        print('pos',speaker, entity_label)
+        # print('pos', speaker, entity_label)
         if speaker.lower() == entity_label.lower():
             pronoun = 'your'
         elif entity_label.lower() == 'leolani':
@@ -50,7 +50,7 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
         return pronoun
 
     # Entity
-    if entity_label is not None :
+    if entity_label is not None:
         if speaker.lower() in [entity_label.lower(), 'speaker'] or entity_label == 'Speaker':
             pronoun = 'you'
         elif entity_label.lower() == 'leolani':
@@ -65,4 +65,3 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
             pronoun = entity_label.title()
 
         return pronoun
-

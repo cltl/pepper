@@ -2,6 +2,7 @@ from pepper.language import *
 from pepper.brain import LongTermMemory
 from pepper.framework import UtteranceHypothesis, Context, Face
 from pepper.framework.sensor.obj import Object, Bounds
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.language.generation import reply_to_question
 
 import numpy as np
@@ -126,11 +127,15 @@ def test_scenario(statement, questions, gold):
         for stat in statement.split(','):
             chat.add_utterance([UtteranceHypothesis(stat, 1.0)], False)
             chat.last_utterance.analyze()
-            brain.update(chat.last_utterance, reason_types=True)
+            brain_response = brain.update(chat.last_utterance, reason_types=True)
+            reply = phrase_thoughts(brain_response, True, True)
+        print(reply)
     else:
         chat.add_utterance([UtteranceHypothesis(statement, 1.0)], False)
         chat.last_utterance.analyze()
-        brain.update(chat.last_utterance, reason_types=True)
+        brain_response = brain.update(chat.last_utterance, reason_types=True)
+        reply = phrase_thoughts(brain_response, True, True)
+        print(reply)
 
     # brain is queried and a reply is generated and compared with golden standard
     for question in questions:

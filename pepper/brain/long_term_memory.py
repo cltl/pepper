@@ -124,7 +124,7 @@ class LongTermMemory(BasicBrain):
 
             # Check for conflicts after adding the knowledge
             negation_conflicts = self.thought_generator.get_negation_conflicts(utterance)
-            complement_conflict = self.thought_generator.get_object_cardinality_conflicts(utterance)
+            complement_conflict = self.thought_generator.get_complement_cardinality_conflicts(utterance)
 
             # Check for gaps, in case we want to be proactive
             subject_gaps = self.thought_generator.get_entity_gaps(utterance.triple.subject,
