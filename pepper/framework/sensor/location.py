@@ -16,14 +16,19 @@ class Location(object):
     UNKNOWN = "Unknown"
 
     def __init__(self):
-        loc = requests.get("https://ipinfo.io").json()
-
         self._id = getrandbits(128)
-
-        self._country = pycountry.countries.get(alpha_2=loc['country']).name
-        self._region = loc['region']
-        self._city = loc['city']
         self._label = self.UNKNOWN
+
+        try:
+            loc = requests.get("https://ipinfo.io").json()
+
+            self._country = pycountry.countries.get(alpha_2=loc['country']).name
+            self._region = loc['region']
+            self._city = loc['city']
+        except:
+            self._country = self.UNKNOWN
+            self._region = self.UNKNOWN
+            self._city = self.UNKNOWN
 
     @property
     def id(self):

@@ -97,7 +97,7 @@ class LongTermMemory(BasicBrain):
                 # Try to figure out what this entity is
                 if not utterance.triple.complement.types:
                     complement_type, _ = self.type_reasoner.reason_entity_type(str(utterance.triple.complement_name),
-                                                                           exact_only=True)
+                                                                               exact_only=True)
                     utterance.triple.complement.add_types([complement_type])
 
                 if not utterance.triple.subject.types:
@@ -130,7 +130,7 @@ class LongTermMemory(BasicBrain):
             subject_gaps = self.thought_generator.get_entity_gaps(utterance.triple.subject,
                                                                   exclude=utterance.triple.complement)
             complement_gaps = self.thought_generator.get_entity_gaps(utterance.triple.complement,
-                                                                 exclude=utterance.triple.subject)
+                                                                     exclude=utterance.triple.subject)
 
             # Report trust
             trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
@@ -289,15 +289,24 @@ class LongTermMemory(BasicBrain):
 
         if cntxt.location is not None:
             location_id = self._rdf_builder.fill_literal(cntxt.location.id, datatype=self.namespaces['XML']['string'])
+
+            # City level
             location_city = self._rdf_builder.fill_entity(cntxt.location.city, ['location', 'city', 'Place'], 'LW')
             self._link_entity(location_city, self.interaction_graph)
+            # Country level
             location_country = self._rdf_builder.fill_entity(cntxt.location.country, ['location', 'country', 'Place'],
                                                              'LW')
             self._link_entity(location_country, self.interaction_graph)
+            # Region level
             location_region = self._rdf_builder.fill_entity(cntxt.location.region, ['location', 'region', 'Place'],
                                                             'LW')
             self._link_entity(location_region, self.interaction_graph)
-            location = self._rdf_builder.fill_entity(cntxt.location.label, ['location', 'Place'], 'LC')
+
+            # Create location
+            location = self._rdf_builder.fill_entity(
+                casefold_text('%s %s' % (cntxt.location.label, cntxt.location.id), format='triple'),
+                ['location', 'Place'], 'LC')
+
             self._link_entity(location, self.interaction_graph)
             self.interaction_graph.add((location.id, self.namespaces['N2MU']['id'], location_id))
             self.interaction_graph.add((location.id, self.namespaces['N2MU']['in'], location_city.id))
@@ -328,6 +337,14 @@ class LongTermMemory(BasicBrain):
         predicate = self._rdf_builder.fill_predicate('know') if claim_type == UtteranceType.STATEMENT \
             else self._rdf_builder.fill_predicate('sense')
         interaction = self._create_claim_graph(self.myself, predicate, actor, claim_type)
+
+        # Add actor (friend) is same as person(world)
+        if 'person' in actor.types:
+            person = self._rdf_builder.fill_entity('%s' % actor.label,
+                                                   ['Instance', 'person'],
+                                                   'LW')
+            self._link_entity(person, self.instance_graph)
+            self.claim_graph.add((actor.id, OWL.sameAs, person.id))
 
         return actor, interaction
 

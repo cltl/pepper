@@ -8,14 +8,13 @@ import numpy as np
 
 
 def fake_context():
-
-    #objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
+    # objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
     #           Object('cat', 0.51, None, None)}
-    #faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
+    # faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
     context = Context()
-    #context.add_objects(objects)
-    #context.add_people(faces)
+    # context.add_objects(objects)
+    # context.add_people(faces)
     return context
 
 
@@ -120,7 +119,7 @@ def test_scenario(statement, questions, gold):
     correct = 0
     chat = Chat("Lenka", fake_context())
     brain = LongTermMemory(
-        clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
     # one or several statements are added to the brain
     if ',' in statement:
@@ -161,7 +160,7 @@ def test_scenarios():
     for sc in scenarios:
         correct += test_scenario(sc['statement'], sc['questions'], sc['reply'])
         total += len(sc['questions'])
-    print(correct, total - correct)
+    print('CORRECT: ', correct, ',\tINCORRECT: ', total - correct)
 
 
 def test_with_triples(path):
@@ -236,7 +235,6 @@ def test_with_triples(path):
 
 
 if __name__ == "__main__":
-
     '''
     test files with triples are formatted like so "test sentence : subject predicate complement" 
     multi-word-expressions have dashes separating their elements, and are marked with apostrophes if they are a collocation

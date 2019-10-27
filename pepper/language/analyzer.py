@@ -121,8 +121,8 @@ class Analyzer(object):
         if predicate == 'hat':  # lemmatizer issue with verb 'hate'
             predicate = 'hate'
 
-        elif predicate == 'bear': # bear-in
-            predicate = 'born' #lemmatizer issue
+        elif predicate == 'bear':  # bear-in
+            predicate = 'born'  # lemmatizer issue
 
         return predicate
 
@@ -266,7 +266,7 @@ class Analyzer(object):
         """
         structure_tree = self.chat.last_utterance.parser.forest[0]
 
-        #TODO 
+        # TODO
         if lexicon_lookup(triple['complement']) and 'person' in lexicon_lookup(triple['complement']):
             if triple['predicate'] == 'be':
                 subject = fix_pronouns(triple['complement'].lower(), self)
@@ -279,7 +279,8 @@ class Analyzer(object):
             else:
                 triple['complement'] = fix_pronouns(triple['complement'].lower(), self)
         elif get_node_label(structure_tree, triple['complement']).startswith('V') and get_node_label(structure_tree,
-                                                                                                 triple['predicate']) == 'MD':
+                                                                                                     triple[
+                                                                                                         'predicate']) == 'MD':
             triple['predicate'] += '-' + triple['complement']
             triple['complement'] = ''
         return triple
@@ -314,7 +315,8 @@ class Analyzer(object):
                         if entry is None:
                             if typ.lower() in ['leolani']:
                                 final_type.append('robot')
-                            elif typ.lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize() == typ:
+                            elif typ.lower() in ['lenka', 'selene', 'suzana', 'bram',
+                                                 'piek'] or typ.capitalize() == typ:
                                 final_type.append('person')
                             else:
                                 node = get_node_label(self.chat.last_utterance.parser.forest[0], typ)
@@ -478,8 +480,8 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing
         """
         triple = {'subject': self.chat.last_utterance.parser.constituents[0]['raw'],
-                'predicate': self.chat.last_utterance.parser.constituents[1]['raw'],
-                'complement': self.chat.last_utterance.parser.constituents[2]['raw']}
+                  'predicate': self.chat.last_utterance.parser.constituents[1]['raw'],
+                  'complement': self.chat.last_utterance.parser.constituents[2]['raw']}
 
         return triple
 
@@ -545,7 +547,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         triple = trim_dash(triple)
         triple['predicate'] = self.fix_predicate(triple['predicate'])
         self._perspective = self.extract_perspective(triple['predicate'], utterance_info)
-        print(self._perspective)
+        Analyzer.LOG.info('extracted perspective: {}'.format(self._perspective))
         triple = self.get_types_in_triple(triple)
         Analyzer.LOG.debug('final triple: {} {}'.format(triple, utterance_info))
         self._triple = triple
@@ -825,7 +827,6 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         triple = self.get_types_in_triple(triple)
         Analyzer.LOG.debug('final triple: {} {}'.format(triple, utterance_info))
         self._triple = triple
-
 
     @property
     def triple(self):

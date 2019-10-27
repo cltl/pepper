@@ -4,11 +4,9 @@ import json
 import os
 import urllib
 
-
 from nltk import pos_tag
 from nltk import tree as ntree
 from nltk.stem import WordNetLemmatizer
-
 
 import wordnet_utils as wu
 from pepper import logger
@@ -47,25 +45,25 @@ def get_triple_element_type(element, forest):
     if '-' in element:
         text = ''
         for el in element.split('-'):
-            text += el+' '
+            text += el + ' '
 
         text = text.strip()
         uris = get_uris(text)
 
-        print('LOOKUP: ', text, len(uris))
+        # print('LOOKUP: ', text, len(uris))
 
-        if len(uris)>0:
-            print('URI ',text, len(uris))
+        # if len(uris) > 0:
+        #     print('URI ', text, len(uris))
 
         # entities with more than 1 uri from DBpedia are NE and collocations
-        if len(uris)>1:
+        if len(uris) > 1:
             return 'NE-col'
 
         # collocations which exist in WordNet
         synsets = wu.get_synsets(text, get_node_label(forest, text))
         if len(synsets):
             typ = wu.get_lexname(synsets)
-            return typ+'-col'
+            return typ + '-col'
 
         # if entity does not exist in DBP or WN it is considered composite
         for el in element.split('-'):
@@ -95,15 +93,15 @@ def get_word_type(word, forest):
     entry = lexicon_lookup(word)
     if entry is not None:
         if 'proximity' in entry:
-             return 'deictic:'+entry['proximity']+','+entry['number']
+            return 'deictic:' + entry['proximity'] + ',' + entry['number']
         if 'person' in entry:
-            return 'pronoun:' +entry['person']
+            return 'pronoun:' + entry['person']
         if 'root' in entry:
-            return 'modal:'+str(entry['root'])
+            return 'modal:' + str(entry['root'])
         if 'definite' in entry:
-            return 'article:'+entry
+            return 'article:' + entry
         if 'integer' in entry:
-            return 'numeral:'+entry['integer']
+            return 'numeral:' + entry['integer']
 
     types = {'NN': 'person', 'V': 'verb', 'IN': 'prep', 'TO': 'prep', 'MD': 'modal'}
 
@@ -161,7 +159,7 @@ def fix_pronouns(pronoun, self):
         elif entry['person'] == 'second':
             return 'leolani'
         else:
-            #print('disambiguate third person')
+            # print('disambiguate third person')
             return pronoun
     else:
         return pronoun
@@ -354,14 +352,17 @@ def get_uris(string):
     :return: set of URIS from DBpedia for the queried string
     """
     query = """PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT ?pred WHERE {
-  ?pred rdfs:label """ + "'" + string + "'" + """@en .
-}
-ORDER BY ?pred"""
+                SELECT ?pred WHERE {
+                  ?pred rdfs:label """ + "'" + string + "'" + """@en .
+                }
+                ORDER BY ?pred"""
 
-    results = dbp_query(query, "http://dbpedia.org/sparql")
-    uris = []
-    for x in results['results']['bindings']:
-        uris.append(x['pred']['value'])
+    try:
+        results = dbp_query(query, "http://dbpedia.org/sparql")
+        uris = []
+        for x in results['results']['bindings']:
+            uris.append(x['pred']['value'])
+    except:
+        uris = []
 
     return uris
