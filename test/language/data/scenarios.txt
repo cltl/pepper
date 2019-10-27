@@ -1,13 +1,13 @@
+I like your voice - what do I like - you told me you like my voice
+Robots can't eat food - can robots eat food, who can eat food - you told me robots can not eat food
+I don't like paprika - do I like paprika, who likes paprika - you told me you do not like paprika
+I didn't see the new movie - did I see the new movie - you told me you did not see the new movie
+I think birds like trees - what do birds like, who likes trees, do you know who likes trees - you told me birds like trees
 I know selene is from Mexico City - do you know who is from Mexico City, who is from Mexico City, where is Selene from - you told me Selene is from Mexico city
 I know New York City is in the United States - where is New York City - you told me New York City is in the United States
 I love eating ice-cream - who loves eating ice-cream - you told me you love eating ice-cream
 my sister enjoys eating cakes - what does my sister enjoy - you told me your sister enjoys eating cakes
-
-
-I think birds like trees - what do birds like, who likes trees, do you know who likes trees - you told me birds like trees
 I know you - do I know you, who do I know - you told me you know me
-
-
 you are a robot - are you a robot, who is a robot - you told me I am a robot
 you live in Amsterdam - who lives in Amsterdam, do you live in Amsterdam - you told me I live in Amsterdam
 I am a woman - who is a woman - you told me you are a woman
@@ -15,3 +15,4 @@ I like baking cakes - what do I like, do I like baking cakes, who likes baking c
 Birds can sing - can birds sing, what can birds do, who can sing - you told me birds can sing
 Selene can see a laptop - what can Selene see, who can see a laptop - you told me Selene can see a laptop
 Robots can't eat food - can robots eat food, who can eat food - you told me robots can't eat food
+I don't like your shirt, Selene likes your shirt - who likes your shirt - you told me you do not like my shirt and selene likes my shirt #FIX

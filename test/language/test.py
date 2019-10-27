@@ -246,7 +246,7 @@ if __name__ == "__main__":
 
     test_files = ["./data/statements.txt"]
 
-    # for test_file in test_files:
-    #     test_with_triples(test_file)
+    for test_file in all_test_files:
+        test_with_triples(test_file)
 
-    test_scenarios()
+    #test_scenarios()

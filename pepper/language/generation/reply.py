@@ -134,6 +134,10 @@ def reply_to_question(brain_response):
             if predicate != previous_predicate:
                 say += ' that '
 
+        if item['sentimentValue']['value']!='UNDERSPECIFIED':
+            print('sentiment', item['sentimentValue']['value'])
+
+
         if predicate.endswith('is'):
 
             say += object + ' is'
@@ -156,6 +160,17 @@ def reply_to_question(brain_response):
                         predicate = 'are'
             elif person == 'third' and not '-' in predicate:
                 predicate += 's'
+
+            if item['certaintyValue']['value'] != 'CERTAIN': #TODO extract correct certainty marker
+                print('certainty', item['certaintyValue']['value'])
+                predicate = 'maybe '+predicate
+
+            if item['polarityValue']['value'] != 'POSITIVE':
+                print('polarity', item['polarityValue']['value'], predicate)
+                if ' ' in predicate:
+                    predicate = predicate.split()[0]+ ' not '+predicate.split()[1]
+                else:
+                    predicate = 'do not '+predicate
 
             say += subject + ' ' + predicate + ' ' + object
 

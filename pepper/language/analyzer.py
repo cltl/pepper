@@ -224,23 +224,34 @@ class Analyzer(object):
         :return: updated triple
         """
         first_word = triple[element].split('-')[0]
-        subject = fix_pronouns(first_word, self)
-        predicate = ''
-        for word in triple[element].split('-')[1:]:
-            # words that express people are grouped together in the subject
-            if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'), 'kinship')) or word == 'best':
-                subject += '-' + word
-            else:
-                predicate += '-' + word
 
         if element == 'complement':
-            triple['complement'] = triple['subject']
+            complement = fix_pronouns(first_word, self)
 
-        # properties are stored with a suffix "-is"
-        if predicate:
-            triple['predicate'] = predicate + '-is'
+            for word in triple['complement'].split('-')[1:]:
+                complement+='-'+word
 
-        triple['subject'] = subject
+            triple['complement'] = complement
+
+        else:
+
+            subject = fix_pronouns(first_word, self)
+            predicate = ''
+            for word in triple[element].split('-')[1:]:
+                # words that express people are grouped together in the subject
+                if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'), 'kinship')) or word == 'best':
+                    subject += '-' + word
+                else:
+                    predicate += '-' + word
+            if element == 'complement':
+                triple['complement'] = triple['subject']
+
+            # properties are stored with a suffix "-is"
+            if predicate:
+                triple['predicate'] = predicate + '-is'
+
+            triple['subject'] = subject
+
 
         return triple
 
@@ -540,12 +551,16 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         if len(triple['complement'].split('-')) > 1:  # multi-word complement
             triple = self.analyze_multiword_complement(triple)
 
-        if len(triple['complement'].split('-')) == 1:
+        elif len(triple['complement'].split('-')) == 1:
             triple = self.analyze_one_word_complement(triple)
+
+        Analyzer.LOG.debug('after complement analysis: {}'.format(triple))
 
         # Final fixes to triple
         triple = trim_dash(triple)
         triple['predicate'] = self.fix_predicate(triple['predicate'])
+        Analyzer.LOG.debug('after predicate fix: {}'.format(triple))
+
         self._perspective = self.extract_perspective(triple['predicate'], utterance_info)
         Analyzer.LOG.info('extracted perspective: {}'.format(self._perspective))
         triple = self.get_types_in_triple(triple)
