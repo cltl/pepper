@@ -40,14 +40,14 @@ class ThoughtGenerator(BasicBrain):
 
         return StatementNovelty(processed_provenance)
 
-    def fill_entity_novelty(self, subject_url, object_url):
+    def fill_entity_novelty(self, subject_url, complement_url):
         """
         Structure entity novelty to signal if these entities have been heard before
         Parameters
         ----------
         subject_url: str
             URI of instance
-        object_url: str
+        complement_url: str
             URI of instance
 
         Returns
@@ -55,9 +55,9 @@ class ThoughtGenerator(BasicBrain):
             Entity object containing boolean values signaling if they are new
         """
         subject_novelty = self._check_instance_novelty_(subject_url)
-        object_novelty = self._check_instance_novelty_(object_url)
+        complement_novelty = self._check_instance_novelty_(complement_url)
 
-        return EntityNovelty(subject_novelty, object_novelty)
+        return EntityNovelty(subject_novelty, complement_novelty)
 
     def get_statement_novelty(self, statement_uri):
         """
@@ -149,14 +149,14 @@ class ThoughtGenerator(BasicBrain):
         response = self._submit_query(query)
 
         if response:
-            object_gaps = [self._fill_entity_gap_(elem)
+            complement_gaps = [self._fill_entity_gap_(elem)
                            for elem in response
                            if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
 
         else:
-            object_gaps = []
+            complement_gaps = []
 
-        return Gaps(subject_gaps, object_gaps)
+        return Gaps(subject_gaps, complement_gaps)
 
     ########## overlaps ##########
     def _fill_overlap_(self, raw_conflict):
@@ -197,9 +197,9 @@ class ThoughtGenerator(BasicBrain):
         response = self._submit_query(query)
 
         if response[0]['types']['value'] != '':
-            object_overlap = [self._fill_overlap_(elem) for elem in response]
+            complement_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
-            object_overlap = []
+            complement_overlap = []
 
         # Role as object
         query = read_query('thoughts/subject_overlap') % (
@@ -212,7 +212,7 @@ class ThoughtGenerator(BasicBrain):
         else:
             subject_overlap = []
 
-        return Overlaps(subject_overlap, object_overlap)
+        return Overlaps(subject_overlap, complement_overlap)
 
     ########## conflicts ##########
     def _fill_cardinality_conflict_(self, raw_conflict):
@@ -281,7 +281,7 @@ class ThoughtGenerator(BasicBrain):
 
         return conflicts
 
-    def get_object_cardinality_conflicts(self, utterance):
+    def get_complement_cardinality_conflicts(self, utterance):
         """
         Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
         multiple object values
