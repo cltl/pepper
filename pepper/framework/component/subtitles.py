@@ -47,7 +47,7 @@ class SubtitlesComponent(AbstractComponent):
         # Stop Timeout Timer if running
         if self._subtitles_timeout_timer: self._subtitles_timeout_timer.cancel()
 
-        # Show Subtitlesd
+        # Show Subtitles
         text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
         self.backend.tablet.show(self.SUBTITLES_URL.format(text_websafe))
 

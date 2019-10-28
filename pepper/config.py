@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
 NAME = "Leolani"
@@ -136,7 +136,7 @@ VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 # NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
     pepper.ObjectDetectionTarget.COCO,
-    pepper.ObjectDetectionTarget.OID
+    # pepper.ObjectDetectionTarget.OID
 ]
 
 # Microphone sample rate (Hz) and number of channels
@@ -147,7 +147,7 @@ MICROPHONE_CHANNELS = 1
 # Camera resolution (in pixels) and frame rate (Hz)
 # NOTE: Both resolution and frame rate impact system performance...
 CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
-CAMERA_FRAME_RATE = 30
+CAMERA_FRAME_RATE = 3
 
 # NAOqi Text to Speech Speed
 NAOQI_SPEECH_SPEED = 90
