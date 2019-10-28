@@ -158,7 +158,9 @@ def transform_capsule(capsule, empty=False, no_people=False, place=False):
     builder = RdfBuilder()
 
     triple = builder.fill_triple(capsule['subject'], capsule['predicate'], capsule['object'])
-
     utt.set_triple(triple)
+
+    perspective = {'sentiment': 0, 'certainty': 1, 'polarity': 1}
+    utt.pack_perspective(perspective)
 
     return utt

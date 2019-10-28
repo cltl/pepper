@@ -96,6 +96,7 @@ class Entity(RDFBase):
         super(Entity, self).__init__(id, label, offset, confidence)
 
         self._types = [t for t in types if t != '' and t is not None]
+        self._types = list(dict.fromkeys(self._types))
 
     @property
     def types(self):

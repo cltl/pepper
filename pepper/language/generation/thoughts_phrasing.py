@@ -34,6 +34,7 @@ def _phrase_cardinality_conflicts(conflicts, utterance):
         x = 'you' if conflict.author == utterance.chat_speaker else conflict.author
         y = 'you' if utterance.triple.subject_name == conflict.author else utterance.triple.subject_name
 
+        # Checked
         say += ' %s told me in %s that %s %s %s, but now you tell me that %s %s %s' \
                % (x, conflict.date.strftime("%B"), y, utterance.triple.predicate_name, conflict.complement_name,
                   y, utterance.triple.predicate_name, utterance.triple.complement_name)
@@ -86,10 +87,12 @@ def _phrase_statement_novelty(novelties, utterance):
             else:
                 any_type = 'anything'
 
+            # Checked
             say += ' I did not know %s that %s %s' % (any_type, utterance.triple.subject_name,
                                                       utterance.triple.predicate_name)
 
         elif entity_role == 'complement':
+            # Checked
             say += ' I did not know anybody who %s %s' % (utterance.triple.predicate_name,
                                                           utterance.triple.complement_name)
 
@@ -98,6 +101,7 @@ def _phrase_statement_novelty(novelties, utterance):
         say = random.choice(EXISTING_KNOWLEDGE)
         novelty = random.choice(novelties)
 
+        # Checked
         say += ' %s told me about it in %s' % (novelty.author, novelty.date.strftime("%B"))
 
     return say
@@ -112,6 +116,7 @@ def _phrase_type_novelty(novelties, utterance):
         entity_label = replace_pronouns(utterance.chat_speaker, entity_label=entity_label, role=entity_role)
         say = random.choice(NEW_KNOWLEDGE)
         if entity_label != 'you':  # TODO or type person?
+            # Checked
             say += ' I had never heard about %s before!' % replace_pronouns(utterance.chat_speaker,
                                                                             entity_label=entity_label,
                                                                             role='complement')
@@ -121,6 +126,7 @@ def _phrase_type_novelty(novelties, utterance):
     else:
         say = random.choice(EXISTING_KNOWLEDGE)
         if entity_label != 'you':
+            # Checked
             say += ' I have heard about %s before' % replace_pronouns(utterance.chat_speaker, entity_label=entity_label,
                                                                       role='complement')
         else:
@@ -153,7 +159,8 @@ def _phrase_subject_gaps(all_gaps, utterance):
                 say += ' Is there a %s that is %s %s?' % (
                     gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
             else:
-                say += ' Has %s %s %s?' % (gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
+                # Checked
+                say += ' Has %s %s %s?' % (utterance.triple.subject_name, gap.predicate_name, gap.entity_range_name)
 
     elif entity_role == 'complement':
         say = random.choice(CURIOSITY)
@@ -168,10 +175,12 @@ def _phrase_subject_gaps(all_gaps, utterance):
             if '#' in gap.entity_range_name:
                 say += ' What is %s %s?' % (utterance.triple.subject_name, gap.predicate_name)
             elif ' ' in gap.predicate_name:
+                # Checked
                 say += ' Has %s ever %s %s?' % (
                     gap.entity_range_name, gap.predicate_name, utterance.triple.subject_name)
 
             else:
+                # Checked
                 say += ' Has %s ever %s a %s?' % (utterance.triple.subject_name, gap.predicate_name,
                                                   gap.entity_range_name)
 
@@ -188,6 +197,7 @@ def _phrase_complement_gaps(all_gaps, utterance):
         say = random.choice(CURIOSITY)
 
         if not gaps:
+            # Checked
             say += ' What types can %s %s' % (utterance.triple.subject_name, utterance.triple.predicate_name)
 
         else:
@@ -218,8 +228,8 @@ def _phrase_complement_gaps(all_gaps, utterance):
                 say += ' Has %s ever %s a %s?' % (
                     utterance.triple.complement_name, gap.predicate_name, gap.entity_range_name)
             else:
-                say += ' Has %s ever %s a %s?' % (
-                    utterance.triple.complement_name, gap.predicate_name, gap.entity_range_name)
+                say += ' Has a %s ever %s %s?' % (
+                    gap.entity_range_name, gap.predicate_name, utterance.triple.complement_name)
 
     return say
 
@@ -258,10 +268,10 @@ def _phrase_overlaps(all_overlaps, utterance):
     elif entity_role == 'complement':
         say = random.choice(HAPPY)
         sample = random.sample(overlaps, 2)
-        types = utterance.triple.complement.types_names if utterance.triple.complement.types_names != '' else 'things'
+        types = sample[0].entity_types[0] if sample[0].entity_types  else 'things'
         say += ' Now I know %s %s that %s %s, like %s and %s' % (len(overlaps), types,
-                                                                 utterance.triple.complement_name,
                                                                  utterance.triple.predicate_name,
+                                                                 utterance.triple.complement_name,
                                                                  sample[0].entity_name, sample[1].entity_name)
 
     return say

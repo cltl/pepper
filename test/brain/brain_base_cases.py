@@ -20,15 +20,39 @@ if __name__ == "__main__":
         p = choice(bl)
         capsule = transform_capsule(elem, empty=em, no_people=np, place=p)
         x = brain.update(capsule)
+        thoughts = x['thoughts']
+        utterance = x['statement']
 
-        print(elem['subject']['label'], elem['predicate']['type'], elem['object']['label'])
-        print('\tcardinality conflicts: ' + _phrase_cardinality_conflicts(x['cardinality_conflicts'], elem))
-        print('\tnegation conflicts: ' + _phrase_negation_conflicts(x['negation_conflicts'], elem))
-        print('\tstatement novelty: ' + _phrase_statement_novelty(x['statement_novelty']))
-        print('\ttype novelty: ' + _phrase_type_novelty(x['entity_novelty'], elem))
-        print('\tsubject gaps: ' + _phrase_subject_gaps(x['subject_gaps'], elem))
-        print('\tobject gaps: ' + _phrase_complement_gaps(x['object_gaps'], elem))
-        print('\toverlaps: ' + _phrase_overlaps(x['overlaps'], elem))
-        print('\ttrust: ' + phrase_trust(x['trust']))
-
-        print('\t\t\tFINAL SAY: ' + phrase_thoughts(x, proactive=True, persist=True))
+        try:
+            print('\tcardinality conflicts: ' + _phrase_cardinality_conflicts(thoughts.complement_conflicts(),
+                                                                              utterance))
+        except:
+            print('No say')
+        try:
+            print('\tnegation conflicts: ' + _phrase_negation_conflicts(thoughts.negation_conflicts(), utterance))
+        except:
+            print('No say')
+        try:
+            print('\tstatement novelty: ' + _phrase_statement_novelty(thoughts.statement_novelties(), utterance))
+        except:
+            print('No say')
+        try:
+            print('\ttype novelty: ' + _phrase_type_novelty(thoughts.entity_novelty(), utterance))
+        except:
+            print('No say')
+        try:
+            print('\tsubject gaps: ' + _phrase_subject_gaps(thoughts.subject_gaps(), utterance))
+        except:
+            print('No say')
+        try:
+            print('\tobject gaps: ' + _phrase_complement_gaps(thoughts.complement_gaps(), utterance))
+        except:
+            print('No say')
+        try:
+            print('\toverlaps: ' + _phrase_overlaps(thoughts.overlaps(), utterance))
+        except:
+            print('No say')
+        try:
+            print('\t\t\tFINAL SAY: ' + phrase_thoughts(x, proactive=True, persist=True))
+        except:
+            print('No say')

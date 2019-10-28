@@ -119,8 +119,8 @@ def test_scenario(statement, questions, gold):
     '''
     correct = 0
     chat = Chat("Lenka", fake_context())
-    brain = LongTermMemory(
-    clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    brain = LongTermMemory()
+    # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
     # one or several statements are added to the brain
     if ',' in statement:
@@ -175,8 +175,8 @@ def test_with_triples(path):
     :param path: filepath of test file
     '''
     chat = Chat("Lenka", fake_context())
-    brain = LongTermMemory(
-        clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    brain = LongTermMemory()
+        # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
     index = 0
     correct = 0
@@ -254,4 +254,4 @@ if __name__ == "__main__":
     for test_file in all_test_files:
         test_with_triples(test_file)
 
-    #test_scenarios()
+    test_scenarios()

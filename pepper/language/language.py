@@ -626,7 +626,7 @@ class Parser(object):
                 pos[ind] = (w, 'VB')
             ind += 1
 
-        if pos[0][0] == 'Does':
+        if pos and pos[0][0] == 'Does':
             pos[0] = ('Does', 'VBD')
 
         # the POS tagger returns one tag with a $ sign (POS$) and this needs to be fixed for the CFG parsing

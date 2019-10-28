@@ -7,7 +7,7 @@ statements = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "serbia",
@@ -25,7 +25,7 @@ statements = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "netherlands",
@@ -43,7 +43,7 @@ statements = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "mexico",
@@ -61,7 +61,7 @@ statements = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "netherlands",
@@ -75,11 +75,11 @@ statements = [
     },
     {  # selene K is from the netherlands
         "subject": {
-            "label": "selene_k",
+            "label": "selene-k",
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "netherlands",
@@ -91,13 +91,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # bram likes goulash
+    {  # bram like goulash
         "subject": {
             "label": "bram",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "goulash",
@@ -109,16 +109,16 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # bram likes The Big Lebowski
+    {  # bram like The Big Lebowski
         "subject": {
             "label": "bram",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "the_big_lebowski",
+            "label": "the_big-lebowski",
             "type": "movie"
         },
         "author": "selene",
@@ -127,13 +127,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # bram likes baseball
+    {  # bram like baseball
         "subject": {
             "label": "bram",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "baseball",
@@ -145,17 +145,17 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # bram likes romantic movies
+    {  # bram like romantic movies
         "subject": {
             "label": "bram",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "romantic_movies",
-            "type": "film_genre"
+            "label": "romantic-movies",
+            "type": "film-genre"
         },
         "author": "selene",
         "chat": 1,
@@ -163,16 +163,16 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # lenka likes ice cream
+    {  # lenka like ice cream
         "subject": {
             "label": "lenka",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "ice_cream",
+            "label": "ice-cream",
             "type": "dish"
         },
         "author": "selene",
@@ -181,16 +181,16 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # lenka likes Harry Potter
+    {  # lenka like Harry Potter
         "subject": {
             "label": "lenka",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "harry_potter",
+            "label": "harry-potter",
             "type": "movie"
         },
         "author": "selene",
@@ -199,13 +199,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # lenka likes acrobatics
+    {  # lenka like acrobatics
         "subject": {
             "label": "lenka",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "acrobatics",
@@ -217,17 +217,17 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # lenka likes action movies
+    {  # lenka like action movies
         "subject": {
             "label": "lenka",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "action_movies",
-            "type": "film_genre"
+            "label": "action-movies",
+            "type": "film-genre"
         },
         "author": "selene",
         "chat": 1,
@@ -235,13 +235,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # piek likes balkenbrij
+    {  # piek like balkenbrij
         "subject": {
             "label": "piek",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "balkenbrij",
@@ -253,16 +253,16 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # piek likes 2001 A Space Odyssey
+    {  # piek like 2001 A Space Odyssey
         "subject": {
             "label": "piek",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "2001_a_space_odyssey",
+            "label": "2001_a_space-odyssey",
             "type": "movie"
         },
         "author": "selene",
@@ -271,13 +271,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # piek likes soccer
+    {  # piek like soccer
         "subject": {
             "label": "piek",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "soccer",
@@ -289,17 +289,17 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # piek likes horror movies
+    {  # piek like horror movies
         "subject": {
             "label": "piek",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "horror_movies",
-            "type": "film_genre"
+            "label": "horror-movies",
+            "type": "film-genre"
         },
         "author": "selene",
         "chat": 1,
@@ -307,13 +307,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # selene likes tacos
+    {  # selene like tacos
         "subject": {
             "label": "selene",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "tacos",
@@ -325,13 +325,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # selene likes Coco
+    {  # selene like Coco
         "subject": {
             "label": "selene",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "coco",
@@ -343,13 +343,13 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # selene likes soccer
+    {  # selene like soccer
         "subject": {
             "label": "selene",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
             "label": "soccer",
@@ -361,17 +361,17 @@ statements = [
         "position": "0-25",
         "date": date(2018, 3, 19)
     },
-    {  # selene likes animated movies
+    {  # selene like animated movies
         "subject": {
             "label": "selene",
             "type": "person"
         },
         "predicate": {
-            "type": "likes"
+            "type": "like"
         },
         "object": {
-            "label": "animated_movies",
-            "type": "film_genre"
+            "label": "animated-movies",
+            "type": "film-genre"
         },
         "author": "selene",
         "chat": 1,
@@ -385,7 +385,7 @@ statements = [
             "type": "person"
         },
         "predicate": {
-            "type": "knows"
+            "type": "know"
         },
         "object": {
             "label": "lenka",
@@ -403,7 +403,7 @@ statements = [
             "type": "robot"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "france",
@@ -421,7 +421,7 @@ statements = [
             "type": "robot"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "japan",
@@ -434,7 +434,7 @@ statements = [
         "date": date(2018, 3, 19)
     },
     {  # lenka mother is ljubica (lenka)
-        u'predicate': {u'type': u'mother_is'},
+        u'predicate': {u'type': u'mother-is'},
         u'chat': u'',
         u'author': u'lenka',
         u'object': {u'type': u'', u'id': u'', u'label': u'ljubica'},
@@ -445,11 +445,11 @@ statements = [
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'lenka'}
     },
-    {  # bram likes action movies (bram)
-        u'predicate': {u'type': u'likes'},
+    {  # bram like action movies (bram)
+        u'predicate': {u'type': u'like'},
         u'chat': u'',
         u'author': u'bram',
-        u'object': {u'type': u'', u'id': u'', u'label': u'action_movies'},
+        u'object': {u'type': u'', u'id': u'', u'label': u'action-movies'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
@@ -457,11 +457,11 @@ statements = [
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
     },
-    {  # bram likes romantic movies (selene)
-        u'predicate': {u'type': u'likes'},
+    {  # bram like romantic movies (selene)
+        u'predicate': {u'type': u'like'},
         u'chat': u'',
         u'author': u'selene',
-        u'object': {u'type': u'', u'id': u'', u'label': u'romantic_movies'},
+        u'object': {u'type': u'', u'id': u'', u'label': u'romantic-movies'},
         u'turn': u'',
         u'utterance_type': u'statement',
         u'date': date(2018, 3, 19),
@@ -469,8 +469,8 @@ statements = [
         u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
     },
-    {  # bram is_from Italy (selene)
-        u'predicate': {u'type': u'is_from'},
+    {  # bram be_from Italy (selene)
+        u'predicate': {u'type': u'be-from'},
         u'chat': u'',
         u'author': u'selene',
         u'object': {u'type': u'location', u'id': u'', u'label': u'italy'},
@@ -482,7 +482,7 @@ statements = [
         u'subject': {u'type': u'', u'id': u'', u'label': u'bram'}
     },
     {  # lenka favorite food-is cake (lenka)
-        u'predicate': {u'type': u'favorite'},
+        u'predicate': {u'type': u'favorite-is'},
         u'chat': u'',
         u'author': u'lenka',
         u'object': {u'type': u'', u'id': u'', u'label': u'cake'},
@@ -497,7 +497,7 @@ statements = [
 
 questions = [
     {
-        u'predicate': {u'type': 'is_from'},
+        u'predicate': {u'type': 'be-from'},
         u'chat': 0,
         u'author': u'jo',
         u'object': {u'type': u'', u'id': u'', u'label': ''},
@@ -512,7 +512,7 @@ questions = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "serbia",
@@ -525,7 +525,7 @@ questions = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "",
@@ -551,7 +551,7 @@ questions = [
             "type": "person"
         },
         "predicate": {
-            "type": "is_from"
+            "type": "be-from"
         },
         "object": {
             "label": "netherlands",
@@ -587,19 +587,19 @@ questions = [
         u'subject': {u'type': u'', u'id': u'', u'label': u'selene'}
     },
     {  # Where is Leolani from?
-        u'predicate': {u'type': u'is_from'}, u'chat': u'', u'author': u'person',
+        u'predicate': {u'type': u'be-from'}, u'chat': u'', u'author': u'person',
         u'object': {u'type': u'', u'id': u'', u'label': u''}, u'turn': u'', u'utterance_type': u'question',
         u'date': date(2018, 3, 19), u'position': u'', u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u'leolani'}
     },
     {  # Who is from italy
-        u'predicate': {u'type': u'is_from'}, u'chat': u'', u'author': u'jill',
+        u'predicate': {u'type': u'be-from'}, u'chat': u'', u'author': u'jill',
         u'object': {u'type': u'', u'id': u'', u'label': u'italy'}, u'turn': u'', u'utterance_type': u'question',
         u'date': date(2018, 3, 19), u'position': u'', u'response': {u'role': u'', u'format': u''},
         u'subject': {u'type': u'', u'id': u'', u'label': u''}
     },
     {  # what does piek like (jo)
-        u'predicate': {u'type': u'likes'},
+        u'predicate': {u'type': u'like'},
         u'chat': u'',
         u'author': u'jo',
         u'object': {u'type': u'', u'id': u'', u'label': u''},
