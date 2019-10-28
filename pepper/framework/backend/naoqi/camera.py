@@ -142,6 +142,7 @@ class NAOqiCamera(AbstractCamera):
                 for image in self._service.getImagesRemote(self._client):
 
                     # Get Image Data
+                    # TODO: RGB and Depth Images are not perfectly synced, can they?
                     width, height, _, _, _, _, data, camera, left, top, right, bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:

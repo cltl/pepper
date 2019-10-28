@@ -147,7 +147,7 @@ MICROPHONE_CHANNELS = 1
 # Camera resolution (in pixels) and frame rate (Hz)
 # NOTE: Both resolution and frame rate impact system performance...
 CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
-CAMERA_FRAME_RATE = 3
+CAMERA_FRAME_RATE = 30
 
 # NAOqi Text to Speech Speed
 NAOQI_SPEECH_SPEED = 90
