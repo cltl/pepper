@@ -96,7 +96,7 @@ class Context(object):
         return self.chats[-1] if self.chatting else None
 
     @property
-    def datetime(self):     # When
+    def datetime(self):  # When
         # type: () -> datetime
         """
         The Current Date & Time
@@ -109,7 +109,7 @@ class Context(object):
         return datetime.now()
 
     @property
-    def location(self):     # Where
+    def location(self):  # Where
         # type: () -> Location
         """
         The Current Location
@@ -122,7 +122,7 @@ class Context(object):
         return self._location
 
     @property
-    def people(self):      # Who
+    def people(self):  # Who
         # type: () -> List[Face]
         """
         People seen within Observation Timeout
@@ -148,7 +148,7 @@ class Context(object):
         return [person for person, t in self._people.values()]
 
     @property
-    def objects(self):      # What
+    def objects(self):  # What
         # type: () -> List[Object]
         """
         Objects seen within Observation Timeout
@@ -366,9 +366,13 @@ class ObjectObservations:
         ----------
         observation: Object
         """
-
         # If observation is a scene descriptor instead of an actual object, override clustering and use single instance
-        if observation.image_bounds.area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
+        try:
+            observation_area = observation.image_bounds.area
+        except:
+            observation_area = 0
+
+        if observation_area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
             self._instances = [observation]
             return
 

@@ -3,6 +3,7 @@ import random
 from pepper.language.generation.phrasing import *
 from pepper.language.utils.helper_functions import wnl, lexicon_lookup
 
+
 def fix_predicate_morphology(subject, predicate, object, format='triple'):
     """
     Conjugation
@@ -38,7 +39,7 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
                 else:
                     new_predicate += el + ' '
 
-        #elif predicate == wnl.lemmatize(predicate):
+        # elif predicate == wnl.lemmatize(predicate):
         #    new_predicate = predicate + 's'
 
         else:
@@ -48,10 +49,6 @@ def fix_predicate_morphology(subject, predicate, object, format='triple'):
 
 
 def reply_to_question(brain_response):
-
-
-    print(brain_response)
-
     say = ''
     previous_author = ''
     previous_subject = ''
@@ -67,7 +64,8 @@ def reply_to_question(brain_response):
     if not response:
         # TODO revise by lenka (we catch responses we could have known here)
         subject_type = random.choice(utterance.triple.subject.types) if utterance.triple.subject.types else 'things'
-        object_type = random.choice(utterance.triple.object.types) if utterance.triple.object.types else 'things'
+        object_type = random.choice(
+            utterance.triple.complement.types) if utterance.triple.complement.types else 'things'
         predicate = str(utterance.triple.predicate_name)
         say += "I know %s usually %s %s, but I do not know this case" % (subject_type, predicate, object_type)
         return say
@@ -82,26 +80,16 @@ def reply_to_question(brain_response):
             else:
                 say+=' a '+obj+', '
 
-        if utterance.triple.object_name:
-            if utterance.triple.object_name.lower() in viewed_objects:
-                say = 'yes, I can see a ' + utterance.triple.object_name
+        if utterance.triple.complement_name:
+            if utterance.triple.complement_name.lower() in viewed_objects:
+                say = 'yes, I can see a ' + utterance.triple.complement_name
             else:
-                say = 'no, I cannot see a ' + utterance.triple.object_name
+                say = 'no, I cannot see a ' + utterance.triple.complement_name
     '''
 
     response.sort(key=lambda x: x['authorlabel']['value'])
 
     for item in response:
-
-
-        # CERTAINTY
-        if 'v' in brain_response['response']:
-            print (brain_response['response']['v'])
-
-        else:
-            print (brain_response['response'])
-
-
         # INITIALIZATION
         author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
         if utterance.triple.subject_name != '':
@@ -109,8 +97,8 @@ def reply_to_question(brain_response):
         else:
             subject = item['slabel']['value']
 
-        if utterance.triple.object_name!='':
-            object = utterance.triple.object_name
+        if utterance.triple.complement_name != '':
+            object = utterance.triple.complement_name
         elif 'olabel' in item:
             object = item['olabel']['value']
         else:
@@ -130,7 +118,7 @@ def reply_to_question(brain_response):
         if '-' in subject:
             new_sub = ''
             for word in subject.split('-'):
-                new_sub += replace_pronouns(utterance.chat_speaker, entity_label = word, role='pos')+' '
+                new_sub += replace_pronouns(utterance.chat_speaker, entity_label=word, role='pos') + ' '
             subject = new_sub
 
         subject_entry = lexicon_lookup(subject.lower())
@@ -146,34 +134,45 @@ def reply_to_question(brain_response):
             if predicate != previous_predicate:
                 say += ' that '
 
+        if item['sentimentValue']['value']!='UNDERSPECIFIED':
+            print('sentiment', item['sentimentValue']['value'])
 
 
         if predicate.endswith('is'):
 
-            say += object+' is'
-            if utterance.triple.object_name.lower() == utterance.chat_speaker.lower() or \
+            say += object + ' is'
+            if utterance.triple.complement_name.lower() == utterance.chat_speaker.lower() or \
                     utterance.triple.subject_name.lower() == utterance.chat_speaker.lower():
                 say += ' your '
-            elif utterance.triple.object_name.lower() == 'leolani' or \
+            elif utterance.triple.complement_name.lower() == 'leolani' or \
                     utterance.triple.subject_name.lower() == 'leolani':
                 say += ' my '
             say += predicate[:-3]
 
             return say
-        else: # TODO fix_predicate_morphology
+        else:  # TODO fix_predicate_morphology
             be = {'first': 'am', 'second': 'are', 'third': 'is'}
-            if predicate=='be': # or third person singular
+            if predicate == 'be':  # or third person singular
                 if subject_entry and 'number' in subject_entry:
-                    if subject_entry['number']=='singular':
+                    if subject_entry['number'] == 'singular':
                         predicate = be[person]
                     else:
                         predicate = 'are'
-            elif person=='third' and not '-' in predicate:
-                predicate+='s'
+            elif person == 'third' and not '-' in predicate:
+                predicate += 's'
 
+            if item['certaintyValue']['value'] != 'CERTAIN': #TODO extract correct certainty marker
+                print('certainty', item['certaintyValue']['value'])
+                predicate = 'maybe '+predicate
 
-            say += subject + ' '+ predicate+' '+object
+            if item['polarityValue']['value'] != 'POSITIVE':
+                print('polarity', item['polarityValue']['value'], predicate)
+                if ' ' in predicate:
+                    predicate = predicate.split()[0]+ ' not '+predicate.split()[1]
+                else:
+                    predicate = 'do not '+predicate
 
+            say += subject + ' ' + predicate + ' ' + object
 
         say += ' and '
 

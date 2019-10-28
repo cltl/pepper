@@ -387,7 +387,7 @@ class Utterance(object):
                                       rdf['subject']['type'])
         predicate = builder.fill_predicate(casefold_text(rdf['predicate']['text'], format='triple'))
         complement = builder.fill_entity(casefold_text(rdf['complement']['text'], format='triple'),
-                                                rdf['complement']['type'])
+                                         rdf['complement']['type'])
 
         self.set_triple(Triple(subject, predicate, complement))
 
@@ -478,7 +478,7 @@ class Utterance(object):
 
         # possible openers/greetings/introductions are removed from the beginning of the transcript
         # it is done like this to avoid lowercasing the transcript as caps are useful and google puts them
-        openers = ['Leolani', 'Sorry', 'Excuse me', 'Hey','Hello','Hi']
+        openers = ['Leolani', 'Sorry', 'Excuse me', 'Hey', 'Hello', 'Hi']
         introductions = ['Can you tell me', 'Do you know', 'Please tell me', 'Do you maybe know']
 
         for o in openers:
@@ -591,18 +591,16 @@ class Parser(object):
         :return: parsed syntax tree and a dictionary of syntactic realizations
         '''
         tokenized_sentence = utterance.tokens
-        pos = self.POS_TAGGER.tag(tokenized_sentence) #standford
-        alternative_pos = pos_tag(tokenized_sentence) #nltk
+        pos = self.POS_TAGGER.tag(tokenized_sentence)  # standford
+        alternative_pos = pos_tag(tokenized_sentence)  # nltk
 
         self._log.debug(pos)
         self._log.debug(alternative_pos)
 
+        if pos != alternative_pos:
+            self._log.debug('DIFFERENT POS tag: %s != %s' % (pos, alternative_pos))
 
-        if pos !=alternative_pos:
-            print (pos, alternative_pos)
-            print ('DIFFERENT')
-
-        print('NER ',self.NER_TAGGER.tag(utterance.transcript))
+        # print('NER ', self.NER_TAGGER.tag(utterance.transcript))
 
         # # Fixing POS matching
         # import spacy
@@ -628,7 +626,7 @@ class Parser(object):
                 pos[ind] = (w, 'VB')
             ind += 1
 
-        if pos[0][0] == 'Does':
+        if pos and pos[0][0] == 'Does':
             pos[0] = ('Does', 'VBD')
 
         # the POS tagger returns one tag with a $ sign (POS$) and this needs to be fixed for the CFG parsing
@@ -657,7 +655,7 @@ class Parser(object):
 
             parsed = RD.parse(tokenized_sentence)
 
-            s_r = {} #syntactic_realizations are the topmost branches, usually VP/NP
+            s_r = {}  # syntactic_realizations are the topmost branches, usually VP/NP
             index = 0
 
             forest = [tree for tree in parsed]

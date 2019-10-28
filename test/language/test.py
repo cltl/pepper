@@ -2,20 +2,20 @@ from pepper.language import *
 from pepper.brain import LongTermMemory
 from pepper.framework import UtteranceHypothesis, Context, Face
 from pepper.framework.sensor.obj import Object, Bounds
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.language.generation import reply_to_question
 
 import numpy as np
 
 
 def fake_context():
-
-    #objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
+    # objects = {Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
     #           Object('cat', 0.51, None, None)}
-    #faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
+    # faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
     context = Context()
-    #context.add_objects(objects)
-    #context.add_people(faces)
+    # context.add_objects(objects)
+    # context.add_people(faces)
     return context
 
 
@@ -119,19 +119,23 @@ def test_scenario(statement, questions, gold):
     '''
     correct = 0
     chat = Chat("Lenka", fake_context())
-    brain = LongTermMemory(
-        clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    brain = LongTermMemory()
+    # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
     # one or several statements are added to the brain
     if ',' in statement:
         for stat in statement.split(','):
             chat.add_utterance([UtteranceHypothesis(stat, 1.0)], False)
             chat.last_utterance.analyze()
-            brain.update(chat.last_utterance, reason_types=True)
+            brain_response = brain.update(chat.last_utterance, reason_types=True)
+            reply = phrase_thoughts(brain_response, True, True)
+        print(reply)
     else:
         chat.add_utterance([UtteranceHypothesis(statement, 1.0)], False)
         chat.last_utterance.analyze()
-        brain.update(chat.last_utterance, reason_types=True)
+        brain_response = brain.update(chat.last_utterance, reason_types=True)
+        reply = phrase_thoughts(brain_response, True, True)
+        print(reply)
 
     # brain is queried and a reply is generated and compared with golden standard
     for question in questions:
@@ -161,7 +165,7 @@ def test_scenarios():
     for sc in scenarios:
         correct += test_scenario(sc['statement'], sc['questions'], sc['reply'])
         total += len(sc['questions'])
-    print(correct, total - correct)
+    print('CORRECT: ', correct, ',\tINCORRECT: ', total - correct)
 
 
 def test_with_triples(path):
@@ -171,8 +175,8 @@ def test_with_triples(path):
     :param path: filepath of test file
     '''
     chat = Chat("Lenka", fake_context())
-    brain = LongTermMemory(
-        clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    brain = LongTermMemory()
+        # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
     index = 0
     correct = 0
@@ -236,7 +240,6 @@ def test_with_triples(path):
 
 
 if __name__ == "__main__":
-
     '''
     test files with triples are formatted like so "test sentence : subject predicate complement" 
     multi-word-expressions have dashes separating their elements, and are marked with apostrophes if they are a collocation
@@ -248,7 +251,7 @@ if __name__ == "__main__":
 
     test_files = ["./data/statements.txt"]
 
-    # for test_file in test_files:
-    #     test_with_triples(test_file)
+    for test_file in all_test_files:
+        test_with_triples(test_file)
 
     test_scenarios()
