@@ -1,17 +1,23 @@
-# VU Amsterdam - CLTL - Pepper / Nao Framework
+# VU Amsterdam - CLTL - Robot Framework
 
-This is the main repository for Pepper/Nao Applications created as part of the Computational Lexicology & Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.
+Repository for Robot Applications created as part of the [Computational Lexicology & Terminology Lab (CLTL)](http://www.cltl.nl) at the Vrije Universiteit, Amsterdam.
 
 ![Pepper Robot Leolani](https://github.com/cltl/pepper/blob/develop/docs/images/pepper.png)
 
-## CLTL/Pepper Features
- - A Platform-Agnostic, Object-Oriented Framework for creating Robot Applications
- - The necessary Machine Learning for enabling Human-Robot conversation
- - Language Understanding through Grammars
- - Knowledge Representation of Learned Facts through RDF Graph
- - Realtime visualisation in web browser (WIP)
+## Features
+ - A framework for creating interactive Robot Applications using Python, to enable:
+   - Human-Robot conversation using Speech-to-Text and Text-to-Speech
+   - Recognising friends by face and learning about them and the world through conversation
+   - Recognising and positioning the people and objects in its enviroment.
+ - Natural Language Understanding through Syntax Trees (Grammars)
+ - Knowledge Representation of all learned facts through a RDF Graph: Pepper's Brain!
+ - Curiosity based on Knowledge Gaps and Conflicts resulting from learned facts
+ - Realtime visualisation in web browser
 
-## Get started
+## Getting started
 Check out our [WIKI](https://github.com/cltl/pepper/wiki) for information on [how it works](https://github.com/cltl/pepper/wiki/How-it-works) and [how to Install the package](https://github.com/cltl/pepper/wiki/Installation).
 
-Check out our [API Reference](https://cltl.github.io/pepper/) for detailed information on the framework.
+Check out our [API Reference](https://cltl.github.io/pepper/) and [Sample Applications](https://github.com/cltl/pepper/tree/develop/apps/examples)!
+
+## More information
+More information on the Pepper project at CLTL can be found on http://makerobotstalk.nl
