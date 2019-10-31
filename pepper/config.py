@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
+APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
 
 # Name of Robot
 NAME = "Leolani"
@@ -136,7 +136,7 @@ VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 # NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
     pepper.ObjectDetectionTarget.COCO,
-    pepper.ObjectDetectionTarget.OID
+    # pepper.ObjectDetectionTarget.OID
 ]
 
 # Microphone sample rate (Hz) and number of channels

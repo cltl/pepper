@@ -32,7 +32,7 @@ class ResponderApp(AbstractApplication, StatisticsComponent,
 
                    SubtitlesComponent,
 
-                   DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
+                   # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
 
                    ExploreComponent,
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,

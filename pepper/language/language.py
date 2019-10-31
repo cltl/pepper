@@ -597,7 +597,6 @@ class Parser(object):
         self._log.debug(pos)
         self._log.debug(alternative_pos)
 
-
         if pos !=alternative_pos:
             print (pos, alternative_pos)
             print ('DIFFERENT')
@@ -621,15 +620,17 @@ class Parser(object):
         #                 pos[ind] = (w[0],token.tag_)
         #         ind += 1
 
-        # fixing issues with POS tagger (Does and like)
-        ind = 0
-        for w in tokenized_sentence:
-            if w == 'like':
-                pos[ind] = (w, 'VB')
-            ind += 1
+        if pos:
 
-        if pos[0][0] == 'Does':
-            pos[0] = ('Does', 'VBD')
+            # fixing issues with POS tagger (Does and like)
+            ind = 0
+            for w in tokenized_sentence:
+                if w == 'like':
+                    pos[ind] = (w, 'VB')
+                ind += 1
+
+            if pos[0][0] == 'Does':
+                pos[0] = ('Does', 'VBD')
 
         # the POS tagger returns one tag with a $ sign (POS$) and this needs to be fixed for the CFG parsing
         ind = 0
