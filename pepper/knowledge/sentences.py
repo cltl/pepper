@@ -276,6 +276,12 @@ ELOQUENCE = [
     "Many of us feel that way"
     ]
 
+PARSED_KNOWLEDGE = ["I like learning things!",
+                    "I'm always hungry for more information!",
+                    "I will remember that!",
+                    "Now that's an interesting fact!",
+                    "I understand!"]
+
 NEW_KNOWLEDGE = ["I did not know that!", "This is news to me.", "Interesting!", "Exciting news!",
                  "I just learned something,", "I am glad to have learned something new."]
 
