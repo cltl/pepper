@@ -3,10 +3,15 @@ from pepper.responder import *
 #from pepper.responder.weather import WeatherResponder
 from pepper.language import Utterance
 from pepper import config
-
+from pepper.responder.weather import WeatherMoods
 
 RESPONDERS = [
-    GoodbyeResponder(), GreetingResponder(),  WeatherElserwhere(), WeatherResponder(), ThanksResponder()
+    GoodbyeResponder(),
+    # GreetingResponder(),
+    # ThanksResponder(),
+    WeatherMoods(),
+    # WeatherElserwhere(),
+    # WeatherResponder(),
 ]
 
 
