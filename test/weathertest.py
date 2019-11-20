@@ -18,7 +18,6 @@ print()
 
 def get_weather(api_key, location):
     url = "https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid={}".format(location, api_key)
-    #url = "https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid={}".format(location, api_key)
     r = requests.get(url)
     return r.json()
     #already turns into a dictionary

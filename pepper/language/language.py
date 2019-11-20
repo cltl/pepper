@@ -186,6 +186,7 @@ class Utterance(object):
         self._tokens = self._clean(self._tokenize(self.transcript))
 
         # TODO: Optimize: takes 2.6 seconds now! Should be < 1 second!?
+
         self._parser = None if self.me else Parser(self)
         # TODO analyze sets triple, perspective and type, but currently is not called on constructor
         self._type = None

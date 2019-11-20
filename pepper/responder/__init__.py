@@ -17,4 +17,4 @@ from .sensory import VisionResponder, PreviousUtteranceResponder, LocationRespon
 from .internet import WikipediaResponder, WolframResponder
 from .brain import BrainResponder
 from .intention import MeetIntentionResponder
-from .weather import WeatherResponder, WeatherElserwhere
+from .weather import WeatherResponder, WeatherElserwhere, WeatherMoods

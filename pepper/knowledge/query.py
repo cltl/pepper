@@ -60,8 +60,6 @@ class QnA:
         "What do you do?": "I'm learning about the world through conversations with humans. With this I aid research!",
         "Are you married?": "Although I've met other Pepper robots, I'm a single lady!",
         "What do you do in your free time": "For me it's only small talk that counts!",
-        #"What's the weather like?": "Perfect! It's always nicely air conditioned in the office!",
-
         "How are you": "I'm fine, thanks! What about you?",
         "How is it going?": "Great, as always, how are things with you, my dear human?",
         "How are you feeling": "I feel robot-like, I always have.",
@@ -75,6 +73,9 @@ class QnA:
         "Can you introduce yourself?": "I surely can introduce myself! My name is Leo Lani, "
                                        " which means 'Voice of an Angel' in Hawaiian. "
                                        "I am a social robot and I learn from conversations with humans!",
+
+        # TODO Do something regarding this statement and possible conflict with weatherresponder questions
+        # "What's the weather like?": "Perfect! It's always nicely air conditioned in the office!",
 
         # Technology
         "Do you have a brain?": "Haha, no! My brain is located on the laptop of my programmers "
