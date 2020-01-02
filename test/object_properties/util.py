@@ -4,13 +4,14 @@ from sklearn.cluster import DBSCAN
 from matplotlib import colors as mcolors
 from scipy.sparse import csr_matrix
 from PIL import Image
+from statistics import mean, mode, median
 
 import numpy as np
 import matplotlib.pyplot as plt
+import statistics
 
 import os
 import json
-
 
 OBJ_HANDLE = "_obj.json"
 RGB_HANDLE = "_rgb.png"
@@ -38,30 +39,24 @@ def read_dir(root):
     """
     Read the directory with generated images, objects and associated metadata.
     :param root: directory path
-    :return: images and objects in the directory (AbstractImage, object list)
+    :return: images and objects in the directory (AbstractImage, list)
     """
 
     images = filter(lambda item: os.path.isdir(os.path.join(root, item)), os.listdir(root))
 
     for image in images:
-
         img_path = os.path.join(root, image)
-
         with open(img_path + META_HANDLE) as meta_file:
             img_meta = json.load(meta_file)
-
         img_rgb = np.array(Image.open(os.path.join(root, image + RGB_HANDLE)))
-
         img_depth = get_depth(img_path, img_rgb)
-
         img = AbstractImage(img_rgb, Bounds.from_json(img_meta["bounds"]), img_depth, img_meta["time"])
-
         objects = [os.path.join(img_path, obj) for obj in os.listdir(img_path)]
 
         yield img, objects
 
 
-def object_properties(obj_path):
+def read_object_properties(obj_path):
     """
     Retrieve object data and metadata.
     :param obj_path: object path
@@ -74,9 +69,7 @@ def object_properties(obj_path):
     obj_type = meta_info['name']
     obj_confidence = meta_info['confidence']
     obj_bounds = meta_info['bounds']
-
     obj_img = Image.open(os.path.join(obj_path, RGB_HANDLE[1:]))
-
     obj_rgb = np.array(obj_img).astype('float')
     obj_depth = get_depth(obj_path, obj_rgb)
 
@@ -86,7 +79,7 @@ def object_properties(obj_path):
 def translate_color():
     """
     Translate matplotlib colors from hex to rgb and return mapping to basic and extended color names.
-    :return: mapping to basic and extended color names
+    :return: dictionary mappings to basic and extended color names
     """
 
     rgb_mapping = dict()
@@ -95,9 +88,7 @@ def translate_color():
                   'teal', 'olive', 'violet', 'turquoise', 'navy']
 
     for name, value in dict(mcolors.get_named_colors_mapping()).items():
-
         rgb_value = mcolors.to_rgb(value)
-
         if name.startswith('xkcd'):
             name = name[5:]
         if name.startswith('tab'):
@@ -106,7 +97,6 @@ def translate_color():
             name = name.replace('gray', 'grey')
 
         name = name.replace(' ', '_')
-
         rgb_mapping[name] = rgb_value
 
     basic_colors, new_mapping = get_basic_colors(basic_list, rgb_mapping)
@@ -119,19 +109,16 @@ def get_basic_colors(basic_list, rgb_mapping):
     Map more specific color names to basic colors.
     :param basic_list: list of basic colors
     :param rgb_mapping: mapping of rgb values to matplotlib color names
-    :return: mapping of extended color names to basic colors, cleaned rgb mapping
+    :return: dictionary mapping of extended color names to basic colors, cleaned rgb dictionary mapping
     """
 
     basic_colors = dict.fromkeys(basic_list)
     extended_list = rgb_mapping.keys()  # 1049 color names
 
     for color in extended_list:
-
         for basic_color in basic_list:
-
             if basic_color in color:
                 if basic_colors[basic_color]:
-                    # TODO: use a set instead?
                     basic_colors[basic_color].append(color)
                 else:
                     basic_colors[basic_color] = [color]
@@ -183,10 +170,9 @@ def clustering(rgb, obj_depth, img):
     :return: pixel-level features and cluster labels, set of identified clusters
     """
 
-    # TODO: make a version without depth
     rgbd = np.dstack((rgb, obj_depth))
 
-    # TODO: check indices
+    # TODO: double-check indices
     new_rgbd = csr_matrix(rgbd.reshape(-1, 4))
 
     dbscan = DBSCAN(eps=5, min_samples=50)
@@ -206,15 +192,12 @@ def clustering(rgb, obj_depth, img):
     plt.subplot(2, 1, 2)
     plt.imshow(np.reshape(labels, [rows, cols]))
     plt.axis('off')
-    # plt.show()
 
     indices = np.dstack(np.indices(rgbd.shape[:2]))
     rgbxyd = np.concatenate((rgbd, indices), axis=-1)
-
     result = zip(np.reshape(rgbxyd, [-1, 6]), labels)
-    clusters = set([res[1] for res in result])
 
-    return result, clusters
+    return result, labels
 
 
 def biggest_cluster(result, clusters):
@@ -270,7 +253,6 @@ def middle_cluster(result, clusters):
         diff_5 = (0.5 * max([res[0][5] for res in result]) - avg_5) ** 2
 
         total_diff = diff_4 + diff_5
-
         position_dict[cluster] = total_diff
 
     return position_dict
@@ -330,19 +312,52 @@ def dominant_cluster(result, clusters):
             return dom_cluster
 
 
-def list_avg(somelist):
-    return sum(somelist) / len(somelist)
-
-
 def separate_rgb_channels(rgb_array):
-    r_list = [rgb[0][0] for rgb in rgb_array]
-    g_list = [rgb[0][1] for rgb in rgb_array]
-    b_list = [rgb[0][2] for rgb in rgb_array]
+    """
+    Separate rgb channels and return normalized channels.
+    :param rgb_array:
+    :return:
+    """
+    r_list = [rgb[0][0] / 255 for rgb in rgb_array]
+    g_list = [rgb[0][1] / 255 for rgb in rgb_array]
+    b_list = [rgb[0][2] / 255 for rgb in rgb_array]
 
     return r_list, g_list, b_list
 
 
-def color_mapping(array, color_names):
+def manual_mode(a_list):
+
+    max_count = max(a_list.count(item) for item in a_list)
+    all_max = filter(lambda v: a_list.count(v) == max_count, a_list)
+
+    return mean(all_max)
+
+
+def stats(rgb_array):
+
+    r_list, g_list, b_list = separate_rgb_channels(rgb_array)
+    mean_rgb = [mean(r_list), mean(g_list), mean(b_list)]
+    median_rgb = [median(r_list), median(g_list), median(b_list)]
+
+    try:
+        mode_r = mode(r_list)
+    except statistics.StatisticsError:
+        mode_r = manual_mode(r_list)
+    try:
+        mode_g = mode(g_list)
+    except statistics.StatisticsError:
+        mode_g = manual_mode(g_list)
+    try:
+        mode_b = mode(b_list)
+    except statistics.StatisticsError:
+        mode_b = manual_mode(b_list)
+
+    mode_rgb = [mode_r, mode_g, mode_b]
+
+    return mean_rgb, mode_rgb, median_rgb
+
+
+def color_mapping(avg_triplet, color_names):
     """
     Map object color values to color names.
     :param array: array of rgb values
@@ -350,24 +365,13 @@ def color_mapping(array, color_names):
     :return: the closest color name for the given rgb array
     """
 
-    r_list, g_list, b_list = separate_rgb_channels(array)
-
-    avg_r = list_avg(r_list)
-    avg_g = list_avg(g_list)
-    avg_b = list_avg(b_list)
-
-    # normalize the average values because they will be compared with already normalized values
-    avg_triplet = (avg_r / 255, avg_g / 255, avg_b / 255)
-
     min_diff = 1000
     min_key = ''
 
     for name, color_value in color_names.items():
-
         r_diff = (avg_triplet[0] - color_value[0]) ** 2
         g_diff = (avg_triplet[1] - color_value[1]) ** 2
         b_diff = (avg_triplet[2] - color_value[2]) ** 2
-
         total_diff = r_diff + g_diff + b_diff
 
         if total_diff < min_diff:
@@ -375,33 +379,3 @@ def color_mapping(array, color_names):
             min_key = name
 
     return min_key
-
-
-def get_surface(obj_bounds):
-    """
-    Calculate object surface.
-    :param obj_bounds: min and max x and y values of the object bounding box
-    :return: object bounding box surface area
-    """
-
-    x_span = obj_bounds['x1'] - obj_bounds['x0']
-    y_span = obj_bounds['y1'] - obj_bounds['y0']
-
-    return 100 * x_span * y_span
-
-
-def get_size(surface):
-    """
-    Map object surface to size (tiny/small/big).
-    :param surface: object surface area
-    :return: tiny/small/big (string)
-    """
-
-    if surface < 1:
-        size = 'tiny'
-    elif surface < 10:
-        size = 'small'
-    else:
-        size = 'big'
-
-    return size
