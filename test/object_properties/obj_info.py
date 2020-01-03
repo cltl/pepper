@@ -26,6 +26,7 @@ def map_colors():
             name = name.replace('lavendar', 'lavender')
         if 'gray' in name:
             name = name.replace('gray', 'grey')
+        # TODO: additional tokenization
         d = re.compile('dark[a-z]+')
         f = d.search(name)
         if f:

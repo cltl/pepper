@@ -57,6 +57,6 @@ def main(work_dir):
 
 if __name__ == '__main__':
 
-    # WORK_DIR = './results/cup'
-    WORK_DIR = './results/chair'
+    WORK_DIR = './results/cup'
+    # WORK_DIR = './results/chair'
     main(WORK_DIR)
