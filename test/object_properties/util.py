@@ -1,7 +1,6 @@
 from pepper.framework import AbstractImage, Bounds
 
 from sklearn.cluster import DBSCAN
-from matplotlib import colors as mcolors
 from scipy.sparse import csr_matrix
 from PIL import Image
 from statistics import mean, mode, median
@@ -74,91 +73,6 @@ def read_object_properties(obj_path):
     obj_depth = get_depth(obj_path, obj_rgb)
 
     return obj_type, obj_confidence, obj_bounds, obj_depth, obj_rgb, obj_img
-
-
-def translate_color():
-    """
-    Translate matplotlib colors from hex to rgb and return mapping to basic and extended color names.
-    :return: dictionary mappings to basic and extended color names
-    """
-
-    rgb_mapping = dict()
-
-    basic_list = ['black', 'white', 'grey', 'red', 'green', 'blue', 'yellow', 'orange', 'purple', 'pink', 'brown',
-                  'teal', 'olive', 'violet', 'turquoise', 'navy']
-
-    for name, value in dict(mcolors.get_named_colors_mapping()).items():
-        rgb_value = mcolors.to_rgb(value)
-        if name.startswith('xkcd'):
-            name = name[5:]
-        if name.startswith('tab'):
-            name = name[4:]
-        if 'gray' in name:
-            name = name.replace('gray', 'grey')
-
-        name = name.replace(' ', '_')
-        rgb_mapping[name] = rgb_value
-
-    basic_colors, new_mapping = get_basic_colors(basic_list, rgb_mapping)
-
-    return new_mapping, basic_colors
-
-
-def get_basic_colors(basic_list, rgb_mapping):
-    """
-    Map more specific color names to basic colors.
-    :param basic_list: list of basic colors
-    :param rgb_mapping: mapping of rgb values to matplotlib color names
-    :return: dictionary mapping of extended color names to basic colors, cleaned rgb dictionary mapping
-    """
-
-    basic_colors = dict.fromkeys(basic_list)
-    extended_list = rgb_mapping.keys()  # 1049 color names
-
-    for color in extended_list:
-        for basic_color in basic_list:
-            if basic_color in color:
-                if basic_colors[basic_color]:
-                    basic_colors[basic_color].append(color)
-                else:
-                    basic_colors[basic_color] = [color]
-
-            # TODO: add condition if the string contains a substring of color + ish
-
-    uncategorized = count_uncategorized(basic_colors, extended_list)
-
-    for c in uncategorized:
-        if 'ruby' in c or 'crimson' in c or 'blood' in c or 'tomato' in c:
-            basic_colors['red'].append(c)
-        if 'lemon' in c or 'banana' in c:
-            basic_colors['yellow'].append(c)
-        if 'tangerine' in c:
-            basic_colors['orange'].append(c)
-        if 'sky' in c or 'sea' in c:
-            basic_colors['blue'].append(c)
-        if 'kiwi' in c:
-            basic_colors['green'].append(c)
-        if 'lilac' in c or 'purpl' in c:
-            basic_colors['purple'].append(c)
-        if 'rose' in c or 'salmon' in c:
-            basic_colors['pink'].append(c)
-        if 'chocolate' in c or 'coffee' in c:
-            basic_colors['brown'].append(c)
-
-    # TODO: check error
-    # for uncategorized_color in count_uncategorized(basic_colors, extended_list):
-    # del basic_colors[uncategorized_color]
-
-    return basic_colors, rgb_mapping
-
-
-def count_uncategorized(colordict, colorlist):
-    # flatten list of lists and convert to a set because the same specific color can appear under more than one
-    # basic color: e.g., green-blue under both green and blue
-    colors_in_dict = set(color for colors in colordict.values() for color in colors)
-    uncategorized_colors = filter(lambda c: c not in colors_in_dict, colorlist)
-
-    return uncategorized_colors
 
 
 def clustering(rgb, obj_depth, img):

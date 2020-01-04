@@ -1,15 +1,26 @@
-from util import *
+from util import read_dir, read_object_properties, clustering, dominant_cluster, stats, color_mapping
 from classes import ObjectInstance
 from matplotlib import colors as mcolors
+from matplotlib import pyplot as plt
 
+import os
 import glob
 import re
+import json
+from datetime import datetime
+
+ROOT = './data/20190930_133826'
+#ROOT = './data/small'
+OBJ_HANDLE = "_obj.json"
+RGB_HANDLE = "_rgb.png"
+DEPTH_HANDLE = "_depth.npy"
+META_HANDLE = "_meta.json"
 
 
 def map_colors():
     """
     Translate matplotlib colors from hex to rgb and edit color names
-    :return: dictionary mappings from color names to rgb values
+    :return: dictionary mapping from 1049 matplotlib color names to normalized rgb values
     """
 
     rgb_mapping = dict()
@@ -44,41 +55,91 @@ def map_colors():
         name = name.replace(' ', '_')
         rgb_mapping[name] = rgb_value
 
-    color_list = rgb_mapping.keys()  # 1049 color names
-
-    return rgb_mapping, color_list
+    return rgb_mapping
 
 
-def main():
+def save_types(obj, rgb_mapping, img_count, obj_count):
+    """
+    Save object images to type directories.
+    :param obj:
+    :param rgb_mapping:
+    :return:
+    """
+    obj_type, obj_confidence, obj_bounds, obj_depth, obj_rgb, obj_img = read_object_properties(obj)
+    if obj_confidence < 0.5 or obj_type == 'person':
+        return '', ''
+    else:
+        obj_instance = ObjectInstance(os.path.basename(obj), obj_type, obj_confidence, obj_bounds,
+                                      obj_depth, obj_rgb, obj_img)
+        # TODO: image correction?
+        result, clusters = clustering(obj_instance.rgb, obj_instance.depth, obj_instance.img)
+        dom_cluster = dominant_cluster(result, clusters)
+        dom_result = filter(lambda res: res[1] == dom_cluster, result)
+        avg_triplet, mode_triplet, median_triplet = stats(dom_result)
+        obj_instance.color = color_mapping(avg_triplet, rgb_mapping)
+        print('{} {}'.format(obj_instance.color, obj_instance.type))
+
+        if not os.path.exists(os.path.join('./results', obj_instance.type)):
+            os.mkdir(os.path.join('./results', obj_instance.type))
+        plt.savefig('./results/{}/{}_{}'.format(obj_instance.type, obj_instance.color, obj_instance.id))
+
+        return obj_instance.id, obj_instance.color
+
+
+def total_count():
+
+    img = len([(img_path, objects) for img_path, objects in read_dir(ROOT)])
+    obj = len([obj for img_path, objects in read_dir(ROOT) for obj in objects])
+
+    return img, obj
+
+
+def main(id_check=False):
+    """
+
+    :param id_check:
+    :return:
+    """
+
+    total_start = datetime.now()
 
     known_ids = [os.path.basename(item)[:-4].split('_')[-1] for item in glob.glob('./results/*/*.png')]
-    # TODO: replace translate_color with map_colors
-    color_names, basic_colors = translate_color()
-    # rgb_mapping, color_list = map_colors()
+    rgb_mapping = map_colors()
+    path_dict = dict()
+    color_dict = dict()
+
+    total_img, total_obj = total_count()
+    img_count = 0
+    obj_count = 0
 
     for image, objects in read_dir(ROOT):
+        img_count +=1
         for obj in objects:
-            if os.path.split(obj)[-1] not in known_ids:
-                obj_type, obj_confidence, obj_bounds, obj_depth, obj_rgb, obj_img = read_object_properties(obj)
-                if obj_confidence > 0.5 and obj_type != 'person':
-                    obj_instance = ObjectInstance(os.path.basename(obj), obj_type, obj_confidence, obj_bounds,
-                                                  obj_depth, obj_rgb, obj_img)
-                    # TODO: image correction?
-                    result, clusters = clustering(obj_instance.rgb, obj_instance.depth, obj_instance.img)
-                    dom_cluster = dominant_cluster(result, clusters)
-                    dom_result = filter(lambda res: res[1] == dom_cluster, result)
-                    avg_triplet, mode_triplet, median_triplet = stats(dom_result)
-                    obj_instance.color = color_mapping(avg_triplet, color_names)
-                    print('{} {}'.format(obj_instance.color, obj_instance.type))
+            obj_count +=1
+            obj_start = datetime.now()
+            print('Processing image {}/{}, object {}/{}.'.format(img_count, total_img, obj_count, total_obj))
+            if not id_check:
+                obj_id, obj_color = save_types(obj, rgb_mapping, img_count, obj_count)
+                if obj_id and obj_color:
+                    path_dict[obj_id] = obj
+                    color_dict[obj_id] = obj_color
+            elif os.path.split(obj)[-1] not in known_ids:
+                obj_id, obj_color = save_types(obj, rgb_mapping, img_count, obj_count)
+                if obj_id and obj_color:
+                    path_dict[obj_id] = obj
+                    color_dict[obj_id] = obj_color
+            obj_end = datetime.now()
+            print('Object processing time: {}'.format(obj_end - obj_start))
+            print('Total time elapsed: {}'.format(obj_end - total_start))
+            print('\n')
 
-                    if not os.path.exists(os.path.join('./results', obj_instance.type)):
-                        os.mkdir(os.path.join('./results', obj_instance.type))
-                    plt.savefig('./results/{}/{}_{}'.format(obj_instance.type, obj_instance.color, obj_instance.id))
+    with open('path_mapping.json', 'w') as jsonfile:
+        json.dump(path_dict, jsonfile)
+
+    with open('color_mapping.json', 'w') as jsonfile:
+        json.dump(color_dict, jsonfile)
 
 
 if __name__ == '__main__':
 
-    ROOT = './data/20190930_133826'
-    #ROOT = './data/small'
-
-    main()
+    main(id_check=False)
