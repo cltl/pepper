@@ -1,6 +1,7 @@
 from pepper.framework import AbstractImage, Bounds
 
 from sklearn.cluster import DBSCAN
+from matplotlib import colors as mcolors
 from scipy.sparse import csr_matrix
 from PIL import Image
 from statistics import mean, mode, median

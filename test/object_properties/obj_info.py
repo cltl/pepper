@@ -1,16 +1,16 @@
-from util import read_dir, read_object_properties, clustering, dominant_cluster, stats, color_mapping
 from classes import ObjectInstance
+from util import read_dir, read_object_properties, clustering, dominant_cluster, stats, color_mapping
+
 from matplotlib import colors as mcolors
 from matplotlib import pyplot as plt
 
 import os
-import glob
 import re
 import json
 from datetime import datetime
 
-ROOT = './data/20190930_133826'
-#ROOT = './data/small'
+# ROOT = './data/20190930_133826'
+ROOT = './data/small'
 OBJ_HANDLE = "_obj.json"
 RGB_HANDLE = "_rgb.png"
 DEPTH_HANDLE = "_depth.npy"
@@ -58,7 +58,7 @@ def map_colors():
     return rgb_mapping
 
 
-def save_types(obj, rgb_mapping, img_count, obj_count):
+def save_types(obj, rgb_mapping):
     """
     Save object images to type directories.
     :param obj:
@@ -94,7 +94,7 @@ def total_count():
     return img, obj
 
 
-def main(id_check=False):
+def main():
     """
 
     :param id_check:
@@ -103,10 +103,21 @@ def main(id_check=False):
 
     total_start = datetime.now()
 
-    known_ids = [os.path.basename(item)[:-4].split('_')[-1] for item in glob.glob('./results/*/*.png')]
+    if os.path.isfile('path_mapping.json'):
+        with open('path_mapping.json', 'r') as jsonfile:
+            path_dict = json.load(jsonfile)
+            known_paths = path_dict.values()
+    else:
+        path_dict = {}
+        known_paths = []
+
+    if os.path.isfile('color_mapping.json'):
+        with open('color_mapping.json', 'r') as jsonfile:
+            color_dict = json.load(jsonfile)
+    else:
+        color_dict = {}
+
     rgb_mapping = map_colors()
-    path_dict = dict()
-    color_dict = dict()
 
     total_img, total_obj = total_count()
     img_count = 0
@@ -118,16 +129,13 @@ def main(id_check=False):
             obj_count +=1
             obj_start = datetime.now()
             print('Processing image {}/{}, object {}/{}.'.format(img_count, total_img, obj_count, total_obj))
-            if not id_check:
-                obj_id, obj_color = save_types(obj, rgb_mapping, img_count, obj_count)
+            if obj not in known_paths:
+                obj_id, obj_color = save_types(obj, rgb_mapping)
                 if obj_id and obj_color:
                     path_dict[obj_id] = obj
                     color_dict[obj_id] = obj_color
-            elif os.path.split(obj)[-1] not in known_ids:
-                obj_id, obj_color = save_types(obj, rgb_mapping, img_count, obj_count)
-                if obj_id and obj_color:
-                    path_dict[obj_id] = obj
-                    color_dict[obj_id] = obj_color
+            else:
+                print('Object already processed: {}.'.format(obj))
             obj_end = datetime.now()
             print('Object processing time: {}'.format(obj_end - obj_start))
             print('Total time elapsed: {}'.format(obj_end - total_start))
@@ -142,4 +150,4 @@ def main(id_check=False):
 
 if __name__ == '__main__':
 
-    main(id_check=False)
+    main()
