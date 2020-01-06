@@ -137,18 +137,18 @@ def main():
             print('Processing image {}/{}, object {}/{}.'.format(img_count, total_img, obj_count, total_obj))
             print(obj_path)
             if obj_path in known_paths:
-                print('Object already processed: {}.'.format(obj_path))
+                print('Object already processed.')
             else:
                 obj_id, obj_features = save_types(obj_path, rgb_mapping)
                 if obj_id == 'id':
-                    print('Object could not be processed: {}.'.format(obj_path))
+                    print('Object could not be processed.')
                 else:
                     c.execute('INSERT INTO features VALUES (?, ?, ?);', (str(obj_id), str(obj_path), str(obj_features)))
                     conn.commit()
-            obj_end = datetime.now()
-            print('Object processing time: {}'.format(obj_end - obj_start))
-            print('Total elapsed time: {}'.format(obj_end - total_start))
-            print('\n')
+                    obj_end = datetime.now()
+                    print('Object processing time: {}'.format(obj_end - obj_start))
+                    print('Total elapsed time: {}'.format(obj_end - total_start))
+                    print('\n')
 
     conn.close()
 
