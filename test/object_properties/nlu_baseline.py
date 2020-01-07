@@ -4,33 +4,48 @@ from collections import defaultdict
 import os
 
 
-WORK_DIR = './results/cup'
-obj_type = os.path.split(WORK_DIR)[-1]
+def map_observations_to_instances(root):
+    """
 
-target_string = 'dark pink cup'
+    :param root:
+    :return:
+    """
+    string_dict = defaultdict(set)
+    for type_dir in (type_dir for type_dir in os.listdir(root)
+                     if os.path.isdir(os.path.join(root, type_dir))):
+        type_path = os.path.join(root, type_dir)
+        for instance_dir in (instance_dir for instance_dir in os.listdir(type_path)
+                             if os.path.isdir(os.path.join(type_path, instance_dir))):
+            for filename in os.listdir(os.path.join(type_path, instance_dir)):
+                file_string = ' '.join(filename.split('_')[:-1])
+                string_dict[file_string].add(instance_dir)
 
-string_dict = defaultdict(set)
+    return string_dict
 
-for dir in os.listdir(WORK_DIR):
-    if os.path.isdir(os.path.join(WORK_DIR, dir)):
-        for filename in os.listdir(os.path.join(WORK_DIR, dir)):
-            file_string = ' '.join(filename.split('_')[:-1]) + ' ' + obj_type
-            string_dict[file_string].add(dir)
 
-observation_strings = set([' '.join(observation_string.split('_')[:-1]) + ' ' + obj_type
-                           for observation_string in os.listdir(WORK_DIR)
-                           if os.path.isfile(os.path.join(WORK_DIR, observation_string))])
+def main():
+    """
 
-# TODO: deal with cases where there is more than one max value
-# The actual observation with minimum edit distance using token sort ration
-closest_observation = process.extractOne(target_string, observation_strings, scorer=fuzz.token_sort_ratio)
+    :return:
+    """
+    target_string = 'dark pink cup'
+    root = './results'
 
-for key, values in string_dict.items():
-    if key == closest_observation[0]:
-        value_list = list(values)
-        if len(values) == 1:
-            reference = value_list[0]
-            # The cluster the closest observation belongs to
-            print('I think the object is {}'.format(value_list[0]))
-        else:
-            print('I\'m not sure, but I think the object is {} or {}.'.format(value_list[:-1], value_list[-1]))
+    instance_mapping = map_observations_to_instances(root)
+    observation_strings = instance_mapping.keys()
+
+    # Find the observation with minimum edit distance using token sort ratio
+    closest_observation = process.extractOne(target_string, observation_strings, scorer=fuzz.token_sort_ratio)
+
+    # Find the cluster the closest observation belongs to
+    for key, values in instance_mapping.items():
+        if key == closest_observation[0]:
+            value_list = list(values)
+            if len(values) == 1:
+                print('I think the object is {}.'.format(value_list[0]))
+            else:
+                print('I\'m not sure, but I think the object is {} or {}.'.format(value_list[:-1], value_list[-1]))
+
+
+if __name__ == '__main__':
+    main()
