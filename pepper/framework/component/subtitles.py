@@ -36,8 +36,11 @@ class SubtitlesComponent(AbstractComponent):
 
         speaker = "Human"
 
-        if isinstance(self, ContextComponent) and self.context.chatting:
-            speaker = self.context.chat.speaker
+        try:
+            if isinstance(self, ContextComponent) and self.context.chatting:
+                speaker = self.context.chat.speaker
+        except AttributeError as e:
+            pass
 
         self._show_subtitles('{}:/"{}"'.format(speaker, hypotheses[0].transcript))
         super(SubtitlesComponent, self).on_transcript(hypotheses, audio)
