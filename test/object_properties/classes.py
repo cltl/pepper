@@ -15,8 +15,6 @@ class ObjectInstance(object):
 
         self.root_path = None
         self.color = None
-        self.surface = None
-        self.size = None
         self.features = None
 
         self.__class__.instances.append(self)

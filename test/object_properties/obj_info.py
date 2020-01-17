@@ -24,6 +24,8 @@ def map_colors():
     :return: dictionary mapping from 1049 matplotlib color names to normalized rgb values
     """
 
+    #   TODO: change dict to {value: name}, check the number of colors
+
     rgb_mapping = dict()
 
     for name, value in dict(mcolors.get_named_colors_mapping()).items():
@@ -38,7 +40,7 @@ def map_colors():
             name = name.replace('lavendar', 'lavender')
         if 'gray' in name:
             name = name.replace('gray', 'grey')
-        # TODO: additional tokenization
+        # TODO: additional tokenization: check CSS keywords
         d = re.compile('dark[a-z]+')
         f = d.search(name)
         if f:
@@ -72,7 +74,6 @@ def save_types(obj, rgb_mapping):
     else:
         obj_instance = ObjectInstance(os.path.basename(obj), obj_type, obj_confidence, obj_bounds,
                                       obj_depth, obj_rgb, obj_img)
-        # TODO: image correction?
         result, clusters = clustering(obj_instance.rgb, obj_instance.depth, obj_instance.img)
         dom_cluster = dominant_cluster(result, clusters)
         dom_result = filter(lambda res: res[1] == dom_cluster, result)
@@ -100,15 +101,15 @@ def total_count():
     return img, obj
 
 
-def read_db(c):
-    c.execute('SELECT path FROM features')
+def read_table(c):
+    c.execute('SELECT path FROM object_info')
     paths = c.fetchall()
 
     return paths
 
 
-def create_db(c):
-    c.execute('CREATE TABLE features(id TEXT, path TEXT, features TEXT);')
+def create_table(c):
+    c.execute('CREATE TABLE object_info(id TEXT, path TEXT, features TEXT);')
 
 
 def main():
@@ -116,9 +117,9 @@ def main():
     conn = sqlite3.connect('instances.db')
     c = conn.cursor()
     try:
-        known_paths = read_db(c)
+        known_paths = read_table(c)
     except sqlite3.OperationalError:
-        create_db(c)
+        create_table(c)
         known_paths = []
 
     total_start = datetime.now()
@@ -143,7 +144,7 @@ def main():
                 if obj_id == 'id':
                     print('Object could not be processed.')
                 else:
-                    c.execute('INSERT INTO features VALUES (?, ?, ?);', (str(obj_id), str(obj_path), str(obj_features)))
+                    c.execute('INSERT INTO object_info VALUES (?, ?, ?);', (str(obj_id), str(obj_path), str(obj_features)))
                     conn.commit()
                     obj_end = datetime.now()
                     print('Object processing time: {}'.format(obj_end - obj_start))

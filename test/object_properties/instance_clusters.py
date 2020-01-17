@@ -14,7 +14,7 @@ def read_db(obj_ids):
     """
     conn = sqlite3.connect('instances.db')
     c = conn.cursor()
-    query = 'SELECT id, features FROM features WHERE id IN ({})'.format(', '.join('?' * len(obj_ids)))
+    query = 'SELECT id, features FROM object_info WHERE id IN ({})'.format(', '.join('?' * len(obj_ids)))
     c.execute(query, obj_ids)
     data = c.fetchall()
     conn.close()
