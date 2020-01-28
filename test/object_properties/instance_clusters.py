@@ -28,8 +28,7 @@ def get_data(dir_path):
     :param dir_path:
     :return:
     """
-    objs = (obj_file for obj_file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, obj_file)))
-    obj_ids = [os.path.basename(obj_file)[:-4].split('_')[-1] for obj_file in objs]
+    obj_ids = [obj_file[:-4] for obj_file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, obj_file))]
     data = read_db(obj_ids)
     ids = [tup[0] for tup in data]
     feats = np.array([tup[1].strip('[]').split(', ') for tup in data], dtype=float)
@@ -68,20 +67,16 @@ def main():
             ids, feats = get_data(dir_path)
             clusters, result = cluster_instances(ids, feats)
 
-            for cluster in clusters:
-                if not os.path.isdir(os.path.join(dir_path, str(cluster))):
-                    os.mkdir(os.path.join(dir_path, str(cluster)))
-
-            for item in os.listdir(dir_path):
+            for filename in os.listdir(dir_path):
                 for res in result:
-                    if res[0] in item:
-                        source = os.path.join(dir_path, str(item))
-                        target = os.path.join(dir_path, str(res[1]), str(item))
+                    if res[0] in filename:
+                        source = os.path.join(dir_path, str(filename))
+                        target = os.path.join(dir_path, directory + '_' + str(res[1]), str(filename))
                         try:
                             shutil.copy(source, target)
                         except IOError:
-                            print('File not found: {}'.format(item))
-                            continue
+                            os.makedirs(os.path.join(dir_path, directory + '_' + str(res[1])))
+                            shutil.copy(source, target)
 
 
 if __name__ == '__main__':
