@@ -50,6 +50,7 @@ def main():
         cur.execute('INSERT INTO nlu_baseline VALUES (?, ?);', (str(target_string), str(closest_observation)))
 
     conn.commit()
+    conn.close()
     print('\nResults saved to database.')
 
 
