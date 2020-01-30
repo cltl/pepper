@@ -63,23 +63,6 @@ def clean_color_name(name, keywords):
     return name
 
 
-def check_tokens_in_glove(name, vocab):
-    """
-    Unused
-    """
-
-    for token in name.split(' '):
-        if token not in vocab:
-            if token.endswith('ish'):
-                new_token = token[:-3]
-                name = name.replace(token, new_token)
-            elif token.endswith('y'):
-                new_token = token[:-1]
-                name = name.replace(token, new_token)
-
-    return name
-
-
 def search_left(color_name, color_keyword, word_list=()):
 
     l = re.compile('{}[a-z]+'.format(color_keyword))
