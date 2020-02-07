@@ -14,7 +14,7 @@ def map_instances_to_observations(c, root):
     for type_dir in (type_dir for type_dir in os.listdir(root) if os.path.isdir(os.path.join(root, type_dir))):
         type_path = os.path.join(root, type_dir)
         for instance_dir in (instance_dir for instance_dir in os.listdir(type_path)
-                             if os.path.isdir(os.path.join(type_path, instance_dir))):
+                             if os.path.isdir(os.path.join(type_path, instance_dir)) and not instance_dir.endswith('-1')):
             for observation in os.listdir(os.path.join(type_path, instance_dir)):
                 c.execute('SELECT color FROM object_info WHERE id = (?)', (str(observation)[:-4],))
                 color = c.fetchone()[0]

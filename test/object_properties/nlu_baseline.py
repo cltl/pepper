@@ -11,7 +11,7 @@ def map_observations_to_instances(c, root):
     for type_dir in (type_dir for type_dir in os.listdir(root) if os.path.isdir(os.path.join(root, type_dir))):
         type_path = os.path.join(root, type_dir)
         for instance_dir in (instance_dir for instance_dir in os.listdir(type_path)
-                             if os.path.isdir(os.path.join(type_path, instance_dir))):
+                             if os.path.isdir(os.path.join(type_path, instance_dir)) and not instance_dir.endswith('-1')):
             for observation in os.listdir(os.path.join(type_path, instance_dir)):
                 c.execute('SELECT color FROM object_info WHERE id = (?)', (str(observation)[:-4],))
                 color = c.fetchone()[0]
@@ -44,8 +44,7 @@ def main():
         for key, value in instance_mapping.items():
             if key == closest_observation[0]:
                 closest_instance = value
-                print('\nTarget string: {}'.format(target_string))
-                print('Closest instance: {}'.format(closest_instance))
+                print('{}: {}'.format(target_string, closest_instance))
 
         cur.execute('INSERT INTO nlu_baseline VALUES (?, ?);', (str(target_string), str(closest_observation)))
 
