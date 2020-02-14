@@ -287,6 +287,12 @@ ELOQUENCE = [
     "Now I have seen this too"
     ]
 
+PARSED_KNOWLEDGE = ["I like learning things!",
+                    "I'm always hungry for more information!",
+                    "I will remember that!",
+                    "Now that's an interesting fact!",
+                    "I understand!"]
+
 NEW_KNOWLEDGE = ["I did not know that!", "This is news to me.", "Interesting!", "Exciting news!",
                  "I just learned something,", "I am glad to have learned something new."]
 
@@ -300,3 +306,61 @@ CURIOSITY = ["I am curious.", "Let me ask you something.", "I would like to know
 TRUST = ["I think I trust you.", "I trust you", "I believe you", "You have my trust."]
 
 NO_TRUST = ["I am not sure I trust you.", "I do not trust you.", "I do not believe you."]
+
+BREXIT_NEWS = [
+    "On Thursday October 03, Erik Stokstad wrote an article in Science Magazine titled:... Split decisions:... How Brexit has taken a toll on five researchers",
+    "On Monday October 28, Reuters Editorial wrote an article in Reuters titled:... Britain pledges to help finance flourish after Brexit",
+    "On Saturday October 26, Amy Woodyatt and Anna Stewart, CNN wrote an article in CNN International titled:... Production of Brexit coin stopped as uncertainty looms",
+    "On Sunday October 20, Amy Walker wrote an article in The Guardian titled:... Brexit:... government to seek meaningful vote on deal on Monday   live news",
+    "On Tuesday October 22, Lisa O'Carroll wrote an article in The Guardian titled:... Brexit weekly briefing:... frantic negotiations end in anticlimax for PM",
+    "On Sunday October 27, PA Media wrote an article in The Guardian titled:... Little Britain cast to reunite for Brexit-themed radio special",
+    "On Friday October 11, Stephen Castle and Matina Stevis-Gridneff wrote an article in The New York Times titled:... Britain and E.U. Step Up Last-Ditch Brexit Talks",
+    "On Thursday October 24, Patrick Wintour wrote an article in The Guardian titled:... David Miliband:... Brexit is wrecking British democracy",
+    "On Thursday October 24, Yascha Mounk wrote an article in The Atlantic titled:... Brexit Is a Cultural Revolution",
+    "On Friday October 25, Hannah McKay wrote an article in The Wider Image titled:... On a London high street, Brexit fatigue sets in",
+    "On Tuesday October 15, Mark Landler and Stephen Castle wrote an article in The New York Times titled:... E.U. May Be on Verge of Brexit Deal, Though Approval in U.K. Is Not Assured",
+    "On Wednesday October 23, Matina Stevis-Gridneff wrote an article in The New York Times titled:... Grudgingly, E.U. Looks Set to Grant Brexit Extension to Jan. 31",
+    "On Tuesday October 15, Mark Landler wrote an article in The New York Times titled:... A Second Referendum Gains Traction Among Brexit Foes",
+    "On Thursday October 17, Laurence Norman and Max Colchester wrote an article in The Wall Street Journal titled:... U.K., EU Agree on Draft Brexit Deal, Paving Way for Key Vote",
+    "On Friday October 25, Richard Partington wrote an article in The Guardian titled:... How has Brexit vote affected the UK economy? October verdict",
+    "On Tuesday October 22, Max Colchester and Jason Douglas wrote an article in The Wall Street Journal titled:... Johnson s Brexit Deal Clears Hurdle in Parliament but His Timetable Is Rejected",
+    "On Thursday October 24, Ceylan Yeginsu wrote an article in The New York Times titled:... In Northern Ireland, Brexit Deal Is Seen as  Betrayal ",
+    "On Monday October 28, Laurence Norman wrote an article in The Wall Street Journal titled:... EU Extends Brexit Deadline Until Jan. 31",
+    "On Wednesday October 23, George Holding for CNN Business Perspectives wrote an article in CNN titled:... Brexit could provide the US huge economic opportunity",
+    "On Monday October 28, Barbie Latza Nadeau wrote an article in The Daily Beast titled:... European Union Grants (Another) Brexit Extension to Jan. 31, 2020",
+    "On Saturday October 26, ToHelm wrote an article in The Guardian titled:... Brexit referendum should never have been called, say majority of voters",
+    "On Monday October 28, Gerrard Kaonga wrote an article in Express titled:... Tony Blair forced to admit Nigel Farage was RIGHT about no deal Brexit and Boris's plan",
+    "On Thursday October 17, Phillip Inman wrote an article in The Guardian titled:... UK would lose  130bn in growth if Brexit deal passed, figures suggest",
+    "On Sunday October 27, Roy Greenslade wrote an article in The Guardian titled:... Brexit bias? BBC faces a difficult balancing act in polarised nation",
+    "On Wednesday October 23, Steven Scheer wrote an article in Reuters titled:... Second Brexit referendum would keep Britain in EU:... Virgin's Branson",
+    "On Thursday October 17, Holly Ellyatt wrote an article in CNBC titled:... UK and EU strike new Brexit deal in last-ditch talks",
+    "On Sunday October 20, The Editorial Board wrote an article in The New York Times titled:... Will the U.K. Ever Get Closure on Brexit?",
+    "On Tuesday October 22, Tom Kibasi wrote an article in The Guardian titled:... Remember Thatcher s Britain? That s where this Brexit deal would take us",
+    "On Monday October 28, Reuters Editorial wrote an article in Reuters titled:... EU nations agree to Brexit extension until January 31:... Tusk",
+    "On Tuesday October 15, Andrew Sparrow wrote an article in The Guardian titled:... Brexit:... Rees-Mogg says he can't confirm Saturday sitting as EU talks continue - as it happened",
+    "On Sunday October 06, Benjamin Mueller wrote an article in The New York Times titled:... Jeremy Corbyn or No-Deal Brexit? The U.K. Might Have to Choose",
+    "On Friday October 25, Jim Waterson wrote an article in The Guardian titled:... Get ready for the impossible:... Brexit ads still counting down",
+    "On Monday October 21, Daniel Boffey wrote an article in The Guardian titled:... EU would agree to Brexit delay, says German minister",
+    "On Monday October 28, Elliot Smith wrote an article in CNBC titled:... European stocks mixed as EU grants 3-month Brexit delay; HSBC down 4.7% after earnings miss",
+    "On Monday October 28, Dino-Ray Ramos wrote an article in Deadline titled:...  Last Week Tonight :... John Oliver Addresses  Stupid Watergate II , Giuliani s Butt Dial And  Brexit Halloween ",
+    "On Sunday October 27, Sean Farrell wrote an article in The Guardian titled:... JD Wetherspoon may have breached law over 1.9m Brexit beer mats",
+    "On Saturday October 19, Julia Buckley, CNN wrote an article in CNN titled:... Has Brexit sent airfares into a tailspin?",
+    "On Monday October 07, Eliza Mackintosh, CNN wrote an article in CNN International titled:... 25 days until 'Brexit day.' Here's how it could play out",
+    "On Sunday October 27, Noah Martin wrote an article in Mirror Online titled:... Dad cancels holiday over fears family will be trapped after Brexit",
+    "On Monday October 28, Yoruk Bahceli wrote an article in Reuters titled:... UPDATE 1-Euro zone bond yields rise on hopes for Brexit delay",
+    "On Thursday October 17, Mark Landler and Stephen Castle wrote an article in The New York Times titled:... A Brexit Deal in Hand, Boris Johnson Faces an Uphill Struggle in Parliament",
+    "On Monday October 28, Silvia Amaro wrote an article in CNBC titled:... EU agrees to give the UK a Brexit extension until January 31",
+    "On Tuesday October 01, Stephen Castle wrote an article in The New York Times titled:... As Boris Johnson s Time to Get Brexit Deal Ticks Down, Blame Game Heats Up",
+    "On Monday October 21, Opinion Laura Beers wrote an article in CNN titled:... What I learned from teaching Brexit to freshmen",
+    "On Sunday October 27, Julie Burchill wrote an article in Telegraph.co.uk titled:... I'm going to miss losing friends because of Brexit",
+    "On Sunday October 27, Neal Ascherson wrote an article in The Guardian titled:... The long Brexit ordeal will finish off the break-up of Britain",
+    "On Sunday October 27, Stewart Lee wrote an article in The Guardian titled:... Nobody gives a hoot about my Brexit misery",
+    "On Sunday October 27, Daniel Boffey wrote an article in The Guardian titled:... Brexit:... EU prepares to grant UK three-month extension",
+    "On Sunday October 27, Richard Partington wrote an article in The Guardian titled:... Sajid Javid's budget delay only adds to the turmoil over Brexit",
+    "On Monday October 21, Weizhen Tan wrote an article in CNBC titled:... 'Anger, frustration' and 'betrayal' in Northern Ireland after new Brexit deal",
+    "On Monday October 28, Stanley White wrote an article in Reuters titled:... Dollar off one-week highs on trade hopes; long dollar positions cut",
+    "On Sunday October 27, Aurora Bosotti wrote an article in Express titled:... Brexit voter rages as Remainer says EU isn t panicking about losing UK trade",
+    "On Thursday October 17, Pierre Brian on wrote an article in MarketWatch titled:... U.K. agrees to best of worst possible Brexit deals",
+    "On Sunday October 20, Max Colchester and Jason Douglas wrote an article in The Wall Street Journal titled:... British Government Asks for EU Delay Amid Johnson Resistance",
+    "On Thursday October 03, Michael Birnbaum closeMichael BirnbaumBrussels bureau chief covering EuropeEmailEmailBioBioFollowFollow wrote an article in The Washington Post titled:... E.U. rejects Boris Johnson s Brexit proposal, raising prospect of chaotic break within weeks",
+]

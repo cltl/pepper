@@ -58,6 +58,7 @@ def reply_to_question(brain_response):
     utterance = brain_response['question']
     response = brain_response['response']
 
+
     # TODO revise by Lenka (we conjugate the predicate by doing this)
     utterance.casefold(format='natural')
 
@@ -89,7 +90,13 @@ def reply_to_question(brain_response):
 
     response.sort(key=lambda x: x['authorlabel']['value'])
 
+    # TODO: Bram: Quick solution for duplicate Brain items
+    # Each (subject, predicate, object, author) tuple is hashed,
+    # So we can figure out when we are about the say things double
+    handled_items = set()
+
     for item in response:
+
         # INITIALIZATION
         author = replace_pronouns(utterance.chat_speaker, author=item['authorlabel']['value'])
         if utterance.triple.subject_name != '':
@@ -107,6 +114,16 @@ def reply_to_question(brain_response):
         predicate = utterance.triple.predicate_name
 
         subject = replace_pronouns(utterance.chat_speaker, entity_label=subject, role='subject')
+
+        # TODO: Bram: Quick solution for duplicate Brain items
+        # Hash item such that duplicate entries have the same hash
+        item_hash = '{}_{}_{}_{}'.format(subject, predicate, object, author)
+
+        # If this hash is already in handled items -> skip this item and move to the next one
+        if item_hash in handled_items: continue
+
+        # Otherwise, add this item to the handled items (and handle item the usual way (with the code below))
+        else: handled_items.add(item_hash)
 
         '''
         new_sub = replace_pronouns(utterance.chat_speaker, entity_label=subject, role='subject')
@@ -150,6 +167,7 @@ def reply_to_question(brain_response):
             say += predicate[:-3]
 
             return say
+
         else:  # TODO fix_predicate_morphology
             be = {'first': 'am', 'second': 'are', 'third': 'is'}
             if predicate == 'be':  # or third person singular
@@ -158,6 +176,9 @@ def reply_to_question(brain_response):
                         predicate = be[person]
                     else:
                         predicate = 'are'
+                else:
+                    # TODO: Bram: Is this a good default when 'number' is unknown?
+                    predicate = 'is'
             elif person == 'third' and not '-' in predicate:
                 predicate += 's'
 

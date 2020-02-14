@@ -5,6 +5,8 @@ import qi
 
 import re
 
+from time import sleep
+
 
 class NAOqiTablet(AbstractTablet):
     """Access Robot Tablet to show URLs"""
@@ -20,6 +22,7 @@ class NAOqiTablet(AbstractTablet):
 
         self.hide()
 
+
     def show(self, url):
         # type: (str) -> None
         """
@@ -34,13 +37,15 @@ class NAOqiTablet(AbstractTablet):
         if url:
             try:
                 if re.findall(self.IMAGE_FORMATS, url.lower()):
-                    self._service.showImage(url)
+                    if not self._service.showImage(url):
+                        raise RuntimeError()
                 else:
-                    self._service.showWebview(url)
-
+                    if not self._service.showWebview(url):
+                        raise RuntimeError()
+                
                 self._log.debug("Show {}".format(url))
-            except:
-                self._log.warning("Couldn't Show {}".format(url))
+            except Exception as e:
+                self._log.warning("Couldn't Show {}".format(url, e))
 
     def hide(self):
         # type: () -> None

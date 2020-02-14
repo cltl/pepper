@@ -132,11 +132,11 @@ OBJECT_RECOGNITION_THRESHOLD = 0.25
 VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 
 # Set which Object Recognition Backends to use
-# NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow
+# NOTE: adding more target is only possible when the backends actually run: see pepper_tensorflow
 # NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
     pepper.ObjectDetectionTarget.COCO,
-    pepper.ObjectDetectionTarget.OID
+    # pepper.ObjectDetectionTarget.OID
 ]
 
 # Microphone sample rate (Hz) and number of channels

@@ -36,8 +36,11 @@ class SubtitlesComponent(AbstractComponent):
 
         speaker = "Human"
 
-        if isinstance(self, ContextComponent) and self.context.chatting:
-            speaker = self.context.chat.speaker
+        try:
+            if isinstance(self, ContextComponent) and self.context.chatting:
+                speaker = self.context.chat.speaker
+        except AttributeError as e:
+            pass
 
         self._show_subtitles('{}:/"{}"'.format(speaker, hypotheses[0].transcript))
         super(SubtitlesComponent, self).on_transcript(hypotheses, audio)
@@ -47,7 +50,7 @@ class SubtitlesComponent(AbstractComponent):
         # Stop Timeout Timer if running
         if self._subtitles_timeout_timer: self._subtitles_timeout_timer.cancel()
 
-        # Show Subtitlesd
+        # Show Subtitles
         text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
         self.backend.tablet.show(self.SUBTITLES_URL.format(text_websafe))
 
