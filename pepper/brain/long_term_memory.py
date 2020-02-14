@@ -12,6 +12,7 @@ from pepper.language.utils.atoms import UtteranceType
 from pepper import config
 
 from rdflib import RDF, RDFS, OWL
+import random
 
 
 class LongTermMemory(BasicBrain):
@@ -457,7 +458,8 @@ class LongTermMemory(BasicBrain):
             perspective_values = {'CertaintyValue': certainty_value, 'PolarityValue': polarity_value,
                                   'SentimentValue': sentiment_value}
             mention_unit = 'char'
-            mention_position = '0-%s' % len(utterance.transcript)
+            # mention_position = '0-%s' % len(utterance.transcript)
+            mention_position = '0-%s' % (len(utterance.transcript) + random.randint(1, len(utterance.transcript)))
         else:
             scores = [x.confidence for x in utterance.context.objects] + [x.confidence for x in
                                                                           utterance.context.people]

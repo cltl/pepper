@@ -13,6 +13,6 @@ you live in Amsterdam - who lives in Amsterdam, do you live in Amsterdam - you t
 I am a woman - who is a woman - you told me you are a woman
 I like baking cakes - what do I like, do I like baking cakes, who likes baking cakes - you told me you like baking cakes
 Birds can sing - can birds sing, what can birds do, who can sing - you told me birds can sing
-Selene can see a laptop - what can Selene see, who can see a laptop - you told me Selene can see a laptop
+Selene can't see a laptop - what can Selene see, who can see a laptop - you told me Selene can't see a laptop
 Robots can't eat food - can robots eat food, who can eat food - you told me robots can't eat food
 I don't like your shirt, Selene likes your shirt - who likes your shirt - you told me you do not like my shirt and selene likes my shirt #FIX

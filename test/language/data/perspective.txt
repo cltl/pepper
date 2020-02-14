@@ -4,7 +4,6 @@ birds can't talk: birds can-talk: 1 -1 0
 john hates fashion: john hate fashion: 1 1 -1
 john loves fashion: john love fashion: 1 1 1
 john doesn't hate fashion: john hate fashion: 1 -1 -1
-
 I think selene works in Amsterdam: selene work-in amsterdam: 0.5 1 0
 I think john can't come to school: john can-come-to school: 0.5 -1 0
 you know I like coffee: lenka like coffee: 1 1 0.75
