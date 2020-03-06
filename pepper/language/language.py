@@ -516,12 +516,16 @@ class Utterance(object):
         # in case of possessive genitive the 's' is just removed, while for the aux verb 'is' is inserted
         if 's' in tokens_raw:
             index = tokens_raw.index('s')
-            tag = pos_tag([tokens_raw[index + 1]])
-            if tag[0][1] in ['DT', 'JJ', 'IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
+            try:
+                tag = pos_tag([tokens_raw[index + 1]])
+                if tag[0][1] in ['DT', 'JJ', 'IN'] or tag[0][1].startswith('V'):  # determiner, adjective, verb
+                    tokens_raw.remove('s')
+                    tokens_raw.insert(index, 'is')
+                else:
+                    tokens_raw.remove('s')
+            except:
                 tokens_raw.remove('s')
-                tokens_raw.insert(index, 'is')
-            else:
-                tokens_raw.remove('s')
+
 
         return tokens_raw
 

@@ -253,7 +253,15 @@ JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is re
         "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
         "Did you hear about the crook who stole a calendar? He got twelve months.",
         "Why is an island like the letter T? They're both in the middle of water!",
-        "Did you hear the one about the little mountain? It's hilarious!"]
+        "Did you hear the one about the little mountain? It's hilarious!",
+        "I usually meet my friends at 12:59 because I like that one-to-one time.",
+        "You can't lose a homing pigeon. If your homing pigeon doesn't come back, then what you've lost is a pigeon",
+        "My friend got a personal trainer a year before his wedding. I thought: Oh my god! how long is the aisle going to be",
+        "I needed a password eight characters long so I picked Snow White and the Seven Dwarves.",
+        "I'm not a very muscular robot; the strongest thing about me is my password.",
+        "Insomnia is awful. But on the plus side, only three more sleeps till Christmas.",
+        "If you don't know what introspection is, you need to take a long, hard look at yourself",
+        "Thing is, we all just want to belong. But some of us are short."]
 
 ELOQUENCE = [
     "I see",
@@ -273,7 +281,10 @@ ELOQUENCE = [
     "Wise words by wise men write wise deeds in wise pen",
     "In this economy?",
     "and then the wolves came",
-    "Many of us feel that way"
+    "Many of us feel that way",
+    "I do frequently do not know things",
+    "One more thing off the bucket list",
+    "Now I have seen this too"
     ]
 
 PARSED_KNOWLEDGE = ["I like learning things!",
