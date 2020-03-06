@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 from pepper.framework import *
 from pepper.responder import *
 
-from pepper.framework.component.subtitles import SubtitlesComponent
-
 from pepper import config
 
 from pepper.knowledge import sentences

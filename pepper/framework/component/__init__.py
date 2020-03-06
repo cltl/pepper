@@ -37,3 +37,5 @@ from .explore import ExploreComponent
 
 from .statistics import StatisticsComponent
 from .display.display import DisplayComponent
+
+from .subtitles import SubtitlesComponent
