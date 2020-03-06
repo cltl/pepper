@@ -248,20 +248,22 @@ NEGATION = [
     "stupid"
 ]
 
-JOKE = ["Ok! What's the difference between a hippo? and a Zippo? Well, one is really heavy and the other is a little lighter.",
-        "What's the difference between ignorance and apathy? I don't know and I don't care.",
-        "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
-        "Did you hear about the crook who stole a calendar? He got twelve months.",
-        "Why is an island like the letter T? They're both in the middle of water!",
-        "Did you hear the one about the little mountain? It's hilarious!",
-        "I usually meet my friends at 12:59 because I like that one-to-one time.",
-        "You can't lose a homing pigeon. If your homing pigeon doesn't come back, then what you've lost is a pigeon",
-        "My friend got a personal trainer a year before his wedding. I thought: Oh my god! how long is the aisle going to be",
-        "I needed a password eight characters long so I picked Snow White and the Seven Dwarves.",
-        "I'm not a very muscular robot; the strongest thing about me is my password.",
-        "Insomnia is awful. But on the plus side, only three more sleeps till Christmas.",
-        "If you don't know what introspection is, you need to take a long, hard look at yourself",
-        "Thing is, we all just want to belong. But some of us are short."]
+JOKE = [
+    "Ok! What's the difference between a hippo? and a Zippo? Well, one is really heavy and the other is a little lighter.",
+    "What's the difference between ignorance and apathy? I don't know and I don't care.",
+    "Did you hear about the semi-colon that broke the law? He was given two consecutive sentences.",
+    "Did you hear about the crook who stole a calendar? He got twelve months.",
+    "Why is an island like the letter T? They're both in the middle of water!",
+    "Did you hear the one about the little mountain? It's hilarious!",
+    "I usually meet my friends at 12:59 because I like that one-to-one time.",
+    "You can't lose a homing pigeon. If your homing pigeon doesn't come back, then what you've lost is a pigeon",
+    "My friend got a personal trainer a year before his wedding. I thought: Oh my god! how long is the aisle going to be",
+    "I needed a password eight characters long so I picked Snow White and the Seven Dwarves.",
+    "I'm not a very muscular robot; the strongest thing about me is my password.",
+    "Insomnia is awful. But on the plus side, only three more sleeps till Christmas.",
+    "If you don't know what introspection is, you need to take a long, hard look at yourself",
+    "Thing is, we all just want to belong. But some of us are short."
+]
 
 ELOQUENCE = [
     "I see",
@@ -284,8 +286,11 @@ ELOQUENCE = [
     "Many of us feel that way",
     "I do frequently do not know things",
     "One more thing off the bucket list",
-    "Now I have seen this too"
-    ]
+    "Now I have seen this too",
+    "But, why?",
+    "May I ask you why?",
+    "Why?"
+]
 
 PARSED_KNOWLEDGE = ["I like learning things!",
                     "I'm always hungry for more information!",
@@ -363,4 +368,13 @@ BREXIT_NEWS = [
     "On Thursday October 17, Pierre Brian on wrote an article in MarketWatch titled:... U.K. agrees to best of worst possible Brexit deals",
     "On Sunday October 20, Max Colchester and Jason Douglas wrote an article in The Wall Street Journal titled:... British Government Asks for EU Delay Amid Johnson Resistance",
     "On Thursday October 03, Michael Birnbaum closeMichael BirnbaumBrussels bureau chief covering EuropeEmailEmailBioBioFollowFollow wrote an article in The Washington Post titled:... E.U. rejects Boris Johnson s Brexit proposal, raising prospect of chaotic break within weeks",
+]
+
+
+FUN_NLP_FACTS = [
+    "Did you know that about 80% of data in the web is text? This is only an estimation, of course",
+    "Did you know that one of the most active areas of Artificial Intelligence is Natural Language Processing? Language, in the end, is complicated. ",
+    "Did you know that you can specialize in text mining to find patterns in ",
+    "As Adam Geitgey from Medium says ... Computers are great at working with structured data like spreadsheets and database tables. But humans usually communicate in words, not in tables. That's unfortunate for computers.",
+    "Alexa, Siri and Cortana depend on language technologies like the ones you could learn"
 ]

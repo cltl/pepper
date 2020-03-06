@@ -1,7 +1,7 @@
 from pepper.framework import *
 from pepper.language import Utterance
 from .responder import Responder, ResponderType
-from pepper.knowledge import animations
+from pepper.knowledge import animations, sentences
 
 from typing import Optional, Union, Tuple, Callable
 
@@ -10,30 +10,7 @@ from random import choice, random
 
 class UnknownResponder(Responder):
 
-    ELOQUENCE = [
-        "I see",
-        "Interesting",
-        "Very Interesting, Indeed!",
-        "Good to know",
-        "I do not know, but I have a joke {insert joke}",
-        "As the prophecy foretold",
-        "But at what cost?",
-        "So let it be written, ... so let it be done",
-        "So ... it   has come to this",
-        "That's just what he/she/they would've said",
-        "Is this why fate brought us together?",
-        "And thus, I die",
-        "... just like in my dream",
-        "Be that as it may, still may it be as it may be",
-        "There is no escape from destiny",
-        "Wise words by wise men write wise deeds in wise pen",
-        "In this economy?",
-        "and then the wolves came",
-        "Many of us feel that way",
-        "But, why?",
-        "May I ask you why?",
-        "Why?"
-    ]
+    ELOQUENCE = sentences.ELOQUENCE
 
     HEARD = ["I think you said", "I heard", "I picked up", "I'm guessing you told me"]
     NOT_UNDERSTAND = ["I don't know what it means", "I don't understand it", "I couldn't parse it",
