@@ -30,10 +30,10 @@ RESPONDERS = [
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
 
-                   # SubtitlesComponent,
+                    SubtitlesComponent,
 
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
-
+WikipediaResponder, # WolframResponder,
                    ExploreComponent,
                    ContextComponent, BrainComponent, SpeechRecognitionComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
