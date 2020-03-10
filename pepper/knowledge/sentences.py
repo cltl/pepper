@@ -374,7 +374,8 @@ BREXIT_NEWS = [
 FUN_NLP_FACTS = [
     "Did you know that about 80% of data in the web is text? This is only an estimation, of course",
     "Did you know that one of the most active areas of Artificial Intelligence is Natural Language Processing? Language, in the end, is complicated. ",
-    "Did you know that you can specialize in text mining to find patterns in ",
+    "Did you know that you can specialize in text mining to find patterns in what people communicate about? ",
     "As Adam Geitgey from Medium says ... Computers are great at working with structured data like spreadsheets and database tables. But humans usually communicate in words, not in tables. That's unfortunate for computers.",
-    "Alexa, Siri and Cortana depend on language technologies like the ones you could learn"
+    "Alexa, Siri and Cortana depend on language technologies like the ones you could learn",
+    "Every second, on average, around 6,000 tweets are tweeted on Twitter. That is a lot of text! "
 ]

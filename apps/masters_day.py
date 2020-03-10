@@ -34,7 +34,7 @@ TOPIC_ANSWER = "Do you have a question for me?"
 MIN_ANSWER_LENGTH = 4
 
 # Override Speech Speed for added clarity!
-config.NAOQI_SPEECH_SPEED = 80
+config.NAOQI_SPEECH_SPEED = 90
 
 RESPONDERS = [
     BrainResponder(),
@@ -79,7 +79,8 @@ class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
         "you may begin",
         "you may start",
         "you can begin",
-        "you can start"
+        "you can start",
+        "robot"
     ]
 
     GREET_TIMEOUT = 15  # Only Greet people once every X seconds
@@ -134,11 +135,12 @@ class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
         # If Start Face Cue is observed by Leolani -> Start Main Intention
         if self.is_greeting_appropriate("new"):
             self.say("I see a new person!, Hello stranger!")
+            IntroductionIntention(self.application)
 
         # Before was like this
-        # if any([on_face_new(self, face) for face in faces]):
-        #         #     self.say("Ah, I can see {}! Let me begin!".format(SPEAKER_NAME_THIRD))
-        #         #     IntroductionIntention(self.application)
+        if any([self.on_face_new(face) for face in faces]):
+            self.say("Ah, I can see {}! Let me begin!".format(SPEAKER_NAME_THIRD))
+            IntroductionIntention(self.application)
 
         # Changed to this
         if len(faces) == 0:
@@ -169,6 +171,7 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
 
         # 1.1 - Welcome
         self.say("Hello {}. Welcome to the {}. ...".format(SPEAKER_NAME, LOCATION_NAME), animations.BOW)
+        self.say("My apologies is I am slow today, my internet connection is not very good")
         self.say("We are thrilled to have you here!")
 
         # 1.2 - Introduction
@@ -176,14 +179,20 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
                  animations.I)
         self.say("I am built by students from the VU that come from all over the world. ", animations.ONCE_UPON_A_TIME)
         self.tablet.show(IMAGE_SELENE)
+        sleep(1.0)
         self.say("Selene, from Mexico, designed my brain and thoughts!", animations.TABLET)
         self.tablet.show(IMAGE_LENKA)
+        sleep(1.0)
         self.say("Lenka, from Serbia, taught me to understand language", animations.TABLET)
         self.tablet.show(IMAGE_BRAM)
+        sleep(1.0)
         self.say("Bram, from the Netherlands, programmed me to perceive the world around me.", animations.TABLET)
         self.tablet.show(IMAGE_LEA)
-        self.say("Lea, from Germany, has recently joined the team and will help me improve my language understanding.", animations.TABLET)
+        sleep(1.0)
+        self.say("Lea, from Germany, has recently joined the team and will help me improve my language understanding.",
+                 animations.TABLET)
         self.tablet.show(IMAGE_PIEK)
+        sleep(1.0)
         self.say(
             "Peek, from the Netherlands, and I, from France and Japan, work on identity, reference and perspective in language!",
             animations.TABLET)
@@ -193,19 +202,21 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
 
         # 2.1 - Topic Introduction
         self.say("I believe you are here for " + TOPIC_NAME, animations.THINK)
-        self.say("Here at the {} there are many interesting programs to choose from! ".format(VU_NAME_PHONETIC), animations.ENTHUSIASTIC)
+        self.say("Here at the {} there are many interesting programs to choose from! ".format(VU_NAME_PHONETIC),
+                 animations.ENTHUSIASTIC)
         self.say("I am just a robot, but I have my little robot thoughts...", animations.SHY)
         self.say(TOPIC_ROBOT_THOUGHT)
 
         # 2.2 - Topic Knowledge
         self.say("As a robot, I have learned a few things about " + TOPIC_QUERY + " myself!", animations.THINK)
-        self.say("For example, the Linguistics Department here offers a specialized program on Text Mining ", animations.JOYFUL)
-
+        self.say("For example, the Linguistics Department here offers a specialized program on Text Mining ",
+                 animations.JOYFUL)
 
         # 2.2.1 - Topic in the News
         self.say("{}".format(choice(sentences.USED_WWW)))
         self.say(choice(sentences.FUN_NLP_FACTS))
         self.tablet.show(IMAGE_NLP)
+        sleep(5.0)
         self.say("Impressive, right?".format(choice(sentences.HAPPY)), animations.EXCITED)
 
         # 2.2.2 - Topic in Brain
@@ -220,7 +231,6 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
         TopicQuestionIntention(self.application)
 
     def topic_in_brain(self):
-        self.answer_brain_query("what is " + TOPIC_QUERY + " about")
         self.answer_brain_query("what is " + TOPIC_QUERY + " ")
 
     def answer_brain_query(self, query):
@@ -366,6 +376,10 @@ class DefaultIntention(AbstractIntention, PresentTeamApp):
         if isinstance(responder, GoodbyeResponder):
             self._ignored_people[utterance.chat.speaker] = time()
             self.context.stop_chat()
+
+    def on_face(self, faces):
+        self.say("Ah, I can see someone! Let me begin!")
+        WaitForStartCueIntention(self.application)
 
 
 if __name__ == '__main__':
