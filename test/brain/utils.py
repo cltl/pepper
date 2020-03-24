@@ -9,9 +9,10 @@ from random import choice
 places = ['Forest', 'Playground', 'Monastery', 'House', 'University', 'Hotel', 'Office']
 
 signal = False
-bl = [True, False]
+binary_values = [True, False]
 
-capsule_knows = {  # dimitris knows piek
+capsule_knows = {
+    "utterance": "dimitris knows piek",
     "subject": {
         "label": "dimitris",
         "type": "person"
@@ -29,7 +30,8 @@ capsule_knows = {  # dimitris knows piek
     "date": date(2019, 1, 24)
 }
 
-capsule_is_from = {  # bram is from mongolia
+capsule_is_from = {
+    "utterance": "bram is from mongolia",
     "subject": {
         "label": "bram",
         "type": "person"
@@ -48,7 +50,8 @@ capsule_is_from = {  # bram is from mongolia
     "date": date(2018, 3, 19)
 }
 
-capsule_is_from_2 = {  # bram is from mongolia
+capsule_is_from_2 = {
+    "utterance": "bram is from mongolia",
     "subject": {
         "label": "bram",
         "type": "person"
@@ -67,7 +70,8 @@ capsule_is_from_2 = {  # bram is from mongolia
     "date": date(2018, 3, 25)
 }
 
-capsule_is_from_3 = {  # bram is from mongolia
+capsule_is_from_3 = {
+    "utterance": "bram is from mongolia",
     "subject": {
         "label": "piek",
         "type": "person"
@@ -86,20 +90,9 @@ capsule_is_from_3 = {  # bram is from mongolia
     "date": date(2018, 3, 25)
 }
 
-capsule_likes = {  # human likes pizza
-    u'predicate': {u'type': u'like'},
-    u'chat': 490254330820530247757705225416035124L,
-    u'author': u'Human',
-    u'object': {u'type': u'', u'id': u'', u'label': u'pizza'},
-    u'turn': 6,
-    u'utterance_type': 'STATEMENT',
-    u'date': date(2019, 3, 29), u'position': u'',
-    u'response': {u'role': u'', u'format': u''},
-    u'subject': {u'type': u'', u'id': u'', u'label': u'human'}}
-
 
 def fake_context(empty=False, no_people=False, place=False):
-    if choice(bl):
+    if choice(binary_values):
         faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
     else:
         faces = {Face('Selene', 0.90, None, None, None), Face('Piek', 0.90, None, None, None)}
@@ -108,23 +101,23 @@ def fake_context(empty=False, no_people=False, place=False):
     if place:
         context.location._label = choice(places)
 
-    if choice(bl) and not signal and context.location.label == 'Office':
+    if choice(binary_values) and not signal and context.location.label == 'Office':
         objects = [Object('person', 0.79, None, None), Object('laptop', 0.88, None, None),
                    Object('chair', 0.88, None, None), Object('laptop', 0.51, None, None),
                    Object('teddy bear', 0.88, None, None)]
-    elif choice(bl) and not signal and context.location.label == 'Office':
+    elif choice(binary_values) and not signal and context.location.label == 'Office':
         objects = [Object('person', 0.79, None, None), Object('plant', 0.88, None, None),
                    Object('chair', 0.88, None, None), Object('laptop', 0.51, None, None)]
-    elif choice(bl) and not signal and context.location.label == 'Market':
+    elif choice(binary_values) and not signal and context.location.label == 'Market':
         objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                    Object('avocado', 0.51, None, None), Object('banana', 0.88, None, None)]
-    elif choice(bl) and not signal and context.location.label == 'Market':
+    elif choice(binary_values) and not signal and context.location.label == 'Market':
         objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                    Object('avocado', 0.51, None, None), Object('strawberry', 0.88, None, None)]
-    elif choice(bl) and not signal and context.location.label == 'Playground':
+    elif choice(binary_values) and not signal and context.location.label == 'Playground':
         objects = [Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
                    Object('teddy bear', 0.88, None, None), Object('cat', 0.51, None, None)]
-    elif choice(bl) and not signal and context.location.label == 'Playground':
+    elif choice(binary_values) and not signal and context.location.label == 'Playground':
         objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                    Object('cat', 0.51, None, None), Object('banana', 0.88, None, None)]
         # signal = True
@@ -150,7 +143,7 @@ def transform_capsule(capsule, empty=False, no_people=False, place=False):
     context = fake_context(empty=empty, no_people=no_people, place=place)
 
     chat = Chat(capsule['author'], context)
-    hyp = UtteranceHypothesis('this is a test', 0.99)
+    hyp = UtteranceHypothesis(capsule['utterance'], 0.99)
 
     utt = Utterance(chat, [hyp], False, capsule['turn'])
     utt._type = UtteranceType.STATEMENT
@@ -160,7 +153,6 @@ def transform_capsule(capsule, empty=False, no_people=False, place=False):
     triple = builder.fill_triple(capsule['subject'], capsule['predicate'], capsule['object'])
     utt.set_triple(triple)
 
-    perspective = {'sentiment': 0, 'certainty': 1, 'polarity': 1}
-    utt.pack_perspective(perspective)
+    utt.pack_perspective(capsule['perspective'])
 
     return utt

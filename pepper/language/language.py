@@ -4,10 +4,8 @@ from pepper.language.pos import POS
 from pepper.language.ner import NER
 from pepper.language.analyzer import Analyzer
 from pepper.language.utils.atoms import UtteranceType
-from pepper.language.utils.helper_functions import lexicon_lookup, get_node_label
 from pepper.brain.utils.helper_functions import casefold_text
-from pepper.brain.utils.rdf_builder import RdfBuilder
-from pepper.brain.utils.response import Triple, Perspective
+from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
 
 from pepper import logger, config
 from nltk import pos_tag

@@ -1,4 +1,4 @@
-from pepper.brain.utils.response import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
+from pepper.brain.infrastructure import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps
 from pepper.brain.utils.helper_functions import read_query
 from pepper.brain.basic_brain import BasicBrain
@@ -249,7 +249,7 @@ class ThoughtGenerator(BasicBrain):
         preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
         processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
                                                                  preprocessed_date)
-        processed_polarity = self._rdf_builder.label_from_uri(raw_conflict['val']['value'], 'GRASP')
+        processed_polarity = self._rdf_builder.label_from_uri(raw_conflict['val']['value'], 'GRASPf')
 
         return NegationConflict(processed_provenance, processed_polarity)
 

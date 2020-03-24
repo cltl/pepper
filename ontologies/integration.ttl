@@ -444,7 +444,6 @@ rdf:value rdf:type owl:ObjectProperty .
                                            rdfs:range grasp:Detection ,
                                                       grasp:Utterance ;
                                            rdfs:comment "The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable."@en ;
-                                           rdfs:isDefinedBy <http://www.w3.org/ns/prov-o#> ;
                                            rdfs:label "wasDerivedFrom" ;
                                            <http://www.w3.org/ns/prov#category> "starting-point" ;
                                            <http://www.w3.org/ns/prov#component> "derivations" ;
@@ -1025,8 +1024,7 @@ grasp:Visual rdf:type owl:Class ;
 
 ###  http://groundedannotationframework.org/grasp/factuality#negative
 <http://groundedannotationframework.org/grasp/factuality#negative> rdf:type owl:NamedIndividual ,
-                                                                            grasp:PolarityValue ,
-                                                                            grasp:SentimentValue .
+                                                                            grasp:PolarityValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#non-future
@@ -1036,8 +1034,7 @@ grasp:Visual rdf:type owl:Class ;
 
 ###  http://groundedannotationframework.org/grasp/factuality#positive
 <http://groundedannotationframework.org/grasp/factuality#positive> rdf:type owl:NamedIndividual ,
-                                                                            grasp:PolarityValue ,
-                                                                            grasp:SentimentValue .
+                                                                            grasp:PolarityValue .
 
 
 ###  http://groundedannotationframework.org/grasp/factuality#possible
@@ -1063,51 +1060,6 @@ grasp:Visual rdf:type owl:Class ;
 ###  http://groundedannotationframework.org/grasp/sentiment#positive
 <http://groundedannotationframework.org/grasp/sentiment#positive> rdf:type owl:NamedIndividual ,
                                                                            grasp:SentimentValue .
-
-
-###  http://www.w3.org/ns/prov-o-20130430
-<http://www.w3.org/ns/prov-o-20130430> rdf:type owl:NamedIndividual .
-
-
-###  http://www.w3.org/ns/prov#
-<http://www.w3.org/ns/prov#> rdf:type owl:NamedIndividual ;
-                             <http://www.w3.org/ns/prov#wasDerivedFrom> <http://www.w3.org/ns/prov-o-20130430> ,
-                                                                        <http://www.w3.org/ns/prov-aq#> ,
-                                                                        <http://www.w3.org/ns/prov-dc#> ,
-                                                                        <http://www.w3.org/ns/prov-dictionary#> ,
-                                                                        <http://www.w3.org/ns/prov-links#> ,
-                                                                        <http://www.w3.org/ns/prov-o#> ,
-                                                                        <http://www.w3.org/ns/prov-o-inverses#> .
-
-
-###  http://www.w3.org/ns/prov-aq#
-<http://www.w3.org/ns/prov-aq#> rdf:type owl:NamedIndividual .
-
-
-###  http://www.w3.org/ns/prov-dc#
-<http://www.w3.org/ns/prov-dc#> rdf:type owl:NamedIndividual ;
-                                <http://www.w3.org/ns/prov#wasDerivedFrom> <http://www.w3.org/ns/prov-dc-refinements#> .
-
-
-###  http://www.w3.org/ns/prov-dc-refinements#
-<http://www.w3.org/ns/prov-dc-refinements#> rdf:type owl:NamedIndividual .
-
-
-###  http://www.w3.org/ns/prov-dictionary#
-<http://www.w3.org/ns/prov-dictionary#> rdf:type owl:NamedIndividual .
-
-
-###  http://www.w3.org/ns/prov-links#
-<http://www.w3.org/ns/prov-links#> rdf:type owl:NamedIndividual .
-
-
-###  http://www.w3.org/ns/prov-o#
-<http://www.w3.org/ns/prov-o#> rdf:type owl:NamedIndividual .
-
-
-###  http://www.w3.org/ns/prov-o-inverses#
-<http://www.w3.org/ns/prov-o-inverses#> rdf:type owl:NamedIndividual ;
-                                        <http://www.w3.org/ns/prov#wasDerivedFrom> <http://www.w3.org/ns/prov-o-20130430> .
 
 
 #################################################################

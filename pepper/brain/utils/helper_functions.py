@@ -57,7 +57,7 @@ def confidence_to_certainty_value(confidence):
     if confidence is not None:
         if confidence > .90:
             return 'CERTAIN'
-        elif confidence > .50:
+        elif confidence >= .50:
             return 'PROBABLE'
         elif confidence > 0:
             return 'POSSIBLE'

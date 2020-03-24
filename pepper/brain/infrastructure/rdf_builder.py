@@ -1,5 +1,5 @@
 from pepper.brain.utils.helper_functions import casefold_text
-from pepper.brain.utils.response import Predicate, Entity, Triple, Provenance
+from pepper.brain.infrastructure import Predicate, Entity, Triple, Provenance
 from pepper import logger
 
 from rdflib import Dataset, Namespace, OWL
@@ -48,6 +48,12 @@ class RdfBuilder(object):
         # Namespaces for the attribution layer
         attribution_vocab = 'http://groundedannotationframework.org/grasp#'
         self.namespaces['GRASP'] = Namespace(attribution_vocab)
+        factuality_vocab = 'http://groundedannotationframework.org/grasp/factuality#'
+        self.namespaces['GRASPf'] = Namespace(factuality_vocab)
+        sentiment_vocab = 'http://groundedannotationframework.org/grasp/sentiment#'
+        self.namespaces['GRASPs'] = Namespace(sentiment_vocab)
+        emotion_vocab = 'http://groundedannotationframework.org/grasp/emotion#'
+        self.namespaces['GRASPe'] = Namespace(emotion_vocab)
         attribution_resource_friends = 'http://cltl.nl/leolani/friends/'
         self.namespaces['LF'] = Namespace(attribution_resource_friends)
         attribution_resource_inputs = 'http://cltl.nl/leolani/inputs/'
@@ -116,6 +122,9 @@ class RdfBuilder(object):
         self.dataset.bind('leolaniTalk', self.namespaces['LTa'])
 
         self.dataset.bind('grasp', self.namespaces['GRASP'])
+        self.dataset.bind('graspf', self.namespaces['GRASPf'])
+        self.dataset.bind('grasps', self.namespaces['GRASPs'])
+        self.dataset.bind('graspe', self.namespaces['GRASPe'])
         self.dataset.bind('leolaniFriends', self.namespaces['LF'])
         self.dataset.bind('leolaniInputs', self.namespaces['LI'])
 

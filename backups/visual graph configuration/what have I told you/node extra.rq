@@ -1,0 +1,25 @@
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+
+# Note that ?node is the node you clicked and must be used in the query
+SELECT ?property ?value {
+    {
+        GRAPH ?node {
+            ?value ?p ?o .
+        } .
+    }
+
+    UNION {
+        GRAPH ?node {
+            ?s ?value ?node .
+        } .
+    }
+
+    UNION {
+        GRAPH ?node {
+            ?s ?p ?value .
+        } .
+    }
+
+    BIND(n2mu:involves AS ?property)
+
+}

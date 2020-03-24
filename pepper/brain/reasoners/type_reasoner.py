@@ -41,18 +41,18 @@ class TypeReasoner(BasicBrain):
             if item.startswith(a):
                 item = item.replace(a, '')
 
+        # If this is in the ontology already as a class, create sensor triples directly
         if casefold_text(item, format='triple') in self.get_classes():
-            # If this is in the ontology already as a class, create sensor triples directly
             text = 'I know about %s. I will remember this object' % item
             return item, text
 
+        # If this is in the ontology already as a label, create sensor triples directly
         temp = self.get_labels_and_classes()
         if casefold_text(item, format='triple') in temp.keys():
-            # If this is in the ontology already as a label, create sensor triples directly
             text = ' I know about %s. It is of type %s. I will remember this object' % (item, temp[item])
             return temp[item], text
 
-        # Query the display for information
+        # First go at wikidata exact match
         class_type, description = self._exact_match_wikidata(item)
         if class_type is not None:
             # Had to learn it, but I can create triples now
@@ -60,15 +60,15 @@ class TypeReasoner(BasicBrain):
                    'I will remember this object' % (item, class_type)
             return casefold_text(class_type, format='triple'), text
 
+        # First go at dbpedia exact match
         class_type, description = self._exact_match_dbpedia(item)
         if class_type is not None:
-            # Had to learn it, but I can create triples now
             text = ' I did not know what %s is, but I searched on Dbpedia and I found that it is a %s. ' \
                    'I will remember this object' % (item, class_type)
             return casefold_text(class_type, format='triple'), text
 
+        # Second go at dbpedia, relaxed approach
         if not exact_only:
-            # Second go at dbpedia, relaxed approach
             class_type, description = self._keyword_match_dbpedia(item)
             if class_type is not None:
                 # Had to really search for it to learn it, but I can create triples now

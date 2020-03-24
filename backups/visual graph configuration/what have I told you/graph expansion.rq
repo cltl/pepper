@@ -7,34 +7,20 @@ PREFIX grasp: <http://groundedannotationframework.org/grasp#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT {
-    ?node n2mu:involvedIn ?g .
     ?g prov:wasDerivedFrom ?chat .
     ?chat sem:hasPlace ?place .
     ?chat sem:hasBeginTimeStamp ?date .
-    ?chat grasp:wasAttributedTo ?author .
+    ?chat grasp:wasAttributedTo ?node .
 
 } WHERE {
-    {
-        # Left to right relations
-        GRAPH ?g {
-            ?node ?p ?o .
-        } .
-    }
 
-    UNION {
-        # Right to left relations
-        GRAPH ?g {
-            ?s ?p ?node .
-        } .
-    }
-
+    ?m grasp:wasAttributedTo ?node .
     ?g grasp:denotedBy ?m .
     ?m prov:wasDerivedFrom ?utt .
     ?chat sem:hasSubEvent ?utt .
     ?context sem:hasEvent ?chat .
     ?context sem:hasPlace ?place .
     ?context sem:hasBeginTimeStamp ?date .
-    ?m grasp:wasAttributedTo ?author .
 
     # Select only
     FILTER(

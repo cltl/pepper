@@ -1,6 +1,5 @@
 from pepper.brain.utils.helper_functions import read_query
-from pepper.brain.utils.store_connector import StoreConnector
-from pepper.brain.utils.rdf_builder import RdfBuilder
+from pepper.brain.infrastructure import StoreConnector, RdfBuilder
 from pepper import config, logger
 
 from datetime import datetime
@@ -130,7 +129,7 @@ class BasicBrain(object):
 
         temp = dict()
         for r in response:
-            temp[r['l']['value']] = r['o']['value'].split('/')[-1]
+            temp[r['l']['value']] = r['type']['value'].split('/')[-1]
 
         return temp
 
@@ -188,7 +187,7 @@ class BasicBrain(object):
         :param instance_type: name of class in ontology
         :return:
         """
-        query = read_query('content exploration/instance_of_type') % instance_type
+        query = read_query('typing/instance_of_type') % instance_type
         response = self._submit_query(query)
         return [elem['name']['value'] for elem in response] if response else []
 
@@ -198,9 +197,19 @@ class BasicBrain(object):
         :param label: label of instance
         :return:
         """
-        query = read_query('content exploration/type_of_instance') % label
+        query = read_query('typing/type_of_instance') % label
         response = self._submit_query(query)
         return [elem['type']['value'] for elem in response] if response else []
+
+    def get_id_of_instance(self, label):
+        """
+        Get ids of a certain instance identified by its label
+        :param label: label of instance
+        :return:
+        """
+        query = read_query('id/id_of_instance') % label
+        response = self._submit_query(query)
+        return [elem['id']['value'] for elem in response] if response else []
 
     def get_triples_with_predicate(self, predicate):
         """

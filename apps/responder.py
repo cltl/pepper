@@ -14,6 +14,7 @@ from random import choice
 from time import time
 import os
 
+IMAGE_VU = "https://www.vu.nl/nl/Images/VUlogo_NL_Wit_HR_RGB_tcm289-201376.png"
 
 RESPONDERS = [
     BrainResponder(),
@@ -27,19 +28,20 @@ RESPONDERS = [
 
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
-
-                    SubtitlesComponent,
-
+                   SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
-WikipediaResponder, # WolframResponder,
-                   ExploreComponent,
-                   ContextComponent, BrainComponent, SpeechRecognitionComponent,
-                   ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent):
-    pass
+                   # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
+                   ExploreComponent, # TODO: (un)comment to turn exploration On/Off
+                   ContextComponent, BrainComponent,
+                   ObjectDetectionComponent, FaceRecognitionComponent,
+                   SpeechRecognitionComponent, TextToSpeechComponent):
+
+    def __init__(self, backend):
+        super(ResponderApp, self).__init__(backend)
+        self.backend.tablet.show(IMAGE_VU)
 
 
 class DefaultIntention(AbstractIntention, ResponderApp):
-
     IGNORE_TIMEOUT = 60
 
     def __init__(self, application):
@@ -75,7 +77,6 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 # TODO: What are you thinking about? -> Well, Bram, I thought....
 
 class BinaryQuestionIntention(AbstractIntention, ResponderApp):
-
     NEGATION = NegationResponder
     AFFIRMATION = AffirmationResponder
 
@@ -220,7 +221,6 @@ class MeetIntention(AbstractIntention, ResponderApp):
 if __name__ == '__main__':
 
     while True:
-
         # Boot Application
         application = ResponderApp(config.get_backend())
 

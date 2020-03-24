@@ -1,6 +1,7 @@
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-select distinct ?l ?o where {
-            ?s a ?o .
+
+select distinct ?l ?type where {
+            ?s a ?type .
     		?s rdfs:label ?l
-            FILTER(regex(str(?o), "n2mu")) .
-        } ORDER BY (str(?p))
+            FILTER(regex(str(?type), "n2mu")) .
+        }

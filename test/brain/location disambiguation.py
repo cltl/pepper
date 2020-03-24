@@ -1,5 +1,5 @@
 from pepper.brain import LongTermMemory
-from test.brain.utils import transform_capsule, places, bl, capsule_likes, capsule_is_from, capsule_is_from_2, \
+from test.brain.utils import transform_capsule, places, binary_values, capsule_likes, capsule_is_from, capsule_is_from_2, \
     capsule_is_from_3, capsule_knows
 
 from random import choice
@@ -13,9 +13,9 @@ if __name__ == "__main__":
 
     for capsule in capsules:
         say = ''
-        em = choice(bl)
-        np = choice(bl)
-        p = choice(bl)
+        em = choice(binary_values)
+        np = choice(binary_values)
+        p = choice(binary_values)
         capsule = transform_capsule(capsule, empty=em, no_people=np, place=p)
         x = brain.update(capsule, reason_types=True)
 
