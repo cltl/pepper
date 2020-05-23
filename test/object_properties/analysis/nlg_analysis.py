@@ -83,19 +83,6 @@ def calculate_avg_method_scores(label_list):
     return {'avg_correct_score': method_correct, 'avg_natural_score': method_natural}
 
 
-'''def create_scores_table(label_list, label_averages):
-    label_dict = OrderedDict()
-    label_dict[''] = ['avg correct score', 'avg natural score']
-    for label in label_list:
-        label_dict['{} ({})'.format(label.name, label.instance)] = [label.avg_correct, label.avg_natural]
-    label_dict['total average'] = [label_averages['avg_correct_score'], label_averages['avg_natural_score']]
-
-    label_df = pd.DataFrame.from_dict(label_dict, orient='index')
-
-    with open('nlg_{}_avg_table.tex'.format(label_list[0].method), 'w') as tf:
-        tf.write(label_df.to_latex(index=True, bold_rows=True))'''
-
-
 def create_scores_table(label_list, label_averages):
     score_list = []
 
@@ -144,7 +131,6 @@ def main():
 
     survey_df = pd.read_csv(survey_file).astype('str')
     survey_df.drop(survey_df.iloc[:, :9], axis=1, inplace=True)
-
     column_names = list(survey_df.columns)
 
     conn = sqlite3.connect('../eval_instances.db')
