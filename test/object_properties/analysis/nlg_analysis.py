@@ -92,9 +92,15 @@ def create_scores_table(label_list, label_averages):
         label_dict['Object instance'] = label.instance
         label_dict['Avg. correct'] = label.avg_correct
         label_dict['Avg. natural'] = label.avg_natural
-        label_dict['total average'] = [label_averages['avg_correct_score'], label_averages['avg_natural_score']]
 
         score_list.append(label_dict)
+
+    total_dict = OrderedDict()
+    total_dict['Label'] = 'All labels'
+    total_dict['Object instance'] = ''
+    total_dict['Avg. correct'] = label_averages['avg_correct_score']
+    total_dict['Avg. natural'] = label_averages['avg_natural_score']
+    score_list.append(total_dict)
 
     label_df = pd.DataFrame.from_records(score_list)
 
