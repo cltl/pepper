@@ -20,7 +20,7 @@ class TypeReasoner(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(TypeReasoner, self).__init__(address, clear_all, quiet=True)
+        super(TypeReasoner, self).__init__(address, clear_all, is_submodule=True)
 
     def reason_entity_type(self, item, exact_only=True):
         """

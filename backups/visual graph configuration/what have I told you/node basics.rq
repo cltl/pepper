@@ -27,7 +27,7 @@ SELECT ?type ?rank {
             # Get node rank that will be used to define node size. Should be a number between 0 and 1
 
             OPTIONAL {
-                ?node grasp:denotedBy ?claim_trigger .      # Claim node
+                ?node gaf:denotedBy ?claim_trigger .      # Claim node
             }
 
             OPTIONAL {

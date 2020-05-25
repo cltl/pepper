@@ -122,7 +122,7 @@ class LongTermMemory(BasicBrain):
 
             # Check for conflicts after adding the knowledge
             negation_conflicts = self.thought_generator.get_negation_conflicts(utterance)
-            complement_conflict = self.thought_generator.get_complement_cardinality_conflicts(utterance)
+            cardinality_conflict = self.thought_generator.get_complement_cardinality_conflicts(utterance)
 
             # Check for gaps, in case we want to be proactive
             subject_gaps = self.thought_generator.get_entity_gaps(utterance.triple.subject,
@@ -131,10 +131,10 @@ class LongTermMemory(BasicBrain):
                                                                      exclude=utterance.triple.subject)
 
             # Report trust
-            trust = 0 if self.when_last_chat_with(utterance.chat_speaker) == '' else 1
+            trust = self.thought_generator.get_trust(utterance.chat_speaker)
 
             # Create JSON output
-            thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, complement_conflict,
+            thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, cardinality_conflict,
                                 subject_gaps, complement_gaps, overlaps, trust)
             output = {'response': code, 'statement': utterance, 'thoughts': thoughts}
 

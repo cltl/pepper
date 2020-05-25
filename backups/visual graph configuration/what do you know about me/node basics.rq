@@ -29,11 +29,11 @@ SELECT ?type ?rank {
                 GRAPH ?g {
                     ?node ?p ?o .
                 } .
-                ?g grasp:denotedBy ?init_trigger .          # Initial node
+                ?g gaf:denotedBy ?init_trigger .          # Initial node
             }
 
             OPTIONAL {
-                ?node grasp:denotedBy ?claim_trigger .      # Claim node
+                ?node gaf:denotedBy ?claim_trigger .      # Claim node
             }
 
             OPTIONAL {

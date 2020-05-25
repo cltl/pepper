@@ -12,7 +12,7 @@ from random import choice
 if __name__ == "__main__":
 
     # Create brain connection
-    brain = LongTermMemory(clear_all=True)
+    brain = LongTermMemory(clear_all=False)
 
     for elem in statements:
         em = choice(binary_values)

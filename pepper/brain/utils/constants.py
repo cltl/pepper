@@ -5,14 +5,15 @@ Other agreements/notes
 """
 
 NAMESPACE_MAPPING = {
-    'Instance': 'GRASP',
+    'Instance': 'GAF',
+    'Assertion': 'GAF',
     'Statement': 'GRASP',
     'Experience': 'GRASP',
     'Chat': 'GRASP',
     'Visual': 'GRASP',
     'Utterance': 'GRASP',
     'Detection': 'GRASP',
-    'Mention': 'GRASP',
+    'Mention': 'GAF',
     'Attribution': 'GRASP',
     'AttributionValue': 'GRASP',
     'FactualityValue': 'GRASP',

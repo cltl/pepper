@@ -15,7 +15,7 @@ CONSTRUCT {
 } WHERE {
 
     ?m grasp:wasAttributedTo ?node .
-    ?g grasp:denotedBy ?m .
+    ?g gaf:denotedBy ?m .
     ?m prov:wasDerivedFrom ?utt .
     ?chat sem:hasSubEvent ?utt .
     ?context sem:hasEvent ?chat .

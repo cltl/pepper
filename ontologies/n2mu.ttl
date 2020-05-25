@@ -8,7 +8,6 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix geonames: <http://www.geonames.org/ontology/documentation.html> .
 @prefix oboInOwl: <http://www.geneontology.org/formats/oboInOwl#> .
 @base <http://cltl.nl/leolani/n2mu/> .
 

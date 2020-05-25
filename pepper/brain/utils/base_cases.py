@@ -1,6 +1,30 @@
 from datetime import date
 
 statements = [
+{
+        "utterance": "I think Lenka is from Serbia",
+        "subject": {"label": "lenka", "type": "person"},
+        "predicate": {"type": "be-from"},
+        "object": {"label": "serbia", "type": "location"},
+        "perspective": {"certainty": 0.5, "polarity": 1, "sentiment": 0},
+        "author": "piek",
+        "chat": 1,
+        "turn": 1,
+        "position": "0-25",
+        "date": date(2018, 3, 19)
+    },
+    {
+        "utterance": "Bram is not from the Netherlands",
+        "subject": {"label": "bram", "type": "person"},
+        "predicate": {"type": "be-from"},
+        "object": {"label": "netherlands", "type": "location"},
+        "perspective": {"certainty": 1, "polarity": -1, "sentiment": 0},
+        "author": "piek",
+        "chat": 2,
+        "turn": 2,
+        "position": "0-25",
+        "date": date(2018, 3, 19)
+    },
     {
         "utterance": "Lenka is from Serbia",
         "subject": {"label": "lenka", "type": "person"},
@@ -8,7 +32,7 @@ statements = [
         "object": {"label": "serbia", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 1,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -20,7 +44,7 @@ statements = [
         "object": {"label": "netherlands", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 2,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -32,7 +56,7 @@ statements = [
         "object": {"label": "mexico", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 3,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -44,7 +68,7 @@ statements = [
         "object": {"label": "netherlands", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 4,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -56,7 +80,7 @@ statements = [
         "object": {"label": "netherlands", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 5,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -68,7 +92,7 @@ statements = [
         "object": {"label": "goulash", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 6,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -80,7 +104,7 @@ statements = [
         "object": {"label": "the_big-lebowski", "type": "movie"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 7,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -92,7 +116,7 @@ statements = [
         "object": {"label": "baseball", "type": "sport"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 8,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -104,7 +128,7 @@ statements = [
         "object": {"label": "romantic-movies", "type": "film-genre"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 9,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -116,7 +140,7 @@ statements = [
         "object": {"label": "ice-cream", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 10,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -128,7 +152,7 @@ statements = [
         "object": {"label": "harry-potter", "type": "movie"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 11,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -140,7 +164,7 @@ statements = [
         "object": {"label": "acrobatics", "type": "sport"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 12,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -152,7 +176,7 @@ statements = [
         "object": {"label": "action-movies", "type": "film-genre"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 13,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -164,7 +188,7 @@ statements = [
         "object": {"label": "balkenbrij", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 14,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -176,7 +200,7 @@ statements = [
         "object": {"label": "2001_a_space-odyssey", "type": "movie"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 15,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -188,7 +212,7 @@ statements = [
         "object": {"label": "soccer", "type": "sport"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 16,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -200,7 +224,7 @@ statements = [
         "object": {"label": "horror-movies", "type": "film-genre"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 17,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -212,7 +236,7 @@ statements = [
         "object": {"label": "tacos", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 18,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -224,7 +248,7 @@ statements = [
         "object": {"label": "coco", "type": "movie"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 19,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -236,7 +260,7 @@ statements = [
         "object": {"label": "soccer", "type": "sport"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 20,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -248,7 +272,7 @@ statements = [
         "object": {"label": "animated-movies", "type": "film-genre"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 21,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -260,7 +284,7 @@ statements = [
         "object": {"label": "lenka", "type": "person"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 22,
         "position": "0-16",
         "date": date(2018, 3, 19)
@@ -272,7 +296,7 @@ statements = [
         "object": {"label": "france", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 23,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -284,7 +308,7 @@ statements = [
         "object": {"label": "japan", "type": "location"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "selene",
-        "chat": 1,
+        "chat": 2,
         "turn": 24,
         "position": "0-25",
         "date": date(2018, 3, 19)
@@ -296,7 +320,7 @@ statements = [
         "object": {"type": "person", "label": "ljubica"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "lenka",
-        "chat": 2,
+        "chat": 3,
         "turn": 1,
         "position": "0-25",
         "date": date(2018, 3, 20)
@@ -308,7 +332,7 @@ statements = [
         "object": {"type": "dish", "label": "cake"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "lenka",
-        "chat": 2,
+        "chat": 3,
         "turn": 2,
         "position": "0-25",
         "date": date(2018, 3, 20)
@@ -320,7 +344,7 @@ statements = [
         "object": {"type": "film-genre", "label": "action-movies"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "bram",
-        "chat": 3,
+        "chat": 4,
         "turn": 1,
         "position": "0-25",
         "date": date(2018, 3, 23)
@@ -332,7 +356,7 @@ statements = [
         "object": {"type": "location", "label": "italy"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "bram",
-        "chat": 3,
+        "chat": 4,
         "turn": 2,
         "position": "0-25",
         "date": date(2018, 3, 23)
@@ -344,7 +368,7 @@ statements = [
         "object": {"label": "goulash", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": -1, "sentiment": 0},
         "author": "bram",
-        "chat": 3,
+        "chat": 4,
         "turn": 3,
         "position": "0-21",
         "date": date(2018, 3, 23)
@@ -356,7 +380,7 @@ statements = [
         "object": {"type": "film-genre", "label": "romantic-movies"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": 0},
         "author": "piek",
-        "chat": 4,
+        "chat": 5,
         "turn": 1,
         "position": "0-25",
         "date": date(2018, 3, 25)
@@ -368,7 +392,7 @@ statements = [
         "object": {"label": "tacos", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": -1, "sentiment": 0},
         "author": "piek",
-        "chat": 4,
+        "chat": 5,
         "turn": 2,
         "position": "0-26",
         "date": date(2018, 3, 25)
@@ -380,7 +404,7 @@ statements = [
         "object": {"label": "tacos", "type": "dish"},
         "perspective": {"certainty": 1, "polarity": 1, "sentiment": -1},
         "author": "piek",
-        "chat": 4,
+        "chat": 5,
         "turn": 3,
         "position": "0-12",
         "date": date(2018, 3, 25)

@@ -17,7 +17,7 @@ class LocationReasoner(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(LocationReasoner, self).__init__(address, clear_all, quiet=True)
+        super(LocationReasoner, self).__init__(address, clear_all, is_submodule=True)
 
     @staticmethod
     def _measure_detection_overlap(detections_1, detections_2):

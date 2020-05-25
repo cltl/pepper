@@ -198,7 +198,7 @@ def _create_events(self, utterance, claim_type, context):
     self.interaction_graph.add((event.id, self.namespaces['N2MU']['id'], event_id))
     self.interaction_graph.add((context.id, self.namespaces['SEM']['hasEvent'], event.id))
 
-    # Utterance or Visual are events and instances
+    # Utterance or Detection are events and instances  # TODO incremental detection instead of id of utterance
     subevent_id = self._rdf_builder.fill_literal(utterance.turn, datatype=self.namespaces['XML']['string'])
     subevent_type = '%s' % ('utterance' if claim_type == UtteranceType.STATEMENT else 'detection')
     subevent_label = '%s_%s%s' % (str(event.label), subevent_type, str(subevent_id))
@@ -218,6 +218,7 @@ def _create_mention(self, utterance, subevent, claim_type, detection):
     if claim_type == UtteranceType.STATEMENT:
         mention_unit = 'char'
         mention_position = '0-%s' % len(utterance.transcript)
+        transcript = self._rdf_builder.fill_literal(utterance.transcript, datatype=self.namespaces['XML']['string'])
     else:
         scores = [x.confidence for x in utterance.context.objects] + [x.confidence for x in
                                                                       utterance.context.people]
@@ -226,27 +227,28 @@ def _create_mention(self, utterance, subevent, claim_type, detection):
 
     # Mention
     mention_label = '%s_%s%s' % (subevent.label, mention_unit, mention_position)
-    mention = self._rdf_builder.fill_entity(mention_label, ['Mention'], 'LTa')
+    mention = self._rdf_builder.fill_entity(mention_label, ['Mention', claim_type.name.title()], 'LTa')
     _link_entity(self, mention, self.perspective_graph)
 
     # Bidirectional link between mention and individual instances
     if claim_type == UtteranceType.STATEMENT:
-        self.instance_graph.add((utterance.triple.subject.id, self.namespaces['GRASP']['denotedIn'], mention.id))
-        self.instance_graph.add((utterance.triple.complement.id, self.namespaces['GRASP']['denotedIn'], mention.id))
+        self.instance_graph.add((utterance.triple.subject.id, self.namespaces['GAF']['denotedIn'], mention.id))
+        self.instance_graph.add((utterance.triple.complement.id, self.namespaces['GAF']['denotedIn'], mention.id))
         self.perspective_graph.add(
-            (mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.subject.id))
+            (mention.id, self.namespaces['GAF']['containsDenotation'], utterance.triple.subject.id))
         self.perspective_graph.add(
-            (mention.id, self.namespaces['GRASP']['containsDenotation'], utterance.triple.complement.id))
+            (mention.id, self.namespaces['GAF']['containsDenotation'], utterance.triple.complement.id))
+        self.perspective_graph.add((mention.id, RDF.value, transcript))
     else:
-        self.instance_graph.add((detection.id, self.namespaces['GRASP']['denotedIn'], mention.id))
-        self.perspective_graph.add((mention.id, self.namespaces['GRASP']['containsDenotation'], detection.id))
+        self.instance_graph.add((detection.id, self.namespaces['GAF']['denotedIn'], mention.id))
+        self.perspective_graph.add((mention.id, self.namespaces['GAF']['containsDenotation'], detection.id))
 
     return mention
 
 
-def _create_attribution(self, utterance, mention, claim_type=None, perspective_values=None):
+def _create_attribution(self, utterance, mention, claim, claim_type=None, perspective_values=None):
     if perspective_values:
-        attribution_suffix = '-'.join(perspective_values.values())
+        attribution_suffix = '-'.join([perspective_values[k] for k in sorted(perspective_values)])
 
     elif claim_type == UtteranceType.STATEMENT:
         certainty_value = confidence_to_certainty_value(utterance.perspective.certainty)
@@ -262,7 +264,7 @@ def _create_attribution(self, utterance, mention, claim_type=None, perspective_v
         perspective_values = {'CertaintyValue': certainty_value}
         attribution_suffix = '%s' % certainty_value
 
-    attribution_label = mention.label + '_%s' % attribution_suffix
+    attribution_label = claim.label + '_%s' % attribution_suffix
     attribution = self._rdf_builder.fill_entity(attribution_label, ['Attribution'], 'LTa')
     _link_entity(self, attribution, self.perspective_graph)
 
@@ -326,7 +328,7 @@ def create_claim_graph(self, subject, predicate, complement, claim_type=Utteranc
     # Statement
     claim_label = hash_claim_id([subject.label, predicate.label, complement.label])
 
-    claim = self._rdf_builder.fill_entity(claim_label, ['Event', 'Instance', claim_type.name.title()], 'LW')
+    claim = self._rdf_builder.fill_entity(claim_label, ['Event', 'Assertion'], 'LW')
     _link_entity(self, claim, self.claim_graph)
 
     # Create graph and add triple
@@ -343,22 +345,22 @@ def create_interaction_graph(self, utterance, claim):
     # Subevents
     experience, sensor, use_sensor = _create_events(self, utterance, UtteranceType.EXPERIENCE, context)
     for detection, observation in zip(detections, observations):
-        mention, attribution = create_perspective_graph(self, utterance, experience, UtteranceType.EXPERIENCE,
+        mention, attribution = create_perspective_graph(self, utterance, claim, experience, UtteranceType.EXPERIENCE,
                                                         detection=detection)
         interlink_graphs(self, mention, sensor, experience, observation, use_sensor)
 
     if utterance.type == UtteranceType.STATEMENT:
         statement, actor, make_friend = _create_events(self, utterance, UtteranceType.STATEMENT, context)
-        mention, attribution = create_perspective_graph(self, utterance, statement, UtteranceType.STATEMENT)
+        mention, attribution = create_perspective_graph(self, utterance, claim, statement, UtteranceType.STATEMENT)
         interlink_graphs(self, mention, actor, statement, claim, make_friend)
 
 
-def create_perspective_graph(self, utterance, subevent, claim_type, detection=None):
+def create_perspective_graph(self, utterance, claim, subevent, claim_type, detection=None):
     # Mention
     mention = _create_mention(self, utterance, subevent, claim_type, detection=detection)
 
     # Attribution
-    attribution = _create_attribution(self, utterance, mention, claim_type=claim_type)
+    attribution = _create_attribution(self, utterance, mention, claim, claim_type=claim_type)
 
     return mention, attribution
 
@@ -369,11 +371,11 @@ def interlink_graphs(self, mention, actor, subevent, claim, interaction):
     self.perspective_graph.add((mention.id, self.namespaces['PROV']['wasDerivedFrom'], subevent.id))
 
     # Bidirectional link between mention and claim
-    self.claim_graph.add((claim.id, self.namespaces['GRASP']['denotedBy'], mention.id))
-    self.perspective_graph.add((mention.id, self.namespaces['GRASP']['denotes'], claim.id))
+    self.claim_graph.add((claim.id, self.namespaces['GAF']['denotedBy'], mention.id))
+    self.perspective_graph.add((mention.id, self.namespaces['GAF']['denotes'], claim.id))
 
     # Link mention to the interaction TODO: revise with Piek
-    # self.claim_graph.add((interaction.id, self.namespaces['GRASP']['denotedBy'], mention.id))
+    # self.claim_graph.add((interaction.id, self.namespaces['GAF']['denotedBy'], mention.id))
 
 
 def model_graphs(self, utterance):

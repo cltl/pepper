@@ -8,20 +8,10 @@ PREFIX grasp: <http://groundedannotationframework.org/grasp#>
 PREFIX graspf: <http://groundedannotationframework.org/grasp/factuality#>
 PREFIX gaf: <http://groundedannotationframework.org/gaf#>
 
-CONSTRUCT {
+SELECT
+ ?g ?date1 ?author1 ?val1 ?date2 ?author2 ?val2
 
-    ?g grasp:hasAttribution ?att1 .
-    ?att1 rdf:value ?val1 .
-    ?att1 grasp:wasAttributedTo ?author1 .
-    ?author1 sem:hasTime ?date1 .
-
-    ?g grasp:hasAttribution  ?att2 .
-    ?att2 rdf:value ?val2 .
-    ?att2 grasp:wasAttributedTo ?author2 .
-    ?author2 sem:hasTime ?date2 .
-
-} WHERE {
-
+WHERE {
     ?g gaf:denotedBy ?m1 .
     ?m1 grasp:hasAttribution ?att1 .
     ?att1 rdf:value graspf:POSITIVE .

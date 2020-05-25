@@ -29,7 +29,7 @@ SELECT ?type ?rank {
                 GRAPH ?node {
                     ?s ?p ?o .
                 } .
-                ?node grasp:denotedBy ?init_trigger .          # Initial node
+                ?node gaf:denotedBy ?init_trigger .          # Initial node
             }
 
             OPTIONAL {

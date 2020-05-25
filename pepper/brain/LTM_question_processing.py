@@ -14,7 +14,7 @@ def create_query(self, utterance):
                                GRAPH ?g {
                                    ?s n2mu:%s ?o . 
                                } . 
-                               ?g grasp:denotedBy ?m . 
+                               ?g gaf:denotedBy ?m . 
                                ?m grasp:wasAttributedTo ?author . 
                                ?author rdfs:label ?authorlabel .
 
@@ -46,7 +46,7 @@ def create_query(self, utterance):
                                GRAPH ?g {
                                    ?s n2mu:%s ?o . 
                                } . 
-                               ?g grasp:denotedBy ?m . 
+                               ?g gaf:denotedBy ?m . 
                                ?m grasp:wasAttributedTo ?author . 
                                ?author rdfs:label ?authorlabel .
 
@@ -78,7 +78,7 @@ def create_query(self, utterance):
                                GRAPH ?g {
                                    ?s n2mu:%s ?o . 
                                } . 
-                               ?g grasp:denotedBy ?m . 
+                               ?g gaf:denotedBy ?m . 
                                ?m grasp:wasAttributedTo ?author . 
                                ?author rdfs:label ?authorlabel .
 

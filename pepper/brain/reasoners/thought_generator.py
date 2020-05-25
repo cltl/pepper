@@ -19,23 +19,23 @@ class ThoughtGenerator(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(ThoughtGenerator, self).__init__(address, clear_all, quiet=True)
+        super(ThoughtGenerator, self).__init__(address, clear_all, is_submodule=True)
 
     ########## novelty ##########
-    def _fill_statement_novelty_(self, raw_conflict):
+    def _fill_statement_novelty_(self, raw_provenance):
         """
         Structure statement novelty to get provenance if this statement has been heard before
         Parameters
         ----------
-        raw_conflict: dict
+        raw_provenance: dict
             standard row result from SPARQL
 
         Returns
         -------
             StatementNovelty object containing provenance
         """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
-        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
+        preprocessed_date = self._rdf_builder.label_from_uri(raw_provenance['date']['value'], 'LC')
+        processed_provenance = self._rdf_builder.fill_provenance(raw_provenance['authorlabel']['value'],
                                                                  preprocessed_date)
 
         return StatementNovelty(processed_provenance)
@@ -92,7 +92,7 @@ class ThoughtGenerator(BasicBrain):
 
         Returns
         -------
-        conflicts: List[StatementNovelty]
+        response: List[StatementNovelty]
             List of provenance for the instance
         """
         query = read_query('thoughts/entity_novelty') % instance_url
@@ -101,12 +101,12 @@ class ThoughtGenerator(BasicBrain):
         return response
 
     ########## gaps ##########
-    def _fill_entity_gap_(self, raw_conflict):
+    def _fill_entity_gap_(self, raw_response):
         """
         Structure entity gap to get the predicate and range of what has been learned but not heard
         Parameters
         ----------
-        raw_conflict: dict
+        raw_response: dict
             standard row result from SPARQL
 
         Returns
@@ -114,9 +114,9 @@ class ThoughtGenerator(BasicBrain):
             Gap object containing a predicate and its range
         """
 
-        processed_predicate = self._rdf_builder.fill_predicate(raw_conflict['p']['value'].split('/')[-1])
+        processed_predicate = self._rdf_builder.fill_predicate(raw_response['p']['value'].split('/')[-1])
         processed_range = self._rdf_builder.fill_entity('', namespace='N2MU',
-                                                        types=[raw_conflict['type2']['value'].split('/')[-1]])
+                                                        types=[raw_response['type2']['value'].split('/')[-1]])
 
         return Gap(processed_predicate, processed_range)
 
@@ -150,8 +150,8 @@ class ThoughtGenerator(BasicBrain):
 
         if response:
             complement_gaps = [self._fill_entity_gap_(elem)
-                           for elem in response
-                           if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
+                               for elem in response
+                               if elem['p']['value'].split('/')[-1] not in self._NOT_TO_ASK_PREDICATES]
 
         else:
             complement_gaps = []
@@ -159,24 +159,24 @@ class ThoughtGenerator(BasicBrain):
         return Gaps(subject_gaps, complement_gaps)
 
     ########## overlaps ##########
-    def _fill_overlap_(self, raw_conflict):
+    def _fill_overlap_(self, raw_response):
         """
         Structure overlap to get the provenance and entity on which they overlap
         Parameters
         ----------
-        raw_conflict: dict
+        raw_response: dict
             standard row result from SPARQL
 
         Returns
         -------
             Overlap object containing an entity and the provenance of the mention causing the overlap
         """
-        preprocessed_date = self._rdf_builder.label_from_uri(raw_conflict['date']['value'], 'LC')
-        preprocessed_types = self._rdf_builder.clean_aggregated_types(raw_conflict['types']['value'])
+        preprocessed_date = self._rdf_builder.label_from_uri(raw_response['date']['value'], 'LC')
+        preprocessed_types = self._rdf_builder.clean_aggregated_types(raw_response['types']['value'])
 
-        processed_provenance = self._rdf_builder.fill_provenance(raw_conflict['authorlabel']['value'],
+        processed_provenance = self._rdf_builder.fill_provenance(raw_response['authorlabel']['value'],
                                                                  preprocessed_date)
-        processed_entity = self._rdf_builder.fill_entity(raw_conflict['label']['value'], preprocessed_types, 'LW')
+        processed_entity = self._rdf_builder.fill_entity(raw_response['label']['value'], preprocessed_types, 'LW')
 
         return Overlap(processed_provenance, processed_entity)
 
@@ -192,8 +192,9 @@ class ThoughtGenerator(BasicBrain):
             Overlaps containing shared information with the heard statement
         """
         # Role as subject
-        query = read_query('thoughts/object_overlap') % (utterance.triple.predicate_name, utterance.triple.complement_name,
-                                                         utterance.triple.subject_name)
+        query = read_query('thoughts/object_overlap') % (
+        utterance.triple.predicate_name, utterance.triple.complement_name,
+        utterance.triple.subject_name)
         response = self._submit_query(query)
 
         if response[0]['types']['value'] != '':
@@ -332,3 +333,38 @@ class ThoughtGenerator(BasicBrain):
             conflicts = []
 
         return conflicts
+
+    def get_trust(self, speaker):
+        """
+        Compute a value of trust based on what is know about and via this person
+        Parameters
+        ----------
+        speaker
+
+        Returns
+        -------
+        trust_value: float
+            Weighted average of features
+        """
+
+        # chat based feature
+        num_chats = float(self.count_chat_with(speaker))
+        friends = self.get_best_friends()
+        best_friend_chats = float(friends[0][1])
+        chat_feature = num_chats / best_friend_chats
+
+        # new content feature
+        num_claims = float(self.count_statements_by(speaker))
+        all_claims = float(self.count_statements())
+        claims_feature = num_claims / all_claims
+
+        # conflicts feature
+        num_conflicts = float(len(self.get_conflicts_by(speaker)))
+        all_conflicts = float(len(self.get_conflicts()))
+        conflicts_feature = (num_conflicts / all_conflicts) - 1
+
+        # Aggregate
+        # TODO scale
+        trust_value = (chat_feature + claims_feature + conflicts_feature) / 3
+
+        return trust_value

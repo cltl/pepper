@@ -16,7 +16,7 @@ class BasicBrain(object):
 
     _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, quiet=False):
+    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, is_submodule=False):
         """
         Interact with Triple store
 
@@ -33,7 +33,7 @@ class BasicBrain(object):
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
 
-        if not quiet:
+        if not is_submodule:
             # Possible clear all contents (testing purposes)
             if clear_all:
                 self.clear_brain()
@@ -94,10 +94,23 @@ class BasicBrain(object):
         Upload ontology
         :return: response status
         """
-        self._log.info("Uploading ontology to brain")
-        data = self._serialize(self._brain_log)
+        if not self.ontology_is_uploaded():
+            self._rdf_builder.load_ontologies()
 
-        return self._connection.upload(data)
+            self._log.info("Uploading ontology to brain")
+            data = self._serialize(self._brain_log)
+            _ = self._connection.upload(data)
+
+    def ontology_is_uploaded(self):
+        """
+        Query the existance of the Ontology graph, thus not importing the whole Ontology every time
+        :return: response status
+        """
+        self._log.debug("Checking if ontology is in brain")
+        query = read_query('structure exploration/ontology_uploaded')
+        response = self._submit_query(query, ask=True)
+
+        return response
 
     def get_predicates(self):
         """
@@ -143,6 +156,33 @@ class BasicBrain(object):
         response = self._submit_query(query)
         return response[0]['count']['value']
 
+    def count_statements_by(self, actor_label):
+        """
+        Count statements or 'facts' in the brain by a given author
+        :return:
+        """
+        query = read_query('trust/count_statements_by') % actor_label
+        response = self._submit_query(query)
+        return response[0]['num_stat']['value']
+
+    def get_conflicts(self):
+        """
+        Count statements or 'facts' in the brain
+        :return:
+        """
+        query = read_query('content exploration/all_conflicts')
+        response = self._submit_query(query)
+        return response
+
+    def get_conflicts_by(self, actor_label):
+        """
+        Count statements or 'facts' in the brain
+        :return:
+        """
+        query = read_query('trust/conflicts_by') % (actor_label, actor_label)
+        response = self._submit_query(query)
+        return response
+
     def count_friends(self):
         """
         Count number of people I have talked to
@@ -168,7 +208,7 @@ class BasicBrain(object):
         """
         query = read_query('content exploration/best_friends')
         response = self._submit_query(query)
-        return [elem['name']['value'] for elem in response]
+        return [(elem['name']['value'], elem['num_chat']['value'].split('/')[-1]) for elem in response]
 
     def when_last_chat_with(self, actor_label):
         """
@@ -176,10 +216,21 @@ class BasicBrain(object):
         :param actor_label: name of person
         :return:
         """
-        query = read_query('content exploration/when_last_chat_with') % actor_label
+        query = read_query('trust/when_last_chat_with') % actor_label
         response = self._submit_query(query)
 
         return response[0]['time']['value'].split('/')[-1] if response != [] else ''
+
+    def count_chat_with(self, actor_label):
+        """
+        Count times I chatted with this person
+        :param actor_label: name of person
+        :return:
+        """
+        query = read_query('trust/count_chat_with') % actor_label
+        response = self._submit_query(query)
+
+        return response[0]['num_chats']['value'].split('/')[-1] if response != [] else ''
 
     def get_instance_of_type(self, instance_type):
         """
@@ -235,8 +286,9 @@ class BasicBrain(object):
     def clean_local_memory(self):
         self.namespaces = self._rdf_builder.namespaces
         self.dataset = self._rdf_builder.dataset
+
+        self.ontology_graph = self._rdf_builder.ontology_graph
         self.instance_graph = self._rdf_builder.instance_graph
         self.claim_graph = self._rdf_builder.claim_graph
-        self.ontology_graph = self._rdf_builder.ontology_graph
         self.perspective_graph = self._rdf_builder.perspective_graph
         self.interaction_graph = self._rdf_builder.interaction_graph

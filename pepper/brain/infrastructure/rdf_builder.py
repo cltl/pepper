@@ -25,7 +25,6 @@ class RdfBuilder(object):
         self._define_namespaces()
         self._bind_namespaces()
         self.define_named_graphs()
-        self.load_ontology_integration()
 
     ########## setting up connection ##########
     def _define_namespaces(self):
@@ -89,27 +88,6 @@ class RdfBuilder(object):
         wikibase = 'http://wikiba.se/ontology#'
         self.namespaces['wikibase'] = Namespace(wikibase)
 
-    def define_named_graphs(self):
-        # Instance graph
-        self.ontology_graph = self.dataset.graph(self.create_resource_uri('LW', 'Ontology'))
-        self.instance_graph = self.dataset.graph(self.create_resource_uri('LW', 'Instances'))
-        self.claim_graph = self.dataset.graph(self.create_resource_uri('LW', 'Claims'))
-        self.perspective_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Perspectives'))
-        self.interaction_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Interactions'))
-
-    def _get_ontology_path(self):
-        """
-        Define ontology paths to key vocabularies
-        :return:
-        """
-        self.ontology_paths['n2mu'] = os.path.join(self.ONTOLOGY_ROOT, 'leolani.ttl')
-        self.ontology_paths['gaf'] = os.path.join(self.ONTOLOGY_ROOT, 'gaf.rdf')
-        self.ontology_paths['grasp'] = os.path.join(self.ONTOLOGY_ROOT, 'grasp.rdf')
-        self.ontology_paths['sem'] = os.path.join(self.ONTOLOGY_ROOT, 'sem.rdf')
-
-    def load_ontology_integration(self):
-        self.ontology_graph.parse(location=os.path.join(self.ONTOLOGY_ROOT, 'integration.ttl'), format="turtle")
-
     def _bind_namespaces(self):
         """
         Bind namespaces
@@ -142,6 +120,28 @@ class RdfBuilder(object):
         self.dataset.bind('wdt', self.namespaces['WDT'])
         self.dataset.bind('wikibase', self.namespaces['wikibase'])
 
+    def define_named_graphs(self):
+        # Instance graph
+        self.ontology_graph = self.dataset.graph(self.create_resource_uri('LW', 'Ontology'))
+        self.instance_graph = self.dataset.graph(self.create_resource_uri('LW', 'Instances'))
+        self.claim_graph = self.dataset.graph(self.create_resource_uri('LW', 'Claims'))
+        self.perspective_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Perspectives'))
+        self.interaction_graph = self.dataset.graph(self.create_resource_uri('LTa', 'Interactions'))
+
+    def load_ontologies(self):
+        self.ontology_graph.parse(location=os.path.join(self.ONTOLOGY_ROOT, 'integration.ttl'), format="turtle")
+        self.ontology_graph.parse(location=os.path.join(self.ONTOLOGY_ROOT, 'ceo_original.ttl'), format="turtle")
+
+    def _get_ontology_path(self):
+        """
+        Define ontology paths to key vocabularies
+        :return:
+        """
+        self.ontology_paths['n2mu'] = os.path.join(self.ONTOLOGY_ROOT, 'leolani.ttl')
+        self.ontology_paths['gaf'] = os.path.join(self.ONTOLOGY_ROOT, 'gaf.rdf')
+        self.ontology_paths['grasp'] = os.path.join(self.ONTOLOGY_ROOT, 'grasp.rdf')
+        self.ontology_paths['sem'] = os.path.join(self.ONTOLOGY_ROOT, 'sem.rdf')
+
     ########## basic constructors ##########
     def _fix_nlp_types(self, types):
         # TODO here we know if two types are different category (aka noun and verb) we might need to split the triple
@@ -151,7 +151,7 @@ class RdfBuilder(object):
                 # this was just a char
                 fixed_types.append(types.split('.')[-1])
                 break
-            elif "article" in el or "prep" in el:
+            elif "article" in el or "prep" in el or "adj" in el:
                 pass
             elif '.' in el:
                 fixed_types.append(el.split('.')[-1])

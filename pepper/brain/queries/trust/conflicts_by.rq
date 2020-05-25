@@ -7,21 +7,12 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX grasp: <http://groundedannotationframework.org/grasp#>
 PREFIX graspf: <http://groundedannotationframework.org/grasp/factuality#>
 PREFIX gaf: <http://groundedannotationframework.org/gaf#>
+PREFIX : <http://cltl.nl/leolani/n2mu/>
 
-CONSTRUCT {
+SELECT
+ ?g ?date1 ?author1 ?val1 ?date2 ?author2 ?val2
 
-    ?g grasp:hasAttribution ?att1 .
-    ?att1 rdf:value ?val1 .
-    ?att1 grasp:wasAttributedTo ?author1 .
-    ?author1 sem:hasTime ?date1 .
-
-    ?g grasp:hasAttribution  ?att2 .
-    ?att2 rdf:value ?val2 .
-    ?att2 grasp:wasAttributedTo ?author2 .
-    ?author2 sem:hasTime ?date2 .
-
-} WHERE {
-
+WHERE {
     ?g gaf:denotedBy ?m1 .
     ?m1 grasp:hasAttribution ?att1 .
     ?att1 rdf:value graspf:POSITIVE .
@@ -34,6 +25,7 @@ CONSTRUCT {
     ?cont1 ?time_pred1 ?date1 .
     VALUES (?time_pred1) { (sem:hasTime) (sem:hasBeginTimeStamp) } .
     ?m1 grasp:wasAttributedTo ?author1 .
+    ?author1 rdfs:label ?author1label.
 
     ?g gaf:denotedBy ?m2 .
     ?m2 grasp:hasAttribution ?att2 .
@@ -47,4 +39,8 @@ CONSTRUCT {
     ?cont2 ?time_pred2 ?date2 .
     VALUES (?time_pred2) { (sem:hasTime) (sem:hasBeginTimeStamp) } .
     ?m2 grasp:wasAttributedTo ?author2 .
+    ?author2 rdfs:label ?author2label.
+
+    FILTER (?author1label = "%s" || ?author2label = "%s" )
+
 } GROUP BY ?g ?date1 ?author1 ?att1 ?val1 ?date2 ?author2 ?att2 ?val2

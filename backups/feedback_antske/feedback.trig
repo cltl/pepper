@@ -33,7 +33,7 @@ leolaniTalk:Perspectives {
         grasp:isAttributionFor leolaniTalk:chat83754061691870037768117075533786301842_utterance1_char0-14 ; -> redundant, but maybe useful at query time not relevant for model
         grasp:wasAttributedTo leolaniFriends:tom ;
         rdf:value grasp:CERTAIN .
-        -> prov that
+        DONE -> prov that
 
     leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 a grasp:Experience ;
         grasp:containsDenotation leolaniWorld:apple-28248883782911140876150137923737585159,
@@ -52,7 +52,7 @@ leolaniTalk:Perspectives {
         rdfs:label "visual83754061691870037768117075533786301842_detection1_pixel0-5_PROBABLE" ;
         grasp:isAttributionFor leolaniTalk:visual83754061691870037768117075533786301842_detection1_pixel0-5 ;
         rdf:value grasp:PROBABLE .
-           -> we need an attribution per statement/experience
+           DONE -> we need an attribution per statement/experience
            _> grasp is meant to show uncertainty in the text, not on the processing of the text. the latter is more related to provenance
            -> factuality values related of how certain the source is
 }
