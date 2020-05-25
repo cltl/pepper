@@ -57,6 +57,7 @@ def find_closest_concat(model, vocab, target, observations):
 
 def find_closest_wmd(model, target, observations):
     # WMD = Euclidean distance over normalized bag of words (nBOW)
+    # "the minimum cumulative distance that all words in document 1 need to travel to exactly match document 2"
 
     target_list = target.split()
 

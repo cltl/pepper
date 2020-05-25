@@ -28,7 +28,7 @@ class InstanceLabel:
         picks = dict()
         for pick in list_of_picks:
             pick = str(pick).strip()
-            # some values not counted if list_of_picks.count(pick) is used
+            # some values not counted if list_of_picks.count(pick) is used (?)
             if pick not in picks:
                 picks[pick] = 1
             else:
@@ -59,7 +59,7 @@ class InstanceLabel:
             yield(description)
 
 
-def retrieve_data_from_table(cur, table):
+def retrieve_data_from_nlg_table(cur, table):
     cur.execute('SELECT * FROM {}'.format(table))
     data = cur.fetchall()
 
@@ -110,12 +110,17 @@ def create_scores_table(label_list, label_averages):
 
 def create_picks_table(label_list):
     score_list = []
+    correct_scores = 0
+    incorrect_scores = 0
+    total_scores = 0
     for label in label_list:
         correct = sum([label.picks[key] for key in label.picks.keys() if str(key) == str(label.instance)])
         incorrect = sum([label.picks[key] for key in label.picks.keys() if str(key) != str(label.instance)])
 
-        correct_percent = round(float(correct) / float(correct + incorrect) * 100, 2)
-        incorrect_percent = round(float(incorrect) / float(correct + incorrect) * 100, 2)
+        total = correct + incorrect
+
+        correct_percent = round(float(correct) / float(total) * 100, 2)
+        incorrect_percent = round(float(incorrect) / float(total) * 100, 2)
 
         label_dict = OrderedDict()
         label_dict['Label'] = label.name
@@ -124,6 +129,21 @@ def create_picks_table(label_list):
         label_dict['Incorrect %'] = incorrect_percent
 
         score_list.append(label_dict)
+
+        correct_scores += correct
+        incorrect_scores += incorrect
+        total_scores += total
+
+    total_correct = round(float(correct_scores) / float(total_scores) * 100, 2)
+    total_incorrect = round(float(incorrect_scores) / float(total_scores) * 100, 2)
+
+    total_dict = OrderedDict()
+    total_dict['Label'] = 'Total'
+    total_dict['Object instance'] = ''
+    total_dict['Correct %'] = total_correct
+    total_dict['Incorrect %'] = total_incorrect
+
+    score_list.append(total_dict)
 
     picks_df = pd.DataFrame.from_records(score_list)
 
@@ -142,9 +162,9 @@ def main():
     conn = sqlite3.connect('../eval_instances.db')
     cur = conn.cursor()
 
-    baseline = retrieve_data_from_table(cur, 'nlg_baseline')
-    glove_100 = retrieve_data_from_table(cur, 'nlg_glove_100')
-    glove_300 = retrieve_data_from_table(cur, 'nlg_glove_300')
+    baseline = retrieve_data_from_nlg_table(cur, 'nlg_baseline')
+    glove_100 = retrieve_data_from_nlg_table(cur, 'nlg_glove_100')
+    glove_300 = retrieve_data_from_nlg_table(cur, 'nlg_glove_300')
 
     obj_instances = baseline.keys()
 
