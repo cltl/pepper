@@ -15,7 +15,7 @@ Repository for Robot Applications created as part of the [Computational Lexicolo
  - Realtime visualisation in web browser
 
 ## Getting started
-Check out our [WIKI](https://github.com/cltl/pepper/wiki) for information on [how it works](https://github.com/cltl/pepper/wiki/How-it-works) and [how to Install the package](https://github.com/cltl/pepper/wiki/Installation).
+Check out our [WIKI](https://github.com/cltl/pepper/wiki) for information on [how it works](https://github.com/cltl/pepper/wiki/2.-How-it-works) and [how to set up](https://github.com/cltl/pepper/wiki/1.-Set-up).
 
 Check out our [API Reference](https://cltl.github.io/pepper/) and [Sample Applications](https://github.com/cltl/pepper/tree/develop/apps/examples)!
 
