@@ -13,40 +13,44 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.language.language module" href="pepper.language.language.html" />
-    <link rel="prev" title="pepper.language.utils.wordnet_utils module" href="pepper.language.utils.wordnet_utils.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="index.html"/>
+        <link rel="up" title="pepper.language package" href="pepper.language.html"/>
+        <link rel="next" title="pepper.language.language module" href="pepper.language.language.html"/>
+        <link rel="prev" title="pepper.language.utils.wordnet_utils module" href="pepper.language.utils.wordnet_utils.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -81,10 +85,7 @@
           
             
             
-              
-            
-            
-              <ul class="current">
+                <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
@@ -115,58 +116,38 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
-
-
-
-
-
-
-
-
-
-
-
+ 
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
+      
           <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
-        
-      <li>pepper.language.analyzer module</li>
-    
-    
+      
+    <li>pepper.language.analyzer module</li>
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/pepper.language.analyzer.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -217,30 +198,47 @@
 </table>
 </dd></dl>
 
+<dl class="staticmethod">
+<dt id="pepper.language.analyzer.Analyzer.analyze_complement_with_preposition">
+<em class="property">static </em><code class="descname">analyze_complement_with_preposition</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_complement_with_preposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_complement_with_preposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyses triple complement which starts with a preposition and updates the triple
+:param triple: S,P,C triple
+:return: updated triple</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pepper.language.analyzer.Analyzer.analyze_np">
-<code class="descname">analyze_np</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_np" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.Analyzer.analyze_object_with_preposition">
-<em class="property">static </em><code class="descname">analyze_object_with_preposition</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_object_with_preposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_object_with_preposition" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">analyze_np</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_np" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyses noun phrases
+:param triple: S,P,C triple
+:return: triple with updated elements</p>
+</dd></dl>
 
 <dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.analyze_one_word_object">
-<code class="descname">analyze_one_word_object</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_one_word_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_one_word_object" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pepper.language.analyzer.Analyzer.analyze_one_word_complement">
+<code class="descname">analyze_one_word_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_one_word_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_one_word_complement" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyses one word complement and updates the triple
+:param triple: S,P,C triple
+:return: updated triple</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.language.analyzer.Analyzer.analyze_possessive">
-<code class="descname">analyze_possessive</code><span class="sig-paren">(</span><em>rdf</em>, <em>element</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_possessive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_possessive" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">analyze_possessive</code><span class="sig-paren">(</span><em>triple</em>, <em>element</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_possessive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_possessive" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyses possessive phrases, which start with pos. pronoun
+:param triple: subject, predicate, complement triple
+:param element: element of the triple which has the possessive phrase
+:return: updated triple</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pepper.language.analyzer.Analyzer.analyze_vp">
-<code class="descname">analyze_vp</code><span class="sig-paren">(</span><em>rdf</em>, <em>utterance_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_vp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">analyze_vp</code><span class="sig-paren">(</span><em>triple</em>, <em>utterance_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_vp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyzes verb phrases
+:param triple: triple (subject, predicate, complement)
+:param utterance_info: the result of analysis thus far
+:return: triple and utterance info, updated with the results of VP analysis</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.chat">
@@ -252,12 +250,18 @@
 <dl class="method">
 <dt id="pepper.language.analyzer.Analyzer.fix_predicate">
 <code class="descname">fix_predicate</code><span class="sig-paren">(</span><em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.fix_predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.fix_predicate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function returns the lemmatized predicate and fixes the errors with lemmatizing
+:param predicate: predicate to lemmatize
+:return: lemmatized predicate</p>
+</dd></dl>
 
 <dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.get_types_in_rdf">
-<code class="descname">get_types_in_rdf</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.get_types_in_rdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.get_types_in_rdf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pepper.language.analyzer.Analyzer.get_types_in_triple">
+<code class="descname">get_types_in_triple</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.get_types_in_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.get_types_in_triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets types for all the elements of the triple
+:param triple: S,P,C triple
+:return: triple dictionary with types</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.analyzer.Analyzer.json_file">
@@ -272,9 +276,9 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.rdf">
-<code class="descname">rdf</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.rdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>rdf</strong>
+<dt id="pepper.language.analyzer.Analyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
 :rtype: dict or None</p>
 </dd></dl>
 
@@ -293,28 +297,48 @@
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.StatementAnalyzer</span></code></a></p>
 <dl class="method">
 <dt id="pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement">
-<code class="descname">analyze_certainty_statement</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_certainty_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">analyze_certainty_statement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_certainty_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>triple</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_object">
-<code class="descname">analyze_multiword_object</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_multiword_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_object" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_complement">
+<code class="descname">analyze_multiword_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_multiword_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_complement" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function analyses complex complements in statements
+:param triple: S,P,C triple
+:return: updated triple</p>
+</dd></dl>
 
 <dl class="staticmethod">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.check_rdf_completeness">
-<em class="property">static </em><code class="descname">check_rdf_completeness</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.check_rdf_completeness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.check_rdf_completeness" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.check_triple_completeness">
+<em class="property">static </em><code class="descname">check_triple_completeness</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.check_triple_completeness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.check_triple_completeness" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks whether an extracted triple is complete
+:param triple: S,P,C triple
+:return: True if the triple has all three elements, False otherwise</p>
+</dd></dl>
 
 <dl class="staticmethod">
 <dt id="pepper.language.analyzer.GeneralStatementAnalyzer.extract_perspective">
 <em class="property">static </em><code class="descname">extract_perspective</code><span class="sig-paren">(</span><em>predicate</em>, <em>utterance_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.extract_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.extract_perspective" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function extracts perspective from statements
+:param predicate: statement predicate
+:param utterance_info: product of statement analysis thus far
+:return: perspective dictionary consisting of sentiment, certainty, and polarity value</p>
+</dd></dl>
 
 <dl class="method">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.initialize_rdf">
-<code class="descname">initialize_rdf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.initialize_rdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.initialize_rdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>assumed word order: NP VP C
+<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.initialize_triple">
+<code class="descname">initialize_triple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.initialize_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.initialize_triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function initializes the triple with assumed word order: NP VP C
 subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing</p>
 </dd></dl>
 
@@ -325,12 +349,26 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 :rtype: dict or None</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
+:rtype: dict or None</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="pepper.language.analyzer.ObjectStatementAnalyzer">
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">ObjectStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#ObjectStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.ObjectStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.StatementAnalyzer</span></code></a></p>
+<dl class="attribute">
+<dt id="pepper.language.analyzer.ObjectStatementAnalyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.ObjectStatementAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
+:rtype: dict or None</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -355,6 +393,13 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.analyzer.QuestionAnalyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
+:rtype: dict or None</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -398,6 +443,13 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pepper.language.analyzer.StatementAnalyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
+:rtype: dict or None</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pepper.language.analyzer.StatementAnalyzer.utterance_type">
 <code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns: <strong>utterance_type</strong> – Utterance Type (Statement)
@@ -411,14 +463,21 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">VerbQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.QuestionAnalyzer</span></code></a></p>
 <dl class="method">
-<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_object">
-<code class="descname">analyze_multiword_object</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.analyze_multiword_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_object" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_complement">
+<code class="descname">analyze_multiword_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.analyze_multiword_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_complement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.initialize_rdf">
-<code class="descname">initialize_rdf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.initialize_rdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.initialize_rdf" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.initialize_triple">
+<code class="descname">initialize_triple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.initialize_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.initialize_triple" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
+:rtype: dict with S,P,C or None</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -427,14 +486,22 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 <em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">WhQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.QuestionAnalyzer</span></code></a></p>
 <dl class="method">
-<dt id="pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_object">
-<code class="descname">analyze_multiword_object</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.analyze_multiword_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_object" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_complement">
+<code class="descname">analyze_multiword_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.analyze_multiword_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_complement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pepper.language.analyzer.WhQuestionAnalyzer.initialize_rdf">
-<code class="descname">initialize_rdf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.initialize_rdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.initialize_rdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>The assumed word order in wh-questions: aux before predicate, subject before object</p>
+<dt id="pepper.language.analyzer.WhQuestionAnalyzer.initialize_triple">
+<code class="descname">initialize_triple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.initialize_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.initialize_triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function initializes the triple for wh_questions with the assumed word order: aux before predicate, subject before complement
+:return: initial S,P,C triple</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.analyzer.WhQuestionAnalyzer.triple">
+<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns: <strong>triple</strong>
+:rtype: dict or None</p>
 </dd></dl>
 
 </dd></dl>
@@ -443,16 +510,15 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 
 
            </div>
-           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.language.language.html" class="btn btn-neutral float-right" title="pepper.language.language module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.language.language.html" class="btn btn-neutral float-right" title="pepper.language.language module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.language.utils.wordnet_utils.html" class="btn btn-neutral float-left" title="pepper.language.utils.wordnet_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.language.utils.wordnet_utils.html" class="btn btn-neutral" title="pepper.language.utils.wordnet_utils module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -461,11 +527,11 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -478,15 +544,36 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

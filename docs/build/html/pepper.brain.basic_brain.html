@@ -13,40 +13,44 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pepper.brain.long_term_memory module" href="pepper.brain.long_term_memory.html" />
-    <link rel="prev" title="pepper.brain.utils.type_reasoner module" href="pepper.brain.utils.type_reasoner.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="index.html"/>
+        <link rel="up" title="pepper.brain package" href="pepper.brain.html"/>
+        <link rel="next" title="pepper.brain.fame_aware module" href="pepper.brain.fame_aware.html"/>
+        <link rel="prev" title="pepper.brain.LTM_statement_processing module" href="pepper.brain.LTM_statement_processing.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -81,14 +85,16 @@
           
             
             
-              
-            
-            
-              <ul class="current">
+                <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.infrastructure.html">pepper.brain.infrastructure package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.reasoners.html">pepper.brain.reasoners package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.LTM_question_processing.html">pepper.brain.LTM_question_processing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.LTM_statement_processing.html">pepper.brain.LTM_statement_processing module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.brain.basic_brain module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.fame_aware.html">pepper.brain.fame_aware module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.long_term_memory.html">pepper.brain.long_term_memory module</a></li>
 </ul>
 </li>
@@ -110,58 +116,38 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
-
-
-
-
-
-
-
-
-
-
-
+ 
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
-        
+      
           <li><a href="pepper.brain.html">pepper.brain package</a> &raquo;</li>
-        
-      <li>pepper.brain.basic_brain module</li>
-    
-    
+      
+    <li>pepper.brain.basic_brain module</li>
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/pepper.brain.basic_brain.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -171,7 +157,7 @@
 <span id="pepper-brain-basic-brain-module"></span><h1>pepper.brain.basic_brain module<a class="headerlink" href="#module-pepper.brain.basic_brain" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pepper.brain.basic_brain.BasicBrain">
-<em class="property">class </em><code class="descclassname">pepper.brain.basic_brain.</code><code class="descname">BasicBrain</code><span class="sig-paren">(</span><em>address='http://localhost:7200/repositories/leolani'</em>, <em>clear_all=False</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pepper.brain.basic_brain.</code><code class="descname">BasicBrain</code><span class="sig-paren">(</span><em>address='http://localhost:7200/repositories/leolani'</em>, <em>clear_all=False</em>, <em>is_submodule=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="pepper.brain.basic_brain.BasicBrain.clean_local_memory">
@@ -183,6 +169,14 @@
 <code class="descname">clear_brain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.clear_brain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.clear_brain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear all data from the brain
 :return: response status</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.basic_brain.BasicBrain.count_chat_with">
+<code class="descname">count_chat_with</code><span class="sig-paren">(</span><em>actor_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.count_chat_with"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.count_chat_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count times I chatted with this person
+:param actor_label: name of person
+:return:</p>
 </dd></dl>
 
 <dl class="method">
@@ -200,6 +194,13 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="pepper.brain.basic_brain.BasicBrain.count_statements_by">
+<code class="descname">count_statements_by</code><span class="sig-paren">(</span><em>actor_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.count_statements_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.count_statements_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count statements or ‘facts’ in the brain by a given author
+:return:</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pepper.brain.basic_brain.BasicBrain.get_best_friends">
 <code class="descname">get_best_friends</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.get_best_friends"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.get_best_friends" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get names of the 5 people I have talked to the most
@@ -210,6 +211,28 @@
 <dt id="pepper.brain.basic_brain.BasicBrain.get_classes">
 <code class="descname">get_classes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.get_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.get_classes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get classes or types in social ontology
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.basic_brain.BasicBrain.get_conflicts">
+<code class="descname">get_conflicts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.get_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.get_conflicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count statements or ‘facts’ in the brain
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.basic_brain.BasicBrain.get_conflicts_by">
+<code class="descname">get_conflicts_by</code><span class="sig-paren">(</span><em>actor_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.get_conflicts_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.get_conflicts_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count statements or ‘facts’ in the brain
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.brain.basic_brain.BasicBrain.get_id_of_instance">
+<code class="descname">get_id_of_instance</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.get_id_of_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.get_id_of_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ids of a certain instance identified by its label
+:param label: label of instance
 :return:</p>
 </dd></dl>
 
@@ -259,6 +282,13 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="pepper.brain.basic_brain.BasicBrain.ontology_is_uploaded">
+<code class="descname">ontology_is_uploaded</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.ontology_is_uploaded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.ontology_is_uploaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query the existance of the Ontology graph, thus not importing the whole Ontology every time
+:return: response status</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pepper.brain.basic_brain.BasicBrain.upload_ontology">
 <code class="descname">upload_ontology</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/basic_brain.html#BasicBrain.upload_ontology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.basic_brain.BasicBrain.upload_ontology" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload ontology
@@ -279,16 +309,15 @@
 
 
            </div>
-           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.brain.long_term_memory.html" class="btn btn-neutral float-right" title="pepper.brain.long_term_memory module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.brain.fame_aware.html" class="btn btn-neutral float-right" title="pepper.brain.fame_aware module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.brain.utils.type_reasoner.html" class="btn btn-neutral float-left" title="pepper.brain.utils.type_reasoner module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.brain.LTM_statement_processing.html" class="btn btn-neutral" title="pepper.brain.LTM_statement_processing module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -297,11 +326,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -314,15 +343,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

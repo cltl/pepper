@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../index.html"/>
+        <link rel="up" title="pepper" href="../pepper.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,54 +96,36 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.config</li>
-    
-    
+      
+    <li>pepper.config</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -168,7 +151,7 @@
 <span class="c1"># &lt;&lt;&lt; Application Configuration Settings &gt;&gt;&gt;</span>
 
 <span class="c1"># Application Backend to Use (SYSTEM or NAOQI)</span>
-<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">NAOQI</span>
+<span class="n">APPLICATION_BACKEND</span> <span class="o">=</span> <span class="n">pepper</span><span class="o">.</span><span class="n">ApplicationBackend</span><span class="o">.</span><span class="n">SYSTEM</span>
 
 <span class="c1"># Name of Robot</span>
 <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;Leolani&quot;</span>
@@ -186,12 +169,6 @@
 <span class="c1">#   Translation can induce quite a bit of lag in the System</span>
 <span class="n">APPLICATION_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
 <span class="n">INTERNAL_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>  <span class="c1"># Must start with &#39;en-&#39; (Must by a dialect of English)</span>
-
-
-<span class="c1"># Show Subtitles on Pepper&#39;s Tablet!</span>
-<span class="n">SUBTITLES_URL</span> <span class="o">=</span> <span class="s2">&quot;https://bramkraai.github.io/subtitle?text=</span><span class="si">{}</span><span class="s2">&quot;</span>
-<span class="n">SUBTITLES_TIMEOUT</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="n">SUBTITLES</span> <span class="o">=</span> <span class="kc">True</span>
 
 
 <span class="c1"># &lt;&lt;&lt; Application Paths &gt;&gt;&gt;</span>
@@ -279,21 +256,21 @@
 
 <span class="c1"># NAOqi Robot URL</span>
 <span class="n">NAOQI_IP</span> <span class="o">=</span> <span class="s2">&quot;192.168.1.176&quot;</span>  <span class="c1"># Default WiFi</span>
-<span class="c1"># NAOQI_IP = &quot;192.168.1.149&quot;  # Ethernet?</span>
 <span class="n">NAOQI_PORT</span> <span class="o">=</span> <span class="mi">9559</span>
 <span class="n">NAOQI_URL</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">NAOQI_IP</span><span class="p">,</span> <span class="n">NAOQI_PORT</span><span class="p">)</span>
 
 
 <span class="c1"># &lt;&lt;&lt; Application Sensor Parameters &gt;&gt;&gt;</span>
-<span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">FACE_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">OBJECT_RECOGNITION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">VOICE_ACTIVITY_DETECTION_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.6</span>
 
 <span class="c1"># Set which Object Recognition Backends to use</span>
-<span class="c1"># NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow</span>
+<span class="c1"># NOTE: adding more target is only possible when the backends actually run: see pepper_tensorflow</span>
 <span class="c1"># NOTE: running multiple targets at once</span>
 <span class="n">OBJECT_RECOGNITION_TARGETS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">pepper</span><span class="o">.</span><span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span>
+    <span class="n">pepper</span><span class="o">.</span><span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span><span class="p">,</span>
+    <span class="c1"># pepper.ObjectDetectionTarget.OID</span>
 <span class="p">]</span>
 
 <span class="c1"># Microphone sample rate (Hz) and number of channels</span>
@@ -347,7 +324,6 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -356,11 +332,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -373,15 +349,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

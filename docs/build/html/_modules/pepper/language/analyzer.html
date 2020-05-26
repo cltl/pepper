@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="pepper" href="../../pepper.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,54 +96,36 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.language.analyzer</li>
-    
-    
+      
+    <li>pepper.language.analyzer</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -235,13 +218,13 @@
         <span class="k">return</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        rdf: dict or None</span>
+<span class="sd">        triple: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -254,9 +237,11 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Analyzer.fix_predicate"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.fix_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">fix_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
-
-        <span class="c1"># if predicate.endswith(&#39;-not&#39;):</span>
-        <span class="c1">#    predicate = predicate[:-4]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function returns the lemmatized predicate and fixes the errors with lemmatizing</span>
+<span class="sd">        :param predicate: predicate to lemmatize</span>
+<span class="sd">        :return: lemmatized predicate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="s1">&#39;-&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predicate</span><span class="p">:</span>
             <span class="n">predicate</span> <span class="o">=</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
@@ -270,28 +255,37 @@
         <span class="k">if</span> <span class="n">predicate</span> <span class="o">==</span> <span class="s1">&#39;hat&#39;</span><span class="p">:</span>  <span class="c1"># lemmatizer issue with verb &#39;hate&#39;</span>
             <span class="n">predicate</span> <span class="o">=</span> <span class="s1">&#39;hate&#39;</span>
 
-        <span class="k">elif</span> <span class="n">predicate</span> <span class="o">==</span> <span class="s1">&#39;bear&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">predicate</span> <span class="o">==</span> <span class="s1">&#39;bear&#39;</span><span class="p">:</span>  <span class="c1"># bear-in</span>
             <span class="n">predicate</span> <span class="o">=</span> <span class="s1">&#39;born&#39;</span>  <span class="c1"># lemmatizer issue</span>
 
         <span class="k">return</span> <span class="n">predicate</span></div>
 
-<div class="viewcode-block" id="Analyzer.analyze_vp"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_vp">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_vp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">):</span>
+<div class="viewcode-block" id="Analyzer.analyze_vp"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_vp">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_vp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function analyzes verb phrases</span>
+<span class="sd">        :param triple: triple (subject, predicate, complement)</span>
+<span class="sd">        :param utterance_info: the result of analysis thus far</span>
+<span class="sd">        :return: triple and utterance info, updated with the results of VP analysis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pred</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">structure_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+        <span class="c1"># one word predicate is just lemmatized</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;cannot&#39;</span><span class="p">:</span>  <span class="c1"># special case with no space between not and verb</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;can&#39;</span>
+            <span class="k">if</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;cannot&#39;</span><span class="p">:</span>  <span class="c1"># special case with no space between not and verb</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;can&#39;</span>
                 <span class="n">utterance_info</span><span class="p">[</span><span class="s1">&#39;neg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-            <span class="k">return</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span>
+            <span class="k">return</span> <span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span>
 
-        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+        <span class="c1"># complex predicate</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
 
+            <span class="c1"># negation</span>
             <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;RB&#39;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">el</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;never&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">]:</span>
                     <span class="n">utterance_info</span><span class="p">[</span><span class="s1">&#39;neg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -299,24 +293,25 @@
             <span class="c1"># verbs that carry sentiment or certainty are considered followed by their object</span>
             <span class="k">elif</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="s1">&#39;lexical&#39;</span><span class="p">):</span>
                 <span class="n">pred</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]:</span>
+                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]:</span>
                     <span class="n">label</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;TO&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">]:</span>
                         <span class="n">pred</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">elem</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
+                        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
                 <span class="k">break</span>
 
+            <span class="c1"># prepositions are joined to the predicate and removed from the complement</span>
             <span class="k">elif</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">]:</span>
                 <span class="n">pred</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">el</span>
-                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]:</span>
-                    <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
+                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]:</span>
+                    <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
                 <span class="k">break</span>
 
             <span class="c1"># auxiliary verb</span>
-            <span class="k">elif</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="s1">&#39;aux&#39;</span><span class="p">):</span>  <span class="c1"># and not rdf[&#39;predicate&#39;].endswith(&#39;-is&#39;):</span>
+            <span class="k">elif</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="s1">&#39;aux&#39;</span><span class="p">):</span>  <span class="c1"># and not triple[&#39;predicate&#39;].endswith(&#39;-is&#39;):</span>
                 <span class="n">utterance_info</span><span class="p">[</span><span class="s1">&#39;aux&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="s1">&#39;aux&#39;</span><span class="p">)</span>
 
             <span class="c1"># verb or modal verb</span>
@@ -334,94 +329,139 @@
         <span class="k">if</span> <span class="n">pred</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
             <span class="n">pred</span> <span class="o">=</span> <span class="s1">&#39;be&#39;</span>
 
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
-        <span class="k">return</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span></div>
+        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
+        <span class="k">return</span> <span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span></div>
 
-<div class="viewcode-block" id="Analyzer.analyze_np"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_np">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_np</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
-        <span class="c1"># multi-word subject (posesive phrase)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">first_word</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<div class="viewcode-block" id="Analyzer.analyze_np"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_np">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_np</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function analyses noun phrases</span>
+<span class="sd">        :param triple: S,P,C triple</span>
+<span class="sd">        :return: triple with updated elements</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># multi-word subject (possessive phrase)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">first_word</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">):</span>
-                <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+                <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+            <span class="c1"># TODO else</span>
+
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># one word subject</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rdf</span></div>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
-<div class="viewcode-block" id="Analyzer.analyze_possessive"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_possessive">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_possessive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
-        <span class="n">first_word</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">subject</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="n">predicate</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
-            <span class="c1"># words that express people are grouped together in the subject</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;kinship&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="s1">&#39;kinship&#39;</span><span class="p">))</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;best&#39;</span><span class="p">:</span>
-                <span class="n">subject</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">predicate</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
+<div class="viewcode-block" id="Analyzer.analyze_possessive"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_possessive">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_possessive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function analyses possessive phrases, which start with pos. pronoun</span>
+<span class="sd">        :param triple: subject, predicate, complement triple</span>
+<span class="sd">        :param element: element of the triple which has the possessive phrase</span>
+<span class="sd">        :return: updated triple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">first_word</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">predicate</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicate</span> <span class="o">+</span> <span class="s1">&#39;-is&#39;</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="s1">&#39;complement&#39;</span><span class="p">:</span>
+            <span class="n">complement</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">complement</span><span class="o">+=</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">word</span>
 
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">complement</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div>
-
-<div class="viewcode-block" id="Analyzer.analyze_object_with_preposition"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_object_with_preposition">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">analyze_object_with_preposition</span><span class="p">(</span><span class="n">rdf</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;aux&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;modal&#39;</span><span class="p">):</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-be-&#39;</span> <span class="o">+</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
-        <span class="k">return</span> <span class="n">rdf</span></div>
 
-<div class="viewcode-block" id="Analyzer.analyze_one_word_object"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_one_word_object">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_one_word_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">predicate</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="c1"># words that express people are grouped together in the subject</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;kinship&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="s1">&#39;kinship&#39;</span><span class="p">))</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;best&#39;</span><span class="p">:</span>
+                    <span class="n">subject</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">predicate</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
+            <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="s1">&#39;complement&#39;</span><span class="p">:</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span>
+
+            <span class="c1"># properties are stored with a suffix &quot;-is&quot;</span>
+            <span class="k">if</span> <span class="n">predicate</span><span class="p">:</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicate</span> <span class="o">+</span> <span class="s1">&#39;-is&#39;</span>
+
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
+
+
+        <span class="k">return</span> <span class="n">triple</span></div>
+
+<div class="viewcode-block" id="Analyzer.analyze_complement_with_preposition"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_complement_with_preposition">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">analyze_complement_with_preposition</span><span class="p">(</span><span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function analyses triple complement which starts with a preposition and updates the triple</span>
+<span class="sd">        :param triple: S,P,C triple</span>
+<span class="sd">        :return: updated triple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;aux&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;modal&#39;</span><span class="p">):</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-be-&#39;</span> <span class="o">+</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">triple</span></div>
+
+<div class="viewcode-block" id="Analyzer.analyze_one_word_complement"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.analyze_one_word_complement">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_one_word_complement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function analyses one word complement and updates the triple</span>
+<span class="sd">        :param triple: S,P,C triple</span>
+<span class="sd">        :return: updated triple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">structure_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]):</span>
-            <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;be&#39;</span><span class="p">:</span>
-                <span class="n">subject</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
-                <span class="n">pred</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
-                    <span class="n">pred</span> <span class="o">+=</span> <span class="n">el</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span> <span class="o">+</span> <span class="s1">&#39;is&#39;</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span>
-                                                                                              <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">rdf</span></div>
 
-<div class="viewcode-block" id="Analyzer.get_types_in_rdf"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.get_types_in_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">get_types_in_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
+        <span class="c1"># TODO</span>
+        <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;be&#39;</span><span class="p">:</span>
+                <span class="n">subject</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+                    <span class="n">pred</span> <span class="o">+=</span> <span class="n">el</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span> <span class="o">+</span> <span class="s1">&#39;is&#39;</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span>
+                                                                                                     <span class="n">triple</span><span class="p">[</span>
+                                                                                                         <span class="s1">&#39;predicate&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">triple</span></div>
+
+<div class="viewcode-block" id="Analyzer.get_types_in_triple"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.Analyzer.get_types_in_triple">[docs]</a>    <span class="k">def</span> <span class="nf">get_types_in_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function gets types for all the elements of the triple</span>
+<span class="sd">        :param triple: S,P,C triple</span>
+<span class="sd">        :return: triple dictionary with types</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get type</span>
-        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
             <span class="n">final_type</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="p">[]}</span>
 
             <span class="c1"># If no text was extracted we cannot get a type</span>
             <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="c1"># First attempt at typing via forest</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_type</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_triple_element_type</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="c1"># Analyze types</span>
-            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
                 <span class="c1"># Loop through dictionary for multiword entities</span>
-                <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]:</span>
                     <span class="c1"># If type is None or empty, look it up</span>
-                    <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
                         <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
 
                         <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">typ</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;leolani&#39;</span><span class="p">]:</span>
                                 <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;robot&#39;</span><span class="p">)</span>
-                            <span class="k">elif</span> <span class="n">typ</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span> <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
+                            <span class="k">elif</span> <span class="n">typ</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span>
+                                                 <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
                                 <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">node</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">typ</span><span class="p">)</span>
@@ -438,21 +478,25 @@
                             <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;pronoun&#39;</span><span class="p">)</span>
 
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">])</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_type</span>
+                        <span class="n">final_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="n">typ</span><span class="p">])</span>
+                <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_type</span>
 
             <span class="c1"># Patch special types</span>
-            <span class="k">elif</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
-                <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;leolani&#39;</span><span class="p">]:</span>
-                        <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;robot&#39;</span><span class="p">]</span>
-                    <span class="k">elif</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span> <span class="s1">&#39;piek&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">typ</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">typ</span><span class="p">:</span>
-                        <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span>
-                <span class="k">elif</span> <span class="s1">&#39;proximity&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
-                    <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;deictic&#39;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div></div>
+                    <span class="c1"># TODO: Remove Hardcoded Names</span>
+                    <span class="k">if</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;leolani&#39;</span><span class="p">]:</span>
+                        <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;robot&#39;</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lenka&#39;</span><span class="p">,</span> <span class="s1">&#39;selene&#39;</span><span class="p">,</span> <span class="s1">&#39;suzana&#39;</span><span class="p">,</span> <span class="s1">&#39;bram&#39;</span><span class="p">,</span> <span class="s1">&#39;piek&#39;</span><span class="p">]:</span>
+                        <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]:</span>
+                        <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="s1">&#39;proximity&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                    <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;deictic&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">triple</span></div></div>
 
 
 <div class="viewcode-block" id="StatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.StatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">StatementAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
@@ -489,6 +533,15 @@
         <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: dict or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns</span>
@@ -501,6 +554,12 @@
 <div class="viewcode-block" id="GeneralStatementAnalyzer"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">GeneralStatementAnalyzer</span><span class="p">(</span><span class="n">StatementAnalyzer</span><span class="p">):</span>
 <div class="viewcode-block" id="GeneralStatementAnalyzer.extract_perspective"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.extract_perspective">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_perspective</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="n">utterance_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function extracts perspective from statements</span>
+<span class="sd">        :param predicate: statement predicate</span>
+<span class="sd">        :param utterance_info: product of statement analysis thus far</span>
+<span class="sd">        :return: perspective dictionary consisting of sentiment, certainty, and polarity value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sentiment</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">certainty</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">polarity</span> <span class="o">=</span> <span class="mi">1</span>
@@ -525,15 +584,26 @@
         <span class="n">perspective</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sentiment&#39;</span><span class="p">:</span> <span class="n">sentiment</span><span class="p">,</span> <span class="s1">&#39;certainty&#39;</span><span class="p">:</span> <span class="n">certainty</span><span class="p">,</span> <span class="s1">&#39;polarity&#39;</span><span class="p">:</span> <span class="n">polarity</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">perspective</span></div>
 
-<div class="viewcode-block" id="GeneralStatementAnalyzer.check_rdf_completeness"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.check_rdf_completeness">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">check_rdf_completeness</span><span class="p">(</span><span class="n">rdf</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="n">el</span><span class="p">]):</span>
+<div class="viewcode-block" id="GeneralStatementAnalyzer.check_triple_completeness"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.check_triple_completeness">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_triple_completeness</span><span class="p">(</span><span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function checks whether an extracted triple is complete</span>
+<span class="sd">        :param triple: S,P,C triple</span>
+<span class="sd">        :return: True if the triple has all three elements, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO - PERSPECTIVE</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;complement&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="n">el</span><span class="p">]):</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Cannot find </span><span class="si">{}</span><span class="s2"> in statement&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="GeneralStatementAnalyzer.analyze_certainty_statement"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_certainty_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
+<div class="viewcode-block" id="GeneralStatementAnalyzer.analyze_certainty_statement"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_certainty_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param triple:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">subtree</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;structure&#39;</span><span class="p">]:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -541,42 +611,46 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">leaf</span> <span class="o">==</span> <span class="s1">&#39;that&#39;</span><span class="p">):</span>
                     <span class="n">text</span> <span class="o">+=</span> <span class="n">leaf</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
             <span class="k">if</span> <span class="n">subtree</span><span class="o">.</span><span class="n">label</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;VP&#39;</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">elif</span> <span class="n">subtree</span><span class="o">.</span><span class="n">label</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;NP&#39;</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
-<div class="viewcode-block" id="GeneralStatementAnalyzer.initialize_rdf"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.initialize_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GeneralStatementAnalyzer.initialize_triple"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.initialize_triple">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        assumed word order: NP VP C</span>
+<span class="sd">        This function initializes the triple with assumed word order: NP VP C</span>
 <span class="sd">        subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">],</span>
-               <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">],</span>
-               <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]}</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">],</span>
+                  <span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">],</span>
+                  <span class="s1">&#39;complement&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]}</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
-<div class="viewcode-block" id="GeneralStatementAnalyzer.analyze_multiword_object"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_object">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_multiword_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
+<div class="viewcode-block" id="GeneralStatementAnalyzer.analyze_multiword_complement"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_complement">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_multiword_complement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function analyses complex complements in statements</span>
+<span class="sd">        :param triple: S,P,C triple</span>
+<span class="sd">        :return: updated triple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">structure_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">first_word</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">first_word</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">first_word</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;TO&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">]:</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_object_with_preposition</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_complement_with_preposition</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">):</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="s1">&#39;complement&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">first_word</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">first_word</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">first_word</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -591,36 +665,50 @@
         <span class="c1"># Initialize</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GeneralStatementAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
         <span class="n">utterance_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;neg&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_rdf</span><span class="p">()</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;initial RDF: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_triple</span><span class="p">()</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;initial triple: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="s1">&#39;lexical&#39;</span><span class="p">)</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="s1">&#39;lexical&#39;</span><span class="p">)</span>
 
         <span class="c1"># sentences such as &quot;I think (that) ...&quot;</span>
         <span class="k">if</span> <span class="n">entry</span> <span class="ow">and</span> <span class="s1">&#39;certainty&#39;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
                 <span class="n">utterance_info</span><span class="p">[</span><span class="s1">&#39;certainty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;certainty&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_certainty_statement</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+                <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_certainty_statement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_vp</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after VP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_vp</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after VP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_np</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after NP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_np</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after NP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-word object</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_multiword_object</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-word complement</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_multiword_complement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_one_word_object</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_one_word_complement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="c1"># Final fixes to RDF</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="n">trim_dash</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_predicate</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_perspective</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_perspective</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="n">utterance_info</span><span class="p">)</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_types_in_rdf</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;final RDF: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="n">rdf</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after complement analysis: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
+
+        <span class="c1"># Final fixes to triple</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="n">trim_dash</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_predicate</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after predicate fix: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perspective</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_perspective</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">],</span> <span class="n">utterance_info</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;extracted perspective: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_perspective</span><span class="p">))</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_types_in_triple</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;final triple: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="n">triple</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: dict or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">perspective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -644,9 +732,18 @@
 
         <span class="nb">super</span><span class="p">(</span><span class="n">ObjectStatementAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
 
-        <span class="c1"># TODO: Implement Chat -&gt; RDF</span>
+        <span class="c1"># TODO: Implement Chat -&gt; triple</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="p">{}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: dict or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span></div>
 
 
 <div class="viewcode-block" id="QuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.QuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">QuestionAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
@@ -684,57 +781,68 @@
 <span class="sd">        utterance_type: UtteranceType</span>
 <span class="sd">            Utterance Type (Question)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">QUESTION</span></div>
+        <span class="k">return</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">QUESTION</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: dict or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="WhQuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.WhQuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">WhQuestionAnalyzer</span><span class="p">(</span><span class="n">QuestionAnalyzer</span><span class="p">):</span>
 
-<div class="viewcode-block" id="WhQuestionAnalyzer.initialize_rdf"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.WhQuestionAnalyzer.initialize_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The assumed word order in wh-questions: aux before predicate, subject before object</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+<div class="viewcode-block" id="WhQuestionAnalyzer.initialize_triple"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.WhQuestionAnalyzer.initialize_triple">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function initializes the triple for wh_questions with the assumed word order: aux before predicate, subject before complement</span>
+<span class="sd">        :return: initial S,P,C triple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">triple</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;complement&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
         <span class="n">constituents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;who&#39;</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
             <span class="k">elif</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>  <span class="c1"># rotation &quot;(do you know) what a dog is?&quot;s</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
 
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">])</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">):</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
 
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;MORE CONSTITUENTS </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">),</span> <span class="n">constituents</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
-<div class="viewcode-block" id="WhQuestionAnalyzer.analyze_multiword_object"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_object">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_multiword_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
-        <span class="n">first_word</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<div class="viewcode-block" id="WhQuestionAnalyzer.analyze_multiword_complement"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_complement">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_multiword_complement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
+        <span class="n">first_word</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">get_node_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">first_word</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;TO&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">]:</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_object_with_preposition</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_complement_with_preposition</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">):</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="s1">&#39;complement&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -749,73 +857,81 @@
         <span class="n">utterance_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;neg&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                           <span class="s1">&#39;wh_word&#39;</span><span class="p">:</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())}</span>
 
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_rdf</span><span class="p">()</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;initial RDF: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_triple</span><span class="p">()</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;initial triple: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_vp</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after VP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_vp</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after VP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_np</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after NP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_np</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after NP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-word object</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_multiword_object</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-word complement</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_multiword_complement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_one_word_object</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_one_word_complement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="c1"># Final fixes to RDF</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="n">trim_dash</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_predicate</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_types_in_rdf</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;final RDF: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="n">rdf</span></div>
+        <span class="c1"># Final fixes to triple</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="n">trim_dash</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_predicate</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_types_in_triple</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;final triple: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="n">triple</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: dict or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span></div>
 
 
-<span class="c1"># verb question rules:</span>
 <div class="viewcode-block" id="VerbQuestionAnalyzer"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.VerbQuestionAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">VerbQuestionAnalyzer</span><span class="p">(</span><span class="n">QuestionAnalyzer</span><span class="p">):</span>
 
-<div class="viewcode-block" id="VerbQuestionAnalyzer.analyze_multiword_object"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_object">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_multiword_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rdf</span><span class="p">):</span>
+<div class="viewcode-block" id="VerbQuestionAnalyzer.analyze_multiword_complement"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_complement">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_multiword_complement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">):</span>
         <span class="n">structure_tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">forest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">first_word</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">first_word</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">):</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="s1">&#39;complement&#39;</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">first_word</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">]:</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_object_with_preposition</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_complement_with_preposition</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">first_word</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span>
-                                                                                           <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+                                                                                           <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;MD&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="n">get_node_label</span><span class="p">(</span><span class="n">structure_tree</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;TO&#39;</span><span class="p">,</span> <span class="s1">&#39;MD&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
-                    <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
-                    <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
+                    <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;-is&#39;</span><span class="p">):</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-is&#39;</span>
+        <span class="k">elif</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;-is&#39;</span><span class="p">):</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">word</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;-is&#39;</span>
 
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
-<div class="viewcode-block" id="VerbQuestionAnalyzer.initialize_rdf"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.VerbQuestionAnalyzer.initialize_rdf">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+<div class="viewcode-block" id="VerbQuestionAnalyzer.initialize_triple"><a class="viewcode-back" href="../../../pepper.language.analyzer.html#pepper.language.analyzer.VerbQuestionAnalyzer.initialize_triple">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;predicate&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;complement&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
 
         <span class="n">constituents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">last_utterance</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">constituents</span>
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">constituents</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;raw&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;MORE CONSTITUENTS </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constituents</span><span class="p">),</span> <span class="n">constituents</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">rdf</span></div>
+        <span class="k">return</span> <span class="n">triple</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -829,41 +945,49 @@
         <span class="c1"># Initialize</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">VerbQuestionAnalyzer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat</span><span class="p">)</span>
         <span class="n">utterance_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;neg&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_rdf</span><span class="p">()</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;initial RDF: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_triple</span><span class="p">()</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;initial triple: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_vp</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after VP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_vp</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after VP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">first_word</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">first_word</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;person&#39;</span> <span class="ow">in</span> <span class="n">lexicon_lookup</span><span class="p">(</span><span class="n">first_word</span><span class="p">):</span>
-                <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+                <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_possessive</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="s1">&#39;not-&#39;</span> <span class="ow">in</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]:</span>  <span class="c1"># for sentences that start with negation &quot;haven&#39;t you been to London?&quot;</span>
-                <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;not-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;not-&#39;</span> <span class="ow">in</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]:</span>  <span class="c1"># for sentences that start with negation &quot;haven&#39;t you been to London?&quot;</span>
+                <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;not-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_pronouns</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
 
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after NP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">))</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;after NP: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-word object</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_multiword_object</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-word complement</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_multiword_complement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_one_word_object</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;complement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_one_word_complement</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
 
-        <span class="c1"># Final fixes to RDF</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="n">trim_dash</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_predicate</span><span class="p">(</span><span class="n">rdf</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span>
-        <span class="n">rdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_types_in_rdf</span><span class="p">(</span><span class="n">rdf</span><span class="p">)</span>
-        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;final RDF: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rdf</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf</span> <span class="o">=</span> <span class="n">rdf</span></div>
+        <span class="c1"># Final fixes to triple</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="n">trim_dash</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_predicate</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="s1">&#39;predicate&#39;</span><span class="p">])</span>
+        <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_types_in_triple</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">Analyzer</span><span class="o">.</span><span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;final triple: </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">triple</span><span class="p">,</span> <span class="n">utterance_info</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span> <span class="o">=</span> <span class="n">triple</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        triple: dict with S,P,C or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triple</span></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -872,11 +996,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -889,15 +1013,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

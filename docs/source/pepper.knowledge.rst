@@ -10,6 +10,7 @@ pepper.knowledge package
 .. toctree::
 
    pepper.knowledge.animations
+   pepper.knowledge.objects
    pepper.knowledge.query
    pepper.knowledge.sentences
    pepper.knowledge.wikipedia

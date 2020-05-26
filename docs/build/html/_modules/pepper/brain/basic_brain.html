@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="pepper" href="../../pepper.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,54 +96,36 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.brain.basic_brain</li>
-    
-    
+      
+    <li>pepper.brain.basic_brain</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -150,8 +133,7 @@
             
   <h1>Source code for pepper.brain.basic_brain</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">read_query</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.store_connector</span> <span class="k">import</span> <span class="n">StoreConnector</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.rdf_builder</span> <span class="k">import</span> <span class="n">RdfBuilder</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.infrastructure</span> <span class="k">import</span> <span class="n">StoreConnector</span><span class="p">,</span> <span class="n">RdfBuilder</span>
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
@@ -168,7 +150,8 @@
 
     <span class="n">_NOT_TO_ASK_PREDICATES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;faceID&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_submodule</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (str, bool) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interact with Triple store</span>
 
@@ -178,13 +161,14 @@
 <span class="sd">            IP address and port of the Triple store</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">StoreConnector</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;trig&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">BRAIN_LOG_ROOT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">-%H-%M&#39;</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_submodule</span><span class="p">:</span>
             <span class="c1"># Possible clear all contents (testing purposes)</span>
             <span class="k">if</span> <span class="n">clear_all</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear_brain</span><span class="p">()</span>
@@ -245,10 +229,23 @@
 <span class="sd">        Upload ontology</span>
 <span class="sd">        :return: response status</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Uploading ontology to brain&quot;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ontology_is_uploaded</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">load_ontologies</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Uploading ontology to brain&quot;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasicBrain.ontology_is_uploaded"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.ontology_is_uploaded">[docs]</a>    <span class="k">def</span> <span class="nf">ontology_is_uploaded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query the existance of the Ontology graph, thus not importing the whole Ontology every time</span>
+<span class="sd">        :return: response status</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking if ontology is in brain&quot;</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;structure exploration/ontology_uploaded&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="BasicBrain.get_predicates"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.get_predicates">[docs]</a>    <span class="k">def</span> <span class="nf">get_predicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -280,7 +277,7 @@
 
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-            <span class="n">temp</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">temp</span></div>
 
@@ -293,6 +290,33 @@
         <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;content exploration/count_statements&#39;</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BasicBrain.count_statements_by"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.count_statements_by">[docs]</a>    <span class="k">def</span> <span class="nf">count_statements_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actor_label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count statements or &#39;facts&#39; in the brain by a given author</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;trust/count_statements_by&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">actor_label</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;num_stat&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BasicBrain.get_conflicts"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.get_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">get_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count statements or &#39;facts&#39; in the brain</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;content exploration/all_conflicts&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="BasicBrain.get_conflicts_by"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.get_conflicts_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_conflicts_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actor_label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count statements or &#39;facts&#39; in the brain</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;trust/conflicts_by&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">actor_label</span><span class="p">,</span> <span class="n">actor_label</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
 
 <div class="viewcode-block" id="BasicBrain.count_friends"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.count_friends">[docs]</a>    <span class="k">def</span> <span class="nf">count_friends</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -319,7 +343,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;content exploration/best_friends&#39;</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="n">elem</span><span class="p">[</span><span class="s1">&#39;num_chat&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="BasicBrain.when_last_chat_with"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.when_last_chat_with">[docs]</a>    <span class="k">def</span> <span class="nf">when_last_chat_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actor_label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -327,10 +351,21 @@
 <span class="sd">        :param actor_label: name of person</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;content exploration/when_last_chat_with&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">actor_label</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;trust/when_last_chat_with&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">actor_label</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="o">!=</span> <span class="p">[]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="BasicBrain.count_chat_with"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.count_chat_with">[docs]</a>    <span class="k">def</span> <span class="nf">count_chat_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actor_label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count times I chatted with this person</span>
+<span class="sd">        :param actor_label: name of person</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;trust/count_chat_with&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">actor_label</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;num_chats&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="o">!=</span> <span class="p">[]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span></div>
 
 <div class="viewcode-block" id="BasicBrain.get_instance_of_type"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.get_instance_of_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance_of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -338,7 +373,7 @@
 <span class="sd">        :param instance_type: name of class in ontology</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;content exploration/instance_of_type&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">instance_type</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;typing/instance_of_type&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">instance_type</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="p">[]</span></div>
 
@@ -348,9 +383,19 @@
 <span class="sd">        :param label: label of instance</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;content exploration/type_of_instance&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">label</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;typing/type_of_instance&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">label</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="BasicBrain.get_id_of_instance"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.get_id_of_instance">[docs]</a>    <span class="k">def</span> <span class="nf">get_id_of_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get ids of a certain instance identified by its label</span>
+<span class="sd">        :param label: label of instance</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">read_query</span><span class="p">(</span><span class="s1">&#39;id/id_of_instance&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">label</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="BasicBrain.get_triples_with_predicate"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.get_triples_with_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">get_triples_with_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -374,19 +419,17 @@
         <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BasicBrain.clean_local_memory"><a class="viewcode-back" href="../../../pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain.clean_local_memory">[docs]</a>    <span class="k">def</span> <span class="nf">clean_local_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span> <span class="o">=</span> <span class="n">RdfBuilder</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">namespaces</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">dataset</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ontology_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">ontology_graph</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">instance_graph</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">claim_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">claim_graph</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ontology_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">ontology_graph</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">perspective_graph</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">interaction_graph</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -395,11 +438,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -412,15 +455,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

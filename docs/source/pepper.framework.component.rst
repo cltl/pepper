@@ -24,5 +24,6 @@ pepper.framework.component package
    pepper.framework.component.scene
    pepper.framework.component.speech_recognition
    pepper.framework.component.statistics
+   pepper.framework.component.subtitles
    pepper.framework.component.text_to_speech
 
