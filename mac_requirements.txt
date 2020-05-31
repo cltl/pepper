@@ -2,7 +2,7 @@ numpy==1.16.2
 scipy==1.2.3
 sklearn
 
-nltk==3.4
+nltk==3.4.5
 fuzzywuzzy
 python-Levenshtein
 
