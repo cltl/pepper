@@ -454,7 +454,7 @@ class Utterance(object):
     @staticmethod
     def _get_closest_name(word, names=config.PEOPLE_FRIENDS_NAMES, max_name_distance=2):
         # type: (str, List[str], int) -> str
-        if word[0].isupper():
+        if word[0].isupper() and names:
             name, distance = sorted([(name, edit_distance(name, word)) for name in names], key=lambda key: key[1])[0]
 
             if distance <= max_name_distance:

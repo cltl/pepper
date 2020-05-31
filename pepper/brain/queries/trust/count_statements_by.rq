@@ -4,7 +4,7 @@ PREFIX gaf: <http://groundedannotationframework.org/gaf#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 
-select (COUNT(?stat) AS ?num_stat) where {
+select (COUNT(distinct ?stat) AS ?num_stat) where {
 ?stat rdf:type gaf:Assertion .
 ?stat gaf:denotedBy ?m .
 ?m grasp:wasAttributedTo ?author .

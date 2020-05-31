@@ -35,6 +35,14 @@ def _link_entity(self, entity, graph, namespace_mapping=None):
 
 
 def _create_detections(self, cntxt, context):
+    """
+
+    Parameters
+    ----------
+    self : brain
+    cntxt: Context
+    context: Entity
+    """
     # Get ids of existing objects in this location
     memory = self.location_reasoner.get_location_memory(cntxt)
 
@@ -63,7 +71,6 @@ def _create_detections(self, cntxt, context):
             # Create detection
             objct_detection = create_claim_graph(self, self.myself, prdt, objct, UtteranceType.EXPERIENCE)
             self.claim_graph.add((objct_detection.id, self.namespaces['EPS']['hasContext'], context.id))
-
             observations.append(objct_detection)
 
             # Open ended learning

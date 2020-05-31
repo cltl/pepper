@@ -3,25 +3,27 @@ scipy==1.2.3
 sklearn
 
 nltk==3.4
-fuzzywuzzy[speedup]
+fuzzywuzzy
+python-Levenshtein
 
 rdflib
 iribaker
 SPARQLWrapper
 
+PyObjC
 playsound
 webrtcvad
+
 google-cloud-speech
 google-cloud-TextToSpeech
 google-cloud-translate
 
-requests
-pycountry
-reverse_geocoder
-
-pillow
+Pillow==5.4.1
 opencv-python
 
 tornado==5.1.1
 typing
 pyaudio
+
+pycountry
+reverse-geocoder

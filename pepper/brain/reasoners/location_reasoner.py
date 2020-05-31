@@ -86,7 +86,7 @@ class LocationReasoner(BasicBrain):
         response = self._submit_query(query)
 
         location_memory = {}
-        if response[0]['type']['value'] != '':
+        if response and response[0]['type']['value'] != '':
             for elem in response:
                 categories, ids = self._fill_location_memory_(elem)
                 # assign multiple categories (eg selene is person and agent)
@@ -97,7 +97,7 @@ class LocationReasoner(BasicBrain):
                     location_memory[casefold_text(category, format='triple')] = temp
 
         # Local object memories
-        for item in cntxt.objects: # Error, this skips the first element?
+        for item in cntxt.objects:  # Error, this skips the first element?
             if item.name.lower() != 'person':
                 temp = location_memory.get(casefold_text(item.name, format='triple'),
                                            {'brain_ids': [], 'local_ids': []})
