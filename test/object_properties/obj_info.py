@@ -1,21 +1,23 @@
-from util import clean_color_name, detect_objects, dominant_cluster, stats, color_mapping
+"""
+For each observation, saves to DB the object id, path, color name and rgb features for instance clustering.
+"""
+
+import os
+import json
+import numpy as np
+import sqlite3
 
 from matplotlib import colors as mcolors
 from matplotlib import pyplot as plt
 from PIL import Image
 from datetime import datetime
 
-import numpy as np
-
-import os
-import json
-import sqlite3
+from util import clean_color_name, detect_objects, dominant_cluster, stats, color_mapping
 
 
-ROOT = './data/20190930_133826'
+ROOT = './data/eval/all'
 OBJ_HANDLE = "_obj.json"
 RGB_HANDLE = "_rgb.png"
-DEPTH_HANDLE = "_depth.npy"
 META_HANDLE = "_meta.json"
 
 
@@ -57,7 +59,7 @@ def read_object_properties(obj_path):
 def map_colors(keywords):
     """
     Translate matplotlib colors from hex to rgb
-    :return: dictionary mapping from normalized rgb values to 1099 cleaned matplotlib color names
+    :return: dictionary mapping from cleaned matplotlib color names to normalized rgb values
     """
 
     rgb_mapping = dict()
@@ -65,7 +67,7 @@ def map_colors(keywords):
     for name, value in dict(mcolors.get_named_colors_mapping()).items():
         rgb_value = mcolors.to_rgb(value)
         color_name = clean_color_name(name, keywords)
-        rgb_mapping[rgb_value] = color_name
+        rgb_mapping[color_name] = rgb_value
 
     return rgb_mapping
 
@@ -90,22 +92,13 @@ def save_types(obj, rgb_mapping):
         obj_id = os.path.basename(obj)
         print('{} {}'.format(obj_color, obj_type))
 
-        if not os.path.exists(os.path.join('./results', obj_type)):
+        try:
             os.makedirs(os.path.join('./results', obj_type))
+        except WindowsError:
+            pass
         plt.savefig('./results/{}/{}'.format(obj_type, obj_id))
 
         return obj_id, obj_features, obj_color
-
-
-def total_count(paths):
-    """
-
-    :return:
-    """
-    img = len([(img_path, objects) for img_path, objects in read_dir(ROOT) if any(obj not in paths for obj in objects)])
-    obj = len([obj for img_path, objects in read_dir(ROOT) for obj in objects if obj not in paths])
-
-    return img, obj
 
 
 def read_color_mapping(c):
@@ -113,7 +106,7 @@ def read_color_mapping(c):
     c.execute('SELECT * FROM rgb_mapping')
     mapping = dict()
     for row in c:
-        mapping[eval(row[0])] = row[1]
+        mapping[row[1]] = eval(row[0])
 
     return mapping
 
@@ -126,9 +119,12 @@ def create_color_mapping(conn, c):
 
     mapping = map_colors(color_keywords)
 
-    c.execute('CREATE TABLE rgb_mapping(rgb TEXT, name TEXT);')
+    c.execute('CREATE TABLE rgb_mapping(name TEXT, rgb TEXT);')
     for key, value in mapping.items():
-        c.execute('INSERT INTO rgb_mapping VALUES (?, ?);', (str(key), str(value)))
+        try:
+            c.execute('INSERT INTO rgb_mapping VALUES (?, ?);', (str(key), str(value)))
+        except sqlite3.IntegrityError:
+            continue
     conn.commit()
 
     return mapping
@@ -148,35 +144,32 @@ def create_object_info(conn, c):
     conn.commit()
 
 
-def main():
+def save_obj_info_to_db():
 
     total_start = datetime.now()
-    conn = sqlite3.connect('instances.db')
+    conn = sqlite3.connect('eval_instances.db')
     cur = conn.cursor()
     try:
         rgb_mapping = read_color_mapping(cur)
     except sqlite3.OperationalError:
         rgb_mapping = create_color_mapping(conn, cur)
+    except NameError as e:
+        print(e)
     try:
         known_paths = read_object_info(cur)
     except sqlite3.OperationalError:
         create_object_info(conn, cur)
         known_paths = []
 
-    total_img, total_obj = total_count(known_paths)
-    img_count = 0
-    obj_count = 0
-
     for image, objects in read_dir(ROOT):
         unknown_objects = [obj for obj in objects if obj not in known_paths]
-        if len(unknown_objects) > 0:
-            img_count += 1
         for obj_path in unknown_objects:
-            obj_count += 1
             obj_start = datetime.now()
-            print('Processing image {}/{}, object {}/{}.'.format(img_count, total_img, obj_count, total_obj))
             print(obj_path)
-            obj_id, obj_features, obj_color = save_types(obj_path, rgb_mapping)
+            try:
+                obj_id, obj_features, obj_color = save_types(obj_path, rgb_mapping)
+            except ValueError:
+                continue
             if obj_id == 'id':
                 print('Object could not be processed.')
             else:
@@ -192,5 +185,4 @@ def main():
 
 
 if __name__ == '__main__':
-
-    main()
+    save_obj_info_to_db()

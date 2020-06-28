@@ -1,10 +1,12 @@
+"""
+Generates NLG baseline results and saves them to the database.
+"""
+
 import os
 import sqlite3
 
 
 def get_most_frequent_color(c, type_dir, instance_dir):
-    """
-    """
     instance_dict = dict()
     obj_type = os.path.split(type_dir)[-1]
     for observation in os.listdir(os.path.join(type_dir, instance_dir)):
@@ -20,12 +22,9 @@ def get_most_frequent_color(c, type_dir, instance_dir):
     return description
 
 
-def main():
-    """
-    """
-
+def save_nlg_baseline_results():
     root = './results'
-    conn = sqlite3.connect('instances.db')
+    conn = sqlite3.connect('eval_instances.db')
     cur = conn.cursor()
     cur.execute('CREATE TABLE IF NOT EXISTS nlg_baseline (instance TEXT, color TEXT);')
     instance_dict = dict()
@@ -47,4 +46,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    save_nlg_baseline_results()

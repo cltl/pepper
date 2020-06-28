@@ -5,13 +5,13 @@ from statistics import mean, mode, median
 import numpy as np
 import matplotlib.pyplot as plt
 
+import math
 import statistics
 import re
 
 
 OBJ_HANDLE = "_obj.json"
 RGB_HANDLE = "_rgb.png"
-DEPTH_HANDLE = "_depth.npy"
 META_HANDLE = "_meta.json"
 
 
@@ -37,6 +37,17 @@ def clean_color_name(name, keywords):
         name = name.replace('purpleish', 'purplish')
     if 'lavendar' in name:
         name = name.replace('lavendar', 'lavender')
+    if 'tealish' in name:
+        name = name.replace('tealish', 'teal')
+    if 'browny' in name:
+        name = name.replace('browny', 'brown')
+    if 'purpley' in name:
+        name = name.replace('purpley', 'purple')
+    if 'lightish' in name:
+        name = name.replace('lightish', 'light')
+    if 'orangeish' in name:
+        name = name.replace('orangeish', 'orange')
+
 
     left = search_left(name, 'dark', ('darkish', 'darker'))
     if left:
@@ -84,9 +95,8 @@ def search_right(color_name, color_keyword):
 
 def detect_objects(rgb, img):
     """
-    Identify clusters within an object bounding box based on color, position and depth.
-    :param data: object rgb data
-    :param obj_depth: object depth data
+    Identify clusters within an object bounding box based on color and position.
+    :param rgb: object rgb data
     :param img: object image
     :return: pixel-level features and cluster labels, set of identified clusters
     """
@@ -153,7 +163,7 @@ def middle_cluster(result, clusters):
         diff_3 = (0.5 * max([res[0][3] for res in result]) - avg_3) ** 2
         diff_4 = (0.5 * max([res[0][4] for res in result]) - avg_4) ** 2
 
-        total_diff = diff_3 + diff_4
+        total_diff = math.sqrt(diff_3 + diff_4)
         position_dict[cluster] = total_diff
 
     return position_dict
@@ -255,7 +265,7 @@ def color_mapping(avg_triplet, color_names):
     min_diff = 1000
     min_key = ''
 
-    for color_value, name in color_names.items():
+    for name, color_value in color_names.items():
         r_diff = (avg_triplet[0] - color_value[0]) ** 2
         g_diff = (avg_triplet[1] - color_value[1]) ** 2
         b_diff = (avg_triplet[2] - color_value[2]) ** 2

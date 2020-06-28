@@ -1,33 +1,38 @@
+"""
+Clusters object instances.
+"""
+
 from sklearn.cluster import DBSCAN
 
 import numpy as np
 import os
 import sqlite3
 import shutil
+import math
 
 
 def read_db(obj_ids):
-    """
-
-    :param obj_ids:
-    :return:
-    """
-    conn = sqlite3.connect('instances.db')
+    conn = sqlite3.connect('eval_instances.db')
     c = conn.cursor()
-    query = 'SELECT id, features FROM object_info WHERE id IN ({})'.format(', '.join('?' * len(obj_ids)))
-    c.execute(query, obj_ids)
-    data = c.fetchall()
+    data = []
+    num_chunks = int(math.ceil(len(obj_ids) / 999))
+    for i in range(num_chunks + 1):
+        start = i * 999
+        if i < num_chunks + 1:
+            end = (i + 1) * 999
+        else:
+            end = len(obj_ids)
+        query = 'SELECT id, features FROM object_info[start:end]' \
+                'WHERE id IN ({})'.format(', '.join('?' * len(obj_ids[start:end])))
+        c.execute(query, obj_ids[start:end])
+        chunk_data = c.fetchall()
+        data.extend(chunk_data)
     conn.close()
 
     return data
 
 
 def get_data(dir_path):
-    """
-
-    :param dir_path:
-    :return:
-    """
     obj_ids = [obj_file[:-4] for obj_file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, obj_file))]
     data = read_db(obj_ids)
     ids = [tup[0] for tup in data]
@@ -37,13 +42,8 @@ def get_data(dir_path):
 
 
 def cluster_instances(ids, train):
-    """
-
-    :param ids:
-    :param train:
-    :return:
-    """
-    dbscan = DBSCAN(eps=0.5, min_samples=5)
+    # dbscan = DBSCAN(eps=0.3, min_samples=5)
+    dbscan = DBSCAN(eps=0.2, min_samples=3)
     db = dbscan.fit(train)
 
     core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
@@ -54,16 +54,12 @@ def cluster_instances(ids, train):
     return labels, result
 
 
-def main():
-    """
-
-    :return:
-    """
+def save_instance_clusters():
     for directory in os.listdir('./results'):
         dir_path = os.path.join('./results', directory)
         print('Processing: {}'.format(dir_path))
 
-        if os.path.isdir(dir_path):
+        if os.path.isdir(dir_path) and directory == 'bottle':
             ids, feats = get_data(dir_path)
             clusters, result = cluster_instances(ids, feats)
 
@@ -80,4 +76,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    save_instance_clusters()

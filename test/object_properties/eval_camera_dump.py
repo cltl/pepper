@@ -1,18 +1,19 @@
+"""
+The script to generate evaluation data. Needs to be run within the Leolani framework.
+
+Adapted from the camera_dump app written by Bram Kraaijeveld.
+"""
+
+import os
+
+from datetime import datetime
+from PIL import Image
+
 from pepper.framework import *
 from pepper import config
 
-from PIL import Image
-
-from datetime import datetime
-import json
-import os
-
 
 class EvalCameraDumpApp(AbstractApplication, ObjectDetectionComponent):
-
-    """
-
-    """
 
     OUTPUT_ROOT = os.path.join('./data', 'eval')
 
