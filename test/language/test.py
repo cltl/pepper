@@ -119,8 +119,8 @@ def test_scenario(statement, questions, gold):
     '''
     correct = 0
     chat = Chat("Lenka", fake_context())
-    brain = LongTermMemory()
-    # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    # WARNING! this deletes everything in the brain, must only be used for testing
+    brain = LongTermMemory(clear_all=False)
 
     # one or several statements are added to the brain
     if ',' in statement:
@@ -251,7 +251,7 @@ if __name__ == "__main__":
 
     test_files = ["./data/statements.txt"]
 
-    for test_file in all_test_files:
-        test_with_triples(test_file)
+    # for test_file in all_test_files:
+    #     test_with_triples(test_file)
 
     test_scenarios()

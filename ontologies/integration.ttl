@@ -926,8 +926,7 @@ grasp:TemporalValue rdf:type owl:Class ;
 
 ###  http://groundedannotationframework.org/grasp#Utterance
 grasp:Utterance rdf:type owl:Class ;
-                rdfs:subClassOf gaf:Mention ,
-                                sem:Event .
+                rdfs:subClassOf sem:Event .
 
 
 ###  http://groundedannotationframework.org/grasp#Visual
