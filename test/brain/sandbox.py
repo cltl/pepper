@@ -1,6 +1,7 @@
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.brain import LongTermMemory
 
-from test.brain.utils import transform_capsule, places, binary_values, capsule_likes, capsule_is_from, capsule_is_from_2, \
+from test.brain.utils import transform_capsule, places, binary_values, capsule_is_from, capsule_is_from_2, \
     capsule_is_from_3, capsule_knows
 
 from random import choice
@@ -10,8 +11,8 @@ if __name__ == "__main__":
     # Create brain connection
     brain = LongTermMemory(clear_all=True)
 
-    capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes,
-                capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows, capsule_likes]
+    capsules = [capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows,
+                capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows]
 
     for capsule in capsules:
         say = ''
@@ -37,27 +38,8 @@ if __name__ == "__main__":
             say += 'Having a talk at %s' % capsule.context.location.label
         print(say)
 
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
-        # print(phrase_thoughts(x, True, True))
+        for x in range(10):
+            print(phrase_thoughts(x, True, True))
 
     # for x in range(10):
     #     say = ''

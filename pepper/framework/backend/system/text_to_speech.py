@@ -73,6 +73,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
             playsound(file_hash)
         finally:
             if os.path.exists(file_hash):
+                # TODO: Sometimes we need to save all data from an experiment. Comment the line below and pass
                 os.remove(file_hash)
 
 

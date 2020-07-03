@@ -163,7 +163,10 @@ class RdfBuilder(object):
                 # this was just a char
                 fixed_types.append(types.split('.')[-1])
                 break
-            elif "article" in el or "prep" in el or "adj" in el:
+            elif "article" in el or "prep" in el or "adj" in el or "verb" in el:
+                pass
+            elif "deictic" in el or "article:definite" in el:
+                # need to corefer
                 pass
             elif '.' in el:
                 fixed_types.append(el.split('.')[-1])

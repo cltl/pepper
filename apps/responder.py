@@ -28,7 +28,7 @@ RESPONDERS = [
 
 
 class ResponderApp(AbstractApplication, StatisticsComponent,
-                   SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
+                   # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
                    # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
                    ExploreComponent, # TODO: (un)comment to turn exploration On/Off

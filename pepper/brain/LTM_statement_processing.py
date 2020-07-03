@@ -34,7 +34,26 @@ def _link_entity(self, entity, graph, namespace_mapping=None):
             graph.add((entity.id, RDF.type, entity_type))
 
 
+def _link_detections(self, context, dect, prdt):
+    # Bidirectional link to context
+    self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], dect.id))
+    self.instance_graph.add((dect.id, self.namespaces['EPS']['hasContext'], context.id))
+    # Create detection
+    detection = create_claim_graph(self, self.myself, prdt, dect, UtteranceType.EXPERIENCE)
+    self.claim_graph.add((detection.id, self.namespaces['EPS']['hasContext'], context.id))
+
+    return detection
+
+
 def _create_detections(self, cntxt, context):
+    """
+
+    Parameters
+    ----------
+    self : brain
+    cntxt: Context
+    context: Entity
+    """
     # Get ids of existing objects in this location
     memory = self.location_reasoner.get_location_memory(cntxt)
 
@@ -47,24 +66,21 @@ def _create_detections(self, cntxt, context):
 
     for item in cntxt.objects:
         if item.name.lower() != 'person':
-            # Create instance and link detection to graph
+            # Create instance
             mem_id, memory = get_object_id(memory, item.name)
             objct_id = self._rdf_builder.fill_literal(mem_id, datatype=self.namespaces['XML']['string'])
             objct = self._rdf_builder.fill_entity(casefold_text('%s %s' % (item.name, objct_id), format='triple'),
-                                                  [casefold_text(item.name, format='triple'), 'Instance',
-                                                   'object'],
+                                                  [casefold_text(item.name, format='triple'), 'Instance', 'object'],
                                                   'LW')
+
+            # Link detection to graph
             _link_entity(self, objct, self.instance_graph)
             self.interaction_graph.add((objct.id, self.namespaces['N2MU']['id'], objct_id))
             instances.append(objct)
-            # Bidirectional link to context
-            self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], objct.id))
-            self.instance_graph.add((objct.id, self.namespaces['EPS']['hasContext'], context.id))
-            # Create detection
-            objct_detection = create_claim_graph(self, self.myself, prdt, objct, UtteranceType.EXPERIENCE)
-            self.claim_graph.add((objct_detection.id, self.namespaces['EPS']['hasContext'], context.id))
 
-            observations.append(objct_detection)
+            # Link to context
+            detection = _link_detections(self, context, objct, prdt)
+            observations.append(detection)
 
             # Open ended learning
             learnable_type = self._rdf_builder.create_resource_uri('N2MU',
@@ -74,18 +90,17 @@ def _create_detections(self, cntxt, context):
     # Detections: faces
     for item in cntxt.people:
         if item.name.lower() != item.UNKNOWN.lower():
-            # Create and link detection to instance graph
+            # Create instance
             prsn = self._rdf_builder.fill_entity(casefold_text(item.name, format='triple'), ['person', 'Instance'],
                                                  'LW')
-            instances.append(prsn)
+
+            # Link detection to graph
             _link_entity(self, prsn, self.instance_graph)
-            # Bidirectional link to context
-            self.interaction_graph.add((context.id, self.namespaces['EPS']['hasDetection'], prsn.id))
-            self.instance_graph.add((prsn.id, self.namespaces['EPS']['hasContext'], context.id))
-            # Create detection
-            face_detection = create_claim_graph(self, self.myself, prdt, prsn, UtteranceType.EXPERIENCE)
-            self.claim_graph.add((face_detection.id, self.namespaces['EPS']['hasContext'], context.id))
-            observations.append(face_detection)
+            instances.append(prsn)
+
+            # Link to context
+            detection = _link_detections(self, context, prsn, prdt)
+            observations.append(detection)
 
     return instances, observations
 

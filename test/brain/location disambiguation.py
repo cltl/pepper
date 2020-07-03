@@ -1,5 +1,5 @@
 from pepper.brain import LongTermMemory
-from test.brain.utils import transform_capsule, places, binary_values, capsule_likes, capsule_is_from, capsule_is_from_2, \
+from test.brain.utils import transform_capsule, places, binary_values, capsule_is_from, capsule_is_from_2, \
     capsule_is_from_3, capsule_knows
 
 from random import choice
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     # Create brain connection
     brain = LongTermMemory(clear_all=True)
 
-    capsules = [capsule_likes, capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows]
+    capsules = [capsule_is_from, capsule_is_from_2, capsule_is_from_3, capsule_knows]
 
     for capsule in capsules:
         say = ''

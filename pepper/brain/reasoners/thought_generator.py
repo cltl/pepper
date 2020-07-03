@@ -75,7 +75,7 @@ class ThoughtGenerator(BasicBrain):
         query = read_query('thoughts/statement_novelty') % statement_uri
         response = self._submit_query(query)
 
-        if response[0] != {}:
+        if response and response[0] != {}:
             response = [self._fill_statement_novelty_(elem) for elem in response]
         else:
             response = []
@@ -193,11 +193,11 @@ class ThoughtGenerator(BasicBrain):
         """
         # Role as subject
         query = read_query('thoughts/object_overlap') % (
-        utterance.triple.predicate_name, utterance.triple.complement_name,
-        utterance.triple.subject_name)
+            utterance.triple.predicate_name, utterance.triple.complement_name,
+            utterance.triple.subject_name)
         response = self._submit_query(query)
 
-        if response[0]['types']['value'] != '':
+        if response and response[0]['types']['value'] != '':
             complement_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
             complement_overlap = []
@@ -208,7 +208,7 @@ class ThoughtGenerator(BasicBrain):
             utterance.triple.complement_name)
         response = self._submit_query(query)
 
-        if response[0]['types']['value'] != '':
+        if response and response[0]['types']['value'] != '':
             subject_overlap = [self._fill_overlap_(elem) for elem in response]
         else:
             subject_overlap = []
@@ -303,7 +303,7 @@ class ThoughtGenerator(BasicBrain):
                                                                        utterance.triple.complement_name)
 
         response = self._submit_query(query)
-        if response[0] != {}:
+        if response and response[0] != {}:
             conflicts = [self._fill_cardinality_conflict_(elem) for elem in response]
         else:
             conflicts = []
@@ -327,7 +327,7 @@ class ThoughtGenerator(BasicBrain):
                                                              utterance.triple.complement_name)
 
         response = self._submit_query(query)
-        if response[0] != {}:
+        if response and response[0] != {}:
             conflicts = [self._fill_negation_conflict_(elem) for elem in response]
         else:
             conflicts = []
@@ -350,7 +350,7 @@ class ThoughtGenerator(BasicBrain):
         # chat based feature
         num_chats = float(self.count_chat_with(speaker))
         friends = self.get_best_friends()
-        best_friend_chats = float(friends[0][1])
+        best_friend_chats = float(friends[0][1]) if friends else num_chats
         chat_feature = num_chats / best_friend_chats
 
         # new content feature
@@ -361,7 +361,7 @@ class ThoughtGenerator(BasicBrain):
         # conflicts feature
         num_conflicts = float(len(self.get_conflicts_by(speaker)))
         all_conflicts = float(len(self.get_conflicts()))
-        conflicts_feature = (num_conflicts / all_conflicts) - 1
+        conflicts_feature = -(num_conflicts / all_conflicts) - 1 if all_conflicts != 0 else 1
 
         # Aggregate
         # TODO scale
