@@ -13,7 +13,7 @@ class RdfBuilder(object):
     ONTOLOGY_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../ontologies'))
 
     def __init__(self):
-        # type: () -> RdfBuilder
+        # type: () -> None
 
         self.ontology_paths = {}
         self.namespaces = {}
@@ -144,6 +144,18 @@ class RdfBuilder(object):
 
     ########## basic constructors ##########
     def _fix_nlp_types(self, types):
+        # type: (list) -> list
+        """
+        Takes list of types incoming from the NLP pipeline and filters out types that are not semantic but
+        syntactic (e.g. adjective)
+        Parameters
+        ----------
+        types: list
+
+        Returns fixed_types: list
+        -------
+
+        """
         # TODO here we know if two types are different category (aka noun and verb) we might need to split the triple
         fixed_types = []
         for el in types:
@@ -165,6 +177,7 @@ class RdfBuilder(object):
         return fixed_types
 
     def create_resource_uri(self, namespace, resource_name):
+        # type: (str, str) -> str
         """
         Create an URI for the given resource (entity, predicate, named graph, etc) in the given namespace
         Parameters
@@ -188,6 +201,7 @@ class RdfBuilder(object):
         return uri
 
     def fill_literal(self, value, datatype=None):
+        # type: (str, str) -> Literal
         """
         Create an RDF literal given its value and datatype
         Parameters
@@ -205,6 +219,7 @@ class RdfBuilder(object):
         return Literal(value, datatype=datatype) if datatype is not None else Literal(value)
 
     def fill_entity(self, label, types, namespace='LW', uri=None):
+        # type: (str, list, str, str) -> Entity
         """
         Create an RDF entity given its label, types and its namespace
         Parameters
@@ -231,6 +246,7 @@ class RdfBuilder(object):
             return Entity(entity_id, Literal(label), fixed_types)
 
     def fill_predicate(self, label, namespace='N2MU', uri=None):
+        # type: (str, str, str) -> Predicate
         """
         Create an RDF predicate given its label and its namespace
         Parameters
@@ -244,6 +260,7 @@ class RdfBuilder(object):
 
         Returns
         -------
+
             Predicate object with given label
         """
         predicate_id = self.create_resource_uri(namespace, label) if not uri else URIRef(to_iri(uri))
@@ -251,6 +268,7 @@ class RdfBuilder(object):
         return Predicate(predicate_id, Literal(label))
 
     def fill_entity_from_label(self, label, namespace='LW', uri=None):
+        # type: (str, str, str) -> Entity
         """
         Create an RDF entity given its label and its namespace
         Parameters
@@ -271,6 +289,7 @@ class RdfBuilder(object):
         return Entity(entity_id, Literal(label), [''])
 
     def empty_entity(self):
+        # type: () -> Entity
         """
         Create an empty RDF entity
         Parameters
@@ -283,6 +302,7 @@ class RdfBuilder(object):
         return Entity('', Literal(''), [''])
 
     def fill_provenance(self, author, date):
+        # type: (str, date) -> Provenance
         """
         Structure provenance to pair authors and dates when mentions are created
         Parameters
@@ -300,6 +320,7 @@ class RdfBuilder(object):
         return Provenance(author, date)
 
     def fill_triple(self, subject_dict, predicate_dict, object_dict, namespace='LW'):
+        # type: (dict, dict, dict, str) -> Triple
         """
         Create an RDF entity given its label and its namespace
         Parameters
@@ -324,6 +345,7 @@ class RdfBuilder(object):
         return Triple(subject, predicate, object)
 
     def fill_triple_from_label(self, subject_label, predicate, object_label, namespace='LW'):
+        # type: (str, str, str, str) -> Triple
         """
         Create an RDF entity given its label and its namespace
         Parameters
@@ -349,9 +371,36 @@ class RdfBuilder(object):
 
     ########## basic reverse engineer ##########
     def label_from_uri(self, uri, namespace='LTi'):
+        """
+        Extract a label from a resource, by removing the namespace
+        Parameters
+        ----------
+        uri: str
+            Resource Identifier
+        namespace: str
+            prefix to remove
+
+        Returns
+        -------
+            Label of the entity without the namespace
+
+        """
+        # type: (str, str) -> str
         return uri.strip(self.namespaces[namespace])
 
     def clean_aggregated_types(self, aggregated_types):
+        # type: (str) -> list
+        """
+        Remove prefixes and suffixes of types when URIs include them
+        Parameters
+        ----------
+        aggregated_types: str
+
+        Returns
+        -------
+            List of clean types
+
+        """
         split_types = aggregated_types.split('|')
 
         clean_types = []
@@ -368,8 +417,21 @@ class RdfBuilder(object):
 
         return clean_types
 
-    def clean_aggregated_detections(self, aggregared_detections):
-        split_detections = aggregared_detections.split('|')
+    def clean_aggregated_detections(self, aggregated_detections):
+        # type: (str) -> list
+        """
+        Remove id from detections, if it contains it
+        Parameters
+        ----------
+        aggregated_detections: str
+            String containing list of detections
+
+        Returns
+        -------
+            List of detections without id
+
+        """
+        split_detections = aggregated_detections.split('|')
 
         clean_detections = []
         for detection_label in split_detections:

@@ -295,10 +295,12 @@ def create_instance_graph(self, utterance):
     Create linked data related to what leolani learned/knows about the world
     Parameters
     ----------
+    self:
     utterance: Utterance
 
     Returns
     -------
+    claim: claim graph
 
 
     """

@@ -17,6 +17,7 @@ class BasicBrain(object):
     _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
     def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, is_submodule=False):
+        # type: (str, bool) -> None
         """
         Interact with Triple store
 
