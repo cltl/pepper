@@ -82,7 +82,7 @@ PEOPLE_FRIENDS_ROOT = os.path.join(PEOPLE_ROOT, 'friends')
 PEOPLE_NEW_ROOT = os.path.join(PEOPLE_ROOT, 'new')
 
 # Names of Friends
-PEOPLE_FRIENDS_NAMES = [os.path.splitext(path)[0] for path in os.listdir(PEOPLE_FRIENDS_ROOT)]
+PEOPLE_FRIENDS_NAMES = [os.path.splitext(path)[0] for path in os.listdir(PEOPLE_FRIENDS_ROOT) if path.endswith(".bin")]
 
 # Path to GOOGLE_APPLICATION_CREDENTIALS file (.json)
 # See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries
