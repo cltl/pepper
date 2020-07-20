@@ -1,11 +1,7 @@
 .idea/
 *.pyc
 
-people/friends/
-people/new/
-people/VU/
-people/Groningen/
-people/WvdW/
+people/**/*.bin
 tmp/
 
 test/news/tmp
@@ -16,6 +12,7 @@ tokens.json
 
 log.txt
 *.trig
+!.gitignore
 
 pepper/.DS_Store
 .DS_Store

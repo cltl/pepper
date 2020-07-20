@@ -195,7 +195,8 @@ class FaceStore(object):
             Dictionary of {name: representation} pairs
         """
         faces = {}
-        faces.update(FaceStore.load_face(os.path.join(directory, path)) for path in os.listdir(directory))
+        faces.update(FaceStore.load_face(os.path.join(directory, path))
+                for path in os.listdir(directory) if path.endswith(FaceStore.EXTENSION))
         return faces
 
     @staticmethod
@@ -211,6 +212,8 @@ class FaceStore(object):
         -------
         name, representation: str, np.ndarray
         """
+        if not path.endswith(FaceStore.EXTENSION):
+            raise ValueError("Wrong file extension for " + str(path))
         name = os.path.splitext(os.path.basename(path))[0]
         representation = np.fromfile(path, np.float32).reshape(-1, OpenFace.FEATURE_DIM)
         return name, representation
@@ -244,6 +247,7 @@ class FaceClassifier:
     """
 
     NEW = "NEW"
+    EXTENSION = ".bin"
 
     def __init__(self, people, n_neighbors=20):
         # type: (Dict[str, np.ndarray], int) -> None
@@ -375,7 +379,8 @@ class FaceClassifier:
         """
         people = {}
         for path in os.listdir(directory):
-            name = os.path.splitext(path)[0]
-            features = np.fromfile(os.path.join(directory, path), np.float32).reshape(-1, OpenFace.FEATURE_DIM)
-            people[name] = features
+            if path.endswith(FaceClassifier.EXTENSION):
+                name = os.path.splitext(path)[0]
+                features = np.fromfile(os.path.join(directory, path), np.float32).reshape(-1, OpenFace.FEATURE_DIM)
+                people[name] = features
         return people
