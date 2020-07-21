@@ -1,7 +1,7 @@
 from pepper.language.utils.helper_functions import *
 
 
-LOG = logger.getChild(__name__)
+LOG = logger.getChild(self.__class__.__name__)
 
 
 def analyze_question_word(question_word, pos):

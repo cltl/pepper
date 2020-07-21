@@ -34,13 +34,13 @@ class BasicBrain(object):
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
 
+        # Start with a clean local memory
+        self.clean_local_memory()
+
         if not is_submodule:
             # Possible clear all contents (testing purposes)
             if clear_all:
                 self.clear_brain()
-
-            # Start with a clean local memory
-            self.clean_local_memory()
 
             # Upload ontology here
             self.upload_ontology()
@@ -285,6 +285,12 @@ class BasicBrain(object):
         _ = self._connection.query(query, post=True)
 
     def clean_local_memory(self):
+        """
+        Assign direct access to rdf builder attributes
+        Returns
+        -------
+
+        """
         self.namespaces = self._rdf_builder.namespaces
         self.dataset = self._rdf_builder.dataset
 

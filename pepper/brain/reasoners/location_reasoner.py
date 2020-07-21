@@ -55,7 +55,7 @@ class LocationReasoner(BasicBrain):
         query = read_query('context/detections_per_context')
         response = self._submit_query(query)
 
-        if response[0]['detections']['value'] != '':
+        if response and response[0]['detections']['value'] != '':
             episodic_memory = [self._fill_episodic_memory_(elem) for elem in response]
         else:
             episodic_memory = []
@@ -113,6 +113,9 @@ class LocationReasoner(BasicBrain):
         return location_memory
 
     def reason_location(self, cntxt):
+
+        guess = None
+
         if cntxt.location.label != cntxt.location.UNKNOWN:
             return cntxt.location.label
 
@@ -141,11 +144,12 @@ class LocationReasoner(BasicBrain):
             # Pick most similar and determine equality based on a threshold
             memory.sort(key=lambda x: x['overlap'])
             best_guess = memory[0]
-            return best_guess['place'] if best_guess['overlap'] > 0.5 \
-                                          and best_guess['place'] != cntxt.location.UNKNOWN else None
+            guess = best_guess['place'] \
+                if best_guess['overlap'] > 0.5 and best_guess['place'] != cntxt.location.UNKNOWN else None
 
-        else:
-            return None
+            self._log.info("Reasoned location to: {}".format(guess))
+
+        return guess
 
     def set_location_label(self, label, default='Unknown'):
         # https: // www.semanticarts.com / sparql - changing - instance - uris /
@@ -157,4 +161,4 @@ class LocationReasoner(BasicBrain):
         for query in queries.split(';'):
             response = self._submit_query(query, post=True)
 
-        return None
+        self._log.info("Set location to: {}".format(label))

@@ -1,3 +1,4 @@
+import random
 from pepper.brain.infrastructure import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps
 from pepper.brain.utils.helper_functions import read_query
@@ -57,7 +58,12 @@ class ThoughtGenerator(BasicBrain):
         subject_novelty = self._check_instance_novelty_(subject_url)
         complement_novelty = self._check_instance_novelty_(complement_url)
 
-        return EntityNovelty(subject_novelty, complement_novelty)
+        entity_novelty = EntityNovelty(subject_novelty, complement_novelty)
+
+        if entity_novelty.subject or entity_novelty.complement:
+            self._log.info("Entity Novelty: {} ".format(entity_novelty.__str__()))
+
+        return entity_novelty
 
     def get_statement_novelty(self, statement_uri):
         """
@@ -69,18 +75,22 @@ class ThoughtGenerator(BasicBrain):
 
         Returns
         -------
-        response: List[StatementNovelty]
+        novelties: List[StatementNovelty]
             List of provenance for the instance
         """
         query = read_query('thoughts/statement_novelty') % statement_uri
         response = self._submit_query(query)
 
         if response and response[0] != {}:
-            response = [self._fill_statement_novelty_(elem) for elem in response]
+            novelties = [self._fill_statement_novelty_(elem) for elem in response]
         else:
-            response = []
+            novelties = []
 
-        return response
+        if novelties:
+            n = random.choice(novelties)
+            self._log.info("Statement Novelty: {} times, e.g. {}".format(len(response), n.__str__()))
+
+        return novelties
 
     def _check_instance_novelty_(self, instance_url):
         """
@@ -156,7 +166,12 @@ class ThoughtGenerator(BasicBrain):
         else:
             complement_gaps = []
 
-        return Gaps(subject_gaps, complement_gaps)
+        gaps = Gaps(subject_gaps, complement_gaps)
+
+        if len(subject_gaps) > 0 or len(complement_gaps) > 0 :
+            self._log.info("Gaps: {}".format(gaps.__str__()))
+
+        return gaps
 
     ########## overlaps ##########
     def _fill_overlap_(self, raw_response):
@@ -213,7 +228,12 @@ class ThoughtGenerator(BasicBrain):
         else:
             subject_overlap = []
 
-        return Overlaps(subject_overlap, complement_overlap)
+        overlaps = Overlaps(subject_overlap, complement_overlap)
+
+        if len(subject_overlap) > 0 or len(complement_overlap) > 0 :
+            self._log.info("Overlaps: {}".format(overlaps.__str__()))
+
+        return overlaps
 
     ########## conflicts ##########
     def _fill_cardinality_conflict_(self, raw_conflict):
@@ -292,7 +312,7 @@ class ThoughtGenerator(BasicBrain):
 
         Returns
         -------
-        conflicts: List[CardinalityConflicts]
+        conflicts: List[CardinalityConflict]
             List of Conflicts containing the object which creates the conflict, and their provenance
         """
         if str(utterance.triple.predicate_name) not in self._ONE_TO_ONE_PREDICATES:
@@ -307,6 +327,10 @@ class ThoughtGenerator(BasicBrain):
             conflicts = [self._fill_cardinality_conflict_(elem) for elem in response]
         else:
             conflicts = []
+
+        if conflicts:
+            c = random.choice(conflicts)
+            self._log.info("Cardinality Conflict: {}".format(c.__str__()))
 
         return conflicts
 
@@ -332,9 +356,29 @@ class ThoughtGenerator(BasicBrain):
         else:
             conflicts = []
 
+        if conflicts:
+            # TODO check if there are both positive and negative views on this statement
+            c = random.choice(conflicts)
+            self._log.info("Negation Conflicts: {}".format(c.__str__()))
+
         return conflicts
 
     def get_trust(self, speaker):
+        """
+        Get trust level (between 1 and 0) of a friend. Default is set to 0.5
+        :return:
+        """
+        query = read_query('trust/trust_by') % speaker
+        response = self._submit_query(query)
+
+        if response and response[0] != {}:
+            trust = response[0]['trust']['value']
+        else:
+            trust = 0.5
+
+        return trust
+
+    def compute_trust(self, speaker):
         """
         Compute a value of trust based on what is know about and via this person
         Parameters
@@ -363,8 +407,43 @@ class ThoughtGenerator(BasicBrain):
         all_conflicts = float(len(self.get_conflicts()))
         conflicts_feature = -(num_conflicts / all_conflicts) - 1 if all_conflicts != 0 else 1
 
-        # Aggregate
-        # TODO scale
+        # Aggregate # TODO scale
         trust_value = (chat_feature + claims_feature + conflicts_feature) / 3
 
         return trust_value
+
+    def delete_trust_network(self):
+        """
+        Delete the trust values for all known friends
+        :return:
+        """
+        query = read_query('trust/delete_trust')
+        _ = self._connection.query(query, post=True)
+
+    def compute_trust_network(self):
+        """
+        Compute the trust values for all known friends
+        Returns
+        -------
+
+        """
+        self.delete_trust_network()
+
+        friends = self.get_my_friends()
+
+        for friend in friends:
+            # Form actor
+            actor = self._rdf_builder.fill_entity(friend, ['Instance', 'Source', 'Actor', 'person'], 'LF')
+
+            # Compute trust
+            trust_in_friend = self.compute_trust(friend)
+            trust = self._rdf_builder.fill_literal(trust_in_friend, datatype=self.namespaces['XML']['float'])
+
+            # Structure knowledge
+            self.interaction_graph.add((actor.id, self.namespaces['N2MU']['hasTrustworthinessLevel'], trust))
+
+            # Finish process of uploading new knowledge to the triple store
+            data = self._serialize(self._brain_log)
+            code = self._upload_to_brain(data)
+
+        self._log.info("Computed trust for all known agents")

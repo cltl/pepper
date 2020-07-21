@@ -636,7 +636,9 @@ class EntityNovelty(object):
         return self._complement
 
     def __repr__(self):
-        return '{} - {}'.format(self.subject, self.complement)
+        subject = '{} subject'.format('new' if self.subject else 'existing')
+        complement = '{} object'.format('new' if self.complement else 'existing')
+        return '{} - {}'.format(subject, complement)
 
 
 class Gap(object):
@@ -743,7 +745,8 @@ class Gaps(object):
     def __repr__(self):
         s = random.choice(self._subject) if self._subject else ''
         o = random.choice(self._complement) if self._complement else ''
-        return '{} - {}'.format(s.__repr__(), o.__repr__())
+        return '{} subject gaps: e.g. {} - ' \
+               '{} object gaps: e.g. {}'.format(len(self._subject), s.__repr__(), len(self._complement), o.__repr__())
 
 
 class Overlap(object):
@@ -853,7 +856,9 @@ class Overlaps(object):
     def __repr__(self):
         s = random.choice(self._subject) if self._subject else ''
         o = random.choice(self._complement) if self._complement else ''
-        return '{} - {}'.format(s.__repr__(), o.__repr__())
+        return '{} subject overlaps: e.g. {} - ' \
+               '{} object overlaps: e.g. {}'.format(len(self._subject), s.__repr__(),
+                                                    len(self._complement), o.__repr__())
 
 
 class Thoughts(object):
@@ -874,7 +879,7 @@ class Thoughts(object):
             Information regarding conflicts by violating one to one predicates
         subject_gaps: Gaps
             Information about what can be learned of the subject
-        complement_gaps_gaps: Gaps
+        complement_gaps: Gaps
             Information about what can be learned of the complement
         overlaps: Overlaps
             Information regarding overlaps of this statement with things heard so far
