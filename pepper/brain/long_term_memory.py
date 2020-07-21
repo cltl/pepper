@@ -32,6 +32,8 @@ class LongTermMemory(BasicBrain):
         self.set_location_label = self.location_reasoner.set_location_label
         self.reason_location = self.location_reasoner.reason_location
 
+        self.thought_generator.compute_trust_network()
+
     #################################### Main functions to interact with the brain ####################################
     def get_thoughts_on_entity(self, entity_label, reason_types=False):
         if entity_label is not None and entity_label != '':
@@ -171,7 +173,6 @@ class LongTermMemory(BasicBrain):
 
         # Generate query
         query = create_query(self, utterance)
-        self._log.info("Triple: {}".format(utterance.triple))
 
         # Perform query
         response = self._submit_query(query)

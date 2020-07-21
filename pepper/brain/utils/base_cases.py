@@ -2,6 +2,18 @@ from datetime import date
 
 statements = [
 {
+        "utterance": "I think Selene is from Peru",
+        "subject": {"label": "selene", "type": "person"},
+        "predicate": {"type": "be-from"},
+        "object": {"label": "peru", "type": ""},
+        "perspective": {"certainty": 0.5, "polarity": 1, "sentiment": 0},
+        "author": "lea",
+        "chat": 6,
+        "turn": 1,
+        "position": "0-27",
+        "date": date(2020, 7, 19)
+    },
+    {
         "utterance": "I think Lenka is from Serbia",
         "subject": {"label": "lenka", "type": "person"},
         "predicate": {"type": "be-from"},

@@ -23,6 +23,8 @@ def phrase_all_conflicts(conflicts, speaker=None):
 
 
 def _phrase_cardinality_conflicts(conflicts, utterance):
+    # type: (List[CardinalityConflict], Utterance) -> str
+
     # There is no conflict, so nothing
     if not conflicts:
         say = None
@@ -43,12 +45,12 @@ def _phrase_cardinality_conflicts(conflicts, utterance):
 
 
 def _phrase_negation_conflicts(conflicts, utterance):
-    # There is no conflict entries, so empty
-    if not conflicts or not conflicts[0]:
-        say = None
+    # type: (List[NegationConflict], Utterance) -> str
+
+    say = None
 
     # There is conflict entries
-    else:
+    if conflicts and conflicts[0]:
         affirmative_conflict = [item for item in conflicts if item.polarity_value == 'POSITIVE']
         negative_conflict = [item for item in conflicts if item.polarity_value == 'NEGATIVE']
 
@@ -65,14 +67,12 @@ def _phrase_negation_conflicts(conflicts, utterance):
                       negative_conflict.date.strftime("%B"), negative_conflict.author,
                       utterance.triple.subject_name, utterance.triple.predicate_name, utterance.triple.complement_name)
 
-        # There is no conflict, so just be happy to learn
-        else:
-            say = None
-
     return say
 
 
 def _phrase_statement_novelty(novelties, utterance):
+    # type: (List[StatementNovelty], Utterance) -> str
+
     # I do not know this before, so be happy to learn
     if not novelties:
         entity_role = random.choice(['subject', 'complement'])
@@ -108,6 +108,8 @@ def _phrase_statement_novelty(novelties, utterance):
 
 
 def _phrase_type_novelty(novelties, utterance):
+    # type: (EntityNovelty, Utterance) -> str
+
     entity_role = random.choice(['subject', 'complement'])
     entity_label = utterance.triple.subject_name if entity_role == 'subject' else utterance.triple.complement_name
     novelty = novelties.subject if entity_role == 'subject' else novelties.complement
@@ -136,6 +138,8 @@ def _phrase_type_novelty(novelties, utterance):
 
 
 def _phrase_subject_gaps(all_gaps, utterance):
+    # type: (Gaps, Utterance) -> str
+
     entity_role = random.choice(['subject', 'complement'])
     gaps = all_gaps.subject if entity_role == 'subject' else all_gaps.complement
     say = None
@@ -188,6 +192,8 @@ def _phrase_subject_gaps(all_gaps, utterance):
 
 
 def _phrase_complement_gaps(all_gaps, utterance):
+    # type: (Gaps, Utterance) -> str
+
     # random choice between complement or subject
     entity_role = random.choice(['subject', 'complement'])
     gaps = all_gaps.subject if entity_role == 'subject' else all_gaps.complement
@@ -235,6 +241,8 @@ def _phrase_complement_gaps(all_gaps, utterance):
 
 
 def _phrase_overlaps(all_overlaps, utterance):
+    # type: (Overlaps, Utterance) -> str
+
     entity_role = random.choice(['subject', 'complement'])
     overlaps = all_overlaps.subject if entity_role == 'subject' else all_overlaps.complement
     say = None
@@ -277,8 +285,10 @@ def _phrase_overlaps(all_overlaps, utterance):
     return say
 
 
-def phrase_trust(trust):
-    if trust == 1:
+def _phrase_trust(trust):
+    # type: (float) -> str
+
+    if trust > 0.75:
         say = random.choice(TRUST)
     else:
         say = random.choice(NO_TRUST)
@@ -301,9 +311,9 @@ def phrase_thoughts(update, entity_only=False, proactive=True, persist=False):
 
     """
     if entity_only:
-        options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty']
+        options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty', 'trust']
     else:
-        options = ['cardinality_conflicts', 'entity_novelty']
+        options = ['cardinality_conflicts', 'entity_novelty', 'trust']
 
     if proactive:
         options.extend(['subject_gaps', 'complement_gaps', 'overlaps'])
