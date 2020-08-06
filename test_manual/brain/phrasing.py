@@ -1,7 +1,7 @@
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 from pepper.brain import LongTermMemory
 
-from test.brain.utils import transform_capsule, binary_values, capsule_is_from, capsule_is_from_2, \
+from test_manual.brain.utils import transform_capsule, binary_values, capsule_is_from, capsule_is_from_2, \
     capsule_is_from_3, capsule_knows
 
 from random import choice
