@@ -1,12 +1,13 @@
-from pepper.framework import *
-from pepper import config
-
-from PIL import Image
-import numpy as np
-
-from datetime import datetime
 import json
 import os
+from datetime import datetime
+
+import numpy as np
+from PIL import Image
+
+from pepper import config
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import ObjectDetectionComponent
 
 
 class CameraDumpApp(AbstractApplication, ObjectDetectionComponent):

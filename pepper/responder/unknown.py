@@ -1,11 +1,11 @@
-from pepper.framework import *
-from pepper.language import Utterance
-from .responder import Responder, ResponderType
-from pepper.knowledge import animations, sentences
+from random import choice, random
 
 from typing import Optional, Union, Tuple, Callable
 
-from random import choice, random
+from pepper.framework.component import TextToSpeechComponent
+from pepper.knowledge import animations, sentences
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
 
 
 class UnknownResponder(Responder):

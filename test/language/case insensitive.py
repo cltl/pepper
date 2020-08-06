@@ -1,9 +1,10 @@
 from random import choice
 
-from pepper.language import *
 from pepper.brain import LongTermMemory
-from pepper.framework import UtteranceHypothesis, Context, Object, Face
-from pepper.language.generation import reply_to_question, reply_to_statement, phrase_thoughts
+from pepper.framework.context import Context
+from pepper.framework.sensor import Object, Face, UtteranceHypothesis
+from pepper.language import *
+from pepper.language.generation import reply_to_question, phrase_thoughts
 
 
 def fake_context():

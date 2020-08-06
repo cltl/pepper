@@ -1,8 +1,9 @@
 """Example Application that answers questions posed in natural language using Wikipedia"""
 
-from pepper.framework import *              # Contains Application Building Blocks
-from pepper.knowledge import Wikipedia      # Class to Query Wikipedia using Natural Language
-from pepper import config                   # Global Configuration File
+from pepper import config  # Global Configuration File
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.knowledge import Wikipedia  # Class to Query Wikipedia using Natural Language
 
 
 class WikipediaApplication(AbstractApplication,         # Every Application Inherits from AbstractApplication

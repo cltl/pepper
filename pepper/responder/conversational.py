@@ -1,13 +1,12 @@
-from pepper.framework import *
-from pepper.language import Utterance
-from .responder import Responder, ResponderType
-from pepper.knowledge import animations
-
 import re
+from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
-from random import choice
+from pepper.framework.component import TextToSpeechComponent
+from pepper.knowledge import animations
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
 
 
 class GreetingResponder(Responder):

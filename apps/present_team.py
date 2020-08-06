@@ -1,13 +1,15 @@
-from pepper.framework import *
-from pepper.responder import *
-from pepper.knowledge import sentences, animations
-from pepper.language import Utterance
-from pepper.language.generation.reply import reply_to_question
-from pepper import config
-
-from threading import Thread
 from random import choice
-from time import time
+from threading import Thread
+from time import time, sleep
+
+from pepper import config
+from pepper.framework.abstract import AbstractApplication, AbstractIntention
+from pepper.framework.component import StatisticsComponent, SubtitlesComponent, BrainComponent, ContextComponent, \
+    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.framework.sensor import UtteranceHypothesis
+from pepper.knowledge import sentences, animations
+from pepper.language.generation.reply import reply_to_question
+from pepper.responder import *
 
 SPEAKER_NAME_THIRD = "Dear guest"
 SPEAKER_NAME = "Dear guest"

@@ -1,4 +1,4 @@
-from pepper.framework import AbstractComponent
+from pepper.framework.abstract import AbstractComponent
 from pepper.framework.sensor import VAD, StreamedGoogleASR, UtteranceHypothesis
 from pepper import config
 

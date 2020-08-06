@@ -1,5 +1,7 @@
-from pepper.framework import *
 from pepper import config
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import DisplayComponent, StatisticsComponent, CameraComponent, \
+    SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent
 
 
 class VerboseApp(AbstractApplication, DisplayComponent, StatisticsComponent, CameraComponent,

@@ -1,12 +1,11 @@
-from pepper.framework import *
-from pepper.language import Utterance
-from pepper import logger
-
-from enum import Enum
-
 from time import time
 
+from enum import Enum
 from typing import List, Union, Tuple, Optional, ClassVar, Callable
+
+from pepper import logger
+from pepper.framework.abstract import AbstractComponent, AbstractApplication
+from pepper.language import Utterance
 
 
 class ResponderRequirementUnmetError(Exception):

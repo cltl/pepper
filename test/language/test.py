@@ -1,11 +1,9 @@
-from pepper.language import *
 from pepper.brain import LongTermMemory
-from pepper.framework import UtteranceHypothesis, Context, Face
-from pepper.framework.sensor.obj import Object, Bounds
-from pepper.language.generation.thoughts_phrasing import phrase_thoughts
+from pepper.framework.context import Context
+from pepper.framework.sensor import UtteranceHypothesis
+from pepper.language import *
 from pepper.language.generation import reply_to_question
-
-import numpy as np
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
 
 
 def fake_context():

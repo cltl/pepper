@@ -1,11 +1,8 @@
-from .responder import Responder, ResponderType
-from pepper.framework import *
-from pepper.language import Utterance
-from pepper.knowledge import animations
-
-from random import choice
-
 from typing import Optional, Union, Tuple, Callable
+
+from pepper.framework.component import TextToSpeechComponent
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
 
 
 class BrexitResponder(Responder):

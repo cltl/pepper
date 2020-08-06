@@ -1,10 +1,12 @@
-from pepper.framework import AbstractImage, Bounds, Object
-
 from PIL import Image
 import numpy as np
 
 import json
 import os
+
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.sensor import Object
+from pepper.framework.util import Bounds
 
 
 def read(root):

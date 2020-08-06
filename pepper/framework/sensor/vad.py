@@ -1,4 +1,4 @@
-from pepper.framework import AbstractMicrophone
+from pepper.framework.abstract import AbstractMicrophone
 
 from webrtcvad import Vad
 import numpy as np

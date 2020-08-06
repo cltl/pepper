@@ -54,9 +54,3 @@ Some Components are more complex and require other components to work. They will
 
 .. _pepper_tensorflow: https://github.com/cltl/pepper_tensorflow
 """
-
-from .abstract import *
-from .component import *
-from .sensor import *
-from .context import Context
-from .util import *

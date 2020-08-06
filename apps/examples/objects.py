@@ -1,9 +1,10 @@
 """Example Application that tells you what it sees"""
 
-from pepper.framework import *      # Application Building Blocks
-from pepper import config           # Global Configuration File
-
 from time import time
+
+from pepper import config  # Global Configuration File
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import ObjectDetectionComponent, TextToSpeechComponent
 
 
 class ObjectApplication(AbstractApplication,        # Each Application inherits from AbstractApplication

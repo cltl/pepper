@@ -1,9 +1,11 @@
 """Example Application that shows how to work with different Intentions in one Application"""
 
-from pepper.framework import *
-from pepper import config
-
 from time import sleep
+
+from pepper import config
+from pepper.framework.abstract import AbstractApplication, AbstractIntention
+from pepper.framework.component import StatisticsComponent, FaceRecognitionComponent, SpeechRecognitionComponent, \
+    TextToSpeechComponent
 
 
 class MyApplication(AbstractApplication,            # Main Application, inherits from AbstractApplication

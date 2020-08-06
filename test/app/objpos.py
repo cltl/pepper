@@ -1,5 +1,7 @@
-from pepper.framework import *
 from pepper import config
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import DisplayComponent, SceneComponent, ExploreComponent, ContextComponent, \
+    ObjectDetectionComponent, SpeechRecognitionComponent, FaceRecognitionComponent, TextToSpeechComponent
 
 
 class ObjPosApp(AbstractApplication,

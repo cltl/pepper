@@ -1,4 +1,4 @@
-from pepper.framework import AbstractComponent, AbstractImage, AbstractBackend
+from pepper.framework.abstract import AbstractComponent, AbstractImage, AbstractBackend
 
 
 class CameraComponent(AbstractComponent):

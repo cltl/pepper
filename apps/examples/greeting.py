@@ -1,9 +1,11 @@
 """Example Application that greets known and unknown people"""
 
-from pepper.framework import *
-from pepper import config
-
 from time import time
+
+from pepper import config
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import FaceRecognitionComponent, StatisticsComponent, SpeechRecognitionComponent, \
+    TextToSpeechComponent
 
 
 class GreetingApplication(AbstractApplication,          # All Applications inherit from AbstractApplication

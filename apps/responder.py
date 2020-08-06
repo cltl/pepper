@@ -1,18 +1,19 @@
 from __future__ import unicode_literals
 
-from pepper.framework import *
-from pepper.responder import *
-
-from pepper import config
-
-from pepper.knowledge import sentences
-
-import numpy as np
-
-from typing import List, Callable
+import os
 from random import choice
 from time import time
-import os
+
+import numpy as np
+from typing import List, Callable
+
+from pepper import config
+from pepper.framework.abstract import AbstractApplication, AbstractIntention
+from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
+    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.framework.sensor import SynchronousGoogleASR, OpenFace
+from pepper.knowledge import sentences
+from pepper.responder import *
 
 IMAGE_VU = "https://www.vu.nl/nl/Images/VUlogo_NL_Wit_HR_RGB_tcm289-201376.png"
 

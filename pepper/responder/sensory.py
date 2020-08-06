@@ -1,13 +1,13 @@
-from .responder import Responder, ResponderType
-
-from pepper.framework import *
-from pepper.language import Utterance
-from pepper.knowledge import animations, QnA
-from pepper import config
+from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
-from random import choice
+from pepper import config
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import TextToSpeechComponent, BrainComponent
+from pepper.knowledge import animations
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
 
 
 class VisionResponder(Responder):

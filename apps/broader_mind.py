@@ -1,6 +1,8 @@
-from pepper.framework import *
-from pepper.knowledge import animations
 from pepper import config
+from pepper.framework.abstract import AbstractApplication
+from pepper.framework.component import StatisticsComponent, DisplayComponent, SceneComponent, ContextComponent, \
+    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.knowledge import animations
 
 """
 HOWTO

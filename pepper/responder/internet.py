@@ -1,13 +1,11 @@
-from pepper.framework import *
-from pepper.knowledge import Wikipedia, Wolfram, animations
-from pepper.language import Utterance
-
-from .responder import Responder, ResponderType
-
 import re
 
 from typing import Optional, Union, Tuple, Callable
 
+from pepper.framework.component import TextToSpeechComponent
+from pepper.knowledge import Wikipedia, Wolfram, animations
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
 
 WEB_CUE = [
     "can you search ",

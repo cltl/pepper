@@ -1,4 +1,4 @@
-from pepper.framework import AbstractComponent
+from pepper.framework.abstract import AbstractComponent
 import numpy as np
 
 

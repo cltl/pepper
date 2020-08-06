@@ -1,4 +1,4 @@
-from pepper.framework import AbstractComponent, AbstractImage
+from pepper.framework.abstract import AbstractComponent, AbstractImage
 from pepper.framework.util import spherical2cartesian
 
 from cv2 import resize

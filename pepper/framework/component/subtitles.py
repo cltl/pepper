@@ -1,16 +1,14 @@
 from __future__ import unicode_literals
 
-from pepper.framework import AbstractComponent, AbstractBackend
-from pepper.framework.component import ContextComponent, TextToSpeechComponent, SpeechRecognitionComponent
-from pepper.language import Utterance
-from pepper import config
-
-import urllib
 import re
-
+import urllib
 from threading import Timer
 
 from typing import Optional
+
+from pepper import config
+from pepper.framework.abstract import AbstractComponent, AbstractBackend
+from pepper.framework.component import ContextComponent, TextToSpeechComponent, SpeechRecognitionComponent
 
 
 class SubtitlesComponent(AbstractComponent):
