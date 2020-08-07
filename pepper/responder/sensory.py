@@ -195,7 +195,7 @@ class LocationResponder(Responder):
     CUE_GUESS_LOCATION = [
         "guess where we are",
         "figure out where we are",
-        "guess where we are",
+        "can you guess where we are",
     ]
 
     ANSWER_GUESS = [
@@ -208,7 +208,7 @@ class LocationResponder(Responder):
     ANSWER_FAILED_GUESS = [
         "I could not figure out where we are",
         "I am not sure I have been here",
-        "This place does not look like anywhere have been before",
+        "This place does not look like anywhere I have been before",
         "Maybe many things have changed, but I cannot figure out what this place is",
     ]
 
