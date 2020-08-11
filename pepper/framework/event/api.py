@@ -10,6 +10,10 @@ class EventBus(object):
     def topics(self):
         raise NotImplementedError()
 
+    @property
+    def has_topic(self, topic):
+        return topic in self.topics
+
 class Event(object):
     def __init__(self, payload, metadata):
         self._payload = payload

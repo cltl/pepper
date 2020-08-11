@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractMicrophone
+from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 
 from webrtcvad import Vad
 import numpy as np
@@ -88,8 +89,8 @@ class VAD(object):
 
     MODE = 3
 
-    def __init__(self, microphone):
-        # type: (AbstractMicrophone) -> None
+    def __init__(self, microphone, event_bus):
+        # type: (AbstractMicrophone, EventBus) -> None
 
         self._microphone = microphone
         self._vad = Vad(VAD.MODE)
@@ -111,14 +112,14 @@ class VAD(object):
         self._activation = 0
 
         # Subscribe VAD to Microphone on_audio event
-        self.microphone.callbacks += [self._on_audio]
+        event_bus.subscribe(MIC_TOPIC, self._on_audio)
 
     @property
     def microphone(self):
         # type: () -> AbstractMicrophone
         """
         VAD Microphone
-        
+
         Returns
         -------
         microphone: AbstractMicrophone
@@ -150,17 +151,18 @@ class VAD(object):
         while True:
             yield self._voice_queue.get()
 
-    def _on_audio(self, audio):
+    def _on_audio(self, event):
         # type: (np.ndarray) -> None
         """
         (Microphone Callback) Add Audio to VAD
 
         Parameters
         ----------
-        audio: np.ndarray
+        audio: Event
         """
 
         # Work through Microphone Stream Frame by Frame
+        audio = event.payload
         self._frame_buffer.extend(audio.tobytes())
         while len(self._frame_buffer) >= self._frame_size_bytes:
             self._on_frame(np.frombuffer(self._frame_buffer[:self._frame_size_bytes], VAD.AUDIO_TYPE))

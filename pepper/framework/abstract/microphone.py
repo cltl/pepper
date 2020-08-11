@@ -1,3 +1,4 @@
+from pepper.framework.event.api import Event
 from pepper.framework.util import Scheduler
 from pepper import logger
 
@@ -11,6 +12,8 @@ from collections import deque
 from typing import List, Callable
 
 
+TOPIC = "pepper.framework.abstract.microphone.audio"
+
 class AbstractMicrophone(object):
     """
     Abstract Microphone
@@ -21,16 +24,16 @@ class AbstractMicrophone(object):
         Samples per Second
     channels: int
         Number of Channels
-    callbacks: list of callable
-        Functions to call each time some audio samples are captured
+    event_bus: EventBus
+        EventBus to send events when audio is captured
     """
 
-    def __init__(self, rate, channels, callbacks):
-        # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
+    def __init__(self, rate, channels, event_bus):
+        # type: (int, int, EventBus) -> None
 
         self._rate = rate
         self._channels = channels
-        self._callbacks = callbacks
+        self._event_bus = event_bus
 
         # Variables to do some performance statistics
         self._dt_buffer = deque([], maxlen=32)
@@ -92,30 +95,6 @@ class AbstractMicrophone(object):
         return self._channels
 
     @property
-    def callbacks(self):
-        # type: () -> List[Callable[[np.ndarray], None]]
-        """
-        Get/Set :func:`~AbstractCamera.on_audio` Callbacks
-
-        Returns
-        -------
-        callbacks: list of callable
-        """
-        return self._callbacks
-
-    @callbacks.setter
-    def callbacks(self, value):
-        # type: (List[Callable[[np.ndarray], None]]) -> None
-        """
-        Get/Set :func:`~AbstractCamera.on_audio` Callbacks
-
-        Parameters
-        ----------
-        value: list of callable
-        """
-        self._callbacks = value
-
-    @property
     def running(self):
         # type: () -> bool
         """
@@ -132,7 +111,7 @@ class AbstractMicrophone(object):
         """
         On Audio Event, Called for every frame of audio captured by Microphone
 
-        Microphone Modules should call this function for every frame of audio acquired by Microphone
+        Microphone implementations should call this function for every frame of audio acquired by Microphone
 
         Parameters
         ----------
@@ -152,16 +131,14 @@ class AbstractMicrophone(object):
         """
         Audio Processor
 
-        Calls each callback for each audio frame, threaded, for higher audio throughput
+        Publishes audio events for each audio frame, threaded, for higher audio throughput
         """
-
-        # Get Audio Samples from Buffer
         audio = self._queue.get()
 
-        # Call each regisered Callback with Samples
+        # TODO should this check be in on_audio instead? The buffer can still contain content that was
+        # recorded when the mic was still running
         if self._running:
-            for callback in self.callbacks:
-                callback(audio)
+            self._event_bus.publish(AbstractMicrophone.TOPIC, Event(audio))
 
         # Update Statistics
         self._update_dt(len(audio))

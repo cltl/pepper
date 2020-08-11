@@ -4,8 +4,8 @@
 people/**/*.bin
 tmp/
 
-test/news/tmp
-test/news/out
+test_manual/news/tmp
+test_manual/news/out
 
 google_cloud_key.json
 tokens.json

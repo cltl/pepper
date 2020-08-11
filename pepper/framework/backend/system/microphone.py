@@ -16,13 +16,13 @@ class SystemMicrophone(AbstractMicrophone):
         Samples per Second
     channels: int
         Number of Channels
-    callbacks: list of callable
-        Functions to call each time some audio samples are captured
+    event_bus: EventBus
+        EventBus to publish audio events
     """
 
-    def __init__(self, rate, channels, callbacks=[]):
+    def __init__(self, rate, channels, event_bus):
         # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
-        super(SystemMicrophone, self).__init__(rate, channels, callbacks)
+        super(SystemMicrophone, self).__init__(rate, channels, event_bus)
 
         # Open Microphone Stream
         self._pyaudio = pyaudio.PyAudio()
