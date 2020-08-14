@@ -21,7 +21,7 @@ class SystemMicrophone(AbstractMicrophone):
     """
 
     def __init__(self, rate, channels, event_bus):
-        # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
+        # type: (int, int, EventBus) -> None
         super(SystemMicrophone, self).__init__(rate, channels, event_bus)
 
         # Open Microphone Stream

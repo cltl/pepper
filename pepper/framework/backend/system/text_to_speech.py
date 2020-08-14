@@ -8,7 +8,6 @@ from google.cloud import texttospeech, translate_v2
 from playsound import playsound
 
 from random import getrandbits
-from time import sleep
 import os
 
 from typing import Union, Optional

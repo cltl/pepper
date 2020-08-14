@@ -5,16 +5,11 @@ from pepper.brain import LongTermMemory
 class BrainComponent(AbstractComponent):
     """
     Exposes the Brain (LongTermMemory) to Applications
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
 
-    def __init__(self, backend):
-        # type: (AbstractBackend) -> None
-        super(BrainComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(BrainComponent, self).__init__()
         self._brain = LongTermMemory()
 
     @property

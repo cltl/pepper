@@ -14,6 +14,7 @@ from typing import List, Callable
 
 TOPIC = "pepper.framework.abstract.microphone.audio"
 
+
 class AbstractMicrophone(object):
     """
     Abstract Microphone
@@ -138,7 +139,7 @@ class AbstractMicrophone(object):
         # TODO should this check be in on_audio instead? The buffer can still contain content that was
         # recorded when the mic was still running
         if self._running:
-            self._event_bus.publish(AbstractMicrophone.TOPIC, Event(audio))
+            self._event_bus.publish(TOPIC, Event(audio, None))
 
         # Update Statistics
         self._update_dt(len(audio))

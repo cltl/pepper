@@ -16,9 +16,9 @@ class SubtitlesComponent(AbstractComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
     SUBTITLES_TIMEOUT = 15
 
-    def __init__(self, backend):
-        # type: (AbstractBackend) -> None
-        super(SubtitlesComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(SubtitlesComponent, self).__init__()
 
         self._subtitles_timeout_timer = None  # type: Optional[Timer]
 

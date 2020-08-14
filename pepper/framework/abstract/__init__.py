@@ -27,7 +27,7 @@ from .motion import AbstractMotion
 from .led import AbstractLed, Led
 from .tablet import AbstractTablet
 
-from .backend import AbstractBackend
+from .backend import AbstractBackend, BackendContainer
 from .component import AbstractComponent
 
 from .application import AbstractApplication

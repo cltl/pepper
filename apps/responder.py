@@ -8,6 +8,7 @@ import numpy as np
 from typing import List, Callable
 
 from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication, AbstractIntention
 from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
@@ -28,7 +29,8 @@ RESPONDERS = [
 ]
 
 
-class ResponderApp(AbstractApplication, StatisticsComponent,
+class ResponderApp(ApplicationContainer,
+                   AbstractApplication, StatisticsComponent,
                    # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
                    # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
@@ -37,8 +39,8 @@ class ResponderApp(AbstractApplication, StatisticsComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,
                    SpeechRecognitionComponent, TextToSpeechComponent):
 
-    def __init__(self, backend):
-        super(ResponderApp, self).__init__(backend)
+    def __init__(self):
+        super(ResponderApp, self).__init__()
         self.backend.tablet.show(IMAGE_VU)
 
 
@@ -220,13 +222,7 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
 
 if __name__ == '__main__':
-
     while True:
-        # Boot Application
-        application = ResponderApp(config.get_backend())
-
-        # Boot Default Intention
+        application = ResponderApp()
         intention = DefaultIntention(application)
-
-        # Run Application
         application.run()

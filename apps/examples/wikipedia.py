@@ -1,12 +1,13 @@
 """Example Application that answers questions posed in natural language using Wikipedia"""
 
-from pepper import config  # Global Configuration File
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent
 from pepper.knowledge import Wikipedia  # Class to Query Wikipedia using Natural Language
 
 
-class WikipediaApplication(AbstractApplication,         # Every Application Inherits from AbstractApplication
+class WikipediaApplication(ApplicationContainer,
+                           AbstractApplication,         # Every Application Inherits from AbstractApplication
                            StatisticsComponent,         # Displays Performance Statistics in Terminal
                            SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
                            TextToSpeechComponent):      # Enables Text to Speech and the self.say method
@@ -48,12 +49,5 @@ class WikipediaApplication(AbstractApplication,         # Every Application Inhe
 
 
 if __name__ == "__main__":
-
-    # Get Backend from Global Configuration File
-    backend = config.get_backend()
-
-    # Create Application with given Backend
-    application = WikipediaApplication(backend)
-
-    # Run Application
+    application = WikipediaApplication()
     application.run()

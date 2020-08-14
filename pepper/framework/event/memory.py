@@ -1,6 +1,14 @@
 from pepper.framework.event.api import *
+from pepper.framework.di_container import singleton
 
 from threading import RLock
+
+class SynchronousEventBusContainer(EventBusContainer):
+    @property
+    @singleton
+    def event_bus(self):
+        return SynchronousEventBus()
+
 
 class SynchronousEventBus(EventBus):
     def __init__(self):

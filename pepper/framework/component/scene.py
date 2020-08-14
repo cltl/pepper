@@ -10,11 +10,6 @@ from typing import Tuple
 class SceneComponent(AbstractComponent):
     """
     Construct 3D Scene Based on Camera Data
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
 
     RESOLUTION = 200
@@ -22,8 +17,9 @@ class SceneComponent(AbstractComponent):
     DEPTH_THRESHOLD = 0.5
     VARIANCE_THRESHOLD = 0.5
 
-    def __init__(self, backend):
-        super(SceneComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(SceneComponent, self).__init__()
 
         # Create Spherical Coordinate Map
         self._theta_map, self._phi_map = np.meshgrid(

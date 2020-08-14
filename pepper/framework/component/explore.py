@@ -11,20 +11,15 @@ import random
 class ExploreComponent(AbstractComponent):
     """
     Explore Environment to keep up to date on the people/objects inhabiting it.
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
 
     TIMEOUT = 15
     LAST_MOVE = 0
     SPEED = 0.05
 
-    def __init__(self, backend):
-        # type: (AbstractBackend) -> None
-        super(ExploreComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(ExploreComponent, self).__init__()
 
         # Requires the ContextComponent to know which objects/people to look for
         context = self.require(ExploreComponent, ContextComponent)  # type: ContextComponent

@@ -11,17 +11,12 @@ class AbstractApplication(AbstractComponent):
     It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,
     allows extension by instances of :class:`~pepper.framework.abstract.intention.AbstractIntention` and
     exposes :class:`~pepper.framework.abstract.backend.AbstractBackend` devices to the Application Layer.
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
     """
 
     _EVENT_TAG = 'on_'
 
-    def __init__(self, backend):
-        super(AbstractApplication, self).__init__(backend)
+    def __init__(self):
+        super(AbstractApplication, self).__init__()
 
         # Find Events associated with Application (inherited from Components)
         self._events = {k: v for k, v in self.__dict__.items() if k.startswith(self._EVENT_TAG) and callable(v)}

@@ -1,4 +1,4 @@
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import StatisticsComponent, DisplayComponent, SceneComponent, ContextComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
@@ -14,7 +14,8 @@ HOWTO
 """
 
 
-class BroaderMindApp(AbstractApplication,
+class BroaderMindApp(ApplicationContainer,
+                     AbstractApplication,
                      StatisticsComponent,           # Show Performance Statistics in Terminal
                      DisplayComponent,              # Display what Robot (or Computer) sees in browser
                      SceneComponent,                # Scene (dependency of DisplayComponent)
@@ -24,8 +25,8 @@ class BroaderMindApp(AbstractApplication,
                      SpeechRecognitionComponent,    # Speech Recognition Component (dependency)
                      TextToSpeechComponent):        # Text to Speech (dependency)
 
-    def __init__(self, backend):
-        super(BroaderMindApp, self).__init__(backend)
+    def __init__(self):
+        super(BroaderMindApp, self).__init__()
 
         self.context.start_chat("Human")
 
@@ -36,4 +37,4 @@ class BroaderMindApp(AbstractApplication,
 
 
 if __name__ == '__main__':
-    BroaderMindApp(config.get_backend()).run()
+    BroaderMindApp().run()

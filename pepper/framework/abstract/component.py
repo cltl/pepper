@@ -1,4 +1,5 @@
-from pepper.framework.abstract import AbstractBackend
+from pepper.framework.abstract import AbstractBackend, BackendContainer
+from pepper.framework.event.api import EventBusContainer
 from pepper import logger
 
 from logging import Logger
@@ -9,8 +10,8 @@ class ComponentDependencyError(Exception):
     """Raised when a Component Dependency hasn't been met"""
     pass
 
-
-class AbstractComponent(object):
+# TODO For now use the mixin pattern, unify dependency management
+class AbstractComponent(BackendContainer, EventBusContainer):
     """
     Abstract Base Component on which all Components are Based
 
@@ -20,11 +21,10 @@ class AbstractComponent(object):
         Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
     """
 
-    def __init__(self, backend):
-        # type: (AbstractBackend) -> None
+    def __init__(self):
+        # type: () -> None
         super(AbstractComponent, self).__init__()
 
-        self._backend = backend
         self._log = logger.getChild(self.__class__.__name__)
 
     @property
@@ -38,18 +38,6 @@ class AbstractComponent(object):
         logger: logging.Logger
         """
         return self._log
-
-    @property
-    def backend(self):
-        # type: () -> AbstractBackend
-        """
-        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
-
-        Returns
-        -------
-        backend: AbstractBackend
-        """
-        return self._backend
 
     def require(self, cls, dependency):
         # type: (ClassVar[AbstractComponent], ClassVar[AbstractComponent]) -> AbstractComponent

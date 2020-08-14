@@ -2,21 +2,21 @@
 
 from time import time
 
-from pepper import config  # Global Configuration File
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import ObjectDetectionComponent, TextToSpeechComponent
 
 
-class ObjectApplication(AbstractApplication,        # Each Application inherits from AbstractApplication
+class ObjectApplication(ApplicationContainer,
+                        AbstractApplication,        # Each Application inherits from AbstractApplication
                         ObjectDetectionComponent,   # Object Detection Component (using pepper_tensorflow)
                         TextToSpeechComponent):     # Text to Speech, for Speaking using the self.say method
 
     OBJECT_TIMEOUT = 15
 
-    def __init__(self, backend):
-
+    def __init__(self):
         # Initialize Superclasses (very, very important)
-        super(ObjectApplication, self).__init__(backend)
+        super(ObjectApplication, self).__init__()
 
         # Keep track of which objects are seen when
         self.object_time = {}
@@ -55,6 +55,4 @@ class ObjectApplication(AbstractApplication,        # Each Application inherits 
 
 
 if __name__ == "__main__":
-
-    # Run ObjectApplication using Backend Configured in Global Configuration File
-    ObjectApplication(config.get_backend()).run()
+    ObjectApplication().run()

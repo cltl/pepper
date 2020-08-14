@@ -1,4 +1,6 @@
-from pepper.framework.abstract import AbstractBackend
+from pepper.framework.di_container import singleton
+from pepper.framework.event.api import EventBusContainer
+from pepper.framework.abstract import AbstractBackend, BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
 from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech,\
     NAOqiMotion, NAOqiLed, NAOqiTablet
@@ -6,6 +8,12 @@ from pepper import config, CameraResolution
 
 from naoqi import ALProxy
 import qi
+
+class NAOqiBackendContainer(BackendContainer, EventBusContainer):
+    @property
+    @singleton
+    def backend(self):
+        return NAOqiBackend(self.event_bus())
 
 
 class NAOqiBackend(AbstractBackend):
@@ -35,7 +43,8 @@ class NAOqiBackend(AbstractBackend):
     --------
     http://doc.aldebaran.com/2-5/index_dev_guide.html
     """
-    def __init__(self, url=config.NAOQI_URL,
+    def __init__(self, event_bus,
+                 url=config.NAOQI_URL,
                  camera_resolution=config.CAMERA_RESOLUTION, camera_rate=config.CAMERA_FRAME_RATE,
                  microphone_index=config.NAOQI_MICROPHONE_INDEX, language=config.APPLICATION_LANGUAGE,
                  use_system_camera=config.NAOQI_USE_SYSTEM_CAMERA,
@@ -53,7 +62,7 @@ class NAOqiBackend(AbstractBackend):
         else: camera = NAOqiCamera(self.session, camera_resolution, camera_rate)
 
         # System Microphone Override
-        if use_system_microphone: microphone = SystemMicrophone(16000, 1)
+        if use_system_microphone: microphone = SystemMicrophone(16000, 1, event_bus)
         else: microphone = NAOqiMicrophone(self.session, microphone_index)
 
         # System Text To Speech Override

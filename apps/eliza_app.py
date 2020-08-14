@@ -2,7 +2,8 @@
 from time import sleep
 
 from pepper import config  # Global Configuration File
-from pepper.framework.abstract import AbstractApplication
+from pepper.app_container import ApplicationContainer
+from pepper.framework.abstract import AbstractApplication, AbstractIntention
 from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent
 from pepper.knowledge import animations
 # TODO Unresolved import
@@ -19,19 +20,20 @@ MIN_ANSWER_LENGTH = 4
 config.NAOQI_SPEECH_SPEED = 80
 
 
-class ElizaApplication(AbstractApplication,         # Every Application Inherits from AbstractApplication
-                           StatisticsComponent,         # Displays Performance Statistics in Terminal
-                           SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
-                           TextToSpeechComponent):      # Enables Text to Speech and the self.say method
+class ElizaApplication(ApplicationContainer,
+                       AbstractApplication,         # Every Application Inherits from AbstractApplication
+                       StatisticsComponent,         # Displays Performance Statistics in Terminal
+                       SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
+                       TextToSpeechComponent):      # Enables Text to Speech and the self.say method
 
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
 
-    def __init__(self, application):
+    def __init__(self):
         """Greets New and Known People"""
         self.name_time = {}  # Dictionary of <name, time> pairs, to keep track of who is greeted when
 
-        super(ElizaApplication, self).__init__(application)
+        super(ElizaApplication, self).__init__()
 
         IntroductionIntention(self).speech()
         sleep(2.5)
@@ -70,13 +72,7 @@ class ElizaApplication(AbstractApplication,         # Every Application Inherits
                 break
 
 
-
-
-
-
 class IntroductionIntention(AbstractIntention, ElizaApplication):
-
-
     def speech(self):
         # 1.1 - Welcome
         self.say("Hello. Welcome to my clinic", animations.BOW)
@@ -86,16 +82,6 @@ class IntroductionIntention(AbstractIntention, ElizaApplication):
         sleep(3.5)
 
 
-
-
 if __name__ == "__main__":
-
-    # Get Backend from Global Configuration File
-    backend = config.get_backend()
-
-
-    # Create Application with given Backend
-    application = ElizaApplication(backend)
-
-    # Run Application
+    application = ElizaApplication()
     application.run()

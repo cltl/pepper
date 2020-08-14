@@ -39,9 +39,9 @@ class ContextComponent(AbstractComponent):
     # Number of seconds of inactivity before conversation times out
     CONVERSATION_TIMEOUT = 30
 
-    def __init__(self, backend):
-        # type: (AbstractBackend) -> None
-        super(ContextComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(ContextComponent, self).__init__()
 
         # The ContextComponent requires the following Components:
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent

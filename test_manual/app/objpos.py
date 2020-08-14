@@ -1,10 +1,11 @@
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import DisplayComponent, SceneComponent, ExploreComponent, ContextComponent, \
     ObjectDetectionComponent, SpeechRecognitionComponent, FaceRecognitionComponent, TextToSpeechComponent
 
 
-class ObjPosApp(AbstractApplication,
+class ObjPosApp(ApplicationContainer,
+                AbstractApplication,
                 DisplayComponent, SceneComponent,
                 ExploreComponent, ContextComponent,
                 ObjectDetectionComponent, SpeechRecognitionComponent, FaceRecognitionComponent, TextToSpeechComponent):
@@ -14,4 +15,4 @@ class ObjPosApp(AbstractApplication,
 
 
 if __name__ == '__main__':
-    ObjPosApp(config.get_backend()).run()
+    ObjPosApp().run()

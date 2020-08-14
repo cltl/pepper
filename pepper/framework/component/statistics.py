@@ -27,8 +27,9 @@ class StatisticsComponent(AbstractComponent):
     LIVE_SPEECH_TIMEOUT = 3
     LIVE_SPEECH_TIME = 0
 
-    def __init__(self, backend):
-        super(StatisticsComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(StatisticsComponent, self).__init__()
 
         # Require Speech Recognition Component and Get Information from it
         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent

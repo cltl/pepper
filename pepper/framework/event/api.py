@@ -1,5 +1,10 @@
-class EventBus(object):
+from pepper.framework.di_container import DIContainer
 
+class EventBusContainer(DIContainer):
+    def event_bus(self):
+        raise ValueError("No EventBus configured")
+
+class EventBus(object):
     def publish(self, topic, event):
         raise NotImplementedError()
 

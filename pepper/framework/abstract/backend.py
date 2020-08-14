@@ -1,4 +1,18 @@
+from pepper.framework.di_container import DIContainer
 from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet
+
+
+class BackendContainer(DIContainer):
+    def backend(self):
+        # type: () -> AbstractBackend
+        """
+        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
+
+        Returns
+        -------
+        backend: AbstractBackend
+        """
+        raise ValueError("No backend configured")
 
 
 class AbstractBackend(object):

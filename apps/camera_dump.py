@@ -5,12 +5,12 @@ from datetime import datetime
 import numpy as np
 from PIL import Image
 
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import ObjectDetectionComponent
 
 
-class CameraDumpApp(AbstractApplication, ObjectDetectionComponent):
+class CameraDumpApp(ApplicationContainer, AbstractApplication, ObjectDetectionComponent):
 
     """
 
@@ -18,8 +18,8 @@ class CameraDumpApp(AbstractApplication, ObjectDetectionComponent):
 
     OUTPUT_ROOT = r"C:\Users\Pepper\Documents\Pepper\pepper\tmp\data"
 
-    def __init__(self, backend):
-        super(CameraDumpApp, self).__init__(backend)
+    def __init__(self):
+        super(CameraDumpApp, self).__init__()
 
         self.output = os.path.join(self.OUTPUT_ROOT, datetime.now().strftime("%Y%m%d_%H%M%S"))
         os.makedirs(self.output)
@@ -54,4 +54,4 @@ class CameraDumpApp(AbstractApplication, ObjectDetectionComponent):
 
 
 if __name__ == '__main__':
-    CameraDumpApp(config.get_backend()).run()
+    CameraDumpApp().run()

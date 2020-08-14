@@ -12,15 +12,11 @@ from typing import *
 class SpeechRecognitionComponent(AbstractComponent):
     """
     Speech Recognition Component. Exposes on_transcript Event to Applications.
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
 
-    def __init__(self, backend):
-        super(SpeechRecognitionComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(SpeechRecognitionComponent, self).__init__()
 
         # Public List of On Transcript Callbacks:
         # Allowing other Components to Subscribe to it
@@ -30,7 +26,7 @@ class SpeechRecognitionComponent(AbstractComponent):
         self._asr = StreamedGoogleASR(config.APPLICATION_LANGUAGE, self.backend.microphone.rate)
 
         # Initialize Voice Activity Detection
-        self._vad = VAD(self.backend.microphone)
+        self._vad = VAD(self.backend.microphone, self.event_bus)
 
         def worker():
             # type: () -> None

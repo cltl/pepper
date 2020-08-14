@@ -11,18 +11,14 @@ from typing import List, Dict
 class ObjectDetectionComponent(AbstractComponent):
     """
     Perform Object Detection using `Pepper Tensorflow <https://github.com/cltl/pepper_tensorflow>`_
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
 
     # The Object Detection Servers to Target (See pepper_tensorflow)
     TARGETS = config.OBJECT_RECOGNITION_TARGETS
 
-    def __init__(self, backend):
-        super(ObjectDetectionComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(ObjectDetectionComponent, self).__init__()
 
         # Public List of On Object Callbacks:
         # Allowing other Components to Subscribe to it

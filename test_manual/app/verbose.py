@@ -1,10 +1,11 @@
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import DisplayComponent, StatisticsComponent, CameraComponent, \
     SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent
 
 
-class VerboseApp(AbstractApplication, DisplayComponent, StatisticsComponent, CameraComponent,
+class VerboseApp(ApplicationContainer,
+                 AbstractApplication, DisplayComponent, StatisticsComponent, CameraComponent,
                  SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent):
 
     def on_image(self, image):
@@ -27,4 +28,4 @@ class VerboseApp(AbstractApplication, DisplayComponent, StatisticsComponent, Cam
 
 
 if __name__ == '__main__':
-    VerboseApp(config.get_backend()).run()
+    VerboseApp().run()

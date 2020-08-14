@@ -2,13 +2,14 @@
 
 from time import time
 
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication
 from pepper.framework.component import FaceRecognitionComponent, StatisticsComponent, SpeechRecognitionComponent, \
     TextToSpeechComponent
 
 
-class GreetingApplication(AbstractApplication,          # All Applications inherit from AbstractApplication
+class GreetingApplication(ApplicationContainer,
+                          AbstractApplication,          # All Applications inherit from AbstractApplication
                           FaceRecognitionComponent,     # We need Face Recognition to Greet People by Name
                           StatisticsComponent,
                           SpeechRecognitionComponent,
@@ -16,9 +17,9 @@ class GreetingApplication(AbstractApplication,          # All Applications inher
 
     GREET_TIMEOUT = 15  # Only Greet people once every X seconds
 
-    def __init__(self, backend):
+    def __init__(self):
         """Greets New and Known People"""
-        super(GreetingApplication, self).__init__(backend)
+        super(GreetingApplication, self).__init__()
 
         self.name_time = {}  # Dictionary of <name, time> pairs, to keep track of who is greeted when
 
@@ -60,6 +61,4 @@ class GreetingApplication(AbstractApplication,          # All Applications inher
 
 
 if __name__ == "__main__":
-
-    # Run Application with Backend specified in Global Configuration File
-    GreetingApplication(config.get_backend()).run()
+    GreetingApplication().run()

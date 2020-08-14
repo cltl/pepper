@@ -6,6 +6,7 @@ from pepper.responder import *
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question
 from pepper import config
+from pepper.app_container import ApplicationContainer
 
 from threading import Thread
 from random import choice
@@ -47,15 +48,16 @@ RESPONDERS = [
 ]
 
 
-class PresentTeamApp(AbstractApplication, StatisticsComponent,
+class PresentTeamApp(ApplicationContainer,
+                     AbstractApplication, StatisticsComponent,
                      SubtitlesComponent,
                      BrainComponent, ContextComponent,
                      ObjectDetectionComponent, FaceRecognitionComponent,
                      SpeechRecognitionComponent, TextToSpeechComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
-    def __init__(self, backend):
-        super(PresentTeamApp, self).__init__(backend)
+    def __init__(self):
+        super(PresentTeamApp, self).__init__()
 
         self.tablet.show(IMAGE_VU)
 
@@ -385,11 +387,6 @@ class DefaultIntention(AbstractIntention, PresentTeamApp):
 
 
 if __name__ == '__main__':
-    # Initialize Application
-    application = PresentTeamApp(config.get_backend())
-
-    # Initialize Intention
+    application = PresentTeamApp()
     WaitForStartCueIntention(application)
-
-    # Run Application
     application.run()

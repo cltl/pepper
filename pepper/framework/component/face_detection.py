@@ -10,15 +10,11 @@ class FaceRecognitionComponent(AbstractComponent):
     """
     Perform Face Detection using :class:`~pepper.sensor.face.OpenFace` and :class:`~pepper.sensor.face.FaceClassifier`
     on every :class:`~pepper.framework.abstract.camera.AbstractCamera` on_image event.
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
 
-    def __init__(self, backend):
-        super(FaceRecognitionComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(FaceRecognitionComponent, self).__init__()
 
         # Public Lists of Callbacks:
         # Allowing other Components to Subscribe to them

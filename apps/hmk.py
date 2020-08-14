@@ -5,6 +5,7 @@ from threading import Thread
 from time import time, sleep
 
 from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication, AbstractIntention
 from pepper.framework.component import StatisticsComponent, ObjectDetectionComponent, ContextComponent, BrainComponent, \
     FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
@@ -43,14 +44,15 @@ RESPONDERS = [
 ]
 
 
-class HMKApp(AbstractApplication, StatisticsComponent,
+class HMKApp(ApplicationContainer,
+             AbstractApplication, StatisticsComponent,
              BrainComponent, ContextComponent,
              ObjectDetectionComponent, FaceRecognitionComponent,
              SpeechRecognitionComponent, TextToSpeechComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
-    def __init__(self, backend):
-        super(HMKApp, self).__init__(backend)
+    def __init__(self):
+        super(HMKApp, self).__init__()
 
         self.tablet.show(IMAGE_VU)
 
@@ -312,7 +314,7 @@ class DefaultIntention(AbstractIntention, HMKApp):
 
 if __name__ == '__main__':
     # Initialize Application
-    application = HMKApp(config.get_backend())
+    application = HMKApp()
 
     # Initialize Intention
     WaitForStartCueIntention(application)

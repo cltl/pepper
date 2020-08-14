@@ -166,24 +166,3 @@ with open(KEY_WOLFRAM) as tokens:
 
 # Set GOOGLE CREDENTIALS
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = KEY_GOOGLE_CLOUD
-
-
-def get_backend():
-    """
-    Get Backend based on config.py settings
-
-    Returns
-    -------
-    backend: AbstractBackend
-    """
-
-    pepper.logger.info("Using {}".format(APPLICATION_BACKEND))
-
-    backend = None
-    if APPLICATION_BACKEND == pepper.ApplicationBackend.SYSTEM:
-        from pepper.framework.backend.system import SystemBackend
-        backend = SystemBackend()
-    elif APPLICATION_BACKEND == pepper.ApplicationBackend.NAOQI:
-        from pepper.framework.backend.naoqi import NAOqiBackend
-        backend = NAOqiBackend()
-    return backend

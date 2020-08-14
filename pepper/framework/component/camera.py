@@ -4,15 +4,10 @@ from pepper.framework.abstract import AbstractComponent, AbstractImage, Abstract
 class CameraComponent(AbstractComponent):
     """
     Exposes the on_image event to Applications
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
-    def __init__(self, backend):
-        # type: (AbstractBackend) -> None
-        super(CameraComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(CameraComponent, self).__init__()
         self.backend.camera.callbacks += [self.on_image]
 
     def on_image(self, image):

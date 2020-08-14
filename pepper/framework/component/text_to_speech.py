@@ -8,15 +8,11 @@ from typing import Optional, Union
 class TextToSpeechComponent(AbstractComponent):
     """
     Text To Speech Component. Exposes the say() Method to Applications
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
-
-    def __init__(self, backend):
-        super(TextToSpeechComponent, self).__init__(backend)
+    def __init__(self):
+        # type: () -> None
+        super(TextToSpeechComponent, self).__init__()
+        self.backend = backend
 
         # Prevent Racing Conditions
         self._microphone_lock = Lock()

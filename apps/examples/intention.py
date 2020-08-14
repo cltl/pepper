@@ -2,13 +2,14 @@
 
 from time import sleep
 
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract import AbstractApplication, AbstractIntention
 from pepper.framework.component import StatisticsComponent, FaceRecognitionComponent, SpeechRecognitionComponent, \
     TextToSpeechComponent
 
 
-class MyApplication(AbstractApplication,            # Main Application, inherits from AbstractApplication
+class MyApplication(ApplicationContainer,
+                    AbstractApplication,            # Main Application, inherits from AbstractApplication
                     StatisticsComponent,            # Show Performance Statistics
                     FaceRecognitionComponent,       # Face Recognition
                     SpeechRecognitionComponent,     # Speech Recognition
@@ -73,12 +74,6 @@ class TalkIntention(AbstractIntention, MyApplication):
 
 
 if __name__ == '__main__':
-
-    # Initialize Application
-    application = MyApplication(config.get_backend())
-
-    # Initialize (Idle) Intention
+    application = MyApplication()
     IdleIntention(application)
-
-    # Run Application
     application.run()
