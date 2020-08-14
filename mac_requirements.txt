@@ -19,7 +19,7 @@ google-cloud-TextToSpeech
 google-cloud-translate
 
 Pillow==5.4.1
-opencv-python
+opencv-python==4.2.0.32
 
 tornado==5.1.1
 typing
