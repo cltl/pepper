@@ -1,10 +1,22 @@
 from pepper.framework.di_container import DIContainer
 
+
 class EventBusContainer(DIContainer):
+    @property
     def event_bus(self):
         raise ValueError("No EventBus configured")
 
+
 class EventBus(object):
+    """
+    Supports publishing of and subscribing to events based on topics.
+
+    Events published to a topic are delivered to all subscribers in the order
+    of their arrival. Publishing and invocation of the subscribed handler
+    can be asynchronous. Subscribers receive only events that arrive after they
+    subscribed to a topic.
+    """
+
     def publish(self, topic, event):
         raise NotImplementedError()
 
@@ -19,6 +31,7 @@ class EventBus(object):
     def has_topic(self, topic):
         return topic in self.topics
 
+
 class Event(object):
     def __init__(self, payload, metadata):
         self._payload = payload
@@ -31,6 +44,7 @@ class Event(object):
     @property
     def payload(self):
         return self._payload
+
 
 class EventMetadata(object):
     def __init__(self, timestamp=None, offset=None):

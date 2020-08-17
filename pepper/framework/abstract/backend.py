@@ -3,14 +3,13 @@ from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, Abstract
 
 
 class BackendContainer(DIContainer):
+    @property
     def backend(self):
         # type: () -> AbstractBackend
         """
-        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
-
         Returns
         -------
-        backend: AbstractBackend
+        backend: AbstractBackend :class:`~pepper.framework.abstract.backend.AbstractBackend`
         """
         raise ValueError("No backend configured")
 

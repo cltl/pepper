@@ -5,8 +5,8 @@ class DIContainer(object):
     """
     Base class for Dependency Injection containers.
 
-    Dependency Injection containers manages manages object creation and it's
-    life-time, and also injects dependencies to the class.
+    DIContainers manage object creation (injecting necessary dependencies) and
+    their life-cycle.
     """
     __lock = Lock()
 
@@ -16,6 +16,9 @@ class DIContainer(object):
 
 
 def singleton(method):
+    """
+    Decorator to provide singleton instances from methods of a DIContainer.
+    """
     def decorated(self, *args, **kwargs):
         container_type = type(self)
         singleton_attr = "_" + method.__name__
