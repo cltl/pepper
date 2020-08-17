@@ -68,8 +68,8 @@ class Voice(object):
         # type: () -> Iterable[np.ndarray]
         return self.frames
 
-
-class VAD(object):
+# TODO Don't extend VAD for now to avoid circular dependency
+class WebRtcVAD(object):
     """
     Perform Voice Activity Detection on Microphone Input
 
@@ -93,15 +93,15 @@ class VAD(object):
         # type: (AbstractMicrophone, EventBus) -> None
 
         self._microphone = microphone
-        self._vad = Vad(VAD.MODE)
+        self._vad = Vad(WebRtcVAD.MODE)
 
         # Voice Activity Detection Frame Size: VAD works in units of 'frames'
-        self._frame_size = VAD.AUDIO_FRAME_MS * self.microphone.rate // 1000
-        self._frame_size_bytes = self._frame_size * VAD.AUDIO_TYPE_BYTES
+        self._frame_size = WebRtcVAD.AUDIO_FRAME_MS * self.microphone.rate // 1000
+        self._frame_size_bytes = self._frame_size * WebRtcVAD.AUDIO_TYPE_BYTES
 
         # Audio & Voice Ring-Buffers
-        self._audio_buffer = np.zeros((VAD.BUFFER_SIZE, self._frame_size), VAD.AUDIO_TYPE)
-        self._voice_buffer = np.zeros(VAD.BUFFER_SIZE, np.bool)
+        self._audio_buffer = np.zeros((WebRtcVAD.BUFFER_SIZE, self._frame_size), WebRtcVAD.AUDIO_TYPE)
+        self._voice_buffer = np.zeros(WebRtcVAD.BUFFER_SIZE, np.bool)
         self._buffer_index = 0
 
         self._voice = None
@@ -131,13 +131,16 @@ class VAD(object):
         # type: () -> float
         """
         VAD Activation
-        
+
         Returns
         -------
         activation: float
         """
         return self._activation
 
+    # TODO change the API to accept audio and return voices, i.e.
+    # move _on_audio to the place that calls this (iterates this VAD)
+    # Then we can simply Mock this class in itests
     @property
     def voices(self):
         # type: () -> Iterable[Voice]
@@ -165,7 +168,7 @@ class VAD(object):
         audio = event.payload
         self._frame_buffer.extend(audio.tobytes())
         while len(self._frame_buffer) >= self._frame_size_bytes:
-            self._on_frame(np.frombuffer(self._frame_buffer[:self._frame_size_bytes], VAD.AUDIO_TYPE))
+            self._on_frame(np.frombuffer(self._frame_buffer[:self._frame_size_bytes], WebRtcVAD.AUDIO_TYPE))
             del self._frame_buffer[:self._frame_size_bytes]
 
     def _on_frame(self, frame):
@@ -180,7 +183,7 @@ class VAD(object):
         self._activation = self._calculate_activation(frame)
 
         if not self._voice:
-            if self.activation > VAD.VOICE_THRESHOLD:
+            if self.activation > WebRtcVAD.VOICE_THRESHOLD:
 
                 # Create New Utterance Object
                 self._voice = Voice()
@@ -193,7 +196,7 @@ class VAD(object):
                 self._voice_queue.put(self._voice)
         else:
             # If Utterance Ongoing: Add Frame to Utterance Object
-            if self.activation > VAD.VOICE_THRESHOLD:
+            if self.activation > WebRtcVAD.VOICE_THRESHOLD:
                 self._voice.add_frame(frame)
 
             # Else: Terminate Utterance
@@ -217,10 +220,10 @@ class VAD(object):
         # Update Buffers
         self._audio_buffer[self._buffer_index] = frame
         self._voice_buffer[self._buffer_index] = self._vad.is_speech(frame.tobytes(), self.microphone.rate, len(frame))
-        self._buffer_index = (self._buffer_index + 1) % VAD.BUFFER_SIZE
+        self._buffer_index = (self._buffer_index + 1) % WebRtcVAD.BUFFER_SIZE
 
         # Calculate Activation
-        voice_window = np.arange(self._buffer_index - VAD.VOICE_WINDOW, self._buffer_index) % VAD.BUFFER_SIZE
+        voice_window = np.arange(self._buffer_index - WebRtcVAD.VOICE_WINDOW, self._buffer_index) % WebRtcVAD.BUFFER_SIZE
         return float(np.mean(self._voice_buffer[voice_window]))
 
     def __iter__(self):

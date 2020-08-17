@@ -3,7 +3,7 @@ from random import choice
 from typing import Optional, Union, Tuple, Callable
 
 from pepper import config
-from pepper.framework.abstract import AbstractApplication
+from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.component import TextToSpeechComponent, BrainComponent
 from pepper.knowledge import animations
 from pepper.language import Utterance

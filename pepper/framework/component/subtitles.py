@@ -7,7 +7,7 @@ from threading import Timer
 from typing import Optional
 
 from pepper import config
-from pepper.framework.abstract import AbstractComponent, AbstractBackend
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import ContextComponent, TextToSpeechComponent, SpeechRecognitionComponent
 
 
@@ -19,6 +19,8 @@ class SubtitlesComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(SubtitlesComponent, self).__init__()
+
+        self._log.info("Initializing SubtitlesComponent")
 
         self._subtitles_timeout_timer = None  # type: Optional[Timer]
 

@@ -4,7 +4,8 @@ from enum import Enum
 from typing import List, Union, Tuple, Optional, ClassVar, Callable
 
 from pepper import logger
-from pepper.framework.abstract import AbstractComponent, AbstractApplication
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.abstract.application import AbstractApplication
 from pepper.language import Utterance
 
 

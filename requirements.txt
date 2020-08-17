@@ -25,3 +25,5 @@ opencv-python==4.2.0.32
 tornado==5.1.1
 typing
 pyaudio
+
+mock

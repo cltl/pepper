@@ -1,6 +1,8 @@
-from pepper import ApplicationBackend
+from pepper import logger, ApplicationBackend
 from pepper.config import APPLICATION_BACKEND
 from pepper.framework.event.memory import SynchronousEventBusContainer
+from pepper.framework.sensor.container import DefaultSensorContainer
+
 
 if APPLICATION_BACKEND is ApplicationBackend.SYSTEM:
     from pepper.framework.backend.system import SystemBackendContainer as backend_container
@@ -10,5 +12,5 @@ else:
     raise ValueError("Unknown backend configured: " + str(APPLICATION_BACKEND))
 
 
-class ApplicationContainer(backend_container, SynchronousEventBusContainer):
-    pass
+class ApplicationContainer(backend_container, DefaultSensorContainer, SynchronousEventBusContainer):
+    logger.info("Initialized ApplicationContainer")

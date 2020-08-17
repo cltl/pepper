@@ -1,6 +1,6 @@
 from pepper.brain import LongTermMemory
 from pepper.framework.context import Context
-from pepper.framework.sensor import UtteranceHypothesis
+from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.language import *
 from pepper.language.generation import reply_to_question
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts

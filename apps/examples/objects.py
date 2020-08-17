@@ -3,7 +3,7 @@
 from time import time
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract import AbstractApplication
+from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.component import ObjectDetectionComponent, TextToSpeechComponent
 
 

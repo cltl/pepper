@@ -1,7 +1,7 @@
 """Example Application that answers questions posed in natural language using Wikipedia"""
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract import AbstractApplication
+from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent
 from pepper.knowledge import Wikipedia  # Class to Query Wikipedia using Natural Language
 

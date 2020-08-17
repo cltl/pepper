@@ -1,15 +1,18 @@
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
-from pepper.framework.abstract import AbstractBackend, BackendContainer
+from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
 from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech,\
     NAOqiMotion, NAOqiLed, NAOqiTablet
-from pepper import config, CameraResolution
+from pepper import config, logger, CameraResolution
 
 from naoqi import ALProxy
 import qi
 
+
 class NAOqiBackendContainer(BackendContainer, EventBusContainer):
+    logger.info("Initialized NAOqiBackendContainer")
     @property
     @singleton
     def backend(self):

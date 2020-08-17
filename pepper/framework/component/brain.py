@@ -1,5 +1,7 @@
-from pepper.framework.abstract import AbstractComponent, AbstractBackend
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.brain import LongTermMemory
+
+from pepper import logger
 
 
 class BrainComponent(AbstractComponent):
@@ -10,7 +12,10 @@ class BrainComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(BrainComponent, self).__init__()
+
+        self._log.info("Initializing BrainComponent")
         self._brain = LongTermMemory()
+        self._log.info("Initialized BrainComponent")
 
     @property
     def brain(self):

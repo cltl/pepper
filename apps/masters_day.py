@@ -1,7 +1,8 @@
-from pepper.framework.abstract import AbstractApplication, AbstractIntention
+from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.component import StatisticsComponent, SubtitlesComponent, BrainComponent, ContextComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
-from pepper.framework.sensor import UtteranceHypothesis
+from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.responder import *
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question

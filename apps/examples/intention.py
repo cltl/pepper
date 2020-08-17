@@ -3,7 +3,8 @@
 from time import sleep
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract import AbstractApplication, AbstractIntention
+from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.component import StatisticsComponent, FaceRecognitionComponent, SpeechRecognitionComponent, \
     TextToSpeechComponent
 

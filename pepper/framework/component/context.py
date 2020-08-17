@@ -1,7 +1,10 @@
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
 from ..context import Context
-from ..sensor import UtteranceHypothesis, Object, Face, FaceClassifier
-from ..abstract import AbstractComponent, AbstractImage, AbstractBackend
+from ..sensor.api import UtteranceHypothesis, Object, Face
+from ..sensor.face import FaceClassifier
+from ..abstract import AbstractImage
+from ..abstract.component import AbstractComponent
+from ..abstract.backend import AbstractBackend
 
 from pepper.language import Utterance
 from pepper import config, ObjectDetectionTarget
@@ -13,6 +16,7 @@ from time import time
 from typing import Deque, List
 
 import numpy as np
+from pepper import logger
 
 
 class ContextComponent(AbstractComponent):
@@ -42,6 +46,8 @@ class ContextComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(ContextComponent, self).__init__()
+
+        self._log.info("Initializing ContextComponent")
 
         # The ContextComponent requires the following Components:
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
@@ -336,6 +342,8 @@ class ContextComponent(AbstractComponent):
         object_comp.on_object_callbacks.append(on_object)  # Link on_object event from ObjectDetectionComponent
         face_comp.on_face_callbacks.append(on_face)  # Link on_face event from FaceDetectionComponent
         self.backend.camera.callbacks.append(on_image)  # Link on_image event from Backend Camera
+
+        self._log.info("Initialized ContextComponent")
 
     @property
     def context(self):

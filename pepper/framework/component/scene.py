@@ -1,4 +1,5 @@
-from pepper.framework.abstract import AbstractComponent, AbstractImage
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.util import spherical2cartesian
 
 from cv2 import resize
@@ -20,6 +21,7 @@ class SceneComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(SceneComponent, self).__init__()
+        self._log.info("Initializing SceneComponent")
 
         # Create Spherical Coordinate Map
         self._theta_map, self._phi_map = np.meshgrid(

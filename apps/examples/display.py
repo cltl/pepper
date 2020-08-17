@@ -1,7 +1,7 @@
 """Example Application that displays what it sees in the browser"""
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract import AbstractApplication
+from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.component import StatisticsComponent, DisplayComponent, SceneComponent, ContextComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
 

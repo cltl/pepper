@@ -1,5 +1,7 @@
-from pepper.framework.abstract import AbstractBackend, BackendContainer
+from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.container import BackendContainer
 from pepper.framework.event.api import EventBusContainer
+from pepper.framework.sensor.api import SensorContainer
 from pepper import logger
 
 from logging import Logger
@@ -11,7 +13,7 @@ class ComponentDependencyError(Exception):
     pass
 
 # TODO For now use the mixin pattern, unify dependency management
-class AbstractComponent(BackendContainer, EventBusContainer):
+class AbstractComponent(BackendContainer, SensorContainer, EventBusContainer):
     """
     Abstract Base Component on which all Components are Based
 
@@ -26,6 +28,7 @@ class AbstractComponent(BackendContainer, EventBusContainer):
         super(AbstractComponent, self).__init__()
 
         self._log = logger.getChild(self.__class__.__name__)
+        self._log.info("Initializing")
 
     @property
     def log(self):

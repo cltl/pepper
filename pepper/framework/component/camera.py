@@ -1,4 +1,5 @@
-from pepper.framework.abstract import AbstractComponent, AbstractImage, AbstractBackend
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.component import AbstractComponent
 
 
 class CameraComponent(AbstractComponent):
@@ -8,6 +9,7 @@ class CameraComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(CameraComponent, self).__init__()
+        self._log.info("Initializing CameraComponent")
         self.backend.camera.callbacks += [self.on_image]
 
     def on_image(self, image):

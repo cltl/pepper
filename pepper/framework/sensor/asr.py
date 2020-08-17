@@ -19,6 +19,7 @@ class UtteranceHypothesis(object):
     confidence: float
         Utterance Hypothesis Confidence
     """
+
     def __init__(self, transcript, confidence):
         # type: (str, float) -> None
 
@@ -74,6 +75,7 @@ class AbstractTranslator(object):
     target: str
         Two Character Target Language Code
     """
+
     def __init__(self, source, target):
         # type: (str, str) -> None
         self._source = source
@@ -133,6 +135,7 @@ class GoogleTranslator(AbstractTranslator):
     target: str
         Two Character Target Language Code
     """
+
     def __init__(self, source, target):
         # type: (str, str) -> None
         super(GoogleTranslator, self).__init__(source, target)
@@ -346,7 +349,7 @@ class StreamedGoogleASR(BaseGoogleASR):
             try:
                 return self._transcribe(audio)
             except:
-                self._log.error("ASR Transcription Error (try {})".format(i+1))
+                self._log.error("ASR Transcription Error (try {})".format(i + 1))
 
         return []  # Return an empty list if ASR transcription fails
 
@@ -384,7 +387,6 @@ class StreamedGoogleASR(BaseGoogleASR):
 
                     # Iterate over alternatives (a.k.a. hypotheses)
                     for alternative in result.alternatives:
-
                         # Add current alternative to hypotheses
                         hypotheses.append(UtteranceHypothesis(
 

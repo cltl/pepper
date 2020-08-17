@@ -5,9 +5,7 @@ Context
 """
 from pepper.framework.abstract import AbstractImage
 from pepper.language import Chat
-from pepper.framework.sensor.location import Location
-from pepper.framework.sensor.face import Face
-from pepper.framework.sensor.obj import Object
+from pepper.framework.sensor.api import Face, Location, Object
 
 from pepper.knowledge.objects import OBJECT_INFO
 

@@ -3,6 +3,8 @@ from .ner import NER
 from nltk.metrics.distance import edit_distance
 from concurrent import futures
 
+#TODO Module is not used
+
 
 class KnownNameParser:
 

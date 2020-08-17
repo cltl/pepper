@@ -1,8 +1,9 @@
-from pepper.framework.abstract import AbstractComponent
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.util import Scheduler
 from threading import Lock
 
 from typing import Optional, Union
+from pepper import logger
 
 
 class TextToSpeechComponent(AbstractComponent):
@@ -12,7 +13,8 @@ class TextToSpeechComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(TextToSpeechComponent, self).__init__()
-        self.backend = backend
+
+        self._log.info("Initializing TextToSpeechComponent")
 
         # Prevent Racing Conditions
         self._microphone_lock = Lock()
@@ -29,6 +31,7 @@ class TextToSpeechComponent(AbstractComponent):
 
         schedule = Scheduler(worker, name="TextToSpeechComponentThread")
         schedule.start()
+        self._log.info("Started TextToSpeechComponent worker")
 
     def say(self, text, animation=None, block=False):
         # type: (Union[str, unicode], Optional[str], bool) -> None

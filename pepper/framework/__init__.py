@@ -25,17 +25,17 @@ Sensor
 
 The framework.sensor package implements Face, Object and Speech Recognition:
 
-- :class:`~pepper.framework.sensor.vad.VAD` implements Voice Activity Detection on Microphone input
-- :class:`~pepper.framework.sensor.asr.StreamedGoogleASR` implements Automated Speech Recognition through Google Speech API
-- :class:`~pepper.framework.sensor.obj.ObjectDetectionClient` connects to pepper_tensorflow_ for Object Detection
-- :class:`~pepper.framework.sensor.face.OpenFace` connects to the `bamos/openface` Docker container for Face Recognition
-- :class:`~pepper.framework.sensor.location.Location` gets the current geographical location (WIP)
+- :class:`~pepper.framework.sensor.api.VAD` implements Voice Activity Detection on Microphone input
+- :class:`~pepper.framework.sensor.api.ASR` implements Automated Speech Recognition
+- :class:`~pepper.framework.sensor.api.ObjectDetector` implements Object Detection
+- :class:`~pepper.framework.sensor.api.FaceDetector` implements Face Detection
+- :class:`~pepper.framework.sensor.api.Location` gets the current geographical location (WIP)
 
 Component
 =========
 
 Applications are made out of several instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,
-which expose various methods and events to applications. They're summarized below:
+which expose various methods and events to applications. They are summarized below:
 
 - :class:`~pepper.framework.component.camera.CameraComponent` exposes the :meth:`~pepper.framework.component.camera.CameraComponent.on_image` event.
 - :class:`~pepper.framework.component.speech_recognition.SpeechRecognitionComponent` exposes the :meth:`~pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript` event.

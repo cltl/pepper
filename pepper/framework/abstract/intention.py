@@ -1,4 +1,5 @@
-from pepper.framework.abstract import AbstractComponent, AbstractApplication
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.component import ComponentDependencyError
 from pepper import logger
 

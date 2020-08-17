@@ -9,10 +9,12 @@ from typing import List, Callable
 
 from pepper import config
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract import AbstractApplication, AbstractIntention
+from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
-from pepper.framework.sensor import SynchronousGoogleASR, OpenFace
+# TODO move constants from Openface into a configuration
+from pepper.framework.sensor.face import OpenFace
 from pepper.knowledge import sentences
 from pepper.responder import *
 
@@ -118,7 +120,7 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
-        self._asrs = [SynchronousGoogleASR(language) for language in ['nl-NL', 'es-ES']]
+        self._asrs = [self.asr(language) for language in ['nl-NL', 'es-ES']]
 
         self._last_statement_was_name = False
         self._current_name = None

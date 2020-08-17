@@ -14,6 +14,7 @@ import os
 from typing import Tuple, List, Optional, Callable
 
 
+# TODO this should not be abstract, all implementations are the same
 class AbstractImage(object):
     """
     Abstract Image Container
@@ -27,7 +28,6 @@ class AbstractImage(object):
     depth: np.ndarray
         Depth Image (height, width) as Numpy Array
     """
-
     def __init__(self, image, bounds, depth=None, image_time=None):
         # type: (np.ndarray, Bounds, Optional[np.ndarray]) -> None
 

@@ -1,19 +1,17 @@
 from __future__ import unicode_literals
 
-from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
-from pepper.framework.sensor import GoogleTranslator
-from pepper import config
-
-from google.cloud import texttospeech, translate_v2
-from playsound import playsound
-
-from random import getrandbits
 import os
+from random import getrandbits
 
+from google.cloud import texttospeech
+from playsound import playsound
 from typing import Union, Optional
 
+from pepper import config
+from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
 
-class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
+
+class SystemTextToSpeech(AbstractTextToSpeech):
     """
     System Text to Speech
 
@@ -27,10 +25,10 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
     GENDER = 2  # "Female" or 1 "Male"
     TYPE = "Standard"
 
-    def __init__(self, language):
+    def __init__(self, translator, language):
         # type: (str) -> None
         AbstractTextToSpeech.__init__(self, language)
-        GoogleTranslator.__init__(self, config.INTERNAL_LANGUAGE[:2], language[:2])
+        self._translator = translator
 
         if not os.path.exists(self.TMP):
             os.makedirs(self.TMP)
@@ -41,7 +39,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
         # Select the type of audio file you want returned
         self._audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.MP3)
 
-        self._log.debug("Booted ({} -> {})".format(self.source, self.target))
+        self._log.debug("Booted ({} -> {})".format(self._translator.source, self._translator.target))
 
     def on_text_to_speech(self, text, animation=None):
         # type: (Union[str, unicode], Optional[str]) -> None
@@ -56,7 +54,7 @@ class SystemTextToSpeech(AbstractTextToSpeech, GoogleTranslator):
 
         for i in range(3):
             try:
-                synthesis_input = texttospeech.types.SynthesisInput(text=self.translate(text))
+                synthesis_input = texttospeech.types.SynthesisInput(text=self._translator.translate(text))
                 response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
                 self._play_sound(response.audio_content)
                 return

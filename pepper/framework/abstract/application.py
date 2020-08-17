@@ -1,4 +1,5 @@
 from pepper.framework.abstract import *
+from pepper.framework.abstract.component import AbstractComponent
 from pepper import logger
 
 from logging import Logger
@@ -23,7 +24,7 @@ class AbstractApplication(AbstractComponent):
 
         # Instantiate Logger for this Application
         self._log = logger.getChild(self.__class__.__name__)
-        self.log.debug("Booted")
+        self.log.info("Booted Application")
 
     @property
     def log(self):

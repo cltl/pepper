@@ -1,14 +1,13 @@
 from __future__ import print_function
-from sys import stdout, stderr
-
-from pepper.framework.abstract import AbstractComponent
-from pepper.framework.util import Scheduler
-from pepper.framework.component import SpeechRecognitionComponent
-from pepper import config
 
 import threading
-import urllib
+from sys import stdout, stderr
 from time import time
+
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.component import SpeechRecognitionComponent
+from pepper.framework.util import Scheduler
+from pepper import logger
 
 
 class StatisticsComponent(AbstractComponent):
@@ -31,9 +30,11 @@ class StatisticsComponent(AbstractComponent):
         # type: () -> None
         super(StatisticsComponent, self).__init__()
 
+        self._log.info("Initializing StatisticsComponent")
+
         # Require Speech Recognition Component and Get Information from it
         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
-        vad, asr = speech_recognition.vad, speech_recognition.asr
+        vad, asr = speech_recognition.vad, speech_recognition.asr()
 
         def worker():
 
@@ -76,3 +77,4 @@ class StatisticsComponent(AbstractComponent):
         # TODO: Bit Much?
         schedule = Scheduler(worker, 0.1)
         schedule.start()
+        self._log.info("Started StatisticsComponent worker")

@@ -27,3 +27,5 @@ pyaudio
 
 pycountry
 reverse-geocoder
+
+mock

@@ -1,4 +1,5 @@
-from pepper.framework.abstract import AbstractComponent, AbstractBackend, AbstractImage
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import ContextComponent
 from pepper import logger
 
@@ -20,6 +21,8 @@ class ExploreComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(ExploreComponent, self).__init__()
+
+        self._log.info("Initializing ExploreComponent")
 
         # Requires the ContextComponent to know which objects/people to look for
         context = self.require(ExploreComponent, ContextComponent)  # type: ContextComponent
@@ -67,3 +70,4 @@ class ExploreComponent(AbstractComponent):
 
         # Subscribe private on_image event to backend camera (which will call it regularly)
         self.backend.camera.callbacks += [on_image]
+        self._log.info("Initialized ExploreComponent")

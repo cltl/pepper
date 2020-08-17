@@ -1,5 +1,5 @@
 from pepper.framework.abstract import AbstractImage
-from pepper.framework.sensor.obj import Object
+from .obj import Object
 from pepper.framework.util import Bounds
 from pepper import logger, config
 

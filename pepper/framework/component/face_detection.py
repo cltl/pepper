@@ -1,9 +1,11 @@
-from pepper.framework.abstract import AbstractComponent, AbstractImage
-from pepper.framework.sensor.face import OpenFace, FaceClassifier, Face
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.sensor.face import FaceClassifier, Face
 from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
 
 from typing import List
+from pepper import logger
 
 
 class FaceRecognitionComponent(AbstractComponent):
@@ -16,14 +18,15 @@ class FaceRecognitionComponent(AbstractComponent):
         # type: () -> None
         super(FaceRecognitionComponent, self).__init__()
 
+        self._log.info("Initializing FaceRecognitionComponent")
+
         # Public Lists of Callbacks:
         # Allowing other Components to Subscribe to them
         self.on_face_callbacks = []
         self.on_face_known_callbacks = []
         self.on_face_new_callbacks = []
 
-        # Initialize OpenFace
-        open_face = OpenFace()
+        face_detector = self.face_detector
 
         # Import Face Data (Friends & New)
         people = FaceClassifier.load_directory(config.PEOPLE_FRIENDS_ROOT)
@@ -54,7 +57,7 @@ class FaceRecognitionComponent(AbstractComponent):
             image = mailbox.get()
 
             # Get All Face Representations from OpenFace & Initialize Known/New Face Categories
-            on_face = [self.face_classifier.classify(r, b, image) for r, b in open_face.represent(image.image)]
+            on_face = [self.face_classifier.classify(r, b, image) for r, b in face_detector.represent(image.image)]
             on_face_known = []
             on_face_new = []
 
@@ -83,9 +86,13 @@ class FaceRecognitionComponent(AbstractComponent):
         # Initialize Worker
         schedule = Scheduler(worker, name="FaceDetectionComponentThread")
         schedule.start()
+        self._log.info("Started FaceDetectionComponent worker")
 
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]
+
+        self._log.info("Initialized FaceDetectionComponent")
+
 
     def on_face(self, faces):
         # type: (List[Face]) -> None

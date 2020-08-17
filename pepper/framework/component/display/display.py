@@ -1,4 +1,5 @@
-from pepper.framework.abstract import AbstractComponent, AbstractImage
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import *
 from .server import DisplayServer
 
@@ -24,6 +25,8 @@ class DisplayComponent(AbstractComponent):
 
     def __init__(self, backend):
         super(DisplayComponent, self).__init__(backend)
+
+        self._log.info("Initializing DisplayComponent")
 
         # Get Required Components
         face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent

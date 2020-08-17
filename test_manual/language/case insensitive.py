@@ -2,7 +2,7 @@ from random import choice
 
 from pepper.brain import LongTermMemory
 from pepper.framework.context import Context
-from pepper.framework.sensor import Object, Face, UtteranceHypothesis
+from pepper.framework.sensor.api import Face, Object, UtteranceHypothesis
 from pepper.language import *
 from pepper.language.generation import reply_to_question, phrase_thoughts
 

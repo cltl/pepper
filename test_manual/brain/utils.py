@@ -3,7 +3,7 @@ from random import choice
 
 from pepper.brain import RdfBuilder
 from pepper.framework.context import Context
-from pepper.framework.sensor import Face, UtteranceHypothesis
+from pepper.framework.sensor.api import Face, UtteranceHypothesis
 from pepper.framework.sensor.obj import Object
 from pepper.language import Chat, Utterance, UtteranceType
 

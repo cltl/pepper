@@ -16,6 +16,7 @@ class Location(object):
     UNKNOWN = "Unknown"
 
     def __init__(self):
+        # TODO use UUIDs
         self._id = getrandbits(128)
         self._label = self.UNKNOWN
 

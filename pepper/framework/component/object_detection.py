@@ -1,7 +1,7 @@
-from pepper.framework.abstract import AbstractComponent, AbstractImage
-from pepper.framework.sensor.obj import ObjectDetectionClient
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.util import Scheduler, Mailbox
-from pepper import config
+from pepper import config, logger
 
 from threading import Lock
 
@@ -20,13 +20,15 @@ class ObjectDetectionComponent(AbstractComponent):
         # type: () -> None
         super(ObjectDetectionComponent, self).__init__()
 
+        self._log.info("Initializing ObjectDetectionComponent")
+
         # Public List of On Object Callbacks:
         # Allowing other Components to Subscribe to it
         self.on_object_callbacks = []
 
         # Create Object Detection Client and a Mailbox per Target
         # Make sure the corresponding server @ pepper_tensorflow is actually running
-        clients = [ObjectDetectionClient(target) for target in ObjectDetectionComponent.TARGETS]
+        clients = [self.object_detector(target) for target in ObjectDetectionComponent.TARGETS]
         mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
         lock = Lock()
@@ -44,7 +46,7 @@ class ObjectDetectionComponent(AbstractComponent):
                 mailboxes[client].put(image)
 
         def worker(client):
-            # type: (ObjectDetectionClient) -> None
+            # type: (ObjectDetector) -> None
             """Object Detection Worker"""
 
             # Get Image from Mailbox Corresponding with Client
@@ -65,9 +67,11 @@ class ObjectDetectionComponent(AbstractComponent):
                     self.on_object(objects)
 
         # Initialize & Start Object Workers
-        schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(client.target.name)) for client in clients]
+        schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(type(client))) for client in clients]
         for s in schedule:
             s.start()
+
+        self._log.info("Started Object Workers")
 
         # Add on_image to Camera Callbacks
         self.backend.camera.callbacks += [on_image]

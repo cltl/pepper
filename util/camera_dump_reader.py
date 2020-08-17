@@ -5,7 +5,7 @@ import json
 import os
 
 from pepper.framework.abstract import AbstractImage
-from pepper.framework.sensor import Object
+from pepper.framework.sensor.api import Object
 from pepper.framework.util import Bounds
 
 
