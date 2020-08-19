@@ -16,11 +16,15 @@ from pepper.framework.backend.container import BackendContainer
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.di_container import singleton
-from pepper.framework.abstract import AbstractMicrophone, AbstractCamera, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet
+from pepper.framework.abstract import AbstractMicrophone, AbstractCamera, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet, AbstractImage
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.backend import AbstractBackend
 
 from pepper import CameraResolution
+
+
+TEST_IMG = np.zeros((128,))
+TEST_BOUNDS = Bounds(0.0, 0.0, 1.0, 1.0)
 
 
 class TestBackendContainer(BackendContainer, EventBusContainer):
@@ -49,24 +53,20 @@ class TestSensorContainer(DefaultSensorContainer):
 
     def translator(self, source_language, target_language):
         mock_translator = mock.create_autospec(AbstractTranslator)
-        mock_translator.translate.side_effect = lambda text: text
+        mock_translator.translate.side_effect = lambda text: "Translated: " + text
 
         return mock_translator
 
     @property
     def face_detector(self):
-        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
-
         mock_face_detector = mock.create_autospec(FaceDetector)
-        mock_face_detector.represent.side_effect = lambda image: [np.zeros((2, 2, 3)), bounds]
+        mock_face_detector.represent.side_effect = lambda image: [(TEST_IMG, TEST_BOUNDS)]
 
         return mock_face_detector
 
     def object_detector(self, target):
-        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
-
         mock_object_detector = mock.create_autospec(ObjectDetector)
-        mock_object_detector.classify.side_effect = lambda image: Object("test_object", 1.0, bounds, image)
+        mock_object_detector.classify.side_effect = lambda image: [Object("test_object", 1.0, TEST_BOUNDS, image)]
 
         return mock_object_detector
 
@@ -81,6 +81,7 @@ class TestApplication(ApplicationContainer, AbstractApplication,
                       ObjectDetectionComponent,
                       CameraComponent):
     def __init__(self):
+        super(TestApplication, self).__init__()
         self.images = []
         self.objects = []
         self.faces = []
@@ -123,7 +124,7 @@ class ApplicationITest(unittest.TestCase):
         self.application.stop()
         del self.application
 
-    def test_audio_events(self):
+    def test_mic_events(self):
         mic_events = []
         def handle_audio_event(event):
             mic_events.append(event)
@@ -142,6 +143,26 @@ class ApplicationITest(unittest.TestCase):
 
         try:
             self.await(lambda: len(mic_events) > 1, max=5)
+        except unittest.TestCase.failureException:
+            # Expect no more audio events
+            pass
+
+    def test_camera_events(self):
+        self.application.start()
+
+        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
+        image = AbstractImage(np.zeros((2, 2, 3)), bounds)
+
+        cam = self.application.camera
+        cam.on_image(image)
+
+        self.await(lambda: len(self.application.images) > 0, msg="images")
+
+        self.assertEqual(len(self.application.images), 1)
+        np.testing.assert_array_equal(self.application.images[0], image)
+
+        try:
+            self.await(lambda: len(self.application.images) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
