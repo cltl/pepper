@@ -1,11 +1,11 @@
+from typing import List
+
+from pepper import config
 from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.sensor.face import FaceClassifier, Face
 from pepper.framework.util import Scheduler, Mailbox
-from pepper import config
-
-from typing import List
-from pepper import logger
 
 
 class FaceRecognitionComponent(AbstractComponent):
@@ -38,16 +38,16 @@ class FaceRecognitionComponent(AbstractComponent):
         # Initialize Image Mailbox
         mailbox = Mailbox()
 
-        def on_image(image):
-            # type: (AbstractImage) -> None
+        def on_image(event):
+            # type: (Event) -> None
             """
             Private On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
-            image: AbstractImage
+            event: Event
             """
-            mailbox.put(image)
+            mailbox.put(event.payload)
 
         def worker():
             # type: () -> None
@@ -88,8 +88,8 @@ class FaceRecognitionComponent(AbstractComponent):
         schedule.start()
         self._log.info("Started FaceDetectionComponent worker")
 
-        # Add on_image to Camera Callbacks
-        self.backend.camera.callbacks += [on_image]
+        # Subscribe to Camera on_image events
+        self.event_bus.subscribe(CAM_TOPIC, on_image)
 
         self._log.info("Initialized FaceDetectionComponent")
 

@@ -1,11 +1,11 @@
+import numpy as np
+from cv2 import resize
+from typing import Tuple
+
 from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.util import spherical2cartesian
-
-from cv2 import resize
-import numpy as np
-
-from typing import Tuple
 
 
 class SceneComponent(AbstractComponent):
@@ -36,16 +36,17 @@ class SceneComponent(AbstractComponent):
         # Previous Camera Bounds (=View), to assess whether camera is stationary
         self._last_bounds = None
 
-        def on_image(image):
-            # type: (AbstractImage) -> None
+        def on_image(event):
+            # type: (Event) -> None
             """
             On Image Event. Called every time an image was taken by Backend
 
             Parameters
             ----------
-            image: AbstractImage
-                Camera Frame
+            event: Event
+                Event with Camera Frame
             """
+            image = event.payload
 
             # If Camera is stationary (check to prevent blurry frames to enter data pool)
             if self._last_bounds and image.bounds.overlap(self._last_bounds) > 0.9:
@@ -85,7 +86,7 @@ class SceneComponent(AbstractComponent):
             self._last_bounds = image.bounds
 
         # Subscribe to On Image Event
-        self.backend.camera.callbacks += [on_image]
+        self.event_bus.subscribe(CAM_TOPIC, on_image)
 
     @property
     def scatter_map(self):

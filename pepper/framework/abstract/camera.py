@@ -1,4 +1,5 @@
 from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
+from pepper.framework.event.api import Event
 from pepper import CameraResolution
 from pepper import logger
 
@@ -12,6 +13,9 @@ import json
 import os
 
 from typing import Tuple, List, Optional, Callable
+
+
+TOPIC = "pepper.framework.abstract.microphone.camera"
 
 
 # TODO this should not be abstract, all implementations are the same
@@ -220,22 +224,22 @@ class AbstractCamera(object):
         :class:`~pepper.config.CameraResolution`
     rate: int
         Camera Frames per Second
-    callbacks: List[Callable[[AbstractImage], None]]
-        Functions to call each time an AbstractImage is captured
+    event_bus: EventBus
+        Event bus of the application
     """
 
-    def __init__(self, resolution, rate, callbacks):
-        # type: (CameraResolution, int, List[Callable[[AbstractImage], None]]) -> None
+    def __init__(self, resolution, rate, event_bus):
+        # type: (CameraResolution, int, EventBus) -> None
 
         # Extract Image Dimensions from CameraResolution
         self._resolution = resolution
         self._width = self._resolution.value[1]
         self._height = self._resolution.value[0]
         self._shape = np.array([self.height, self.width, self.channels])
+        self._event_bus = event_bus
 
         # Store Camera Rate and Callbacks
         self._rate = rate
-        self._callbacks = callbacks
 
         # Variables to do some performance statistics
         self._dt_buffer = deque([], maxlen=10)
@@ -244,7 +248,7 @@ class AbstractCamera(object):
 
         # Create Mailbox and Image Processor:
         #   Each time an image is captured it is put in the mailbox, overriding whatever there might currently be.
-        #   In a separate thread, the _processor worker takes an image and calls all registered callbacks.
+        #   In a separate thread, the _processor worker takes an image and publishes it as event.
         #   This way the processing of images does not block the acquisition of new images,
         #   while at the same new images don't build up a queue, but are discarded when the _processor is too busy.
         self._mailbox = Mailbox()
@@ -349,31 +353,6 @@ class AbstractCamera(object):
         return self._shape
 
     @property
-    def callbacks(self):
-        # type: () -> List[Callable[[AbstractImage], None]]
-        """
-        Get/Set :func:`~AbstractCamera.on_image` Callbacks
-
-        Returns
-        -------
-        callbacks: list of callable
-            on_image callbacks
-        """
-        return self._callbacks
-
-    @callbacks.setter
-    def callbacks(self, value):
-        # type: (List[Callable[[AbstractImage], None]]) -> None
-        """
-        Get/Set :func:`~AbstractCamera.on_image` Callbacks
-
-        Parameters
-        ----------
-        value: list of callable
-        """
-        self._callbacks = value
-
-    @property
     def running(self):
         # type: () -> bool
         """
@@ -418,8 +397,7 @@ class AbstractCamera(object):
 
         # Call Every Registered Callback
         if self._running:
-            for callback in self.callbacks:
-                callback(image)
+            self._event_bus.publish(TOPIC, Event(image, None))
 
         # Update Statistics
         self._update_dt()

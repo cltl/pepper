@@ -1,12 +1,13 @@
-from pepper.framework.abstract import AbstractImage
-from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.component import ContextComponent
-from pepper import logger
+import random
+from time import time
 
 import numpy as np
 
-from time import time
-import random
+from pepper import logger
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.component import ContextComponent
 
 
 class ExploreComponent(AbstractComponent):
@@ -50,15 +51,16 @@ class ExploreComponent(AbstractComponent):
                     float(np.clip(np.pi/2 + np.random.standard_normal() / 10 * np.pi, 0, np.pi))
                 ), ExploreComponent.SPEED)
 
-        def on_image(image):
-            # type: (AbstractImage) -> None
+        def on_image(event):
+            # type: (Event) -> None
             """
             Private On Image Event. Simply used because it is called n times a second.
 
             Parameters
             ----------
-            image: AbstractImage
+            event: Event
             """
+            image = event.payload
 
             # When no chat is currently happening
             if not context.context.chatting:
@@ -69,5 +71,6 @@ class ExploreComponent(AbstractComponent):
                     ExploreComponent.LAST_MOVE = time()
 
         # Subscribe private on_image event to backend camera (which will call it regularly)
-        self.backend.camera.callbacks += [on_image]
+        self.event_bus.subscribe(CAM_TOPIC, on_image)
+
         self._log.info("Initialized ExploreComponent")

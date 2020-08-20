@@ -1,22 +1,20 @@
-from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
-from ..context import Context
-from ..sensor.api import UtteranceHypothesis, Object, Face
-from ..sensor.face import FaceClassifier
-from ..abstract import AbstractImage
-from ..abstract.component import AbstractComponent
-from ..abstract.backend import AbstractBackend
-
-from pepper.language import Utterance
-from pepper import config, ObjectDetectionTarget
-
 from collections import deque
 from threading import Thread, Lock
 from time import time
 
+import numpy as np
 from typing import Deque, List
 
-import numpy as np
-from pepper import logger
+from pepper import config, ObjectDetectionTarget
+from pepper.language import Utterance
+from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
+from ..abstract import AbstractImage
+from ..abstract.backend import AbstractBackend
+from ..abstract.camera import TOPIC as CAM_TOPIC
+from ..abstract.component import AbstractComponent
+from ..context import Context
+from ..sensor.api import UtteranceHypothesis, Object, Face
+from ..sensor.face import FaceClassifier
 
 
 class ContextComponent(AbstractComponent):
@@ -204,8 +202,8 @@ class ContextComponent(AbstractComponent):
             self.on_chat_exit()
             self._face_vectors.clear()
 
-        def on_image(image):
-            # type: (AbstractImage) -> None
+        def on_image(event):
+            # type: (Event) -> None
             """
             Private On Image Event
 
@@ -219,8 +217,9 @@ class ContextComponent(AbstractComponent):
 
             Parameters
             ----------
-            image: AbstractImage
+            event: Event
             """
+            image = event.payload
 
             # Get People within Conversation Bounds
             closest_people = get_closest_people(self._people_info)
@@ -341,7 +340,9 @@ class ContextComponent(AbstractComponent):
         speech_comp.on_transcript_callbacks.append(on_transcript)  # Link on_transcript event from SpeechComponent
         object_comp.on_object_callbacks.append(on_object)  # Link on_object event from ObjectDetectionComponent
         face_comp.on_face_callbacks.append(on_face)  # Link on_face event from FaceDetectionComponent
-        self.backend.camera.callbacks.append(on_image)  # Link on_image event from Backend Camera
+
+        # Subscribe to events
+        self.event_bus.subscribe(CAM_TOPIC, on_image)  # Link on_image event from Backend Camera
 
         self._log.info("Initialized ContextComponent")
 

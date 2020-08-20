@@ -5,12 +5,13 @@ from time import sleep
 import numpy as np
 
 from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
     UtteranceHypothesis
 from pepper.framework.util import Bounds
 
 from pepper.framework.sensor.container import DefaultSensorContainer
-from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, CameraComponent
+from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
 
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.event.api import EventBusContainer
@@ -36,7 +37,7 @@ class TestBackendContainer(BackendContainer, EventBusContainer):
 
 class TestBackend(AbstractBackend):
     def __init__(self, event_bus):
-        super(TestBackend, self).__init__(camera=AbstractCamera(CameraResolution.VGA, 1, []),
+        super(TestBackend, self).__init__(camera=AbstractCamera(CameraResolution.VGA, 1, event_bus),
                                           microphone=AbstractMicrophone(8000, 1, event_bus),
                                           text_to_speech=AbstractTextToSpeech("nl"),
                                           motion=AbstractMotion(),
@@ -78,11 +79,9 @@ class ApplicationContainer(TestBackendContainer, TestSensorContainer, Synchronou
 class TestApplication(ApplicationContainer, AbstractApplication,
                       SpeechRecognitionComponent,
                       FaceRecognitionComponent,
-                      ObjectDetectionComponent,
-                      CameraComponent):
+                      ObjectDetectionComponent):
     def __init__(self):
         super(TestApplication, self).__init__()
-        self.images = []
         self.objects = []
         self.faces = []
         self.persons = []
@@ -96,9 +95,6 @@ class TestApplication(ApplicationContainer, AbstractApplication,
     def stop(self):
         self.microphone.stop()
         self.camera.stop()
-
-    def on_image(self, image):
-        self.images.append(image)
 
     def on_object(self, objects):
         self.objects.extend(objects)
@@ -148,6 +144,12 @@ class ApplicationITest(unittest.TestCase):
             pass
 
     def test_camera_events(self):
+        image_events = []
+
+        def handle_image_event(event):
+            image_events.append(event)
+
+        self.application.event_bus.subscribe(CAM_TOPIC, handle_image_event)
         self.application.start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
@@ -156,13 +158,13 @@ class ApplicationITest(unittest.TestCase):
         cam = self.application.camera
         cam.on_image(image)
 
-        self.await(lambda: len(self.application.images) > 0, msg="images")
+        self.await(lambda: len(image_events) > 0, msg="images")
 
-        self.assertEqual(len(self.application.images), 1)
-        np.testing.assert_array_equal(self.application.images[0], image)
+        self.assertEqual(len(image_events), 1)
+        np.testing.assert_array_equal(image_events[0].payload, image)
 
         try:
-            self.await(lambda: len(self.application.images) > 1, max=5)
+            self.await(lambda: len(image_events) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass

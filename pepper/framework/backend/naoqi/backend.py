@@ -61,12 +61,12 @@ class NAOqiBackend(AbstractBackend):
         self._session = self.create_session(self._url)
 
         # System Camera Override
-        if use_system_camera: camera = SystemCamera(camera_resolution, camera_rate)
-        else: camera = NAOqiCamera(self.session, camera_resolution, camera_rate)
+        if use_system_camera: camera = SystemCamera(camera_resolution, camera_rate, event_bus)
+        else: camera = NAOqiCamera(self.session, camera_resolution, camera_rate, event_bus)
 
         # System Microphone Override
         if use_system_microphone: microphone = SystemMicrophone(16000, 1, event_bus)
-        else: microphone = NAOqiMicrophone(self.session, microphone_index)
+        else: microphone = NAOqiMicrophone(self.session, microphone_index, event_bus)
 
         # System Text To Speech Override
         if use_system_text_to_speech: text_to_speech = SystemTextToSpeech(language)

@@ -35,13 +35,12 @@ class SystemCamera(AbstractCamera):
     ----------
     resolution: pepper.framework.CameraResolution
     rate: int
-    callbacks: list of callable
+    event_bus: EventBus
     index: int
     """
-
-    def __init__(self, resolution, rate, callbacks=[], index=0):
-        # type: (CameraResolution, int, List[Callable[[AbstractImage], None]], int) -> None
-        super(SystemCamera, self).__init__(resolution, rate, callbacks)
+    def __init__(self, resolution, rate, event_bus, index=0):
+        # type: (CameraResolution, int, EventBus, int) -> None
+        super(SystemCamera, self).__init__(resolution, rate, event_bus)
 
         # Get Camera and request resolution
         self._camera = cv2.VideoCapture(index)

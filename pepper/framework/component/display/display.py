@@ -1,4 +1,5 @@
 from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import *
 from .server import DisplayServer
@@ -64,15 +65,16 @@ class DisplayComponent(AbstractComponent):
                 png.seek(0)
                 return base64.b64encode(png.read())
 
-        def on_image(image):
-            # type: (AbstractImage) -> None
+        def on_image(event):
+            # type: (Event) -> None
             """
             Private On Image Event
 
             Parameters
             ----------
-            image: AbstractImage
+            event: Event
             """
+            image = event.payload
 
             with update_lock:
 
@@ -127,6 +129,8 @@ class DisplayComponent(AbstractComponent):
 
         # Register Callbacks from On Image, Known Faces & Object Detection
         # TODO: Add All Faces to Display? Also Unknown ones?
-        self.backend.camera.callbacks += [on_image]
         face_recognition.on_face_known_callbacks += [add_items]
         object_recognition.on_object_callbacks += [add_items]
+
+        # Subscribe to Image events from Camera
+        self.event_bus.subscribe(CAM_TOPIC, on_image)

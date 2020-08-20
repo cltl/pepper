@@ -43,7 +43,7 @@ class AbstractMicrophone(object):
 
         # Create Queue and Sound Processor:
         #   Each time audio samples are captured it is put in the audio processing queue
-        #   In a separate thread, the _processor worker takes these samples and calls all registered callbacks.
+        #   In a separate thread, the _processor worker takes these samples and publishes them as events.
         #   This way, samples are not accidentally skipped (NAOqi has some very strict timings)
         self._queue = Queue()
         self._processor_scheduler = Scheduler(self._processor, 0, name="MicrophoneThread")
@@ -107,6 +107,7 @@ class AbstractMicrophone(object):
         """
         return self._running
 
+    # TODO With an async event bus we can directly post events to the event bus
     def on_audio(self, audio):
         # type: (np.ndarray) -> None
         """

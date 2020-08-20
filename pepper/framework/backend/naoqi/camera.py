@@ -30,8 +30,8 @@ class NAOqiCamera(AbstractCamera):
         NAOqi Camera Resolution
     rate: int
         NAOqi Camera Rate
-    callbacks: list of callable
-        On Image Event Callbacks
+    event_bus: EventBus
+        Event bus of the application
     index: int
         Which NAOqi Camera to use
     """
@@ -69,9 +69,9 @@ class NAOqiCamera(AbstractCamera):
     # Only take non-blurry pictures
     HEAD_DELTA_THRESHOLD = 0.1
 
-    def __init__(self, session, resolution, rate, callbacks=[], index=NAOqiCameraIndex.TOP):
-        # type: (qi.Session, CameraResolution, int, List[Callable[[AbstractImage], None]], NAOqiCameraIndex) -> None
-        super(NAOqiCamera, self).__init__(resolution, rate, callbacks)
+    def __init__(self, session, resolution, rate, event_bus, index=NAOqiCameraIndex.TOP):
+        # type: (qi.Session, CameraResolution, int, event_bus, NAOqiCameraIndex) -> None
+        super(NAOqiCamera, self).__init__(resolution, rate, event_bus)
 
         # Get random camera id, to prevent name collision
         self._id = str(getrandbits(128))

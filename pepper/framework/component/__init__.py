@@ -5,7 +5,6 @@ Component
 Applications are made out of several instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,
 which expose various methods and events to applications. They're summarized below:
 
-- :class:`~pepper.framework.component.camera.CameraComponent` exposes the :meth:`~pepper.framework.component.camera.CameraComponent.on_image` event.
 - :class:`~pepper.framework.component.speech_recognition.SpeechRecognitionComponent` exposes the :meth:`~pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript` event.
 - :class:`~pepper.framework.component.object_detection.ObjectDetectionComponent` exposes the :meth:`~pepper.framework.component.object_detection.ObjectDetectionComponent.on_object` event.
 - :class:`~pepper.framework.component.face_detection.FaceRecognitionComponent` exposes the :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponent.on_face`, :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponentComponent.on_face_known` & :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponent.on_face_new` events.
@@ -20,7 +19,6 @@ Some Components are more complex and require other components to work. They will
 - :class:`~pepper.framework.component.display.display.DisplayComponent` shows the live camera feedback and the 3D view of the current space, including the objects that are observed.
 """
 
-from .camera import CameraComponent
 from .face_detection import FaceRecognitionComponent
 from .object_detection import ObjectDetectionComponent
 from .speech_recognition import SpeechRecognitionComponent

@@ -1,11 +1,12 @@
-from pepper.framework.abstract import AbstractImage
-from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.util import Scheduler, Mailbox
-from pepper import config, logger
-
 from threading import Lock
 
 from typing import List, Dict
+
+from pepper import config
+from pepper.framework.abstract import AbstractImage
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.util import Scheduler, Mailbox
 
 
 class ObjectDetectionComponent(AbstractComponent):
@@ -33,17 +34,17 @@ class ObjectDetectionComponent(AbstractComponent):
 
         lock = Lock()
 
-        def on_image(image):
-            # type: (AbstractImage) -> None
+        def on_image(event):
+            # type: (Event) -> None
             """
             Raw On Image Event. Called every time the camera yields a frame.
 
             Parameters
             ----------
-            image: AbstractImage
+            event: Event
             """
             for client in clients:
-                mailboxes[client].put(image)
+                mailboxes[client].put(event.payload)
 
         def worker(client):
             # type: (ObjectDetector) -> None
@@ -73,8 +74,8 @@ class ObjectDetectionComponent(AbstractComponent):
 
         self._log.info("Started Object Workers")
 
-        # Add on_image to Camera Callbacks
-        self.backend.camera.callbacks += [on_image]
+        # Subscribe to on_image events from Camera
+        self.event_bus.subscribe(CAM_TOPIC, on_image)
 
     def on_object(self, objects):
         # type: (List[Object]) -> None
