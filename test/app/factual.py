@@ -3,12 +3,17 @@ from pepper.responder import *
 
 from pepper import config
 
+from pepper.knowledge import sentences
+
+from random import choice
+
 RESPONDERS = [
     WikipediaResponder(), WolframResponder()
 ]
 
 
 class FactCheckingApp(AbstractApplication, StatisticsComponent,
+                      ContextComponent,
                       ObjectDetectionComponent, FaceRecognitionComponent,
                       SpeechRecognitionComponent, TextToSpeechComponent):
 
@@ -23,16 +28,26 @@ class DefaultIntention(AbstractIntention, FactCheckingApp):
         super(DefaultIntention, self).__init__(application)
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
+    def on_chat_enter(self, name):
+        self.context.start_chat(name)
+        self.say("{}, {}".format(choice(sentences.GREETING), name))
+
+    def on_chat_exit(self):
+        self.say("{}, {}".format(choice(sentences.GOODBYE), self.context.chat.speaker))
+        self.context.stop_chat()
+
     def on_chat_turn(self, utterance):
         responder = self.response_picker.respond(utterance)
 
 
 if __name__ == '__main__':
-    # Initialize Application
-    application = FactCheckingApp(config.get_backend())
 
-    # Initialize Intention
-    DefaultIntention(application)
+    while True:
+        # Initialize Application
+        application = FactCheckingApp(config.get_backend())
 
-    # Run Application
-    application.run()
+        # Initialize Intention
+        DefaultIntention(application)
+
+        # Run Application
+        application.run()
