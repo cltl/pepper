@@ -21,9 +21,9 @@ class QnA:
         "What is the time?": lambda: strftime("It is currently %H:%M."),
         "day is it?": lambda: strftime("It is %A today."),
         "month is it?": lambda: strftime("It is %B today."),
-        "How many friends?": lambda: "I have {} friends".format(len(os.listdir(config.PEOPLE_FRIENDS_ROOT))),
+        "How many friends?": lambda: "I have {} friends".format(len(config.PEOPLE_FRIENDS_NAMES)),
         "Who are your friends?": lambda: "My friends are {}. I like my friends!".format(
-            ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_FRIENDS_ROOT))),
+            ", ".join(config.PEOPLE_FRIENDS_NAMES)),
         "How many people did you meet?": lambda: "I met {} people today!".format(len(os.listdir(config.PEOPLE_NEW_ROOT)) - 1),
         "Who did you meet?": lambda: "I met {}!".format(
             ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_NEW_ROOT) if name != "NEW.bin")),
@@ -126,4 +126,3 @@ class QnA:
 
         if ratio > 90:
             return float(ratio)/100, answer
-
