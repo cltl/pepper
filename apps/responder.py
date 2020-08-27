@@ -17,12 +17,11 @@ import os
 IMAGE_VU = "https://www.vu.nl/nl/Images/VUlogo_NL_Wit_HR_RGB_tcm289-201376.png"
 
 RESPONDERS = [
-    BrainResponder(),
     VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(), TimeResponder(),
     QnAResponder(),
     GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
-    WikipediaResponder(),
-    WolframResponder(),
+    WikipediaResponder(), WolframResponder(), # TODO: (un)comment to turn factual responder On/Off
+    BrainResponder(),
     UnknownResponder(),
 ]
 
@@ -30,7 +29,6 @@ RESPONDERS = [
 class ResponderApp(AbstractApplication, StatisticsComponent,
                    # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
-                   # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
                    ExploreComponent, # TODO: (un)comment to turn exploration On/Off
                    ContextComponent, BrainComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,

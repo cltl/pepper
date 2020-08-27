@@ -71,25 +71,28 @@ class Wikipedia:
     def _query(query):
         query_websafe = urllib.quote(query)
 
-        # Query Summary
-        json = requests.get(Wikipedia.FULL + query_websafe).json()
-        extract = Wikipedia._find_key(json, 'extract')
+        try:
+            # Query Summary
+            json = requests.get(Wikipedia.FULL + query_websafe).json()
+            extract = Wikipedia._find_key(json, 'extract')
 
-        # Query Thumbnail
-        json = requests.get(Wikipedia.THUMBNAIL + query_websafe).json()
-        url = Wikipedia._find_key(json, 'source')
+            # Query Thumbnail
+            json = requests.get(Wikipedia.THUMBNAIL + query_websafe).json()
+            url = Wikipedia._find_key(json, 'source')
 
-        if extract:
-            if any([disambiguation in extract for disambiguation in Wikipedia.DISAMBIGUATION]):
-                links = Wikipedia._find_key(requests.get(Wikipedia.LINKS + query_websafe).json(), 'links')
+            if extract:
+                if any([disambiguation in extract for disambiguation in Wikipedia.DISAMBIGUATION]):
+                    links = Wikipedia._find_key(requests.get(Wikipedia.LINKS + query_websafe).json(), 'links')
 
-                for link in links:
-                    new_query = link['title']
-                    extract = Wikipedia._query(new_query)
-                    if extract:
-                        return new_query, "{} may refer to {}: {}".format(query, new_query, extract), url
-            else:
-                return query, extract, url
+                    for link in links:
+                        new_query = link['title']
+                        extract = Wikipedia._query(new_query)
+                        if extract:
+                            return new_query, "{} may refer to {}: {}".format(query, new_query, extract), url
+                else:
+                    return query, extract, url
+        except:
+            return
 
     @staticmethod
     def _find_key(dictionary, key):
