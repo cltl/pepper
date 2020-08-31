@@ -9,14 +9,13 @@ import re
 from typing import Optional, Union, Tuple, Callable
 
 
-WEB_CUE = [
-    "can you search ",
-    "can you look up ",
-    "can you query ",
-]
-
-
 class WikipediaResponder(Responder):
+    WEB_CUE = [
+        "can you search ",
+        "can you look up ",
+        "can you query ",
+    ]
+
     @property
     def type(self):
         return ResponderType.Internet
@@ -28,13 +27,12 @@ class WikipediaResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        for que in WEB_CUE:
+        for que in self.WEB_CUE:
             if utterance.transcript.lower().startswith(que):
 
                 result = Wikipedia.query(utterance.transcript.lower().replace(que, ""))
 
                 if result:
-
                     # Get Answer and Image URL from Wikipedia Query
                     answer, url = result
 
@@ -48,6 +46,12 @@ class WikipediaResponder(Responder):
 
 
 class WolframResponder(Responder):
+    WEB_CUE = [
+        "can you search ",
+        "can you look up ",
+        "can you query ",
+    ]
+
     def __init__(self):
         self._wolfram = Wolfram()
 
@@ -62,7 +66,7 @@ class WolframResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        for que in WEB_CUE:
+        for que in self.WEB_CUE:
             if utterance.transcript.lower().startswith(que):
 
                 transcript = utterance.transcript.lower().replace(que, "")

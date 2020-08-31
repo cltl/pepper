@@ -208,7 +208,7 @@ class Predicate(RDFBase):
         -------
 
         """
-        # TODO: Copied from language.utils.helper_functions, because of circular dependency issues...
+        # TODO: Copied from language.generation.phrasing, because of circular dependency issues...
         # TODO revise by Lenka
         new_predicate = ''
         if format == 'triple':
@@ -234,7 +234,7 @@ class Predicate(RDFBase):
                         new_predicate += el + ' '
 
             # elif predicate == wnl.lemmatize(predicate):
-            #    new_predicate = predicate + 's'
+            #    new_predicate = predicate + 's' # TODO conjugate!
 
             else:
                 new_predicate = predicate

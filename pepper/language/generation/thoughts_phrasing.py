@@ -353,4 +353,7 @@ def phrase_thoughts(update, entity_only=False, proactive=True, persist=False):
     if persist and say is None:
         say = phrase_thoughts(update, proactive, persist)
 
+    if say and '-' in say:
+        say = say.replace('-', ' ').replace('  ', ' ')
+
     return say
