@@ -60,7 +60,7 @@ def reply_to_question(brain_response):
     utterance = brain_response['question']
     response = brain_response['response']
 
-    # TODO revise by Lenka (we conjugate the predicate by doing this)
+    # TODO revise by Lea (we conjugate the predicate by doing this)
     utterance.casefold(format='natural')
 
     if not response:
