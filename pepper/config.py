@@ -17,7 +17,7 @@ import os
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
-APPLICATION_BACKEND = pepper.ApplicationBackend.SYSTEM
+APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
 # Name of Robot
 NAME = "Leolani"

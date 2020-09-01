@@ -102,6 +102,6 @@ def create_query(self, utterance):
 
     query = self.query_prefixes + query
 
-    self._log.info("Triple: {}".format(utterance.triple))
+    self._log.info("Triple in question: {}".format(utterance.triple))
 
     return query

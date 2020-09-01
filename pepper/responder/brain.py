@@ -37,24 +37,29 @@ class BrainResponder(Responder):
             self._log.debug("TRIPLE: {}".format(utterance.triple))
 
             if utterance.triple is not None:
+                brain_response_statement = []
+                brain_response_question = []
                 if utterance.type == UtteranceType.QUESTION:
-                    brain_response = app.brain.query_brain(utterance)
-                    reply = reply_to_question(brain_response)
+                    brain_response_question = app.brain.query_brain(utterance)
+                    reply = reply_to_question(brain_response_question)
+                    self._log.info("REPLY to question: {}".format(reply))
                 else:
-                    brain_response = app.brain.update(utterance, reason_types=True)  # Searches for types in dbpedia
-                    reply = phrase_thoughts(brain_response, True, True, True)
-
-                self._log.debug("REPLY: {}".format(reply))
+                    brain_response_statement = app.brain.update(utterance, reason_types=True)  # Searches for types in dbpedia
+                    reply = phrase_thoughts(brain_response_statement, True, True, True)
+                    self._log.info("REPLY to statement: {}".format(reply))
 
                 if (isinstance(reply, str) or isinstance(reply, unicode)) and reply != "":
                     # Return Score and Response
                     # Make sure to not execute the response here, but just to return the response function
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
-                elif brain_response:
+                elif brain_response_statement:
                     # Thank Human for the Data!
                     return 1.0, lambda: app.say("{} {}".format(choice([
                         choice(sentences.THANK), choice(sentences.HAPPY)
                     ]), choice(sentences.PARSED_KNOWLEDGE)), animations.HAPPY)
+                elif brain_response_question:
+                    # Apologize to human for not knowing
+                    return 1.0, lambda: app.say("{} {}".format(choice(sentences.SORRY), choice(sentences.NO_ANSWER)))
 
         except Exception as e:
             self._log.error(e)

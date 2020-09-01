@@ -402,6 +402,6 @@ def model_graphs(self, utterance):
     # Leolani talk (includes interaction and perspective graphs)
     create_interaction_graph(self, utterance, claim)
 
-    self._log.info("Triple: {}".format(utterance.triple))
+    self._log.info("Triple in statement: {}".format(utterance.triple))
 
     return claim

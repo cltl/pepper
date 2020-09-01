@@ -86,8 +86,8 @@ def reply_to_question(brain_response):
         subject = replace_pronouns(utterance.chat_speaker, entity_label=subject, role='subject')
         object = replace_pronouns(utterance.chat_speaker, entity_label=object, role='object')
 
-        fixed_subject = fix_entity(subject, utterance.chat_speaker)
-        fixed_object = fix_entity(object, utterance.chat_speaker)
+        subject = fix_entity(subject, utterance.chat_speaker)
+        object = fix_entity(object, utterance.chat_speaker)
 
         # Hash item such that duplicate entries have the same hash
         item_hash = '{}_{}_{}_{}'.format(subject, predicate, object, author)

@@ -32,7 +32,8 @@ class VisionResponder(Responder):
     SEE_SPECIFIC = [
         "do you see ",
         "can you see ",
-        "where is the "
+        "where is the ",
+        "where's the "
     ]
 
     I_SEE = [
