@@ -123,7 +123,12 @@ class AbstractApplication(AbstractComponent):
             while True:
                 sleep(1)
         except KeyboardInterrupt:
-            exit(0)
+            pass
+
+        self.backend.microphone.stop()
+        self.backend.camera.stop()
+
+        exit(0)
 
     def _reset_events(self):
         """
@@ -133,3 +138,5 @@ class AbstractApplication(AbstractComponent):
         """
         for event_name, event_function in self._events.items():
             self.__setattr__(event_name, event_function)
+
+        #TODO Unregister event handlers from EventBus

@@ -26,15 +26,19 @@ def singleton(method):
             create_instance = False
             with self._lock:
                 if not hasattr(container_type, singleton_attr):
-                    #First set to None and then instanciate outside the lock to avoid dead-locks
+                    #First set to None and then instantiate outside the lock to avoid dead-locks
                     setattr(container_type, singleton_attr, None)
                     create_instance = True
             if create_instance:
-                setattr(container_type, singleton_attr, method(self, *args, **kwargs))
+                instance = method(self, *args, **kwargs)
+                if not instance:
+                    print("Scheisse")
+                    raise ValueError("could not set " + singleton_attr)
+                setattr(container_type, singleton_attr, instance)
 
         # The instance is created outside the lock, therefore we can end up here with None
         while getattr(container_type, singleton_attr) is None:
-            sleep(0.001)
+            sleep(0.01)
 
         return getattr(container_type, singleton_attr)
 

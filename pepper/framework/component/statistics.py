@@ -6,6 +6,7 @@ from time import time
 
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import SpeechRecognitionComponent
+from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.util import Scheduler
 from pepper import logger
 
@@ -35,9 +36,9 @@ class StatisticsComponent(AbstractComponent):
         # Require Speech Recognition Component and Get Information from it
         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         vad, asr = speech_recognition.vad, speech_recognition.asr()
+        mic_lock = self.resource_manager.get_read_lock(MIC_TOPIC)
 
         def worker():
-
             # Create Voice Activation Bar
             activation = int(vad.activation * 10)
             activation_print = "|" * activation + "." * (10 - activation)
@@ -45,7 +46,10 @@ class StatisticsComponent(AbstractComponent):
             empty_voice_print = "[          ]"
 
             # Get Microphone Related Information
-            mic_running = self.backend.microphone.running
+            if mic_lock.interrupted():
+                mic_lock.release()
+            else:
+                mic_running = mic_lock.locked or mic_lock.acquire(blocking=False)
             mic_rate = self.backend.microphone.rate
             mic_rate_true = self.backend.microphone.true_rate
 

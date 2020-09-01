@@ -1,9 +1,6 @@
-from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.util import Scheduler
-from threading import Lock
-
 from typing import Optional, Union
-from pepper import logger
+
+from pepper.framework.abstract.component import AbstractComponent
 
 
 class TextToSpeechComponent(AbstractComponent):
@@ -14,24 +11,7 @@ class TextToSpeechComponent(AbstractComponent):
         # type: () -> None
         super(TextToSpeechComponent, self).__init__()
 
-        self._log.info("Initializing TextToSpeechComponent")
-
-        # Prevent Racing Conditions
-        self._microphone_lock = Lock()
-
-        def worker():
-            # type: () -> None
-            """Make sure Microphone is not listening when Text to Speech is Live"""
-
-            # Acquire Microphone Lock
-            with self._microphone_lock:
-                # If robot is not talking & microphone is not yet running -> Start Microphone
-                if not self.backend.text_to_speech.talking and not self.backend.microphone.running:
-                    self.backend.microphone.start()
-
-        schedule = Scheduler(worker, name="TextToSpeechComponentThread")
-        schedule.start()
-        self._log.info("Started TextToSpeechComponent worker")
+        self._log.info("Initialized TextToSpeechComponent")
 
     def say(self, text, animation=None, block=False):
         # type: (Union[str, unicode], Optional[str], bool) -> None
@@ -47,13 +27,4 @@ class TextToSpeechComponent(AbstractComponent):
         block: bool
             Whether this function should block or immediately return after calling
         """
-
-        # Acquire Microphone Lock
-        with self._microphone_lock:
-
-            # Stop Microphone if running
-            if self.backend.microphone.running:
-                self.backend.microphone.stop()
-
-            # Say Text through Text-to-Speech
-            self.backend.text_to_speech.say(text, animation, block)
+        self.backend.text_to_speech.say(text, animation, block)

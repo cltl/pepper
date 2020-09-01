@@ -1,4 +1,6 @@
 from pepper.framework.abstract.microphone import AbstractMicrophone
+from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 
 import pyaudio
 import numpy as np
@@ -20,15 +22,15 @@ class SystemMicrophone(AbstractMicrophone):
         EventBus to publish audio events
     """
 
-    def __init__(self, rate, channels, event_bus):
-        # type: (int, int, EventBus) -> None
-        super(SystemMicrophone, self).__init__(rate, channels, event_bus)
+    def __init__(self, rate, channels, event_bus, resource_manager):
+        # type: (int, int, EventBus, ResourceManager) -> None
+        super(SystemMicrophone, self).__init__(rate, channels, event_bus, resource_manager)
 
         # Open Microphone Stream
         self._pyaudio = pyaudio.PyAudio()
         self._microphone = self._pyaudio.open(rate, channels, pyaudio.paInt16, input=True, stream_callback=self._stream)
 
-        self._log.debug("Booted")
+        self._log.info("Booted Microphone")
 
     def _stream(self, in_data, frame_count, time_info, status):
         """

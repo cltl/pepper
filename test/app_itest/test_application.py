@@ -7,15 +7,15 @@ import numpy as np
 from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
-    UtteranceHypothesis
+    UtteranceHypothesis, SensorContainer, VAD
 from pepper.framework.util import Bounds
 
-from pepper.framework.sensor.container import DefaultSensorContainer
 from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
 
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
+from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.abstract import AbstractMicrophone, AbstractCamera, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet, AbstractImage
 from pepper.framework.abstract.application import AbstractApplication
@@ -32,23 +32,38 @@ class TestBackendContainer(BackendContainer, EventBusContainer):
     @property
     @singleton
     def backend(self):
-        return TestBackend(self.event_bus)
+        return TestBackend(self.event_bus, self.resource_manager)
 
 
 class TestBackend(AbstractBackend):
-    def __init__(self, event_bus):
+    def __init__(self, event_bus, resource_manager):
         super(TestBackend, self).__init__(camera=AbstractCamera(CameraResolution.VGA, 1, event_bus),
-                                          microphone=AbstractMicrophone(8000, 1, event_bus),
-                                          text_to_speech=AbstractTextToSpeech("nl"),
+                                          microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
+                                          text_to_speech=AbstractTextToSpeech("nl", resource_manager),
                                           motion=AbstractMotion(),
                                           led=AbstractLed(),
                                           tablet=AbstractTablet())
+        # TODO
+        # resource_manager.provide_resource(MIC_TOPIC)
 
 
-class TestSensorContainer(DefaultSensorContainer):
-    def asr(self, language):
+class TestSensorContainer(SensorContainer):
+    @property
+    @singleton
+    def vad(self):
+        mock_vad = mock.create_autospec(VAD)
+        mock_vad.voices.return_value = lambda _: []
+
+        return mock_vad
+
+    def asr(self, language="nl"):
+        def asr_fct(voice):
+            for _ in voice:
+                print("Xxx")
+            return [UtteranceHypothesis("Test one two", 1.0)]
+
         mock_asr = mock.create_autospec(AbstractASR)
-        mock_asr.transcribe.side_effect = lambda audio: [UtteranceHypothesis("Test one two", 1.0)]
+        mock_asr.transcribe.side_effect = asr_fct
 
         return mock_asr
 
@@ -72,7 +87,10 @@ class TestSensorContainer(DefaultSensorContainer):
         return mock_object_detector
 
 
-class ApplicationContainer(TestBackendContainer, TestSensorContainer, SynchronousEventBusContainer):
+class ApplicationContainer(TestBackendContainer,
+                           TestSensorContainer,
+                           SynchronousEventBusContainer,
+                           ThreadedResourceContainer):
     pass
 
 
@@ -177,3 +195,7 @@ class ApplicationITest(unittest.TestCase):
 
         if cnt == max:
             self.fail("Test timed out waiting for " + msg)
+
+
+if __name__ == '__main__':
+    unittest.main()

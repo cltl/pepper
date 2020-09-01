@@ -265,7 +265,7 @@ class FaceClassifier:
             self._classifier.fit(self._features, self._labels)
 
         self._log = logger.getChild(self.__class__.__name__)
-        self._log.debug("Booted")
+        self._log.info("Initialized FaceClassifier")
 
     @property
     def people(self):

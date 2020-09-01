@@ -1,9 +1,12 @@
-from pepper.framework.util import Scheduler
-from pepper import logger
-from Queue import Queue
+from Queue import Queue, Empty
 from time import sleep
 
 from typing import Optional, Union
+
+from pepper import logger
+from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.resource.api import ResourceManager, acquire
+from pepper.framework.util import Scheduler
 
 
 class AbstractTextToSpeech(object):
@@ -16,9 +19,10 @@ class AbstractTextToSpeech(object):
         `Language Code <https://cloud.google.com/speech/docs/languages>`_
     """
 
-    def __init__(self, language):
-        # type: (str) -> None
+    def __init__(self, language, resource_manager):
+        # type: (str, ResourceManager) -> None
         self._language = language
+        self._resource_manager = resource_manager
 
         self._queue = Queue()
         self._talking_jobs = 0
@@ -91,5 +95,16 @@ class AbstractTextToSpeech(object):
         raise NotImplementedError()
 
     def _worker(self):
-        self.on_text_to_speech(*self._queue.get())
-        self._talking_jobs -= 1
+        if self._queue.empty():
+            return
+
+        try:
+            with self._resource_manager.get_write_lock(MIC_TOPIC):
+                try:
+                    self.on_text_to_speech(*self._queue.get(block=False))
+                    self._talking_jobs -= 1
+                except Empty:
+                    # _worker is scheduled anyways, just let the next scheduled worker handle check again
+                    pass
+        except:
+            logger.error("Failed to convert text to speech", exc_info=True)

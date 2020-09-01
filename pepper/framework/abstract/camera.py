@@ -252,8 +252,7 @@ class AbstractCamera(object):
         #   This way the processing of images does not block the acquisition of new images,
         #   while at the same new images don't build up a queue, but are discarded when the _processor is too busy.
         self._mailbox = Mailbox()
-        self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
-        self._processor_scheduler.start()
+        self._processor_scheduler = None
 
         # Default behaviour is to not run by default. Calling AbstractApplication.run() will activate the camera
         self._running = False
@@ -362,7 +361,7 @@ class AbstractCamera(object):
         -------
         running: bool
         """
-        return self._running
+        return self._processor_scheduler.running if self._processor_scheduler else False
 
     def on_image(self, image):
         # type: (AbstractImage) -> None
@@ -379,11 +378,12 @@ class AbstractCamera(object):
 
     def start(self):
         """Start Streaming Images from Camera"""
-        self._running = True
+        self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
+        self._processor_scheduler.start()
 
     def stop(self):
         """Stop Streaming Images from Camera"""
-        self._running = False
+        self._processor_scheduler.stop()
 
     def _processor(self):
         """
@@ -395,9 +395,7 @@ class AbstractCamera(object):
         # Get latest image from Mailbox
         image = self._mailbox.get()
 
-        # Call Every Registered Callback
-        if self._running:
-            self._event_bus.publish(TOPIC, Event(image, None))
+        self._event_bus.publish(TOPIC, Event(image, None))
 
         # Update Statistics
         self._update_dt()

@@ -1,3 +1,4 @@
+from pepper.framework.abstract.backend import AbstractBackend
 from pepper.framework.di_container import DIContainer
 
 class BackendContainer(DIContainer):

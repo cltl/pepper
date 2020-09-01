@@ -33,7 +33,6 @@ class Context(object):
     _objects = None  # type: Observations
 
     def __init__(self):
-
         self._id = getrandbits(128)
 
         self._chats = []

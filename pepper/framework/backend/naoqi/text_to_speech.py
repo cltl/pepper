@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.framework.resource.api import ResourceManager
 from pepper.config import NAOQI_SPEECH_SPEED
 
 import qi
@@ -20,9 +21,9 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
 
     SERVICE = "ALAnimatedSpeech"
 
-    def __init__(self, session, language):
-        # type: (qi.Session, str) -> None
-        super(NAOqiTextToSpeech, self).__init__(language)
+    def __init__(self, session, language, resource_manager):
+        # type: (qi.Session, str, ResourceManager) -> None
+        super(NAOqiTextToSpeech, self).__init__(language, resource_manager)
 
         # Subscribe to NAOqi Text to Speech Service
         self._service = session.service(NAOqiTextToSpeech.SERVICE)

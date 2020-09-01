@@ -1,14 +1,16 @@
-from pepper.framework.di_container import singleton
-from pepper.framework.event.api import EventBusContainer
-from pepper.framework.abstract.backend import AbstractBackend
-from pepper.framework.backend.container import BackendContainer
-from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
-from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech,\
-    NAOqiMotion, NAOqiLed, NAOqiTablet
-from pepper import config, logger, CameraResolution
-
-from naoqi import ALProxy
 import qi
+from naoqi import ALProxy
+
+from pepper import config, logger, CameraResolution
+from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.container import BackendContainer
+from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, \
+    NAOqiMotion, NAOqiLed, NAOqiTablet
+from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
+from pepper.framework.di_container import singleton
+from pepper.framework.event.api import EventBusContainer, EventBus
+from pepper.framework.resource.api import ResourceManager
 
 
 class NAOqiBackendContainer(BackendContainer, EventBusContainer):
@@ -16,7 +18,7 @@ class NAOqiBackendContainer(BackendContainer, EventBusContainer):
     @property
     @singleton
     def backend(self):
-        return NAOqiBackend(self.event_bus())
+        return NAOqiBackend(self.event_bus, self.resource_manager)
 
 
 class NAOqiBackend(AbstractBackend):
@@ -46,14 +48,15 @@ class NAOqiBackend(AbstractBackend):
     --------
     http://doc.aldebaran.com/2-5/index_dev_guide.html
     """
-    def __init__(self, event_bus,
+    def __init__(self, event_bus, resource_manager,
                  url=config.NAOQI_URL,
                  camera_resolution=config.CAMERA_RESOLUTION, camera_rate=config.CAMERA_FRAME_RATE,
                  microphone_index=config.NAOQI_MICROPHONE_INDEX, language=config.APPLICATION_LANGUAGE,
                  use_system_camera=config.NAOQI_USE_SYSTEM_CAMERA,
                  use_system_microphone=config.NAOQI_USE_SYSTEM_MICROPHONE,
                  use_system_text_to_speech=config.NAOQI_USE_SYSTEM_TEXT_TO_SPEECH):
-        # type: (str, CameraResolution, int, int, str, bool, bool, bool) -> None
+        # type: (EventBus, ResourceManager, str, CameraResolution, int, int, str, bool, bool, bool) -> None
+
 
         self._url = url
 
@@ -65,12 +68,12 @@ class NAOqiBackend(AbstractBackend):
         else: camera = NAOqiCamera(self.session, camera_resolution, camera_rate, event_bus)
 
         # System Microphone Override
-        if use_system_microphone: microphone = SystemMicrophone(16000, 1, event_bus)
-        else: microphone = NAOqiMicrophone(self.session, microphone_index, event_bus)
+        if use_system_microphone: microphone = SystemMicrophone(16000, 1, event_bus, resource_manager)
+        else: microphone = NAOqiMicrophone(self.session, microphone_index, event_bus, resource_manager)
 
         # System Text To Speech Override
-        if use_system_text_to_speech: text_to_speech = SystemTextToSpeech(language)
-        else: text_to_speech = NAOqiTextToSpeech(self.session, language)
+        if use_system_text_to_speech: text_to_speech = SystemTextToSpeech(language, resource_manager)
+        else: text_to_speech = NAOqiTextToSpeech(self.session, language, resource_manager)
 
         # Set Default Awareness Behaviour
         self._awareness = ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT)

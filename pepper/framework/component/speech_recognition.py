@@ -27,13 +27,12 @@ class SpeechRecognitionComponent(AbstractComponent):
             """Speech Transcription Worker"""
 
             # Every time a voice has been registered by the Voice Activity Detection (long running generator)
-            for voice in self.vad:
+            for voice in self.vad.voices:
 
                 # Transcribe this Voice and obtain a number of UtteranceHypotheses
                 hypotheses = self.asr().transcribe(voice)
 
                 if hypotheses:
-
                     # Get Voice Audio Corresponding with Hypotheses
                     audio = voice.audio
 

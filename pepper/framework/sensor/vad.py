@@ -1,12 +1,13 @@
-from pepper.framework.abstract import AbstractMicrophone
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
-
-from webrtcvad import Vad
-import numpy as np
-
 from Queue import Queue
 
+import numpy as np
+import webrtcvad
 from typing import Iterable
+
+from pepper.framework.abstract import AbstractMicrophone
+from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.event.api import EventBus, Event
+from pepper.framework.resource.api import ResourceManager
 
 
 class Voice(object):
@@ -50,7 +51,8 @@ class Voice(object):
         audio: np.ndarray
         """
 
-        return np.concatenate([frame for frame in self.frames])
+        frames_ = [frame for frame in self.frames]
+        return np.concatenate(frames_)
 
     def add_frame(self, frame):
         # type: (np.ndarray) -> None
@@ -68,7 +70,8 @@ class Voice(object):
         # type: () -> Iterable[np.ndarray]
         return self.frames
 
-# TODO Don't extend VAD for now to avoid circular dependency
+
+# Don't import VAD for now until Voice is moved to API
 class WebRtcVAD(object):
     """
     Perform Voice Activity Detection on Microphone Input
@@ -89,11 +92,14 @@ class WebRtcVAD(object):
 
     MODE = 3
 
-    def __init__(self, microphone, event_bus):
-        # type: (AbstractMicrophone, EventBus) -> None
+    def __init__(self, microphone, event_bus, resource_manager, vad=None):
+        # type: (AbstractMicrophone, EventBus, ResourceManager, object) -> None
 
+        self._resource_manager = resource_manager
         self._microphone = microphone
-        self._vad = Vad(WebRtcVAD.MODE)
+        # TODO
+        self._mic_lock = None
+        self._vad = webrtcvad.Vad(WebRtcVAD.MODE) if not vad else vad
 
         # Voice Activity Detection Frame Size: VAD works in units of 'frames'
         self._frame_size = WebRtcVAD.AUDIO_FRAME_MS * self.microphone.rate // 1000
@@ -155,13 +161,13 @@ class WebRtcVAD(object):
             yield self._voice_queue.get()
 
     def _on_audio(self, event):
-        # type: (np.ndarray) -> None
+        # type: (Event) -> None
         """
         (Microphone Callback) Add Audio to VAD
 
         Parameters
         ----------
-        audio: Event
+        event: Event
         """
 
         # Work through Microphone Stream Frame by Frame
@@ -182,9 +188,20 @@ class WebRtcVAD(object):
         """
         self._activation = self._calculate_activation(frame)
 
-        if not self._voice:
-            if self.activation > WebRtcVAD.VOICE_THRESHOLD:
+        if not self._mic_lock:
+            self._mic_lock = self._resource_manager.get_read_lock(MIC_TOPIC)
 
+        if not self._mic_lock.locked and not self._mic_lock.acquire(blocking=False):
+            # Don't listen if the lock cannot be obtained
+            return
+
+        if not self._voice:
+            # Only release the lock if there is no voice activity
+            if self._mic_lock.interrupted:
+                self._mic_lock.release()
+                return
+
+            if self._activation > WebRtcVAD.VOICE_THRESHOLD:
                 # Create New Utterance Object
                 self._voice = Voice()
 
@@ -225,14 +242,3 @@ class WebRtcVAD(object):
         # Calculate Activation
         voice_window = np.arange(self._buffer_index - WebRtcVAD.VOICE_WINDOW, self._buffer_index) % WebRtcVAD.BUFFER_SIZE
         return float(np.mean(self._voice_buffer[voice_window]))
-
-    def __iter__(self):
-        # type: () -> Iterable[Voice]
-        """
-        Get Voices from Microphone Stream
-
-        Yields
-        -------
-        voices: Iterable[Voice]
-        """
-        return self.voices

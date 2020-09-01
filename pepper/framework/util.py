@@ -6,6 +6,8 @@ import numpy as np
 
 from typing import Optional, List, Dict
 
+from pepper import logger
+
 
 class Scheduler(Thread):
     """
@@ -42,13 +44,21 @@ class Scheduler(Thread):
 
     def run(self):
         self._running = True
+        logger.info("Started %s thread", self.name)
         while self._running:
-            self._target(*self._args, **self._kwargs)
+            try:
+                self._target(*self._args, **self._kwargs)
+            except:
+                logger.exception(exc_info=True)
             sleep(self._interval)
 
-    def join(self, timeout=None):
+    @property
+    def running(self):
+        return self._running
+
+    def stop(self, timeout=None):
         self._running = False
-        Thread.join(self, timeout)
+        logger.info("Stopped %s thread", self.name)
 
 
 class Mailbox(object):
@@ -91,7 +101,6 @@ class Mailbox(object):
                 while self._mail is None:
                     sleep(Mailbox.EPSILON)
                 return self._get()
-
             else:
                 if self._mail is None:
                     raise Empty

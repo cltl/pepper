@@ -1,4 +1,5 @@
 from pepper.framework.event.api import Event
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler
 from pepper import logger
 
@@ -29,12 +30,12 @@ class AbstractMicrophone(object):
         EventBus to send events when audio is captured
     """
 
-    def __init__(self, rate, channels, event_bus):
-        # type: (int, int, EventBus) -> None
-
+    def __init__(self, rate, channels, event_bus, resource_manager):
+        # type: (int, int, EventBus, ResourceManager) -> None
         self._rate = rate
         self._channels = channels
         self._event_bus = event_bus
+        self._resource_manager = resource_manager
 
         # Variables to do some performance statistics
         self._dt_buffer = deque([], maxlen=32)
@@ -46,13 +47,20 @@ class AbstractMicrophone(object):
         #   In a separate thread, the _processor worker takes these samples and publishes them as events.
         #   This way, samples are not accidentally skipped (NAOqi has some very strict timings)
         self._queue = Queue()
+        self._processor_scheduler = None
+
+        self._log = logger.getChild(self.__class__.__name__)
+
+    def start(self):
+        """Start Microphone Stream"""
+        self._resource_manager.provide_resource(TOPIC)
         self._processor_scheduler = Scheduler(self._processor, 0, name="MicrophoneThread")
         self._processor_scheduler.start()
 
-        # Default behaviour is to not run by default. Calling AbstractApplication.run() will activate the microphone
-        self._running = False
-
-        self._log = logger.getChild(self.__class__.__name__)
+    def stop(self):
+        """Stop Microphone Stream"""
+        self._processor_scheduler.stop()
+        self._resource_manager.retract_resource(TOPIC)
 
     @property
     def rate(self):
@@ -95,18 +103,6 @@ class AbstractMicrophone(object):
         """
         return self._channels
 
-    @property
-    def running(self):
-        # type: () -> bool
-        """
-        Returns whether Microphone is Running
-
-        Returns
-        -------
-        running: bool
-        """
-        return self._running
-
     # TODO With an async event bus we can directly post events to the event bus
     def on_audio(self, audio):
         # type: (np.ndarray) -> None
@@ -121,14 +117,6 @@ class AbstractMicrophone(object):
         """
         self._queue.put(audio)
 
-    def start(self):
-        """Start Microphone Stream"""
-        self._running = True
-
-    def stop(self):
-        """Stop Microphone Stream"""
-        self._running = False
-
     def _processor(self):
         """
         Audio Processor
@@ -136,11 +124,7 @@ class AbstractMicrophone(object):
         Publishes audio events for each audio frame, threaded, for higher audio throughput
         """
         audio = self._queue.get()
-
-        # TODO should this check be in on_audio instead? The buffer can still contain content that was
-        # recorded when the mic was still running
-        if self._running:
-            self._event_bus.publish(TOPIC, Event(audio, None))
+        self._event_bus.publish(TOPIC, Event(audio, None))
 
         # Update Statistics
         self._update_dt(len(audio))

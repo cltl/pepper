@@ -25,9 +25,9 @@ class SystemTextToSpeech(AbstractTextToSpeech):
     GENDER = 2  # "Female" or 1 "Male"
     TYPE = "Standard"
 
-    def __init__(self, translator, language):
+    def __init__(self, translator, language, resource_manager):
         # type: (str) -> None
-        AbstractTextToSpeech.__init__(self, language)
+        AbstractTextToSpeech.__init__(self, language, resource_manager)
         self._translator = translator
 
         if not os.path.exists(self.TMP):
