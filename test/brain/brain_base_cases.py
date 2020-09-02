@@ -12,7 +12,7 @@ from random import choice
 if __name__ == "__main__":
 
     # Create brain connection
-    brain = LongTermMemory(clear_all=False)
+    brain = LongTermMemory(clear_all=False, address="http://localhost:7200/repositories/social-robots")
 
     for elem in statements:
         em = choice(binary_values)

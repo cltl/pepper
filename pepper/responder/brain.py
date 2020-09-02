@@ -39,6 +39,7 @@ class BrainResponder(Responder):
             if utterance.triple is not None:
                 brain_response_statement = []
                 brain_response_question = []
+
                 if utterance.type == UtteranceType.QUESTION:
                     brain_response_question = app.brain.query_brain(utterance)
                     reply = reply_to_question(brain_response_question)
@@ -54,12 +55,12 @@ class BrainResponder(Responder):
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
                 elif brain_response_statement:
                     # Thank Human for the Data!
-                    return 1.0, lambda: app.say("{} {}".format(choice([
-                        choice(sentences.THANK), choice(sentences.HAPPY)
-                    ]), choice(sentences.PARSED_KNOWLEDGE)), animations.HAPPY)
+                    return 1.0, lambda: app.say("{} {}".format(choice([choice(sentences.THANK), choice(sentences.HAPPY)]),
+                                                               choice(sentences.PARSED_KNOWLEDGE)), animations.HAPPY)
                 elif brain_response_question:
                     # Apologize to human for not knowing
-                    return 1.0, lambda: app.say("{} {}".format(choice(sentences.SORRY), choice(sentences.NO_ANSWER)))
+                    return 1.0, lambda: app.say("{} {}".format(choice(sentences.SORRY),
+                                                               choice(sentences.NO_ANSWER)), animations.ASHAMED)
 
         except Exception as e:
             self._log.error(e)
