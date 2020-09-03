@@ -11,7 +11,7 @@ from pepper.framework.resource.threaded import ThreadedResourceManager
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 
 
 TIMEOUT=1
@@ -19,7 +19,7 @@ TIMEOUT=1
 
 seed = random.randrange(sys.maxsize)
 rng = random.Random(seed)
-print("Random seed for test:", seed)
+print(__name__, "Random seed: ", seed)
 
 
 class TestActor(threading.Thread):

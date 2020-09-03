@@ -49,7 +49,7 @@ class Scheduler(Thread):
             try:
                 self._target(*self._args, **self._kwargs)
             except:
-                logger.exception(exc_info=True)
+                logger.exception("Error during thread execution (%s)", self.name, exc_info=True)
             sleep(self._interval)
 
     @property

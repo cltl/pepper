@@ -43,8 +43,6 @@ class TestBackend(AbstractBackend):
                                           motion=AbstractMotion(),
                                           led=AbstractLed(),
                                           tablet=AbstractTablet())
-        # TODO
-        # resource_manager.provide_resource(MIC_TOPIC)
 
 
 class TestSensorContainer(SensorContainer):

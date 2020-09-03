@@ -57,8 +57,6 @@ def setupTestComponents():
             super(TestBackend, self).__init__(camera=None, microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
                                               text_to_speech=TestTextToSpeech(resource_manager),
                                               motion=None, led=None, tablet=None)
-            # TODO
-            # resource_manager.provide_resource(MIC_TOPIC)
 
 
     class TestVAD(WebRtcVAD):
