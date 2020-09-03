@@ -63,11 +63,11 @@ def setupTestComponents():
 
     class TestVAD(WebRtcVAD):
         def __init__(self, microphone, event_bus, resource_manager):
-            mock_speech_detector = mock.Mock()
-            mock_speech_detector.is_speech.side_effect = lambda frame, rate, length: self.speech_flag.val
-            super(TestVAD, self).__init__(microphone, event_bus, resource_manager, mock_speech_detector)
-
+            super(TestVAD, self).__init__(microphone, event_bus, resource_manager)
             self.speech_flag = ThreadsafeBoolean()
+
+        def _is_speech(self, frame):
+            return self.speech_flag.val
 
 
     class TestSensorContainer(BackendContainer, SensorContainer, EventBusContainer):

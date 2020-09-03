@@ -1,11 +1,13 @@
 from __future__ import unicode_literals
 
+import numpy as np
+from google.cloud import speech, translate_v2
+from typing import List, Tuple, Iterable, Union
+
 from pepper import config, logger
 
-from google.cloud import speech, translate_v2
-import numpy as np
 
-from typing import List, Tuple, Iterable, Union
+# TODO extract interfaces to .api
 
 
 class UtteranceHypothesis(object):

@@ -8,13 +8,12 @@ from typing import Deque, List
 from pepper import config, ObjectDetectionTarget
 from pepper.language import Utterance
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
-from ..abstract import AbstractImage
 from ..abstract.backend import AbstractBackend
 from ..abstract.camera import TOPIC as CAM_TOPIC
 from ..abstract.component import AbstractComponent
 from ..context import Context
-from ..sensor.api import UtteranceHypothesis, Object, Face
-from ..sensor.face import FaceClassifier
+from ..sensor.api import UtteranceHypothesis, Object
+from ..sensor.face import Face
 
 
 class ContextComponent(AbstractComponent):
@@ -272,7 +271,7 @@ class ContextComponent(AbstractComponent):
 
                             # If Still Chatting with Same Person -> Update Conversation Time & Face Vectors
                             # Also continue when person is "NEW", to combat "Hello Stranger" mid conversation...
-                            if closest_face.name in [self.context.chat.speaker, FaceClassifier.NEW]:
+                            if closest_face.name in [self.context.chat.speaker, Face.UNKNOWN]:
                                 self._conversation_time = time()
                                 self._face_vectors.append(closest_face.representation)
 
