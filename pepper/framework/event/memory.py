@@ -28,7 +28,10 @@ class SynchronousEventBus(EventBus):
 
     def unsubscribe(self, topic, handler):
         with self._topic_lock:
-            self.__get_handlers(topic).remove(handler)
+            if handler:
+                self.__get_handlers(topic).remove(handler)
+            else:
+                self.__get_handlers(topic).clear()
 
     @property
     def topics(self):

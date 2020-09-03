@@ -23,6 +23,9 @@ class EventBus(object):
     def subscribe(self, topic, handler):
         raise NotImplementedError()
 
+    def unsubscribe(self, topic, handler=None):
+        raise NotImplementedError()
+
     @property
     def topics(self):
         raise NotImplementedError()
