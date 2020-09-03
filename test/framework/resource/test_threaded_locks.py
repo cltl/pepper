@@ -186,7 +186,7 @@ class LockTestCase(TestBase):
         latch = actor_2.enter_critical()
         time.sleep(0.1)
         self.assert_in_critical([True, False], actor_1, actor_2)
-        self.assertEqual([True, True], [actor_1.interrupted, actor_2.interrupted])
+        self.assertEqual([True, False], [actor_1.interrupted, actor_2.interrupted])
 
         self.exec_with_latch(actor_1.exit_critical)
         latch.wait(TIMEOUT)

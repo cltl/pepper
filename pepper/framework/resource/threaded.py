@@ -3,8 +3,8 @@ from collections import defaultdict
 from contextlib import contextmanager
 
 from pepper import logger
-from .api import Lock, ReadLock, WriteLock, ResourceManager, ResourceContainer
-from ..di_container import singleton
+from pepper.framework.di_container import singleton
+from .api import ReadLock, WriteLock, ResourceManager, ResourceContainer
 
 
 class ThreadedResourceContainer(ResourceContainer):
@@ -22,19 +22,7 @@ class ThreadedResourceManager(ResourceManager):
         self._resource_events = defaultdict(list)
 
     def get_lock(self, name, blocking=True, timeout=-1):
-        if blocking:
-            self._await_resource(name, timeout)
-
-        if name not in self._locks:
-            self._init_lock(name, ThreadedLock)
-
-        lock = self._locks[name]
-        if not isinstance(lock, ThreadedLock):
-            raise ValueError("Resource is already protected with a Read[/Write]Lock")
-
-        logger.debug("Retrieved lock for resource %s from thread %s", name, threading.current_thread().name)
-
-        return self._locks[name]
+        return self.get_write_lock(name, blocking, timeout, writer_interrupts=True)
 
     def get_read_lock(self, name, blocking=True, timeout=-1):
         if blocking:
@@ -43,28 +31,20 @@ class ThreadedResourceManager(ResourceManager):
         if name not in self._locks:
             self._init_lock(name, _RWLock)
 
-        lock = self._locks[name]
-        if not isinstance(lock, _RWLock):
-            raise ValueError("Resource is already protected with a Lock")
-
         logger.debug("Retrieved read-lock for resource %s from thread %s", name, threading.current_thread().name)
 
-        return ThreadedReadLock(lock, name)
+        return ThreadedReadLock(self._locks[name], name)
 
-    def get_write_lock(self, name, blocking=True, timeout=-1):
+    def get_write_lock(self, name, blocking=True, timeout=-1, writer_interrupts=False):
         if blocking:
             self._await_resource(name, timeout)
 
         if name not in self._locks:
             self._init_lock(name, _RWLock)
 
-        lock = self._locks[name]
-        if not isinstance(lock, _RWLock):
-            raise ValueError("Resource is already protected with a Lock")
-
         logger.debug("Retrieved write-lock for resource %s from thread %s", name, threading.current_thread().name)
 
-        return ThreadedWriteLock(lock, name)
+        return ThreadedWriteLock(self._locks[name], name, writer_interrupts=writer_interrupts)
 
     def provide_resource(self, name):
         with self._registry_lock:
@@ -78,7 +58,7 @@ class ThreadedResourceManager(ResourceManager):
                 [event.set() for event in self._resource_events[name]]
                 del self._resource_events[name]
 
-    def retract_resource(self, name, force=False, timeout=-1):
+    def retract_resource(self, name, force=True, timeout=-1):
         with self._registry_lock:
             lock = self._acquire_lock(force, name, timeout)
             try:
@@ -86,7 +66,8 @@ class ThreadedResourceManager(ResourceManager):
                 if name in self._locks:
                     del self._locks[name]
             finally:
-                self._release_lock_for_retract(lock)
+                if lock:
+                    lock.writer_release()
 
         logger.info("Unregistered resource: " + name)
 
@@ -95,21 +76,9 @@ class ThreadedResourceManager(ResourceManager):
             return None
 
         lock = self._locks[name]
-        if isinstance(lock, _RWLock):
-            lock.writer_acquire(timeout=timeout)
-        else:
-            lock.acquire(timeout=timeout)
+        lock.writer_acquire(timeout=timeout)
 
         return lock
-
-    def _release_lock_for_retract(self, lock):
-        if not lock:
-            return
-
-        if isinstance(lock, _RWLock):
-            lock.writer_release()
-        else:
-            lock.release()
 
     @property
     def resources(self):
@@ -134,59 +103,28 @@ class ThreadedResourceManager(ResourceManager):
             event.wait()
 
 
-class ThreadedLock(Lock):
-    def __init__(self):
-        self._lock = threading.Lock()
-        self._count_lock = threading.Lock()
-        self._acquired = 0
-
-    def acquire(self, blocking=True, timeout=-1):
-        if not blocking:
-            raise NotImplementedError()
-
-        with self._count_lock:
-            self._acquired += 1
-
-        return self._lock.acquire(blocking)
-
-    @property
-    def locked(self):
-        return self._lock.locked()
-
-    def release(self):
-        with self._count_lock:
-            self._acquired -= 1
-
-        return self._lock.release()
-
-    @property
-    def interrupted(self):
-        return self._acquired > 1
-
-
 class ThreadedReadLock(ReadLock):
     def __init__(self, rw_lock, resource_name):
-        # type: (_RWLock) -> None
+        # type: (_RWLock, str) -> None
         self._resource_name = resource_name
         self._rw_lock = rw_lock
         self._lock = threading.Lock()
 
     def acquire(self, blocking=True, timeout=-1):
-        if self._lock.acquire(blocking):
-            if self._rw_lock.reader_acquire(blocking=blocking, timeout=timeout):
-                logger.debug("Acquired read-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
-                return True
-            else:
-                self._lock.release()
-                return False
+        if self._rw_lock.reader_acquire(blocking=blocking, timeout=timeout):
+            self._lock.acquire()
+            logger.debug("Acquired read-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
+            return True
+        else:
+            return False
 
     @property
     def locked(self):
         return self._lock.locked()
 
     def release(self):
-        self._rw_lock.reader_release()
         self._lock.release()
+        self._rw_lock.reader_release()
         logger.debug("Released read-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
 
     @property
@@ -195,32 +133,33 @@ class ThreadedReadLock(ReadLock):
 
 
 class ThreadedWriteLock(WriteLock):
-    def __init__(self, lock, resource_name):
+    def __init__(self, lock, resource_name, writer_interrupts=False):
+        # type: (_RWLock, str, bool) -> None
         self._resource_name = resource_name
+        self._writer_interrupts = writer_interrupts
         self._rw_lock = lock
         self._lock = threading.Lock()
 
     def acquire(self, blocking=True, timeout=-1):
-        if self._lock.acquire(blocking):
-            if self._rw_lock.writer_acquire(blocking=blocking, timeout=timeout):
-                logger.debug("Acquired write-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
-                return True
-            else:
-                self._lock.release()
-                return False
+        if self._rw_lock.writer_acquire(blocking=blocking, timeout=timeout):
+            self._lock.acquire()
+            logger.debug("Acquired write-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
+            return True
+        else:
+            return False
 
     @property
     def locked(self):
         return self._lock.locked()
 
     def release(self):
-        self._rw_lock.writer_release()
         self._lock.release()
+        self._rw_lock.writer_release()
         logger.debug("Released write-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
 
     @property
     def interrupted(self):
-        return self._rw_lock.writer_interrupted() and self._lock.locked()
+        return self._rw_lock.writer_interrupted(writer_interrupts=self._writer_interrupts) and self._lock.locked()
 
 
 # Modified version of:
@@ -289,8 +228,13 @@ class _RWLock(object):
     def reader_interrupted(self):
         return self.__read_switch.is_on and self.__write_switch.is_acquired
 
-    def writer_interrupted(self):
-        return self.__write_switch.is_on and self.__readers_queue.locked()
+    def writer_interrupted(self, writer_interrupts=False):
+        readers_interrupted = self.__write_switch.is_on and self.__readers_queue.locked()
+
+        if writer_interrupts:
+            return readers_interrupted or self.__write_switch.interrupted
+
+        return readers_interrupted
 
 
 class _LightSwitch:
@@ -327,9 +271,14 @@ class _LightSwitch:
                 lock.release()
 
     @property
+    def interrupted(self):
+        with _acquire(self.__mutex, blocking=False) as in_mutex:
+            return not in_mutex or self.__acquired > 1
+
+    @property
     def is_acquired(self):
-        with _acquire(self.__mutex, blocking=False) as acquired:
-            return not acquired or self.__acquired > 0
+        with _acquire(self.__mutex, blocking=False) as in_mutex:
+            return not in_mutex or self.__acquired > 0
 
     @property
     def is_on(self):
