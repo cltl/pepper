@@ -21,12 +21,11 @@ from pepper.responder import *
 IMAGE_VU = "https://www.vu.nl/nl/Images/VUlogo_NL_Wit_HR_RGB_tcm289-201376.png"
 
 RESPONDERS = [
-    BrainResponder(),
     VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(), TimeResponder(),
     QnAResponder(),
     GreetingResponder(), GoodbyeResponder(), ThanksResponder(), AffirmationResponder(), NegationResponder(),
-    WikipediaResponder(),
-    WolframResponder(),
+    WikipediaResponder(), WolframResponder(), # TODO: (un)comment to turn factual responder On/Off
+    BrainResponder(),
     UnknownResponder(),
 ]
 

@@ -2,7 +2,6 @@ from .responder import Responder, ResponderType
 
 
 class MeetIntentionResponder(Responder):
-
     CUES = [
         "let's meet",
         "want to meet",

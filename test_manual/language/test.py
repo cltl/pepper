@@ -33,7 +33,6 @@ def load_golden_triples(filepath):
         if sample == '\n':
             break
 
-        # print(sample.split(':')[0],sample.split(':')[1])
         test_suite.append(sample.split(':')[0])
         triple['subject'] = sample.split(':')[1].split()[0].lower()
         triple['predicate'] = sample.split(':')[1].split()[1].lower()
@@ -47,7 +46,6 @@ def load_golden_triples(filepath):
             triple['perspective']['certainty'] = float(sample.split(':')[2].split()[0])
             triple['perspective']['polarity'] = float(sample.split(':')[2].split()[1])
             triple['perspective']['sentiment'] = float(sample.split(':')[2].split()[2])
-            # print('stored perspective ', triple['perspective'])
 
         for el in triple:
             if triple[el] == '?':
@@ -68,7 +66,6 @@ def load_scenarios(filepath):
     scenarios = []
 
     for sample in test:
-        print(sample)
         if sample == '\n':
             break
         scenario = {'statement': '', 'questions': [], 'reply': ''}
@@ -142,9 +139,9 @@ def test_scenario(statement, questions, gold):
         brain_response = brain.query_brain(chat.last_utterance)
         reply = reply_to_question(brain_response)
         print(reply)
-        if '-' in reply:
-            reply = reply.replace('-', ' ')
-        if reply.lower().strip() != gold.lower().strip():
+        if reply is None:
+            print('MISMATCH RESPONSE ', reply, gold.lower().strip())
+        elif reply.lower().strip() != gold.lower().strip():
             print('MISMATCH RESPONSE ', reply.lower().strip(), gold.lower().strip())
         else:
             correct += 1
@@ -201,8 +198,7 @@ def test_with_triples(path):
 
         if chat.last_utterance.type == language.UtteranceType.QUESTION:
             brain_response = brain.query_brain(chat.last_utterance)
-            # reply = reply_to_question(brain_response)
-            # print(reply)
+            reply = reply_to_question(brain_response)
 
         else:
             if 'perspective' in gold[index]:
@@ -213,22 +209,10 @@ def test_with_triples(path):
                     if float(extracted_perspective[key]) != gold[index]['perspective'][key]:
                         print('MISMATCH PERSPECTIVE ', key, extracted_perspective[key], gold[index]['perspective'][key])
                         incorrect += 1
-                        # print(issues[chat.last_utterance.transcript])
-                        # print([extracted_perspective[key], gold[index]['perspective'][key]])
                         issues[chat.last_utterance.transcript] = [extracted_perspective[key],
                                                                   gold[index]['perspective'][key]]
                     else:
                         correct += 1
-
-            '''
-            brain_response = brain.update(chat.last_utterance, reason_types=True)
-            # reply = reply_to_statement(brain_response, chat.speaker, brain)
-            reply = phrase_thoughts(brain_response, True, True)
-            '''
-
-        # print(chat.last_utterance)
-        # print(chat.last_utterance.triple)
-        # print(reply)
         index += 1
 
     print(correct, incorrect)
