@@ -1,16 +1,15 @@
 from pepper import config, logger, CameraResolution
 from pepper.framework.abstract.backend import AbstractBackend
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, \
     SystemMotion, SystemLed, SystemTablet
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.sensor.api import SensorContainer
 
 
-class SystemBackendContainer(BackendContainer, SensorContainer, EventBusContainer, Res):
+class SystemBackendContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer):
     logger.info("Initialized SystemBackendContainer")
 
     @property
@@ -45,7 +44,7 @@ class SystemBackend(AbstractBackend):
                  language=config.APPLICATION_LANGUAGE):
         # type: (Callable[AbstractTranslator], EventBus, ResourceManager, CameraResolution, int, int, int, str) -> None
         translator = translator_factory(config.INTERNAL_LANGUAGE[:2], language[:2])
-        super(SystemBackend, self).__init__(SystemCamera(camera_resolution, camera_rate),
-                                            SystemMicrophone(microphone_rate, microphone_channels, event_bus),
+        super(SystemBackend, self).__init__(SystemCamera(camera_resolution, camera_rate, event_bus),
+                                            SystemMicrophone(microphone_rate, microphone_channels, event_bus, resource_manager),
                                             SystemTextToSpeech(translator, language, resource_manager),
                                             SystemMotion(), SystemLed(), SystemTablet())

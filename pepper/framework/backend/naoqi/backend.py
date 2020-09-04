@@ -3,17 +3,16 @@ from naoqi import ALProxy
 
 from pepper import config, logger, CameraResolution
 from pepper.framework.abstract.backend import AbstractBackend
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, \
     NAOqiMotion, NAOqiLed, NAOqiTablet
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer, EventBus
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.resource.api import ResourceContainer
 
 
-class NAOqiBackendContainer(BackendContainer, EventBusContainer):
+class NAOqiBackendContainer(BackendContainer, EventBusContainer, ResourceContainer):
     logger.info("Initialized NAOqiBackendContainer")
     @property
     @singleton

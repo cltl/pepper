@@ -1,15 +1,16 @@
+from pepper import logger
+from pepper.framework.backend.container import BackendContainer
+from pepper.framework.di_container import singleton
+from pepper.framework.event.api import EventBusContainer
+from pepper.framework.resource.api import ResourceContainer
 from .api import SensorContainer
 from .asr import StreamedGoogleASR, GoogleTranslator
 from .face_detect import OpenFace
 from .obj import ObjectDetectionClient
 from .vad import WebRtcVAD
-from pepper.framework.di_container import singleton
-from pepper.framework.backend.container import BackendContainer
-from pepper.framework.event.api import EventBusContainer
-from pepper import logger
 
 
-class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer):
+class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer):
     logger.info("Initialized DefaultSensorContainer")
 
     def asr(self, language=None):
@@ -18,7 +19,7 @@ class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContaine
     @property
     @singleton
     def vad(self):
-        return WebRtcVAD(self.backend.microphone, self.event_bus)
+        return WebRtcVAD(self.backend.microphone, self.event_bus, self.resource_manager)
 
     def translator(self, source_language, target_language):
         return GoogleTranslator(source_language, target_language)
