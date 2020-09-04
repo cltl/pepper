@@ -14,7 +14,7 @@ from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
 # TODO move constants from Openface into a configuration
-from pepper.framework.sensor.face import OpenFace
+from pepper.framework.sensor.api import FaceDetector
 from pepper.knowledge import sentences
 from pepper.responder import *
 
@@ -215,7 +215,7 @@ class MeetIntention(AbstractIntention, ResponderApp):
         return False
 
     def _save(self):
-        name, features = self._current_name, np.concatenate(self.face_vectors).reshape(-1, OpenFace.FEATURE_DIM)
+        name, features = self._current_name, np.concatenate(self.face_vectors).reshape(-1, FaceDetector.FEATURE_DIM)
 
         if name != "NEW":  # Prevent Overwrite of NEW.bin
             self.face_classifier.add(name, features)

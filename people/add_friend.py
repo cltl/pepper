@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-from pepper.framework.sensor.face import OpenFace
+from pepper.framework.sensor.face_detect import OpenFace
 from pepper import config
 
 from scipy.ndimage import imread

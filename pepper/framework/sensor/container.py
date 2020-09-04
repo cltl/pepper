@@ -1,6 +1,6 @@
 from .api import SensorContainer
 from .asr import StreamedGoogleASR, GoogleTranslator
-from .face import OpenFace
+from .face_detect import OpenFace
 from .obj import ObjectDetectionClient
 from .vad import WebRtcVAD
 from pepper.framework.di_container import singleton
