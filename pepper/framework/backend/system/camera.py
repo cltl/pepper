@@ -45,6 +45,7 @@ class SystemCamera(AbstractCamera):
         # Get Camera and request resolution
         self._camera = cv2.VideoCapture(index)
 
+    def start(self):
         if not self.resolution == CameraResolution.NATIVE:
             self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
             self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
@@ -57,7 +58,13 @@ class SystemCamera(AbstractCamera):
         self._scheduler = Scheduler(self._run, name="SystemCameraThread")
         self._scheduler.start()
 
-        self._log.debug("Booted")
+        super(SystemCamera, self).start()
+
+        self._log.debug("Started SystemCamera")
+
+    def stop(self):
+        super(SystemCamera, self).stop()
+        self._scheduler.stop()
 
     def _run(self):
         t0 = time()

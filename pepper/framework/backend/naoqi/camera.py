@@ -1,4 +1,5 @@
 from pepper.framework.abstract.camera import AbstractCamera, AbstractImage
+from pepper.framework.event.api import EventBus
 from pepper.framework.util import Bounds
 from pepper import NAOqiCameraIndex, CameraResolution
 
@@ -70,11 +71,13 @@ class NAOqiCamera(AbstractCamera):
     HEAD_DELTA_THRESHOLD = 0.1
 
     def __init__(self, session, resolution, rate, event_bus, index=NAOqiCameraIndex.TOP):
-        # type: (qi.Session, CameraResolution, int, event_bus, NAOqiCameraIndex) -> None
+        # type: (qi.Session, CameraResolution, int, EventBus, NAOqiCameraIndex) -> None
         super(NAOqiCamera, self).__init__(resolution, rate, event_bus)
 
         # Get random camera id, to prevent name collision
         self._id = str(getrandbits(128))
+
+        self._session = session
 
         self._color_space = self.COLOR_SPACE['YUV422']
         self._color_space_3D = self.COLOR_SPACE['Distance']
@@ -85,19 +88,20 @@ class NAOqiCamera(AbstractCamera):
         self._rate = rate
         self._index = index
 
+    def start(self):
         # Connect to Camera Service and Subscribe with Settings
-        self._service = session.service(NAOqiCamera.SERVICE_VIDEO)
+        self._service = self._session.service(NAOqiCamera.SERVICE_VIDEO)
 
         # Access Head Motion for Image Coordinates
-        self._motion = session.service(NAOqiCamera.SERVICE_MOTION)
+        self._motion = self._session.service(NAOqiCamera.SERVICE_MOTION)
 
         # Subscribe to Robot Cameras
         self._client = self._service.subscribeCameras(
             str(getrandbits(128)),  # Random Client ID's to prevent name collision
             [int(NAOqiCameraIndex.TOP), int(NAOqiCameraIndex.DEPTH)],
-            [NAOqiCamera.RESOLUTION_CODE[resolution], NAOqiCamera.RESOLUTION_CODE[self._resolution_3D]],
+            [NAOqiCamera.RESOLUTION_CODE[self._resolution], NAOqiCamera.RESOLUTION_CODE[self._resolution_3D]],
             [self._color_space, self._color_space_3D],
-            rate
+            self._rate
         )
 
         # Run Image Acquisition in Thread
@@ -119,7 +123,9 @@ class NAOqiCamera(AbstractCamera):
         # self._thread_high_rate.setDaemon(True)
         # self._thread_high_rate.start()
 
-        self._log.debug("Booted")
+        super(NAOqiCamera, self).start()
+
+        self._log.debug("NAOqiCamera started")
 
     # def _run_high_rate(self):
     #     while True:

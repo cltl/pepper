@@ -380,9 +380,11 @@ class AbstractCamera(object):
         """Start Streaming Images from Camera"""
         self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
         self._processor_scheduler.start()
+        self._running = True
 
     def stop(self):
         """Stop Streaming Images from Camera"""
+        self._running = False
         self._processor_scheduler.stop()
 
     def _processor(self):
