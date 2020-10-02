@@ -34,6 +34,19 @@ class StoreConnector(object):
         return str(response.status_code)
 
     def query(self, query, ask=False, post=False):
+        """
+        Submit a SPARQL query to the triple store, and returning the results as JSON
+        Parameters
+        ----------
+        query: str SPARQL query
+        ask: Boolean whether the query returns a Boolean
+        post: Boolean whether the query is posting information instead of querying
+
+        Returns
+        -------
+        response: dictionary query results from triple store
+
+        """
         # Set up connection
         endpoint = self.address
         if post:

@@ -41,6 +41,7 @@ WHERE {
     ?m2 grasp:wasAttributedTo ?author2 .
     ?author2 rdfs:label ?author2label.
 
-    FILTER (?author1label = "%s" || ?author2label = "%s" )
+    FILTER (?author1label = "%s" || ?author2label = "%s" ) .
+    FILTER(STRSTARTS(STR(?author1), "http://cltl.nl/leolani/friends/") && STRSTARTS(STR(?author2), "http://cltl.nl/leolani/friends/") ) .
 
 } GROUP BY ?g ?date1 ?author1 ?att1 ?val1 ?date2 ?author2 ?att2 ?val2

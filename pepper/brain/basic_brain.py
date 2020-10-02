@@ -166,6 +166,15 @@ class BasicBrain(object):
         response = self._submit_query(query)
         return response[0]['num_stat']['value']
 
+    def novel_statements_by(self, actor_label):
+        """
+        Return statements or 'facts' in the brain by a given author, that have not been heard from anyone else
+        :return:
+        """
+        query = read_query('trust/novel_statements_by') % actor_label
+        response = self._submit_query(query)
+        return [elem['stat']['value'].split('/')[-1] for elem in response]
+
     def get_conflicts(self):
         """
         Count statements or 'facts' in the brain

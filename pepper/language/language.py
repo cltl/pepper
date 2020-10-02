@@ -101,6 +101,9 @@ class Chat(object):
         """
         return self._id
 
+    def set_id(self, value):
+        self._id = value
+
     @property
     def utterances(self):
         # type: () -> List[Utterance]
@@ -277,6 +280,9 @@ class Utterance(object):
             Utterance Turn
         """
         return self._turn
+
+    def set_turn(self, value):
+        self._turn = value
 
     @property
     def triple(self):
@@ -523,7 +529,6 @@ class Utterance(object):
                     tokens_raw.remove('s')
             except:
                 tokens_raw.remove('s')
-
 
         return tokens_raw
 

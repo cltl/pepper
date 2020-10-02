@@ -4,11 +4,10 @@ from pepper.framework import UtteranceHypothesis, Context, Face
 from pepper.framework.sensor.obj import Object
 
 from datetime import date
-from random import choice
+from random import choice, sample, randint, uniform
 
-places = ['Forest', 'Playground', 'Monastery', 'House', 'University', 'Hotel', 'Office']
-
-signal = False
+places = ['Office']
+friends = ['Piek', 'Lenka', 'Bram', 'Suzana', 'Selene', 'Lea', 'Thomas', 'Jaap', 'Tae']
 binary_values = [True, False]
 
 capsule_knows = {
@@ -91,36 +90,37 @@ capsule_is_from_3 = {
 }
 
 
-def fake_context(empty=False, no_people=False, place=False):
-    if choice(binary_values):
-        faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
-    else:
-        faces = {Face('Selene', 0.90, None, None, None), Face('Piek', 0.90, None, None, None)}
-
-    context = Context()
-    if place:
-        context.location._label = choice(places)
-
-    if choice(binary_values) and not signal and context.location.label == 'Office':
+def fake_objects(context):
+    # Office
+    if choice(binary_values) and context.location.label == 'Office':
         objects = [Object('person', 0.79, None, None), Object('laptop', 0.88, None, None),
                    Object('chair', 0.88, None, None), Object('laptop', 0.51, None, None),
-                   Object('teddy bear', 0.88, None, None)]
-    elif choice(binary_values) and not signal and context.location.label == 'Office':
+                   Object('bottle', 0.88, None, None)]
+    elif choice(binary_values) and context.location.label == 'Office':
         objects = [Object('person', 0.79, None, None), Object('plant', 0.88, None, None),
                    Object('chair', 0.88, None, None), Object('laptop', 0.51, None, None)]
-    elif choice(binary_values) and not signal and context.location.label == 'Market':
+    elif choice(binary_values) and context.location.label == 'Office':
+        objects = [Object('person', 0.79, None, None), Object('plant', 0.88, None, None),
+                   Object('chair', 0.88, None, None), Object('laptop', 0.51, None, None),
+                   Object('book', 0.88, None, None), Object('laptop', 0.51, None, None)]
+
+    # Market
+    elif choice(binary_values) and context.location.label == 'Market':
         objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                    Object('avocado', 0.51, None, None), Object('banana', 0.88, None, None)]
-    elif choice(binary_values) and not signal and context.location.label == 'Market':
+    elif choice(binary_values) and context.location.label == 'Market':
         objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                    Object('avocado', 0.51, None, None), Object('strawberry', 0.88, None, None)]
-    elif choice(binary_values) and not signal and context.location.label == 'Playground':
+
+    # Playground
+    elif choice(binary_values) and context.location.label == 'Playground':
         objects = [Object('person', 0.79, None, None), Object('teddy bear', 0.88, None, None),
                    Object('teddy bear', 0.88, None, None), Object('cat', 0.51, None, None)]
-    elif choice(binary_values) and not signal and context.location.label == 'Playground':
+    elif choice(binary_values) and context.location.label == 'Playground':
         objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                    Object('cat', 0.51, None, None), Object('banana', 0.88, None, None)]
-        # signal = True
+
+    # Other
     else:
         if context.location.label != 'Market':
             objects = [Object('teddy bear', 0.79, None, None), Object('dog', 0.88, None, None),
@@ -129,6 +129,38 @@ def fake_context(empty=False, no_people=False, place=False):
             objects = [Object('apple', 0.79, None, None), Object('banana', 0.88, None, None),
                        Object('avocado', 0.51, None, None), Object('strawberry', 0.88, None, None)]
 
+    return objects
+
+
+def fake_people():
+    num_people = randint(0, len(friends))
+    people = sample(friends, num_people)
+
+    faces = set()
+    for peep in people:
+        confidence = uniform(0, 1)
+        f = Face(peep, confidence, None, None, None)
+        faces.add(f)
+
+    # Add strangers?
+    if choice(binary_values):
+        confidence = uniform(0, 1)
+        faces.add(Face('Stranger', confidence, None, None, None))
+
+    return faces
+
+
+def fake_context(empty=False, no_people=False, place=False):
+    context = Context()
+
+    # Set place
+    if place:
+        context.location._label = choice(places)
+
+    faces = fake_people()
+    objects = fake_objects(context)
+
+    # Set objects
     if not empty:
         context.add_objects(objects)
         context.add_people(faces)
@@ -139,20 +171,39 @@ def fake_context(empty=False, no_people=False, place=False):
     return context
 
 
-def transform_capsule(capsule, empty=False, no_people=False, place=False):
-    context = fake_context(empty=empty, no_people=no_people, place=place)
-
+def fake_chat(capsule, context):
     chat = Chat(capsule['author'], context)
+    chat.set_id(capsule['chat'])
+
+    return chat
+
+
+def fake_utterance(capsule, chat):
     hyp = UtteranceHypothesis(capsule['utterance'], 0.99)
 
     utt = Utterance(chat, [hyp], False, capsule['turn'])
     utt._type = UtteranceType.STATEMENT
+    utt.set_turn(capsule['turn'])
 
+    return utt
+
+
+def fake_triple(capsule, utt):
     builder = RdfBuilder()
 
     triple = builder.fill_triple(capsule['subject'], capsule['predicate'], capsule['object'])
     utt.set_triple(triple)
 
     utt.pack_perspective(capsule['perspective'])
+
+
+def transform_capsule(capsule, empty=False, no_people=False, place=False):
+    context = fake_context(empty=empty, no_people=no_people, place=place)
+    context.set_datetime(capsule['date'])
+
+    chat = fake_chat(capsule, context)
+    utt = fake_utterance(capsule, chat)
+
+    fake_triple(capsule, utt)
 
     return utt

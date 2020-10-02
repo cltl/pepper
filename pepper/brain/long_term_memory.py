@@ -1,5 +1,5 @@
 from pepper.brain.utils.helper_functions import read_query, casefold_text
-from pepper.brain.reasoners import LocationReasoner, ThoughtGenerator, TypeReasoner
+from pepper.brain.reasoners import LocationReasoner, ThoughtGenerator, TypeReasoner, TrustCalculator
 from pepper.brain.infrastructure import Thoughts
 from pepper.brain.basic_brain import BasicBrain
 
@@ -28,11 +28,12 @@ class LongTermMemory(BasicBrain):
         self.thought_generator = ThoughtGenerator()
         self.location_reasoner = LocationReasoner()
         self.type_reasoner = TypeReasoner()
+        self.trust_calculator = TrustCalculator()
 
         self.set_location_label = self.location_reasoner.set_location_label
         self.reason_location = self.location_reasoner.reason_location
 
-        self.thought_generator.compute_trust_network()
+        self.trust_calculator.compute_trust_network()
 
     #################################### Main functions to interact with the brain ####################################
     def get_thoughts_on_entity(self, entity_label, reason_types=False):
@@ -133,7 +134,7 @@ class LongTermMemory(BasicBrain):
                                                                      exclude=utterance.triple.subject)
 
             # Report trust
-            trust = self.thought_generator.get_trust(utterance.chat_speaker)
+            trust = self.trust_calculator.get_trust(utterance.chat_speaker)
 
             # Create JSON output
             thoughts = Thoughts(statement_novelty, entity_novelty, negation_conflicts, cardinality_conflict,

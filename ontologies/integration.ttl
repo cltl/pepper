@@ -93,11 +93,19 @@ n2mu:acknowledge rdf:type owl:ObjectProperty ;
                  owl:propertyDisjointWith n2mu:experience .
 
 
+###  http://cltl.nl/leolani/n2mu/be-ancestor-of
+n2mu:be-ancestor-of rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf n2mu:be-family-of ;
+                    rdfs:domain n2mu:person ;
+                    rdfs:range n2mu:person .
+
+
 ###  http://cltl.nl/leolani/n2mu/be-child-of
 n2mu:be-child-of rdf:type owl:ObjectProperty ;
                  rdfs:subPropertyOf n2mu:be-family-of ;
                  rdfs:domain n2mu:agent ;
-                 rdfs:range n2mu:agent .
+                 rdfs:range n2mu:agent ;
+                 owl:propertyDisjointWith n2mu:be-parent-of .
 
 
 ###  http://cltl.nl/leolani/n2mu/be-colleague-of
@@ -443,6 +451,10 @@ prov:hadDerivation rdf:type owl:ObjectProperty ;
                    owl:inverseOf prov:wasDerivedFrom .
 
 
+###  http://www.w3.org/ns/prov#wasAttributedTo
+prov:wasAttributedTo rdf:type owl:ObjectProperty .
+
+
 ###  http://www.w3.org/ns/prov#wasDerivedFrom
 prov:wasDerivedFrom rdf:type owl:ObjectProperty ;
                     rdfs:subPropertyOf owl:topObjectProperty ;
@@ -456,10 +468,6 @@ prov:wasDerivedFrom rdf:type owl:ObjectProperty ;
                     prov:definition "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."@en ;
                     prov:inverse "hadDerivation" ;
                     prov:qualifiedForm prov:Derivation .
-
-
-###  http://www.w3.org/ns/prov#wasAttributedTo
-prov:wasAttributedTo rdf:type owl:ObjectProperty .
 
 
 #################################################################

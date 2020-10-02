@@ -42,32 +42,27 @@ def get_triple_element_type(element, forest):
 
     types = {}
 
+    # Multiword element
     if '-' in element:
-        text = ''
-        for el in element.split('-'):
-            text += el + ' '
+        text = element.replace(" ", "-")
 
-        text = text.strip()
-        uris = get_uris(text)
-
-        # print('LOOKUP: ', text, len(uris))
-
-        # if len(uris) > 0:
-        #     print('URI ', text, len(uris))
-
-        # entities with more than 1 uri from DBpedia are NE and collocations
+        # Try to get type from DBpedia
+        uris = get_uris(text.strip())
         if len(uris) > 1:
+            # entities with more than 1 uri from DBpedia are NE and collocations
             return 'NE-col'
 
-        # collocations which exist in WordNet
-        synsets = wu.get_synsets(text, get_node_label(forest, text))
-        if len(synsets):
-            typ = wu.get_lexname(synsets)
-            return typ + '-col'
+        # Try to get types from wordnet
+        lexname = get_lexname_in_tree(text, forest)
+        if lexname:
+            # collocations which exist in WordNet
+            return lexname + '-col'
 
-        # if entity does not exist in DBP or WN it is considered composite
+        # if entity does not exist in DBP or WN it is considered composite. Get type per word
         for el in element.split('-'):
             types[el] = get_word_type(el, forest)
+
+    # Single word
     else:
         types[element] = get_word_type(element, forest)
 
@@ -84,8 +79,7 @@ def get_word_type(word, forest):
     if word == '':
         return ''
 
-    lexname = get_lexname(word, forest)
-
+    lexname = get_lexname_in_tree(word, forest)
     if lexname is not None:
         return lexname
 
@@ -103,19 +97,14 @@ def get_word_type(word, forest):
         if 'integer' in entry:
             return 'numeral:' + entry['integer']
 
+    # for words which are not in the lexicon nor have a lexname,
+    # the sem.type is derived from the POS tag
     types = {'NN': 'person', 'V': 'verb', 'IN': 'prep', 'TO': 'prep', 'MD': 'modal'}
-
-    # for words which are not in the lexicon nor have a lexname, the sem.type is derived from the POS tag
-    pos = pos_tag([word])[0][1]
-    if pos in types:
-        return types[pos]
-
-    node = get_node_label(forest, word)
-    if node in types:
-        return types[node]
+    pos = get_pos_tag(forest, word)
+    return types[pos]
 
 
-def get_lexname(word, forest):
+def get_lexname_in_tree(word, forest):
     '''
     :param word: word for which we want a WordNe lexname
     :param forest: parsed forest of the sentence, to extract the POS tag
@@ -123,16 +112,13 @@ def get_lexname(word, forest):
     https://wordnet.princeton.edu/documentation/lexnames5wn
     '''
     if word == '':
-        return
+        return None
 
-    label = get_node_label(forest[0], word)
-    if label == '':
-        label = pos_tag([word])
-        if label == '':
-            return None
-        label = label[0][1]
+    # Get POS tag
+    pos_label = get_pos_tag(forest[0], word)
 
-    synset = wu.get_synsets(word, label)
+    # Try to get types from wordnet
+    synset = wu.get_synsets(word, pos_label)
     if synset:
         type = wu.get_lexname(synset[0])
         return type
@@ -182,7 +168,7 @@ def lemmatize(word, tag=''):
     return wnl.lemmatize(word)
 
 
-def get_node_label(tree, word):
+def get_pos_in_tree(tree, word):
     """
     This function extracts POS tag of a word from the parsed syntax tree
     :param tree: syntax tree gotten from initial CFG parsing
@@ -197,7 +183,21 @@ def get_node_label(tree, word):
                     for n in subtree:
                         if n == word:
                             label = str(subtree.label())
+                            return label
     return label
+
+
+def get_pos_tag(forest, word):
+    """
+    This function extract POS tags from either the tree or the word alone
+    :param forest: syntax tree gotten from initial CFG parsing
+    :param word: word whose POS tag we want
+    :return: POS tag of the word
+    """
+    pos_label = get_pos_in_tree(forest, word)
+    pos_label = pos_tag([word])[0][1] if pos_label == '' else pos_label
+
+    return pos_label
 
 
 def lexicon_lookup(word, typ=None):

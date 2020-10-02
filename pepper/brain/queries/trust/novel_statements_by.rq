@@ -3,9 +3,12 @@ PREFIX grasp: <http://groundedannotationframework.org/grasp#>
 PREFIX gaf: <http://groundedannotationframework.org/gaf#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-select (COUNT(distinct ?stat) AS ?num_stat) where {
+select ?stat where {
 ?stat rdf:type gaf:Assertion .
+
+?stat gaf:denotedBy ?m1 .
+?m1 grasp:wasAttributedTo ?author1 .
+?author1 rdfs:label "%s" .
+
 ?stat gaf:denotedBy ?m .
-?m grasp:wasAttributedTo ?author .
-?author rdfs:label "%s" .
-}
+} GROUP BY ?stat HAVING (COUNT(distinct ?m) = 1)

@@ -112,7 +112,7 @@ class Analyzer(object):
         if '-' not in predicate:
             predicate = lemmatize(predicate, 'v')
 
-            if get_node_label(self.chat.last_utterance.parser.forest[0], predicate) in ['IN', 'TO']:
+            if get_pos_in_tree(self.chat.last_utterance.parser.forest[0], predicate) in ['IN', 'TO']:
                 predicate = 'be-' + predicate
 
             elif predicate == '':
@@ -149,7 +149,7 @@ class Analyzer(object):
 
         # complex predicate
         for el in triple['predicate'].split('-'):
-            label = get_node_label(structure_tree, el)
+            label = get_pos_in_tree(structure_tree, el)
 
             # negation
             if label == 'RB':
@@ -160,7 +160,7 @@ class Analyzer(object):
             elif lexicon_lookup(lemmatize(el, 'v'), 'lexical'):
                 pred += '-' + lemmatize(el, 'v')
                 for elem in triple['predicate'].split('-')[ind + 1:]:
-                    label = get_node_label(structure_tree, elem)
+                    label = get_pos_in_tree(structure_tree, elem)
                     if label in ['TO', 'IN']:
                         pred += '-' + elem
                     else:
@@ -229,7 +229,7 @@ class Analyzer(object):
             complement = fix_pronouns(first_word, self)
 
             for word in triple['complement'].split('-')[1:]:
-                complement+='-'+word
+                complement += '-' + word
 
             triple['complement'] = complement
 
@@ -239,7 +239,8 @@ class Analyzer(object):
             predicate = ''
             for word in triple[element].split('-')[1:]:
                 # words that express people are grouped together in the subject
-                if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'), 'kinship')) or word == 'best':
+                if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'),
+                                                                      'kinship')) or word == 'best':
                     subject += '-' + word
                 else:
                     predicate += '-' + word
@@ -251,7 +252,6 @@ class Analyzer(object):
                 triple['predicate'] = predicate + '-is'
 
             triple['subject'] = subject
-
 
         return triple
 
@@ -289,9 +289,10 @@ class Analyzer(object):
                 triple['subject'] = subject
             else:
                 triple['complement'] = fix_pronouns(triple['complement'].lower(), self)
-        elif get_node_label(structure_tree, triple['complement']).startswith('V') and get_node_label(structure_tree,
-                                                                                                     triple[
-                                                                                                         'predicate']) == 'MD':
+        elif get_pos_in_tree(structure_tree, triple['complement']).startswith('V') and get_pos_in_tree(
+                structure_tree,
+                triple[
+                    'predicate']) == 'MD':
             triple['predicate'] += '-' + triple['complement']
             triple['complement'] = ''
         return triple
@@ -330,7 +331,7 @@ class Analyzer(object):
                                                  'piek'] or typ.capitalize() == typ:
                                 final_type.append('person')
                             else:
-                                node = get_node_label(self.chat.last_utterance.parser.forest[0], typ)
+                                node = get_pos_in_tree(self.chat.last_utterance.parser.forest[0], typ)
                                 if node in ['IN', 'TO']:
                                     final_type.append('preposition')
                                 elif node.startswith('V'):
@@ -505,14 +506,14 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         structure_tree = self.chat.last_utterance.parser.forest[0]
         first_word = triple['complement'].split('-')[0]
 
-        if get_node_label(structure_tree, first_word) in ['TO', 'IN']:
+        if get_pos_in_tree(structure_tree, first_word) in ['TO', 'IN']:
             triple = self.analyze_complement_with_preposition(triple)
 
         if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
             triple = self.analyze_possessive(triple, 'complement')
 
-        if get_node_label(structure_tree, first_word).startswith('V'):
-            if get_node_label(structure_tree, triple['predicate']) == 'MD':
+        if get_pos_in_tree(structure_tree, first_word).startswith('V'):
+            if get_pos_in_tree(structure_tree, triple['predicate']) == 'MD':
                 triple['predicate'] += '-' + first_word
                 triple['complement'] = triple['complement'].replace(first_word, '')
 
@@ -531,29 +532,31 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         # Initialize
         super(GeneralStatementAnalyzer, self).__init__(chat)
         utterance_info = {'neg': False}
+
+        # Initial parsing
         triple = self.initialize_triple()
         Analyzer.LOG.debug('initial triple: {}'.format(triple))
 
-        entry = lexicon_lookup(lemmatize(triple['predicate'], 'v'), 'lexical')
-
         # sentences such as "I think (that) ..."
+        entry = lexicon_lookup(lemmatize(triple['predicate'], 'v'), 'lexical')
         if entry and 'certainty' in entry:
             if self.chat.last_utterance.parser.constituents[2]['label'] == 'S':
                 utterance_info['certainty'] = entry['certainty']
                 triple = self.analyze_certainty_statement(triple)
 
+        # Analyze verb phrase
         triple, utterance_info = self.analyze_vp(triple, utterance_info)
         Analyzer.LOG.debug('after VP: {}'.format(triple))
 
+        # Analyze noun phrase
         triple = self.analyze_np(triple)
         Analyzer.LOG.debug('after NP: {}'.format(triple))
 
+        # Analyze complement
         if len(triple['complement'].split('-')) > 1:  # multi-word complement
             triple = self.analyze_multiword_complement(triple)
-
         elif len(triple['complement'].split('-')) == 1:
             triple = self.analyze_one_word_complement(triple)
-
         Analyzer.LOG.debug('after complement analysis: {}'.format(triple))
 
         # Final fixes to triple
@@ -561,10 +564,15 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         triple['predicate'] = self.fix_predicate(triple['predicate'])
         Analyzer.LOG.debug('after predicate fix: {}'.format(triple))
 
+        # Extract perspective
         self._perspective = self.extract_perspective(triple['predicate'], utterance_info)
         Analyzer.LOG.info('extracted perspective: {}'.format(self._perspective))
+
+        # Get types
         triple = self.get_types_in_triple(triple)
         Analyzer.LOG.debug('final triple: {} {}'.format(triple, utterance_info))
+
+        # Final triple assignment
         self._triple = triple
 
     @property
@@ -670,7 +678,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         triple = {'predicate': '', 'subject': '', 'complement': ''}
         constituents = self.chat.last_utterance.parser.constituents
         if len(constituents) == 3:
-            label = get_node_label(self.chat.last_utterance.parser.forest[0], constituents[2]['raw'])
+            label = get_pos_in_tree(self.chat.last_utterance.parser.forest[0], constituents[2]['raw'])
             if constituents[0]['raw'] == 'who':
                 triple['predicate'] = constituents[1]['raw']
                 triple['complement'] = constituents[2]['raw']
@@ -682,7 +690,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
                 triple['subject'] = constituents[2]['raw']
 
         elif len(constituents) == 4:
-            label = get_node_label(self.chat.last_utterance.parser.forest[0], constituents[1]['raw'])
+            label = get_pos_in_tree(self.chat.last_utterance.parser.forest[0], constituents[1]['raw'])
             if not (label.startswith('V') or label == 'MD'):
                 triple['subject'] = constituents[3]['raw']
                 triple['predicate'] = constituents[2]['raw']
@@ -702,7 +710,7 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
     def analyze_multiword_complement(self, triple):
         first_word = triple['complement'].split('-')[0]
 
-        if get_node_label(self.chat.last_utterance.parser.forest[0], first_word) in ['TO', 'IN']:
+        if get_pos_in_tree(self.chat.last_utterance.parser.forest[0], first_word) in ['TO', 'IN']:
             triple = self.analyze_complement_with_preposition(triple)
 
         if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
@@ -763,13 +771,14 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
             triple = self.analyze_possessive(triple, 'complement')
 
-        elif get_node_label(structure_tree, first_word) in ['IN', 'TO']:
+        elif get_pos_in_tree(structure_tree, first_word) in ['IN', 'TO']:
             triple = self.analyze_complement_with_preposition(triple)
 
-        elif get_node_label(structure_tree, first_word).startswith('V') and get_node_label(structure_tree,
-                                                                                           triple['predicate']) == 'MD':
+        elif get_pos_in_tree(structure_tree, first_word).startswith('V') and get_pos_in_tree(structure_tree,
+                                                                                             triple[
+                                                                                                       'predicate']) == 'MD':
             for word in triple['complement'].split('-'):
-                label = get_node_label(structure_tree, word)
+                label = get_pos_in_tree(structure_tree, word)
                 if label in ['IN', 'TO', 'MD'] or label.startswith('V'):
                     triple['predicate'] += '-' + word
                     triple['complement'] = triple['complement'].replace(word, '')

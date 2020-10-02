@@ -1,10 +1,22 @@
 import os
+import numpy as np
 from datetime import date
 
 from pepper.brain.utils.constants import CAPITALIZED_TYPES
 
 
 def read_query(query_filename):
+    """
+    Read a query from file and return as a string
+    Parameters
+    ----------
+    query_filename: str name of the query. It will be looked for in the queries folder of this project
+
+    Returns
+    -------
+    query: str the query with placeholders for the query parameters, as a string to be formatted
+
+    """
     with open(os.path.join(os.path.dirname(__file__), "../queries/{}.rq".format(query_filename))) as fr:
         query = fr.read()
     return query
@@ -97,3 +109,7 @@ def get_object_id(memory, category):
     cat_mem['ids'] = tail
     memory[casefold_text(category, format='triple')] = cat_mem
     return id, memory
+
+
+def sigmoid(z, growth_rate=1):
+    return 1/(1 + np.exp(-z*growth_rate))

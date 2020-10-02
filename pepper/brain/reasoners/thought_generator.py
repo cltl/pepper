@@ -168,7 +168,7 @@ class ThoughtGenerator(BasicBrain):
 
         gaps = Gaps(subject_gaps, complement_gaps)
 
-        if len(subject_gaps) > 0 or len(complement_gaps) > 0 :
+        if len(subject_gaps) > 0 or len(complement_gaps) > 0:
             self._log.info("Gaps: {}".format(gaps.__str__()))
 
         return gaps
@@ -230,7 +230,7 @@ class ThoughtGenerator(BasicBrain):
 
         overlaps = Overlaps(subject_overlap, complement_overlap)
 
-        if len(subject_overlap) > 0 or len(complement_overlap) > 0 :
+        if len(subject_overlap) > 0 or len(complement_overlap) > 0:
             self._log.info("Overlaps: {}".format(overlaps.__str__()))
 
         return overlaps
@@ -362,88 +362,3 @@ class ThoughtGenerator(BasicBrain):
             self._log.info("Negation Conflicts: {}".format(c.__str__()))
 
         return conflicts
-
-    def get_trust(self, speaker):
-        """
-        Get trust level (between 1 and 0) of a friend. Default is set to 0.5
-        :return:
-        """
-        query = read_query('trust/trust_by') % speaker
-        response = self._submit_query(query)
-
-        if response and response[0] != {}:
-            trust = response[0]['trust']['value']
-        else:
-            trust = 0.5
-
-        return trust
-
-    def compute_trust(self, speaker):
-        """
-        Compute a value of trust based on what is know about and via this person
-        Parameters
-        ----------
-        speaker
-
-        Returns
-        -------
-        trust_value: float
-            Weighted average of features
-        """
-
-        # chat based feature
-        num_chats = float(self.count_chat_with(speaker))
-        friends = self.get_best_friends()
-        best_friend_chats = float(friends[0][1]) if friends else num_chats
-        chat_feature = num_chats / best_friend_chats
-
-        # new content feature
-        num_claims = float(self.count_statements_by(speaker))
-        all_claims = float(self.count_statements())
-        claims_feature = num_claims / all_claims
-
-        # conflicts feature
-        num_conflicts = float(len(self.get_conflicts_by(speaker)))
-        all_conflicts = float(len(self.get_conflicts()))
-        conflicts_feature = -(num_conflicts / all_conflicts) - 1 if all_conflicts != 0 else 1
-
-        # Aggregate # TODO scale
-        trust_value = (chat_feature + claims_feature + conflicts_feature) / 3
-
-        return trust_value
-
-    def delete_trust_network(self):
-        """
-        Delete the trust values for all known friends
-        :return:
-        """
-        query = read_query('trust/delete_trust')
-        _ = self._connection.query(query, post=True)
-
-    def compute_trust_network(self):
-        """
-        Compute the trust values for all known friends
-        Returns
-        -------
-
-        """
-        self.delete_trust_network()
-
-        friends = self.get_my_friends()
-
-        for friend in friends:
-            # Form actor
-            actor = self._rdf_builder.fill_entity(friend, ['Instance', 'Source', 'Actor', 'person'], 'LF')
-
-            # Compute trust
-            trust_in_friend = self.compute_trust(friend)
-            trust = self._rdf_builder.fill_literal(trust_in_friend, datatype=self.namespaces['XML']['float'])
-
-            # Structure knowledge
-            self.interaction_graph.add((actor.id, self.namespaces['N2MU']['hasTrustworthinessLevel'], trust))
-
-            # Finish process of uploading new knowledge to the triple store
-            data = self._serialize(self._brain_log)
-            code = self._upload_to_brain(data)
-
-        self._log.info("Computed trust for all known agents")

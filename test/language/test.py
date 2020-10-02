@@ -230,12 +230,13 @@ if __name__ == "__main__":
     test files with scenarios are formatted like so "statement - question1, question2, etc - reply"
     '''
 
-    all_test_files = ["./data/wh-questions.txt", "./data/verb-questions.txt",
-                      "./data/statements.txt", "./data/perspective.txt"]
+    # all_test_files = ["./data/wh-questions.txt", "./data/verb-questions.txt",
+    #                   "./data/statements.txt", "./data/perspective.txt"]
 
     test_files = ["./data/statements.txt"]
 
     # for test_file in all_test_files:
     #     test_with_triples(test_file)
+    test_with_triples(test_files[0])
 
     test_scenarios()
