@@ -3,7 +3,7 @@ from pepper.brain.basic_brain import BasicBrain
 
 from pepper import config
 
-from fuzzywuzzy import process
+from rapidfuzz import process
 import requests
 
 
