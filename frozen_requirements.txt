@@ -37,7 +37,7 @@ numpy==1.16.2
 numpydoc==0.9.1
 opencv-python==4.0.0.21
 packaging==19.2
-Pillow==5.4.1
+Pillow==7.1.0
 playsound==1.2.2
 polib==1.1.0
 protobuf==3.7.0

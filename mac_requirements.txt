@@ -18,7 +18,7 @@ google-cloud-speech
 google-cloud-TextToSpeech
 google-cloud-translate
 
-Pillow==5.4.1
+Pillow==7.1.0
 opencv-python
 
 tornado==5.1.1
