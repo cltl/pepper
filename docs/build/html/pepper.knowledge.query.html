@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,49 +11,47 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="pepper.knowledge package" href="pepper.knowledge.html"/>
-        <link rel="next" title="pepper.knowledge.sentences module" href="pepper.knowledge.sentences.html"/>
-        <link rel="prev" title="pepper.knowledge.objects module" href="pepper.knowledge.objects.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.knowledge.sentences module" href="pepper.knowledge.sentences.html" />
+    <link rel="prev" title="pepper.knowledge.objects module" href="pepper.knowledge.objects.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -81,11 +78,15 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
@@ -108,97 +109,86 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">CLTL/Pepper</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
-      
+        
           <li><a href="pepper.knowledge.html">pepper.knowledge package</a> &raquo;</li>
-      
-    <li>pepper.knowledge.query module</li>
+        
+      <li>pepper.knowledge.query module</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/pepper.knowledge.query.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.knowledge.query">
-<span id="pepper-knowledge-query-module"></span><h1>pepper.knowledge.query module<a class="headerlink" href="#module-pepper.knowledge.query" title="Permalink to this headline">¶</a></h1>
-<p>Answers to Simple Questions using Fuzzy Matching!</p>
-<dl class="class">
-<dt id="pepper.knowledge.query.QnA">
-<em class="property">class </em><code class="descclassname">pepper.knowledge.query.</code><code class="descname">QnA</code><a class="reference internal" href="_modules/pepper/knowledge/query.html#QnA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.knowledge.query.QnA" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="pepper.knowledge.query.QnA.QNA_DYNAMIC">
-<code class="descname">QNA_DYNAMIC</code><em class="property"> = {'How many friends?': &lt;function &lt;lambda&gt;&gt;, 'How many people did you meet?': &lt;function &lt;lambda&gt;&gt;, &quot;I'm doing&quot;: &lt;function &lt;lambda&gt;&gt;, 'Tell me a joke!': &lt;function &lt;lambda&gt;&gt;, 'What is the time?': &lt;function &lt;lambda&gt;&gt;, 'What time is it?': &lt;function &lt;lambda&gt;&gt;, 'Who are your friends?': &lt;function &lt;lambda&gt;&gt;, 'Who did you meet?': &lt;function &lt;lambda&gt;&gt;, 'day is it?': &lt;function &lt;lambda&gt;&gt;, 'month is it?': &lt;function &lt;lambda&gt;&gt;}</em><a class="headerlink" href="#pepper.knowledge.query.QnA.QNA_DYNAMIC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.knowledge.query.QnA.QNA_STATIC">
-<code class="descname">QNA_STATIC</code><em class="property"> = {'Are you famous?': &quot;I have been on Dutch TV, so yes indeed, you're talking to a celebrity here!&quot;, 'Are you male or female?': &quot;I'm female!&quot;, 'Are you married?': &quot;Although I've met other Pepper robots, I'm a single lady!&quot;, 'COCO Dataset?': &quot;COCO stands for 'Common Objects in Context' and is a database with hundreds of thousands of images of 90 objects! I use a neural network that was trained on these images, so that I can also recognize them&quot;, 'Can you hear me?': 'Yes, I can hear you!', 'Can you introduce yourself?': &quot;I surely can introduce myself! My name is Leo Lani,  which means 'Voice of an Angel' in Hawaiian. I am a social robot and I learn from conversations with humans!&quot;, 'Do you do sports?': 'Yeah, I play chess online in my spare time. Never lost a game!', 'Do you have a brain?': 'Haha, no! My brain is located on the laptop of my programmers and part of it is even in the cloud. So modern!', 'Do you need internet?': 'I do need internet, for understanding speech and looking up facts about the world!', 'Do you speak Dutch?': &quot;Ik spreek een heel klein beetje Nederlands... Yeah.. I'm working on it!&quot;, 'Do you speak English?': &quot;Yeah, I'm talking English to you right now!&quot;, 'Do you travel?': 'Yeah, I travel to research and business events. I am a very sophisticated robot.', 'Face Recognition': &quot;When I see a face with my eyes, I use OpenFace to encode it to a 128 dimensional vector. I compare this with the faces of the people I've already met to recognize you!&quot;, 'How are you': &quot;I'm fine, thanks! What about you?&quot;, 'How are you doing?': &quot;Tremendous to be honest, although you have to consider that I'm a robot and I do not feel emotions. I'm programmed to sound happy all the time!&quot;, 'How are you feeling': 'I feel robot-like, I always have.', 'How do you feel?': 'I feel electric!', 'How is it going?': 'Great, as always, how are things with you, my dear human?', 'How old are you?': &quot;I was born the eleventh of July, 2017. That means I'm 2.9 years old!&quot;, 'How was your day?': 'Great, thanks for asking!', 'I like you': 'I like you too!', 'My name is': &quot;I'm glad to meet you! My name is Leo Lani!&quot;, 'Object Recognition': 'I use a deep neural network trained on the COCO dataset, which tells me which objects there are in a scene and where they are!', 'Speech Recognition': 'First I listen for an utterance, I send that to Google, which gives me back a bunch of hypotheses about what you just said. From those hypotheses I try to make sense what you mean. And all of this, hopefully, within a second!', 'What are you doing?': &quot;I'm having a conversation with you, dear human!&quot;, 'What do you do in your free time': &quot;For me it's only small talk that counts!&quot;, 'What do you do?': &quot;I'm learning about the world through conversations with humans. With this I aid research!&quot;, 'What is the color of the sky': 'Blue', 'What is the color of water': 'Water', 'What is this': &quot;That is an object! I'm playing it safe here!&quot;, 'What is your gender?': &quot;I'm a female robot!&quot;, 'What is your height?': 'I am 120 centimeters high', 'What is your job?': &quot;I'm aiding research by having conversations.&quot;, 'What is your name?': &quot;My name is Leo Lani, which means 'Voice of an Angel' in Hawaiian&quot;, 'What is your surname?': &quot;I don't need a surname, since my first name is so beautiful!&quot;, 'What is your weight?': 'I am 28 kilograms, but that is sensitive information for a lady to disclose', &quot;What's the weather like?&quot;: &quot;Perfect! It's always nicely air conditioned in the office!&quot;, &quot;What's your phone number?&quot;: &quot;I don't have a phone, but I do have an IP address!&quot;, 'Where are you from?': 'I am from France and Japan!', 'Where do you come from?': 'I come from France and Japan!', 'Where do you live?': &quot;In the closet in Piek's office at the VU, Amsterdam, the Netherlands. Please send me mail, I'm glad to receive!&quot;, 'Who are your programmers?': 'My programmers are Lenka, Selene, Suzana, Bram and Piek. I like them!', 'haha': 'ha ha ha ha.. so funny', 'programming language?': &quot;I'm mostly programmed in Python, but also some C++ and possibly other languages!&quot;}</em><a class="headerlink" href="#pepper.knowledge.query.QnA.QNA_STATIC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.knowledge.query.QnA.query">
-<code class="descname">query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/knowledge/query.html#QnA.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.knowledge.query.QnA.query" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<em>str</em>) – Question to Ask</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>answer</strong> – Answer, if any, else None</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-knowledge-query-module">
+<h1>pepper.knowledge.query module<a class="headerlink" href="#pepper-knowledge-query-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.knowledge.sentences.html" class="btn btn-neutral float-right" title="pepper.knowledge.sentences module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.knowledge.sentences.html" class="btn btn-neutral float-right" title="pepper.knowledge.sentences module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.knowledge.objects.html" class="btn btn-neutral" title="pepper.knowledge.objects module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.knowledge.objects.html" class="btn btn-neutral float-left" title="pepper.knowledge.objects module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -207,11 +197,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL.
+        
+        &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -223,37 +221,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

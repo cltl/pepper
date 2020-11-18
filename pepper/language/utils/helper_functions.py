@@ -99,9 +99,10 @@ def get_word_type(word, forest):
 
     # for words which are not in the lexicon nor have a lexname,
     # the sem.type is derived from the POS tag
-    types = {'NN': 'person', 'V': 'verb', 'IN': 'prep', 'TO': 'prep', 'MD': 'modal'}
+    types = {'NN': 'agent', 'V': 'verb', 'IN': 'prep', 'TO': 'prep', 'MD': 'modal'}
     pos = get_pos_tag(forest, word)
-    return types[pos]
+    if pos in types:
+        return types[pos]
 
 
 def get_lexname_in_tree(word, forest):
@@ -122,9 +123,6 @@ def get_lexname_in_tree(word, forest):
     if synset:
         type = wu.get_lexname(synset[0])
         return type
-
-    else:
-        return None
 
 
 def fix_pronouns(pronoun, self):

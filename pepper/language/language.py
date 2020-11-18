@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from pepper.language.pos import POS
 from pepper.language.ner import NER
 from pepper.language.analyzer import Analyzer
-from pepper.language.utils.atoms import UtteranceType
+from pepper.language.utils.atoms import UtteranceType, Emotion, Time
 from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
 
@@ -16,32 +16,10 @@ from collections import Counter
 
 from random import getrandbits
 from datetime import datetime
-import enum
 import json
 import os
 
 from typing import List, Optional
-
-
-class Time(enum.Enum):
-    """
-    This will be used in the future to represent tense
-    """
-    PAST = -1
-    PRESENT = 0
-    FUTURE = 1
-
-
-class Emotion(enum.Enum):
-    """
-    This will be used in the future to represent emotion
-    """
-    ANGER = 0
-    DISGUST = 1
-    FEAR = 2
-    HAPPINESS = 3
-    SADNESS = 4
-    SURPRISE = 5
 
 
 class Chat(object):
@@ -343,10 +321,6 @@ class Utterance(object):
     def analyze(self):
         """
         Determines the type of utterance, extracts the RDF triple and perspective attaching them to the last utterance
-        Parameters
-        ----------
-        chat
-
         Returns
         -------
 
@@ -396,7 +370,36 @@ class Utterance(object):
         self.set_triple(Triple(subject, predicate, complement))
 
     def pack_perspective(self, persp):
-        self.set_perspective(Perspective(persp['certainty'], persp['polarity'], persp['sentiment']))
+        sentiment = persp.get('sentiment', 0.0)
+        emotion = persp.get('emotion', Emotion.NEUTRAL)
+
+        if type(sentiment) not in [float, int]:
+            # Gotta translate this
+            if sentiment.lower() == 'positive':
+                sentiment = 1.0
+            elif sentiment.lower() == 'negative':
+                sentiment = -1.0
+            elif sentiment.lower() == 'neutral':
+                sentiment = 0.0
+
+        if type(emotion) != Emotion:
+            # Gotta translate this
+            if emotion.lower() == 'anger':
+                emotion = Emotion.ANGER
+            elif emotion.lower() == 'disgust':
+                emotion = Emotion.DISGUST
+            elif emotion.lower() == 'fear':
+                emotion = Emotion.FEAR
+            elif emotion.lower() == 'joy':
+                emotion = Emotion.JOY
+            elif emotion.lower() == 'sadness':
+                emotion = Emotion.SADNESS
+            elif emotion.lower() == 'surprise':
+                emotion = Emotion.SURPRISE
+            elif emotion.lower() == 'neutral':
+                emotion = Emotion.NEUTRAL
+
+        self.set_perspective(Perspective(persp.get('certainty', 1), persp.get('polarity', 1), sentiment, emotion=emotion))
 
     def set_triple(self, triple):
         # type: (Triple) -> ()
@@ -533,12 +536,12 @@ class Utterance(object):
         return tokens_raw
 
     def replace_token(self, tokens_raw, old, new):
-        '''
+        """
         :param tokens_raw: list of tokens
         :param old: token to replace
         :param new: new token
         :return: new list with the replaced token
-        '''
+        """
         if old in tokens_raw:
             index = tokens_raw.index(old)
             tokens_raw.remove(old)

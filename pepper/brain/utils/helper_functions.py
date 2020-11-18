@@ -1,8 +1,11 @@
 import os
+import re
 import numpy as np
 from datetime import date
+import string
 
 from pepper.brain.utils.constants import CAPITALIZED_TYPES
+from pepper.language.utils.atoms import Emotion
 
 
 def read_query(query_filename):
@@ -28,9 +31,17 @@ def is_proper_noun(types):
 
 def casefold_text(text, format='triple'):
     if format == 'triple':
-        return text.strip().lower().replace(" ", "-") if isinstance(text, basestring) else text
+        if isinstance(text, basestring):
+            for sign in string.punctuation:
+                text = text.replace(sign, "-")
+
+            text = text.lower().replace(" ", "-").strip('-')
+
+        return re.sub('-+', '-', text)
+
     elif format == 'natural':
-        return text.strip().lower().replace("-", " ") if isinstance(text, basestring) else text
+        return text.lower().replace("-", " ").strip() if isinstance(text, basestring) else text
+
     else:
         return text
 
@@ -91,6 +102,27 @@ def sentiment_to_sentiment_value(sentiment):
             return 'POSITIVE'
         elif sentiment < 0:
             return 'NEGATIVE'
+        elif sentiment == 0:
+            return 'NEUTRAL'
+    return 'UNDERSPECIFIED'
+
+
+def emotion_to_emotion_value(emotion):
+    if emotion is not None:
+        if emotion == Emotion.ANGER:
+            return 'ANGER'
+        elif emotion == Emotion.DISGUST:
+            return 'DISGUST'
+        elif emotion == Emotion.FEAR:
+            return 'FEAR'
+        elif emotion == Emotion.JOY:
+            return 'JOY'
+        elif emotion == Emotion.SADNESS:
+            return 'SADNESS'
+        elif emotion == Emotion.SURPRISE:
+            return 'SURPRISE'
+        elif emotion == Emotion.NEUTRAL:
+            return 'NEUTRAL'
     return 'UNDERSPECIFIED'
 
 
@@ -112,4 +144,4 @@ def get_object_id(memory, category):
 
 
 def sigmoid(z, growth_rate=1):
-    return 1/(1 + np.exp(-z*growth_rate))
+    return 1 / (1 + np.exp(-z * growth_rate))

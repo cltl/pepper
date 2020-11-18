@@ -107,7 +107,7 @@ def compare_triples(triple, gold):
     return correct
 
 
-def test_scenario(statement, questions, gold):
+def test_scenario(statements, questions, gold):
     '''
     :param statement: one or several statements separated by a comma, to be stored in the brain
     :param questions: set of questions regarding the stored statement
@@ -120,15 +120,9 @@ def test_scenario(statement, questions, gold):
     brain = LongTermMemory(clear_all=False)
 
     # one or several statements are added to the brain
-    if ',' in statement:
-        for stat in statement.split(','):
-            chat.add_utterance([UtteranceHypothesis(stat, 1.0)], False)
-            chat.last_utterance.analyze()
-            brain_response = brain.update(chat.last_utterance, reason_types=True)
-            reply = phrase_thoughts(brain_response, True, True)
-        print(reply)
-    else:
-        chat.add_utterance([UtteranceHypothesis(statement, 1.0)], False)
+    statements = statements.split(',')
+    for stat in statements:
+        chat.add_utterance([UtteranceHypothesis(stat, 1.0)], False)
         chat.last_utterance.analyze()
         brain_response = brain.update(chat.last_utterance, reason_types=True)
         reply = phrase_thoughts(brain_response, True, True)
@@ -141,6 +135,7 @@ def test_scenario(statement, questions, gold):
         brain_response = brain.query_brain(chat.last_utterance)
         reply = reply_to_question(brain_response)
         print(reply)
+
         if reply is None:
             print('MISMATCH RESPONSE ', reply, gold.lower().strip())
         elif reply.lower().strip() != gold.lower().strip():

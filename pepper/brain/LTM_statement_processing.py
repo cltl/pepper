@@ -1,8 +1,8 @@
-from pepper.brain.utils.helper_functions import hash_claim_id, casefold_text, \
-    confidence_to_certainty_value, polarity_to_polarity_value, sentiment_to_sentiment_value, get_object_id
+from pepper.brain.utils.helper_functions import hash_claim_id, casefold_text, get_object_id, \
+    confidence_to_certainty_value, polarity_to_polarity_value, sentiment_to_sentiment_value, emotion_to_emotion_value
 from pepper.brain.utils.constants import NAMESPACE_MAPPING
 
-from pepper.language.utils.atoms import UtteranceType
+from pepper.language.utils.atoms import UtteranceType, Emotion, Time
 
 from rdflib import RDF, RDFS, OWL
 
@@ -269,9 +269,10 @@ def _create_attribution(self, utterance, mention, claim, claim_type=None, perspe
         certainty_value = confidence_to_certainty_value(utterance.perspective.certainty)
         polarity_value = polarity_to_polarity_value(utterance.perspective.polarity)
         sentiment_value = sentiment_to_sentiment_value(utterance.perspective.sentiment)
+        emotion_value = emotion_to_emotion_value(utterance.perspective.emotion)
         perspective_values = {'CertaintyValue': certainty_value, 'PolarityValue': polarity_value,
-                              'SentimentValue': sentiment_value}
-        attribution_suffix = '%s-%s-%s' % (certainty_value, polarity_value, sentiment_value)
+                              'SentimentValue': sentiment_value, 'EmotionValue': emotion_value}
+        attribution_suffix = '%s-%s-%s-%s' % (certainty_value, polarity_value, sentiment_value, emotion_value)
     else:
         scores = [x.confidence for x in utterance.context.objects] + [x.confidence for x in
                                                                       utterance.context.people]

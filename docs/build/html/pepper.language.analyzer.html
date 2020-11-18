@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,49 +11,47 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="pepper.language package" href="pepper.language.html"/>
-        <link rel="next" title="pepper.language.language module" href="pepper.language.language.html"/>
-        <link rel="prev" title="pepper.language.utils.wordnet_utils module" href="pepper.language.utils.wordnet_utils.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.language.language module" href="pepper.language.language.html" />
+    <link rel="prev" title="pepper.language.utils.wordnet_utils module" href="pepper.language.utils.wordnet_utils.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -81,11 +78,15 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
@@ -110,415 +111,86 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">CLTL/Pepper</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
-      
+        
           <li><a href="pepper.language.html">pepper.language package</a> &raquo;</li>
-      
-    <li>pepper.language.analyzer module</li>
+        
+      <li>pepper.language.analyzer module</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/pepper.language.analyzer.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.language.analyzer">
-<span id="pepper-language-analyzer-module"></span><h1>pepper.language.analyzer module<a class="headerlink" href="#module-pepper.language.analyzer" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.language.analyzer.Analyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">Analyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.GRAMMAR_JSON">
-<code class="descname">GRAMMAR_JSON</code><em class="property"> = 'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\pepper\\language\\data\\lexicon.json'</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.GRAMMAR_JSON" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.LEXICON">
-<code class="descname">LEXICON</code><em class="property"> = {u'categories': [u'book', u'movie', u'friend', u'food', u'laptop'], u'conjunctions': {u'coordinating': {u'and': {u'connection': u'non-contrast'}, u'but': {u'connection': [u'contrast', u'exception']}, u'for': {u'connection': u'rationale'}, u'nor': {u'connection': u'negative non-contrast'}, u'or': {u'connection': u'alternative'}, u'so': {u'connection': u'consequence'}, u'yet': {u'connection': [u'contrast', u'exception']}}, u'subordinating': {u'after': {}, u'although': {}, u'because': {}, u'before': {}, u'if': {}, u'since': {}, u'so that': {}, u'than': {}, u'that': {}, u'though': {}, u'unless': {}, u'until': {}, u'whenever': {}, u'wherever': {}, u'while': {}}}, u'determiners': {u'articles': {u'a': u'indefinite', u'an': u'indefinite', u'the': u'definite'}, u'demonstratives': {u'that': {u'number': u'singular', u'proximity': u'distal'}, u'these': {u'number': u'plural', u'proximity': u'proximal'}, u'this': {u'number': u'singular', u'proximity': u'proximal'}, u'those': {u'number': u'plural', u'proximity': u'distal'}}, u'numerals': {u'cardinals': {u'eight': {u'integer': u'8'}, u'eighty': {u'integer': u'80'}, u'eleven': {u'integer': u'11'}, u'fifty': {u'integer': u'50'}, u'five': {u'integer': u'5'}, u'forty': {u'integer': u'40'}, u'four': {u'integer': u'4'}, u'nine': {u'integer': u'9'}, u'ninety': {u'integer': u'90'}, u'one': {u'integer': u'1'}, u'one hundred': {u'integer': u'100'}, u'seven': {u'integer': u'7'}, u'seventy': {u'integer': u'70'}, u'six': {u'integer': u'6'}, u'sixty': {u'integer': u'60'}, u'ten': {u'integer': u'10'}, u'thirty': {u'integer': u'30'}, u'three': {u'integer': u'3'}, u'twelve': {u'integer': u'12'}, u'twenty': {u'integer': u'20'}, u'two': {u'integer': u'2'}, u'zero': {u'integer': u'0'}}, u'ordinals': {u'eighth': {}, u'eleventh': {}, u'fifth': {}, u'first': {}, u'fourth': {}, u'ninth': {}, u'second': {}, u'seventh': {}, u'sixth': {}, u'tenth': {}, u'third': {}, u'twelfth': {}}}, u'possessives': {u'her': {u'gender': u'feminine', u'number': u'singular', u'person': u'third'}, u'his': {u'gender': u'masculine', u'number': u'singular', u'person': u'third'}, u'its': {u'gender': u'neuter', u'number': u'singular', u'person': u'third'}, u'my': {u'number': u'singular', u'person': u'first'}, u'our': {u'number': u'plural', u'person': u'first'}, u'their': {u'number': u'plural', u'person': u'third'}, u'your': {u'number': [u'singular', u'plural'], u'person': u'second'}}, u'quantifiers': {u'a couple': {u'quantity': u'small'}, u'a few': {u'quantity': u'small'}, u'a little': {u'quantity': u'small'}, u'a lot of': {u'quantity': u'large'}, u'all': {u'quantity': u'relative'}, u'another': {u'quantity': u'relative'}, u'any': {u'quantity': u'relative'}, u'each': {u'quantity': u'relative'}, u'either': {u'quantity': u'relative'}, u'every': {u'quantity': u'relative'}, u'few': {u'quantity': u'small'}, u'little': {u'quantity': u'small'}, u'lots of': {u'quantity': u'large'}, u'many': {u'quantity': u'large'}, u'most': {u'quantity': u'relative'}, u'most of': {u'quantity': u'relative'}, u'much': {u'quantity': u'large'}, u'neither': {u'quantity': u'relative'}, u'no': {u'quantity': u'zero'}, u'several': {u'quantity': u'large'}, u'some': {u'quantity': u'relative'}, u'whole': {u'quantity': u'relative'}}, u's-genitive': u&quot;'s&quot;, u'wh-determiners': {u'what': {u'response': u'object'}, u'which': {u'response': u'object'}, u'whose': {u'response': u'person'}}}, u'kinship': {u'aunt': {u'distance': u'2', u'gender': u'female'}, u'brother': {u'distance': u'1', u'gender': u'male'}, u'child': {u'distance': u'1', u'gender': u'neutral'}, u'cousin': {u'distance': u'2', u'gender': u'neutral'}, u'daughter': {u'distance': u'1', u'gender': u'female'}, u'father': {u'distance': u'1', u'gender': u'male'}, u'friend': {u'distance': u'0', u'gender': u'neutral'}, u'grandchild': {u'distance': u'2', u'gender': u'neutral'}, u'granddaughter': {u'distance': u'2', u'gender': u'female'}, u'grandfather': {u'distance': u'2', u'gender': u'male'}, u'grandmother': {u'distance': u'2', u'gender': u'female'}, u'grandparent': {u'distance': u'2', u'gender': u'neutral'}, u'grandson': {u'distance': u'2', u'gender': u'male'}, u'mother': {u'distance': u'1', u'gender': u'female'}, u'nephew': {u'distance': u'2', u'gender': u'male'}, u'niece': {u'distance': u'2', u'gender': u'female'}, u'parent': {u'distance': u'1', u'gender': u'neutral'}, u'sibling': {u'distance': u'1', u'gender': u'neutral'}, u'sister': {u'distance': u'1', u'gender': u'female'}, u'son': {u'distance': u'1', u'gender': u'male'}, u'uncle': {u'distance': u'2', u'gender': u'male'}}, u'predicates': [u'likes', u'knows', u'is_from', u'lives', u'loves', u'enjoys', u'sees', u'owns', u'can'], u'pronouns': {u'indefinite': {u'person': {u'anybody': {u'quantity': u'part', u'sentence type': u'negative'}, u'anyone': {u'quantity': u'part', u'sentence type': u'negative'}, u'everybody': {u'quantity': u'all'}, u'everyone': {u'quantity': u'all'}, u'no one': {u'quantity': u'none'}, u'nobody': {u'quantity': u'none'}, u'somebody': {u'quantity': u'part', u'sentence type': u'affirmative'}, u'someone': {u'quantity': u'part', u'sentence type': u'affirmative'}}, u'place': {u'anywhere': {u'quantity': u'part', u'sentence type': u'negative'}, u'everywhere': {u'quantity': u'all'}, u'nowhere': {u'quantity': u'none'}, u'somewhere': {u'quantity': u'part', u'sentence type': u'affirmative'}}, u'thing': {u'anything': {u'quantity': u'part', u'sentence type': u'negative'}, u'everything': {u'quantity': u'all'}, u'nothing': {u'quantity': u'none'}, u'something': {u'quantity': u'part', u'sentence type': u'affirmative'}}}, u'object': {u'her': {u'gender': u'feminine', u'number': u'singular', u'person': u'third'}, u'him': {u'gender': u'masculine', u'number': u'singular', u'person': u'third'}, u'it': {u'gender': u'neuter', u'number': u'singular', u'person': u'third'}, u'me': {u'number': u'singular', u'person': u'first'}, u'them': {u'number': u'plural', u'person': u'third'}, u'us': {u'number': u'plural', u'person': u'first'}, u'you': {u'number': [u'singular', u'plural'], u'person': u'second'}}, u'possessive': {u'dependent': {u'her': {u'gender': u'feminine', u'number': u'singular', u'person': u'third'}, u'his': {u'gender': u'masculine', u'number': u'singular', u'person': u'third'}, u'its': {u'gender': u'neuter', u'number': u'singular', u'person': u'third'}, u'my': {u'number': u'singular', u'person': u'first'}, u'our': {u'number': u'plural', u'person': u'first'}, u'their': {u'number': u'plural', u'person': u'third'}, u'your': {u'number': [u'singular', u'plural'], u'person': u'second'}}, u'independent': {u'hers': {u'gender': u'feminine', u'number': u'singular', u'person': u'third'}, u'his': {u'gender': u'masculine', u'number': u'singular', u'person': u'third'}, u'mine': {u'number': u'singular', u'person': u'first'}, u'ours': {u'number': u'plural', u'person': u'first'}, u'theirs': {u'number': u'plural', u'person': u'third'}, u'yours': {u'number': [u'singular', u'plural'], u'person': u'second'}}}, u'reflexive': {u'herself': {u'gender': u'feminine', u'number': u'singular', u'person': u'third'}, u'himself': {u'gender': u'masculine', u'number': u'singular', u'person': u'third'}, u'itself': {u'gender': u'neuter', u'number': u'singular', u'person': u'third'}, u'myself': {u'number': u'singular', u'person': u'first'}, u'ourselves': {u'number': u'plural', u'person': u'first'}, u'themselves': {u'number': u'plural', u'person': u'third'}, u'yourself': {u'number': u'singular', u'person': u'second'}, u'yourselves': {u'number': u'plural', u'person': u'second'}}, u'subject': {u'he': {u'gender': u'masculine', u'number': u'singular', u'person': u'third'}, u'i': {u'number': u'singular', u'person': u'first'}, u'it': {u'gender': u'neuter', u'number': u'singular', u'person': u'third'}, u'she': {u'gender': u'feminine', u'number': u'singular', u'person': u'third'}, u'they': {u'number': u'plural', u'person': u'third'}, u'we': {u'number': u'plural', u'person': u'first'}, u'you': {u'number': [u'singular', u'plural'], u'person': u'second'}}}, u'question words': {u'how': {u'response': u'manner'}, u'what': {u'response': u'object'}, u'when': {u'response': u'time'}, u'where': {u'response': u'location'}, u'which': {u'response': u'choice'}, u'who': {u'response': u'person'}, u'why': {u'response': u'reason'}}, u'verbs': {u'auxiliaries': {u'have': {u'had': {u'number': [u'singular', u'plural'], u'person': [u'first', u'second', u'third'], u'tense': u'past'}, u'has': {u'number': u'singular', u'person': u'third', u'tense': u'present'}, u'have': {u'number': [u'singular', u'plural'], u'person': [u'first', u'second', u'third'], u'tense': u'present'}}, u'modals': {u'can': {u'past': u'could', u'root': [u'ability', u'permission']}, u'may': {u'certainty': u'0.5', u'root': [u'permission', u'possibility']}, u'might': {u'certainty': u'0.5', u'root': [u'permission', u'possibility']}, u'must': {u'certainty': u'1', u'root': u'obligation'}, u'shall': {u'certainty': u'1', u'root': [u'obligation', u'prediction']}, u'should': {u'certainty': u'0.75', u'root': u'obligation'}, u'will': {u'certainty': u'1', u'past': u'would', u'root': [u'volition', u'prediction']}}, u'to do': {u'did': {u'number': [u'singular', u'plural'], u'person': [u'first', u'second', u'third'], u'tense': u'simple past'}, u'do': {u'number': [u'singular', u'plural'], u'person': [u'first', u'second', u'third'], u'tense': u'present'}, u'does': {u'number': u'singular', u'person': u'third', u'tense': u'present'}, u'done': {u'tense': u'past participle'}}}, u'lexical verbs': {u'appreciate': {u'past participle': u'appreciated', u'sentiment': u'0.75', u'simple past': u'appreciated'}, u'believe': {u'certainty': u'0.75', u'past participle': u'believed', u'simple past': u'believed'}, u'dislike': {u'antonym': u'like', u'past participle': u'disliked', u'sentiment': u'-0.75', u'simple past': u'disliked'}, u'enjoy': {u'past participle': u'enjoyed', u'sentiment': u'1', u'simple past': u'enjoyed'}, u'guess': {u'certainty': u'0.5', u'past participle': u'guessed', u'simple past': u'guessed'}, u'hate': {u'antonym': u'love', u'past participle': u'hated', u'sentiment': u'-1', u'simple past': u'hated'}, u'know': {u'certainty': u'1', u'past participle': u'known', u'simple past': u'knew'}, u'like': {u'antonym': u'dislike', u'past participle': u'liked', u'sentiment': u'0.75', u'simple past': u'liked'}, u'love': {u'antonym': u'hate', u'past participle': u'loved', u'sentiment': u'1', u'simple past': u'loved'}, u'suppose': {u'certainty': u'0.5', u'past participle': u'supposed', u'simple past': u'supposed'}, u'think': {u'certainty': u'0.75', u'past participle': u'tought', u'simple past': u'thought'}}, u'to be': {u'am': {u'number': u'singular', u'person': u'first', u'tense': u'present'}, u'are': {u'number': [u'singular', u'plural'], u'person': [u'second', u'third'], u'tense': u'present'}, u'been': {u'tense': u'past participle'}, u'is': {u'number': u'singular', u'person': u'third', u'tense': u'present'}, u'was': {u'number': u'singular', u'person': [u'first', u'third'], u'tense': u'simple past'}, u'were': {u'number': [u'singular', u'plural'], u'person': [u'first', u'second', u'third'], u'tense': u'simple past'}}}}</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.LEXICON" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.LOG">
-<code class="descname">LOG</code><em class="property"> = &lt;logging.Logger object&gt;</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.LOG" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.NER">
-<code class="descname">NER</code><em class="property"> = None</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.NER" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.Analyzer.analyze">
-<em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze" title="Permalink to this definition">¶</a></dt>
-<dd><p>Analyzer factory function</p>
-<p>Find appropriate Analyzer for this utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chat</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat"><em>Chat</em></a>) – Chat to be analyzed</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>analyzer</strong> – Appropriate Analyzer Subclass</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.language.analyzer.Analyzer" title="pepper.language.analyzer.Analyzer">Analyzer</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.Analyzer.analyze_complement_with_preposition">
-<em class="property">static </em><code class="descname">analyze_complement_with_preposition</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_complement_with_preposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_complement_with_preposition" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function analyses triple complement which starts with a preposition and updates the triple
-:param triple: S,P,C triple
-:return: updated triple</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.analyze_np">
-<code class="descname">analyze_np</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_np" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function analyses noun phrases
-:param triple: S,P,C triple
-:return: triple with updated elements</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.analyze_one_word_complement">
-<code class="descname">analyze_one_word_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_one_word_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_one_word_complement" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function analyses one word complement and updates the triple
-:param triple: S,P,C triple
-:return: updated triple</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.analyze_possessive">
-<code class="descname">analyze_possessive</code><span class="sig-paren">(</span><em>triple</em>, <em>element</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_possessive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_possessive" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function analyses possessive phrases, which start with pos. pronoun
-:param triple: subject, predicate, complement triple
-:param element: element of the triple which has the possessive phrase
-:return: updated triple</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.analyze_vp">
-<code class="descname">analyze_vp</code><span class="sig-paren">(</span><em>triple</em>, <em>utterance_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.analyze_vp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.analyze_vp" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function analyzes verb phrases
-:param triple: triple (subject, predicate, complement)
-:param utterance_info: the result of analysis thus far
-:return: triple and utterance info, updated with the results of VP analysis</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.chat">
-<code class="descname">chat</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.chat" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>chat</strong> – Chat to be analyzed
-:rtype: Chat</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.fix_predicate">
-<code class="descname">fix_predicate</code><span class="sig-paren">(</span><em>predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.fix_predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.fix_predicate" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function returns the lemmatized predicate and fixes the errors with lemmatizing
-:param predicate: predicate to lemmatize
-:return: lemmatized predicate</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.Analyzer.get_types_in_triple">
-<code class="descname">get_types_in_triple</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#Analyzer.get_types_in_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.Analyzer.get_types_in_triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets types for all the elements of the triple
-:param triple: S,P,C triple
-:return: triple dictionary with types</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.json_file">
-<code class="descname">json_file</code><em class="property"> = &lt;closed file 'C:\\Users\\Pepper\\Documents\\Pepper\\pepper\\pepper\\language\\data\\lexicon.json', mode 'r'&gt;</em><a class="headerlink" href="#pepper.language.analyzer.Analyzer.json_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.perspective">
-<code class="descname">perspective</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.perspective" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>perspective</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.Analyzer.utterance_type">
-<code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.Analyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>utterance_type</strong> – Utterance Type
-:rtype: UtteranceType</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">GeneralStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.StatementAnalyzer</span></code></a></p>
-<dl class="method">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement">
-<code class="descname">analyze_certainty_statement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_certainty_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_certainty_statement" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>triple</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_complement">
-<code class="descname">analyze_multiword_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.analyze_multiword_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.analyze_multiword_complement" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function analyses complex complements in statements
-:param triple: S,P,C triple
-:return: updated triple</p>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.check_triple_completeness">
-<em class="property">static </em><code class="descname">check_triple_completeness</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.check_triple_completeness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.check_triple_completeness" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function checks whether an extracted triple is complete
-:param triple: S,P,C triple
-:return: True if the triple has all three elements, False otherwise</p>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.extract_perspective">
-<em class="property">static </em><code class="descname">extract_perspective</code><span class="sig-paren">(</span><em>predicate</em>, <em>utterance_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.extract_perspective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.extract_perspective" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts perspective from statements
-:param predicate: statement predicate
-:param utterance_info: product of statement analysis thus far
-:return: perspective dictionary consisting of sentiment, certainty, and polarity value</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.initialize_triple">
-<code class="descname">initialize_triple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#GeneralStatementAnalyzer.initialize_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.initialize_triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function initializes the triple with assumed word order: NP VP C
-subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.perspective">
-<code class="descname">perspective</code><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.perspective" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>perspective</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.GeneralStatementAnalyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.GeneralStatementAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.analyzer.ObjectStatementAnalyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">ObjectStatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#ObjectStatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.ObjectStatementAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.StatementAnalyzer</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.language.analyzer.ObjectStatementAnalyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.ObjectStatementAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.analyzer.QuestionAnalyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">QuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#QuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.Analyzer" title="pepper.language.analyzer.Analyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.Analyzer</span></code></a></p>
-<p>Abstract QuestionAnalyzer Object: call QuestionAnalyzer.analyze(utterance) factory function</p>
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.QuestionAnalyzer.analyze">
-<em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#QuestionAnalyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer.analyze" title="Permalink to this definition">¶</a></dt>
-<dd><p>QuestionAnalyzer factory function</p>
-<p>Find appropriate QuestionAnalyzer for this utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chat</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat"><em>Chat</em></a>) – Chat to be analyzed</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>analyzer</strong> – Appropriate QuestionAnalyzer Subclass</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer">QuestionAnalyzer</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.QuestionAnalyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.QuestionAnalyzer.utterance_type">
-<code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.QuestionAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>utterance_type</strong> – Utterance Type (Question)
-:rtype: UtteranceType</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.analyzer.StatementAnalyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">StatementAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#StatementAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.Analyzer" title="pepper.language.analyzer.Analyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.Analyzer</span></code></a></p>
-<p>Abstract StatementAnalyzer Object: call StatementAnalyzer.analyze(utterance) factory function</p>
-<dl class="staticmethod">
-<dt id="pepper.language.analyzer.StatementAnalyzer.analyze">
-<em class="property">static </em><code class="descname">analyze</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#StatementAnalyzer.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.analyze" title="Permalink to this definition">¶</a></dt>
-<dd><p>StatementAnalyzer factory function</p>
-<p>Find appropriate StatementAnalyzer for this utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chat</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Chat" title="pepper.language.language.Chat"><em>Chat</em></a>) – Chat to be analyzed</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>analyzer</strong> – Appropriate StatementAnalyzer Subclass</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pepper.language.analyzer.StatementAnalyzer" title="pepper.language.analyzer.StatementAnalyzer">StatementAnalyzer</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.StatementAnalyzer.perspective">
-<code class="descname">perspective</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.perspective" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>perspective</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.StatementAnalyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.StatementAnalyzer.utterance_type">
-<code class="descname">utterance_type</code><a class="headerlink" href="#pepper.language.analyzer.StatementAnalyzer.utterance_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>utterance_type</strong> – Utterance Type (Statement)
-:rtype: UtteranceType</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.analyzer.VerbQuestionAnalyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">VerbQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.QuestionAnalyzer</span></code></a></p>
-<dl class="method">
-<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_complement">
-<code class="descname">analyze_multiword_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.analyze_multiword_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.analyze_multiword_complement" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.initialize_triple">
-<code class="descname">initialize_triple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#VerbQuestionAnalyzer.initialize_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.initialize_triple" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.VerbQuestionAnalyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.VerbQuestionAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict with S,P,C or None</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.language.analyzer.WhQuestionAnalyzer">
-<em class="property">class </em><code class="descclassname">pepper.language.analyzer.</code><code class="descname">WhQuestionAnalyzer</code><span class="sig-paren">(</span><em>chat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pepper.language.analyzer.QuestionAnalyzer" title="pepper.language.analyzer.QuestionAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.language.analyzer.QuestionAnalyzer</span></code></a></p>
-<dl class="method">
-<dt id="pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_complement">
-<code class="descname">analyze_multiword_complement</code><span class="sig-paren">(</span><em>triple</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.analyze_multiword_complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.analyze_multiword_complement" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.language.analyzer.WhQuestionAnalyzer.initialize_triple">
-<code class="descname">initialize_triple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/analyzer.html#WhQuestionAnalyzer.initialize_triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.initialize_triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function initializes the triple for wh_questions with the assumed word order: aux before predicate, subject before complement
-:return: initial S,P,C triple</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.language.analyzer.WhQuestionAnalyzer.triple">
-<code class="descname">triple</code><a class="headerlink" href="#pepper.language.analyzer.WhQuestionAnalyzer.triple" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns: <strong>triple</strong>
-:rtype: dict or None</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-language-analyzer-module">
+<h1>pepper.language.analyzer module<a class="headerlink" href="#pepper-language-analyzer-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.language.language.html" class="btn btn-neutral float-right" title="pepper.language.language module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.language.language.html" class="btn btn-neutral float-right" title="pepper.language.language module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.language.utils.wordnet_utils.html" class="btn btn-neutral" title="pepper.language.utils.wordnet_utils module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.language.utils.wordnet_utils.html" class="btn btn-neutral float-left" title="pepper.language.utils.wordnet_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -527,11 +199,19 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL.
+        
+        &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -543,37 +223,15 @@ subject is the NP, predicate is VP and complement can be NP, VP, PP, another S o
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
