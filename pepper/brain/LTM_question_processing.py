@@ -6,7 +6,7 @@ def create_query(self, utterance):
     # Query subject
     if utterance.triple.subject_name == empty:
         query = """
-                   SELECT distinct ?slabel ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue
+                   SELECT distinct ?slabel ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue ?emotionValue ?temporalValue
                            WHERE { 
                                ?s n2mu:%s ?o . 
                                ?s rdfs:label ?slabel . 
@@ -20,15 +20,23 @@ def create_query(self, utterance):
 
                                ?m grasp:hasAttribution ?att .
                                ?att rdf:value ?certainty .
-                               ?certainty rdf:type grasp:CertaintyValue .
+                               ?certainty rdf:type graspf:CertaintyValue .
                                ?certainty rdfs:label ?certaintyValue .
 
                                ?att rdf:value ?polarity .
-                               ?polarity rdf:type grasp:PolarityValue .
+                               ?polarity rdf:type graspf:PolarityValue .
                                ?polarity rdfs:label ?polarityValue .
 
+                               ?att rdf:value ?temporal .
+                               ?temporal rdf:type graspf:TemporalValue .
+                               ?temporal rdfs:label ?temporalValue .
+
+                               ?att rdf:value ?emotion .
+                               ?emotion rdf:type graspe:EmotionValue .
+                               ?emotion rdfs:label ?emotionValue .
+
                                ?att rdf:value ?sentiment .
-                               ?sentiment rdf:type grasp:SentimentValue .
+                               ?sentiment rdf:type grasps:SentimentValue .
                                ?sentiment rdfs:label ?sentimentValue .
                            }
                    """ % (utterance.triple.predicate_name,
@@ -38,7 +46,7 @@ def create_query(self, utterance):
     # Query complement
     elif utterance.triple.complement_name == empty:
         query = """
-                   SELECT distinct ?olabel ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue
+                   SELECT distinct ?olabel ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue ?emotionValue ?temporalValue
                            WHERE { 
                                ?s n2mu:%s ?o .   
                                ?s rdfs:label '%s' .  
@@ -52,15 +60,23 @@ def create_query(self, utterance):
 
                                ?m grasp:hasAttribution ?att .
                                ?att rdf:value ?certainty .
-                               ?certainty rdf:type grasp:CertaintyValue .
+                               ?certainty rdf:type graspf:CertaintyValue .
                                ?certainty rdfs:label ?certaintyValue .
 
                                ?att rdf:value ?polarity .
-                               ?polarity rdf:type grasp:PolarityValue .
+                               ?polarity rdf:type graspf:PolarityValue .
                                ?polarity rdfs:label ?polarityValue .
 
+                               ?att rdf:value ?temporal .
+                               ?temporal rdf:type graspf:TemporalValue .
+                               ?temporal rdfs:label ?temporalValue .
+
+                               ?att rdf:value ?emotion .
+                               ?emotion rdf:type graspe:EmotionValue .
+                               ?emotion rdfs:label ?emotionValue .
+
                                ?att rdf:value ?sentiment .
-                               ?sentiment rdf:type grasp:SentimentValue .
+                               ?sentiment rdf:type grasps:SentimentValue .
                                ?sentiment rdfs:label ?sentimentValue .
                            }
                    """ % (utterance.triple.predicate_name,
@@ -70,7 +86,7 @@ def create_query(self, utterance):
     # Query existence
     else:
         query = """
-                   SELECT distinct ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue
+                   SELECT distinct ?authorlabel ?certaintyValue ?polarityValue ?sentimentValue ?emotionValue ?temporalValue
                            WHERE { 
                                ?s n2mu:%s ?o .   
                                ?s rdfs:label '%s' .  
@@ -84,15 +100,23 @@ def create_query(self, utterance):
 
                                ?m grasp:hasAttribution ?att .
                                ?att rdf:value ?certainty .
-                               ?certainty rdf:type grasp:CertaintyValue .
+                               ?certainty rdf:type graspf:CertaintyValue .
                                ?certainty rdfs:label ?certaintyValue .
 
                                ?att rdf:value ?polarity .
-                               ?polarity rdf:type grasp:PolarityValue .
+                               ?polarity rdf:type graspf:PolarityValue .
                                ?polarity rdfs:label ?polarityValue .
 
+                               ?att rdf:value ?temporal .
+                               ?temporal rdf:type graspf:TemporalValue .
+                               ?temporal rdfs:label ?temporalValue .
+
+                               ?att rdf:value ?emotion .
+                               ?emotion rdf:type graspe:EmotionValue .
+                               ?emotion rdfs:label ?emotionValue .
+
                                ?att rdf:value ?sentiment .
-                               ?sentiment rdf:type grasp:SentimentValue .
+                               ?sentiment rdf:type grasps:SentimentValue .
                                ?sentiment rdfs:label ?sentimentValue .
                            }
                    """ % (utterance.triple.predicate_name,

@@ -2,9 +2,9 @@ pepper.framework.abstract package
 =================================
 
 .. automodule:: pepper.framework.abstract
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
@@ -19,4 +19,3 @@ pepper.framework.abstract package
    pepper.framework.abstract.motion
    pepper.framework.abstract.tablet
    pepper.framework.abstract.text_to_speech
-

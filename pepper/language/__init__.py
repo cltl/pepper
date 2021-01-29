@@ -4,7 +4,7 @@ The Pepper Language Package contains tools to generate RDF triples from Natural 
 
 
 from .language import Chat, Utterance
-from .utils.atoms import UtteranceType
+from .utils.atoms import UtteranceType, Emotion, Time
 
 
 # Download NLTK Dependencies

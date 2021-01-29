@@ -2,9 +2,9 @@ pepper.responder package
 ========================
 
 .. automodule:: pepper.responder
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
@@ -18,4 +18,3 @@ pepper.responder package
    pepper.responder.sensory
    pepper.responder.topic
    pepper.responder.unknown
-

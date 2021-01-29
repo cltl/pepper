@@ -2,9 +2,9 @@ pepper.knowledge package
 ========================
 
 .. automodule:: pepper.knowledge
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
@@ -15,4 +15,3 @@ pepper.knowledge package
    pepper.knowledge.sentences
    pepper.knowledge.wikipedia
    pepper.knowledge.wolfram
-

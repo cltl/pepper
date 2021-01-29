@@ -6,7 +6,7 @@ from typing import List, Optional
 from nltk.stem import WordNetLemmatizer
 
 from pepper.brain.utils.constants import NOT_TO_MENTION_TYPES
-from pepper.brain.utils.helper_functions import hash_claim_id, is_proper_noun
+from pepper.brain.utils.helper_functions import hash_claim_id, is_proper_noun, casefold_text
 
 
 class RDFBase(object):
@@ -65,11 +65,11 @@ class RDFBase(object):
         """
         if format == 'triple':
             # Label
-            self._label = Literal(self.label.lower().replace(" ", "-"))
+            self._label = Literal(casefold_text(self.label, format=format))
 
         elif format == 'natural':
             # Label
-            self._label = self.label.lower().replace("-", " ")
+            self._label = casefold_text(self.label, format=format)
 
     def __repr__(self):
         return '{}'.format(self.label)
@@ -127,13 +127,13 @@ class Entity(RDFBase):
         """
         if format == 'triple':
             # Label
-            self._label = Literal(self.label.lower().replace(" ", "-"))
+            self._label = Literal(casefold_text(self.label, format=format))
             # Types
-            self._types = [t.lower().replace(" ", "_") for t in self.types]
+            self._types = [casefold_text(t, format=format) for t in self.types]
 
         elif format == 'natural':
             # Label
-            self._label = self.label.lower().replace("_", " ")
+            self._label = casefold_text(self.label, format=format)
             self._label = self._label.capitalize() if is_proper_noun(self.types) else self._label
             # Types
             self._types = [t.lower().replace("_", " ") for t in self.types]
@@ -186,13 +186,13 @@ class Predicate(RDFBase):
 
         if format == 'triple':
             # Label
-            self._label = Literal(self.label.lower().replace(" ", "-"))
+            self._label = Literal(casefold_text(self.label, format=format))
             self._label = Literal(
                 self._fix_predicate_morphology(subject_label, str(self.label), complement_label, format=format))
 
         elif format == 'natural':
             # Label
-            self._label = self.label.lower().replace("-", " ")
+            self._label = casefold_text(self.label, format=format)
             self._label = self._fix_predicate_morphology(subject_label, self.label, complement_label, format=format)
 
     @staticmethod
@@ -397,6 +397,26 @@ class Perspective(object):
     def emotion(self):
         # type: () -> Optional[Emotion]
         return self._emotion
+
+    def set_certainty(self, certainty):
+        # type: (float) -> ()
+        self._certainty = certainty
+
+    def set_polarity(self, polarity):
+        # type: (int) -> ()
+        self._polarity = polarity
+
+    def set_sentiment(self, sentiment):
+        # type: (float) -> ()
+        self._sentiment = sentiment
+
+    def set_time(self, time):
+        # type: (Time) -> ()
+        self._time = time
+
+    def set_emotion(self, emotion):
+        # type: (Emotion) -> ()
+        self._emotion = emotion
 
 
 class Provenance(object):

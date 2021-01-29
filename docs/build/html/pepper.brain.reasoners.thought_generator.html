@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,49 +11,47 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="pepper.brain.reasoners package" href="pepper.brain.reasoners.html"/>
-        <link rel="next" title="pepper.brain.reasoners.type_reasoner module" href="pepper.brain.reasoners.type_reasoner.html"/>
-        <link rel="prev" title="pepper.brain.reasoners.location_reasoner module" href="pepper.brain.reasoners.location_reasoner.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.brain.reasoners.trust_calculator module" href="pepper.brain.reasoners.trust_calculator.html" />
+    <link rel="prev" title="pepper.brain.reasoners.location_reasoner module" href="pepper.brain.reasoners.location_reasoner.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -81,17 +78,22 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.infrastructure.html">pepper.brain.infrastructure package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.brain.reasoners.html">pepper.brain.reasoners package</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.reasoners.location_reasoner.html">pepper.brain.reasoners.location_reasoner module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.brain.reasoners.thought_generator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.brain.reasoners.trust_calculator.html">pepper.brain.reasoners.trust_calculator module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.brain.reasoners.type_reasoner.html">pepper.brain.reasoners.type_reasoner module</a></li>
 </ul>
 </li>
@@ -115,209 +117,88 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">CLTL/Pepper</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
-      
+        
           <li><a href="pepper.brain.html">pepper.brain package</a> &raquo;</li>
-      
+        
           <li><a href="pepper.brain.reasoners.html">pepper.brain.reasoners package</a> &raquo;</li>
-      
-    <li>pepper.brain.reasoners.thought_generator module</li>
+        
+      <li>pepper.brain.reasoners.thought_generator module</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/pepper.brain.reasoners.thought_generator.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.brain.reasoners.thought_generator">
-<span id="pepper-brain-reasoners-thought-generator-module"></span><h1>pepper.brain.reasoners.thought_generator module<a class="headerlink" href="#module-pepper.brain.reasoners.thought_generator" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator">
-<em class="property">class </em><code class="descclassname">pepper.brain.reasoners.thought_generator.</code><code class="descname">ThoughtGenerator</code><span class="sig-paren">(</span><em>address='http://localhost:7200/repositories/leolani'</em>, <em>clear_all=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain" title="pepper.brain.basic_brain.BasicBrain"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.basic_brain.BasicBrain</span></code></a></p>
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.fill_entity_novelty">
-<code class="descname">fill_entity_novelty</code><span class="sig-paren">(</span><em>subject_url</em>, <em>complement_url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.fill_entity_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.fill_entity_novelty" title="Permalink to this definition">¶</a></dt>
-<dd><p>Structure entity novelty to signal if these entities have been heard before
-:param subject_url: URI of instance
-:type subject_url: str
-:param complement_url: URI of instance
-:type complement_url: str</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Entity object containing boolean values signaling if they are new</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_all_conflicts">
-<code class="descname">get_all_conflicts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_all_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_all_conflicts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Aggregate all conflicts in brain
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_complement_cardinality_conflicts">
-<code class="descname">get_complement_cardinality_conflicts</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_complement_cardinality_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_complement_cardinality_conflicts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build cardinality conflicts, meaning conflicts because predicates should be one to one but have
-multiple object values
-:param utterance:</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>conflicts</strong> – List of Conflicts containing the object which creates the conflict, and their provenance</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[CardinalityConflicts]</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_conflicts_with_one_to_one_predicate">
-<code class="descname">get_conflicts_with_one_to_one_predicate</code><span class="sig-paren">(</span><em>one_to_one_predicate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_conflicts_with_one_to_one_predicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_conflicts_with_one_to_one_predicate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_entity_gaps">
-<code class="descname">get_entity_gaps</code><span class="sig-paren">(</span><em>entity</em>, <em>exclude=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_entity_gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_entity_gaps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build gaps with regards to the range and domain of the given entity and its predicates
-:param entity: Information regarding the entity
-:type entity: dict</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Gaps object containing gaps related to range and domain information that could be learned</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_negation_conflicts">
-<code class="descname">get_negation_conflicts</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_negation_conflicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_negation_conflicts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build negation conflicts, meaning conflicts because predicates are directly negated
-:param utterance:</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>conflicts</strong> – List of Conflicts containing the predicate which creates the conflict, and their provenance</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.NegationConflict" title="pepper.brain.infrastructure.building_blocks.NegationConflict">NegationConflict</a>]</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_overlaps">
-<code class="descname">get_overlaps</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_overlaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_overlaps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build overlaps with regards to the subject and object of the heard statement
-:param utterance:</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Overlaps containing shared information with the heard statement</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_statement_novelty">
-<code class="descname">get_statement_novelty</code><span class="sig-paren">(</span><em>statement_uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_statement_novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_statement_novelty" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query and build provenance if an instance (statement) has been learned before
-:param statement_uri: URI of instance
-:type statement_uri: str</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>response</strong> – List of provenance for the instance</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference internal" href="pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.StatementNovelty" title="pepper.brain.infrastructure.building_blocks.StatementNovelty">StatementNovelty</a>]</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_trust">
-<code class="descname">get_trust</code><span class="sig-paren">(</span><em>speaker</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/reasoners/thought_generator.html#ThoughtGenerator.get_trust"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.reasoners.thought_generator.ThoughtGenerator.get_trust" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute a value of trust based on what is know about and via this person
-:param speaker:</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>trust_value</strong> – Weighted average of features</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-brain-reasoners-thought-generator-module">
+<h1>pepper.brain.reasoners.thought_generator module<a class="headerlink" href="#pepper-brain-reasoners-thought-generator-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.brain.reasoners.type_reasoner.html" class="btn btn-neutral float-right" title="pepper.brain.reasoners.type_reasoner module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.brain.reasoners.trust_calculator.html" class="btn btn-neutral float-right" title="pepper.brain.reasoners.trust_calculator module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.brain.reasoners.location_reasoner.html" class="btn btn-neutral" title="pepper.brain.reasoners.location_reasoner module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.brain.reasoners.location_reasoner.html" class="btn btn-neutral float-left" title="pepper.brain.reasoners.location_reasoner module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -326,11 +207,19 @@ multiple object values
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL.
+        
+        &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -342,37 +231,15 @@ multiple object values
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

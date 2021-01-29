@@ -2,15 +2,15 @@ pepper.language package
 =======================
 
 .. automodule:: pepper.language
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
 
-    pepper.language.generation
-    pepper.language.utils
+   pepper.language.generation
+   pepper.language.utils
 
 
 .. toctree::
@@ -21,4 +21,3 @@ pepper.language package
    pepper.language.ner
    pepper.language.pos
    pepper.language.transitivity
-

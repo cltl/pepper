@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,48 +11,47 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="index.html"/>
-        <link rel="next" title="pepper.brain package" href="pepper.brain.html"/>
-        <link rel="prev" title="CLTL Pepper/Nao Framework - API Reference" href="index.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.brain package" href="pepper.brain.html" />
+    <link rel="prev" title="CLTL Pepper/Nao Framework - API Reference" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -80,11 +78,15 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pepper package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a></li>
@@ -99,40 +101,61 @@
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">CLTL/Pepper</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>pepper package</li>
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>pepper package</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/pepper.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -144,139 +167,144 @@
 Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit (VU), Amsterdam.</p>
 <p>The pepper package is split in a number of subpackages:</p>
 <ul class="simple">
-<li><a class="reference internal" href="pepper.brain.html#module-pepper.brain" title="pepper.brain"><code class="xref py py-mod docutils literal notranslate"><span class="pre">brain</span></code></a> is concerned with managing and querying pepper’s triple store database</li>
-<li><a class="reference internal" href="pepper.framework.html#module-pepper.framework" title="pepper.framework"><code class="xref py py-mod docutils literal notranslate"><span class="pre">framework</span></code></a> contains the backends and sensory processing needed to run robot apps</li>
-<li><a class="reference internal" href="pepper.knowledge.html#module-pepper.knowledge" title="pepper.knowledge"><code class="xref py py-mod docutils literal notranslate"><span class="pre">knowledge</span></code></a> contains pepper’s hardwired and internet knowledge</li>
-<li><a class="reference internal" href="pepper.language.html#module-pepper.language" title="pepper.language"><code class="xref py py-mod docutils literal notranslate"><span class="pre">language</span></code></a> contains the grammars and scripts to parse and generate natural language</li>
-<li><a class="reference internal" href="pepper.responder.html#module-pepper.responder" title="pepper.responder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">responder</span></code></a> contains scripts that reply to certain (natural language) queries</li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">brain</span></code> is concerned with managing and querying pepper’s triple store database</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">framework</span></code> contains the backends and sensory processing needed to run robot apps</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">knowledge</span></code> contains pepper’s hardwired and internet knowledge</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">language</span></code> contains the grammars and scripts to parse and generate natural language</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">responder</span></code> contains scripts that reply to certain (natural language) queries</p></li>
 </ul>
 <p><a class="reference internal" href="pepper.config.html#module-pepper.config" title="pepper.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">config</span></code></a> lists all application configuration options</p>
 <dl class="class">
 <dt id="pepper.ApplicationBackend">
-<em class="property">class </em><code class="descclassname">pepper.</code><code class="descname">ApplicationBackend</code><a class="reference internal" href="_modules/pepper.html#ApplicationBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.ApplicationBackend" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pepper.</code><code class="sig-name descname">ApplicationBackend</code><a class="reference internal" href="_modules/pepper.html#ApplicationBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.ApplicationBackend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
 <dl class="attribute">
 <dt id="pepper.ApplicationBackend.NAOQI">
-<code class="descname">NAOQI</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.ApplicationBackend.NAOQI" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">NAOQI</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.ApplicationBackend.NAOQI" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.ApplicationBackend.SYSTEM">
-<code class="descname">SYSTEM</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.ApplicationBackend.SYSTEM" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">SYSTEM</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.ApplicationBackend.SYSTEM" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pepper.CameraResolution">
-<em class="property">class </em><code class="descclassname">pepper.</code><code class="descname">CameraResolution</code><a class="reference internal" href="_modules/pepper.html#CameraResolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.CameraResolution" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pepper.</code><code class="sig-name descname">CameraResolution</code><a class="reference internal" href="_modules/pepper.html#CameraResolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.CameraResolution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
 <dl class="attribute">
 <dt id="pepper.CameraResolution.NATIVE">
-<code class="descname">NATIVE</code><em class="property"> = (-1, -1)</em><a class="headerlink" href="#pepper.CameraResolution.NATIVE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">NATIVE</code><em class="property"> = (-1, -1)</em><a class="headerlink" href="#pepper.CameraResolution.NATIVE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.CameraResolution.QQQQVGA">
-<code class="descname">QQQQVGA</code><em class="property"> = (30, 40)</em><a class="headerlink" href="#pepper.CameraResolution.QQQQVGA" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QQQQVGA</code><em class="property"> = (30, 40)</em><a class="headerlink" href="#pepper.CameraResolution.QQQQVGA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.CameraResolution.QQQVGA">
-<code class="descname">QQQVGA</code><em class="property"> = (60, 80)</em><a class="headerlink" href="#pepper.CameraResolution.QQQVGA" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QQQVGA</code><em class="property"> = (60, 80)</em><a class="headerlink" href="#pepper.CameraResolution.QQQVGA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.CameraResolution.QQVGA">
-<code class="descname">QQVGA</code><em class="property"> = (120, 160)</em><a class="headerlink" href="#pepper.CameraResolution.QQVGA" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QQVGA</code><em class="property"> = (120, 160)</em><a class="headerlink" href="#pepper.CameraResolution.QQVGA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.CameraResolution.QVGA">
-<code class="descname">QVGA</code><em class="property"> = (240, 320)</em><a class="headerlink" href="#pepper.CameraResolution.QVGA" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QVGA</code><em class="property"> = (240, 320)</em><a class="headerlink" href="#pepper.CameraResolution.QVGA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.CameraResolution.VGA">
-<code class="descname">VGA</code><em class="property"> = (480, 640)</em><a class="headerlink" href="#pepper.CameraResolution.VGA" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">VGA</code><em class="property"> = (480, 640)</em><a class="headerlink" href="#pepper.CameraResolution.VGA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.CameraResolution.VGA4">
-<code class="descname">VGA4</code><em class="property"> = (960, 1280)</em><a class="headerlink" href="#pepper.CameraResolution.VGA4" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">VGA4</code><em class="property"> = (960, 1280)</em><a class="headerlink" href="#pepper.CameraResolution.VGA4" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pepper.NAOqiCameraIndex">
-<em class="property">class </em><code class="descclassname">pepper.</code><code class="descname">NAOqiCameraIndex</code><a class="reference internal" href="_modules/pepper.html#NAOqiCameraIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.NAOqiCameraIndex" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pepper.</code><code class="sig-name descname">NAOqiCameraIndex</code><a class="reference internal" href="_modules/pepper.html#NAOqiCameraIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.NAOqiCameraIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.IntEnum</span></code></p>
+<p>An enumeration.</p>
 <dl class="attribute">
 <dt id="pepper.NAOqiCameraIndex.BOTTOM">
-<code class="descname">BOTTOM</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.NAOqiCameraIndex.BOTTOM" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">BOTTOM</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.NAOqiCameraIndex.BOTTOM" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.NAOqiCameraIndex.DEPTH">
-<code class="descname">DEPTH</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.NAOqiCameraIndex.DEPTH" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEPTH</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.NAOqiCameraIndex.DEPTH" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.NAOqiCameraIndex.TOP">
-<code class="descname">TOP</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.NAOqiCameraIndex.TOP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">TOP</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.NAOqiCameraIndex.TOP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pepper.NAOqiMicrophoneIndex">
-<em class="property">class </em><code class="descclassname">pepper.</code><code class="descname">NAOqiMicrophoneIndex</code><a class="reference internal" href="_modules/pepper.html#NAOqiMicrophoneIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pepper.</code><code class="sig-name descname">NAOqiMicrophoneIndex</code><a class="reference internal" href="_modules/pepper.html#NAOqiMicrophoneIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.IntEnum</span></code></p>
+<p>An enumeration.</p>
 <dl class="attribute">
 <dt id="pepper.NAOqiMicrophoneIndex.ALL">
-<code class="descname">ALL</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.ALL" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ALL</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.ALL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.NAOqiMicrophoneIndex.FRONT">
-<code class="descname">FRONT</code><em class="property"> = 3</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.FRONT" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">FRONT</code><em class="property"> = 3</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.FRONT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.NAOqiMicrophoneIndex.LEFT">
-<code class="descname">LEFT</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.LEFT" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LEFT</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.LEFT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.NAOqiMicrophoneIndex.REAR">
-<code class="descname">REAR</code><em class="property"> = 4</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.REAR" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">REAR</code><em class="property"> = 4</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.REAR" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.NAOqiMicrophoneIndex.RIGHT">
-<code class="descname">RIGHT</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.RIGHT" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">RIGHT</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.NAOqiMicrophoneIndex.RIGHT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pepper.ObjectDetectionTarget">
-<em class="property">class </em><code class="descclassname">pepper.</code><code class="descname">ObjectDetectionTarget</code><a class="reference internal" href="_modules/pepper.html#ObjectDetectionTarget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.ObjectDetectionTarget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pepper.</code><code class="sig-name descname">ObjectDetectionTarget</code><a class="reference internal" href="_modules/pepper.html#ObjectDetectionTarget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.ObjectDetectionTarget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
 <dl class="attribute">
 <dt id="pepper.ObjectDetectionTarget.AVA">
-<code class="descname">AVA</code><em class="property"> = ('localhost', 27001)</em><a class="headerlink" href="#pepper.ObjectDetectionTarget.AVA" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">AVA</code><em class="property"> = ('localhost', 27001)</em><a class="headerlink" href="#pepper.ObjectDetectionTarget.AVA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.ObjectDetectionTarget.COCO">
-<code class="descname">COCO</code><em class="property"> = ('localhost', 27002)</em><a class="headerlink" href="#pepper.ObjectDetectionTarget.COCO" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">COCO</code><em class="property"> = ('localhost', 27002)</em><a class="headerlink" href="#pepper.ObjectDetectionTarget.COCO" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.ObjectDetectionTarget.OID">
-<code class="descname">OID</code><em class="property"> = ('localhost', 27003)</em><a class="headerlink" href="#pepper.ObjectDetectionTarget.OID" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">OID</code><em class="property"> = ('localhost', 27003)</em><a class="headerlink" href="#pepper.ObjectDetectionTarget.OID" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -293,6 +321,7 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.reasoners.html">pepper.brain.reasoners package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.reasoners.location_reasoner.html">pepper.brain.reasoners.location_reasoner module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.reasoners.thought_generator.html">pepper.brain.reasoners.thought_generator module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.reasoners.trust_calculator.html">pepper.brain.reasoners.trust_calculator module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.reasoners.type_reasoner.html">pepper.brain.reasoners.type_reasoner module</a></li>
 </ul>
 </li>
@@ -310,12 +339,7 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html#abstract">Abstract</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
@@ -329,7 +353,6 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html#backend">Backend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.naoqi.backend.html">pepper.framework.backend.naoqi.backend module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.naoqi.camera.html">pepper.framework.backend.naoqi.camera module</a></li>
@@ -353,7 +376,6 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.display.display.html">pepper.framework.component.display.display module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.display.server.html">pepper.framework.component.display.server module</a></li>
@@ -374,7 +396,6 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html#sensor">Sensor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.asr.html">pepper.framework.sensor.asr module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.face.html">pepper.framework.sensor.face module</a></li>
@@ -383,10 +404,7 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.vad.html">pepper.framework.sensor.vad module</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html#context">Context</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.framework.util.html">pepper.framework.util module</a></li>
 </ul>
 </li>
@@ -407,7 +425,6 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.analyzers_old.html">pepper.language.utils.analyzers_old module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.atoms.html">pepper.language.utils.atoms module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.helper_functions.html">pepper.language.utils.helper_functions module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.utils.wordnet_utils.html">pepper.language.utils.wordnet_utils module</a></li>
@@ -444,15 +461,16 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pepper.brain.html" class="btn btn-neutral float-right" title="pepper.brain package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pepper.brain.html" class="btn btn-neutral float-right" title="pepper.brain package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="CLTL Pepper/Nao Framework - API Reference" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="CLTL Pepper/Nao Framework - API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -461,11 +479,19 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL.
+        
+        &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -477,37 +503,15 @@ Computational Lexicology &amp; Terminology Lab (CLTL) at the Vrije Universiteit 
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
