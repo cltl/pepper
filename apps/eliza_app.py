@@ -70,10 +70,6 @@ class ElizaApplication(AbstractApplication,         # Every Application Inherits
                 break
 
 
-
-
-
-
 class IntroductionIntention(AbstractIntention, ElizaApplication):
 
 
@@ -84,8 +80,6 @@ class IntroductionIntention(AbstractIntention, ElizaApplication):
         self.say("I am your best friend and personal therapist", animations.MODEST)
         self.say("How do you feel today?", animations.FRIENDLY)
         sleep(3.5)
-
-
 
 
 if __name__ == "__main__":
