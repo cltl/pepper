@@ -1,0 +1,62 @@
+# Note that ?node is the relevant node's IRI and must be used in the query
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+
+SELECT ?type ?rank {
+    {
+    	{
+            # Get node type
+            ?node rdf:type ?type.
+
+            FILTER (
+                isURI(?type)
+                && (
+                    STRSTARTS(str(?type), str(n2mu:))
+                    || STRSTARTS(str(?type), str(sem:))
+                    || STRSTARTS(str(?type), str(grasp:))
+                )
+                && ?type NOT IN (sem:Event , sem:Place , grasp:Instance)
+            )
+        } UNION {
+            # Get node rank that will be used to define node size. Should be a number between 0 and 1
+            OPTIONAL {
+                GRAPH ?node {
+                    ?s ?p ?o .
+                } .
+                ?node gaf:denotedBy ?init_trigger .          # Initial node
+            }
+
+            OPTIONAL {
+                ?attval_trigger rdf:value ?node .              # Attribution Value node
+            }
+
+            OPTIONAL {
+               ?att_trigger grasp:hasAttribution ?node .       # Attribution node
+            }
+
+            OPTIONAL {
+                ?date_trigger sem:hasBeginTimeStamp ?node .       # Date node
+            }
+
+            OPTIONAL {
+                ?author_trigger grasp:wasAttributedTo ?node .       # Author node
+            }
+
+            BIND(
+                IF(BOUND(?init_trigger), 1,
+                IF(BOUND(?attval_trigger), 0.8,
+                IF(BOUND(?att_trigger), 0.0,
+                IF(BOUND(?date_trigger), 0.4,
+                IF(BOUND(?author_trigger), 0.4, 0.0)))))
+            AS ?rank)
+
+            ?node rank:hasRDFRank ?rank .
+        }
+    }
+} ORDER BY ?type

@@ -5,6 +5,7 @@ import requests
 
 from xml.etree import ElementTree
 
+import time
 import json
 import os
 import io
@@ -26,6 +27,21 @@ class Article(object):
     @property
     def complete(self):
         return self.language and self.time and self.url
+
+    def to_dict(self):
+        return {
+            'language': self.language,
+            'title': self.title,
+            'publisher': self.publisher,
+            'author': self.author,
+            'time': self.time,
+            'url': self.url,
+            'raw': self.raw,
+            'hash': self.hash
+        }
+
+    def to_json(self):
+        return json.dumps(self.to_dict())
 
     def to_naf(self):
         xml_header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
@@ -183,5 +199,29 @@ def news_to_naf(articles, path):
 
 
 if __name__ == '__main__':
-    query, language, region = 'brexit', 'nl', 'nl'
-    news_to_naf(get_news(query, language, region), 'out/{}/{}-{}'.format(query, language, region))
+
+    DIR = 'tmp/brexit/en-gb-json'
+
+    # # Get News and Save as JSON
+    # for item in get_news('brexit', 'en', 'gb'):
+    #     with open('tmp/brexit/en-gb-json/{}.json'.format(item.hash), 'w') as json_file:
+    #         json_file.write(item.to_json())
+
+
+    def strip_nonascii(text):
+        return re.sub(r'[^\x00-\x7F]+', ' ', text)
+
+
+    print("BREXIT_NEWS = [")
+    for item in os.listdir(DIR):
+        with open(os.path.join(DIR, item)) as json_file:
+            article = json.load(json_file)
+            if all([key in article for key in 'author', 'title', 'publisher', 'time']):
+                date = time.strftime('%A %B %d', time.strptime(article['time'], '%Y%m%dT%H%M%S'))
+                if article['author'] and article['title'] and article['publisher'] and article['time']:
+                    print('    "On {}, {} wrote an article in {} titled: {}",'.format(
+                        date,
+                        strip_nonascii(article['author']),
+                        strip_nonascii(article['publisher']),
+                        strip_nonascii(article['title'])).replace(':', ':...'))
+    print("]")

@@ -3,29 +3,28 @@ from pepper.language import Utterance
 from .responder import Responder, ResponderType
 from pepper.knowledge import animations
 
-import re
-
 from typing import Optional, Union, Tuple, Callable
-
 from random import choice
+import re
 
 
 class GreetingResponder(Responder):
 
     GREETINGS = [
         "Yo",
-        "Hey!",
-        "Hello!",
-        "Hi!",
+        "Hey",
+        "Hello",
+        "Hi",
         "Good Day",
-        "How's it going?",
-        "How are you doing?",
-        "What's up?",
-        "What's new?",
-        "What's going on?",
-        "What's up?",
-        "Good to see you!",
-        "Nice to see you!",
+        "How's it going",
+        "How are you doing",
+        "What's up",
+        "What's new",
+        "What's going on",
+        "What's up",
+        "Good to see you",
+        "Nice to see you",
+        "How is it going",
     ]
 
     _GREETINGS_STRIPPED = [re.sub('[!?]', '', greeting.lower()) for greeting in GREETINGS]
@@ -58,6 +57,7 @@ class GoodbyeResponder(Responder):
         "Good Bye",
         "Have a nice day",
         "Nice having talked to you",
+        "See you later alligator",
     ]
 
     _GOODBYES_STRIPPED = [re.sub('[!?]', '', goodbye.lower()) for goodbye in GOODBYES]
@@ -84,7 +84,7 @@ class ThanksResponder(Responder):
     THANKS = [
         "thank you",
         "thanks",
-        "appreciate",
+        "appreciate it",
         "cheers",
     ]
 
@@ -144,8 +144,11 @@ class AffirmationResponder(Responder):
         "Amazing!",
         "I like it!",
         "That makes my day!",
-        "Incredible",
-        "Mesmerizing"
+        "Incredible!",
+        "Lekker!",
+        "Fantastic!",
+        "Awesome!",
+        "Splendid",
     ]
 
     @property

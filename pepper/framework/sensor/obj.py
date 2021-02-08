@@ -98,7 +98,10 @@ class Object(object):
         -------
         time: float
         """
-        return self.image.time
+        try:
+            return self.image.time
+        except:
+            return 0.0
 
     @property
     def image_bounds(self):
@@ -204,9 +207,9 @@ class Object(object):
         distance: float
         """
         return np.sqrt(
-            (self.position[0] - obj.position[0])**2 +
-            (self.position[1] - obj.position[1])**2 +
-            (self.position[2] - obj.position[2])**2
+            (self.position[0] - obj.position[0]) ** 2 +
+            (self.position[1] - obj.position[1]) ** 2 +
+            (self.position[2] - obj.position[2]) ** 2
         )
 
     def dict(self):
@@ -250,12 +253,15 @@ class Object(object):
         -------
         depth: float
         """
-        depth_map = self.image.get_depth(self._image_bounds)
-        depth_map_valid = depth_map != 0
+        try:
+            depth_map = self.image.get_depth(self._image_bounds)
+            depth_map_valid = depth_map != 0
 
-        if np.sum(depth_map_valid):
-            return np.median(depth_map[depth_map_valid])
-        else:
+            if np.sum(depth_map_valid):
+                return np.median(depth_map[depth_map_valid])
+            else:
+                return 0.0
+        except:
             return 0.0
 
     def _calculate_bounds(self):
@@ -268,9 +274,12 @@ class Object(object):
         bounds: Bounds
             Bounds in View Space
         """
-        x0, y0 = self._image.get_direction((self._image_bounds.x0, self._image_bounds.y0))
-        x1, y1 = self._image.get_direction((self._image_bounds.x1, self._image_bounds.y1))
-        return Bounds(x0, y0, x1, y1)
+        try:
+            x0, y0 = self._image.get_direction((self._image_bounds.x0, self._image_bounds.y0))
+            x1, y1 = self._image.get_direction((self._image_bounds.x1, self._image_bounds.y1))
+            return Bounds(x0, y0, x1, y1)
+        except:
+            return Bounds(0, 0, 0, 0)
 
     def _calculate_bounds_3D(self):
         # type: () -> List[List[float]]
@@ -301,6 +310,7 @@ class ObjectDetectionClient(object):
     target: ObjectDetectionTarget
         Which Object Detection Server to target
     """
+
     def __init__(self, target):
         # type: (ObjectDetectionTarget) -> None
         self._target = target
@@ -341,7 +351,8 @@ class ObjectDetectionClient(object):
             sock.sendall(image.image)
 
             response_length = np.frombuffer(sock.recv(4), np.uint32)[0]
-            response = [self._obj_from_dict(info, image) for info in json.loads(self._receive_all(sock, response_length).decode())]
+            response = [self._obj_from_dict(info, image) for info in
+                        json.loads(self._receive_all(sock, response_length).decode())]
 
             return response
         except socket_error:

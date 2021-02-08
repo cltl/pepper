@@ -5,7 +5,8 @@
     <uri id="User Entered Import Resolution" name="https://semanticweb.cs.vu.nl/2009/11/sem/" uri="sem_extended.ttl"/>
     <uri id="User Entered Import Resolution" name="https://semanticweb.cs.vu.nl/2009/11/sem" uri="sem_original.rdf"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1557071254899" name="http://groundedannotationframework.org/gaf" uri="gaf_original.rdf"/>
-        <uri id="Automatically generated entry, Timestamp=1557071254899" name="http://groundedannotationframework.org/grasp" uri="grasp_original.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1601551440398" name="http://groundedannotationframework.org/gaf" uri="gaf_original.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1601551440398" name="http://groundedannotationframework.org/grasp" uri="grasp_original.rdf"/>
+        <uri id="Automatically generated entry, Timestamp=1601551440398" name="http://www.newsreader-project.eu/domain-ontology" uri="ceo_original.owl"/>
     </group>
 </catalog>

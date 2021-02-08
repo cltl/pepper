@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.responder.intention module" href="pepper.responder.intention.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,6 +112,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -148,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -173,263 +176,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.responder.conversational">
-<span id="pepper-responder-conversational-module"></span><h1>pepper.responder.conversational module<a class="headerlink" href="#module-pepper.responder.conversational" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.responder.conversational.AffirmationResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.conversational.</code><code class="descname">AffirmationResponder</code><a class="reference internal" href="_modules/pepper/responder/conversational.html#AffirmationResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.AffirmationResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.conversational.AffirmationResponder.AFFIRMATION">
-<code class="descname">AFFIRMATION</code><em class="property"> = ['yes', 'yeah', 'correct', 'alright', 'right', 'great', 'nice', 'sweet', 'true', 'good', 'ok', 'well', 'fair', 'correctamundo', 'splendid', 'indeed', 'superduper', 'wow', 'amazing']</em><a class="headerlink" href="#pepper.responder.conversational.AffirmationResponder.AFFIRMATION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.AffirmationResponder.HAPPY">
-<code class="descname">HAPPY</code><em class="property"> = ['Nice!', 'Cool!', 'Great!', 'Wow!', 'Superduper!', 'Amazing!', 'I like it!', 'That makes my day!', 'Incredible', 'Mesmerizing']</em><a class="headerlink" href="#pepper.responder.conversational.AffirmationResponder.HAPPY" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.AffirmationResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.conversational.AffirmationResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.conversational.AffirmationResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/conversational.html#AffirmationResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.AffirmationResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.AffirmationResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.conversational.AffirmationResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.conversational.GoodbyeResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.conversational.</code><code class="descname">GoodbyeResponder</code><a class="reference internal" href="_modules/pepper/responder/conversational.html#GoodbyeResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.GoodbyeResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GoodbyeResponder.GOODBYES">
-<code class="descname">GOODBYES</code><em class="property"> = ['Bye', 'Bye Bye', 'See you', 'See you later', 'Goodbye', 'Good Bye', 'Have a nice day', 'Nice having talked to you']</em><a class="headerlink" href="#pepper.responder.conversational.GoodbyeResponder.GOODBYES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GoodbyeResponder.goodbye">
-<code class="descname">goodbye</code><em class="property"> = 'Nice having talked to you'</em><a class="headerlink" href="#pepper.responder.conversational.GoodbyeResponder.goodbye" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GoodbyeResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.conversational.GoodbyeResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.conversational.GoodbyeResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/conversational.html#GoodbyeResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.GoodbyeResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GoodbyeResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.conversational.GoodbyeResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.conversational.GreetingResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.conversational.</code><code class="descname">GreetingResponder</code><a class="reference internal" href="_modules/pepper/responder/conversational.html#GreetingResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.GreetingResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GreetingResponder.GREETINGS">
-<code class="descname">GREETINGS</code><em class="property"> = ['Yo', 'Hey!', 'Hello!', 'Hi!', 'Good Day', &quot;How's it going?&quot;, 'How are you doing?', &quot;What's up?&quot;, &quot;What's new?&quot;, &quot;What's going on?&quot;, &quot;What's up?&quot;, 'Good to see you!', 'Nice to see you!']</em><a class="headerlink" href="#pepper.responder.conversational.GreetingResponder.GREETINGS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GreetingResponder.greeting">
-<code class="descname">greeting</code><em class="property"> = 'Nice to see you!'</em><a class="headerlink" href="#pepper.responder.conversational.GreetingResponder.greeting" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GreetingResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.conversational.GreetingResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.conversational.GreetingResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/conversational.html#GreetingResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.GreetingResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.GreetingResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.conversational.GreetingResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.conversational.NegationResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.conversational.</code><code class="descname">NegationResponder</code><a class="reference internal" href="_modules/pepper/responder/conversational.html#NegationResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.NegationResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.conversational.NegationResponder.NEGATION">
-<code class="descname">NEGATION</code><em class="property"> = ['no', 'nope', 'incorrect', 'wrong', 'false', 'bad', 'stupid']</em><a class="headerlink" href="#pepper.responder.conversational.NegationResponder.NEGATION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.NegationResponder.SORRY">
-<code class="descname">SORRY</code><em class="property"> = ['Sorry!', 'I am sorry!', 'Forgive me!', 'My apologies!', 'My humble apologies!', 'How unfortunate!', 'My mistake']</em><a class="headerlink" href="#pepper.responder.conversational.NegationResponder.SORRY" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.NegationResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.conversational.NegationResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.conversational.NegationResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/conversational.html#NegationResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.NegationResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.NegationResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.conversational.NegationResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.conversational.ThanksResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.conversational.</code><code class="descname">ThanksResponder</code><a class="reference internal" href="_modules/pepper/responder/conversational.html#ThanksResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.ThanksResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.conversational.ThanksResponder.THANKS">
-<code class="descname">THANKS</code><em class="property"> = ['thank you', 'thanks', 'appreciate', 'cheers']</em><a class="headerlink" href="#pepper.responder.conversational.ThanksResponder.THANKS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.ThanksResponder.THANKS_REPLY">
-<code class="descname">THANKS_REPLY</code><em class="property"> = [&quot;You're welcome&quot;, 'No problem', 'Glad to be of service', 'Anytime']</em><a class="headerlink" href="#pepper.responder.conversational.ThanksResponder.THANKS_REPLY" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.ThanksResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.conversational.ThanksResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.conversational.ThanksResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/conversational.html#ThanksResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.conversational.ThanksResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.conversational.ThanksResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.conversational.ThanksResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-responder-conversational-module">
+<h1>pepper.responder.conversational module<a class="headerlink" href="#pepper-responder-conversational-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -452,11 +200,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -467,7 +223,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

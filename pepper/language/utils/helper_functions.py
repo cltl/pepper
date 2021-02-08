@@ -2,10 +2,7 @@ from __future__ import unicode_literals
 
 import json
 import os
-import sys
-import traceback
 import urllib
-import urllib2
 
 from nltk import pos_tag
 from nltk import tree as ntree
@@ -21,87 +18,144 @@ wnl = WordNetLemmatizer()
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 lexicon = json.load(open(os.path.join(ROOT, 'data', 'lexicon.json')))
 
-def trim_dash(rdf):
-    for el in rdf:
-        if rdf[el]:
-            if rdf[el].startswith('-'):
-                rdf[el] = rdf[el][1:]
-            if rdf[el].endswith('-'):
-                rdf[el] = rdf[el][:-1]
-    return rdf
+
+def trim_dash(triple):
+    """
+    :param triple: a set with three elements (subject, object, complement)
+    :return: clean triple with extra dashes removed
+    """
+    for el in triple:
+        if triple[el]:
+            if triple[el].startswith('-'):
+                triple[el] = triple[el][1:]
+            if triple[el].endswith('-'):
+                triple[el] = triple[el][:-1]
+    return triple
 
 
-def get_type(element, forest):
+def get_triple_element_type(element, forest):
+    """
+    :param element: text of one element from the triple
+    :param forest: parsed tree
+    :return: dictionary with semantic types of the element or sub-elements
+    """
+
+    types = {}
+
+    # Multiword element
     if '-' in element:
-        type = {}
+        text = element.replace(" ", "-")
+
+        # Try to get type from DBpedia
+        uris = get_uris(text.strip())
+        if len(uris) > 1:
+            # entities with more than 1 uri from DBpedia are NE and collocations
+            return 'NE-col'
+
+        # Try to get types from wordnet
+        lexname = get_lexname_in_tree(text, forest)
+        if lexname:
+            # collocations which exist in WordNet
+            return lexname + '-col'
+
+        # if entity does not exist in DBP or WN it is considered composite. Get type per word
         for el in element.split('-'):
-            type[el] = get_lexname(el, forest)
-            if type[el]=='None':
-                lexicon_category = lexicon_lookup(el,'category')
-                type[el]=lexicon_category
+            types[el] = get_word_type(el, forest)
+
+    # Single word
     else:
-        type = get_lexname(element, forest)
-        if type == 'None':
-            lexicon_category = lexicon_lookup(element, 'category')
-            type = lexicon_category
-    return type
+        types[element] = get_word_type(element, forest)
+
+    return types
 
 
+def get_word_type(word, forest):
+    """
+    :param word: one word from triple element
+    :param forest: parsed syntax tree
+    :return: semantic type of word
+    """
 
-def get_lexname(element, forest):
-    if element=='':
-        return
-    label = get_node_label(forest[0], element)
-    if label=='':
-        #print(element,' has no label')
-        label = pos_tag([element])
-        #print('NEW LABEL ', label)
-        if label=='':
-            return None
-        label = label[0][1]
-    #print(element,label)
-    synset = wu.get_synsets(element, label)
+    if word == '':
+        return ''
+
+    lexname = get_lexname_in_tree(word, forest)
+    if lexname is not None:
+        return lexname
+
+    # words which don't have a lexname are looked up in the lexicon
+    entry = lexicon_lookup(word)
+    if entry is not None:
+        if 'proximity' in entry:
+            return 'deictic:' + entry['proximity'] + ',' + entry['number']
+        if 'person' in entry:
+            return 'pronoun:' + entry['person']
+        if 'root' in entry:
+            return 'modal:' + str(entry['root'])
+        if 'definite' in entry:
+            return 'article:' + entry
+        if 'integer' in entry:
+            return 'numeral:' + entry['integer']
+
+    # for words which are not in the lexicon nor have a lexname,
+    # the sem.type is derived from the POS tag
+    types = {'NN': 'agent', 'V': 'verb', 'IN': 'prep', 'TO': 'prep', 'MD': 'modal'}
+    pos = get_pos_tag(forest, word)
+    if pos in types:
+        return types[pos]
+
+
+def get_lexname_in_tree(word, forest):
+    '''
+    :param word: word for which we want a WordNe lexname
+    :param forest: parsed forest of the sentence, to extract the POS tag
+    :return: lexname of the word
+    https://wordnet.princeton.edu/documentation/lexnames5wn
+    '''
+    if word == '':
+        return None
+
+    # Get POS tag
+    pos_label = get_pos_tag(forest[0], word)
+
+    # Try to get types from wordnet
+    synset = wu.get_synsets(word, pos_label)
     if synset:
         type = wu.get_lexname(synset[0])
-        #print('TYPE OF ' + element + ' IS ' + type)
         return type
-
-    else:
-        #print(element + ' has no type!')
-        return None
 
 
 def fix_pronouns(pronoun, self):
     """
-
-    :param pronoun:
-    :param self:
-    :return:
+    :param pronoun: personal ronoun which is said in the sentence
+    :param self: Utterance object from which we can get the speaker and lexicon
+    :return: disambiguated first or second person pronoun
+    In the case of third person pronouns - guesses or asks questions
+    * plural *
     """
-    #print('fixing', dict)
-    lexicon = self.LEXICON
+
     speaker = self.chat.speaker
+    entry = lexicon_lookup(pronoun, lexicon)
 
-    dict = lexicon_lookup(pronoun, lexicon)
-
-    if dict and 'person' in dict:
-        if dict['person'] == 'first':
+    if entry and 'person' in entry:
+        if entry['person'] == 'first':
             return speaker
-        elif dict['person'] == 'second':
+        elif entry['person'] == 'second':
             return 'leolani'
         else:
-            print('disambiguate third person')
+            # print('disambiguate third person')
             return pronoun
     else:
         return pronoun
 
 
 def lemmatize(word, tag=''):
-    '''
-    :param word:
-    :param tag:
-    :return:
-    '''
+    """
+    This function uses the WordNet lemmatizer
+    :param word: word to be lemmatized
+    :param tag: POS tag of word
+    :return: word lemma
+    """
     lem = ''
     if len(word.split()) > 1:
         for el in word.split():
@@ -112,28 +166,45 @@ def lemmatize(word, tag=''):
     return wnl.lemmatize(word)
 
 
-def get_node_label(tree, word):
-    '''
-    :param tree:
-    :param word:
-    :return:
-    '''
+def get_pos_in_tree(tree, word):
+    """
+    This function extracts POS tag of a word from the parsed syntax tree
+    :param tree: syntax tree gotten from initial CFG parsing
+    :param word: word whose POS tag we want
+    :return: POS tag of the word
+    """
     label = ''
-    if '-' in word:
-        word = word.replace('-','')
     for el in tree:
         for node in el:
-            if type(node)==ntree.Tree:
+            if type(node) == ntree.Tree:
                 for subtree in node.subtrees():
                     for n in subtree:
-                        if n==word:
+                        if n == word:
                             label = str(subtree.label())
+                            return label
     return label
 
 
+def get_pos_tag(forest, word):
+    """
+    This function extract POS tags from either the tree or the word alone
+    :param forest: syntax tree gotten from initial CFG parsing
+    :param word: word whose POS tag we want
+    :return: POS tag of the word
+    """
+    pos_label = get_pos_in_tree(forest, word)
+    pos_label = pos_tag([word])[0][1] if pos_label == '' else pos_label
+
+    return pos_label
+
 
 def lexicon_lookup(word, typ=None):
-    """ Look up and return features of a given word in the lexicon. """
+    """
+    Look up and return features of a given word in the lexicon.
+    :param word: word which we're looking up
+    :param typ: type of word, if type is category then returns the lexicon entry and the word type
+    :return: lexicon entry of the word
+    """
 
     # Define pronoun categories.
     pronouns = lexicon["pronouns"]
@@ -241,51 +312,22 @@ def lexicon_lookup(word, typ=None):
                       question_words,
                       kinship]
 
-    # print("looking up: ", word)
-
     for category in categories:
         for item in category:
             if word == item:
-                if typ=='category':
-                    #print(type(category), category)
-                    return category, category [item]
+                if typ == 'category':
+                    return category, category[item]
                 return category[item]
     return None
 
-def dbp_query(q, epr, f='application/json'):
-    try:
-        params = {'query': q}
-        params = urllib.urlencode(params)
-        opener = urllib2.build_opener(urllib2.HTTPHandler)
-        request = urllib2.Request(epr + '?' + params)
-        request.add_header('Accept', f)
-        request.get_method = lambda: 'GET'
-        url = opener.open(request)
-        return url.read()
-    except Exception as e:
-        traceback.print_exc(file=sys.stdout)
-        raise e
 
-
-def get_uri(string):
-    query = "\
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \
-    SELECT ?x \
-    WHERE { ?x rdfs:label ?string . \
-        FILTER ( ?string = \"" + string + "\" ) }\
-    LIMIT 200"
-    results = dbp_query(query, "http://dbpedia.org/sparql")
-    results = json.loads(results)
-    uris = []
-    for x in results['results']['bindings']:
-        uris.append(x['x']['value'])
-    if uris:
-        return uris[0]
-    else:
-        return None
-
-'''
-def dbp_query(q, baseURL, format="application/json"):
+def dbp_query(q, base_url, format="application/json"):
+    """
+    :param q: query for DBpedia
+    :param base_url: URL to connect to DBpedia
+    :param format: format for query, typically json
+    :return: json with DBpedia responses
+    """
     params = {
         "default-graph": "",
         "should-sponge": "soft",
@@ -296,20 +338,29 @@ def dbp_query(q, baseURL, format="application/json"):
         "save": "display",
         "fname": ""
     }
+
     querypart = urllib.urlencode(params)
-    response = urllib.urlopen(baseURL, querypart).read()
+    response = urllib.urlopen(base_url, querypart).read()
     return json.loads(response)
 
 
-def get_uri(string):
+def get_uris(string):
+    """
+    :param string: string which we are querying for
+    :return: set of URIS from DBpedia for the queried string
+    """
     query = """PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT ?pred WHERE {
-  ?pred rdfs:label """ + "'" + string + "'" + """@en .
-}
-ORDER BY ?pred"""
-    results = dbp_query(query, "http://dbpedia.org/sparql")
-    uris = []
-    for x in results['results']['bindings']:
-        uris.append(x['pred']['value'])
+                SELECT ?pred WHERE {
+                  ?pred rdfs:label """ + "'" + string + "'" + """@en .
+                }
+                ORDER BY ?pred"""
+
+    try:
+        results = dbp_query(query, "http://dbpedia.org/sparql")
+        uris = []
+        for x in results['results']['bindings']:
+            uris.append(x['pred']['value'])
+    except:
+        uris = []
+
     return uris
-'''

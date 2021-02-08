@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../../../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../../../index.html"/>
+        <link rel="up" title="pepper" href="../../../../pepper.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,54 +96,36 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../../../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../../../../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.framework.backend.naoqi.camera</li>
-    
-    
+      
+    <li>pepper.framework.backend.naoqi.camera</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -239,6 +222,9 @@
         <span class="c1"># Connect to Camera Service and Subscribe with Settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_service</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">service</span><span class="p">(</span><span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">SERVICE_VIDEO</span><span class="p">)</span>
 
+        <span class="c1"># Access Head Motion for Image Coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_motion</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">service</span><span class="p">(</span><span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">SERVICE_MOTION</span><span class="p">)</span>
+
         <span class="c1"># Subscribe to Robot Cameras</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">subscribeCameras</span><span class="p">(</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)),</span>  <span class="c1"># Random Client ID&#39;s to prevent name collision</span>
@@ -248,15 +234,30 @@
             <span class="n">rate</span>
         <span class="p">)</span>
 
-        <span class="c1"># Access Head Motion for Image Coordinates</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_motion</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">service</span><span class="p">(</span><span class="n">NAOqiCamera</span><span class="o">.</span><span class="n">SERVICE_MOTION</span><span class="p">)</span>
-
-        <span class="c1"># Run image acquisition in Thread</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">)</span>
+        <span class="c1"># Run Image Acquisition in Thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;NAOqiCameraThread&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
+        <span class="c1"># # Create High Rate Camera</span>
+        <span class="c1"># self._client_high_rate = self._service.subscribeCamera(</span>
+        <span class="c1">#     str(getrandbits(128)),</span>
+        <span class="c1">#     int(NAOqiCameraIndex.TOP),</span>
+        <span class="c1">#     NAOqiCamera.RESOLUTION_CODE[CameraResolution.QQQVGA],</span>
+        <span class="c1">#     self._color_space,</span>
+        <span class="c1">#     30</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># # Run High Rate Image Acquisition in Thread</span>
+        <span class="c1"># self._thread_high_rate = Thread(target=self._run_high_rate, name=&quot;NAOqiHighRateCameraThread&quot;)</span>
+        <span class="c1"># self._thread_high_rate.setDaemon(True)</span>
+        <span class="c1"># self._thread_high_rate.start()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Booted&quot;</span><span class="p">)</span>
+
+    <span class="c1"># def _run_high_rate(self):</span>
+    <span class="c1">#     while True:</span>
+    <span class="c1">#         image = self._service.getImageRemote(self._client_high_rate)</span>
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -275,6 +276,7 @@
                 <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">getImagesRemote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">):</span>
 
                     <span class="c1"># Get Image Data</span>
+                    <span class="c1"># TODO: RGB and Depth Images are not perfectly synced, can they?</span>
                     <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">camera</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">image</span>
 
                     <span class="k">if</span> <span class="n">camera</span> <span class="o">==</span> <span class="n">NAOqiCameraIndex</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">:</span>
@@ -339,7 +341,6 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -348,11 +349,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -365,15 +366,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

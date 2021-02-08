@@ -3,6 +3,8 @@ from pepper.framework.sensor.obj import ObjectDetectionClient
 from pepper.framework.util import Scheduler, Mailbox
 from pepper import config
 
+from threading import Lock
+
 from typing import List, Dict
 
 
@@ -31,6 +33,8 @@ class ObjectDetectionComponent(AbstractComponent):
         clients = [ObjectDetectionClient(target) for target in ObjectDetectionComponent.TARGETS]
         mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
+        lock = Lock()
+
         def on_image(image):
             # type: (AbstractImage) -> None
             """
@@ -55,12 +59,14 @@ class ObjectDetectionComponent(AbstractComponent):
 
             if objects:
 
-                # Call on_object Callback Functions
-                for callback in self.on_object_callbacks:
-                    callback(objects)
+                with lock:
 
-                # Call on_object Event Function
-                self.on_object(objects)
+                    # Call on_object Callback Functions
+                    for callback in self.on_object_callbacks:
+                        callback(objects)
+
+                    # Call on_object Event Function
+                    self.on_object(objects)
 
         # Initialize & Start Object Workers
         schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(client.target.name)) for client in clients]

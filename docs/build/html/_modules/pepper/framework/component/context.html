@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="pepper" href="../../../pepper.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,54 +96,36 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.framework.component.context</li>
-    
-    
+      
+    <li>pepper.framework.component.context</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -155,7 +138,7 @@
 <span class="kn">from</span> <span class="nn">..abstract</span> <span class="k">import</span> <span class="n">AbstractComponent</span><span class="p">,</span> <span class="n">AbstractImage</span><span class="p">,</span> <span class="n">AbstractBackend</span>
 
 <span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="n">Utterance</span>
-<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">ObjectDetectionTarget</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
@@ -199,6 +182,12 @@
         <span class="n">object_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">ObjectDetectionComponent</span><span class="p">)</span>  <span class="c1"># type: ObjectDetectionComponent</span>
         <span class="n">face_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">FaceRecognitionComponent</span><span class="p">)</span>  <span class="c1"># type: FaceRecognitionComponent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">ContextComponent</span><span class="p">,</span> <span class="n">TextToSpeechComponent</span><span class="p">)</span>  <span class="c1"># type: TextToSpeechComponent</span>
+
+        <span class="c1"># Raise Warning if COCO is not used, due to reliance on &#39;person&#39; object</span>
+        <span class="k">if</span> <span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">OBJECT_RECOGNITION_TARGETS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> relies on the </span><span class="si">{1}</span><span class="s2"> &#39;person&#39; object, but </span><span class="si">{1}</span><span class="s2"> is not included in </span><span class="si">{2}</span><span class="s2">. &quot;</span>
+                             <span class="s2">&quot;Face Recognition and the on_chat_enter event might not work as expected.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">ObjectDetectionTarget</span><span class="o">.</span><span class="n">COCO</span><span class="p">,</span> <span class="s2">&quot;config.OBJECT_RECOGNITION_TARGETS&quot;</span><span class="p">))</span>
 
         <span class="c1"># Initialize the Context for this Application</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">Context</span><span class="p">()</span>
@@ -571,7 +560,6 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -580,11 +568,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -597,15 +585,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

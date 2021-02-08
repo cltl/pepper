@@ -1,0 +1,32 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX gaf: <http://groundedannotationframework.org/gaf#>
+
+CONSTRUCT {
+    ?g prov:wasDerivedFrom ?chat .
+    ?chat sem:hasPlace ?place .
+    ?chat sem:hasBeginTimeStamp ?date .
+    ?chat grasp:wasAttributedTo ?node .
+
+} WHERE {
+
+    ?m grasp:wasAttributedTo ?node .
+    ?g gaf:denotedBy ?m .
+    ?m prov:wasDerivedFrom ?utt .
+    ?chat sem:hasSubEvent ?utt .
+    ?context sem:hasEvent ?chat .
+    ?context sem:hasPlace ?place .
+    ?context sem:hasBeginTimeStamp ?date .
+
+    # Select only
+    FILTER(
+        isIRI(?g)
+        && ?edge NOT IN (rdf:type)
+    )
+
+}

@@ -2,14 +2,14 @@ pepper.framework.component package
 ==================================
 
 .. automodule:: pepper.framework.component
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
 
-    pepper.framework.component.display
+   pepper.framework.component.display
 
 
 .. toctree::
@@ -24,5 +24,5 @@ pepper.framework.component package
    pepper.framework.component.scene
    pepper.framework.component.speech_recognition
    pepper.framework.component.statistics
+   pepper.framework.component.subtitles
    pepper.framework.component.text_to_speech
-

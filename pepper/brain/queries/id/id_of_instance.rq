@@ -1,0 +1,12 @@
+prefix n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+select ?id
+where {
+
+    ?s rdfs:label "%s".
+    ?s n2mu:id ?id
+}
+
+ORDER BY DESC (?id)
+LIMIT 1

@@ -1,6 +1,8 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX gaf: <http://groundedannotationframework.org/gaf#>
 
-select (COUNT(?stat) AS ?count) where {
-?stat rdf:type grasp:Statement .
+select (COUNT(distinct ?stat) AS ?count) where {
+?stat rdf:type gaf:Assertion .
+?stat gaf:denotedBy ?m .
 }

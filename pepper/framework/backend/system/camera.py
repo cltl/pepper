@@ -64,11 +64,16 @@ class SystemCamera(AbstractCamera):
         t0 = time()
 
         # Get frame from camera
-        status, image = self._camera.read()
+        # Sometimes the camera fails on the first image. We introduce a three trial policy to initialize the camera
+        status = False
+        image = None
+        for chance in range(3):
+            status, image = self._camera.read()
+            if status:
+                break
 
         if status:
             if self._running:
-
                 # Resize Image and Convert to RGB
                 image = cv2.resize(image, (self.width, self.height))
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

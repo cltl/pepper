@@ -1,0 +1,21 @@
+# Note that ?node is the node being expanded and must be used in the query
+PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+CONSTRUCT {
+    # The triples that will be added to the visual graph
+    ?node ?edge ?newNodeLTR .
+    ?newNodeRTL ?edge ?node .
+} WHERE {
+    {
+        # Left to right relations (starting IRI is the subject)
+        ?node ?edge ?newNodeLTR .
+    } UNION {
+        # Right to left relations (starting IRI is the object)
+        ?newNodeRTL ?edge ?node .
+    }
+
+    # Filter out some edges you don't want to see.
+    FILTER(?edge NOT IN (rdf:type))
+
+}

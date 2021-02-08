@@ -1,0 +1,28 @@
+{
+ "Temporal_ruler": {
+   "Events": [
+     {
+       "Id": e1,
+       "Begin": t1,
+       "End": t2,
+       "grasp:denotedBy": "identifier#offset=0,length=10"
+     },
+     {
+       "Id": e2,
+       "Begin": t2,
+       "End": t3,
+       "grasp:denotedBy": "identifier#offset=0,length=10"
+     }
+   ]
+ },
+ "Chat": {
+   "Id": chat1,
+   "Turn": [
+     {
+       "Id": turn1,
+       "Agent": "Leolani",
+       "Utterance": "What does Selene like?"
+     }
+   ]
+ }
+}

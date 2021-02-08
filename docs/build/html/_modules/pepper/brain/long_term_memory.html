@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="pepper" href="../../pepper.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,79 +96,56 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.brain.long_term_memory</li>
-    
-    
+      
+    <li>pepper.brain.long_term_memory</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for pepper.brain.long_term_memory</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">hash_claim_id</span><span class="p">,</span> <span class="n">read_query</span><span class="p">,</span> <span class="n">casefold_text</span><span class="p">,</span> \
-    <span class="n">confidence_to_certainty_value</span><span class="p">,</span> <span class="n">polarity_to_polarity_value</span><span class="p">,</span> <span class="n">sentiment_to_sentiment_value</span><span class="p">,</span> <span class="n">get_object_id</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.location_reasoner</span> <span class="k">import</span> <span class="n">LocationReasoner</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.though_generator</span> <span class="k">import</span> <span class="n">ThoughtGenerator</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.type_reasoner</span> <span class="k">import</span> <span class="n">TypeReasoner</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.constants</span> <span class="k">import</span> <span class="n">NAMESPACE_MAPPING</span>
-<span class="kn">from</span> <span class="nn">pepper.brain.utils.response</span> <span class="k">import</span> <span class="n">Thoughts</span>
+<span></span><span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">read_query</span><span class="p">,</span> <span class="n">casefold_text</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.reasoners</span> <span class="k">import</span> <span class="n">LocationReasoner</span><span class="p">,</span> <span class="n">ThoughtGenerator</span><span class="p">,</span> <span class="n">TypeReasoner</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.infrastructure</span> <span class="k">import</span> <span class="n">Thoughts</span>
 <span class="kn">from</span> <span class="nn">pepper.brain.basic_brain</span> <span class="k">import</span> <span class="n">BasicBrain</span>
 
-<span class="kn">from</span> <span class="nn">pepper.language.utils.atoms</span> <span class="k">import</span> <span class="n">UtteranceType</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.LTM_question_processing</span> <span class="k">import</span> <span class="n">create_query</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.LTM_statement_processing</span> <span class="k">import</span> <span class="n">model_graphs</span>
 
 <span class="kn">from</span> <span class="nn">pepper</span> <span class="k">import</span> <span class="n">config</span>
-
-<span class="kn">from</span> <span class="nn">rdflib</span> <span class="k">import</span> <span class="n">RDF</span><span class="p">,</span> <span class="n">RDFS</span><span class="p">,</span> <span class="n">OWL</span>
 
 
 <div class="viewcode-block" id="LongTermMemory"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory">[docs]</a><span class="k">class</span> <span class="nc">LongTermMemory</span><span class="p">(</span><span class="n">BasicBrain</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BRAIN_URL_LOCAL</span><span class="p">,</span> <span class="n">clear_all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="c1"># type: (str, bool) -&gt; LongTermMemory</span>
+        <span class="c1"># type: (str, bool) -&gt; None</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interact with Triple store</span>
 
@@ -185,7 +163,43 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">location_reasoner</span> <span class="o">=</span> <span class="n">LocationReasoner</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_reasoner</span> <span class="o">=</span> <span class="n">TypeReasoner</span><span class="p">()</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_location_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_reasoner</span><span class="o">.</span><span class="n">set_location_label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reason_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_reasoner</span><span class="o">.</span><span class="n">reason_location</span>
+
     <span class="c1">#################################### Main functions to interact with the brain ####################################</span>
+<div class="viewcode-block" id="LongTermMemory.get_thoughts_on_entity"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.get_thoughts_on_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_thoughts_on_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_label</span><span class="p">,</span> <span class="n">reason_types</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entity_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">entity_label</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="c1"># Casefold</span>
+            <span class="n">entity_label</span> <span class="o">=</span> <span class="n">casefold_text</span><span class="p">(</span><span class="n">entity_label</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">)</span>
+            <span class="n">entity_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">reason_types</span><span class="p">:</span>
+                <span class="c1"># Try to figure out what this entity is</span>
+                <span class="n">entity_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_reasoner</span><span class="o">.</span><span class="n">reason_entity_type</span><span class="p">(</span><span class="n">entity_label</span><span class="p">,</span> <span class="n">exact_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">entity_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">entity_label</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity_from_label</span><span class="p">(</span><span class="n">entity_label</span><span class="p">,</span> <span class="s1">&#39;N2MU&#39;</span><span class="p">)</span>
+
+            <span class="c1"># TODO: Ongoing work</span>
+            <span class="n">triple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_triple_from_label</span><span class="p">(</span><span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="s1">&#39;see&#39;</span><span class="p">,</span> <span class="n">entity_label</span><span class="p">)</span>
+
+            <span class="c1"># Check how many items of the same type as subject and complement we have</span>
+            <span class="n">entity_novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">fill_entity_novelty</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+            <span class="c1"># Check for gaps, in case we want to be proactive</span>
+            <span class="n">entity_gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_entity_gaps</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+
+            <span class="c1"># Create JSON output</span>
+            <span class="n">thoughts</span> <span class="o">=</span> <span class="n">Thoughts</span><span class="p">([],</span> <span class="n">entity_novelty</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[],</span> <span class="n">entity_gaps</span><span class="p">,</span> <span class="n">entity_gaps</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">entity</span><span class="p">,</span> <span class="s1">&#39;thoughts&#39;</span><span class="p">:</span> <span class="n">thoughts</span><span class="p">}</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Create JSON output</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;thoughts&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
 
 <div class="viewcode-block" id="LongTermMemory.update"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">reason_types</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1"># type (Utterance) -&gt; Thoughts</span>
@@ -196,6 +210,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        utterance: Utterance</span>
 <span class="sd">            Contains all necessary information regarding a statement just made.</span>
+<span class="sd">        reason_types: Boolean</span>
+<span class="sd">            Signal to entity linking over the semantic web</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -211,25 +227,25 @@
 
             <span class="k">if</span> <span class="n">reason_types</span><span class="p">:</span>
                 <span class="c1"># Try to figure out what this entity is</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
-                    <span class="n">object_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_reasoner</span><span class="o">.</span><span class="n">reason_entity_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">),</span>
-                                                                           <span class="n">exact_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                    <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">add_types</span><span class="p">([</span><span class="n">object_type</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
+                    <span class="n">complement_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_reasoner</span><span class="o">.</span><span class="n">reason_entity_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement_name</span><span class="p">),</span>
+                                                                               <span class="n">exact_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement</span><span class="o">.</span><span class="n">add_types</span><span class="p">([</span><span class="n">complement_type</span><span class="p">])</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
                     <span class="n">subject_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_reasoner</span><span class="o">.</span><span class="n">reason_entity_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">),</span>
                                                                             <span class="n">exact_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                    <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">add_types</span><span class="p">([</span><span class="n">subject_type</span><span class="p">])</span>
+                    <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement</span><span class="o">.</span><span class="n">add_types</span><span class="p">([</span><span class="n">subject_type</span><span class="p">])</span>
 
             <span class="c1"># Create graphs and triples</span>
-            <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">model_graphs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">)</span>
 
             <span class="c1"># Check if this knowledge already exists on the brain</span>
             <span class="n">statement_novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_statement_novelty</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
-            <span class="c1"># Check how many items of the same type as subject and object we have</span>
-            <span class="n">entity_novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">_fill_entity_novelty_</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                                                                          <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="c1"># Check how many items of the same type as subject and complement we have</span>
+            <span class="n">entity_novelty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">fill_entity_novelty</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                                                        <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
             <span class="c1"># Find any overlaps</span>
             <span class="n">overlaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_overlaps</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
@@ -240,20 +256,20 @@
 
             <span class="c1"># Check for conflicts after adding the knowledge</span>
             <span class="n">negation_conflicts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_negation_conflicts</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
-            <span class="n">object_conflict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_object_cardinality_conflicts</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+            <span class="n">cardinality_conflict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_complement_cardinality_conflicts</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
 
             <span class="c1"># Check for gaps, in case we want to be proactive</span>
             <span class="n">subject_gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_entity_gaps</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-                                                                  <span class="n">exclude</span><span class="o">=</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
-            <span class="n">object_gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_entity_gaps</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
-                                                                 <span class="n">exclude</span><span class="o">=</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
+                                                                  <span class="n">exclude</span><span class="o">=</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement</span><span class="p">)</span>
+            <span class="n">complement_gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_entity_gaps</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">complement</span><span class="p">,</span>
+                                                                     <span class="n">exclude</span><span class="o">=</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
 
             <span class="c1"># Report trust</span>
-            <span class="n">trust</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">when_last_chat_with</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="n">trust</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thought_generator</span><span class="o">.</span><span class="n">get_trust</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span><span class="p">)</span>
 
             <span class="c1"># Create JSON output</span>
-            <span class="n">thoughts</span> <span class="o">=</span> <span class="n">Thoughts</span><span class="p">(</span><span class="n">statement_novelty</span><span class="p">,</span> <span class="n">entity_novelty</span><span class="p">,</span> <span class="n">negation_conflicts</span><span class="p">,</span> <span class="n">object_conflict</span><span class="p">,</span>
-                                <span class="n">subject_gaps</span><span class="p">,</span> <span class="n">object_gaps</span><span class="p">,</span> <span class="n">overlaps</span><span class="p">,</span> <span class="n">trust</span><span class="p">)</span>
+            <span class="n">thoughts</span> <span class="o">=</span> <span class="n">Thoughts</span><span class="p">(</span><span class="n">statement_novelty</span><span class="p">,</span> <span class="n">entity_novelty</span><span class="p">,</span> <span class="n">negation_conflicts</span><span class="p">,</span> <span class="n">cardinality_conflict</span><span class="p">,</span>
+                                <span class="n">subject_gaps</span><span class="p">,</span> <span class="n">complement_gaps</span><span class="p">,</span> <span class="n">overlaps</span><span class="p">,</span> <span class="n">trust</span><span class="p">)</span>
             <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s1">&#39;statement&#39;</span><span class="p">:</span> <span class="n">utterance</span><span class="p">,</span> <span class="s1">&#39;thoughts&#39;</span><span class="p">:</span> <span class="n">thoughts</span><span class="p">}</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -270,7 +286,7 @@
 <span class="sd">        :return: json response containing the status for posting the triples, and the original statement</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create graphs and triples</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_graphs_</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">model_graphs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_brain_log</span><span class="p">)</span>
         <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_to_brain</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -288,7 +304,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Generate query</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_query</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">create_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Triple: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="p">))</span>
 
         <span class="c1"># Perform query</span>
@@ -297,391 +313,10 @@
         <span class="c1"># Create JSON output</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="n">response</span><span class="p">,</span> <span class="s1">&#39;question&#39;</span><span class="p">:</span> <span class="n">utterance</span><span class="p">}</span>
 
-        <span class="k">return</span> <span class="n">output</span></div>
-
-    <span class="c1">######################################## Helpers for statement processing ########################################</span>
-    <span class="k">def</span> <span class="nf">_link_leolani</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myself</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Create Leolani</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">myself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="s1">&#39;leolani&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;robot&#39;</span><span class="p">],</span> <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myself</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_link_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">namespace_mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># Set basics like label</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">RDFS</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
-
-        <span class="c1"># Set types</span>
-        <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">types</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]:</span>  <span class="c1"># We only get the label</span>
-            <span class="n">entity_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="n">OWL</span><span class="p">,</span> <span class="s1">&#39;Thing&#39;</span><span class="p">)</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">))</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">namespace_mapping</span> <span class="o">=</span> <span class="n">NAMESPACE_MAPPING</span> \
-                <span class="k">if</span> <span class="n">namespace_mapping</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">namespace_mapping</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">NAMESPACE_MAPPING</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
-                <span class="n">entity_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="n">namespace_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;N2MU&#39;</span><span class="p">),</span> <span class="n">item</span><span class="p">)</span>
-                <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_create_detections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cntxt</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-        <span class="c1"># Get ids of existing objects in this location</span>
-        <span class="n">memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_reasoner</span><span class="o">.</span><span class="n">get_location_memory</span><span class="p">(</span><span class="n">cntxt</span><span class="p">)</span>
-
-        <span class="c1"># Detections: objects</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_leolani</span><span class="p">()</span>
-        <span class="n">prdt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="s1">&#39;see&#39;</span><span class="p">)</span>
-        <span class="n">object_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="s1">&#39;N2MU&#39;</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span>
-        <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">observations</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;person&#39;</span><span class="p">:</span>
-                <span class="c1"># Create instance and link detection to graph</span>
-                <span class="n">mem_id</span><span class="p">,</span> <span class="n">memory</span> <span class="o">=</span> <span class="n">get_object_id</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                <span class="n">objct_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">mem_id</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;string&#39;</span><span class="p">])</span>
-                <span class="n">objct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">objct_id</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span>
-                                                      <span class="p">[</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="s1">&#39;Instance&#39;</span><span class="p">,</span>
-                                                       <span class="s1">&#39;object&#39;</span><span class="p">],</span>
-                                                      <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">objct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">objct</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">objct_id</span><span class="p">))</span>
-                <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">objct</span><span class="p">)</span>
-                <span class="c1"># Bidirectional link to context</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;EPS&#39;</span><span class="p">][</span><span class="s1">&#39;hasDetection&#39;</span><span class="p">],</span> <span class="n">objct</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">objct</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;EPS&#39;</span><span class="p">][</span><span class="s1">&#39;hasContext&#39;</span><span class="p">],</span> <span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                <span class="c1"># Create detection</span>
-                <span class="n">objct_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_claim_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myself</span><span class="p">,</span> <span class="n">prdt</span><span class="p">,</span> <span class="n">objct</span><span class="p">,</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">EXPERIENCE</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">claim_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">objct_detection</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;EPS&#39;</span><span class="p">][</span><span class="s1">&#39;hasContext&#39;</span><span class="p">],</span> <span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-                <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">objct_detection</span><span class="p">)</span>
-
-                <span class="c1"># Open ended learning</span>
-                <span class="n">learnable_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="s1">&#39;N2MU&#39;</span><span class="p">,</span>
-                                                                       <span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ontology_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">learnable_type</span><span class="p">,</span> <span class="n">RDFS</span><span class="o">.</span><span class="n">subClassOf</span><span class="p">,</span> <span class="n">object_type</span><span class="p">))</span>
-
-        <span class="c1"># Detections: faces</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">item</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                <span class="c1"># Create and link detection to instance graph</span>
-                <span class="n">prsn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">casefold_text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;Instance&#39;</span><span class="p">],</span>
-                                                     <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-                <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prsn</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">prsn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="p">)</span>
-                <span class="c1"># Bidirectional link to context</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;EPS&#39;</span><span class="p">][</span><span class="s1">&#39;hasDetection&#39;</span><span class="p">],</span> <span class="n">prsn</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">prsn</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;EPS&#39;</span><span class="p">][</span><span class="s1">&#39;hasContext&#39;</span><span class="p">],</span> <span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                <span class="c1"># Create detection</span>
-                <span class="n">face_detection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_claim_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myself</span><span class="p">,</span> <span class="n">prdt</span><span class="p">,</span> <span class="n">prsn</span><span class="p">,</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">EXPERIENCE</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">claim_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">face_detection</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;EPS&#39;</span><span class="p">][</span><span class="s1">&#39;hasContext&#39;</span><span class="p">],</span> <span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                <span class="n">observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face_detection</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">instances</span><span class="p">,</span> <span class="n">observations</span>
-
-<div class="viewcode-block" id="LongTermMemory.create_context"><a class="viewcode-back" href="../../../pepper.brain.long_term_memory.html#pepper.brain.long_term_memory.LongTermMemory.create_context">[docs]</a>    <span class="k">def</span> <span class="nf">create_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cntxt</span><span class="p">):</span>
-        <span class="c1"># Create an episodic awareness by making a context</span>
-        <span class="n">context_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;string&#39;</span><span class="p">])</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="s1">&#39;context</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Context&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">context_id</span><span class="p">))</span>
-
-        <span class="c1"># Time</span>
-        <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="s1">&#39;DateTimeDescription&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;SEM&#39;</span><span class="p">][</span><span class="s1">&#39;hasBeginTimeStamp&#39;</span><span class="p">],</span> <span class="n">time</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Set specifics of datetime</span>
-        <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;gDay&#39;</span><span class="p">])</span>
-        <span class="n">month</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;gMonthDay&#39;</span><span class="p">])</span>
-        <span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;gYear&#39;</span><span class="p">])</span>
-        <span class="n">time_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">create_resource_uri</span><span class="p">(</span><span class="s1">&#39;TIME&#39;</span><span class="p">,</span> <span class="s1">&#39;unitDay&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">][</span><span class="s1">&#39;day&#39;</span><span class="p">],</span> <span class="n">day</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">][</span><span class="s1">&#39;month&#39;</span><span class="p">],</span> <span class="n">month</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">][</span><span class="s1">&#39;year&#39;</span><span class="p">],</span> <span class="n">year</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">][</span><span class="s1">&#39;unitType&#39;</span><span class="p">],</span> <span class="n">time_unit</span><span class="p">))</span>
-
-        <span class="c1"># Place</span>
-
-        <span class="k">if</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">location_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;string&#39;</span><span class="p">])</span>
-            <span class="n">location_city</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;Place&#39;</span><span class="p">],</span> <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">location_city</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-            <span class="n">location_country</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">country</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;Place&#39;</span><span class="p">],</span>
-                                                             <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">location_country</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-            <span class="n">location_region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">region</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;region&#39;</span><span class="p">,</span> <span class="s1">&#39;Place&#39;</span><span class="p">],</span>
-                                                            <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">location_region</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">cntxt</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;Place&#39;</span><span class="p">],</span> <span class="s1">&#39;LC&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">location</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">location_id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">location</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;in&#39;</span><span class="p">],</span> <span class="n">location_city</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">location</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;in&#39;</span><span class="p">],</span> <span class="n">location_country</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">location</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;in&#39;</span><span class="p">],</span> <span class="n">location_region</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;SEM&#39;</span><span class="p">][</span><span class="s1">&#39;hasPlace&#39;</span><span class="p">],</span> <span class="n">location</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Detections</span>
-        <span class="n">instances</span><span class="p">,</span> <span class="n">observations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_detections</span><span class="p">(</span><span class="n">cntxt</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">context</span><span class="p">,</span> <span class="n">instances</span><span class="p">,</span> <span class="n">observations</span></div>
-
-    <span class="k">def</span> <span class="nf">_create_actor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">claim_type</span><span class="p">):</span>
-        <span class="c1"># Actor</span>
-        <span class="n">actor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat_speaker</span>
-                                                      <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span>
-                                                      <span class="k">else</span> <span class="s1">&#39;front-camera&#39;</span><span class="p">),</span>
-                                              <span class="p">[</span><span class="s1">&#39;Instance&#39;</span><span class="p">,</span> <span class="s1">&#39;Source&#39;</span><span class="p">,</span>
-                                               <span class="s1">&#39;Actor&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;person&#39;</span>
-                                                                <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span>
-                                                                <span class="k">else</span> <span class="s1">&#39;sensor&#39;</span><span class="p">)],</span>
-                                              <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;LF&#39;</span>
-                                                      <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span>
-                                                      <span class="k">else</span> <span class="s1">&#39;LI&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">actor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-
-        <span class="c1"># Add leolani knows/senses actor</span>
-        <span class="n">predicate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="s1">&#39;know&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span> \
-            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="s1">&#39;sense&#39;</span><span class="p">)</span>
-        <span class="n">interaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_claim_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myself</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">claim_type</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">actor</span><span class="p">,</span> <span class="n">interaction</span>
-
-    <span class="k">def</span> <span class="nf">_create_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">claim_type</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-        <span class="c1"># Chat or Visual</span>
-        <span class="n">event_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;string&#39;</span><span class="p">])</span>
-        <span class="n">event_type</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;chat&#39;</span> <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span> <span class="k">else</span> <span class="s1">&#39;visual&#39;</span><span class="p">)</span>
-        <span class="n">eventt_label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">event_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">event_id</span><span class="p">))</span>
-        <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">eventt_label</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Event&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">event_type</span><span class="o">.</span><span class="n">title</span><span class="p">()],</span> <span class="s1">&#39;LTa&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">event_id</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">context</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;SEM&#39;</span><span class="p">][</span><span class="s1">&#39;hasEvent&#39;</span><span class="p">],</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Utterance or Visual are events and instances</span>
-        <span class="n">subevent_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">turn</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;XML&#39;</span><span class="p">][</span><span class="s1">&#39;string&#39;</span><span class="p">])</span>
-        <span class="n">subevent_type</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;utterance&#39;</span> <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span> <span class="k">else</span> <span class="s1">&#39;detection&#39;</span><span class="p">)</span>
-        <span class="n">subevent_label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">label</span><span class="p">),</span> <span class="n">subevent_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">subevent_id</span><span class="p">))</span>
-        <span class="n">subevent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">subevent_label</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Event&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">subevent_type</span><span class="o">.</span><span class="n">title</span><span class="p">()],</span> <span class="s1">&#39;LTa&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">subevent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="p">)</span>
-
-        <span class="c1"># Actor</span>
-        <span class="n">actor</span><span class="p">,</span> <span class="n">interaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_actor</span><span class="p">(</span><span class="n">utterance</span><span class="p">,</span> <span class="n">claim_type</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">subevent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;N2MU&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">subevent_id</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">subevent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;SEM&#39;</span><span class="p">][</span><span class="s1">&#39;hasActor&#39;</span><span class="p">],</span> <span class="n">actor</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">interaction_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;SEM&#39;</span><span class="p">][</span><span class="s1">&#39;hasSubEvent&#39;</span><span class="p">],</span> <span class="n">subevent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">subevent</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">interaction</span>
-
-    <span class="k">def</span> <span class="nf">_create_instance_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
-        <span class="c1"># type (Utterance) -&gt; Graph, Graph, str, str, str</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create linked data related to what leolani learned/knows about the world</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        utterance: Utterance</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_leolani</span><span class="p">()</span>
-        <span class="c1"># Subject</span>
-        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
-            <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">add_types</span><span class="p">([</span><span class="s1">&#39;Instance&#39;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">utterance</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">EXPERIENCE</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_leolani</span><span class="p">()</span>
-
-        <span class="c1"># Object</span>
-        <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">add_types</span><span class="p">([</span><span class="s1">&#39;Instance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="p">)</span>
-
-        <span class="c1"># Claim graph</span>
-        <span class="n">predicate</span> <span class="o">=</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate</span> <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span> \
-            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_predicate</span><span class="p">(</span><span class="s1">&#39;see&#39;</span><span class="p">)</span>
-
-        <span class="n">claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_claim_graph</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
-                                         <span class="n">utterance</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">claim</span>
-
-    <span class="k">def</span> <span class="nf">_create_claim_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">claim_type</span><span class="p">):</span>
-        <span class="c1"># Statement</span>
-        <span class="n">claim_label</span> <span class="o">=</span> <span class="n">hash_claim_id</span><span class="p">([</span><span class="n">subject</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">predicate</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="nb">object</span><span class="o">.</span><span class="n">label</span><span class="p">])</span>
-
-        <span class="n">claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">claim_label</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Event&#39;</span><span class="p">,</span> <span class="s1">&#39;Instance&#39;</span><span class="p">,</span> <span class="n">claim_type</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()],</span> <span class="s1">&#39;LW&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">claim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">claim_graph</span><span class="p">)</span>
-
-        <span class="c1"># Create graph and add triple</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span><span class="n">claim</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">subject</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">predicate</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">object</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">claim</span>
-
-    <span class="k">def</span> <span class="nf">_create_interaction_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">claim</span><span class="p">):</span>
-        <span class="c1"># Add context</span>
-        <span class="n">context</span><span class="p">,</span> <span class="n">detections</span><span class="p">,</span> <span class="n">observations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_context</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
-
-        <span class="c1"># Subevents</span>
-        <span class="n">experience</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">use_sensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_events</span><span class="p">(</span><span class="n">utterance</span><span class="p">,</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">EXPERIENCE</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">detection</span><span class="p">,</span> <span class="n">observation</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">observations</span><span class="p">):</span>
-            <span class="n">mention</span><span class="p">,</span> <span class="n">attribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_perspective_graph</span><span class="p">(</span><span class="n">utterance</span><span class="p">,</span> <span class="n">experience</span><span class="p">,</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">EXPERIENCE</span><span class="p">,</span>
-                                                                  <span class="n">detection</span><span class="o">=</span><span class="n">detection</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_interlink_graphs</span><span class="p">(</span><span class="n">mention</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">experience</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">use_sensor</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
-            <span class="n">statement</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">make_friend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_events</span><span class="p">(</span><span class="n">utterance</span><span class="p">,</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
-            <span class="n">mention</span><span class="p">,</span> <span class="n">attribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_perspective_graph</span><span class="p">(</span><span class="n">utterance</span><span class="p">,</span> <span class="n">statement</span><span class="p">,</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_interlink_graphs</span><span class="p">(</span><span class="n">mention</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">statement</span><span class="p">,</span> <span class="n">claim</span><span class="p">,</span> <span class="n">make_friend</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_interlink_graphs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mention</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">subevent</span><span class="p">,</span> <span class="n">claim</span><span class="p">,</span> <span class="n">interaction</span><span class="p">):</span>
-
-        <span class="c1"># Link mention and its properties like actor and event</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;wasAttributedTo&#39;</span><span class="p">],</span> <span class="n">actor</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;PROV&#39;</span><span class="p">][</span><span class="s1">&#39;wasDerivedFrom&#39;</span><span class="p">],</span> <span class="n">subevent</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Bidirectional link between mention and claim</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">claim_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">claim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;denotedBy&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;denotes&#39;</span><span class="p">],</span> <span class="n">claim</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Link mention to the interaction</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">claim_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">interaction</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;denotedBy&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_create_perspective_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">subevent</span><span class="p">,</span> <span class="n">claim_type</span><span class="p">,</span> <span class="n">detection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
-            <span class="n">certainty_value</span> <span class="o">=</span> <span class="n">confidence_to_certainty_value</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">perspective</span><span class="o">.</span><span class="n">certainty</span><span class="p">)</span>
-            <span class="n">polarity_value</span> <span class="o">=</span> <span class="n">polarity_to_polarity_value</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">perspective</span><span class="o">.</span><span class="n">polarity</span><span class="p">)</span>
-            <span class="n">sentiment_value</span> <span class="o">=</span> <span class="n">sentiment_to_sentiment_value</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">perspective</span><span class="o">.</span><span class="n">sentiment</span><span class="p">)</span>
-            <span class="n">perspective_values</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;CertaintyValue&#39;</span><span class="p">:</span> <span class="n">certainty_value</span><span class="p">,</span> <span class="s1">&#39;PolarityValue&#39;</span><span class="p">:</span> <span class="n">polarity_value</span><span class="p">,</span>
-                                  <span class="s1">&#39;SentimentValue&#39;</span><span class="p">:</span> <span class="n">sentiment_value</span><span class="p">}</span>
-            <span class="n">mention_unit</span> <span class="o">=</span> <span class="s1">&#39;char&#39;</span>
-            <span class="n">mention_position</span> <span class="o">=</span> <span class="s1">&#39;0-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">confidence</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">objects</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">confidence</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
-                                                                          <span class="n">utterance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">people</span><span class="p">]</span>
-            <span class="n">certainty_value</span> <span class="o">=</span> <span class="n">confidence_to_certainty_value</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
-            <span class="n">perspective_values</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;CertaintyValue&#39;</span><span class="p">:</span> <span class="n">certainty_value</span><span class="p">}</span>
-            <span class="n">mention_unit</span> <span class="o">=</span> <span class="s1">&#39;pixel&#39;</span>
-            <span class="n">mention_position</span> <span class="o">=</span> <span class="s1">&#39;0-</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
-
-        <span class="c1"># Mention</span>
-        <span class="n">mention_label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subevent</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">mention_unit</span><span class="p">,</span> <span class="n">mention_position</span><span class="p">)</span>
-        <span class="n">mention</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">mention_label</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Mention&#39;</span><span class="p">],</span> <span class="s1">&#39;LTa&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">mention</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="p">)</span>
-
-        <span class="c1"># Attribution</span>
-        <span class="n">attribution_label</span> <span class="o">=</span> <span class="n">mention_label</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">certainty_value</span>
-        <span class="n">attribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">attribution_label</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Attribution&#39;</span><span class="p">],</span> <span class="s1">&#39;LTa&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">attribution</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">typ</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">perspective_values</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-            <span class="n">attribution_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_entity</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;AttributionValue&#39;</span><span class="p">,</span> <span class="n">typ</span><span class="p">],</span> <span class="s1">&#39;GRASP&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_link_entity</span><span class="p">(</span><span class="n">attribution_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">attribution</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">RDF</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">attribution_value</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Bidirectional link between mention and attribution</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;hasAttribution&#39;</span><span class="p">],</span> <span class="n">attribution</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">attribution</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;isAttributionFor&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="c1"># Bidirectional link between mention and individual instances</span>
-        <span class="k">if</span> <span class="n">claim_type</span> <span class="o">==</span> <span class="n">UtteranceType</span><span class="o">.</span><span class="n">STATEMENT</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;denotedIn&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;denotedIn&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;containsDenotation&#39;</span><span class="p">],</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;containsDenotation&#39;</span><span class="p">],</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">instance_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">detection</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;denotedIn&#39;</span><span class="p">],</span> <span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">perspective_graph</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">mention</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespaces</span><span class="p">[</span><span class="s1">&#39;GRASP&#39;</span><span class="p">][</span><span class="s1">&#39;containsDenotation&#39;</span><span class="p">],</span> <span class="n">detection</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">mention</span><span class="p">,</span> <span class="n">attribution</span>
-
-    <span class="k">def</span> <span class="nf">_model_graphs_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
-        <span class="c1"># Leolani world (includes instance and claim graphs)</span>
-        <span class="n">claim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance_graph</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
-
-        <span class="c1"># Leolani talk (includes interaction and perspective graphs)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_create_interaction_graph</span><span class="p">(</span><span class="n">utterance</span><span class="p">,</span> <span class="n">claim</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Triple: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">claim</span>
-
-    <span class="c1">######################################### Helpers for question processing #########################################</span>
-
-    <span class="k">def</span> <span class="nf">_create_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
-        <span class="n">empty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rdf_builder</span><span class="o">.</span><span class="n">fill_literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Query subject</span>
-        <span class="k">if</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span> <span class="o">==</span> <span class="n">empty</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                    SELECT distinct ?slabel ?authorlabel</span>
-<span class="s2">                            WHERE { </span>
-<span class="s2">                                ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o . </span>
-<span class="s2">                                ?s rdfs:label ?slabel . </span>
-<span class="s2">                                ?o rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .  </span>
-<span class="s2">                                GRAPH ?g {</span>
-<span class="s2">                                    ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o . </span>
-<span class="s2">                                } . </span>
-<span class="s2">                                ?g grasp:denotedBy ?m . </span>
-<span class="s2">                                ?m grasp:wasAttributedTo ?author . </span>
-<span class="s2">                                ?author rdfs:label ?authorlabel .</span>
-<span class="s2">                            }</span>
-<span class="s2">                    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">)</span>
-
-        <span class="c1"># Query object</span>
-        <span class="k">elif</span> <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span> <span class="o">==</span> <span class="n">empty</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                    SELECT distinct ?olabel ?authorlabel</span>
-<span class="s2">                            WHERE { </span>
-<span class="s2">                                ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o .   </span>
-<span class="s2">                                ?s rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .  </span>
-<span class="s2">                                ?o rdfs:label ?olabel .  </span>
-<span class="s2">                                GRAPH ?g {</span>
-<span class="s2">                                    ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o . </span>
-<span class="s2">                                } . </span>
-<span class="s2">                                ?g grasp:denotedBy ?m . </span>
-<span class="s2">                                ?m grasp:wasAttributedTo ?author . </span>
-<span class="s2">                                ?author rdfs:label ?authorlabel .</span>
-<span class="s2">                            }</span>
-<span class="s2">                    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">)</span>
-
-        <span class="c1"># Query existence</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">                    SELECT distinct ?authorlabel ?v</span>
-<span class="s2">                            WHERE { </span>
-<span class="s2">                                ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o .   </span>
-<span class="s2">                                ?s rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .  </span>
-<span class="s2">                                ?o rdfs:label &#39;</span><span class="si">%s</span><span class="s2">&#39; .  </span>
-<span class="s2">                                GRAPH ?g {</span>
-<span class="s2">                                    ?s n2mu:</span><span class="si">%s</span><span class="s2"> ?o . </span>
-<span class="s2">                                } . </span>
-<span class="s2">                                ?g grasp:denotedBy ?m . </span>
-<span class="s2">                                ?m grasp:wasAttributedTo ?author . </span>
-<span class="s2">                                ?author rdfs:label ?authorlabel .</span>
-<span class="s2">                                ?m grasp:hasAttribution ?att .</span>
-<span class="s2">                                ?att rdf:value ?v .</span>
-<span class="s2">                                ?v rdf:type grasp:CertaintyValue .</span>
-<span class="s2">                            }</span>
-<span class="s2">                    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">subject_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">object_name</span><span class="p">,</span>
-                           <span class="n">utterance</span><span class="o">.</span><span class="n">triple</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">)</span>
-
-        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_prefixes</span> <span class="o">+</span> <span class="n">query</span>
-
-        <span class="k">return</span> <span class="n">query</span></div>
+        <span class="k">return</span> <span class="n">output</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -690,11 +325,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -707,15 +342,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

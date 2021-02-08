@@ -8,7 +8,6 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix n2mu: <http://cltl.nl/leolani/n2mu/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix geonames: <http://www.geonames.org/ontology/documentation.html> .
 @prefix oboInOwl: <http://www.geneontology.org/formats/oboInOwl#> .
 @base <http://cltl.nl/leolani/n2mu/> .
 
@@ -83,15 +82,6 @@ n2mu:be-from rdf:type owl:ObjectProperty ;
              rdfs:range n2mu:location .
 
 
-###  http://cltl.nl/leolani/n2mu/be-in
-n2mu:be-in rdf:type owl:ObjectProperty ,
-                    owl:TransitiveProperty ;
-           rdfs:domain n2mu:city ,
-                       n2mu:institution ;
-           rdfs:range n2mu:city ,
-                      n2mu:country .
-
-
 ###  http://cltl.nl/leolani/n2mu/bestfriend-is
 n2mu:bestfriend-is rdf:type owl:ObjectProperty ;
                    rdfs:subPropertyOf n2mu:friend-is .
@@ -152,6 +142,15 @@ n2mu:favorite-is rdf:type owl:ObjectProperty ;
 ###  http://cltl.nl/leolani/n2mu/friend-is
 n2mu:friend-is rdf:type owl:ObjectProperty ;
                rdfs:subPropertyOf n2mu:know .
+
+
+###  http://cltl.nl/leolani/n2mu/in
+n2mu:in rdf:type owl:ObjectProperty ,
+                 owl:TransitiveProperty ;
+        rdfs:domain n2mu:city ,
+                    n2mu:institution ;
+        rdfs:range n2mu:city ,
+                   n2mu:country .
 
 
 ###  http://cltl.nl/leolani/n2mu/know
@@ -709,7 +708,7 @@ foaf:Person rdf:type owl:Class ;
 ###  http://cltl.nl/leolani/world/amsterdam
 <http://cltl.nl/leolani/world/amsterdam> rdf:type owl:NamedIndividual ,
                                                   n2mu:city ;
-                                         n2mu:be-in <http://cltl.nl/leolani/world/netherlands> .
+                                         n2mu:in <http://cltl.nl/leolani/world/netherlands> .
 
 
 ###  http://cltl.nl/leolani/world/bram

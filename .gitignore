@@ -1,9 +1,7 @@
 .idea/
 *.pyc
 
-people/friends/
-people/new/
-people/VU/
+people/**/*.bin
 tmp/
 
 test/news/tmp
@@ -14,7 +12,11 @@ tokens.json
 
 log.txt
 *.trig
+!.gitignore
 
 pepper/.DS_Store
 .DS_Store
 venv/
+
+
+papers/

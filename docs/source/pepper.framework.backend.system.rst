@@ -2,9 +2,9 @@ pepper.framework.backend.system package
 =======================================
 
 .. automodule:: pepper.framework.backend.system
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
@@ -16,4 +16,3 @@ pepper.framework.backend.system package
    pepper.framework.backend.system.motion
    pepper.framework.backend.system.tablet
    pepper.framework.backend.system.text_to_speech
-

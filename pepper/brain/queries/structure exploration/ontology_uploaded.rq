@@ -1,0 +1,12 @@
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX leolaniWorld: <http://cltl.nl/leolani/world/>
+
+ASK {
+    VALUES (?g) { (leolaniWorld:Ontology) }
+    {
+    	GRAPH ?g {
+        	?s ?p ?o .
+    	} .
+    }
+}
+

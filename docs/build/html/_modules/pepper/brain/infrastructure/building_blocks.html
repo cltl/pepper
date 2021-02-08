@@ -1,0 +1,1151 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.brain.infrastructure.building_blocks &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="pepper" href="../../../pepper.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">CLTL/Pepper</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../pepper.html">pepper</a> &raquo;</li>
+      
+    <li>pepper.brain.infrastructure.building_blocks</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.brain.infrastructure.building_blocks</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">rdflib</span> <span class="k">import</span> <span class="n">Literal</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="k">import</span> <span class="n">WordNetLemmatizer</span>
+
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.constants</span> <span class="k">import</span> <span class="n">NOT_TO_MENTION_TYPES</span>
+<span class="kn">from</span> <span class="nn">pepper.brain.utils.helper_functions</span> <span class="k">import</span> <span class="n">hash_claim_id</span><span class="p">,</span> <span class="n">is_proper_noun</span>
+
+
+<div class="viewcode-block" id="RDFBase"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.RDFBase">[docs]</a><span class="k">class</span> <span class="nc">RDFBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="c1"># type: (str, str, Optional[slice], float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct RDFBase Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id: str</span>
+<span class="sd">            URI of RDFBase</span>
+<span class="sd">        label: str</span>
+<span class="sd">            Label of RDFBase</span>
+<span class="sd">        offset: Optional[slice]</span>
+<span class="sd">            Indeces of substring where this RDFBase was mentioned</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">            Confidence value that this RDFBase was mentioned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span> <span class="o">=</span> <span class="n">confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[slice]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence</span>
+
+<div class="viewcode-block" id="RDFBase.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.RDFBase.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">RDFBase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="c1"># type: (str, str, List[str], Optional[slice], float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Entity Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id: str</span>
+<span class="sd">            URI of entity</span>
+<span class="sd">        label: str</span>
+<span class="sd">            Label of entity</span>
+<span class="sd">        types: List[str]</span>
+<span class="sd">            List of types for this entity</span>
+<span class="sd">        offset: Optional[slice]</span>
+<span class="sd">            Indeces of substring where this entity was mentioned</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">            Confidence value that this entity was mentioned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">confidence</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span> <span class="k">if</span> <span class="n">t</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_types</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_types</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[str]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_types</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">types_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="s1">&#39; or &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_types</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">NOT_TO_MENTION_TYPES</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Entity.add_types"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Entity.add_types">[docs]</a>    <span class="k">def</span> <span class="nf">add_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+        <span class="c1"># type: (List[str]) -&gt; ()</span>
+        <span class="n">fixed_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span> <span class="k">if</span> <span class="n">t</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_types</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">fixed_types</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Entity.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Entity.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+            <span class="c1"># Types</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_proper_noun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span>
+            <span class="c1"># Types</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Predicate"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Predicate">[docs]</a><span class="k">class</span> <span class="nc">Predicate</span><span class="p">(</span><span class="n">RDFBase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cardinality</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (str, str, Optional[slice], float, int) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Predicate Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id: str</span>
+<span class="sd">            URI of predicate</span>
+<span class="sd">        label: str</span>
+<span class="sd">            Label of predicate</span>
+<span class="sd">        offset: Optional[slice]</span>
+<span class="sd">            Indeces of substring where this predicate was mentioned</span>
+<span class="sd">        confidence: float</span>
+<span class="sd">            Confidence value that this predicate was mentioned</span>
+<span class="sd">        cardinality: int</span>
+<span class="sd">            Represents relation of predicate (Range cardinality)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Predicate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">confidence</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cardinality</span> <span class="o">=</span> <span class="n">cardinality</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cardinality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cardinality</span>
+
+<div class="viewcode-block" id="Predicate.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Predicate.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">complement</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">subject_label</span> <span class="o">=</span> <span class="n">subject</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="n">subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">subject</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="p">(</span>
+            <span class="n">subject</span><span class="o">.</span><span class="n">types</span> <span class="k">if</span> <span class="n">subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span>
+        <span class="n">complement_label</span> <span class="o">=</span> <span class="n">complement</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="n">complement</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">complement</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="p">(</span>
+            <span class="n">complement</span><span class="o">.</span><span class="n">types</span> <span class="k">if</span> <span class="n">complement</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_predicate_morphology</span><span class="p">(</span><span class="n">subject_label</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">),</span> <span class="n">complement_label</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_predicate_morphology</span><span class="p">(</span><span class="n">subject_label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">complement_label</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_fix_predicate_morphology</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">complement</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Conjugation</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subject</span>
+<span class="sd">        predicate</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Copied from language.utils.helper_functions, because of circular dependency issues...</span>
+        <span class="c1"># TODO revise by Lenka</span>
+        <span class="n">new_predicate</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">el</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">:</span>
+                        <span class="n">new_predicate</span> <span class="o">+=</span> <span class="s1">&#39;be-&#39;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_predicate</span> <span class="o">+=</span> <span class="n">el</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span>
+
+            <span class="k">elif</span> <span class="n">predicate</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
+                <span class="n">new_predicate</span> <span class="o">=</span> <span class="n">WordNetLemmatizer</span><span class="p">()</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">predicate</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">predicate</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">el</span> <span class="o">==</span> <span class="s1">&#39;be&#39;</span><span class="p">:</span>
+                        <span class="n">new_predicate</span> <span class="o">+=</span> <span class="s1">&#39;is &#39;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_predicate</span> <span class="o">+=</span> <span class="n">el</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+
+            <span class="c1"># elif predicate == wnl.lemmatize(predicate):</span>
+            <span class="c1">#    new_predicate = predicate + &#39;s&#39;</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+
+        <span class="k">return</span> <span class="n">new_predicate</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Triple"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Triple">[docs]</a><span class="k">class</span> <span class="nc">Triple</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">complement</span><span class="p">):</span>
+        <span class="c1"># type: (Entity, Predicate, Entity) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Triple Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subject: Entity</span>
+<span class="sd">            Instance that is the subject of the information just received</span>
+<span class="sd">        predicate: Predicate</span>
+<span class="sd">            Predicate of the information just received</span>
+<span class="sd">        complement: Entity</span>
+<span class="sd">            Instance that is the complement of the information just received</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="o">=</span> <span class="n">subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="o">=</span> <span class="n">complement</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Entity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Predicate</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Entity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">predicate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="o">.</span><span class="n">label</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="o">.</span><span class="n">types_names</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="o">.</span><span class="n">types_names</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="c1"># TODO not good practice and not used, might think of deleting three setters below</span>
+<div class="viewcode-block" id="Triple.set_subject"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Triple.set_subject">[docs]</a>    <span class="k">def</span> <span class="nf">set_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">):</span>
+        <span class="c1"># type: (Entity) -&gt; ()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="o">=</span> <span class="n">subject</span></div>
+
+<div class="viewcode-block" id="Triple.set_predicate"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Triple.set_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">set_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
+        <span class="c1"># type: (Predicate) -&gt; ()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span> <span class="o">=</span> <span class="n">predicate</span></div>
+
+<div class="viewcode-block" id="Triple.set_complement"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Triple.set_complement">[docs]</a>    <span class="k">def</span> <span class="nf">set_complement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">complement</span><span class="p">):</span>
+        <span class="c1"># type: (Entity) -&gt; ()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="o">=</span> <span class="n">complement</span></div>
+
+<div class="viewcode-block" id="Triple.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Triple.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;predicate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;complement&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> [</span><span class="si">{}</span><span class="s1">])&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hash_claim_id</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span>
+                                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                   <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span>
+                                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                   <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">complement_name</span>
+                                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                                                   <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">]),</span>
+                                 <span class="n">hash_claim_id</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_types</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                                                <span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">complement_types</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;?&#39;</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="Perspective"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Perspective">[docs]</a><span class="k">class</span> <span class="nc">Perspective</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">certainty</span><span class="p">,</span> <span class="n">polarity</span><span class="p">,</span> <span class="n">sentiment</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">emotion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (float, int, float, Time, Emotion) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Perspective Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        certainty: float</span>
+<span class="sd">            Float between 0 and 1. 1 is the default value and things reflecting doubt affect it to make it less certain</span>
+<span class="sd">        polarity: int</span>
+<span class="sd">            Either 1 for positive polarity or -1 for negative polarity. This value directly affects the sentiment</span>
+<span class="sd">        sentiment: float</span>
+<span class="sd">            Float between -1 and 1. Negative values represent negatuve sentiments while positive values represent</span>
+<span class="sd">            positive sentiments.</span>
+<span class="sd">        time: Time</span>
+<span class="sd">            Enumerator representing time. This is extracted from the tense</span>
+<span class="sd">        emotion: Emotion</span>
+<span class="sd">            Enumerator representing one of the 6 universal emotions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_certainty</span> <span class="o">=</span> <span class="n">certainty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_polarity</span> <span class="o">=</span> <span class="n">polarity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sentiment</span> <span class="o">=</span> <span class="n">sentiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_emotion</span> <span class="o">=</span> <span class="n">emotion</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">certainty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_certainty</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">polarity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sentiment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sentiment</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[Time]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">emotion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[Emotion]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_emotion</span></div>
+
+
+<div class="viewcode-block" id="Provenance"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Provenance">[docs]</a><span class="k">class</span> <span class="nc">Provenance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+        <span class="c1"># type: (str, date) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Provenance Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        author: str</span>
+<span class="sd">            Person who said the mention</span>
+<span class="sd">        date: date</span>
+<span class="sd">            Date when the mention was said</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_author</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; date</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_date</span>
+
+<div class="viewcode-block" id="Provenance.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Provenance.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_author</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;natural&#39;</span><span class="p">:</span>
+            <span class="c1"># Label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_author</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%B,%Y&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="CardinalityConflict"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.CardinalityConflict">[docs]</a><span class="k">class</span> <span class="nc">CardinalityConflict</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provenance</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="c1"># type: (Provenance, Entity) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct CardinalityConflict Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        provenance: Provenance</span>
+<span class="sd">            Information about who said the conflicting information and when</span>
+<span class="sd">        entity: Entity</span>
+<span class="sd">            Information about what the conflicting information is about</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span> <span class="o">=</span> <span class="n">provenance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="o">=</span> <span class="n">entity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Provenance</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Entity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">author</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; date</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">date</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="o">.</span><span class="n">label</span>
+
+<div class="viewcode-block" id="CardinalityConflict.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.CardinalityConflict.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> about </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NegationConflict"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.NegationConflict">[docs]</a><span class="k">class</span> <span class="nc">NegationConflict</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provenance</span><span class="p">,</span> <span class="n">polarity_value</span><span class="p">):</span>
+        <span class="c1"># type: (Provenance, polarity_value) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct CardinalityConflict Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        provenance: Provenance</span>
+<span class="sd">            Information about who said the conflicting information and when</span>
+<span class="sd">        polarity_value: str</span>
+<span class="sd">            Information about polarity of the statement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span> <span class="o">=</span> <span class="n">provenance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_polarity_value</span> <span class="o">=</span> <span class="n">polarity_value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Provenance</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">polarity_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarity_value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">author</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; date</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">date</span>
+
+<div class="viewcode-block" id="NegationConflict.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.NegationConflict.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+        <span class="c1"># TODO: Cannot Casefold String, uncommented for now?</span>
+        <span class="c1"># self._polarity_value.casefold(format)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> about </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">polarity_value</span><span class="p">)</span></div>
+
+
+<span class="c1"># TODO revise overlap with provenance</span>
+<div class="viewcode-block" id="StatementNovelty"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.StatementNovelty">[docs]</a><span class="k">class</span> <span class="nc">StatementNovelty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provenance</span><span class="p">):</span>
+        <span class="c1"># type: (Provenance) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct StatementNovelty Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        provenance: Provenance</span>
+<span class="sd">            Information about who said the acquired information and when</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span> <span class="o">=</span> <span class="n">provenance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Provenance</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">author</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; date</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">date</span>
+
+<div class="viewcode-block" id="StatementNovelty.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.StatementNovelty.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="EntityNovelty"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.EntityNovelty">[docs]</a><span class="k">class</span> <span class="nc">EntityNovelty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">existence_subject</span><span class="p">,</span> <span class="n">existence_complement</span><span class="p">):</span>
+        <span class="c1"># type: (bool, bool) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct EntityNovelty Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        existence_subject: bool</span>
+<span class="sd">            Truth value for determining if this subject is something new</span>
+<span class="sd">        existence_complement: bool</span>
+<span class="sd">            Truth value for determining if this complement is something new</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">existence_subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">existence_complement</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Gap"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Gap">[docs]</a><span class="k">class</span> <span class="nc">Gap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="c1"># type: (Predicate, Entity) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Gap Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        predicate: Predicate</span>
+<span class="sd">            Information about what can be known for the entity</span>
+<span class="sd">        entity: Entity</span>
+<span class="sd">            Information about the type of things that can be known</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span> <span class="o">=</span> <span class="n">entity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Predicate</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Entity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">predicate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="o">.</span><span class="n">label</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entity_range</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[str]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">types</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entity_range_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">types_names</span>
+
+<div class="viewcode-block" id="Gap.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Gap.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predicate_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity_range_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Gaps"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Gaps">[docs]</a><span class="k">class</span> <span class="nc">Gaps</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_gaps</span><span class="p">,</span> <span class="n">complement_gaps</span><span class="p">):</span>
+        <span class="c1"># type: (List[Gap], List[Gap]) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Gap Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subject_gaps: List[Gap]</span>
+<span class="sd">            List of gaps with potential things to learn about the original subject</span>
+<span class="sd">        complement_gaps: List[Gap]</span>
+<span class="sd">            List of gaps with potential things to learn about the original complement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="o">=</span> <span class="n">subject_gaps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="o">=</span> <span class="n">complement_gaps</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Gap]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Gap]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span>
+
+<div class="viewcode-block" id="Gaps.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Gaps.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="n">o</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Overlap"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Overlap">[docs]</a><span class="k">class</span> <span class="nc">Overlap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provenance</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="c1"># type: (Provenance, Entity) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Overlap Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        provenance</span>
+<span class="sd">        entity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span> <span class="o">=</span> <span class="n">provenance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span> <span class="o">=</span> <span class="n">entity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Provenance</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Entity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">author</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; date</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">date</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entity_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">label</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entity_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[str]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">types</span>
+
+<div class="viewcode-block" id="Overlap.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Overlap.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entity</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> about </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provenance</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Overlaps"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Overlaps">[docs]</a><span class="k">class</span> <span class="nc">Overlaps</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_overlaps</span><span class="p">,</span> <span class="n">complement_overlaps</span><span class="p">):</span>
+        <span class="c1"># type: (List[Overlap], List[Overlap]) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Overlap Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subject_overlaps: List[Overlap]</span>
+<span class="sd">            List of overlaps shared with original subject</span>
+<span class="sd">        complement_overlaps: List[Overlap]</span>
+<span class="sd">            List of overlaps shared with original complement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="o">=</span> <span class="n">subject_overlaps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="o">=</span> <span class="n">complement_overlaps</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Overlap]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[Overlap]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span>
+
+<div class="viewcode-block" id="Overlaps.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Overlaps.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_subject</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_complement</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="n">o</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Thoughts"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts">[docs]</a><span class="k">class</span> <span class="nc">Thoughts</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement_novelty</span><span class="p">,</span> <span class="n">entity_novelty</span><span class="p">,</span> <span class="n">negation_conflicts</span><span class="p">,</span> <span class="n">complement_conflict</span><span class="p">,</span>
+                 <span class="n">subject_gaps</span><span class="p">,</span> <span class="n">complement_gaps</span><span class="p">,</span> <span class="n">overlaps</span><span class="p">,</span> <span class="n">trust</span><span class="p">):</span>
+        <span class="c1"># type: (List[StatementNovelty], EntityNovelty, List[NegationConflict], List[CardinalityConflict], Gaps, Gaps, Overlaps, float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct Thoughts Object</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        statement_novelty: List[StatementNovelty]</span>
+<span class="sd">            Information if the statement is novel</span>
+<span class="sd">        entity_novelty: EntityNovelty</span>
+<span class="sd">            Information if the entities involved are novel</span>
+<span class="sd">        negation_conflicts: Optional[List[NegationConflict]]</span>
+<span class="sd">            Information regarding conflicts of opposing statements heard</span>
+<span class="sd">        complement_conflict: List[CardinalityConflict]</span>
+<span class="sd">            Information regarding conflicts by violating one to one predicates</span>
+<span class="sd">        subject_gaps: Gaps</span>
+<span class="sd">            Information about what can be learned of the subject</span>
+<span class="sd">        complement_gaps_gaps: Gaps</span>
+<span class="sd">            Information about what can be learned of the complement</span>
+<span class="sd">        overlaps: Overlaps</span>
+<span class="sd">            Information regarding overlaps of this statement with things heard so far</span>
+<span class="sd">        trust: float</span>
+<span class="sd">            Level of trust on this actor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_statement_novelty</span> <span class="o">=</span> <span class="n">statement_novelty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entity_novelty</span> <span class="o">=</span> <span class="n">entity_novelty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_negation_conflicts</span> <span class="o">=</span> <span class="n">negation_conflicts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement_conflict</span> <span class="o">=</span> <span class="n">complement_conflict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject_gaps</span> <span class="o">=</span> <span class="n">subject_gaps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement_gaps</span> <span class="o">=</span> <span class="n">complement_gaps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span> <span class="o">=</span> <span class="n">overlaps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trust</span> <span class="o">=</span> <span class="n">trust</span>
+
+<div class="viewcode-block" id="Thoughts.complement_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.complement_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">complement_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[CardinalityConflict]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement_conflict</span></div>
+
+<div class="viewcode-block" id="Thoughts.negation_conflicts"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.negation_conflicts">[docs]</a>    <span class="k">def</span> <span class="nf">negation_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[NegationConflict]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_negation_conflicts</span></div>
+
+<div class="viewcode-block" id="Thoughts.statement_novelties"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.statement_novelties">[docs]</a>    <span class="k">def</span> <span class="nf">statement_novelties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; List[StatementNovelty]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_statement_novelty</span></div>
+
+<div class="viewcode-block" id="Thoughts.entity_novelty"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.entity_novelty">[docs]</a>    <span class="k">def</span> <span class="nf">entity_novelty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; EntityNovelty</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity_novelty</span></div>
+
+<div class="viewcode-block" id="Thoughts.complement_gaps"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.complement_gaps">[docs]</a>    <span class="k">def</span> <span class="nf">complement_gaps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Gaps</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement_gaps</span></div>
+
+<div class="viewcode-block" id="Thoughts.subject_gaps"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.subject_gaps">[docs]</a>    <span class="k">def</span> <span class="nf">subject_gaps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Gaps</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject_gaps</span></div>
+
+<div class="viewcode-block" id="Thoughts.overlaps"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.overlaps">[docs]</a>    <span class="k">def</span> <span class="nf">overlaps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Overlaps</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span></div>
+
+<div class="viewcode-block" id="Thoughts.trust"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.trust">[docs]</a>    <span class="k">def</span> <span class="nf">trust</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; float</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trust</span></div>
+
+<div class="viewcode-block" id="Thoughts.casefold"><a class="viewcode-back" href="../../../../pepper.brain.infrastructure.building_blocks.html#pepper.brain.infrastructure.building_blocks.Thoughts.casefold">[docs]</a>    <span class="k">def</span> <span class="nf">casefold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+        <span class="c1"># type (str) -&gt; ()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the labels to match triples or natural language</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_statement_novelty</span><span class="p">:</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_negation_conflicts</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement_conflict</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subject_gaps</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complement_gaps</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="o">.</span><span class="n">casefold</span><span class="p">(</span><span class="nb">format</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">representation</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;statement_novelty&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_statement_novelty</span><span class="p">,</span> <span class="s1">&#39;entity_novelty&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entity_novelty</span><span class="p">,</span>
+                          <span class="s1">&#39;negation_conflicts&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_negation_conflicts</span><span class="p">,</span>
+                          <span class="s1">&#39;complement_conflict&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement_conflict</span><span class="p">,</span>
+                          <span class="s1">&#39;subject_gaps&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subject_gaps</span><span class="p">,</span> <span class="s1">&#39;complement_gaps&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complement_gaps</span><span class="p">,</span>
+                          <span class="s1">&#39;overlaps&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">representation</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, CLTL.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,31 +11,33 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.language.utils.helper_functions module" href="pepper.language.utils.helper_functions.html" />
-    <link rel="prev" title="pepper.language.utils.analyzers_old module" href="pepper.language.utils.analyzers_old.html" /> 
+    <link rel="prev" title="pepper.language.utils package" href="pepper.language.utils.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,7 +94,6 @@
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.analyzers_old.html">pepper.language.utils.analyzers_old module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.language.utils.atoms module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.helper_functions.html">pepper.language.utils.helper_functions module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.wordnet_utils.html">pepper.language.utils.wordnet_utils module</a></li>
@@ -115,6 +116,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -153,7 +155,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -183,22 +185,87 @@
   <div class="section" id="module-pepper.language.utils.atoms">
 <span id="pepper-language-utils-atoms-module"></span><h1>pepper.language.utils.atoms module<a class="headerlink" href="#module-pepper.language.utils.atoms" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pepper.language.utils.atoms.UtteranceType">
-<em class="property">class </em><code class="descclassname">pepper.language.utils.atoms.</code><code class="descname">UtteranceType</code><a class="reference internal" href="_modules/pepper/language/utils/atoms.html#UtteranceType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType" title="Permalink to this definition">¶</a></dt>
+<dt id="pepper.language.utils.atoms.Emotion">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.language.utils.atoms.</code><code class="sig-name descname">Emotion</code><a class="reference internal" href="_modules/pepper/language/utils/atoms.html#Emotion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.atoms.Emotion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>This will be used in the future to represent emotion</p>
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.ANGER">
+<code class="sig-name descname">ANGER</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.ANGER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.DISGUST">
+<code class="sig-name descname">DISGUST</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.DISGUST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.FEAR">
+<code class="sig-name descname">FEAR</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.FEAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.JOY">
+<code class="sig-name descname">JOY</code><em class="property"> = 3</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.JOY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.NEUTRAL">
+<code class="sig-name descname">NEUTRAL</code><em class="property"> = 6</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.NEUTRAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.SADNESS">
+<code class="sig-name descname">SADNESS</code><em class="property"> = 4</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.SADNESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Emotion.SURPRISE">
+<code class="sig-name descname">SURPRISE</code><em class="property"> = 5</em><a class="headerlink" href="#pepper.language.utils.atoms.Emotion.SURPRISE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.utils.atoms.Time">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.language.utils.atoms.</code><code class="sig-name descname">Time</code><a class="reference internal" href="_modules/pepper/language/utils/atoms.html#Time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.atoms.Time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>This will be used in the future to represent tense</p>
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Time.FUTURE">
+<code class="sig-name descname">FUTURE</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.language.utils.atoms.Time.FUTURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Time.PAST">
+<code class="sig-name descname">PAST</code><em class="property"> = -1</em><a class="headerlink" href="#pepper.language.utils.atoms.Time.PAST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pepper.language.utils.atoms.Time.PRESENT">
+<code class="sig-name descname">PRESENT</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.language.utils.atoms.Time.PRESENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.language.utils.atoms.UtteranceType">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.language.utils.atoms.</code><code class="sig-name descname">UtteranceType</code><a class="reference internal" href="_modules/pepper/language/utils/atoms.html#UtteranceType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
 <dl class="attribute">
 <dt id="pepper.language.utils.atoms.UtteranceType.EXPERIENCE">
-<code class="descname">EXPERIENCE</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType.EXPERIENCE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">EXPERIENCE</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType.EXPERIENCE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.utils.atoms.UtteranceType.QUESTION">
-<code class="descname">QUESTION</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType.QUESTION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QUESTION</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType.QUESTION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pepper.language.utils.atoms.UtteranceType.STATEMENT">
-<code class="descname">STATEMENT</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType.STATEMENT" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">STATEMENT</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.language.utils.atoms.UtteranceType.STATEMENT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -216,7 +283,7 @@
         <a href="pepper.language.utils.helper_functions.html" class="btn btn-neutral float-right" title="pepper.language.utils.helper_functions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.language.utils.analyzers_old.html" class="btn btn-neutral float-left" title="pepper.language.utils.analyzers_old module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.language.utils.html" class="btn btn-neutral float-left" title="pepper.language.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -225,11 +292,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -240,7 +315,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

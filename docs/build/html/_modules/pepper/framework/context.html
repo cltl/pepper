@@ -13,38 +13,42 @@
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
     
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="CLTL/Pepper 1.0.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="pepper" href="../../pepper.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -79,10 +83,7 @@
           
             
             
-              
-            
-            
-              <ul>
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pepper.html">pepper package</a></li>
 </ul>
 
@@ -95,54 +96,36 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">CLTL/Pepper</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">CLTL/Pepper</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
+      
           <li><a href="../../pepper.html">pepper</a> &raquo;</li>
-        
-      <li>pepper.framework.context</li>
-    
-    
+      
+    <li>pepper.framework.context</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -156,10 +139,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">pepper.language</span> <span class="k">import</span> <span class="n">Chat</span>
-<span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractIntention</span><span class="p">,</span> <span class="n">AbstractImage</span>
+<span class="kn">from</span> <span class="nn">pepper.framework</span> <span class="k">import</span> <span class="n">AbstractImage</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.sensor.location</span> <span class="k">import</span> <span class="n">Location</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.sensor.face</span> <span class="k">import</span> <span class="n">Face</span>
 <span class="kn">from</span> <span class="nn">pepper.framework.sensor.obj</span> <span class="k">import</span> <span class="n">Object</span>
+
+<span class="kn">from</span> <span class="nn">pepper.knowledge.objects</span> <span class="k">import</span> <span class="n">OBJECT_INFO</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -245,7 +230,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chats</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chatting</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>     <span class="c1"># When</span>
+    <span class="k">def</span> <span class="nf">datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># When</span>
         <span class="c1"># type: () -&gt; datetime</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Current Date &amp; Time</span>
@@ -258,7 +243,7 @@
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>     <span class="c1"># Where</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># Where</span>
         <span class="c1"># type: () -&gt; Location</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Current Location</span>
@@ -271,7 +256,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">people</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="c1"># Who</span>
+    <span class="k">def</span> <span class="nf">people</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># Who</span>
         <span class="c1"># type: () -&gt; List[Face]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        People seen within Observation Timeout</span>
@@ -297,7 +282,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">person</span> <span class="k">for</span> <span class="n">person</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_people</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>      <span class="c1"># What</span>
+    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># What</span>
         <span class="c1"># type: () -&gt; List[Object]</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Objects seen within Observation Timeout</span>
@@ -408,7 +393,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ObjectObservations</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ObjectObservations</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">add_observation</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">object_observations</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_observations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -420,14 +405,28 @@
 <span class="sd">    Object Observations for a particular Object Class</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">0.2</span>
-    <span class="n">MIN_SAMPLES</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="n">MAX_SAMPLES</span> <span class="o">=</span> <span class="mi">50</span>
-    <span class="n">OBSERVATION_TIMEOUT</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="n">INSTANCE_TIMEOUT</span> <span class="o">=</span> <span class="mi">120</span>
+    <span class="n">EPSILON</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># Distance in Metres within which observations are considered one single instance</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">MIN_SAMPLES</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Minimum number of observations for an instance</span>
+    <span class="n">MAX_SAMPLES</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># Maximum number of observations for an instance</span>
+    <span class="n">INSTANCE_TIMEOUT</span> <span class="o">=</span> <span class="mi">120</span>  <span class="c1"># Time in seconds without observation after which an instance no longer exists</span>
+
+    <span class="n">MIN_SAMPLES_MOVING</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">MAX_SAMPLES_MOVING</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">INSTANCE_TIMEOUT_MOVING</span> <span class="o">=</span> <span class="mi">30</span>
+
+    <span class="n">OBSERVATION_BOUNDS_AREA_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.9</span>  <span class="c1"># If exceeded, observation is treated as a label for the scene instead</span>
+    <span class="n">OBSERVATION_TIMEOUT</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Time in seconds for an observation to be considered &#39;recent&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_moving</span> <span class="o">=</span> <span class="n">OBJECT_INFO</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;moving&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">OBJECT_INFO</span> <span class="k">else</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MIN_SAMPLES_MOVING</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moving</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">MIN_SAMPLES</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAX_SAMPLES_MOVING</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moving</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAX_SAMPLES</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">INSTANCE_TIMEOUT_MOVING</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moving</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">INSTANCE_TIMEOUT</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -455,9 +454,13 @@
 <span class="sd">        image: AbstractImage</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># If observation is a scene descriptor instead of an actual object, override clustering and use single instance</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_instances</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">area</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">OBSERVATION_BOUNDS_AREA_THRESHOLD</span><span class="p">:</span>
+            <span class="k">return</span>
+
         <span class="c1"># Limit observations &amp; Instances to be within INSTANCE TIMEOUT</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs</span> <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">obs</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">INSTANCE_TIMEOUT</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="o">=</span> <span class="p">[</span><span class="n">ins</span> <span class="k">for</span> <span class="n">ins</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">ins</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">INSTANCE_TIMEOUT</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs</span> <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span> <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">obs</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_timeout</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="o">=</span> <span class="p">[</span><span class="n">ins</span> <span class="k">for</span> <span class="n">ins</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">ins</span><span class="o">.</span><span class="n">time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_timeout</span><span class="p">]</span>
 
         <span class="c1"># Go through observations oldest to newest</span>
         <span class="k">for</span> <span class="n">observation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -487,7 +490,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
                         <span class="k">break</span></div>
 
-<div class="viewcode-block" id="ObjectObservations.add_observation"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.ObjectObservations.add_observation">[docs]</a>    <span class="k">def</span> <span class="nf">add_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectObservations.add_observation"><a class="viewcode-back" href="../../../pepper.framework.context.html#pepper.framework.context.ObjectObservations.add_observation">[docs]</a>    <span class="k">def</span> <span class="nf">add_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add Observation of object with this Object Class</span>
 
@@ -495,16 +498,30 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        obj: Object</span>
+<span class="sd">        observation: Object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="c1"># If observation is a scene descriptor instead of an actual object, override clustering and use single instance</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">observation_area</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">image_bounds</span><span class="o">.</span><span class="n">area</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">observation_area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">observation_area</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">OBSERVATION_BOUNDS_AREA_THRESHOLD</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="o">=</span> <span class="p">[</span><span class="n">observation</span><span class="p">]</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Append Object Observation to all Observations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+
+        <span class="c1"># Get Positions of all Observations</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">observation</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">observation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">]</span>
 
         <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">removal</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Cluster to find Object Instances</span>
-        <span class="n">cluster</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EPSILON</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MIN_SAMPLES</span><span class="p">)</span>
-        <span class="n">cluster</span><span class="o">.</span><span class="n">fit</span><span class="p">([</span><span class="n">obj</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">])</span>
+        <span class="n">cluster</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EPSILON</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_samples</span><span class="p">)</span>
+        <span class="n">cluster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
 
         <span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cluster</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
 
@@ -517,7 +534,7 @@
                 <span class="n">newest_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">[</span><span class="n">group_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
                 <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newest_instance</span><span class="p">)</span>
 
-            <span class="n">removal</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">group_indices</span><span class="p">[:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">MAX_SAMPLES</span><span class="p">])</span>
+            <span class="n">removal</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">group_indices</span><span class="p">[:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_samples</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_instances</span> <span class="o">=</span> <span class="n">instances</span>
 
@@ -526,7 +543,6 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
   
@@ -535,11 +551,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, CLTL
+        &copy; Copyright 2018, CLTL.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -552,15 +568,36 @@
   
 
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+
+  
 
   
   
-    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
    
 
 </body>

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.sensor.obj module" href="pepper.framework.sensor.obj.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,15 +90,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.html#sensor">Sensor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.util.html">pepper.framework.sensor.util package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.asr.html">pepper.framework.sensor.asr module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.sensor.face.html">pepper.framework.sensor.face module</a></li>
@@ -120,6 +117,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -158,7 +156,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -185,105 +183,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.sensor.location">
-<span id="pepper-framework-sensor-location-module"></span><h1>pepper.framework.sensor.location module<a class="headerlink" href="#module-pepper.framework.sensor.location" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.sensor.location.Location">
-<em class="property">class </em><code class="descclassname">pepper.framework.sensor.location.</code><code class="descname">Location</code><a class="reference internal" href="_modules/pepper/framework/sensor/location.html#Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.sensor.location.Location" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Location on Earth</p>
-<dl class="attribute">
-<dt id="pepper.framework.sensor.location.Location.UNKNOWN">
-<code class="descname">UNKNOWN</code><em class="property"> = 'Unknown'</em><a class="headerlink" href="#pepper.framework.sensor.location.Location.UNKNOWN" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.location.Location.city">
-<code class="descname">city</code><a class="headerlink" href="#pepper.framework.sensor.location.Location.city" title="Permalink to this definition">¶</a></dt>
-<dd><p>City String</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>city</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.location.Location.country">
-<code class="descname">country</code><a class="headerlink" href="#pepper.framework.sensor.location.Location.country" title="Permalink to this definition">¶</a></dt>
-<dd><p>Country String</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>country</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.location.Location.id">
-<code class="descname">id</code><a class="headerlink" href="#pepper.framework.sensor.location.Location.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>ID for this Location object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>id</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.location.Location.label">
-<code class="descname">label</code><a class="headerlink" href="#pepper.framework.sensor.location.Location.label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learned Location Label</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>label</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.sensor.location.Location.region">
-<code class="descname">region</code><a class="headerlink" href="#pepper.framework.sensor.location.Location.region" title="Permalink to this definition">¶</a></dt>
-<dd><p>Region String</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>region</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="pepper.framework.sensor.location.getrandbits">
-<code class="descclassname">pepper.framework.sensor.location.</code><code class="descname">getrandbits</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span> &#x2192; x.  Generates a long int with k random bits.<a class="headerlink" href="#pepper.framework.sensor.location.getrandbits" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="pepper-framework-sensor-location-module">
+<h1>pepper.framework.sensor.location module<a class="headerlink" href="#pepper-framework-sensor-location-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -306,11 +207,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -321,7 +230,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

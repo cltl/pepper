@@ -2,9 +2,9 @@ pepper.framework.backend.naoqi package
 ======================================
 
 .. automodule:: pepper.framework.backend.naoqi
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 .. toctree::
@@ -16,4 +16,3 @@ pepper.framework.backend.naoqi package
    pepper.framework.backend.naoqi.motion
    pepper.framework.backend.naoqi.tablet
    pepper.framework.backend.naoqi.text_to_speech
-

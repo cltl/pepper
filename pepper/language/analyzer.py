@@ -1,6 +1,6 @@
 from .ner import NER
 from .utils.helper_functions import *
-from pepper.language.utils.atoms import UtteranceType
+from pepper.language.utils.atoms import UtteranceType, Emotion, Time
 
 
 class Analyzer(object):
@@ -56,12 +56,16 @@ class Analyzer(object):
         for tree in forest:
             sentence_type = tree[0].label()
 
-            if sentence_type == 'S':
-                return StatementAnalyzer.analyze(chat)
-            elif sentence_type == 'Q':
-                return QuestionAnalyzer.analyze(chat)
-            else:
-                Analyzer.LOG.warning("Error: {}".format(sentence_type))
+            try:
+                if sentence_type == 'S':
+                    return StatementAnalyzer.analyze(chat)
+                elif sentence_type == 'Q':
+                    return QuestionAnalyzer.analyze(chat)
+                else:
+                    Analyzer.LOG.warning("Error: {}".format(sentence_type))
+
+            except Exception:
+                Analyzer.LOG.warning("Couldn't parse input")
 
     @property
     def chat(self):
@@ -84,13 +88,13 @@ class Analyzer(object):
         return NotImplementedError()
 
     @property
-    def rdf(self):
+    def triple(self):
         """
         Returns
         -------
-        rdf: dict or None
+        triple: dict or None
         """
-        return self._rdf
+        return self._triple
 
     @property
     def perspective(self):
@@ -100,17 +104,19 @@ class Analyzer(object):
         perspective: dict or None
         """
 
-        return None
+        return self._perspective
 
     def fix_predicate(self, predicate):
-
-        # if predicate.endswith('-not'):
-        #    predicate = predicate[:-4]
+        """
+        This function returns the lemmatized predicate and fixes the errors with lemmatizing
+        :param predicate: predicate to lemmatize
+        :return: lemmatized predicate
+        """
 
         if '-' not in predicate:
             predicate = lemmatize(predicate, 'v')
 
-            if get_node_label(self.chat.last_utterance.parser.forest[0], predicate) in ['IN', 'TO']:
+            if get_pos_in_tree(self.chat.last_utterance.parser.forest[0], predicate) in ['IN', 'TO']:
                 predicate = 'be-' + predicate
 
             elif predicate == '':
@@ -119,28 +125,37 @@ class Analyzer(object):
         if predicate == 'hat':  # lemmatizer issue with verb 'hate'
             predicate = 'hate'
 
-        elif predicate == 'bear':
+        elif predicate == 'bear':  # bear-in
             predicate = 'born'  # lemmatizer issue
 
         return predicate
 
-    def analyze_vp(self, rdf, utterance_info):
+    def analyze_vp(self, triple, utterance_info):
+        """
+        This function analyzes verb phrases
+        :param triple: triple (subject, predicate, complement)
+        :param utterance_info: the result of analysis thus far
+        :return: triple and utterance info, updated with the results of VP analysis
+        """
         pred = ''
         ind = 0
         structure_tree = self.chat.last_utterance.parser.forest[0]
 
-        if len(rdf['predicate'].split('-')) == 1:
-            rdf['predicate'] = lemmatize(rdf['predicate'], 'v')
+        # one word predicate is just lemmatized
+        if len(triple['predicate'].split('-')) == 1:
+            triple['predicate'] = lemmatize(triple['predicate'], 'v')
 
-            if rdf['predicate'] == 'cannot':  # special case with no space between not and verb
-                rdf['predicate'] = 'can'
+            if triple['predicate'] == 'cannot':  # special case with no space between not and verb
+                triple['predicate'] = 'can'
                 utterance_info['neg'] = True
 
-            return rdf, utterance_info
+            return triple, utterance_info
 
-        for el in rdf['predicate'].split('-'):
-            label = get_node_label(structure_tree, el)
+        # complex predicate
+        for el in triple['predicate'].split('-'):
+            label = get_pos_in_tree(structure_tree, el)
 
+            # negation
             if label == 'RB':
                 if el in ['not', 'never', 'no']:
                     utterance_info['neg'] = True
@@ -148,24 +163,25 @@ class Analyzer(object):
             # verbs that carry sentiment or certainty are considered followed by their object
             elif lexicon_lookup(lemmatize(el, 'v'), 'lexical'):
                 pred += '-' + lemmatize(el, 'v')
-                for elem in rdf['predicate'].split('-')[ind + 1:]:
-                    label = get_node_label(structure_tree, elem)
+                for elem in triple['predicate'].split('-')[ind + 1:]:
+                    label = get_pos_in_tree(structure_tree, elem)
                     if label in ['TO', 'IN']:
                         pred += '-' + elem
                     else:
-                        rdf['object'] = elem + '-' + rdf['object']
-                rdf['predicate'] = pred
+                        triple['complement'] = elem + '-' + triple['complement']
+                triple['predicate'] = pred
                 break
 
+            # prepositions are joined to the predicate and removed from the complement
             elif label in ['IN', 'TO']:
                 pred += '-' + el
-                for elem in rdf['predicate'].split('-')[ind + 1:]:
-                    rdf['object'] = elem + '-' + rdf['object']
-                rdf['predicate'] = pred
+                for elem in triple['predicate'].split('-')[ind + 1:]:
+                    triple['complement'] = elem + '-' + triple['complement']
+                triple['predicate'] = pred
                 break
 
             # auxiliary verb
-            elif lexicon_lookup(el, 'aux'):  # and not rdf['predicate'].endswith('-is'):
+            elif lexicon_lookup(el, 'aux'):  # and not triple['predicate'].endswith('-is'):
                 utterance_info['aux'] = lexicon_lookup(el, 'aux')
 
             # verb or modal verb
@@ -183,97 +199,143 @@ class Analyzer(object):
         if pred == '':
             pred = 'be'
 
-        rdf['predicate'] = pred
-        return rdf, utterance_info
+        triple['predicate'] = pred
+        return triple, utterance_info
 
-    def analyze_np(self, rdf):
-        # multi-word subject (posesive phrase)
-        if len(rdf['subject'].split('-')) > 1:
-            first_word = rdf['subject'].split('-')[0].lower()
+    def analyze_np(self, triple):
+        """
+        This function analyses noun phrases
+        :param triple: S,P,C triple
+        :return: triple with updated elements
+        """
+
+        # multi-word subject (possessive phrase)
+        if len(triple['subject'].split('-')) > 1:
+            first_word = triple['subject'].split('-')[0].lower()
             if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-                rdf = self.analyze_possessive(rdf, 'subject')
+                triple = self.analyze_possessive(triple, 'subject')
+            # TODO else
+
         else:  # one word subject
-            rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
-        return rdf
+            triple['subject'] = fix_pronouns(triple['subject'].lower(), self)
+        return triple
 
-    def analyze_possessive(self, rdf, element):
-        first_word = rdf[element].split('-')[0]
-        subject = fix_pronouns(first_word, self)
-        predicate = ''
-        for word in rdf[element].split('-')[1:]:
-            # words that express people are grouped together in the subject
-            if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'), 'kinship')) or word == 'best':
-                subject += '-' + word
-            else:
-                predicate += '-' + word
+    def analyze_possessive(self, triple, element):
+        """
+        This function analyses possessive phrases, which start with pos. pronoun
+        :param triple: subject, predicate, complement triple
+        :param element: element of the triple which has the possessive phrase
+        :return: updated triple
+        """
+        first_word = triple[element].split('-')[0]
 
-        if predicate:
-            rdf['predicate'] = predicate + '-is'
+        if element == 'complement':
+            complement = fix_pronouns(first_word, self)
 
-        if element == 'object':
-            rdf['object'] = rdf['subject']
+            for word in triple['complement'].split('-')[1:]:
+                complement += '-' + word
 
-        rdf['subject'] = subject
+            triple['complement'] = complement
 
-        return rdf
+        else:
+
+            subject = fix_pronouns(first_word, self)
+            predicate = ''
+            for word in triple[element].split('-')[1:]:
+                # words that express people are grouped together in the subject
+                if (lexicon_lookup(word, 'kinship') or lexicon_lookup(lemmatize(word, 'n'),
+                                                                      'kinship')) or word == 'best':
+                    subject += '-' + word
+                else:
+                    predicate += '-' + word
+            if element == 'complement':
+                triple['complement'] = triple['subject']
+
+            # properties are stored with a suffix "-is"
+            if predicate:
+                triple['predicate'] = predicate + '-is'
+
+            triple['subject'] = subject
+
+        return triple
 
     @staticmethod
-    def analyze_object_with_preposition(rdf):
-        if lexicon_lookup(rdf['predicate'], 'aux') or lexicon_lookup(rdf['predicate'], 'modal'):
-            rdf['predicate'] += '-be-' + rdf['object'].split('-')[0]
+    def analyze_complement_with_preposition(triple):
+        """
+        This function analyses triple complement which starts with a preposition and updates the triple
+        :param triple: S,P,C triple
+        :return: updated triple
+        """
+        if lexicon_lookup(triple['predicate'], 'aux') or lexicon_lookup(triple['predicate'], 'modal'):
+            triple['predicate'] += '-be-' + triple['complement'].split('-')[0]
         else:
-            rdf['predicate'] += '-' + rdf['object'].split('-')[0]
-        rdf['object'] = rdf['object'].replace(rdf['object'].split('-')[0], '', 1)[1:]
-        return rdf
+            triple['predicate'] += '-' + triple['complement'].split('-')[0]
+        triple['complement'] = triple['complement'].replace(triple['complement'].split('-')[0], '', 1)[1:]
+        return triple
 
-    def analyze_one_word_object(self, rdf):
+    def analyze_one_word_complement(self, triple):
+        """
+        This function analyses one word complement and updates the triple
+        :param triple: S,P,C triple
+        :return: updated triple
+        """
         structure_tree = self.chat.last_utterance.parser.forest[0]
-        if lexicon_lookup(rdf['object']) and 'person' in lexicon_lookup(rdf['object']):
-            if rdf['predicate'] == 'be':
-                subject = fix_pronouns(rdf['object'].lower(), self)
-                pred = ''
-                for el in rdf['subject'].split('-')[1:]:
-                    pred += el + '-'
-                rdf['predicate'] = pred + 'is'
-                rdf['object'] = rdf['subject'].split('-')[0]
-                rdf['subject'] = subject
-            else:
-                rdf['object'] = fix_pronouns(rdf['object'].lower(), self)
-        elif get_node_label(structure_tree, rdf['object']).startswith('V') and get_node_label(structure_tree,
-                                                                                              rdf['predicate']) == 'MD':
-            rdf['predicate'] += '-' + rdf['object']
-            rdf['object'] = ''
-        return rdf
 
-    def get_types_in_rdf(self, rdf):
+        # TODO
+        if lexicon_lookup(triple['complement']) and 'person' in lexicon_lookup(triple['complement']):
+            if triple['predicate'] == 'be':
+                subject = fix_pronouns(triple['complement'].lower(), self)
+                pred = ''
+                for el in triple['subject'].split('-')[1:]:
+                    pred += el + '-'
+                triple['predicate'] = pred + 'is'
+                triple['complement'] = triple['subject'].split('-')[0]
+                triple['subject'] = subject
+            else:
+                triple['complement'] = fix_pronouns(triple['complement'].lower(), self)
+        elif get_pos_in_tree(structure_tree, triple['complement']).startswith('V') and get_pos_in_tree(
+                structure_tree,
+                triple[
+                    'predicate']) == 'MD':
+            triple['predicate'] += '-' + triple['complement']
+            triple['complement'] = ''
+        return triple
+
+    def get_types_in_triple(self, triple):
+        """
+        This function gets types for all the elements of the triple
+        :param triple: S,P,C triple
+        :return: triple dictionary with types
+        """
         # Get type
-        for el in rdf:
-            text = rdf[el]
+        for el in triple:
+            text = triple[el]
             final_type = []
-            rdf[el] = {'text': text, 'type': []}
+            triple[el] = {'text': text, 'type': []}
 
             # If no text was extracted we cannot get a type
             if text == '':
                 continue
 
             # First attempt at typing via forest
-            rdf[el]['type'] = get_type(text, self.chat.last_utterance.parser.forest[0])
+            triple[el]['type'] = get_triple_element_type(text, self.chat.last_utterance.parser.forest[0])
 
             # Analyze types
-            if type(rdf[el]['type']) == dict:
+            if type(triple[el]['type']) == dict:
                 # Loop through dictionary for multiword entities
-                for typ in rdf[el]['type']:
+                for typ in triple[el]['type']:
                     # If type is None or empty, look it up
-                    if rdf[el]['type'][typ] in [None, '']:
+                    if triple[el]['type'][typ] in [None, '']:
                         entry = lexicon_lookup(typ)
 
                         if entry is None:
                             if typ.lower() in ['leolani']:
                                 final_type.append('robot')
-                            elif typ.lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek'] or typ.capitalize() == typ:
+                            elif typ.lower() in ['lenka', 'selene', 'suzana', 'bram',
+                                                 'piek'] or typ.capitalize() == typ:
                                 final_type.append('person')
                             else:
-                                node = get_node_label(self.chat.last_utterance.parser.forest[0], typ)
+                                node = get_pos_in_tree(self.chat.last_utterance.parser.forest[0], typ)
                                 if node in ['IN', 'TO']:
                                     final_type.append('preposition')
                                 elif node.startswith('V'):
@@ -287,25 +349,25 @@ class Analyzer(object):
                             final_type.append('pronoun')
 
                     else:
-                        final_type.append(rdf[el]['type'][typ])
-                rdf[el]['type'] = final_type
+                        final_type.append(triple[el]['type'][typ])
+                triple[el]['type'] = final_type
 
             # Patch special types
-            elif rdf[el]['type'] in [None, '']:
-                entry = lexicon_lookup(rdf[el]['text'])
+            elif triple[el]['type'] in [None, '']:
+                entry = lexicon_lookup(triple[el]['text'])
                 if entry is None:
 
                     # TODO: Remove Hardcoded Names
-                    if rdf[el]['text'].lower() in ['leolani']:
-                        rdf[el]['type'] = ['robot']
-                    elif rdf[el]['text'].lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek']:
-                        rdf[el]['type'] = ['person']
-                    elif rdf[el]['text'].capitalize() == rdf[el]['text']:
-                        rdf[el]['type'] = ['person']
+                    if triple[el]['text'].lower() in ['leolani']:
+                        triple[el]['type'] = ['robot']
+                    elif triple[el]['text'].lower() in ['lenka', 'selene', 'suzana', 'bram', 'piek']:
+                        triple[el]['type'] = ['person']
+                    elif triple[el]['text'].capitalize() == triple[el]['text']:
+                        triple[el]['type'] = ['person']
                 elif 'proximity' in entry:
-                    rdf[el]['type'] = ['deictic']
+                    triple[el]['type'] = ['deictic']
 
-        return rdf
+        return triple
 
 
 class StatementAnalyzer(Analyzer):
@@ -342,6 +404,15 @@ class StatementAnalyzer(Analyzer):
         return UtteranceType.STATEMENT
 
     @property
+    def triple(self):
+        """
+        Returns
+        -------
+        triple: dict or None
+        """
+        raise NotImplementedError()
+
+    @property
     def perspective(self):
         """
         Returns
@@ -354,9 +425,16 @@ class StatementAnalyzer(Analyzer):
 class GeneralStatementAnalyzer(StatementAnalyzer):
     @staticmethod
     def extract_perspective(predicate, utterance_info=None):
+        """
+        This function extracts perspective from statements
+        :param predicate: statement predicate
+        :param utterance_info: product of statement analysis thus far
+        :return: perspective dictionary consisting of sentiment, certainty, and polarity value
+        """
         sentiment = 0
         certainty = 1
         polarity = 1
+        emotion = Emotion.NEUTRAL
 
         for word in predicate.split('-'):
             word = lemmatize(word)  # with a pos tag ?
@@ -375,18 +453,41 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         if utterance_info['neg']:
             polarity = -1
 
-        perspective = {'sentiment': sentiment, 'certainty': certainty, 'polarity': polarity}
+        perspective = {'sentiment': sentiment, 'certainty': certainty, 'polarity': polarity, 'emotion': emotion}
         return perspective
 
     @staticmethod
-    def check_rdf_completeness(rdf):
-        for el in ['predicate', 'subject', 'object']:
-            if not rdf[el] or not len(rdf[el]):
+    def check_triple_completeness(triple):
+        """
+        This function checks whether an extracted triple is complete
+        :param triple: S,P,C triple
+        :return: True if the triple has all three elements, False otherwise
+        """
+        for el in ['predicate', 'subject', 'complement']:
+            if not triple[el] or not len(triple[el]):
                 LOG.warning("Cannot find {} in statement".format(el))
                 return False
         return True
 
-    def analyze_certainty_statement(self, rdf):
+    @staticmethod
+    def check_perspective_completeness(perspective):
+        """
+        This function checks whether an extracted perspective is complete
+        :param perspective: sentiment, certainty, polarity, emotion perspective
+        :return: True if the perspective has all four elements, False otherwise
+        """
+        for el in ['sentiment', 'certainty', 'polarity', 'emotion']:
+            if not perspective[el] or not len(perspective[el]):
+                LOG.warning("Cannot find {} in statement".format(el))
+                return False
+        return True
+
+    def analyze_certainty_statement(self, triple):
+        """
+
+        :param triple:
+        :return:
+        """
         index = 0
         for subtree in self.chat.last_utterance.parser.constituents[2]['structure']:
             text = ''
@@ -394,42 +495,47 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
                 if not (index == 0 and leaf == 'that'):
                     text += leaf + '-'
             if subtree.label() == 'VP':
-                rdf['predicate'] = text[:-1]
+                triple['predicate'] = text[:-1]
             elif subtree.label() == 'NP':
-                rdf['subject'] = text[:-1]
+                triple['subject'] = text[:-1]
             else:
-                rdf['object'] = text[:-1]
+                triple['complement'] = text[:-1]
             index += 1
-        return rdf
+        return triple
 
-    def initialize_rdf(self):
+    def initialize_triple(self):
         """
-        assumed word order: NP VP C
+        This function initializes the triple with assumed word order: NP VP C
         subject is the NP, predicate is VP and complement can be NP, VP, PP, another S or nothing
-
         """
-        rdf = {'subject': self.chat.last_utterance.parser.constituents[0]['raw'],
-               'predicate': self.chat.last_utterance.parser.constituents[1]['raw'],
-               'object': self.chat.last_utterance.parser.constituents[2]['raw']}
 
-        return rdf
+        triple = {'subject': self.chat.last_utterance.parser.constituents[0]['raw'],
+                  'predicate': self.chat.last_utterance.parser.constituents[1]['raw'],
+                  'complement': self.chat.last_utterance.parser.constituents[2]['raw']}
 
-    def analyze_multiword_object(self, rdf):
+        return triple
+
+    def analyze_multiword_complement(self, triple):
+        """
+        This function analyses complex complements in statements
+        :param triple: S,P,C triple
+        :return: updated triple
+        """
         structure_tree = self.chat.last_utterance.parser.forest[0]
-        first_word = rdf['object'].split('-')[0]
+        first_word = triple['complement'].split('-')[0]
 
-        if get_node_label(structure_tree, first_word) in ['TO', 'IN']:
-            rdf = self.analyze_object_with_preposition(rdf)
+        if get_pos_in_tree(structure_tree, first_word) in ['TO', 'IN']:
+            triple = self.analyze_complement_with_preposition(triple)
 
         if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-            rdf = self.analyze_possessive(rdf, 'object')
+            triple = self.analyze_possessive(triple, 'complement')
 
-        if get_node_label(structure_tree, first_word).startswith('V'):
-            if get_node_label(structure_tree, rdf['predicate']) == 'MD':
-                rdf['predicate'] += '-' + first_word
-                rdf['object'] = rdf['object'].replace(first_word, '')
+        if get_pos_in_tree(structure_tree, first_word).startswith('V'):
+            if get_pos_in_tree(structure_tree, triple['predicate']) == 'MD':
+                triple['predicate'] += '-' + first_word
+                triple['complement'] = triple['complement'].replace(first_word, '')
 
-        return rdf
+        return triple
 
     def __init__(self, chat):
         """
@@ -444,36 +550,57 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         # Initialize
         super(GeneralStatementAnalyzer, self).__init__(chat)
         utterance_info = {'neg': False}
-        rdf = self.initialize_rdf()
-        Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
 
-        entry = lexicon_lookup(lemmatize(rdf['predicate'], 'v'), 'lexical')
+        # Initial parsing
+        triple = self.initialize_triple()
+        Analyzer.LOG.debug('initial triple: {}'.format(triple))
 
         # sentences such as "I think (that) ..."
+        entry = lexicon_lookup(lemmatize(triple['predicate'], 'v'), 'lexical')
         if entry and 'certainty' in entry:
             if self.chat.last_utterance.parser.constituents[2]['label'] == 'S':
                 utterance_info['certainty'] = entry['certainty']
-                rdf = self.analyze_certainty_statement(rdf)
+                triple = self.analyze_certainty_statement(triple)
 
-        rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
-        Analyzer.LOG.debug('after VP: {}'.format(rdf))
+        # Analyze verb phrase
+        triple, utterance_info = self.analyze_vp(triple, utterance_info)
+        Analyzer.LOG.debug('after VP: {}'.format(triple))
 
-        rdf = self.analyze_np(rdf)
-        Analyzer.LOG.debug('after NP: {}'.format(rdf))
+        # Analyze noun phrase
+        triple = self.analyze_np(triple)
+        Analyzer.LOG.debug('after NP: {}'.format(triple))
 
-        if len(rdf['object'].split('-')) > 1:  # multi-word object
-            rdf = self.analyze_multiword_object(rdf)
+        # Analyze complement
+        if len(triple['complement'].split('-')) > 1:  # multi-word complement
+            triple = self.analyze_multiword_complement(triple)
+        elif len(triple['complement'].split('-')) == 1:
+            triple = self.analyze_one_word_complement(triple)
+        Analyzer.LOG.debug('after complement analysis: {}'.format(triple))
 
-        if len(rdf['object'].split('-')) == 1:
-            rdf = self.analyze_one_word_object(rdf)
+        # Final fixes to triple
+        triple = trim_dash(triple)
+        triple['predicate'] = self.fix_predicate(triple['predicate'])
+        Analyzer.LOG.debug('after predicate fix: {}'.format(triple))
 
-        # Final fixes to RDF
-        rdf = trim_dash(rdf)
-        rdf['predicate'] = self.fix_predicate(rdf['predicate'])
-        self._perspective = self.extract_perspective(rdf['predicate'], utterance_info)
-        rdf = self.get_types_in_rdf(rdf)
-        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
-        self._rdf = rdf
+        # Extract perspective
+        self._perspective = self.extract_perspective(triple['predicate'], utterance_info)
+        Analyzer.LOG.info('extracted perspective: {}'.format(self._perspective))
+
+        # Get types
+        triple = self.get_types_in_triple(triple)
+        Analyzer.LOG.debug('final triple: {} {}'.format(triple, utterance_info))
+
+        # Final triple assignment
+        self._triple = triple
+
+    @property
+    def triple(self):
+        """
+        Returns
+        -------
+        triple: dict or None
+        """
+        return self._triple
 
     @property
     def perspective(self):
@@ -497,9 +624,18 @@ class ObjectStatementAnalyzer(StatementAnalyzer):
 
         super(ObjectStatementAnalyzer, self).__init__(chat)
 
-        # TODO: Implement Chat -> RDF
+        # TODO: Implement Chat -> triple
 
-        self._rdf = {}
+        self._triple = {}
+
+    @property
+    def triple(self):
+        """
+        Returns
+        -------
+        triple: dict or None
+        """
+        return self._triple
 
 
 class QuestionAnalyzer(Analyzer):
@@ -539,55 +675,66 @@ class QuestionAnalyzer(Analyzer):
         """
         return UtteranceType.QUESTION
 
+    @property
+    def triple(self):
+        """
+        Returns
+        -------
+        triple: dict or None
+        """
+        raise NotImplementedError()
+
 
 class WhQuestionAnalyzer(QuestionAnalyzer):
 
-    def initialize_rdf(self):
-        '''
-        The assumed word order in wh-questions: aux before predicate, subject before object
-        '''
-        rdf = {'predicate': '', 'subject': '', 'object': ''}
+    def initialize_triple(self):
+        """
+        This function initializes the triple for wh_questions with the assumed word order: aux before predicate, subject before complement
+        :return: initial S,P,C triple
+        """
+
+        triple = {'predicate': '', 'subject': '', 'complement': ''}
         constituents = self.chat.last_utterance.parser.constituents
         if len(constituents) == 3:
-            label = get_node_label(self.chat.last_utterance.parser.forest[0], constituents[2]['raw'])
+            label = get_pos_in_tree(self.chat.last_utterance.parser.forest[0], constituents[2]['raw'])
             if constituents[0]['raw'] == 'who':
-                rdf['predicate'] = constituents[1]['raw']
-                rdf['object'] = constituents[2]['raw']
+                triple['predicate'] = constituents[1]['raw']
+                triple['complement'] = constituents[2]['raw']
             elif label.startswith('V') or label == 'MD':  # rotation "(do you know) what a dog is?"s
-                rdf['subject'] = constituents[1]['raw']
-                rdf['predicate'] = constituents[2]['raw']
+                triple['subject'] = constituents[1]['raw']
+                triple['predicate'] = constituents[2]['raw']
             else:
-                rdf['predicate'] = constituents[1]['raw']
-                rdf['subject'] = constituents[2]['raw']
+                triple['predicate'] = constituents[1]['raw']
+                triple['subject'] = constituents[2]['raw']
 
         elif len(constituents) == 4:
-            label = get_node_label(self.chat.last_utterance.parser.forest[0], constituents[1]['raw'])
+            label = get_pos_in_tree(self.chat.last_utterance.parser.forest[0], constituents[1]['raw'])
             if not (label.startswith('V') or label == 'MD'):
-                rdf['subject'] = constituents[3]['raw']
-                rdf['predicate'] = constituents[2]['raw']
+                triple['subject'] = constituents[3]['raw']
+                triple['predicate'] = constituents[2]['raw']
             else:
-                rdf['subject'] = constituents[2]['raw']
-                rdf['predicate'] = constituents[1]['raw'] + '-' + constituents[3]['raw']
+                triple['subject'] = constituents[2]['raw']
+                triple['predicate'] = constituents[1]['raw'] + '-' + constituents[3]['raw']
 
         elif len(constituents) == 5:
-            rdf['predicate'] = constituents[1]['raw'] + '-' + constituents[3]['raw']
-            rdf['subject'] = constituents[2]['raw']
-            rdf['object'] = constituents[4]['raw']
+            triple['predicate'] = constituents[1]['raw'] + '-' + constituents[3]['raw']
+            triple['subject'] = constituents[2]['raw']
+            triple['complement'] = constituents[4]['raw']
         else:
             Analyzer.LOG.debug('MORE CONSTITUENTS %s %s'.format(len(constituents), constituents))
 
-        return rdf
+        return triple
 
-    def analyze_multiword_object(self, rdf):
-        first_word = rdf['object'].split('-')[0]
+    def analyze_multiword_complement(self, triple):
+        first_word = triple['complement'].split('-')[0]
 
-        if get_node_label(self.chat.last_utterance.parser.forest[0], first_word) in ['TO', 'IN']:
-            rdf = self.analyze_object_with_preposition(rdf)
+        if get_pos_in_tree(self.chat.last_utterance.parser.forest[0], first_word) in ['TO', 'IN']:
+            triple = self.analyze_complement_with_preposition(triple)
 
         if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-            rdf = self.analyze_possessive(rdf, 'object')
+            triple = self.analyze_possessive(triple, 'complement')
 
-        return rdf
+        return triple
 
     def __init__(self, chat):
         """
@@ -602,73 +749,82 @@ class WhQuestionAnalyzer(QuestionAnalyzer):
         utterance_info = {'neg': False,
                           'wh_word': lexicon_lookup(self.chat.last_utterance.parser.constituents[0]['raw'].lower())}
 
-        rdf = self.initialize_rdf()
-        Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
+        triple = self.initialize_triple()
+        Analyzer.LOG.debug('initial triple: {}'.format(triple))
 
-        rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
-        Analyzer.LOG.debug('after VP: {}'.format(rdf))
+        triple, utterance_info = self.analyze_vp(triple, utterance_info)
+        Analyzer.LOG.debug('after VP: {}'.format(triple))
 
-        rdf = self.analyze_np(rdf)
-        Analyzer.LOG.debug('after NP: {}'.format(rdf))
+        triple = self.analyze_np(triple)
+        Analyzer.LOG.debug('after NP: {}'.format(triple))
 
-        if len(rdf['object'].split('-')) > 1:  # multi-word object
-            rdf = self.analyze_multiword_object(rdf)
+        if len(triple['complement'].split('-')) > 1:  # multi-word complement
+            triple = self.analyze_multiword_complement(triple)
 
-        if len(rdf['object'].split('-')) == 1:
-            rdf = self.analyze_one_word_object(rdf)
+        if len(triple['complement'].split('-')) == 1:
+            triple = self.analyze_one_word_complement(triple)
 
-        # Final fixes to RDF
-        rdf = trim_dash(rdf)
-        rdf['predicate'] = self.fix_predicate(rdf['predicate'])
-        rdf = self.get_types_in_rdf(rdf)
-        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
-        self._rdf = rdf
+        # Final fixes to triple
+        triple = trim_dash(triple)
+        triple['predicate'] = self.fix_predicate(triple['predicate'])
+        triple = self.get_types_in_triple(triple)
+        Analyzer.LOG.debug('final triple: {} {}'.format(triple, utterance_info))
+        self._triple = triple
+
+    @property
+    def triple(self):
+        """
+        Returns
+        -------
+        triple: dict or None
+        """
+        return self._triple
 
 
-# verb question rules:
 class VerbQuestionAnalyzer(QuestionAnalyzer):
 
-    def analyze_multiword_object(self, rdf):
+    def analyze_multiword_complement(self, triple):
         structure_tree = self.chat.last_utterance.parser.forest[0]
-        first_word = rdf['object'].split('-')[0]
+        first_word = triple['complement'].split('-')[0]
         if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-            rdf = self.analyze_possessive(rdf, 'object')
+            triple = self.analyze_possessive(triple, 'complement')
 
-        elif get_node_label(structure_tree, first_word) in ['IN', 'TO']:
-            rdf = self.analyze_object_with_preposition(rdf)
+        elif get_pos_in_tree(structure_tree, first_word) in ['IN', 'TO']:
+            triple = self.analyze_complement_with_preposition(triple)
 
-        elif get_node_label(structure_tree, first_word).startswith('V') and get_node_label(structure_tree,
-                                                                                           rdf['predicate']) == 'MD':
-            for word in rdf['object'].split('-'):
-                label = get_node_label(structure_tree, word)
+        elif get_pos_in_tree(structure_tree, first_word).startswith('V') and get_pos_in_tree(structure_tree,
+                                                                                             triple[
+                                                                                                 'predicate']) == 'MD':
+            for word in triple['complement'].split('-'):
+                label = get_pos_in_tree(structure_tree, word)
                 if label in ['IN', 'TO', 'MD'] or label.startswith('V'):
-                    rdf['predicate'] += '-' + word
-                    rdf['object'] = rdf['object'].replace(word, '')
+                    triple['predicate'] += '-' + word
+                    triple['complement'] = triple['complement'].replace(word, '')
 
-        elif rdf['predicate'].endswith('-is'):
-            rdf['predicate'] = rdf['predicate'][:-3]
-            for word in rdf['object'].split('-')[:-1]:
-                rdf['predicate'] += '-' + word
-            rdf['object'] = rdf['object'].split('-')[len(rdf['object'].split('-')) - 1]
-            rdf['predicate'] += '-is'
+        elif triple['predicate'].endswith('-is'):
+            triple['predicate'] = triple['predicate'][:-3]
+            for word in triple['complement'].split('-')[:-1]:
+                triple['predicate'] += '-' + word
+            triple['complement'] = triple['complement'].split('-')[len(triple['complement'].split('-')) - 1]
+            triple['predicate'] += '-is'
 
-        return rdf
+        return triple
 
-    def initialize_rdf(self):
-        rdf = {'predicate': '', 'subject': '', 'object': ''}
+    def initialize_triple(self):
+        triple = {'predicate': '', 'subject': '', 'complement': ''}
 
         constituents = self.chat.last_utterance.parser.constituents
-        rdf['subject'] = constituents[1]['raw']
+        triple['subject'] = constituents[1]['raw']
 
         if len(constituents) == 4:
-            rdf['predicate'] = constituents[0]['raw'] + '-' + constituents[2]['raw']
-            rdf['object'] = constituents[3]['raw']
+            triple['predicate'] = constituents[0]['raw'] + '-' + constituents[2]['raw']
+            triple['complement'] = constituents[3]['raw']
         elif len(constituents) == 3:
-            rdf['predicate'] = constituents[0]['raw']
-            rdf['object'] = constituents[2]['raw']
+            triple['predicate'] = constituents[0]['raw']
+            triple['complement'] = constituents[2]['raw']
         else:
             Analyzer.LOG.debug('MORE CONSTITUENTS %s %s'.format(len(constituents), constituents))
-        return rdf
+        return triple
 
     def __init__(self, chat):
         """
@@ -682,34 +838,43 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
         # Initialize
         super(VerbQuestionAnalyzer, self).__init__(chat)
         utterance_info = {'neg': False}
-        rdf = self.initialize_rdf()
-        Analyzer.LOG.debug('initial RDF: {}'.format(rdf))
+        triple = self.initialize_triple()
+        Analyzer.LOG.debug('initial triple: {}'.format(triple))
 
-        rdf, utterance_info = self.analyze_vp(rdf, utterance_info)
-        Analyzer.LOG.debug('after VP: {}'.format(rdf))
+        triple, utterance_info = self.analyze_vp(triple, utterance_info)
+        Analyzer.LOG.debug('after VP: {}'.format(triple))
 
-        if len(rdf['subject'].split('-')) > 1:
-            first_word = rdf['subject'].split('-')[0].lower()
+        if len(triple['subject'].split('-')) > 1:
+            first_word = triple['subject'].split('-')[0].lower()
             if lexicon_lookup(first_word) and 'person' in lexicon_lookup(first_word):
-                rdf = self.analyze_possessive(rdf, 'subject')
+                triple = self.analyze_possessive(triple, 'subject')
 
-            if 'not-' in rdf['subject']:  # for sentences that start with negation "haven't you been to London?"
-                rdf['subject'] = rdf['subject'].replace('not-', '')
+            if 'not-' in triple['subject']:  # for sentences that start with negation "haven't you been to London?"
+                triple['subject'] = triple['subject'].replace('not-', '')
 
-        if len(rdf['subject'].split('-')) == 1:
-            rdf['subject'] = fix_pronouns(rdf['subject'].lower(), self)
+        if len(triple['subject'].split('-')) == 1:
+            triple['subject'] = fix_pronouns(triple['subject'].lower(), self)
 
-        Analyzer.LOG.debug('after NP: {}'.format(rdf))
+        Analyzer.LOG.debug('after NP: {}'.format(triple))
 
-        if len(rdf['object'].split('-')) > 1:  # multi-word object
-            rdf = self.analyze_multiword_object(rdf)
+        if len(triple['complement'].split('-')) > 1:  # multi-word complement
+            triple = self.analyze_multiword_complement(triple)
 
-        if len(rdf['object'].split('-')) == 1:
-            rdf = self.analyze_one_word_object(rdf)
+        if len(triple['complement'].split('-')) == 1:
+            triple = self.analyze_one_word_complement(triple)
 
-        # Final fixes to RDF
-        rdf = trim_dash(rdf)
-        rdf['predicate'] = self.fix_predicate(rdf['predicate'])
-        rdf = self.get_types_in_rdf(rdf)
-        Analyzer.LOG.debug('final RDF: {} {}'.format(rdf, utterance_info))
-        self._rdf = rdf
+        # Final fixes to triple
+        triple = trim_dash(triple)
+        triple['predicate'] = self.fix_predicate(triple['predicate'])
+        triple = self.get_types_in_triple(triple)
+        Analyzer.LOG.debug('final triple: {} {}'.format(triple, utterance_info))
+        self._triple = triple
+
+    @property
+    def triple(self):
+        """
+        Returns
+        -------
+        triple: dict with S,P,C or None
+        """
+        return self._triple

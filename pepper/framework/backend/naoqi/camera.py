@@ -88,6 +88,9 @@ class NAOqiCamera(AbstractCamera):
         # Connect to Camera Service and Subscribe with Settings
         self._service = session.service(NAOqiCamera.SERVICE_VIDEO)
 
+        # Access Head Motion for Image Coordinates
+        self._motion = session.service(NAOqiCamera.SERVICE_MOTION)
+
         # Subscribe to Robot Cameras
         self._client = self._service.subscribeCameras(
             str(getrandbits(128)),  # Random Client ID's to prevent name collision
@@ -97,15 +100,30 @@ class NAOqiCamera(AbstractCamera):
             rate
         )
 
-        # Access Head Motion for Image Coordinates
-        self._motion = session.service(NAOqiCamera.SERVICE_MOTION)
-
-        # Run image acquisition in Thread
-        self._thread = Thread(target=self._run)
+        # Run Image Acquisition in Thread
+        self._thread = Thread(target=self._run, name="NAOqiCameraThread")
         self._thread.setDaemon(True)
         self._thread.start()
 
+        # # Create High Rate Camera
+        # self._client_high_rate = self._service.subscribeCamera(
+        #     str(getrandbits(128)),
+        #     int(NAOqiCameraIndex.TOP),
+        #     NAOqiCamera.RESOLUTION_CODE[CameraResolution.QQQVGA],
+        #     self._color_space,
+        #     30
+        # )
+
+        # # Run High Rate Image Acquisition in Thread
+        # self._thread_high_rate = Thread(target=self._run_high_rate, name="NAOqiHighRateCameraThread")
+        # self._thread_high_rate.setDaemon(True)
+        # self._thread_high_rate.start()
+
         self._log.debug("Booted")
+
+    # def _run_high_rate(self):
+    #     while True:
+    #         image = self._service.getImageRemote(self._client_high_rate)
 
     def _run(self):
         while True:
@@ -124,6 +142,7 @@ class NAOqiCamera(AbstractCamera):
                 for image in self._service.getImagesRemote(self._client):
 
                     # Get Image Data
+                    # TODO: RGB and Depth Images are not perfectly synced, can they?
                     width, height, _, _, _, _, data, camera, left, top, right, bottom = image
 
                     if camera == NAOqiCameraIndex.DEPTH:

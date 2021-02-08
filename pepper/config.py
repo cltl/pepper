@@ -37,12 +37,6 @@ APPLICATION_LANGUAGE = 'en-GB'
 INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
 
 
-# Show Subtitles on Pepper's Tablet!
-SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
-SUBTITLES_TIMEOUT = 15
-SUBTITLES = True
-
-
 # <<< Application Paths >>>
 
 # pepper/                  PROJECT_ROOT
@@ -88,7 +82,7 @@ PEOPLE_FRIENDS_ROOT = os.path.join(PEOPLE_ROOT, 'friends')
 PEOPLE_NEW_ROOT = os.path.join(PEOPLE_ROOT, 'new')
 
 # Names of Friends
-PEOPLE_FRIENDS_NAMES = [os.path.splitext(path)[0] for path in os.listdir(PEOPLE_FRIENDS_ROOT)]
+PEOPLE_FRIENDS_NAMES = [os.path.splitext(path)[0] for path in os.listdir(PEOPLE_FRIENDS_ROOT) if path.endswith(".bin")]
 
 # Path to GOOGLE_APPLICATION_CREDENTIALS file (.json)
 # See for more details: https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries
@@ -128,21 +122,21 @@ BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
 # NAOqi Robot URL
 NAOQI_IP = "192.168.1.176"  # Default WiFi
-# NAOQI_IP = "192.168.1.149"  # Ethernet?
 NAOQI_PORT = 9559
 NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
 
 
 # <<< Application Sensor Parameters >>>
-FACE_RECOGNITION_THRESHOLD = 0.5
-OBJECT_RECOGNITION_THRESHOLD = 0.5
-VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.8
+FACE_RECOGNITION_THRESHOLD = 0.3
+OBJECT_RECOGNITION_THRESHOLD = 0.25
+VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
 
 # Set which Object Recognition Backends to use
-# NOTE: adding more target is only necessary when the backends actually run: see pepper_tensorflow
+# NOTE: adding more target is only possible when the backends actually run: see pepper_tensorflow
 # NOTE: running multiple targets at once
 OBJECT_RECOGNITION_TARGETS = [
-    pepper.ObjectDetectionTarget.COCO
+    pepper.ObjectDetectionTarget.COCO,
+    # pepper.ObjectDetectionTarget.OID
 ]
 
 # Microphone sample rate (Hz) and number of channels

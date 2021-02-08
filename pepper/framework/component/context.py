@@ -4,7 +4,7 @@ from ..sensor import UtteranceHypothesis, Object, Face, FaceClassifier
 from ..abstract import AbstractComponent, AbstractImage, AbstractBackend
 
 from pepper.language import Utterance
-from pepper import config
+from pepper import config, ObjectDetectionTarget
 
 from collections import deque
 from threading import Thread, Lock
@@ -48,6 +48,12 @@ class ContextComponent(AbstractComponent):
         object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
         face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
+
+        # Raise Warning if COCO is not used, due to reliance on 'person' object
+        if ObjectDetectionTarget.COCO not in config.OBJECT_RECOGNITION_TARGETS:
+            self.log.warning("{0} relies on the {1} 'person' object, but {1} is not included in {2}. "
+                             "Face Recognition and the on_chat_enter event might not work as expected.".format(
+                self.__class__.__name__, ObjectDetectionTarget.COCO, "config.OBJECT_RECOGNITION_TARGETS"))
 
         # Initialize the Context for this Application
         self._context = Context()

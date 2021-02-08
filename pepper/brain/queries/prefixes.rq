@@ -1,5 +1,8 @@
 prefix gaf: <http://groundedannotationframework.org/gaf#>
 prefix grasp: <http://groundedannotationframework.org/grasp#>
+prefix graspf: <http://groundedannotationframework.org/grasp/factuality#>
+prefix grasps: <http://groundedannotationframework.org/grasp/sentiment#>
+prefix graspe: <http://groundedannotationframework.org/grasp/emotion#>
 prefix eps: <http://cltl.nl/episodicawareness/>
 prefix leolaniInputs: <http://cltl.nl/leolani/inputs/>
 prefix leolaniFriends: <http://cltl.nl/leolani/friends/>

@@ -1,7 +1,15 @@
+where is she: she be ?
+I know you: lenka know leolani
+# my best friend is he: lenka best-friend-is he
+I have three white cats: lenka have three-white-cats
+I think Selene doesn't like cheese: selene like cheese
+I think Selene hates cheese: selene hate cheese
+selene might come today: selene might-come today
+# I don't think selene likes cheese: selene like cheese
 lana can read a book: lana can-read a-book
 lana must read: lana must-read
 john will come to Amsterdam: john will-come-to Amsterdam
-you have been in paris: leolani have-been-in paris
+# you have been in paris: leolani have-been-in paris
 animals must drink water: animals must-drink water
 food should be healthy: food should-be healthy
 lana is reading a book: lana read a-book
@@ -19,3 +27,5 @@ bram loves sport: bram love sport
 you come from france: leolani come-from france
 
 
+# dislikes?? verb lemmatization
+# I know selene might come today: selene might-come today
