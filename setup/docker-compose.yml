@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  graphdb:
+    build:
+      context: ./graphdb-docker
+      args:
+        version: "9.3.1"
+        graphdb_parent: "/opt/graphdb"
+    ports:
+        - "7200:7200"
+    volumes:
+        - ./data/graphdb:/opt/graphdb/home/data:delegated
+  openface:
+    build:
+      context: ./openface-docker
+    ports:
+      - "8989:8989"
+    tty: true
+  pepper_tensorflow:
+    image: "cltl/pepper_tensorflow"
+    ports:
+      - "27001:27001"
+      - "27002:27002"
+      - "27003:27003"
