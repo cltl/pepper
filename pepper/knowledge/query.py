@@ -5,7 +5,7 @@ Answers to Simple Questions using Fuzzy Matching!
 from pepper.knowledge.sentences import *
 from pepper import config
 
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 
 from random import choice
 from time import strftime
@@ -113,13 +113,13 @@ class QnA:
 
         # Fuzzily try to find best matching query
         for Q, A in self.QNA_STATIC.items():
-            r = fuzz.partial_ratio(query, Q)
+            r = fuzz.partial_ratio(query, Q, score_cutoff=ratio)
             if r > ratio:
                 answer = A
                 ratio = r
 
         for Q, A in self.QNA_DYNAMIC.items():
-            r = fuzz.partial_ratio(query, Q)
+            r = fuzz.partial_ratio(query, Q, score_cutoff=ratio)
             if r > ratio:
                 answer = A()
                 ratio = r
