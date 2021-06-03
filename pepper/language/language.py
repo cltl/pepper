@@ -1,25 +1,22 @@
 from __future__ import unicode_literals
 
-from pepper.language.pos import POS
-from pepper.language.ner import NER
-from pepper.language.analyzer import Analyzer
-from pepper.language.utils.atoms import UtteranceType, Emotion, Time
-from pepper.brain.utils.helper_functions import casefold_text
-from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
-
-from pepper import logger, config
-from nltk import pos_tag
-
-from nltk import CFG, RecursiveDescentParser, edit_distance
-
-from collections import Counter
-
-from random import getrandbits
-from datetime import datetime
 import json
 import os
+from collections import Counter
+from datetime import datetime
+from random import getrandbits
 
+from nltk import CFG, RecursiveDescentParser, edit_distance
+from nltk import pos_tag
 from typing import List, Optional
+
+from pepper import logger, config
+from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
+from pepper.brain.utils.helper_functions import casefold_text
+from pepper.language.analyzer import Analyzer
+from pepper.language.ner import NER
+from pepper.language.pos import POS
+from pepper.language.utils.atoms import UtteranceType, Emotion
 
 
 class Chat(object):
