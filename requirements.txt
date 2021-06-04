@@ -3,7 +3,7 @@ scipy==1.2.3
 sklearn
 
 nltk==3.4
-fuzzywuzzy[speedup]
+rapidfuzz
 
 rdflib
 iribaker

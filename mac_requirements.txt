@@ -3,8 +3,7 @@ scipy==1.2.3
 sklearn
 
 nltk==3.4
-fuzzywuzzy
-python-Levenshtein
+rapidfuzz
 
 rdflib
 iribaker
