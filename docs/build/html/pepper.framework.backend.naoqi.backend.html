@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.backend.naoqi.camera module" href="pepper.framework.backend.naoqi.camera.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,13 +90,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.html#backend">Backend</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a></li>
 </ul>
@@ -116,6 +113,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -154,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -183,90 +181,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.backend.naoqi.backend">
-<span id="pepper-framework-backend-naoqi-backend-module"></span><h1>pepper.framework.backend.naoqi.backend module<a class="headerlink" href="#module-pepper.framework.backend.naoqi.backend" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.backend.naoqi.backend.NAOqiBackend">
-<em class="property">class </em><code class="descclassname">pepper.framework.backend.naoqi.backend.</code><code class="descname">NAOqiBackend</code><span class="sig-paren">(</span><em>url='tcp://192.168.1.176:9559'</em>, <em>camera_resolution=&lt;CameraResolution.QVGA: (240</em>, <em>320)&gt;</em>, <em>camera_rate=3</em>, <em>microphone_index=&lt;NAOqiMicrophoneIndex.FRONT: 3&gt;</em>, <em>language='en-GB'</em>, <em>use_system_camera=False</em>, <em>use_system_microphone=False</em>, <em>use_system_text_to_speech=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/backend.html#NAOqiBackend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.backend.NAOqiBackend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.backend.AbstractBackend</span></code></a></p>
-<p>Initialize NAOqi Backend</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>url</strong> (<em>str</em>) – NAOqi Robot URL</li>
-<li><strong>camera_resolution</strong> (<a class="reference internal" href="pepper.html#pepper.CameraResolution" title="pepper.CameraResolution"><em>CameraResolution</em></a>) – NAOqi Camera Resolution</li>
-<li><strong>camera_rate</strong> (<em>int</em>) – NAOqi Camera Rate</li>
-<li><strong>microphone_index</strong> (<em>int</em>) – NAOqi Microphone Index</li>
-<li><strong>language</strong> (<em>str</em>) – NAOqi Language</li>
-<li><strong>use_system_camera</strong> (<em>bool</em>) – Use System Camera instead of NAOqi Camera</li>
-<li><strong>use_system_microphone</strong> (<em>bool</em>) – Use System Microphone instead of NAOqi Microphone</li>
-<li><strong>use_system_text_to_speech</strong> (<em>bool</em>) – Use System TextToSpeech instead of NAOqi TextToSpeech</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">http</span></code></dt>
-<dd>//doc.aldebaran.com/2-5/index_dev_guide.html</dd>
-</dl>
-</div>
-<dl class="staticmethod">
-<dt id="pepper.framework.backend.naoqi.backend.NAOqiBackend.create_session">
-<em class="property">static </em><code class="descname">create_session</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/backend.html#NAOqiBackend.create_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.backend.NAOqiBackend.create_session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create Qi Session with Pepper/Nao Robot</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>session</strong></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">qi.Session</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.backend.naoqi.backend.NAOqiBackend.session">
-<code class="descname">session</code><a class="headerlink" href="#pepper.framework.backend.naoqi.backend.NAOqiBackend.session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pepper/Nao Robot Session</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>session</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">qi.Session</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.backend.naoqi.backend.NAOqiBackend.url">
-<code class="descname">url</code><a class="headerlink" href="#pepper.framework.backend.naoqi.backend.NAOqiBackend.url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pepper/Nao Robot URL</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>url</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-framework-backend-naoqi-backend-module">
+<h1>pepper.framework.backend.naoqi.backend module<a class="headerlink" href="#pepper-framework-backend-naoqi-backend-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -289,11 +205,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -304,7 +228,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

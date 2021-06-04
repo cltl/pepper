@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.responder.topic module" href="pepper.responder.topic.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,6 +112,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -148,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -173,308 +176,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.responder.sensory">
-<span id="pepper-responder-sensory-module"></span><h1>pepper.responder.sensory module<a class="headerlink" href="#module-pepper.responder.sensory" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.responder.sensory.IdentityResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">IdentityResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#IdentityResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.sensory.IdentityResponder.ANSWER_ME">
-<code class="descname">ANSWER_ME</code><em class="property"> = ['My name is', &quot;I'm&quot;]</em><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.ANSWER_ME" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.IdentityResponder.ANSWER_YOU">
-<code class="descname">ANSWER_YOU</code><em class="property"> = ['Your name is', 'You are']</em><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.ANSWER_YOU" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.IdentityResponder.CUE_ME">
-<code class="descname">CUE_ME</code><em class="property"> = ['who are you', 'what is your name']</em><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.CUE_ME" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.IdentityResponder.CUE_YOU">
-<code class="descname">CUE_YOU</code><em class="property"> = ['who am i', 'what is my name']</em><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.CUE_YOU" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.IdentityResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.sensory.IdentityResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/sensory.html#IdentityResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.IdentityResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.sensory.IdentityResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.sensory.LocationResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">LocationResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#LocationResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.LocationResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.sensory.LocationResponder.CUE_FULL">
-<code class="descname">CUE_FULL</code><em class="property"> = ['where are we', 'where are you', 'where we are', 'where you are', 'what is here']</em><a class="headerlink" href="#pepper.responder.sensory.LocationResponder.CUE_FULL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.LocationResponder.SET_LOCATION_CUE">
-<code class="descname">SET_LOCATION_CUE</code><em class="property"> = ['we are in ']</em><a class="headerlink" href="#pepper.responder.sensory.LocationResponder.SET_LOCATION_CUE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.LocationResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.sensory.LocationResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.sensory.LocationResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/sensory.html#LocationResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.LocationResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.LocationResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.sensory.LocationResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.sensory.PreviousUtteranceResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">PreviousUtteranceResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#PreviousUtteranceResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.sensory.PreviousUtteranceResponder.CUE">
-<code class="descname">CUE</code><em class="property"> = ['what did you say', &quot;i didn't hear you&quot;, &quot;i can't hear you&quot;, 'come again', 'excuse me']</em><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder.CUE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.PreviousUtteranceResponder.REPEAT">
-<code class="descname">REPEAT</code><em class="property"> = 'I said:'</em><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder.REPEAT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.PreviousUtteranceResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.sensory.PreviousUtteranceResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/sensory.html#PreviousUtteranceResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.PreviousUtteranceResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.sensory.PreviousUtteranceResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.sensory.TimeResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">TimeResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#TimeResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.TimeResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.sensory.TimeResponder.DATE">
-<code class="descname">DATE</code><em class="property"> = ['what day is it', 'which day is it', 'what is the date', 'today']</em><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.DATE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.TimeResponder.DAYS">
-<code class="descname">DAYS</code><em class="property"> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']</em><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.DAYS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.TimeResponder.MONTHS">
-<code class="descname">MONTHS</code><em class="property"> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']</em><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.MONTHS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.TimeResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.sensory.TimeResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/sensory.html#TimeResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.TimeResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.sensory.TimeResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.sensory.VisionResponder">
-<em class="property">class </em><code class="descclassname">pepper.responder.sensory.</code><code class="descname">VisionResponder</code><a class="reference internal" href="_modules/pepper/responder/sensory.html#VisionResponder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.VisionResponder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.responder.responder.html#pepper.responder.responder.Responder" title="pepper.responder.responder.Responder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.responder.responder.Responder</span></code></a></p>
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.I_SAW">
-<code class="descname">I_SAW</code><em class="property"> = ['I saw', 'I have seen', 'I think I observed']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.I_SAW" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.I_SEE">
-<code class="descname">I_SEE</code><em class="property"> = ['I see', 'I can see', 'I think I see', 'I observe']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.I_SEE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.NO_OBJECT">
-<code class="descname">NO_OBJECT</code><em class="property"> = [&quot;I don't see anything&quot;, &quot;I don't see any object&quot;]</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.NO_OBJECT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.NO_PEOPLE">
-<code class="descname">NO_PEOPLE</code><em class="property"> = [&quot;I don't see anybody I know&quot;, &quot;I don't see familiar faces&quot;, 'I cannot identify any of my friends']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.NO_PEOPLE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.SEE_OBJECT">
-<code class="descname">SEE_OBJECT</code><em class="property"> = ['what do you see', 'what can you see', 'what did you see', 'what have you seen']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.SEE_OBJECT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.SEE_PERSON">
-<code class="descname">SEE_PERSON</code><em class="property"> = ['who do you see', 'who can you see']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.SEE_PERSON" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.SEE_PERSON_ALL">
-<code class="descname">SEE_PERSON_ALL</code><em class="property"> = ['who did you see', 'who have you seen']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.SEE_PERSON_ALL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.SEE_SPECIFIC">
-<code class="descname">SEE_SPECIFIC</code><em class="property"> = ['do you see ', 'can you see ', 'where is the ']</em><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.SEE_SPECIFIC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.sensory.VisionResponder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/sensory.html#VisionResponder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.sensory.VisionResponder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.sensory.VisionResponder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-responder-sensory-module">
+<h1>pepper.responder.sensory module<a class="headerlink" href="#pepper-responder-sensory-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -497,11 +200,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -512,7 +223,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

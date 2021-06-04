@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,31 +11,33 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.sensor package" href="pepper.framework.sensor.html" />
-    <link rel="prev" title="pepper.framework.component.statistics module" href="pepper.framework.component.statistics.html" /> 
+    <link rel="prev" title="pepper.framework.component.subtitles module" href="pepper.framework.component.subtitles.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,14 +90,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.component.html">pepper.framework.component package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.html#component">Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.display.html">pepper.framework.component.display package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.brain.html">pepper.framework.component.brain module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.camera.html">pepper.framework.component.camera module</a></li>
@@ -107,6 +104,7 @@
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.scene.html">pepper.framework.component.scene module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.speech_recognition.html">pepper.framework.component.speech_recognition module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.statistics.html">pepper.framework.component.statistics module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.component.subtitles.html">pepper.framework.component.subtitles module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.component.text_to_speech module</a></li>
 </ul>
 </li>
@@ -126,6 +124,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -164,7 +163,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -191,42 +190,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.component.text_to_speech">
-<span id="pepper-framework-component-text-to-speech-module"></span><h1>pepper.framework.component.text_to_speech module<a class="headerlink" href="#module-pepper.framework.component.text_to_speech" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.component.text_to_speech.TextToSpeechComponent">
-<em class="property">class </em><code class="descclassname">pepper.framework.component.text_to_speech.</code><code class="descname">TextToSpeechComponent</code><span class="sig-paren">(</span><em>backend</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/text_to_speech.html#TextToSpeechComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.text_to_speech.TextToSpeechComponent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.component.html#pepper.framework.abstract.component.AbstractComponent" title="pepper.framework.abstract.component.AbstractComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.component.AbstractComponent</span></code></a></p>
-<p>Text To Speech Component. Exposes the say() Method to Applications</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>backend</strong> (<a class="reference internal" href="pepper.framework.abstract.backend.html#pepper.framework.abstract.backend.AbstractBackend" title="pepper.framework.abstract.backend.AbstractBackend"><em>AbstractBackend</em></a>) – Application Backend</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="pepper.framework.component.text_to_speech.TextToSpeechComponent.say">
-<code class="descname">say</code><span class="sig-paren">(</span><em>text</em>, <em>animation=None</em>, <em>block=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/component/text_to_speech.html#TextToSpeechComponent.say"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.component.text_to_speech.TextToSpeechComponent.say" title="Permalink to this definition">¶</a></dt>
-<dd><p>Say Text (with optional Animation) through Text-to-Speech</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>text</strong> (<em>str</em>) – Text to say through Text-to-Speech</li>
-<li><strong>animation</strong> (<em>str</em><em> or </em><em>None</em>) – (Naoqi) Animation to play</li>
-<li><strong>block</strong> (<em>bool</em>) – Whether this function should block or immediately return after calling</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-framework-component-text-to-speech-module">
+<h1>pepper.framework.component.text_to_speech module<a class="headerlink" href="#pepper-framework-component-text-to-speech-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -240,7 +205,7 @@
         <a href="pepper.framework.sensor.html" class="btn btn-neutral float-right" title="pepper.framework.sensor package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.framework.component.statistics.html" class="btn btn-neutral float-left" title="pepper.framework.component.statistics module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.framework.component.subtitles.html" class="btn btn-neutral float-left" title="pepper.framework.component.subtitles module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -249,11 +214,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -264,7 +237,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

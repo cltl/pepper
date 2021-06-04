@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.responder.sensory module" href="pepper.responder.sensory.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,6 +112,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -148,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -173,143 +176,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.responder.responder">
-<span id="pepper-responder-responder-module"></span><h1>pepper.responder.responder module<a class="headerlink" href="#module-pepper.responder.responder" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.responder.responder.Responder">
-<em class="property">class </em><code class="descclassname">pepper.responder.responder.</code><code class="descname">Responder</code><a class="reference internal" href="_modules/pepper/responder/responder.html#Responder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.Responder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pepper.responder.responder.Responder.requirements">
-<code class="descname">requirements</code><a class="headerlink" href="#pepper.responder.responder.Responder.requirements" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lists Component Requirement for this Responder Object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>requirements</strong> – List of required Components</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of AbstractComponent</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.responder.Responder.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/responder.html#Responder.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.Responder.respond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Respond to Utterance</p>
-<p>When successful, respond should return a quality score and a callable implementing the response</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>utterance</strong> (<a class="reference internal" href="pepper.language.language.html#pepper.language.language.Utterance" title="pepper.language.language.Utterance"><em>Utterance</em></a>) – Utterance to respond to</li>
-<li><strong>app</strong> (<em>Union</em><em>[</em><em>requirements</em><em>]</em>) – Components to Interact with as Response</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> – response quality &amp; responder function</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float, callable</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.Responder.type">
-<code class="descname">type</code><a class="headerlink" href="#pepper.responder.responder.Responder.type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="pepper.responder.responder.ResponderRequirementUnmetError">
-<em class="property">exception </em><code class="descclassname">pepper.responder.responder.</code><code class="descname">ResponderRequirementUnmetError</code><a class="reference internal" href="_modules/pepper/responder/responder.html#ResponderRequirementUnmetError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.ResponderRequirementUnmetError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.responder.ResponderType">
-<em class="property">class </em><code class="descclassname">pepper.responder.responder.</code><code class="descname">ResponderType</code><a class="reference internal" href="_modules/pepper/responder/responder.html#ResponderType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.ResponderType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Brain">
-<code class="descname">Brain</code><em class="property"> = 5</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Brain" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Conversational">
-<code class="descname">Conversational</code><em class="property"> = 4</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Conversational" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Intention">
-<code class="descname">Intention</code><em class="property"> = 9</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Intention" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Internet">
-<code class="descname">Internet</code><em class="property"> = 3</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Internet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.PAID">
-<code class="descname">PAID</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.PAID" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Personal">
-<code class="descname">Personal</code><em class="property"> = 6</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Personal" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Sensory">
-<code class="descname">Sensory</code><em class="property"> = 7</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Sensory" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Topic">
-<code class="descname">Topic</code><em class="property"> = 8</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Topic" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponderType.Unknown">
-<code class="descname">Unknown</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.responder.responder.ResponderType.Unknown" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.responder.responder.ResponsePicker">
-<em class="property">class </em><code class="descclassname">pepper.responder.responder.</code><code class="descname">ResponsePicker</code><span class="sig-paren">(</span><em>app</em>, <em>responders</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/responder.html#ResponsePicker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.ResponsePicker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponsePicker.app">
-<code class="descname">app</code><a class="headerlink" href="#pepper.responder.responder.ResponsePicker.app" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponsePicker.groups">
-<code class="descname">groups</code><a class="headerlink" href="#pepper.responder.responder.ResponsePicker.groups" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.responder.responder.ResponsePicker.respond">
-<code class="descname">respond</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/responder/responder.html#ResponsePicker.respond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.responder.responder.ResponsePicker.respond" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.responder.responder.ResponsePicker.responders">
-<code class="descname">responders</code><a class="headerlink" href="#pepper.responder.responder.ResponsePicker.responders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-responder-responder-module">
+<h1>pepper.responder.responder module<a class="headerlink" href="#pepper-responder-responder-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -332,11 +200,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -347,7 +223,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

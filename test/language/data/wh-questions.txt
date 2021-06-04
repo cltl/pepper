@@ -1,4 +1,4 @@
-who is your best friend: Leolani best-friend-is ?
+# who is your best friend: Leolani best-friend-is ?
 who likes talking to people: ? like talking-to-people
 who works at the university: ? work-at the-university
 who have you seen: Leolani see ?
@@ -17,9 +17,8 @@ what is your favorite color: Leolani favorite-color-is ?
 what is my favorite food: Lenka favorite-food-is ?
 what do you enjoy: Leolani enjoy ?
 where is selene from: Selene be-from ?
-where is your friend : leolani friend-is ?
+# where is your friend: leolani friend-is ?
 where are you going: leolani go ?
-where is my friend: lenka friend-is ?
+# where is my friend: lenka friend-is ?
 where can I go: lenka can-go ?
-
 where did Bram come from: Bram come-from ?

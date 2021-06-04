@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.language.utils.wordnet_utils module" href="pepper.language.utils.wordnet_utils.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,7 +94,6 @@
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.language.html">pepper.language package</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pepper.language.generation.html">pepper.language.generation package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.language.utils.html">pepper.language.utils package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.analyzers_old.html">pepper.language.utils.analyzers_old module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.atoms.html">pepper.language.utils.atoms module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.language.utils.helper_functions module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.language.utils.wordnet_utils.html">pepper.language.utils.wordnet_utils module</a></li>
@@ -115,6 +116,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -153,7 +155,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -180,99 +182,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.language.utils.helper_functions">
-<span id="pepper-language-utils-helper-functions-module"></span><h1>pepper.language.utils.helper_functions module<a class="headerlink" href="#module-pepper.language.utils.helper_functions" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.dbp_query">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">dbp_query</code><span class="sig-paren">(</span><em>q</em>, <em>epr</em>, <em>f=u'application/json'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#dbp_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.dbp_query" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.fix_pronouns">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">fix_pronouns</code><span class="sig-paren">(</span><em>pronoun</em>, <em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#fix_pronouns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.fix_pronouns" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pronoun</strong> – </li>
-<li><strong>self</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.get_lexname">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_lexname</code><span class="sig-paren">(</span><em>element</em>, <em>forest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_lexname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_lexname" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.get_node_label">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_node_label</code><span class="sig-paren">(</span><em>tree</em>, <em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_node_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_node_label" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tree</strong> – </li>
-<li><strong>word</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.get_type">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_type</code><span class="sig-paren">(</span><em>element</em>, <em>forest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.get_uri">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">get_uri</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#get_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.get_uri" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.lemmatize">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">lemmatize</code><span class="sig-paren">(</span><em>word</em>, <em>tag=u''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#lemmatize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.lemmatize" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>word</strong> – </li>
-<li><strong>tag</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.lexicon_lookup">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">lexicon_lookup</code><span class="sig-paren">(</span><em>word</em>, <em>typ=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#lexicon_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.lexicon_lookup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Look up and return features of a given word in the lexicon.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pepper.language.utils.helper_functions.trim_dash">
-<code class="descclassname">pepper.language.utils.helper_functions.</code><code class="descname">trim_dash</code><span class="sig-paren">(</span><em>rdf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/language/utils/helper_functions.html#trim_dash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.language.utils.helper_functions.trim_dash" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="pepper-language-utils-helper-functions-module">
+<h1>pepper.language.utils.helper_functions module<a class="headerlink" href="#pepper-language-utils-helper-functions-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -295,11 +206,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -310,7 +229,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

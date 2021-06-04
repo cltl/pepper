@@ -1,7 +1,10 @@
 from pepper.brain.utils.helper_functions import casefold_text
 
+from pepper.language.utils.helper_functions import wnl
+from pepper.config import HUMAN_UNKNOWN
 
-def fix_predicate_morphology(subject, predicate):
+
+def fix_predicate_morphology(subject, predicate, object, format='triple'):
     """
     Conjugation
     Parameters
@@ -14,15 +17,35 @@ def fix_predicate_morphology(subject, predicate):
 
     """
     new_predicate = ''
-    for el in predicate.split():
-        if el != 'is':
-            new_predicate += el + ' '
+    if format == 'triple':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'is':
+                    new_predicate += 'be-'
+                else:
+                    new_predicate += el + '-'
+
+        elif predicate.endswith('s'):
+            new_predicate = wnl.lemmatize(predicate)
+
         else:
-            new_predicate += 'are '
+            new_predicate = predicate
 
-    if predicate.endswith('s'): new_predicate = predicate[:-1]
+    elif format == 'natural':
+        if len(predicate.split()) > 1:
+            for el in predicate.split():
+                if el == 'be':
+                    new_predicate += 'is '
+                else:
+                    new_predicate += el + ' '
 
-    return new_predicate
+        # elif predicate == wnl.lemmatize(predicate):
+        #    new_predicate = predicate + 's'
+
+        else:
+            new_predicate = predicate
+
+    return new_predicate.strip(' ')
 
 
 def replace_pronouns(speaker, author=None, entity_label=None, role=None):
@@ -30,7 +53,7 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
         return speaker
 
     if role == 'pos':
-        print('pos',speaker, entity_label)
+        # print('pos', speaker, entity_label)
         if speaker.lower() == entity_label.lower():
             pronoun = 'your'
         elif entity_label.lower() == 'leolani':
@@ -39,8 +62,9 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
             pronoun = entity_label  # third person pos.
         return pronoun
 
+    # Fix author
     elif author is not None:
-        if speaker.lower() in [author.lower(), 'speaker'] or author == 'Speaker':
+        if speaker.lower() == author.lower() or author == HUMAN_UNKNOWN:
             pronoun = 'you'
         elif author.lower() == 'leolani':
             pronoun = 'I'
@@ -50,7 +74,7 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
         return pronoun
 
     # Entity
-    if entity_label is not None :
+    if entity_label is not None:
         if speaker.lower() in [entity_label.lower(), 'speaker'] or entity_label == 'Speaker':
             pronoun = 'you'
         elif entity_label.lower() == 'leolani':
@@ -62,7 +86,6 @@ def replace_pronouns(speaker, author=None, entity_label=None, role=None):
             pronoun = 'she' if role == 'subject' else 'her'
             '''
         else:
-            pronoun = entity_label.title()
+            pronoun = entity_label
 
         return pronoun
-

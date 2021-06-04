@@ -1,0 +1,18 @@
+I know that you aren't a human: leolani be a-human: 1 -1 0
+I think Selene works in Amsterdam: selene work-in amsterdam: 0.75 1 0
+I think john can't come to school: john can-come-to school: 0.75 -1 0
+I think that birds like flying: birds like flying: 0.75 1 0.75
+birds can't talk: birds can-talk: 1 -1 0
+John hates fashion: john hate fashion: 1 1 -1
+you know I like coffee: lenka like coffee: 1 1 0.75
+Selene thinks my favorite color is blue: lenka favorite-color-is blue 0.75 1 1 
+I think you don't like pizza: leolani like pizza 0.75 -1 0.75
+lana didn't read a book: lana read a-book: 1 -1 0
+bram doesn't love sport: bram love sport: 1 -1 1
+John loves fashion: john love fashion: 1 1 1
+John doesn't hate fashion: john hate fashion: 1 -1 -1
+you must bring three books: leolani must-bring three-books 1 1 0
+john might like reading books: john might-like reading-books 0.5 1. 0.75
+selene should come to the university: selene should-come-to the-university 0.75 1 0
+Bob might be from england: bob might-be-from england 0.5 1 0
+

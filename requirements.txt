@@ -1,8 +1,8 @@
-numpy
-scipy
+numpy==1.16.2
+scipy==1.2.3
 sklearn
 
-nltk
+nltk==3.4
 fuzzywuzzy[speedup]
 
 rdflib
@@ -22,6 +22,6 @@ reverse_geocoder
 pillow
 opencv-python
 
-tornado
+tornado==5.1.1
 typing
 pyaudio

@@ -1,0 +1,47 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX graspf: <http://groundedannotationframework.org/grasp/factuality#>
+PREFIX gaf: <http://groundedannotationframework.org/gaf#>
+PREFIX : <http://cltl.nl/leolani/n2mu/>
+
+SELECT
+ ?g ?date1 ?author1 ?val1 ?date2 ?author2 ?val2
+
+WHERE {
+    ?g gaf:denotedBy ?m1 .
+    ?m1 grasp:hasAttribution ?att1 .
+    ?att1 rdf:value graspf:POSITIVE .
+    ?att1 rdf:value ?val1 .
+    ?val1 rdf:type graspf:PolarityValue .
+    ?m1 prov:wasDerivedFrom ?utt1 .
+    ?utt1 rdf:type grasp:Utterance .
+    ?chat1 sem:hasSubEvent ?utt1 .
+    ?cont1 sem:hasEvent ?chat1 .
+    ?cont1 ?time_pred1 ?date1 .
+    VALUES (?time_pred1) { (sem:hasTime) (sem:hasBeginTimeStamp) } .
+    ?m1 grasp:wasAttributedTo ?author1 .
+    ?author1 rdfs:label ?author1label.
+
+    ?g gaf:denotedBy ?m2 .
+    ?m2 grasp:hasAttribution ?att2 .
+    ?att2 rdf:value graspf:NEGATIVE .
+    ?att2 rdf:value ?val2 .
+    ?val2 rdf:type graspf:PolarityValue .
+    ?m2 prov:wasDerivedFrom ?utt2 .
+    ?utt2 rdf:type grasp:Utterance .
+    ?chat2 sem:hasSubEvent ?utt2 .
+    ?cont2 sem:hasEvent ?chat2 .
+    ?cont2 ?time_pred2 ?date2 .
+    VALUES (?time_pred2) { (sem:hasTime) (sem:hasBeginTimeStamp) } .
+    ?m2 grasp:wasAttributedTo ?author2 .
+    ?author2 rdfs:label ?author2label.
+
+    FILTER (?author1label = "%s" || ?author2label = "%s" ) .
+    FILTER(STRSTARTS(STR(?author1), "http://cltl.nl/leolani/friends/") && STRSTARTS(STR(?author2), "http://cltl.nl/leolani/friends/") ) .
+
+} GROUP BY ?g ?date1 ?author1 ?att1 ?val1 ?date2 ?author2 ?att2 ?val2

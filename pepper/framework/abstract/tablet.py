@@ -1,8 +1,11 @@
+from typing import Union
+
+
 class AbstractTablet(object):
     """Access Robot Tablet to show URLs"""
 
     def show(self, url):
-        # type: (str) -> None
+        # type: (Union[str, unicode]) -> None
         """
         Show URL
 

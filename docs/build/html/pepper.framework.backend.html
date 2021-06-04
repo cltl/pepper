@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.backend.naoqi package" href="pepper.framework.backend.naoqi.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,13 +90,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.framework.backend package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#backend">Backend</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a></li>
 </ul>
@@ -116,6 +113,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -154,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -179,16 +177,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.backend">
-<span id="pepper-framework-backend-package"></span><h1>pepper.framework.backend package<a class="headerlink" href="#module-pepper.framework.backend" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="backend">
-<h2>Backend<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h2>
-<p>The framework.backend package contains the backends implementing Sensors, Actuators &amp; Backend:</p>
-<ul class="simple">
-<li><a class="reference internal" href="pepper.framework.backend.naoqi.backend.html#pepper.framework.backend.naoqi.backend.NAOqiBackend" title="pepper.framework.backend.naoqi.backend.NAOqiBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">NAOqiBackend</span></code></a> implements the backend for Pepper &amp; Nao Robots</li>
-<li><a class="reference internal" href="pepper.framework.backend.system.backend.html#pepper.framework.backend.system.backend.SystemBackend" title="pepper.framework.backend.system.backend.SystemBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">SystemBackend</span></code></a> implements the backend for Windows/Mac/Linux systems.</li>
-</ul>
-</div>
+  <div class="section" id="pepper-framework-backend-package">
+<h1>pepper.framework.backend package<a class="headerlink" href="#pepper-framework-backend-package" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a><ul>
@@ -235,11 +225,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -250,7 +248,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -8,7 +8,8 @@ select distinct ?name (count(distinct ?chat) as ?num_chat) where {
     ?act rdf:type sem:Actor .
     ?act rdf:type n2mu:person .
     ?act rdfs:label ?name .
-    ?chat sem:hasActor ?act
+    ?utt sem:hasActor ?act .
+    ?chat sem:hasSubEvent ?utt .
 
     MINUS {  VALUES (?name) { ('stranger') ('human')} }
 

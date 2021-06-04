@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.backend.naoqi.text_to_speech module" href="pepper.framework.backend.naoqi.text_to_speech.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,13 +90,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.html#backend">Backend</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.backend.naoqi.html">pepper.framework.backend.naoqi package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.backend.system.html">pepper.framework.backend.system package</a></li>
 </ul>
@@ -116,6 +113,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -154,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -183,40 +181,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.backend.naoqi.tablet">
-<span id="pepper-framework-backend-naoqi-tablet-module"></span><h1>pepper.framework.backend.naoqi.tablet module<a class="headerlink" href="#module-pepper.framework.backend.naoqi.tablet" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet">
-<em class="property">class </em><code class="descclassname">pepper.framework.backend.naoqi.tablet.</code><code class="descname">NAOqiTablet</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/tablet.html#NAOqiTablet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.framework.abstract.tablet.html#pepper.framework.abstract.tablet.AbstractTablet" title="pepper.framework.abstract.tablet.AbstractTablet"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.abstract.tablet.AbstractTablet</span></code></a></p>
-<p>Access Robot Tablet to show URLs</p>
-<dl class="attribute">
-<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet.IMAGE_FORMATS">
-<code class="descname">IMAGE_FORMATS</code><em class="property"> = &lt;_sre.SRE_Pattern object&gt;</em><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet.IMAGE_FORMATS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet.hide">
-<code class="descname">hide</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/tablet.html#NAOqiTablet.hide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet.hide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Hide whatever is shown on tablet</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.backend.naoqi.tablet.NAOqiTablet.show">
-<code class="descname">show</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/backend/naoqi/tablet.html#NAOqiTablet.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.backend.naoqi.tablet.NAOqiTablet.show" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show URL</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – WebPage/Image URL</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-framework-backend-naoqi-tablet-module">
+<h1>pepper.framework.backend.naoqi.tablet module<a class="headerlink" href="#pepper-framework-backend-naoqi-tablet-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -239,11 +205,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -254,7 +228,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

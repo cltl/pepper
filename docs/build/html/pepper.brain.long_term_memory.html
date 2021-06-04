@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,31 +11,33 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework package" href="pepper.framework.html" />
-    <link rel="prev" title="pepper.brain.basic_brain module" href="pepper.brain.basic_brain.html" /> 
+    <link rel="prev" title="pepper.brain.fame_aware module" href="pepper.brain.fame_aware.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -87,8 +89,13 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.infrastructure.html">pepper.brain.infrastructure package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.reasoners.html">pepper.brain.reasoners package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.utils.html">pepper.brain.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.LTM_question_processing.html">pepper.brain.LTM_question_processing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.LTM_statement_processing.html">pepper.brain.LTM_statement_processing module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pepper.brain.basic_brain.html">pepper.brain.basic_brain module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.brain.fame_aware.html">pepper.brain.fame_aware module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pepper.brain.long_term_memory module</a></li>
 </ul>
 </li>
@@ -104,6 +111,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -142,7 +150,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -167,57 +175,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.brain.long_term_memory">
-<span id="pepper-brain-long-term-memory-module"></span><h1>pepper.brain.long_term_memory module<a class="headerlink" href="#module-pepper.brain.long_term_memory" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.brain.long_term_memory.LongTermMemory">
-<em class="property">class </em><code class="descclassname">pepper.brain.long_term_memory.</code><code class="descname">LongTermMemory</code><span class="sig-paren">(</span><em>address='http://localhost:7200/repositories/leolani'</em>, <em>clear_all=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pepper.brain.basic_brain.html#pepper.brain.basic_brain.BasicBrain" title="pepper.brain.basic_brain.BasicBrain"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.brain.basic_brain.BasicBrain</span></code></a></p>
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.create_context">
-<code class="descname">create_context</code><span class="sig-paren">(</span><em>cntxt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.create_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.create_context" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.experience">
-<code class="descname">experience</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.experience"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.experience" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function to interact with if an experience is coming into the brain. Takes in a structured utterance
-containing parsed experience, transforms them to triples, and posts them to the triple store
-:param utterance: Structured data of a parsed experience
-:return: json response containing the status for posting the triples, and the original statement</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.query_brain">
-<code class="descname">query_brain</code><span class="sig-paren">(</span><em>utterance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.query_brain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.query_brain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function to interact with if a question is coming into the brain. Takes in a structured parsed question,
-transforms it into a query, and queries the triple store for a response
-:param utterance: Structured data of a parsed question
-:return: json response containing the results of the query, and the original question</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.brain.long_term_memory.LongTermMemory.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>utterance</em>, <em>reason_types=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/brain/long_term_memory.html#LongTermMemory.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.brain.long_term_memory.LongTermMemory.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function to interact with if a statement is coming into the brain. Takes in an Utterance containing a
-parsed statement as a Triple, transforms them to linked data, and posts them to the triple store
-:param utterance: Contains all necessary information regarding a statement just made.
-:type utterance: Utterance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>thoughts</strong> – Contains information about conflicts, novelty, gaps and overlaps that the statement produces given the data
-in the triple store</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.brain.utils.response.html#pepper.brain.utils.response.Thoughts" title="pepper.brain.utils.response.Thoughts">Thoughts</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-brain-long-term-memory-module">
+<h1>pepper.brain.long_term_memory module<a class="headerlink" href="#pepper-brain-long-term-memory-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -231,7 +190,7 @@ in the triple store</td>
         <a href="pepper.framework.html" class="btn btn-neutral float-right" title="pepper.framework package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pepper.brain.basic_brain.html" class="btn btn-neutral float-left" title="pepper.brain.basic_brain module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pepper.brain.fame_aware.html" class="btn btn-neutral float-left" title="pepper.brain.fame_aware module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -240,11 +199,19 @@ in the triple store</td>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -255,7 +222,6 @@ in the triple store</td>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

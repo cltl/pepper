@@ -1,0 +1,14 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX grasp: <http://groundedannotationframework.org/grasp#>
+PREFIX gaf: <http://groundedannotationframework.org/gaf#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+select ?stat where {
+?stat rdf:type gaf:Assertion .
+
+?stat gaf:denotedBy ?m1 .
+?m1 grasp:wasAttributedTo ?author1 .
+?author1 rdfs:label "%s" .
+
+?stat gaf:denotedBy ?m .
+} GROUP BY ?stat HAVING (COUNT(distinct ?m) = 1)

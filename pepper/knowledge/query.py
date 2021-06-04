@@ -21,9 +21,9 @@ class QnA:
         "What is the time?": lambda: strftime("It is currently %H:%M."),
         "day is it?": lambda: strftime("It is %A today."),
         "month is it?": lambda: strftime("It is %B today."),
-        "How many friends?": lambda: "I have {} friends".format(len(os.listdir(config.PEOPLE_FRIENDS_ROOT))),
+        "How many friends?": lambda: "I have {} friends".format(len(config.PEOPLE_FRIENDS_NAMES)),
         "Who are your friends?": lambda: "My friends are {}. I like my friends!".format(
-            ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_FRIENDS_ROOT))),
+            ", ".join(config.PEOPLE_FRIENDS_NAMES)),
         "How many people did you meet?": lambda: "I met {} people today!".format(len(os.listdir(config.PEOPLE_NEW_ROOT)) - 1),
         "Who did you meet?": lambda: "I met {}!".format(
             ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_NEW_ROOT) if name != "NEW.bin")),
@@ -48,13 +48,15 @@ class QnA:
                               "Please send me mail, I'm glad to receive!",
         "Do you travel?": "Yeah, I travel to research and business events. I am a very sophisticated robot.",
         "What's your phone number?": "I don't have a phone, but I do have an IP address!",
-        "Do you sport?": "Yeah, I play chess online in my spare time. Never lost a game!",
+        "Do you do sports?": "Yeah, I play chess online in my spare time. Never lost a game!",
         "Do you speak English?": "Yeah, I'm talking English to you right now!",
         "Do you speak Dutch?": "Ik spreek een heel klein beetje Nederlands... Yeah.. I'm working on it!",
         "How old are you?": "I was born the eleventh of July, 2017. That means I'm {:.1f} years old!".format(
             (datetime.date.today() - datetime.date(2017, 7, 11)).days / 365.0),
         "Are you male or female?": "I'm female!",
         "What is your gender?": "I'm a female robot!",
+        "What is your height?": "I am 120 centimeters high",
+        "What is your weight?": "I am 28 kilograms, but that is sensitive information for a lady to disclose",
         "Who are your programmers?": "My programmers are Lenka, Selene, Suzana, Bram and Piek. I like them!",
         "What is your job?": "I'm aiding research by having conversations.",
         "What do you do?": "I'm learning about the world through conversations with humans. With this I aid research!",
@@ -124,4 +126,3 @@ class QnA:
 
         if ratio > 90:
             return float(ratio)/100, answer
-

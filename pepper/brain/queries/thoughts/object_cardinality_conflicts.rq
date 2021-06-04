@@ -1,6 +1,7 @@
 PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX grasp:<http://groundedannotationframework.org/grasp#>
+PREFIX gaf:<http://groundedannotationframework.org/gaf#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
 
@@ -12,7 +13,7 @@ where {
     ?s rdfs:label '%s' .
     ?o rdfs:label ?objectlabel .
 
-    ?g grasp:denotedBy ?m .
+    ?g gaf:denotedBy ?m .
     ?m prov:wasDerivedFrom ?utt .
 
     ?chat sem:hasSubEvent ?utt .

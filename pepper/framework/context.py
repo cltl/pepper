@@ -5,10 +5,12 @@ Context
 """
 
 from pepper.language import Chat
-from pepper.framework import AbstractIntention, AbstractImage
+from pepper.framework import AbstractImage
 from pepper.framework.sensor.location import Location
 from pepper.framework.sensor.face import Face
 from pepper.framework.sensor.obj import Object
+
+from pepper.knowledge.objects import OBJECT_INFO
 
 import numpy as np
 
@@ -36,6 +38,7 @@ class Context(object):
     def __init__(self):
 
         self._id = getrandbits(128)
+        self._datetime = datetime.now()
 
         self._chats = []
         self._chatting = False
@@ -94,7 +97,7 @@ class Context(object):
         return self.chats[-1] if self.chatting else None
 
     @property
-    def datetime(self):     # When
+    def datetime(self):  # When
         # type: () -> datetime
         """
         The Current Date & Time
@@ -104,10 +107,10 @@ class Context(object):
         datetime: datetime
             Current Date and Time
         """
-        return datetime.now()
+        return self._datetime
 
     @property
-    def location(self):     # Where
+    def location(self):  # Where
         # type: () -> Location
         """
         The Current Location
@@ -120,7 +123,7 @@ class Context(object):
         return self._location
 
     @property
-    def people(self):      # Who
+    def people(self):  # Who
         # type: () -> List[Face]
         """
         People seen within Observation Timeout
@@ -146,7 +149,7 @@ class Context(object):
         return [person for person, t in self._people.values()]
 
     @property
-    def objects(self):      # What
+    def objects(self):  # What
         # type: () -> List[Object]
         """
         Objects seen within Observation Timeout
@@ -196,6 +199,18 @@ class Context(object):
         """
         for person in people:
             self._people[person.name] = (person, time())
+
+    def set_datetime(self, date):
+        # type: (datetime) -> None
+        """
+        Add date to Context
+
+        Parameters
+        ----------
+        date: date
+            Date when the interaction took place
+        """
+        self._datetime = date
 
     def start_chat(self, speaker):
         # type: (str) -> None
@@ -257,7 +272,7 @@ class Observations:
         """
         for obj in objects:
             if obj.name not in self._object_observations:
-                self._object_observations[obj.name] = ObjectObservations()
+                self._object_observations[obj.name] = ObjectObservations(obj.name)
             self._object_observations[obj.name].add_observation(obj)
 
         for object_observations in self._object_observations.values():
@@ -269,14 +284,28 @@ class ObjectObservations:
     Object Observations for a particular Object Class
     """
 
-    EPSILON = 0.2
-    MIN_SAMPLES = 5
-    MAX_SAMPLES = 50
-    OBSERVATION_TIMEOUT = 2
-    INSTANCE_TIMEOUT = 120
+    EPSILON = 0.2  # Distance in Metres within which observations are considered one single instance
 
-    def __init__(self):
+    MIN_SAMPLES = 5  # Minimum number of observations for an instance
+    MAX_SAMPLES = 50  # Maximum number of observations for an instance
+    INSTANCE_TIMEOUT = 120  # Time in seconds without observation after which an instance no longer exists
+
+    MIN_SAMPLES_MOVING = 3
+    MAX_SAMPLES_MOVING = 8
+    INSTANCE_TIMEOUT_MOVING = 30
+
+    OBSERVATION_BOUNDS_AREA_THRESHOLD = 0.9  # If exceeded, observation is treated as a label for the scene instead
+    OBSERVATION_TIMEOUT = 2  # Time in seconds for an observation to be considered 'recent'
+
+    def __init__(self, name):
         # type: () -> None
+        self._name = name
+        self._moving = OBJECT_INFO[name]['moving'] if name in OBJECT_INFO else False
+
+        self._min_samples = self.MIN_SAMPLES_MOVING if self._moving else self.MIN_SAMPLES
+        self._max_samples = self.MAX_SAMPLES_MOVING if self._moving else self.MAX_SAMPLES
+        self._instance_timeout = self.INSTANCE_TIMEOUT_MOVING if self._moving else self.INSTANCE_TIMEOUT
+
         self._observations = []
         self._instances = []
 
@@ -304,9 +333,13 @@ class ObjectObservations:
         image: AbstractImage
         """
 
+        # If observation is a scene descriptor instead of an actual object, override clustering and use single instance
+        if len(self._instances) == 1 and self._instances[0].image_bounds.area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
+            return
+
         # Limit observations & Instances to be within INSTANCE TIMEOUT
-        self._observations = [obs for obs in self._observations if time() - obs.time < self.INSTANCE_TIMEOUT]
-        self._instances = [ins for ins in self._instances if time() - ins.time < self.INSTANCE_TIMEOUT]
+        self._observations = [obs for obs in self._observations if time() - obs.time < self._instance_timeout]
+        self._instances = [ins for ins in self._instances if time() - ins.time < self._instance_timeout]
 
         # Go through observations oldest to newest
         for observation in self._observations[::-1]:
@@ -336,7 +369,7 @@ class ObjectObservations:
                         self._observations.remove(observation)
                         break
 
-    def add_observation(self, obj):
+    def add_observation(self, observation):
         """
         Add Observation of object with this Object Class
 
@@ -344,16 +377,30 @@ class ObjectObservations:
 
         Parameters
         ----------
-        obj: Object
+        observation: Object
         """
-        self._observations.append(obj)
+        # If observation is a scene descriptor instead of an actual object, override clustering and use single instance
+        try:
+            observation_area = observation.image_bounds.area
+        except:
+            observation_area = 0
+
+        if observation_area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
+            self._instances = [observation]
+            return
+
+        # Append Object Observation to all Observations
+        self._observations.append(observation)
+
+        # Get Positions of all Observations
+        positions = [observation.position for observation in self._observations]
 
         instances = []
         removal = []
 
         # Cluster to find Object Instances
-        cluster = DBSCAN(eps=self.EPSILON, min_samples=self.MIN_SAMPLES)
-        cluster.fit([obj.position for obj in self._observations])
+        cluster = DBSCAN(eps=self.EPSILON, min_samples=self._min_samples)
+        cluster.fit(positions)
 
         unique_labels = np.unique(cluster.labels_)
 
@@ -366,7 +413,7 @@ class ObjectObservations:
                 newest_instance = self._observations[group_indices[-1]]
                 instances.append(newest_instance)
 
-            removal.extend(group_indices[:-self.MAX_SAMPLES])
+            removal.extend(group_indices[:-self._max_samples])
 
         self._instances = instances
 

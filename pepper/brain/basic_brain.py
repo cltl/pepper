@@ -1,6 +1,5 @@
 from pepper.brain.utils.helper_functions import read_query
-from pepper.brain.utils.store_connector import StoreConnector
-from pepper.brain.utils.rdf_builder import RdfBuilder
+from pepper.brain.infrastructure import StoreConnector, RdfBuilder
 from pepper import config, logger
 
 from datetime import datetime
@@ -17,7 +16,8 @@ class BasicBrain(object):
 
     _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, quiet=False):
+    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, is_submodule=False):
+        # type: (str, bool) -> None
         """
         Interact with Triple store
 
@@ -34,13 +34,13 @@ class BasicBrain(object):
 
         self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
 
-        if not quiet:
+        # Start with a clean local memory
+        self.clean_local_memory()
+
+        if not is_submodule:
             # Possible clear all contents (testing purposes)
             if clear_all:
                 self.clear_brain()
-
-            # Start with a clean local memory
-            self.clean_local_memory()
 
             # Upload ontology here
             self.upload_ontology()
@@ -95,10 +95,23 @@ class BasicBrain(object):
         Upload ontology
         :return: response status
         """
-        self._log.info("Uploading ontology to brain")
-        data = self._serialize(self._brain_log)
+        if not self.ontology_is_uploaded():
+            self._rdf_builder.load_ontologies()
 
-        return self._connection.upload(data)
+            self._log.info("Uploading ontology to brain")
+            data = self._serialize(self._brain_log)
+            _ = self._connection.upload(data)
+
+    def ontology_is_uploaded(self):
+        """
+        Query the existance of the Ontology graph, thus not importing the whole Ontology every time
+        :return: response status
+        """
+        self._log.debug("Checking if ontology is in brain")
+        query = read_query('structure exploration/ontology_uploaded')
+        response = self._submit_query(query, ask=True)
+
+        return response
 
     def get_predicates(self):
         """
@@ -130,7 +143,7 @@ class BasicBrain(object):
 
         temp = dict()
         for r in response:
-            temp[r['l']['value']] = r['o']['value'].split('/')[-1]
+            temp[r['l']['value']] = r['type']['value'].split('/')[-1]
 
         return temp
 
@@ -143,6 +156,42 @@ class BasicBrain(object):
         query = read_query('content exploration/count_statements')
         response = self._submit_query(query)
         return response[0]['count']['value']
+
+    def count_statements_by(self, actor_label):
+        """
+        Count statements or 'facts' in the brain by a given author
+        :return:
+        """
+        query = read_query('trust/count_statements_by') % actor_label
+        response = self._submit_query(query)
+        return response[0]['num_stat']['value']
+
+    def novel_statements_by(self, actor_label):
+        """
+        Return statements or 'facts' in the brain by a given author, that have not been heard from anyone else
+        :return:
+        """
+        query = read_query('trust/novel_statements_by') % actor_label
+        response = self._submit_query(query)
+        return [elem['stat']['value'].split('/')[-1] for elem in response]
+
+    def get_conflicts(self):
+        """
+        Count statements or 'facts' in the brain
+        :return:
+        """
+        query = read_query('content exploration/all_conflicts')
+        response = self._submit_query(query)
+        return response
+
+    def get_conflicts_by(self, actor_label):
+        """
+        Count statements or 'facts' in the brain
+        :return:
+        """
+        query = read_query('trust/conflicts_by') % (actor_label, actor_label)
+        response = self._submit_query(query)
+        return response
 
     def count_friends(self):
         """
@@ -169,7 +218,7 @@ class BasicBrain(object):
         """
         query = read_query('content exploration/best_friends')
         response = self._submit_query(query)
-        return [elem['name']['value'] for elem in response]
+        return [(elem['name']['value'], elem['num_chat']['value'].split('/')[-1]) for elem in response]
 
     def when_last_chat_with(self, actor_label):
         """
@@ -177,10 +226,21 @@ class BasicBrain(object):
         :param actor_label: name of person
         :return:
         """
-        query = read_query('content exploration/when_last_chat_with') % actor_label
+        query = read_query('trust/when_last_chat_with') % actor_label
         response = self._submit_query(query)
 
         return response[0]['time']['value'].split('/')[-1] if response != [] else ''
+
+    def count_chat_with(self, actor_label):
+        """
+        Count times I chatted with this person
+        :param actor_label: name of person
+        :return:
+        """
+        query = read_query('trust/count_chat_with') % actor_label
+        response = self._submit_query(query)
+
+        return response[0]['num_chats']['value'].split('/')[-1] if response != [] else ''
 
     def get_instance_of_type(self, instance_type):
         """
@@ -188,7 +248,7 @@ class BasicBrain(object):
         :param instance_type: name of class in ontology
         :return:
         """
-        query = read_query('content exploration/instance_of_type') % instance_type
+        query = read_query('typing/instance_of_type') % instance_type
         response = self._submit_query(query)
         return [elem['name']['value'] for elem in response] if response else []
 
@@ -198,9 +258,19 @@ class BasicBrain(object):
         :param label: label of instance
         :return:
         """
-        query = read_query('content exploration/type_of_instance') % label
+        query = read_query('typing/type_of_instance') % label
         response = self._submit_query(query)
         return [elem['type']['value'] for elem in response] if response else []
+
+    def get_id_of_instance(self, label):
+        """
+        Get ids of a certain instance identified by its label
+        :param label: label of instance
+        :return:
+        """
+        query = read_query('id/id_of_instance') % label
+        response = self._submit_query(query)
+        return [elem['id']['value'] for elem in response] if response else []
 
     def get_triples_with_predicate(self, predicate):
         """
@@ -224,10 +294,17 @@ class BasicBrain(object):
         _ = self._connection.query(query, post=True)
 
     def clean_local_memory(self):
+        """
+        Assign direct access to rdf builder attributes
+        Returns
+        -------
+
+        """
         self.namespaces = self._rdf_builder.namespaces
         self.dataset = self._rdf_builder.dataset
+
+        self.ontology_graph = self._rdf_builder.ontology_graph
         self.instance_graph = self._rdf_builder.instance_graph
         self.claim_graph = self._rdf_builder.claim_graph
-        self.ontology_graph = self._rdf_builder.ontology_graph
         self.perspective_graph = self._rdf_builder.perspective_graph
         self.interaction_graph = self._rdf_builder.interaction_graph

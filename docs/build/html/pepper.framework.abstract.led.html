@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.abstract.microphone module" href="pepper.framework.abstract.microphone.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,12 +90,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.html#abstract">Abstract</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.camera.html">pepper.framework.abstract.camera module</a></li>
@@ -124,6 +121,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -162,7 +160,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -189,255 +187,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.abstract.led">
-<span id="pepper-framework-abstract-led-module"></span><h1>pepper.framework.abstract.led module<a class="headerlink" href="#module-pepper.framework.abstract.led" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.abstract.led.AbstractLed">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.led.</code><code class="descname">AbstractLed</code><a class="reference internal" href="_modules/pepper/framework/abstract/led.html#AbstractLed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.led.AbstractLed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Control Robot LEDs</p>
-<dl class="method">
-<dt id="pepper.framework.abstract.led.AbstractLed.off">
-<code class="descname">off</code><span class="sig-paren">(</span><em>leds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/led.html#AbstractLed.off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.led.AbstractLed.off" title="Permalink to this definition">¶</a></dt>
-<dd><p>Switch LEDs off</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>leds</strong> (<em>List</em><em>[</em><a class="reference internal" href="#pepper.framework.abstract.led.Led" title="pepper.framework.abstract.led.Led"><em>Led</em></a><em>]</em>) – Which LEDs are affected</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.led.AbstractLed.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>leds</em>, <em>rgb</em>, <em>duration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/led.html#AbstractLed.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.led.AbstractLed.set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set LEDs to Particular color (interpolating from its current color in ‘duration’ time)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>leds</strong> (<em>List</em><em>[</em><a class="reference internal" href="#pepper.framework.abstract.led.Led" title="pepper.framework.abstract.led.Led"><em>Led</em></a><em>]</em>) – Which LEDs are affected</li>
-<li><strong>rgb</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em>) – Which color to turn</li>
-<li><strong>duration</strong> (<em>float</em>) – How long to take switching this color</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.framework.abstract.led.Led">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.led.</code><code class="descname">Led</code><a class="reference internal" href="_modules/pepper/framework/abstract/led.html#Led"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.led.Led" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
-<p>NAOqi LED ids</p>
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed1">
-<code class="descname">LeftEarLed1</code><em class="property"> = 1</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed10">
-<code class="descname">LeftEarLed10</code><em class="property"> = 10</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed10" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed2">
-<code class="descname">LeftEarLed2</code><em class="property"> = 2</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed3">
-<code class="descname">LeftEarLed3</code><em class="property"> = 3</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed4">
-<code class="descname">LeftEarLed4</code><em class="property"> = 4</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed5">
-<code class="descname">LeftEarLed5</code><em class="property"> = 5</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed5" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed6">
-<code class="descname">LeftEarLed6</code><em class="property"> = 6</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed6" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed7">
-<code class="descname">LeftEarLed7</code><em class="property"> = 7</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed7" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed8">
-<code class="descname">LeftEarLed8</code><em class="property"> = 8</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed8" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLed9">
-<code class="descname">LeftEarLed9</code><em class="property"> = 9</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLed9" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftEarLeds">
-<code class="descname">LeftEarLeds</code><em class="property"> = 0</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftEarLeds" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed1">
-<code class="descname">LeftFaceLed1</code><em class="property"> = 23</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed2">
-<code class="descname">LeftFaceLed2</code><em class="property"> = 24</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed3">
-<code class="descname">LeftFaceLed3</code><em class="property"> = 25</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed4">
-<code class="descname">LeftFaceLed4</code><em class="property"> = 26</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed5">
-<code class="descname">LeftFaceLed5</code><em class="property"> = 27</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed5" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed6">
-<code class="descname">LeftFaceLed6</code><em class="property"> = 28</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed6" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed7">
-<code class="descname">LeftFaceLed7</code><em class="property"> = 29</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed7" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLed8">
-<code class="descname">LeftFaceLed8</code><em class="property"> = 30</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLed8" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.LeftFaceLeds">
-<code class="descname">LeftFaceLeds</code><em class="property"> = 22</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.LeftFaceLeds" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed1">
-<code class="descname">RightEarLed1</code><em class="property"> = 12</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed10">
-<code class="descname">RightEarLed10</code><em class="property"> = 21</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed10" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed2">
-<code class="descname">RightEarLed2</code><em class="property"> = 13</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed3">
-<code class="descname">RightEarLed3</code><em class="property"> = 14</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed4">
-<code class="descname">RightEarLed4</code><em class="property"> = 15</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed5">
-<code class="descname">RightEarLed5</code><em class="property"> = 16</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed5" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed6">
-<code class="descname">RightEarLed6</code><em class="property"> = 17</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed6" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed7">
-<code class="descname">RightEarLed7</code><em class="property"> = 18</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed7" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed8">
-<code class="descname">RightEarLed8</code><em class="property"> = 19</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed8" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLed9">
-<code class="descname">RightEarLed9</code><em class="property"> = 20</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLed9" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightEarLeds">
-<code class="descname">RightEarLeds</code><em class="property"> = 11</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightEarLeds" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed1">
-<code class="descname">RightFaceLed1</code><em class="property"> = 32</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed2">
-<code class="descname">RightFaceLed2</code><em class="property"> = 33</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed3">
-<code class="descname">RightFaceLed3</code><em class="property"> = 34</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed3" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed4">
-<code class="descname">RightFaceLed4</code><em class="property"> = 35</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed4" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed5">
-<code class="descname">RightFaceLed5</code><em class="property"> = 36</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed5" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed6">
-<code class="descname">RightFaceLed6</code><em class="property"> = 37</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed6" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed7">
-<code class="descname">RightFaceLed7</code><em class="property"> = 38</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed7" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLed8">
-<code class="descname">RightFaceLed8</code><em class="property"> = 39</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLed8" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.led.Led.RightFaceLeds">
-<code class="descname">RightFaceLeds</code><em class="property"> = 31</em><a class="headerlink" href="#pepper.framework.abstract.led.Led.RightFaceLeds" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-framework-abstract-led-module">
+<h1>pepper.framework.abstract.led module<a class="headerlink" href="#pepper-framework-abstract-led-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -460,11 +211,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -475,7 +234,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

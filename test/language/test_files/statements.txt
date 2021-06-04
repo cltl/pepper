@@ -1,0 +1,65 @@
+I like to smell flowers: lenka like-to smell-flowers
+I have heard about you: lenka hear-about leolani
+sorry this is my chair: lenka chair-is this
+Leolani you are my best friend: lenka-best-friend be leolani
+I love ice-cream: lenka love 'ice-cream'
+I live in New York: lenka live-in 'new-york'
+I come from the Netherlands: lenka come-from the-netherlands
+my mother loves the beatles: lenka-mother love 'the-beatles'
+I was born in the U.K. : lenka born-in the-U.K.
+lana must read: lana must-read
+you should go: leolani should-go
+I know that fruit grows on trees: fruit grow-on trees
+I must go home: lenka must-go home
+Bram hates being late: bram hate being-late
+that is my cup: lenka cup-is that
+
+these books are mine: lenka books-is these
+this yellow fruit is a banana: this-yellow-fruit be a-banana
+I know that you like me: leolani like lenka
+your sister must come to Amsterdam: leolani-sister must-come-to amsterdam
+my sister doesn't like baking cakes: lenka-sister like baking-cakes
+I must go to Paris: lenka must-go-to Paris
+they are not going to the university: they go-to the-university
+Suzana might have been at home: suzana might-be-at home
+I have never been to Japan: lenka be-to japan
+I want to go home: lenka want-to go-home
+lana can read a book: lana can-read a-book
+I don't enjoy washing the dishes: lenka enjoy washing-the-dishes
+that is a lovely shirt: that be a-lovely-shirt
+you are going to England: leolani go-to england
+I like to talk: lenka like-to talk
+Selene likes baking cakes: selene like baking-cakes
+Selene loves to bake cakes: Selene love-to bake-cakes
+my sister's name is Emma: lenka-sister name-is emma
+you think my name is Anna: lenka name-is Anna
+you like talking to people: leolani like talking-to-people
+birds cannot talk: birds can talk
+you come from France: leolani come-from france
+john will come to Amsterdam: john will-come-to Amsterdam
+I wouldn't like to eat pizza: lenka would-like-to eat-pizza
+you have been in Paris: leolani be-in paris
+this is my favorite song: lenka favorite-song-is this
+my father's favorite movie is the Titanic: lenka-father favorite-movie-is 'the-titanic'
+this is a teddy-bear: this be a-teddy-bear
+this is a pink chair: this be a-pink-chair
+I have always liked reading comic books: lenka like reading-comic-books
+animals must drink water: animals must-drink water
+food should be healthy: food should-be healthy
+lana is reading a book: lana read a-book
+john enjoys watching movies: john enjoy watching-movies
+lana read a book: lana read a-book
+I live in the Netherlands: lenka live-in the-netherlands
+you live in this office: leolani live-in this-office
+you are a robot: leolani be a-robot
+I am a person: lenka be a-person
+humans can eat food: humans can-eat food
+swimming is a sport: swimming be a-sport
+bram loves sport: bram love sport
+I own three beautiful cats: lenka own three-beautiful-cats
+I love looking at the starry sky: lenka love looking-at-the-starry-sky
+
+I have to go home: lenka have-to go-home
+
+
+

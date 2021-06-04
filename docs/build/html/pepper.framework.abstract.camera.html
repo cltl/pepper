@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pepper.framework.abstract.component module" href="pepper.framework.abstract.component.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> CLTL/Pepper
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,12 +90,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.abstract.html">pepper.framework.abstract package</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.html#abstract">Abstract</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.application.html">pepper.framework.abstract.application module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pepper.framework.abstract.backend.html">pepper.framework.abstract.backend module</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pepper.framework.abstract.camera module</a></li>
@@ -124,6 +121,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -162,7 +160,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="pepper.html">pepper package</a> &raquo;</li>
         
@@ -189,372 +187,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pepper.framework.abstract.camera">
-<span id="pepper-framework-abstract-camera-module"></span><h1>pepper.framework.abstract.camera module<a class="headerlink" href="#module-pepper.framework.abstract.camera" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pepper.framework.abstract.camera.AbstractCamera">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractCamera</code><span class="sig-paren">(</span><em>resolution</em>, <em>rate</em>, <em>callbacks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstract Camera</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>resolution</strong> (<a class="reference internal" href="pepper.html#pepper.CameraResolution" title="pepper.CameraResolution"><em>CameraResolution</em></a>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></li>
-<li><strong>rate</strong> (<em>int</em>) – Camera Frames per Second</li>
-<li><strong>callbacks</strong> (<em>List</em><em>[</em><em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#pepper.framework.abstract.camera.AbstractImage" title="pepper.framework.abstract.camera.AbstractImage"><em>AbstractImage</em></a><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – Functions to call each time an AbstractImage is captured</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.callbacks">
-<code class="descname">callbacks</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.callbacks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get/Set <a class="reference internal" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="pepper.framework.abstract.camera.AbstractCamera.on_image"><code class="xref py py-func docutils literal notranslate"><span class="pre">on_image()</span></code></a> Callbacks</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>callbacks</strong> – on_image callbacks</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of callable</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.channels">
-<code class="descname">channels</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.channels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of Image (Color) Channels</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>channels</strong> – Number of Image (Color) channels</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.height">
-<code class="descname">height</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.height" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image Height</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>height</strong> – Image height</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.on_image">
-<code class="descname">on_image</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.on_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.on_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>On Image Event, Called for every Image captured by Camera</p>
-<p>Custom Camera Backends should call this function for every frame acquired by the Camera</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#pepper.framework.abstract.camera.AbstractImage" title="pepper.framework.abstract.camera.AbstractImage"><em>AbstractImage</em></a>) – </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.rate">
-<code class="descname">rate</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image Rate (Frames per Second)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>rate</strong> – Image rate (Frames per Second)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.resolution">
-<code class="descname">resolution</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.resolution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">CameraResolution</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>resolution</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.html#pepper.CameraResolution" title="pepper.CameraResolution">CameraResolution</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.running">
-<code class="descname">running</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.running" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether Camera is Running</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>running</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.shape">
-<code class="descname">shape</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image Shape (height, width, channels)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>shape</strong> – Image Shape (height, width, channels)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.start">
-<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start Streaming Images from Camera</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.stop">
-<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractCamera.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.stop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stop Streaming Images from Camera</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.true_rate">
-<code class="descname">true_rate</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.true_rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Actual Image Rate (Frames per Second)</p>
-<p>Image rate after accounting for latency &amp; performance realities</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>true_rate</strong> – Actual Image Rate (Frames per Second)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractCamera.width">
-<code class="descname">width</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractCamera.width" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image Width</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>width</strong> – Image width</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pepper.framework.abstract.camera.AbstractImage">
-<em class="property">class </em><code class="descclassname">pepper.framework.abstract.camera.</code><code class="descname">AbstractImage</code><span class="sig-paren">(</span><em>image</em>, <em>bounds</em>, <em>depth=None</em>, <em>image_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstract Image Container</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>image</strong> (<em>np.ndarray</em>) – RGB Image (height, width, 3) as Numpy Array</li>
-<li><strong>bounds</strong> (<a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds"><em>Bounds</em></a>) – Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</li>
-<li><strong>depth</strong> (<em>np.ndarray</em>) – Depth Image (height, width) as Numpy Array</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractImage.bounds">
-<code class="descname">bounds</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.bounds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>bounds</strong> – Image Bounds (View Space) in Spherical Coordinates (Phi, Theta)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds">Bounds</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractImage.depth">
-<code class="descname">depth</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.depth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Depth Image (height, width) as Numpy Array</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>depth</strong> – Depth Image (height, width) as Numpy Array</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractImage.frustum">
-<code class="descname">frustum</code><span class="sig-paren">(</span><em>depth_min</em>, <em>depth_max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage.frustum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.frustum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate <a class="reference external" href="https://en.wikipedia.org/wiki/Viewing_frustum">Frustum</a> of the camera at image time (visualisation)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>depth_min</strong> (<em>float</em>) – Near Viewing Plane</li>
-<li><strong>depth_max</strong> (<em>float</em>) – Far Viewing Place</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>frustum</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">List[float]</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractImage.get_depth">
-<code class="descname">get_depth</code><span class="sig-paren">(</span><em>bounds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage.get_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.get_depth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get depth from Image at Bounds in Image Space</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> (<a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds"><em>Bounds</em></a>) – Image Bounds (Image) in Image Space (y, x)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>depth</strong> – Requested depth within Bounds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractImage.get_direction">
-<code class="descname">get_direction</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage.get_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.get_direction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert 2D Image Coordinates [x, y] to 2D position in Spherical Coordinates [phi, theta]</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coordinates</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>direction</strong></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tuple[float, float]</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractImage.get_image">
-<code class="descname">get_image</code><span class="sig-paren">(</span><em>bounds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage.get_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.get_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get pixels from Image at Bounds in Image Space</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> (<a class="reference internal" href="pepper.framework.util.html#pepper.framework.util.Bounds" title="pepper.framework.util.Bounds"><em>Bounds</em></a>) – Image Bounds (Image) in Image Space (y, x)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>pixels</strong> – Requested pixels within Bounds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractImage.hash">
-<code class="descname">hash</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.hash" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractImage.image">
-<code class="descname">image</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.image" title="Permalink to this definition">¶</a></dt>
-<dd><p>RGB Image (height, width, 3) as Numpy Array</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>image</strong> – RGB Image (height, width, 3) as Numpy Array</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pepper.framework.abstract.camera.AbstractImage.time">
-<code class="descname">time</code><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get time image was captured and received by the application.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>time</strong></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pepper.framework.abstract.camera.AbstractImage.to_file">
-<code class="descname">to_file</code><span class="sig-paren">(</span><em>root</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/abstract/camera.html#AbstractImage.to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.abstract.camera.AbstractImage.to_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pepper-framework-abstract-camera-module">
+<h1>pepper.framework.abstract.camera module<a class="headerlink" href="#pepper-framework-abstract-camera-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -577,11 +211,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, CLTL
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -592,7 +234,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -32,7 +32,8 @@ class VisionResponder(Responder):
     SEE_SPECIFIC = [
         "do you see ",
         "can you see ",
-        "where is the "
+        "where is the ",
+        "where's the "
     ]
 
     I_SEE = [
@@ -188,8 +189,28 @@ class LocationResponder(Responder):
         "what is here",
     ]
 
-    SET_LOCATION_CUE = [
+    CUE_SET_LOCATION = [
         "we are in ",
+    ]
+
+    CUE_GUESS_LOCATION = [
+        "guess where we are",
+        "figure out where we are",
+        "can you guess where we are",
+    ]
+
+    ANSWER_GUESS = [
+        "I think we are in ",
+        "It looks a lot like ",
+        "I believe this is ",
+        "I have been here before. It is ",
+    ]
+
+    ANSWER_FAILED_GUESS = [
+        "I could not figure out where we are",
+        "I am not sure I have been here",
+        "This place does not look like anywhere I have been before",
+        "Maybe many things have changed, but I cannot figure out what this place is",
     ]
 
     @property
@@ -202,10 +223,25 @@ class LocationResponder(Responder):
 
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
+        # Respond where we are
         if utterance.transcript.lower() in self.CUE_FULL:
             return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
+
+        # Guess where we are
+        if utterance.transcript.lower() in self.CUE_GUESS_LOCATION:
+            if utterance.context.location.label == utterance.context.location.UNKNOWN:
+                guess = app.brain.reason_location(utterance.context)
+                if guess:
+                    utterance.context.location.label = guess
+                    app.brain.set_location_label(guess)
+                    return 1, lambda: app.say("{} {}".format(choice(self.ANSWER_GUESS),
+                                                             self._location_to_text(utterance.context.location)))
+                else:
+                    return 1, lambda: app.say("{}!".format(choice(self.ANSWER_FAILED_GUESS)))
+
+        # Set name for where we are
         else:
-            for cue in self.SET_LOCATION_CUE:
+            for cue in self.CUE_SET_LOCATION:
                 if utterance.transcript.lower().startswith(cue):
                     location = utterance.transcript.lower().replace(cue, "").strip().title()
                     utterance.context.location.label = location

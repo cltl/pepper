@@ -1,0 +1,3 @@
+PREFIX n2mu: <http://cltl.nl/leolani/n2mu/>
+
+DELETE WHERE { ?s n2mu:hasTrustworthinessLevel ?trust . }

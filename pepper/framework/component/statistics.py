@@ -63,7 +63,7 @@ class StatisticsComponent(AbstractComponent):
                 self.LIVE_SPEECH = ""
 
             # Display Statistics
-            print("\rThreads {:2d} | Cam {:4.1f} Hz | Mic {:4.1f} kHz | TTS {:12s} >>> {}".format(
+            print("\rThreads {:2d} | Cam {:4.1f} Hz | Mic {:4.1f} kHz | STT {:12s} >>> {}".format(
                 threading.active_count(),
                 cam_rate_true,
                 mic_rate_true / 1000.0,
